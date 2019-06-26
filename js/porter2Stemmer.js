@@ -86,7 +86,67 @@ class PT2{
                     [1, 'ness', ''],
                     [1, 'ful', '']
                   ];
-
+  // arrStep4Seq is a list of suffixes to
+  // be evaluated against a token; as soon as one is matched,
+  // the rest are ignored, and if the match location is in R2,
+  // a delete operation is done.
+  // The format is:
+  //  match, delete
+  // So for example: "al" matches, but the match must be in R2
+  // to satisfy the condition.
+    arrStep4Seq = [
+                    ['ement', 'ement'],
+                    ['ment', 'ment'],
+                    ['ance', 'ance'],
+                    ['ence', 'ence'],
+                    ['able', 'able'],
+                    ['ible', 'ible'],
+                    ['ant', 'ant'],
+                    ['ent', 'ent'],
+                    ['ism', 'ism'],
+                    ['ate', 'ate'],
+                    ['iti', 'iti'],
+                    ['ous', 'ous'],
+                    ['ive', 'ive'],
+                    ['ize', 'ize'],
+                    ['[st]|ion', 'ion'],
+                    ['al', 'al'],
+                    ['er', 'er'],
+                    ['ic', 'ic']
+                  ];
+  // arrExeptions is a list of exceptional forms and their matching
+  // stems, to be processed before the rest of the stemming takes place.
+  // The format is:
+  //     token:stem
+  // This list includes items from two lists in the Porter2 description:
+  // the set of special words which have hard-coded stems, and the set
+  // of words which should remain unchanged.
+    arrExceptions = [
+                      ['skis', 'ski'],
+                      ['skies', 'sky'],
+                      ['dying', 'die'],
+                      ['lying', 'lie'],
+                      ['tying', 'tie'],
+                      ['idly', 'idl'],
+                      ['gently', 'gentl'],
+                      ['ugly', 'ugli'],
+                      ['early', 'earli'],
+                      ['only', 'onli'],
+                      ['singly', 'singl'],
+                      ['sky', 'sky'],
+                      ['news', 'news'],
+                      ['howe', 'howe'],
+                      ['atlas', 'atlas'],
+                      ['cosmos', 'cosmos'],
+                      ['bias', 'bias'],
+                      ['andes', 'andes']
+                    ];
+  // arrStep1aExceptions is a short list of items to be left unchanged
+  // if they are found after step 1a.
+    arrStep1aExceptions = [
+                            'inning', 'outing', 'canning', 'herring',
+                            'earring', 'proceed', 'exceed', 'succeed'
+                          ];
 
 }
 

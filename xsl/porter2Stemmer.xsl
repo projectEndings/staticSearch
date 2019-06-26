@@ -40,7 +40,7 @@
   <xsl:variable name="vowel" as="xs:string">[aeiouy]</xsl:variable>
   
   <xd:doc>
-    <xd:desc>The <xd:ref name="nonVowel">nonVowel</xd:ref> variable is 
+    <xd:desc>The <xd:Achref name="nonVowel">nonVowel</xd:Achref> variable is 
       a character class of non-vowels.</xd:desc>
   </xd:doc>
   <xsl:variable name="nonVowel">[^aeiouy]</xsl:variable>
@@ -92,8 +92,7 @@
       prematch|match:replacement 
     where prematch is a component that must exist, but does not have to be in R1.
     So for example: "logi" matches, and the "o" must be in R1 to satisfy the condition.
-    The order of items follows that in the Porter2 
-    description.</xd:desc>
+    </xd:desc>
   </xd:doc>
   <xsl:variable name="step2Seq" as="xs:string+" 
     select="(
@@ -131,9 +130,7 @@
       The format is:
       whichR|match:replacement 
       where whichR is either "1" or "2".
-      So for example: "ative" matches, but the match must be in R2 to satisfy the condition.
-      The order of items follows that in the Porter2 
-      description.</xd:desc>
+      So for example: "ative" matches, but the match must be in R2 to satisfy the condition.</xd:desc>
   </xd:doc>
   <xsl:variable name="step3Seq" as="xs:string+" 
     select="(
@@ -155,8 +152,7 @@
       The format is:
       prematch|match 
       So for example: "al" matches, but the match must be in R2 to satisfy the condition.
-      The order of items follows that in the Porter2 
-      description.</xd:desc>
+    </xd:desc>
   </xd:doc>
   <xsl:variable name="step4Seq" as="xs:string+"
     select="(
