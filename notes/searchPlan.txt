@@ -1,0 +1,116 @@
+# Plan for the Search
+
+
+## TOKENIZING STAGE
+
+ISSUES:
+
+* Words sometimes have self-closing elements interrupting them (<br/>, for isntance)
+* Words sometimes are tagged in fragments and those tags should be deleted removed since they are not important for indexing: (de<emph>vis</emph>ing)
+
+* Some words contained within tags will need to ignored entirely from indexing: <span class="expan">Expanded form</span>
+* Some words contained within tags will need to be given higher precedence: <span class="IMPORTANT">important</span>
+
+
+### PASS 1:
+
+So in the first pass, we need to:
+
+* Unwrap elements whose content might be important but are potentially breaking words
+* Delete any elements that we do not want showing up either in the indexing or the kwic
+* Retain all inline elements that have to be retained in for precedence reasons (i.e. the
+  contained tokens will have a weight > 1) or for context reasons (the span will need 
+  to be treated as a context item) for the kwic
+    
+
+So our config might look something like this:
+
+<config>
+    <rules>
+        <rule xpath="span[@class='name']" weight="2"/>
+        <rule xpath="*[matches(local-name(),'^h\d+$')]" weight="2"/>
+        <rule xpath="span[@class='topo'][ancestor::div[@id='toponymInfo']]" weight="2"/>
+        <rule xpath="span[@class='expan'][parent::span[@data-el='choice'][span[@class='abbr']]]" weight="0"/>
+        <rule xpath="div[@id='metadata']" weight="0"/>
+        <rule xpath="div[@id='footer']" weight="0"/>
+        <rule xpath="body/header" weight="0"/>
+    </rules>
+    <contexts>
+        <rule xpath="span[@class='stage']"/>
+        <rule xpath="span[@class='blockquote']"/>
+    </contexts>
+</config>
+
+The first pass will thus be where we
+
+* Delete any self-closing elements
+* Only retain the contents any inline elements that we don't consider important
+* But retain elements that we need for context or anything else
+
+
+== START PASS 1 CODE ==
+
+<!--****** PASS 1 ********-->
+
+<!--DEFAULT RULE FROM THE XSLT FOR ALL SIMPLIFICATION-->
+<xsl:template match="lb | wbr | span" mode="pass1">
+    <xsl:apply-templates mode="#current"/>
+</xsl:template>
+
+
+<!--THE FOLLOWING WILL BE GENERATED FROM CONFIG FILE AND IMPORTED USING XSL:IMPORT -->
+
+<!--Any element that either will have a higher weight or needs to be
+     retained as a context item will show up here and will be simply
+     copied out normally-> 
+
+<xsl:template match="span[@class='name'] | span[@class='topo'][ancestor::div[@id='toponymInfo']] | *[matches(local-name(),'^h\d+$')] | span[@class='stage'] | span[@class='blockquote']" mode="pass1">
+    <xsl:copy>
+        <xsl:apply-templates select="@*|node()" mode="#current"/>
+    </xsl:copy>
+</xsl:template>
+
+<!-- Any element that should be deleted entirely from the process should show up here:
+     I'm making the assumption here that if you don't want it processed at all in the indexer, then you don't want it
+     showing up in the kwic. -->
+
+<xsl:template match="span[@class='expan'][parent::span[@data-el='choice'][span[@class='abbr']]| div[@id='metadata'] | div[@id='footer'] | body/header" mode="pass1"/>
+
+
+== END PASS 1 CODE ==
+
+
+We could also add an attribute, call it data-searchWeight or something, to the elements that will require a higher weight in the output as we process them in PASS1,
+so that if something does have a higher weight, when we add spans to everything, we can investigate simply whether or not the item should have a higher weight.
+
+So, PASS2 could look something like:
+
+<xsl:template match="[[match pattern]]">
+ <xsl:choose>
+    <xsl:when test="endings:shouldStem(.)">
+        <span>
+            <xsl:attribute name="data-weight" select="if (ancestor::*[@data-searchWeight] then ancestor::*[@data-searchWeight][1] else 1"/
+            <xsl:attribute name="data-stem" select="endings:stem(.)"/>
+            <xsl:value-of select="."/>
+        </span>
+    </xsl:when>
+ </xsl:choose>
+</xsl:template>
+ 
+ In PASS2, when we analyze the text content, since we've handled all the elements that could potentially be word breaking,
+ we can run a fairly simple regex on either the text() or on the element itself that analyzes the words and runs the stemming
+ process. 
+ 
+ The stemming process will have to handle contractions, I think (maybe just slice off the end of the contraction: "posterity's" become "posterity" and then stemmed to posteriti or whatever).
+
+The stemming function can thus be a bit simpler, since all of the necessary contextual data has been added to the document in PASS1.
+
+** QUESTION **: Should we match on text()[ancestor::body] or should we match on the elements that are left in the body *[ancestor::body] and do the text? I think either should produce the same results.
+
+** QUESTION** : I am reconsidering whether or not it's necessary to have a separation of proper nouns or not; it's nearly impossible to tell whether or not something is a proper noun or just a word at the beginning of a sentence. Why not just stem the word as if it were lowercase and then, in the search engine itself, results for (august) will return everything in the august.json, capitalized or not. Capital August will, by default, be a case sensitive search, that first stems the content: "August" turns into "august", looks at the august.json file, and sees if there are any instances that takes the form "August" in the data. 
+
+
+## JSON STAGE
+
+tba
+ 
