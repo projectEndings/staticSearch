@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" 
-  xmlns:h="http://hcmc.uvic.ca/ns"
+  xmlns:hcmc="http://hcmc.uvic.ca/ns"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xslt-version="3.0"
   stylesheet="porter2Stemmer.xsl">
   
@@ -12,61 +12,61 @@
   
   <x:scenario label="Test function preflight">
     <x:scenario label="Testing invented examples (1)">
-      <x:call function="h:preflight">
+      <x:call function="hcmc:preflight">
         <x:param name="token" select="'''yesterday'"/>
       </x:call>
       <x:expect label="Result from 'yesterday" select="'YesterdaY'"/>
     </x:scenario>
     <x:scenario label="Testing invented examples (2)">
-      <x:call function="h:preflight">
+      <x:call function="hcmc:preflight">
         <x:param name="token" select="'wayfair'"/>
       </x:call>
       <x:expect label="Result from wayfair" select="'waYfair'"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'knees'">
-      <x:call function="h:preflight">
+      <x:call function="hcmc:preflight">
         <x:param name="token" select="'knees'"/>
       </x:call>
       <x:expect label="Result from knees" select="'knees'"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'knell'">
-      <x:call function="h:preflight">
+      <x:call function="hcmc:preflight">
         <x:param name="token" select="'knell'"/>
       </x:call>
       <x:expect label="Result from knees" select="'knell'"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'abeyance'">
-      <x:call function="h:preflight">
+      <x:call function="hcmc:preflight">
         <x:param name="token" select="'abeyance'"/>
       </x:call>
       <x:expect label="Result from abeyance" select="'abeYance'"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'abjectness'">
-      <x:call function="h:preflight">
+      <x:call function="hcmc:preflight">
         <x:param name="token" select="'abjectness'"/>
       </x:call>
       <x:expect label="Result from abjectness" select="'abjectness'"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'able'">
-      <x:call function="h:preflight">
+      <x:call function="hcmc:preflight">
         <x:param name="token" select="'able'"/>
       </x:call>
       <x:expect label="Result from able" select="'able'"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'authenticity'">
-      <x:call function="h:preflight">
+      <x:call function="hcmc:preflight">
         <x:param name="token" select="'authenticity'"/>
       </x:call>
       <x:expect label="Result from authenticity" select="'authenticity'"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'bleed'">
-      <x:call function="h:preflight">
+      <x:call function="hcmc:preflight">
         <x:param name="token" select="'bleed'"/>
       </x:call>
       <x:expect label="Result from bleed" select="'bleed'"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'conversational'">
-      <x:call function="h:preflight">
+      <x:call function="hcmc:preflight">
         <x:param name="token" select="'conversational'"/>
       </x:call>
       <x:expect label="Result from conversational" select="'conversational'"/>
@@ -75,145 +75,145 @@
   
   <x:scenario label="Test function getR1AndR2">
     <x:scenario label="Testing exceptions (1)">
-      <x:call function="h:getR1AndR2">
+      <x:call function="hcmc:getR1AndR2">
         <x:param name="token" select="'generates'"/>
       </x:call>
       <x:expect label="Result from 'generates'" select="('ates', 'es', 6, 8)"/>
     </x:scenario>
     <x:scenario label="Testing exceptions (2)">
-      <x:call function="h:getR1AndR2">
+      <x:call function="hcmc:getR1AndR2">
         <x:param name="token" select="'communication'"/>
       </x:call>
       <x:expect label="Result from 'communication'" select="('ication', 'ation', 7, 9)"/>
     </x:scenario>
     <x:scenario label="Testing non-exceptions (1)">
-      <x:call function="h:getR1AndR2">
+      <x:call function="hcmc:getR1AndR2">
         <x:param name="token" select="'asking'"/>
       </x:call>
       <x:expect label="Result from 'asking'" select="('king', 'g', 3, 6)"/>
     </x:scenario>
     <x:scenario label="Testing non-exceptions (2)">
-      <x:call function="h:getR1AndR2">
+      <x:call function="hcmc:getR1AndR2">
         <x:param name="token" select="'adumbration'"/>
       </x:call>
       <x:expect label="Result from 'asking'" select="('umbration', 'bration', 3, 5)"/>
     </x:scenario>
     <x:scenario label="Testing non-exceptions (3)">
-      <x:call function="h:getR1AndR2">
+      <x:call function="hcmc:getR1AndR2">
         <x:param name="token" select="'distortion'"/>
       </x:call>
       <x:expect label="Result from 'distortion'" select="('tortion', 'tion', 4, 7)"/>
     </x:scenario>
     <x:scenario label="Testing non-exceptions (4)">
-      <x:call function="h:getR1AndR2">
+      <x:call function="hcmc:getR1AndR2">
         <x:param name="token" select="'ow'"/>
       </x:call>
       <x:expect label="Result from 'ow'" select="('', '', 3, 3)"/>
     </x:scenario>
     <x:scenario label="Testing non-exceptions (5)">
-      <x:call function="h:getR1AndR2">
+      <x:call function="hcmc:getR1AndR2">
         <x:param name="token" select="'proceed'"/>
       </x:call>
       <x:expect label="Result from 'proceed'" select="('eed', '', 5, 8)"/>
     </x:scenario>
     <x:scenario label="Testing non-exceptions (6)">
-      <x:call function="h:getR1AndR2">
+      <x:call function="hcmc:getR1AndR2">
         <x:param name="token" select="'chickenfeed'"/>
       </x:call>
       <x:expect label="Result from 'chickenfeed'" select="('kenfeed', 'feed', 5, 8)"/>
     </x:scenario>
     <x:scenario label="Testing Porter's examples (1)">
-      <x:call function="h:getR1AndR2">
+      <x:call function="hcmc:getR1AndR2">
         <x:param name="token" select="'beautiful'"/>
       </x:call>
       <x:expect label="Result from 'beautiful'" select="('iful', 'ul', 6, 8)"/>
     </x:scenario>
     <x:scenario label="Testing Porter's examples (2)">
-      <x:call function="h:getR1AndR2">
+      <x:call function="hcmc:getR1AndR2">
         <x:param name="token" select="'beauty'"/>
       </x:call>
       <x:expect label="Result from 'beauty'" select="('y', '', 6, 7)"/>
     </x:scenario>
     <x:scenario label="Testing Porter's examples (3)">
-      <x:call function="h:getR1AndR2">
+      <x:call function="hcmc:getR1AndR2">
         <x:param name="token" select="'beau'"/>
       </x:call>
       <x:expect label="Result from 'beau'" select="('', '', 5, 5)"/>
     </x:scenario>
     <x:scenario label="Testing Porter's examples (4)">
-      <x:call function="h:getR1AndR2">
+      <x:call function="hcmc:getR1AndR2">
         <x:param name="token" select="'animadversion'"/>
       </x:call>
       <x:expect label="Result from 'animadversion'" select="('imadversion', 'adversion', 3, 5)"/>
     </x:scenario>
     <x:scenario label="Testing Porter's examples (5)">
-      <x:call function="h:getR1AndR2">
+      <x:call function="hcmc:getR1AndR2">
         <x:param name="token" select="'sprinkled'"/>
       </x:call>
       <x:expect label="Result from 'sprinkled'" select="('kled', '', 6, 10)"/>
     </x:scenario>
     <x:scenario label="Testing Porter's examples (6)">
-      <x:call function="h:getR1AndR2">
+      <x:call function="hcmc:getR1AndR2">
         <x:param name="token" select="'eucharist'"/>
       </x:call>
       <x:expect label="Result from 'eucharist'" select="('harist', 'ist', 4, 7)"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'knees'">
-      <x:call function="h:getR1AndR2">
+      <x:call function="hcmc:getR1AndR2">
         <x:param name="token" select="'knees'"/>
       </x:call>
       <x:expect label="Result from 'knees'" select="('', '', 6, 6)"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'knell'">
-      <x:call function="h:getR1AndR2">
+      <x:call function="hcmc:getR1AndR2">
         <x:param name="token" select="'knell'"/>
       </x:call>
       <x:expect label="Result from 'knell'" select="('l', '', 5, 6)"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'abeYance'">
-      <x:call function="h:getR1AndR2">
+      <x:call function="hcmc:getR1AndR2">
         <x:param name="token" select="'abeYance'"/>
       </x:call>
       <x:expect label="Result from 'abeYance'" select="('eYance', 'ance', 3, 5)"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'abilities'">
-      <x:call function="h:getR1AndR2">
+      <x:call function="hcmc:getR1AndR2">
         <x:param name="token" select="'abilities'"/>
       </x:call>
       <x:expect label="Result from 'abeYance'" select="('ilities', 'ities', 3, 5)"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'abjectness'">
-      <x:call function="h:getR1AndR2">
+      <x:call function="hcmc:getR1AndR2">
         <x:param name="token" select="'abjectness'"/>
       </x:call>
       <x:expect label="Result from 'abjectness'" select="('jectness', 'tness', 3, 6)"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'able'">
-      <x:call function="h:getR1AndR2">
+      <x:call function="hcmc:getR1AndR2">
         <x:param name="token" select="'able'"/>
       </x:call>
       <x:expect label="Result from 'abjectness'" select="('le', '', 3, 5)"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'achilles'">
-      <x:call function="h:getR1AndR2">
+      <x:call function="hcmc:getR1AndR2">
         <x:param name="token" select="'achilles'"/>
       </x:call>
       <x:expect label="Result from 'achilles'" select="('hilles', 'les', 3, 6)"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'authenticity'">
-      <x:call function="h:getR1AndR2">
+      <x:call function="hcmc:getR1AndR2">
         <x:param name="token" select="'authenticity'"/>
       </x:call>
       <x:expect label="Result from 'authenticity'" select="('henticity', 'ticity', 4, 7)"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'bleed'">
-      <x:call function="h:getR1AndR2">
+      <x:call function="hcmc:getR1AndR2">
         <x:param name="token" select="'bleed'"/>
       </x:call>
       <x:expect label="Result from 'bleed'" select="('', '', 6, 6)"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'conversational'">
-      <x:call function="h:getR1AndR2">
+      <x:call function="hcmc:getR1AndR2">
         <x:param name="token" select="'conversational'"/>
       </x:call>
       <x:expect label="Result from 'conversational'" select="('versational', 'sational', 4, 7)"/>
@@ -222,114 +222,114 @@
 
   <x:scenario label="Test function wordIsShort">
     <x:scenario label="Testing Porter's examples (1)">
-      <x:call function="h:wordIsShort">
+      <x:call function="hcmc:wordIsShort">
         <x:param name="token" select="'bed'"/>
-        <x:param name="R1" select="h:getR1AndR2('bed')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('bed')[3]"/>
       </x:call>
       <x:expect label="Result from 'bed'" select="true()"/>
     </x:scenario>
     <x:scenario label="Testing Porter's examples (2)">
-      <x:call function="h:wordIsShort">
+      <x:call function="hcmc:wordIsShort">
         <x:param name="token" select="'shed'"/>
-        <x:param name="R1" select="h:getR1AndR2('shed')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('shed')[3]"/>
       </x:call>
       <x:expect label="Result from 'shed'" select="true()"/>
     </x:scenario>
     <x:scenario label="Testing Porter's examples (3)">
-      <x:call function="h:wordIsShort">
+      <x:call function="hcmc:wordIsShort">
         <x:param name="token" select="'shred'"/>
-        <x:param name="R1" select="h:getR1AndR2('shred')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('shred')[3]"/>
       </x:call>
       <x:expect label="Result from 'shred'" select="true()"/>
     </x:scenario>
     <x:scenario label="Testing Porter's examples (4)">
-      <x:call function="h:wordIsShort">
+      <x:call function="hcmc:wordIsShort">
         <x:param name="token" select="'bead'"/>
-        <x:param name="R1" select="h:getR1AndR2('bead')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('bead')[3]"/>
       </x:call>
       <x:expect label="Result from 'bead'" select="false()"/>
     </x:scenario>
     <x:scenario label="Testing Porter's examples (5)">
-      <x:call function="h:wordIsShort">
+      <x:call function="hcmc:wordIsShort">
         <x:param name="token" select="'embed'"/>
-        <x:param name="R1" select="h:getR1AndR2('embed')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('embed')[3]"/>
       </x:call>
       <x:expect label="Result from 'embed'" select="false()"/>
     </x:scenario>
     <x:scenario label="Testing Porter's examples (6)">
-      <x:call function="h:wordIsShort">
+      <x:call function="hcmc:wordIsShort">
         <x:param name="token" select="'beds'"/>
-        <x:param name="R1" select="h:getR1AndR2('beds')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('beds')[3]"/>
       </x:call>
       <x:expect label="Result from 'beds'" select="false()"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'knees'">
-      <x:call function="h:wordIsShort">
+      <x:call function="hcmc:wordIsShort">
         <x:param name="token" select="'knees'"/>
-        <x:param name="R1" select="h:getR1AndR2('knees')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('knees')[3]"/>
       </x:call>
       <x:expect label="Result from 'knees'" select="false()"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'knell'">
-      <x:call function="h:wordIsShort">
+      <x:call function="hcmc:wordIsShort">
         <x:param name="token" select="'knell'"/>
-        <x:param name="R1" select="h:getR1AndR2('knell')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('knell')[3]"/>
       </x:call>
       <x:expect label="Result from 'knell'" select="false()"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'abeYance'">
-      <x:call function="h:wordIsShort">
+      <x:call function="hcmc:wordIsShort">
         <x:param name="token" select="'abeYance'"/>
-        <x:param name="R1" select="h:getR1AndR2('abeYance')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('abeYance')[3]"/>
       </x:call>
       <x:expect label="Result from 'abeYance'" select="false()"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'abilities'">
-      <x:call function="h:wordIsShort">
+      <x:call function="hcmc:wordIsShort">
         <x:param name="token" select="'abilities'"/>
-        <x:param name="R1" select="h:getR1AndR2('abilities')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('abilities')[3]"/>
       </x:call>
       <x:expect label="Result from 'abilities'" select="false()"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'abjectness'">
-      <x:call function="h:wordIsShort">
+      <x:call function="hcmc:wordIsShort">
         <x:param name="token" select="'abjectness'"/>
-        <x:param name="R1" select="h:getR1AndR2('abjectness')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('abjectness')[3]"/>
       </x:call>
       <x:expect label="Result from 'abilities'" select="false()"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'able'">
-      <x:call function="h:wordIsShort">
+      <x:call function="hcmc:wordIsShort">
         <x:param name="token" select="'able'"/>
-        <x:param name="R1" select="h:getR1AndR2('able')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('able')[3]"/>
       </x:call>
       <x:expect label="Result from 'able'" select="false()"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'achilles'">
-      <x:call function="h:wordIsShort">
+      <x:call function="hcmc:wordIsShort">
         <x:param name="token" select="'achilles'"/>
-        <x:param name="R1" select="h:getR1AndR2('achilles')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('achilles')[3]"/>
       </x:call>
       <x:expect label="Result from 'achilles'" select="false()"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'authenticity'">
-      <x:call function="h:wordIsShort">
+      <x:call function="hcmc:wordIsShort">
         <x:param name="token" select="'authenticity'"/>
-        <x:param name="R1" select="h:getR1AndR2('authenticity')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('authenticity')[3]"/>
       </x:call>
       <x:expect label="Result from 'authenticity'" select="false()"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'bleed'">
-      <x:call function="h:wordIsShort">
+      <x:call function="hcmc:wordIsShort">
         <x:param name="token" select="'bleed'"/>
-        <x:param name="R1" select="h:getR1AndR2('bleed')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('bleed')[3]"/>
       </x:call>
       <x:expect label="Result from 'bleed'" select="false()"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'conversational'">
-      <x:call function="h:wordIsShort">
+      <x:call function="hcmc:wordIsShort">
         <x:param name="token" select="'conversational'"/>
-        <x:param name="R1" select="h:getR1AndR2('conversational')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('conversational')[3]"/>
       </x:call>
       <x:expect label="Result from 'conversational'" select="false()"/>
     </x:scenario>
@@ -337,67 +337,67 @@
 
   <x:scenario label="Test function step0">
     <x:scenario label="Testing invented examples (1)">
-      <x:call function="h:step0">
+      <x:call function="hcmc:step0">
         <x:param name="token" select="'apostrophe'''"/>
       </x:call>
       <x:expect label="Result from apostrophe'" select="'apostrophe'"/>
     </x:scenario>
     <x:scenario label="Testing invented examples (2)">
-      <x:call function="h:step0">
+      <x:call function="hcmc:step0">
         <x:param name="token" select="'authors'''"/>
       </x:call>
       <x:expect label="Result from authors'" select="'authors'"/>
     </x:scenario>
     <x:scenario label="Testing invented examples (3)">
-      <x:call function="h:step0">
+      <x:call function="hcmc:step0">
         <x:param name="token" select="'apostrophe''s'''"/>
       </x:call>
       <x:expect label="Result from apostrophe's'" select="'apostrophe'"/>
     </x:scenario>
     <x:scenario label="Testing invented examples (4)">
-      <x:call function="h:step0">
+      <x:call function="hcmc:step0">
         <x:param name="token" select="'book'"/>
       </x:call>
       <x:expect label="Result from book" select="'book'"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'knees'">
-      <x:call function="h:step0">
+      <x:call function="hcmc:step0">
         <x:param name="token" select="'knees'"/>
       </x:call>
       <x:expect label="Result from knees" select="'knees'"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'knell'">
-      <x:call function="h:step0">
+      <x:call function="hcmc:step0">
         <x:param name="token" select="'knell'"/>
       </x:call>
       <x:expect label="Result from 'knell'" select="'knell'"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'able'">
-      <x:call function="h:step0">
+      <x:call function="hcmc:step0">
         <x:param name="token" select="'able'"/>
       </x:call>
       <x:expect label="Result from 'able'" select="'able'"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'achilles'">
-      <x:call function="h:step0">
+      <x:call function="hcmc:step0">
         <x:param name="token" select="'achilles'"/>
       </x:call>
       <x:expect label="Result from 'achilles'" select="'achilles'"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'authenticity'">
-      <x:call function="h:step0">
+      <x:call function="hcmc:step0">
         <x:param name="token" select="'authenticity'"/>
       </x:call>
       <x:expect label="Result from 'authenticity'" select="'authenticity'"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'bleed'">
-      <x:call function="h:step0">
+      <x:call function="hcmc:step0">
         <x:param name="token" select="'bleed'"/>
       </x:call>
       <x:expect label="Result from 'bleed'" select="'bleed'"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'conversational'">
-      <x:call function="h:step0">
+      <x:call function="hcmc:step0">
         <x:param name="token" select="'conversational'"/>
       </x:call>
       <x:expect label="Result from 'conversational'" select="'conversational'"/>
@@ -406,142 +406,142 @@
 
   <x:scenario label="Test function step1">
     <x:scenario label="Testing invented examples (1)">
-      <x:call function="h:step1">
+      <x:call function="hcmc:step1">
         <x:param name="token" select="'lasses'"/>
-        <x:param name="R1" select="h:getR1AndR2('lasses')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('lasses')[3]"/>
       </x:call>
       <x:expect label="Result from 'lasses'" select="'lass'"/>
     </x:scenario>
     <x:scenario label="Testing invented examples (2)">
-      <x:call function="h:step1">
+      <x:call function="hcmc:step1">
         <x:param name="token" select="'exceedingly'"/>
-        <x:param name="R1" select="h:getR1AndR2('exceedingly')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('exceedingly')[3]"/>
       </x:call>
       <x:expect label="Result from 'exceedingly'" select="'exceed'"/>
     </x:scenario>
     <x:scenario label="Testing invented examples (3)">
-      <x:call function="h:step1">
+      <x:call function="hcmc:step1">
         <x:param name="token" select="'ties'"/>
-        <x:param name="R1" select="h:getR1AndR2('ties')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('ties')[3]"/>
       </x:call>
       <x:expect label="Result from 'ties'" select="'tie'"/>
     </x:scenario>
     <x:scenario label="Testing invented examples (4)">
-      <x:call function="h:step1">
+      <x:call function="hcmc:step1">
         <x:param name="token" select="'cries'"/>
-        <x:param name="R1" select="h:getR1AndR2('cries')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('cries')[3]"/>
       </x:call>
       <x:expect label="Result from 'cries'" select="'cri'"/>
     </x:scenario>
     <x:scenario label="Testing invented examples (5)">
-      <x:call function="h:step1">
+      <x:call function="hcmc:step1">
         <x:param name="token" select="'gas'"/>
-        <x:param name="R1" select="h:getR1AndR2('gas')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('gas')[3]"/>
       </x:call>
       <x:expect label="Result from 'gas'" select="'gas'"/>
     </x:scenario>
     <x:scenario label="Testing invented examples (6)">
-      <x:call function="h:step1">
+      <x:call function="hcmc:step1">
         <x:param name="token" select="'kiwis'"/>
-        <x:param name="R1" select="h:getR1AndR2('kiwis')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('kiwis')[3]"/>
       </x:call>
       <x:expect label="Result from 'kiwis'" select="'kiwi'"/>
     </x:scenario>
     <x:scenario label="Testing invented examples (7)">
-      <x:call function="h:step1">
+      <x:call function="hcmc:step1">
         <x:param name="token" select="'cries'"/>
-        <x:param name="R1" select="h:getR1AndR2('cries')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('cries')[3]"/>
       </x:call>
       <x:expect label="Result from 'cries'" select="'cri'"/>
     </x:scenario>
     <x:scenario label="Testing invented examples (8)">
-      <x:call function="h:step1">
+      <x:call function="hcmc:step1">
         <x:param name="token" select="'gaps'"/>
-        <x:param name="R1" select="h:getR1AndR2('gaps')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('gaps')[3]"/>
       </x:call>
       <x:expect label="Result from 'gaps'" select="'gap'"/>
     </x:scenario>
     <x:scenario label="Testing invented examples (9)">
-      <x:call function="h:step1">
+      <x:call function="hcmc:step1">
         <x:param name="token" select="'cry'"/>
-        <x:param name="R1" select="h:getR1AndR2('cry')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('cry')[3]"/>
       </x:call>
       <x:expect label="Result from 'cry'" select="'cri'"/>
     </x:scenario>
     <x:scenario label="Testing invented examples (10)">
-      <x:call function="h:step1">
+      <x:call function="hcmc:step1">
         <x:param name="token" select="'by'"/>
-        <x:param name="R1" select="h:getR1AndR2('by')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('by')[3]"/>
       </x:call>
       <x:expect label="Result from 'by'" select="'by'"/>
     </x:scenario>
     <x:scenario label="Testing invented examples (11)">
-      <x:call function="h:step1">
+      <x:call function="hcmc:step1">
         <x:param name="token" select="'say'"/>
-        <x:param name="R1" select="h:getR1AndR2('say')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('say')[3]"/>
       </x:call>
       <x:expect label="Result from 'say'" select="'say'"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'knees'">
-      <x:call function="h:step1">
+      <x:call function="hcmc:step1">
         <x:param name="token" select="'knees'"/>
-        <x:param name="R1" select="h:getR1AndR2('knees')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('knees')[3]"/>
       </x:call>
       <x:expect label="Result from knees" select="'knee'"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'knell'">
-      <x:call function="h:step1">
+      <x:call function="hcmc:step1">
         <x:param name="token" select="'knell'"/>
-        <x:param name="R1" select="h:getR1AndR2('knell')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('knell')[3]"/>
       </x:call>
       <x:expect label="Result from knees" select="'knell'"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'abilities'">
-      <x:call function="h:step1">
+      <x:call function="hcmc:step1">
         <x:param name="token" select="'abilities'"/>
-        <x:param name="R1" select="h:getR1AndR2('abilities')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('abilities')[3]"/>
       </x:call>
       <x:expect label="Result from abilities" select="'abiliti'"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'abjectness'">
-      <x:call function="h:step1">
+      <x:call function="hcmc:step1">
         <x:param name="token" select="'abjectness'"/>
-        <x:param name="R1" select="h:getR1AndR2('abjectness')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('abjectness')[3]"/>
       </x:call>
       <x:expect label="Result from abjectness" select="'abjectness'"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'able'">
-      <x:call function="h:step1">
+      <x:call function="hcmc:step1">
         <x:param name="token" select="'able'"/>
-        <x:param name="R1" select="h:getR1AndR2('able')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('able')[3]"/>
       </x:call>
       <x:expect label="Result from able" select="'able'"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'achilles'">
-      <x:call function="h:step1">
+      <x:call function="hcmc:step1">
         <x:param name="token" select="'achilles'"/>
-        <x:param name="R1" select="h:getR1AndR2('achilles')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('achilles')[3]"/>
       </x:call>
       <x:expect label="Result from achilles" select="'achille'"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'authenticity'">
-      <x:call function="h:step1">
+      <x:call function="hcmc:step1">
         <x:param name="token" select="'authenticity'"/>
-        <x:param name="R1" select="h:getR1AndR2('authenticity')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('authenticity')[3]"/>
       </x:call>
       <x:expect label="Result from authenticity" select="'authenticiti'"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'bleed'">
-      <x:call function="h:step1">
+      <x:call function="hcmc:step1">
         <x:param name="token" select="'bleed'"/>
-        <x:param name="R1" select="h:getR1AndR2('bleed')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('bleed')[3]"/>
       </x:call>
       <x:expect label="Result from bleed" select="'bleed'"/>
     </x:scenario>
     <x:scenario label="Testing problem instance 'conversational'">
-      <x:call function="h:step1">
+      <x:call function="hcmc:step1">
         <x:param name="token" select="'conversational'"/>
-        <x:param name="R1" select="h:getR1AndR2('conversational')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('conversational')[3]"/>
       </x:call>
       <x:expect label="Result from conversational" select="'conversational'"/>
     </x:scenario>
@@ -549,44 +549,44 @@
   
   <x:scenario label="Test function step2">
     <x:scenario label="Testing problem example 'abiliti'">
-      <x:call function="h:step2">
+      <x:call function="hcmc:step2">
         <x:param name="token" select="'abiliti'"/>
-        <x:param name="R1" select="h:getR1AndR2('abilities')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('abilities')[3]"/>
       </x:call>
       <x:expect label="Result from 'abiliti'" select="'abiliti'"/>
     </x:scenario>
     <x:scenario label="Testing problem example 'abjectness'">
-      <x:call function="h:step2">
+      <x:call function="hcmc:step2">
         <x:param name="token" select="'abjectness'"/>
-        <x:param name="R1" select="h:getR1AndR2('abjectness')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('abjectness')[3]"/>
       </x:call>
       <x:expect label="Result from 'abjectness'" select="'abjectness'"/>
     </x:scenario>
     <x:scenario label="Testing problem example 'able'">
-      <x:call function="h:step2">
+      <x:call function="hcmc:step2">
         <x:param name="token" select="'able'"/>
-        <x:param name="R1" select="h:getR1AndR2('able')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('able')[3]"/>
       </x:call>
       <x:expect label="Result from 'able'" select="'able'"/>
     </x:scenario>
     <x:scenario label="Testing problem example 'achille'">
-      <x:call function="h:step2">
+      <x:call function="hcmc:step2">
         <x:param name="token" select="'achille'"/>
-        <x:param name="R1" select="h:getR1AndR2('achilles')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('achilles')[3]"/>
       </x:call>
       <x:expect label="Result from 'achille'" select="'achille'"/>
     </x:scenario>
     <x:scenario label="Testing problem example 'authenticiti'">
-      <x:call function="h:step2">
+      <x:call function="hcmc:step2">
         <x:param name="token" select="'authenticiti'"/>
-        <x:param name="R1" select="h:getR1AndR2('authenticiti')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('authenticiti')[3]"/>
       </x:call>
       <x:expect label="Result from 'authenticiti'" select="'authenticiti'"/>
     </x:scenario>
     <x:scenario label="Testing problem example 'conversational'">
-      <x:call function="h:step2">
+      <x:call function="hcmc:step2">
         <x:param name="token" select="'conversational'"/>
-        <x:param name="R1" select="h:getR1AndR2('conversational')[3]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('conversational')[3]"/>
       </x:call>
       <x:expect label="Result from 'conversational'" select="'conversate'"/>
     </x:scenario>
@@ -594,42 +594,42 @@
   
   <x:scenario label="Test function step3">
     <x:scenario label="Testing problem example 'abjectness'">
-      <x:call function="h:step3">
+      <x:call function="hcmc:step3">
         <x:param name="token" select="'abjectness'"/>
-        <x:param name="R1" select="h:getR1AndR2('abjectness')[3]"/>
-        <x:param name="R2" select="h:getR1AndR2('abjectness')[4]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('abjectness')[3]"/>
+        <x:param name="R2" select="hcmc:getR1AndR2('abjectness')[4]"/>
       </x:call>
       <x:expect label="Result from 'abjectness'" select="'abject'"/>
     </x:scenario>
     <x:scenario label="Testing problem example 'able'">
-      <x:call function="h:step3">
+      <x:call function="hcmc:step3">
         <x:param name="token" select="'able'"/>
-        <x:param name="R1" select="h:getR1AndR2('able')[3]"/>
-        <x:param name="R2" select="h:getR1AndR2('able')[4]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('able')[3]"/>
+        <x:param name="R2" select="hcmc:getR1AndR2('able')[4]"/>
       </x:call>
       <x:expect label="Result from 'able'" select="'able'"/>
     </x:scenario>
     <x:scenario label="Testing problem example 'achille'">
-      <x:call function="h:step3">
+      <x:call function="hcmc:step3">
         <x:param name="token" select="'achille'"/>
-        <x:param name="R1" select="h:getR1AndR2('achilles')[3]"/>
-        <x:param name="R2" select="h:getR1AndR2('achilles')[4]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('achilles')[3]"/>
+        <x:param name="R2" select="hcmc:getR1AndR2('achilles')[4]"/>
       </x:call>
       <x:expect label="Result from 'achille'" select="'achille'"/>
     </x:scenario>
     <x:scenario label="Testing problem example 'authenticiti'">
-      <x:call function="h:step3">
+      <x:call function="hcmc:step3">
         <x:param name="token" select="'authenticiti'"/>
-        <x:param name="R1" select="h:getR1AndR2('authenticity')[3]"/>
-        <x:param name="R2" select="h:getR1AndR2('authenticity')[4]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('authenticity')[3]"/>
+        <x:param name="R2" select="hcmc:getR1AndR2('authenticity')[4]"/>
       </x:call>
       <x:expect label="Result from 'authenticiti'" select="'authentic'"/>
     </x:scenario>
     <x:scenario label="Testing problem example 'conversate'">
-      <x:call function="h:step3">
+      <x:call function="hcmc:step3">
         <x:param name="token" select="'conversate'"/>
-        <x:param name="R1" select="h:getR1AndR2('conversational')[3]"/>
-        <x:param name="R2" select="h:getR1AndR2('conversational')[4]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('conversational')[3]"/>
+        <x:param name="R2" select="hcmc:getR1AndR2('conversational')[4]"/>
       </x:call>
       <x:expect label="Result from 'conversate'" select="'conversate'"/>
     </x:scenario>
@@ -637,23 +637,23 @@
   
   <x:scenario label="Test function step4">
     <x:scenario label="Testing problem example 'abeyance'">
-      <x:call function="h:step4">
+      <x:call function="hcmc:step4">
         <x:param name="token" select="'abeYance'"/>
-        <x:param name="R2" select="h:getR1AndR2('abeYance')[4]"/>
+        <x:param name="R2" select="hcmc:getR1AndR2('abeYance')[4]"/>
       </x:call>
       <x:expect label="Result from 'abeYance'" select="'abeY'"/>
     </x:scenario>
     <x:scenario label="Testing problem example 'able'">
-      <x:call function="h:step4">
+      <x:call function="hcmc:step4">
         <x:param name="token" select="'able'"/>
-        <x:param name="R2" select="h:getR1AndR2('able')[4]"/>
+        <x:param name="R2" select="hcmc:getR1AndR2('able')[4]"/>
       </x:call>
       <x:expect label="Result from 'able'" select="'able'"/>
     </x:scenario>
     <x:scenario label="Testing problem example 'achille'">
-      <x:call function="h:step4">
+      <x:call function="hcmc:step4">
         <x:param name="token" select="'achille'"/>
-        <x:param name="R2" select="h:getR1AndR2('achilles')[4]"/>
+        <x:param name="R2" select="hcmc:getR1AndR2('achilles')[4]"/>
       </x:call>
       <x:expect label="Result from 'achille'" select="'achille'"/>
     </x:scenario>
@@ -661,25 +661,25 @@
   
   <x:scenario label="Test function step5">
     <x:scenario label="Testing problem example 'able'">
-      <x:call function="h:step5">
+      <x:call function="hcmc:step5">
         <x:param name="token" select="'able'"/>
-        <x:param name="R1" select="h:getR1AndR2('able')[3]"/>
-        <x:param name="R2" select="h:getR1AndR2('able')[4]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('able')[3]"/>
+        <x:param name="R2" select="hcmc:getR1AndR2('able')[4]"/>
       </x:call>
       <x:expect label="Result from 'able'" select="'abl'"/>
     </x:scenario>
     <x:scenario label="Testing problem example 'achille'">
-      <x:call function="h:step5">
+      <x:call function="hcmc:step5">
         <x:param name="token" select="'achille'"/>
-        <x:param name="R1" select="h:getR1AndR2('achilles')[3]"/>
-        <x:param name="R2" select="h:getR1AndR2('achilles')[4]"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('achilles')[3]"/>
+        <x:param name="R2" select="hcmc:getR1AndR2('achilles')[4]"/>
       </x:call>
       <x:expect label="Result from 'achille'" select="'achill'"/>
     </x:scenario>
   </x:scenario>
   
-  <x:scenario label="Test function h:stem, the core function">
-    <x:call function="h:runTests"/>
+  <x:scenario label="Test function hcmc:stem, the core function">
+    <x:call function="hcmc:runTests"/>
     <x:expect label="Result from running built-in tests." select="(true(), '')"/>
   </x:scenario>
   
