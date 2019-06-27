@@ -2,8 +2,9 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+    xmlns:hcmc="http//hcmc.uvic.ca/ns/"
     exclude-result-prefixes="xs"
-    xpath-default-namespace="https://hcmc.uvic.ca/ns/"
+    xpath-default-namespace="http//hcmc.uvic.ca/ns/"
     xmlns:xso="dummy"
     version="3.0">
     <xd:doc scope="stylesheet">
