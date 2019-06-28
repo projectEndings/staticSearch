@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<config xmlns="http://hcmc.uvic.ca/ns/">
+<config xmlns="http://hcmc.uvic.ca/ns">
+    <params>
+        <baseDir>.</baseDir>
+        <collectionDir>test</collectionDir>
+        <tempDir>temp</tempDir>
+        <outDir>site/js/</outDir>
+        <createContexts>true</createContexts>
+        <maxContexts>3</maxContexts>
+        <!--NOTE: If NGRAMS is set to TRUE, then
+        maxContents prop will be ignored-->
+        <ngrams>true</ngrams>
+        <verbose>true</verbose>
+        <stopwordsFile>xsl/english_stopwords.txt</stopwordsFile>
+    </params>
+    
     <rules>
-        <rule xpath="span[@class='name']" weight="2"/>
-        <rule xpath="*[matches(local-name(),'^h\d+$')]" weight="2"/>
-        <rule xpath="span[@class='topo'][ancestor::div[@id='toponymInfo']]" weight="2"/>
-        <rule xpath="span[@class='expan'][parent::span[@data-el='choice'][span[@class='abbr']]]" weight="0"/>
-        <rule xpath="div[@id='metadata']" weight="0"/>
-        <rule xpath="div[@id='footer']" weight="0"/>
-        <rule xpath="body/header" weight="0"/>
+        <rule xpath="*[matches(@class,'(^|\s)toponym(\s|$)')]" weight="2"/>
+        <rule xpath="abbr[parent::span/span[@class='expan']]" weight="0"/>
     </rules>
+    
     <contexts>
         <rule xpath="span[@class='stage']"/>
         <rule xpath="span[@class='blockquote']"/>

@@ -3,8 +3,8 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
     xmlns:hcmc="http//hcmc.uvic.ca/ns/"
-    exclude-result-prefixes="xs"
-    xpath-default-namespace="http//hcmc.uvic.ca/ns/"
+    exclude-result-prefixes="#all"
+    xpath-default-namespace="http://hcmc.uvic.ca/ns"
     xmlns:xso="dummy"
     version="3.0">
     <xd:doc scope="stylesheet">
@@ -18,7 +18,22 @@
         </xd:desc>
     </xd:doc>
     <!--This stylesheet converts the configuration document into a temporary stylesheet-->
-   
+    
+  <xsl:param name="configFile" select="'config.xml'"/>
+    
+   <xsl:variable name="configDoc">
+       <xsl:choose>
+           <xsl:when test="doc-available($configFile)">
+               <xsl:copy-of select="document($configFile)"/>
+           </xsl:when>
+           <xsl:otherwise>
+               <xsl:message terminate="yes">ERROR: Config file <xsl:value-of select="$configFile"/> not found.</xsl:message>
+           </xsl:otherwise>
+       </xsl:choose>
+       
+   </xsl:variable>
+      
+    
    <xd:doc>
        <xd:desc>
            <xd:p>We create a namespace alias of "xso" to create XSLT using XSLT.</xd:p>
@@ -33,7 +48,7 @@
             specified as a context item.</xd:p>
         </xd:desc>
     </xd:doc>
-    <xsl:variable name="retainRules" select="//rule[(xs:integer(@weight) gt 0) or parent::contexts]" as="element(rule)*"/>
+    <xsl:variable name="retainRules" select="$configDoc//rule[(xs:integer(@weight) gt 0) or parent::contexts]" as="element(rule)*"/>
     
     
     <xd:doc>
@@ -44,7 +59,7 @@
                 from the document that will eventually be indexed.</xd:p>
         </xd:desc>
     </xd:doc>
-    <xsl:variable name="deleteRules" select="//rule[xs:integer(@weight) = 0]" as="element(rule)*"/>
+    <xsl:variable name="deleteRules" select="$configDoc//rule[xs:integer(@weight) = 0]" as="element(rule)*"/>
     
     
     <xd:doc>
@@ -52,15 +67,22 @@
         [[ADD TOKENIZING XSL NAME HERE]], overriding any existing rules that are included in the document.</xd:desc>
     </xd:doc>
     <xsl:template match="/">
-        <xsl:result-document href="config.xsl" method="xml" encoding="UTF-8" normalization-form="NFC" indent="yes" exclude-result-prefixes="#all">
+        <xsl:message>Creating configuration file from <xsl:value-of select="$configFile"/></xsl:message>
+        
+        <xsl:if test="$configDoc//verbose/text() = 'true'">
+            <xsl:for-each select="$configDoc//params/*">
+                <xsl:message>$<xsl:value-of select="local-name()"/>: <xsl:value-of select="."/></xsl:message>
+            </xsl:for-each>
+        </xsl:if>
+        <xsl:result-document href="xsl/config.xsl" method="xml" encoding="UTF-8" normalization-form="NFC" indent="yes" exclude-result-prefixes="#all">
             
             <!--Root stylesheet-->
             <xso:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
                 exclude-result-prefixes="#all"
-                xpath-default-namespace="http://www.tei-c.org/ns/1.0"
-                xmlns="http://www.tei-c.org/ns/1.0"
+                xpath-default-namespace="http://www.w3.org/1999/xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
                 version="2.0">
                 
                 <!--Simply documentation to add -->
@@ -73,6 +95,10 @@
                         </xd:p>
                     </xd:desc>
                 </xd:doc>
+                
+                <!--Now, create all the parameters-->
+                
+                <xsl:call-template name="createParameters"/>
                 
                 <!--If there are retain rules specified in the configuration file,
                     then call the createRetainRules template-->
@@ -123,5 +149,34 @@
     <xsl:template name="createDeleteRules">
         <xso:template match="{string-join($deleteRules/@xpath,' | ')}" priority="1" mode="pass1"/>
     </xsl:template>
+    
+    
+    <xsl:template name="createParameters">
+        <xsl:variable name="baseDir" select="$configDoc//baseDir/text()" as="xs:string"/>
+        <xsl:variable name="resolvedBaseDir" select="resolve-uri($baseDir,resolve-uri($configFile))"/>
+        <xsl:variable name="params" as="element()+">
+            <xsl:for-each select="$configDoc//params/*" >
+                <xsl:variable name="thisParam" select="."/>
+                <xsl:variable name="paramName" select="local-name()"/>
+                <xsl:variable name="prependBaseDir" select="if (matches($paramName, '(Dir|File)$')) then true() else false()"/>
+                
+                <xso:param name="{local-name()}">
+                    <xsl:value-of select="if ($prependBaseDir) then concat($resolvedBaseDir, if ($paramName = 'baseDir') then () else $thisParam/text()) else ."/>
+                </xso:param>
+            </xsl:for-each>
+        </xsl:variable>
+        
+       <xsl:sequence select="$params"/>
+        
+        <xso:variable name="useVerbose" select="if ($verbose=('true')) then true() else false()"/>
+        <xso:template name="echoParams">
+            <xso:if test="$useVerbose">
+                <xsl:for-each select="$params">
+                    <xso:message>$<xsl:value-of select="@name"/>: <xso:value-of select="{concat('$',@name)}"/></xso:message>
+                </xsl:for-each>
+            </xso:if>
+        </xso:template>
+    </xsl:template>
+    
     
 </xsl:stylesheet>
