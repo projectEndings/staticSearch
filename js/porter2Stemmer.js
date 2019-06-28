@@ -25,18 +25,20 @@
 class PT2{
   constructor(){
     // A character class of vowels
-      this.reVowel                       = /[aeiouy]/;
+      this.vowel                         = '[aeiouy]';
+      this.reVowel                       = new RegExp(this.vowel);
     //A character class of non-vowels
-      this.reNonVowel                    = /[^aeiouy]/;
+      this.nonVowel                      = '[^aeiouy]';
+      this.reNonVowel                    = new RegExp(this.nonVowel);
     // A regex for determining whether a token ends with a short syllable
-      this.reEndsWithShortSyllable       = new RegExp(this.reVowel + this.reNonVowel + '[^aeiouywxY]$');
+      this.reEndsWithShortSyllable       = new RegExp(this.vowel + this.nonVowel + '[^aeiouywxY]$');
     // A regex for doubled consonants
       this.reDbl                         = /((bb)|(dd)|(ff)|(gg)|(mm)|(nn)|(pp)|(rr)|(tt))/;
     // A regular expression which returns R1, defined as "the region after
     // the first non-vowel following a vowel, or the end of the word if
     // there is no such non-vowel".
     //See exceptional cases below. It also returns R2 when applied to R1.
-      this.reR1R2                        = new RegExp('^.*?' + this.reVowel + this.reNonVowel, '(.*)$');
+      this.reR1R2                        = new RegExp('^.*?' + this.vowel + this.nonVowel + '(.*)$');
     // A regular expression which for the exceptions: "If the words begins gener,
     // commun or arsen, set R1  to be the remainder of the word."
       this.reR1Except                    = /^(gener|commun|arsen)(.*)$/;
@@ -154,7 +156,9 @@ class PT2{
                             ];
   }
 
+  preflight(token){
+    return token.replace(/^'/, '').replace(/^y/, 'Y').replace(new RegExp('(' + this.vowel + ')y'), '$1Y');
+  }
+
 
 }
-
-/* VARIABLES */
