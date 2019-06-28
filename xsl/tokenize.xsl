@@ -8,10 +8,21 @@
     xpath-default-namespace="http://www.w3.org/1999/xhtml"
     version="3.0">
     
+    <!--JT TO ADD DOCUMENTATION HERE-->
+    
+    
+    <!--Include the configuration file, which is generated via another XSLT-->
     <xsl:include href="config.xsl"/>
+    
+    <!--ANd include the PORTER2STEMMER; we should also include PORTER1, I think
+        and let users choose which one they want (tho, I don't see why anyone would
+        use PORTER1 and not PORTER2-->
     <xsl:include href="porter2Stemmer.xsl"/>
     
+    <!--Simple regular expression for match document names-->
     <xsl:variable name="docRegex">(.+)(\..?htm.?$)</xsl:variable>
+    
+    <!--The stopwords file, which should probably be configured in the config.xsl transform instead-->
     <xsl:variable name="englishStopwords"
         select="for $t in tokenize(unparsed-text($stopwordsFile),'\n') return normalize-space($t)"
         as="xs:string+"/>
@@ -19,10 +30,14 @@
     <!--Configure the collection use x?html? ( so htm, html, xhtml, xhtm would all work
         as files)-->
     
+    <!--The documents to process; also could be created in the config file-->
     <xsl:variable name="docs" select="collection(concat($collectionDir,'?select=*.*htm*;recurse=yes'))"/>
     
+    <!--IMPORTANT: Do this to avoid indentation-->
     <xsl:output indent="no" method="xml"/>
     
+    
+    <!--Basic template-->
     <xsl:template match="/">
         <xsl:message>Found <xsl:value-of select="count($docs)"/> documents to process...</xsl:message>
         <xsl:call-template name="echoParams"/>
@@ -57,14 +72,21 @@
       Pass 1 templates
       ****************************************************-->
     
+    <!--Basic template to strip away extraneous tags around things we don't care about-->
+    <!--Note that this template is overriden with any XPATHS configured in the config file-->
     <xsl:template match="span | br | wbr | em | b | i | a" mode="pass1">
         <xsl:apply-templates select="node()" mode="#current"/>
     </xsl:template>
     
  <!--TOKENIZE TEMPLATES -->
     
+    <!--The basic thing: tokenizing the string at the text level-->
     <xsl:template match="text()[ancestor::body][not(matches(.,'^\s+$'))]" mode="tokenize">
         <xsl:variable name="currNode" select="."/>
+        
+        <!--Match on word tokens-->
+        <!--TODO: THIS NEEDS TO BE FINESSED TO HANDLE CONTRACTIONS, 
+            DECIMALS, ET CETERA-->
         <xsl:analyze-string select="." regex="[A-Za-z\d]+">
             <xsl:matching-substring>
                 <xsl:variable name="word" select="."/>
@@ -106,9 +128,16 @@
         <xsl:variable name="containsDigit" select="matches($word,'\d+')" as="xs:boolean"/>
         <xsl:variable name="stemVal" as="xs:string">
             <xsl:choose>
+                <!--If it has a digit, then it makes no sense to stem it-->
                 <xsl:when test="$containsDigit">
                     <xsl:value-of select="$word"/>
                 </xsl:when>
+                
+                <!--MIGHT NEEED TO HANDLE CONTRACTIONS HERE AS THE WORD TO STEM 
+                    IS BEFORE THE CONTRACTION-->
+                
+                <!--ALSO NEED TO HANDLE CAPITALIZATION-->
+                
                 <xsl:otherwise>
                     <xsl:value-of select="hcmc:stem($lcWord)"/>
                 </xsl:otherwise>

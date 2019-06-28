@@ -98,7 +98,7 @@
                 
                 <!--Now, create all the parameters-->
                 
-                <xsl:call-template name="createParameters"/>
+                <xsl:call-template name="createGlobals"/>
                 
                 <!--If there are retain rules specified in the configuration file,
                     then call the createRetainRules template-->
@@ -150,8 +150,11 @@
         <xso:template match="{string-join($deleteRules/@xpath,' | ')}" priority="1" mode="pass1"/>
     </xsl:template>
     
+
     
-    <xsl:template name="createParameters">
+    <!--This creates the global parameters and variables for the config file, which works as the global
+        document for the transformations-->
+    <xsl:template name="createGlobals">
         <xsl:variable name="baseDir" select="$configDoc//baseDir/text()" as="xs:string"/>
         <xsl:variable name="resolvedBaseDir" select="resolve-uri($baseDir,resolve-uri($configFile))"/>
         <xsl:variable name="params" as="element()+">
