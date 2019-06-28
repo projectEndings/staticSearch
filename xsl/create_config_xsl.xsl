@@ -3,7 +3,6 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
     xmlns:hcmc="http//hcmc.uvic.ca/ns/"
-    exclude-result-prefixes="#all"
     xpath-default-namespace="http://hcmc.uvic.ca/ns"
     xmlns:xso="dummy"
     version="3.0">
@@ -69,7 +68,7 @@
     <xsl:template match="/">
         <xsl:message>Creating configuration file from <xsl:value-of select="$configFile"/></xsl:message>
         
-        <xsl:if test="$configDoc//verbose/text() = 'true'">
+        <xsl:if test="hcmc:stringToBoolean($configDoc//verbose[1]/text())">
             <xsl:for-each select="$configDoc//params/*">
                 <xsl:message>$<xsl:value-of select="local-name()"/>: <xsl:value-of select="."/></xsl:message>
             </xsl:for-each>
@@ -83,7 +82,7 @@
                 exclude-result-prefixes="#all"
                 xpath-default-namespace="http://www.w3.org/1999/xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"
-                version="2.0">
+                version="3.0">
                 
                 <!--Simply documentation to add -->
                 <xd:doc scope="stylesheet">
@@ -164,34 +163,79 @@
                 <xsl:variable name="isDirProp" select="matches($paramName, 'Dir$')" as="xs:boolean"/>
                 <xsl:variable name="isFileProp" select="matches($paramName,'File$')" as="xs:boolean"/>
                 <xsl:variable name="prependBaseDir" select="$isDirProp or $isFileProp"/>
-                
-                <xso:param name="{local-name()}">
-                    <xsl:variable name="baseVal" select="
-                        if ($prependBaseDir) 
-                        then concat($resolvedBaseDir, 
-                            if ($paramName = 'baseDir') 
-                            then ()
-                            else $thisParam/text())
-                        else ."/>
-                    <xsl:value-of select="
-                        if ($isDirProp and not(ends-with($baseVal,'/'))) 
-                        then concat($baseVal,'/') 
-                        else $baseVal"/>
+                <xso:param>
+                    <xsl:attribute name="name" select="local-name()"/>
+                    <xsl:choose>
+                        <xsl:when test="local-name()=('createContexts','ngrams','verbose','recurse')">
+                            <xsl:attribute name="select" select="concat(hcmc:stringToBoolean(xs:string(.)),'()')"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:variable name="baseVal" select="
+                                if ($prependBaseDir) 
+                                then concat($resolvedBaseDir, 
+                                if ($paramName = 'baseDir') 
+                                then ()
+                                else $thisParam/text())
+                                else ."/>
+                            <xsl:value-of select="
+                                if ($isDirProp and not(ends-with($baseVal,'/'))) 
+                                then concat($baseVal,'/') 
+                                else $baseVal"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </xso:param>
             </xsl:for-each>
         </xsl:variable>
         
        <xsl:sequence select="$params"/>
         
-        <xso:variable name="useVerbose" select="if ($verbose=('true')) then true() else false()"/>
+        <!--The stopwords file, which should probably be configured in the config.xsl transform instead-->
+        <xso:variable name="englishStopwords"
+            select="for $t in tokenize(unparsed-text($stopwordsFile),'\n') return normalize-space($t)"
+            as="xs:string+"/>
+        
+        <!--Configure the collection use x?html? ( so htm, html, xhtml, xhtm would all work
+        as files)-->
+        
+        <!--The documents to process; also could be created in the config file-->
+        <xso:variable name="docs" select="collection(concat($collectionDir,'?select=*.*htm*;recurse=',if ($recurse) then 'yes' else 'no'))"/>
+        
+        <xso:variable name="tokenizedDocs" select="collection(concat($tempDir,'?select=*_tokenized.*htm*;recurse=',if ($recurse) then 'yes' else 'no'))"/>
+        
+        
+
         <xso:template name="echoParams">
-            <xso:if test="$useVerbose">
+            <xso:if test="$verbose">
                 <xsl:for-each select="$params">
                     <xso:message>$<xsl:value-of select="@name"/>: <xso:value-of select="{concat('$',@name)}"/></xso:message>
                 </xsl:for-each>
             </xso:if>
         </xso:template>
     </xsl:template>
+    
+    <xd:doc>
+        <xd:desc>
+            <xd:p><xd:ref name="hcmc:stringToBoolean" type="function">hcmc:stringToBoolean</xd:ref> converts a string value to a boolean. String values can be one of (case-insensitive): "T", "true", "y", "yes", "1"; anything else will evaluate to false.</xd:p>
+        </xd:desc>
+        <xd:param name="str">The input string.</xd:param>
+        <xd:return>A boolean value.</xd:return>
+    </xd:doc>
+    
+    <xsl:function name="hcmc:stringToBoolean" as="xs:boolean">
+        <xsl:param name="str" as="xs:string"/>
+        
+        <xsl:choose>
+            <xsl:when test="matches(lower-case($str),'^(y(es)?|t(rue)?)')">
+                <xsl:value-of select="true()"/>
+            </xsl:when>
+            <xsl:when test="$str castable as xs:integer and xs:integer($str) = 1">
+                <xsl:value-of select="true()"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="false()"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
     
     
 </xsl:stylesheet>

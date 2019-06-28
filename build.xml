@@ -3,7 +3,10 @@
   
   <property name="saxon" value="${basedir}/lib/saxon9he.jar"/>
     
-  <property name="configFile" value="${basedir}/config.xml"/>
+  <property name="config" value="config.xml"/>
+  
+  <property name="configFile" value="${basedir}/${config}"/>
+  
 
     
     
@@ -11,6 +14,7 @@
     
   <!--First thing, create the config file-->
    <target name="createConfig">
+       <delete file="xsl/config.xsl"/>
        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
            <arg value="-xsl:xsl/create_config_xsl.xsl"/>
            <arg value="-s:xsl/create_config_xsl.xsl"/>
@@ -34,7 +38,11 @@
   <!--Then create JSON-->
     
     <target name="json">
-        <echo message="NOTHING YET...."/>
+        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
+            <arg value="-xsl:xsl/json.xsl"/>
+            <arg value="-s:xsl/json.xsl"/>
+            <arg value="--suppressXsltNamespaceCheck:on"/>
+        </java>
     </target>
     
     <target name="all" depends="createConfig, tokenize, json"/>

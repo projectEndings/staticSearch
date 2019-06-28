@@ -468,7 +468,7 @@
         <xsl:choose>
           <!--  Simplest quick test: does it match?       -->
           <xsl:when test="matches($token, $rex)">
-            <xsl:message><xsl:value-of select="concat('Matched ', $token, ' against ', $rex)"/></xsl:message>
+<!--            <xsl:message><xsl:value-of select="concat('Matched ', $token, ' against ', $rex)"/></xsl:message>-->
             <xsl:choose>
               <xsl:when test="contains(., '|')">
                 <!--    Special case: there's a leading component.          -->
@@ -477,8 +477,8 @@
               </xsl:when>
               <xsl:otherwise>
                 <xsl:variable name="replaced" select="replace($token, $rex, '')"/>
-                <xsl:message>Length of replacement "<xsl:value-of select="$replaced"/>" = <xsl:value-of select="string-length($replaced)"/></xsl:message>
-                <xsl:message>R2 = <xsl:value-of select="$R2"/></xsl:message>
+                <!--<xsl:message>Length of replacement "<xsl:value-of select="$replaced"/>" = <xsl:value-of select="string-length($replaced)"/></xsl:message>
+                <xsl:message>R2 = <xsl:value-of select="$R2"/></xsl:message>-->
                 <xsl:value-of select="if ((string-length($replaced) + 1) ge $R2) then $replaced else $token"/>
               </xsl:otherwise>
             </xsl:choose>

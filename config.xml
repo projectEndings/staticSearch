@@ -3,6 +3,7 @@
     <params>
         <baseDir>.</baseDir>
         <collectionDir>test</collectionDir>
+        <recurse>false</recurse>
         <tempDir>temp</tempDir>
         <outDir>site/js/</outDir>
         <createContexts>true</createContexts>
@@ -10,7 +11,7 @@
         <!--NOTE: If NGRAMS is set to TRUE, then
         maxContents prop will be ignored-->
         <ngrams>true</ngrams>
-        <verbose>true</verbose>
+        <verbose>TRUe</verbose>
         <stopwordsFile>xsl/english_stopwords.txt</stopwordsFile>
     </params>
     
