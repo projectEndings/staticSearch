@@ -128,7 +128,7 @@
             <xso:copy>
                 <xsl:for-each select="$retainRules[xs:integer(@weight) gt 1]">
                     <xso:if test="self::{@xpath}">
-                        <xso:attribute name="data-weight" select="{@weight}"/>
+                        <xso:attribute name="data-staticSearch-weight" select="{@weight}"/>
                     </xso:if>
                 </xsl:for-each>
                 <xso:apply-templates select="@*|node()" mode="#current"/>
@@ -158,10 +158,22 @@
             <xsl:for-each select="$configDoc//params/*" >
                 <xsl:variable name="thisParam" select="."/>
                 <xsl:variable name="paramName" select="local-name()"/>
-                <xsl:variable name="prependBaseDir" select="if (matches($paramName, '(Dir|File)$')) then true() else false()"/>
+                <xsl:variable name="isDirProp" select="matches($paramName, 'Dir$')" as="xs:boolean"/>
+                <xsl:variable name="isFileProp" select="matches($paramName,'File$')" as="xs:boolean"/>
+                <xsl:variable name="prependBaseDir" select="$isDirProp or $isFileProp"/>
                 
                 <xso:param name="{local-name()}">
-                    <xsl:value-of select="if ($prependBaseDir) then concat($resolvedBaseDir, if ($paramName = 'baseDir') then () else $thisParam/text()) else ."/>
+                    <xsl:variable name="baseVal" select="
+                        if ($prependBaseDir) 
+                        then concat($resolvedBaseDir, 
+                            if ($paramName = 'baseDir') 
+                            then ()
+                            else $thisParam/text())
+                        else ."/>
+                    <xsl:value-of select="
+                        if ($isDirProp and not(ends-with($baseVal,'/'))) 
+                        then concat($baseVal,'/') 
+                        else $baseVal"/>
                 </xso:param>
             </xsl:for-each>
         </xsl:variable>

@@ -11,7 +11,7 @@
     <xsl:include href="config.xsl"/>
     <xsl:include href="porter2Stemmer.xsl"/>
     
-
+    <xsl:variable name="docRegex">(.+)(\..?htm.?$)</xsl:variable>
     <xsl:variable name="englishStopwords"
         select="for $t in tokenize(unparsed-text($stopwordsFile),'\n') return normalize-space($t)"
         as="xs:string+"/>
@@ -21,26 +21,35 @@
     
     <xsl:variable name="docs" select="collection(concat($collectionDir,'?select=*.*htm*;recurse=yes'))"/>
     
+    <xsl:output indent="no" method="xml"/>
     
     <xsl:template match="/">
         <xsl:message>Found <xsl:value-of select="count($docs)"/> documents to process...</xsl:message>
         <xsl:call-template name="echoParams"/>
         <xsl:for-each select="$docs">
             <xsl:variable name="fn" select="tokenize(document-uri(),'/')[last()]" as="xs:string"/>
-            <xsl:variable name="extension" select="replace($fn,'(.+)\.'"
-            <xsl:message>Tokenizing <xsl:value-of select="$fn"/></xsl:message>
-            <xsl:variable name="out" select="concat($tempDir,'/',$fn)"/>
-            <xsl:choose>
-                <xsl:when test="$useVerbose">
-                    <xsl:result-document href="{$out}"
-                </xsl:when>
-            </xsl:choose>
-            <xsl:result-document href="{$out}">
-                <xsl:variable name="pass1">
-                    <xsl:apply-templates mode="pass1"/>
-                </xsl:variable>
+            <xsl:variable name="basename" select="replace($fn, $docRegex, '$1')"/>
+            <xsl:variable name="extension" select="replace($fn,$docRegex,'$2')"/>
+            <xsl:variable name="pass1OutDoc" select="concat($tempDir,$basename,'_pass1',$extension)"/>
+            <xsl:variable name="tokenizedOutDoc" select="concat($tempDir,$basename,$extension)"/>
+            <xsl:message>Tokenizing <xsl:value-of select="document-uri()"/></xsl:message>
+            <xsl:variable name="pass1">
+                <xsl:apply-templates mode="pass1"/>
+            </xsl:variable>
+            
+            <xsl:if test="$useVerbose">
+                <xsl:message>Creating <xsl:value-of select="$pass1OutDoc"/></xsl:message>
+                <xsl:result-document href="{$pass1OutDoc}">
+                    <xsl:copy-of select="$pass1"/>
+                </xsl:result-document>
+            </xsl:if>
+            <xsl:result-document href="{$tokenizedOutDoc}">
+                <xsl:if test="$useVerbose">
+                    <xsl:message>Creating <xsl:value-of select="$tokenizedOutDoc"/></xsl:message>
+                </xsl:if>
                 <xsl:apply-templates select="$pass1" mode="tokenize"/>
             </xsl:result-document>
+           
         </xsl:for-each>
     </xsl:template>
     
@@ -56,7 +65,7 @@
     
     <xsl:template match="text()[ancestor::body][not(matches(.,'^\s+$'))]" mode="tokenize">
         <xsl:variable name="currNode" select="."/>
-        <xsl:analyze-string select="normalize-space(.)" regex="[A-Za-z\d]+">
+        <xsl:analyze-string select="." regex="[A-Za-z\d]+">
             <xsl:matching-substring>
                 <xsl:variable name="word" select="."/>
                 <xsl:if test="$useVerbose">
@@ -106,7 +115,7 @@
             </xsl:choose>            
         </xsl:variable>
         <span>
-            <xsl:attribute name="data-stem" 
+            <xsl:attribute name="data-staticSearch-stem" 
                 select="$stemVal"/>
             <xsl:value-of select="$word"/>
         </span>

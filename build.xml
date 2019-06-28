@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project basedir="." name="BuildStaticSearch">
+<project basedir="." name="BuildStaticSearch" default="all">
   
   <property name="saxon" value="${basedir}/lib/saxon9he.jar"/>
     
@@ -32,4 +32,10 @@
     
     
   <!--Then create JSON-->
+    
+    <target name="json">
+        <echo message="NOTHING YET...."/>
+    </target>
+    
+    <target name="all" depends="createConfig, tokenize, json"/>
 </project>
