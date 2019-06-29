@@ -180,7 +180,7 @@ class PT2{
      var R1Index = (token.length - R1.length) + 1;
      var R2Candidate = R1.replace(this.reR1R2, '$1');
      var R2 = (R2Candidate == R1)? '' : R2Candidate;
-     var R2Index = ($R2Candidate == R1)? token.length + 1 : (token.length - R2.length) + 1;
+     var R2Index = (R2Candidate == R1)? token.length + 1 : (token.length - R2.length) + 1;
      return {r1: R1, r2: R2, r1of: R1Index, r2of: R2Index};
    }
 

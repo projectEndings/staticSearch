@@ -72,6 +72,16 @@ function runTests(){
     var result = pt2.step0(step0Data[i][0]);
     showTestLog('step0', step0Data[i][0], step0Data[i][1], result);
   }
+  for (var i=0; i<R1R2Data.length; i++){
+    var result = pt2.getR1AndR2(R1R2Data[i][0]);
+    if (Object.prototype.toString.call(result) == Object.prototype.toString.call(R1R2Data[i][1])){
+      showLog('getR1AndR2 with input ' +  R1R2Data[i][0] + ' was correct: ' + Object.prototype.toString.call(result), 'ok');
+    }
+    else{
+       showLog('getR1AndR2 with input ' +  R1R2Data[i][0] + ' was incorrect: ' + result, 'broken');
+    }
+  }
+  
 }
 
 function showLog(msg, msgType){
