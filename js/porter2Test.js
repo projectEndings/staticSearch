@@ -45,6 +45,13 @@ var preflightData =[["'yesterday", 'YesterdaY'],
  ['bleed', 'bleed'],
  ['conversational', 'conversational']];
 
+ var step2Data=[['abiliti', 'abiliti'],
+ ['abjectness', 'abjectness'],
+ ['able', 'able'],
+ ['achille', 'achille'],
+ ['authenticiti', 'authenticiti'],
+ ['conversational', 'conversate']];
+
  var R1R2Data=[['generates', {r1: 'ates',  r2: 'es', r1of: 6, r2of: 8}],
  ['communication', {r1: 'ication',  r2: 'ation', r1of: 7, r2of: 9}],
  ['asking', {r1: 'king',  r2: 'g', r1of: 3, r2of: 6}],
@@ -127,7 +134,11 @@ function runTests(){
     var result = pt2.step1(step1Data[i][0], r1of);
     showTestLog('step1', step1Data[i][0], step1Data[i][1], result);
   }
-
+  for (var i=0; i<step2Data.length; i++){
+    var r1of = pt2.getR1AndR2(step2Data[i][0]).r1of;
+    var result = pt2.step2(step2Data[i][0], r1of);
+    showTestLog('step2', step2Data[i][0], step2Data[i][1], result);
+  }
 }
 
 function showLog(msg, msgType){

@@ -49,30 +49,30 @@ class PT2{
     // NOTE: When browser support for lookbehinds is available, this
     // can be simplified.
       this.arrStep2Seq = [
-                      ['ousness', 'ousness','ous'],
-                      ['iveness', 'iveness','ive'],
-                      ['fulness', 'fulness','ful'],
-                      ['ization', 'ization','ize'],
-                      ['ational', 'ational','ate'],
-                      ['biliti', 'biliti','ble'],
-                      ['tional', 'tional','tion'],
-                      ['lessli', 'lessli','less'],
-                      ['ousli', 'ousli','ous'],
-                      ['fulli', 'fulli','ful'],
-                      ['iviti', 'iviti','ive'],
-                      ['entli', 'entli','ent'],
-                      ['alism', 'alism','al'],
-                      ['aliti', 'aliti','al'],
-                      ['enci', 'enci','ence'],
-                      ['anci', 'anci','ance'],
-                      ['abli', 'abli','able'],
-                      ['izer', 'izer','ize'],
-                      ['ation', 'ation','ate'],
-                      ['ator', 'ator','ate'],
-                      ['alli', 'alli','al'],
-                      ['bli', 'bli','ble'],
-                      ['logi', 'ogi','og'],
-                      ['[cdeghkmnrt]li', 'li', '']
+                    [/ousness$/, /ousness$/, 'ous'],
+                    [/iveness$/, /iveness$/, 'ive'],
+                    [/fulness$/, /fulness$/, 'ful'],
+                    [/ization$/, /ization$/, 'ize'],
+                    [/ational$/, /ational$/, 'ate'],
+                    [/biliti$/, /biliti$/, 'ble'],
+                    [/tional$/, /tional$/, 'tion'],
+                    [/lessli$/, /lessli$/, 'less'],
+                    [/ousli$/, /ousli$/, 'ous'],
+                    [/fulli$/, /fulli$/, 'ful'],
+                    [/iviti$/, /iviti$/, 'ive'],
+                    [/entli$/, /entli$/, 'ent'],
+                    [/alism$/, /alism$/, 'al'],
+                    [/aliti$/, /aliti$/, 'al'],
+                    [/enci$/, /enci$/, 'ence'],
+                    [/anci$/, /anci$/, 'ance'],
+                    [/abli$/, /abli$/, 'able'],
+                    [/izer$/, /izer$/, 'ize'],
+                    [/ation$/, /ation$/, 'ate'],
+                    [/ator$/, /ator$/, 'ate'],
+                    [/alli$/, /alli$/, 'al'],
+                    [/bli$/, /bli$/, 'ble'],
+                    [/logi$/, /ogi$/, 'og'],
+                    [/[cdeghkmnrt]li$/, /li$/,  '']
                     ];
     // step3Seqis a list of suffixes to
     // be evaluated against a token; as soon as one is matched, the rest
@@ -315,7 +315,29 @@ class PT2{
      }
    }
 
-
+   /**
+     * step2 consists of a sequence of items to be evaluated against the
+     * input token; if a match occurs, then a) a replacement operation
+     * is done ONLY IF the match is in R1, and b) the process exits
+     * whether or not a replacement was done.
+     * @param  {String} token the input token
+     * @param  {Number} R1    the offset of the R1 region in the token
+     * @return {String}       the result of the replacement operations
+     */
+   step2(token, R1){
+     //Default return if nothing happens.
+     var result = token;
+     for (var i=0; i<this.arrStep2Seq.length; i++){
+       var nuked = token.replace(this.arrStep2Seq[i][0], '');
+       if (nuked !== token){
+         if ((nuked.length + 1) >= R1){
+           result = token.replace(this.arrStep2Seq[i][1], this.arrStep2Seq[i][2]);
+         }
+         break;
+       }
+     }
+     return result;
+   }
 
 
 }
