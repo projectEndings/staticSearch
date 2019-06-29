@@ -11,7 +11,7 @@ var preflightData =[["'yesterday", 'YesterdaY'],
  ['authenticity', 'authenticity'],
  ['bleed', 'bleed'],
  ['conversational', 'conversational']];
- 
+
  var step0Data=[["apostrophe'", 'apostrophe'],
  ["authors'", 'authors'],
  ["apostrophe's'", 'apostrophe'],
@@ -23,7 +23,7 @@ var preflightData =[["'yesterday", 'YesterdaY'],
  ['authenticity', 'authenticity'],
  ['bleed', 'bleed'],
  ['conversational', 'conversational']];
- 
+
  var R1R2Data=[['generates', {r1: 'ates',  r2: 'es', r1of: 6, r2of: 8}],
  ['communication', {r1: 'ication',  r2: 'ation', r1of: 7, r2of: 9}],
  ['asking', {r1: 'king',  r2: 'g', r1of: 3, r2of: 6}],
@@ -49,7 +49,25 @@ var preflightData =[["'yesterday", 'YesterdaY'],
  ['bleed', {r1: '',  r2: '', r1of: 6, r2of: 6}],
  ['conversational', {r1: 'versational',  r2: 'sational', r1of: 4, r2of: 7}]];
 
+ var wordIsShortData=[['bed', true],
+ ['shed', true],
+ ['shred', true],
+ ['bead', false],
+ ['embed', false],
+ ['beds', false],
+ ['knees', false],
+ ['knell', false],
+ ['abeYance', false],
+ ['abilities', false],
+ ['abjectness', false],
+ ['able', false],
+ ['achilles', false],
+ ['authenticity', false],
+ ['bleed', false],
+ ['conversational', false]];
+
 var testData;
+var errorCount = 0;
 var xmlhttp = new XMLHttpRequest();
 xmlhttp.onreadystatechange = function() {
   if (this.readyState == 4 && this.status == 200) {
@@ -74,14 +92,16 @@ function runTests(){
   }
   for (var i=0; i<R1R2Data.length; i++){
     var result = pt2.getR1AndR2(R1R2Data[i][0]);
-    if (Object.prototype.toString.call(result) == Object.prototype.toString.call(R1R2Data[i][1])){
-      showLog('getR1AndR2 with input ' +  R1R2Data[i][0] + ' was correct: ' + Object.prototype.toString.call(result), 'ok');
-    }
-    else{
-       showLog('getR1AndR2 with input ' +  R1R2Data[i][0] + ' was incorrect: ' + result, 'broken');
-    }
+    var jsonResult = JSON.stringify(result);
+    var jsonExpected = JSON.stringify(R1R2Data[i][1]);
+    showTestLog('getR1AndR2', R1R2Data[i][0], jsonExpected, jsonResult);
   }
-  
+  for (var i=0; i<wordIsShortData.length; i++){
+    var r1of = pt2.getR1AndR2(wordIsShortData[i][0]).r1of;
+    var result = pt2.wordIsShort(wordIsShortData[i][0], r1of);
+    showTestLog('wordIsShort', wordIsShortData[i][0], wordIsShortData[i][1], result);
+  }
+
 }
 
 function showLog(msg, msgType){
@@ -97,6 +117,8 @@ function showTestLog(func, input, expected, result){
     showLog('Input ' + input + ' to function ' + func + ' gave expected result ' + result, 'ok');
   }
   else{
+    errorCount++;
+    document.getElementById('errorCount').innerHTML = errorCount;
     showLog('Input ' + input + ' to function ' + func+ ' gave result ' + result + ' instead of ' + expected + '!', 'broken');
   }
 }

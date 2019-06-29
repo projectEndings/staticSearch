@@ -31,7 +31,7 @@ class PT2{
       this.nonVowel                      = '[^aeiouy]';
       this.reNonVowel                    = new RegExp(this.nonVowel);
     // A regex for determining whether a token ends with a short syllable
-      this.reEndsWithShortSyllable       = new RegExp(this.vowel + this.nonVowel + '[^aeiouywxY]$');
+      this.reEndsWithShortSyllable       = new RegExp(this.nonVowel + this.vowel + '[^aeiouywxY]$');
     // A regex for doubled consonants
       this.reDbl                         = /((bb)|(dd)|(ff)|(gg)|(mm)|(nn)|(pp)|(rr)|(tt))/;
     // A regular expression which returns R1, defined as "the region after
@@ -183,6 +183,29 @@ class PT2{
      var R2Index = (R2Candidate == R1)? token.length + 1 : (token.length - R2.length) + 1;
      return {r1: R1, r2: R2, r1of: R1Index, r2of: R2Index};
    }
+
+   /**
+     * wordIsShort returns a boolean value from testing the input word
+     * against a regular expression to determine whether it matches the
+     * Porter2 definition of a short word. A short syllable is "either
+     * (a) a vowel followed by a non-vowel other than w, x or Y and
+     * preceded by a non-vowel, or * (b) a vowel at the beginning of the
+     * word followed by a non-vowel," and "a word is called short if it
+     * ends in a short syllable, and if R1 is null." R1 being null
+     * basically means the R1 region is empty; that means it starts
+     * after the end of the word, so its offset is the word-length + 1.
+     * @param  {String} token the input token
+     * @param  {Number} r1of  the offset of the R1 region
+     * @return {Boolean}      true if word is short, otherwise false.
+     */
+     wordIsShort(token, r1of){
+       var R1IsNull = (token.length < r1of);
+       var reOnlyShortSyllable = new RegExp('^' + this.vowel +
+                                            this.nonVowel +
+                                            this.nonVowel + '*$');
+       return Boolean(((token.match(this.reEndsWithShortSyllable))||
+              ((token.match(reOnlyShortSyllable)))) && (R1IsNull));
+     }
 
   /**
     * preflight does a couple of simple replacements that need to precede

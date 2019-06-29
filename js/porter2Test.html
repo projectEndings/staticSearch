@@ -5,8 +5,16 @@
         <title>Porter2 Stemmer Test Suite</title>
         <script src="porter2Stemmer.js"></script>
         <script src="porter2Test.js"></script>
-       
+
         <style>
+            span#errorCount{
+                display: inline-block;
+                border: solid 1px red;
+                padding: 0.5em;
+                font-size: 120%;
+                text-align: center;
+                color: red;
+            }
             li{
                 margin-top: 0.5em;
             }
@@ -20,13 +28,16 @@
     </head>
     <body>
         <h1>Test suite for JavaScript Implementation of Porter2 Stemmer</h1>
-        
+        <div>
+          <p>Errors: <span id="errorCount">0</span></p>
+        </div>
+
         <div>
             <h2>Test log</h2>
             <ul id="log">
-               <li>Starting tests...</li> 
+               <li>Starting tests...</li>
             </ul>
         </div>
-        
+
     </body>
 </html>
