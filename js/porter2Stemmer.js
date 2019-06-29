@@ -33,7 +33,8 @@ class PT2{
     // A regex for determining whether a token ends with a short syllable
       this.reEndsWithShortSyllable       = new RegExp(this.nonVowel + this.vowel + '[^aeiouywxY]$');
     // A regex for doubled consonants
-      this.reDbl                         = /((bb)|(dd)|(ff)|(gg)|(mm)|(nn)|(pp)|(rr)|(tt))/;
+      this.dbl                           = '((bb)|(dd)|(ff)|(gg)|(mm)|(nn)|(pp)|(rr)|(tt))';
+      this.reDbl                         = new RegExp(this.reDbl);
     // A regular expression which returns R1, defined as "the region after
     // the first non-vowel following a vowel, or the end of the word if
     // there is no such non-vowel".
@@ -235,11 +236,83 @@ class PT2{
    step1(token, R1){
      //Some regular expressions used only in this function.
      var reStep1a2     = /(..)((ied)|(ies))$/;
-     var reStep1a3     = new RegExp('(.*' + this.vowel + '.+)s$');
+     var reStep1a3     = /((ied)|(ies))$/;
+     var reStep1a4     = new RegExp('(.*' + this.vowel + '.+)s$');
+     var reStep1a5     = /((us)|(ss))$/;
+     var reStep1b1     = /eed(ly)?$/;
      var reStep1b2     = new RegExp('(' + this.vowel + '.*)((ed)|(ing))(ly)?$');
+     var reStep1b3     = /((at)|(bl)|(iz))$/;
      var reStep1c      = new RegExp('(.+' + this.nonVowel + ')[Yy]$');
 
-     //TODO
+     //Start step 1a
+     //Default if step1a matches don't pan out.
+     var step1a = token;
+
+     if (token.match(/sses$/)){
+       step1a = token.replace(/sses$/, 'ss');
+     }
+     else{
+       if (token.match(reStep1a2)){
+         step1a = token.replace(reStep1a3, 'i');
+       }
+       else{
+         if (token.match(reStep1a3)){
+           step1a = token.replace(reStep1a3, 'ie');
+         }
+         else{
+           if ( (token.match(reStep1a4)) && (! token.match(reStep1a5)) ){
+             step1a = token.replace(reStep1a4, '$1');
+           }
+         }
+       }
+     }
+
+     //Start step 1b
+     //Default.
+     var step1b = step1a;
+     //If it's one of the exceptions, nothing more to do.
+     if (this.arrStep1aExceptions.indexOf(step1a) > -1){
+       step1b = step1a;
+     }
+     else{
+       if (step1a.match(reStep1b1)){
+         var tmp1 = step1a.replace(reStep1b1, 'ee');
+         if ((tmp1.length + 1) >= R1){
+           step1b = tmp1;
+         }
+         else{
+           step1b = step1a;
+         }
+       }
+       else{
+         if (step1a.match(reStep1b2)){
+          var tmp2 = step1a.replace(reStep1b2, '$1');
+           if (tmp2.match(reStep1b3)){
+             step1b = tmp2 + 'e';
+           }
+           else{
+             if (tmp2.match(new RegExp(this.dbl + '$'))){
+               step1b = tmp2.replace(/.$/, '');
+             }
+             else{
+               if (this.wordIsShort(tmp2, R1)){
+                 step1b = tmp2 + 'e';
+               }
+               else{
+                 step1b = tmp2;
+               }
+             }
+           }
+         }
+       }
+     }
+     //Start step 1c
+     if (step1b.match(reStep1c)){
+       return step1b.replace(reStep1c, '$1i');
+     }
+     else{
+       return step1b;
+     }
    }
 
 
