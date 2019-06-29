@@ -156,9 +156,70 @@ class PT2{
                             ];
   }
 
+  /**
+   * getR1AndR2 decomposes an input token to get the R1 and R2 regions,
+   * and returns the string values of those two regions, along with their
+   * offsets.
+   * @param  {String} token The input token
+   * @return {Object}       an object with four members:
+   *                        r1 {String} the part of the word constituting R1
+   *                        r1 {String} the part of the word constituting R2
+   *                        r1of {Number} the offset of the start of R1
+   *                        r2of {Number} the offset of the start of R2
+   */
+   getR1AndR2(token){
+     var R1 = '';
+     if (token.match(this.reR1Except)){
+       R1 = token.replace(this.reR1Except, '$2');
+     }
+     else{
+       if (token.match(this.reR1R2)){
+         R1 = token.replace(this.reR1R2, '$1');
+       }
+     }
+     var R1Index = (token.length - R1.length) + 1;
+     var R2Candidate = R1.replace(this.reR1R2, '$1');
+     var R2 = (R2Candidate == R1)? '' : R2Candidate;
+     var R2Index = ($R2Candidate == R1)? token.length + 1 : (token.length - R2.length) + 1;
+     return {r1: R1, r2: R2, r1of: R1Index, r2of: R2Index};
+   }
+
+  /**
+    * preflight does a couple of simple replacements that need to precede
+    * the actual stemming process.
+    * @param  {String} token the input token
+    * @return {String}       the result of the replacement operations
+    */
   preflight(token){
     return token.replace(/^'/, '').replace(/^y/, 'Y').replace(new RegExp('(' + this.vowel + ')y'), '$1Y');
   }
+
+  /**
+    * step0 trims plural/possessive type suffixes from the end.
+    * @param  {String} token the input token
+    * @return {String}       the result of the trimming operations
+    */
+  step0(token){
+    return token.replace(/'(s(')?)?$/, '');
+  }
+
+ /**
+   * step1 performs three replacements on the end of a token (1a, 1b and 1c).
+   * @param  {String} token the input token
+   * @param  {Number} R1    the offset of the R1 region in the token
+   * @return {String}       the result of the replacement operations
+   */
+   step1(token, R1){
+     //Some regular expressions used only in this function.
+     var reStep1a2     = /(..)((ied)|(ies))$/;
+     var reStep1a3     = new RegExp('(.*' + this.vowel + '.+)s$');
+     var reStep1b2     = new RegExp('(' + this.vowel + '.*)((ed)|(ing))(ly)?$');
+     var reStep1c      = new RegExp('(.+' + this.nonVowel + ')[Yy]$');
+
+     //TODO
+   }
+
+
 
 
 }
