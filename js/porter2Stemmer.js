@@ -458,15 +458,22 @@ class PT2{
      */
    step5(token, R1, R2){
      //Some regexps used only in this function.
-     var reStep5a = new RegExp('(^' + this.vowel + this.nonVowel +
-                               '$)|(' + this.reEndsWithShortSyllable + ')');
+     //var reStep5a = new RegExp('(^' + this.vowel + this.nonVowel +
+    //                           '$)|(' + this.reEndsWithShortSyllable + ')');
+    var reStep5a = /(^[aeiouy][^aeiouy]$)|([^aeiouy][aeiou][^aeiouywxY]$)/;
 
      //Start step5a
      var step5a = token;
      if (token.match(/e$/)){
        var nuked = token.replace(/e$/, '');
-       if (((nuked.length + 1) >= R1) && (! nuked.match(reStep5a))){
+       if ((nuked.length + 1) >= R2){
          step5a = nuked;
+       }
+       else{
+         if (((nuked.length + 1) >= R1) && (!nuked.match(reStep5a))){
+//console.log(nuked);
+           step5a = nuked;
+         }
        }
      }
 

@@ -218,6 +218,18 @@
       </x:call>
       <x:expect label="Result from 'conversational'" select="('versational', 'sational', 4, 7)"/>
     </x:scenario>
+    <x:scenario label="Testing problem instance 'knave'">
+      <x:call function="hcmc:getR1AndR2">
+        <x:param name="token" select="'knave'"/>
+      </x:call>
+      <x:expect label="Result from 'knave'" select="('e', '', 5, 6)"/>
+    </x:scenario>
+    <x:scenario label="Testing problem instance 'knaves'">
+      <x:call function="hcmc:getR1AndR2">
+        <x:param name="token" select="'knaves'"/>
+      </x:call>
+      <x:expect label="Result from 'knaves'" select="('es', '', 5, 7)"/>
+    </x:scenario>
   </x:scenario>
 
   <x:scenario label="Test function wordIsShort">
@@ -675,6 +687,14 @@
         <x:param name="R2" select="hcmc:getR1AndR2('achilles')[4]"/>
       </x:call>
       <x:expect label="Result from 'achille'" select="'achill'"/>
+    </x:scenario>
+    <x:scenario label="Testing problem example 'knife'">
+      <x:call function="hcmc:step5">
+        <x:param name="token" select="'knife'"/>
+        <x:param name="R1" select="hcmc:getR1AndR2('knife')[3]"/>
+        <x:param name="R2" select="hcmc:getR1AndR2('knife')[4]"/>
+      </x:call>
+      <x:expect label="Result from 'knife'" select="'knife'"/>
     </x:scenario>
   </x:scenario>
   

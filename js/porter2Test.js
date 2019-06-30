@@ -295,10 +295,10 @@ function runTests(){
     var result = pt2.stem(stemData[i][0]);
     showTestLog('stem', stemData[i][0], stemData[i][1], result);
   }
-  // for (var i=0; i<testData.voc.length; i++){
-  //   var result = pt2.stem(testData.voc[i]);
-  //   showTestLog('stem', testData.voc[i], testData.output[i], result);
-  // }
+  for (var i=0; i<testData.voc.length; i++){
+    var result = pt2.stem(testData.voc[i]);
+    showTestLog('stem', testData.voc[i], testData.output[i], result);
+  }
 }
 
 function showLog(msg, msgType){

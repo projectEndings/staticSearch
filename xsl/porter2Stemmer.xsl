@@ -518,6 +518,7 @@
       <xsl:choose>
         <xsl:when test="matches($token, 'e$')">
           <xsl:variable name="replaced" select="replace($token, 'e$', '')"/>
+          <!--<xsl:message>replaced = <xsl:value-of select="$replaced"/>; match = <xsl:value-of select="matches($replaced, concat('(^', $vowel, $nonVowel, '$)|(', $endsWithShortSyllable, ')'))"/></xsl:message>-->
           <xsl:choose>
             <xsl:when test="(string-length($replaced) + 1) ge $R2">
               <xsl:value-of select="$replaced"/>
