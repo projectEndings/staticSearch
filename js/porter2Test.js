@@ -10,7 +10,11 @@ var preflightData =[["'yesterday", 'YesterdaY'],
  ['able', 'able'],
  ['authenticity', 'authenticity'],
  ['bleed', 'bleed'],
- ['conversational', 'conversational']];
+ ['conversational', 'conversational'],
+ ['knave', 'knave'],
+ ['knaves', 'knaves'],
+ ['knife', 'knife'],
+ ['knives', 'knives']];
 
  var step0Data=[["apostrophe'", 'apostrophe'],
  ["authors'", 'authors'],
@@ -22,7 +26,11 @@ var preflightData =[["'yesterday", 'YesterdaY'],
  ['achilles', 'achilles'],
  ['authenticity', 'authenticity'],
  ['bleed', 'bleed'],
- ['conversational', 'conversational']];
+ ['conversational', 'conversational'],
+ ['knave', 'knave'],
+ ['knaves', 'knaves'],
+ ['knife', 'knife'],
+ ['knives', 'knives']];
 
  var step1Data=[['lasses', 'lass'],
  ['exceedingly', 'exceed'],
@@ -43,7 +51,11 @@ var preflightData =[["'yesterday", 'YesterdaY'],
  ['achilles', 'achille'],
  ['authenticity', 'authenticiti'],
  ['bleed', 'bleed'],
- ['conversational', 'conversational']];
+ ['conversational', 'conversational'],
+ ['knave', 'knave'],
+ ['knaves', 'knave'],
+ ['knife', 'knife'],
+ ['knives', 'knive']];
 
  var step2Data=[['abiliti', 'abiliti'],
  ['abjectness', 'abjectness'],
@@ -88,7 +100,11 @@ var preflightData =[["'yesterday", 'YesterdaY'],
  ['achilles', {r1: 'hilles',  r2: 'les', r1of: 3, r2of: 6}],
  ['authenticity', {r1: 'henticity',  r2: 'ticity', r1of: 4, r2of: 7}],
  ['bleed', {r1: '',  r2: '', r1of: 6, r2of: 6}],
- ['conversational', {r1: 'versational',  r2: 'sational', r1of: 4, r2of: 7}]];
+ ['conversational', {r1: 'versational',  r2: 'sational', r1of: 4, r2of: 7}],
+ ['knave', {r1: 'e', r2: '', r1of: 5, r2of: 6}],
+ ['knaves', {r1: 'es', r2: '', r1of: 5, r2of: 7}],
+ ['knife', {r1: 'e', r2: '', r1of: 5, r2of: 6}],
+ ['knives', {r1: 'es', r2: '', r1of: 5, r2of: 7}]];
 
  var wordIsShortData=[['bed', true],
  ['shed', true],
@@ -105,7 +121,11 @@ var preflightData =[["'yesterday", 'YesterdaY'],
  ['achilles', false],
  ['authenticity', false],
  ['bleed', false],
- ['conversational', false]];
+ ['conversational', false],
+ ['knave', false],
+ ['knaves', false],
+ ['knife', false],
+ ['knives', false]];
 
  var stemData=[
                 ['consign', 'consign'],
@@ -215,15 +235,15 @@ function runTests(){
     var result = pt2.preflight(preflightData[i][0]);
     showTestLog('preflight', preflightData[i][0], preflightData[i][1], result);
   }
-  for (var i=0; i<step0Data.length; i++){
-    var result = pt2.step0(step0Data[i][0]);
-    showTestLog('step0', step0Data[i][0], step0Data[i][1], result);
-  }
   for (var i=0; i<R1R2Data.length; i++){
     var result = pt2.getR1AndR2(R1R2Data[i][0]);
     var jsonResult = JSON.stringify(result);
     var jsonExpected = JSON.stringify(R1R2Data[i][1]);
     showTestLog('getR1AndR2', R1R2Data[i][0], jsonExpected, jsonResult);
+  }
+  for (var i=0; i<step0Data.length; i++){
+    var result = pt2.step0(step0Data[i][0]);
+    showTestLog('step0', step0Data[i][0], step0Data[i][1], result);
   }
   for (var i=0; i<wordIsShortData.length; i++){
     var r1of = pt2.getR1AndR2(wordIsShortData[i][0]).r1of;
