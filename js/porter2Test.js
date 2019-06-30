@@ -62,20 +62,32 @@ var preflightData =[["'yesterday", 'YesterdaY'],
  ['able', 'able'],
  ['achille', 'achille'],
  ['authenticiti', 'authenticiti'],
- ['conversational', 'conversate']];
+ ['conversational', 'conversate'],
+ ['knave', 'knave'],
+ ['knife', 'knife'],
+ ['knive', 'knive']];
 
  var step3Data=[['abjectness', 'abject'],
  ['able', 'able'],
  ['achille', 'achille'],
  ['authenticiti', 'authentic'],
- ['conversate', 'conversate']];
+ ['conversate', 'conversate'],
+ ['knave', 'knave'],
+ ['knife', 'knife'],
+ ['knive', 'knive']];
 
  var step4Data=[['abeYance', 'abeY'],
  ['able', 'able'],
- ['achille', 'achille']];
+ ['achille', 'achille'],
+ ['knave', 'knave'],
+ ['knife', 'knife'],
+ ['knive', 'knive']];
 
  var step5Data=[['able', 'abl'],
- ['achille', 'achill']];
+ ['achille', 'achill'],
+ ['knave', 'knave'],
+ ['knife', 'knife'],
+ ['knive', 'knive']];
 
  var R1R2Data=[['generates', {r1: 'ates',  r2: 'es', r1of: 6, r2of: 8}],
  ['communication', {r1: 'ication',  r2: 'ation', r1of: 7, r2of: 9}],
