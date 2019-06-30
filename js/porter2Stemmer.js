@@ -130,24 +130,45 @@ class PT2{
     // the set of special words which have hard-coded stems, and the set
     // of words which should remain unchanged.
       this.arrExceptions = [
-                        ['skis', 'ski'],
-                        ['skies', 'sky'],
-                        ['dying', 'die'],
-                        ['lying', 'lie'],
-                        ['tying', 'tie'],
-                        ['idly', 'idl'],
-                        ['gently', 'gentl'],
-                        ['ugly', 'ugli'],
-                        ['early', 'earli'],
-                        ['only', 'onli'],
-                        ['singly', 'singl'],
-                        ['sky', 'sky'],
-                        ['news', 'news'],
-                        ['howe', 'howe'],
-                        ['atlas', 'atlas'],
-                        ['cosmos', 'cosmos'],
-                        ['bias', 'bias'],
-                        ['andes', 'andes']
+                        'skis',
+                        'skies',
+                        'dying',
+                        'lying',
+                        'tying',
+                        'idly',
+                        'gently',
+                        'ugly',
+                        'early',
+                        'only',
+                        'singly',
+                        'sky',
+                        'news',
+                        'howe',
+                        'atlas',
+                        'cosmos',
+                        'bias',
+                        'andes'
+                      ];
+
+      this.arrExceptionStems=[
+                        'ski',
+                        'sky',
+                        'die',
+                        'lie',
+                        'tie',
+                        'idl',
+                        'gentl',
+                        'ugli',
+                        'earli',
+                        'onli',
+                        'singl',
+                        'sky',
+                        'news',
+                        'howe',
+                        'atlas',
+                        'cosmos',
+                        'bias',
+                        'andes'
                       ];
     // arrStep1aExceptions is a short list of items to be left unchanged
     // if they are found after step 1a.
@@ -156,6 +177,39 @@ class PT2{
                               'earring', 'proceed', 'exceed', 'succeed'
                             ];
   }
+  /**
+   * stem is the core function that takes a single token and returns
+   * its stemmed version.
+   * @param  {String} token The input token
+   * @return {String}       the stemmed token
+   */
+   stem(token){
+     if (token.length < 3){
+       return token;
+     }
+     else{
+       var indEx = this.arrExceptions.indexOf(token);
+       if (indEx > -1){
+         return this.arrExceptionStems[indEx];
+       }
+       else{
+         var pref = this.preflight(token);
+         var R = this.getR1AndR2(pref);
+         var s0 = this.step0(pref);
+         var s1 = this.step1(s0, R.r1of);
+         if (this.arrStep1aExceptions.indexOf(s1) > -1){
+           return s1;
+         }
+         else{
+           var s2 = this.step2(s1, R.r1of);
+           var s3 = this.step3(s2, R.r1of, R.r2of);
+           var s4 = this.step4(s3, R.r2of);
+           var s5 = this.step5(s4, R.r1of, R.r2of);
+           return s5;
+         }
+       }
+     }
+   }
 
   /**
    * getR1AndR2 decomposes an input token to get the R1 and R2 regions,

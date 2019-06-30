@@ -107,6 +107,94 @@ var preflightData =[["'yesterday", 'YesterdaY'],
  ['bleed', false],
  ['conversational', false]];
 
+ var stemData=[
+                ['consign', 'consign'],
+                ['consigned', 'consign'],
+                ['consigning', 'consign'],
+                ['consignment', 'consign'],
+                ['consist', 'consist'],
+                ['consisted', 'consist'],
+                ['consistency', 'consist'],
+                ['consistent', 'consist'],
+                ['consistently', 'consist'],
+                ['consisting', 'consist'],
+                ['consists', 'consist'],
+                ['consolation', 'consol'],
+                ['consolations', 'consol'],
+                ['consolatory', 'consolatori'],
+                ['console', 'consol'],
+                ['consoled', 'consol'],
+                ['consoles', 'consol'],
+                ['consolidate', 'consolid'],
+                ['consolidated', 'consolid'],
+                ['consolidating', 'consolid'],
+                ['consoling', 'consol'],
+                ['consolingly', 'consol'],
+                ['consols', 'consol'],
+                ['consonant', 'conson'],
+                ['consort', 'consort'],
+                ['consorted', 'consort'],
+                ['consorting', 'consort'],
+                ['conspicuous', 'conspicu'],
+                ['conspicuously', 'conspicu'],
+                ['conspiracy', 'conspiraci'],
+                ['conspirator', 'conspir'],
+                ['conspirators', 'conspir'],
+                ['conspire', 'conspir'],
+                ['conspired', 'conspir'],
+                ['conspiring', 'conspir'],
+                ['constable', 'constabl'],
+                ['constables', 'constabl'],
+                ['constance', 'constanc'],
+                ['constancy', 'constanc'],
+                ['constant', 'constant'],
+                ['knack', 'knack'],
+                ['knackeries', 'knackeri'],
+                ['knacks', 'knack'],
+                ['knag', 'knag'],
+                ['knave', 'knave'],
+                ['knaves', 'knave'],
+                ['knavish', 'knavish'],
+                ['kneaded', 'knead'],
+                ['kneading', 'knead'],
+                ['knee', 'knee'],
+                ['kneel', 'kneel'],
+                ['kneeled', 'kneel'],
+                ['kneeling', 'kneel'],
+                ['kneels', 'kneel'],
+                ['knees', 'knee'],
+                ['knell', 'knell'],
+                ['knelt', 'knelt'],
+                ['knew', 'knew'],
+                ['knick', 'knick'],
+                ['knif', 'knif'],
+                ['knife', 'knife'],
+                ['knight', 'knight'],
+                ['knightly', 'knight'],
+                ['knights', 'knight'],
+                ['knit', 'knit'],
+                ['knits', 'knit'],
+                ['knitted', 'knit'],
+                ['knitting', 'knit'],
+                ['knives', 'knive'],
+                ['knob', 'knob'],
+                ['knobs', 'knob'],
+                ['knock', 'knock'],
+                ['knocked', 'knock'],
+                ['knocker', 'knocker'],
+                ['knockers', 'knocker'],
+                ['knocking', 'knock'],
+                ['knocks', 'knock'],
+                ['knopp', 'knopp'],
+                ['knot', 'knot'],
+                ['knots', 'knot'],
+                ['skis', 'ski'],
+                ['dying', 'die'],
+                ['news', 'news'],
+                ['herrings', 'herring'],
+                ['proceed', 'proceed']
+              ];
+
 var testData;
 var errorCount = 0;
 var xmlhttp = new XMLHttpRequest();
@@ -171,6 +259,14 @@ function runTests(){
     var result = pt2.step5(step5Data[i][0], r1of, r2of);
     showTestLog('step5', step5Data[i][0], step5Data[i][1], result);
   }
+  for (var i=0; i<stemData.length; i++){
+    var result = pt2.stem(stemData[i][0]);
+    showTestLog('stem', stemData[i][0], stemData[i][1], result);
+  }
+  // for (var i=0; i<testData.voc.length; i++){
+  //   var result = pt2.stem(testData.voc[i]);
+  //   showTestLog('stem', testData.voc[i], testData.output[i], result);
+  // }
 }
 
 function showLog(msg, msgType){
