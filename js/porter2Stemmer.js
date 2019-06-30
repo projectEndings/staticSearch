@@ -84,15 +84,15 @@ class PT2{
     // So for example: "ative" matches, but the match must be in R2 to
     // satisfy the condition.
       this.arrStep3Seq = [
-                      [1, /ational/, 'ate'],
-                      [1, /tional/, 'tion'],
-                      [1, /alize/, 'al'],
-                      [1, /icate/, 'ic'],
-                      [1, /iciti/, 'ic'],
-                      [2, /ative/, ''],
-                      [1, /ical/, 'ic'],
-                      [1, /ness/, ''],
-                      [1, /ful/, '']
+                      [1, /ational$/, 'ate'],
+                      [1, /tional$/, 'tion'],
+                      [1, /alize$/, 'al'],
+                      [1, /icate$/, 'ic'],
+                      [1, /iciti$/, 'ic'],
+                      [2, /ative$/, ''],
+                      [1, /ical$/, 'ic'],
+                      [1, /ness$/, ''],
+                      [1, /ful$/, '']
                     ];
     // arrStep4Seq is a list of suffixes to
     // be evaluated against a token; as soon as one is matched,
