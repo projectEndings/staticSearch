@@ -388,5 +388,48 @@ class PT2{
      }
      return result;
    }
+   /**
+     * step5 consists of two specific replacements which are context-dependent:
+     * "Search for the the following suffixes, and, if found,
+     * perform the action indicated.
+     *    e delete if in R2, or in R1 and not preceded by a short syllable*
+     *    l delete if in R2 and preceded by l"
+     * "Finally, turn any remaining Y letters in the word back into lower case. "
+     *   *On mailing list, MP confirms that this means _immediately_
+     * preceded by a short syllable.
+     * @param  {String} token the input token
+     * @param  {Number} R1    the offset of the R1 region in the token
+     * @param  {Number} R2    the offset of the R1 region in the token
+     * @return {String}       the result of the replacement operations
+     */
+   step5(token, R1, R2){
+     //Some regexps used only in this function.
+     var reStep5a = new RegExp('(^' + this.vowel + this.nonVowel +
+                               '$)|(' + this.reEndsWithShortSyllable + ')');
+
+     //Start step5a
+     var step5a = token;
+     if (token.match(/e$/)){
+       var nuked = token.replace(/e$/, '');
+       if (((nuked.length + 1) >= R1) && (! nuked.match(reStep5a))){
+         step5a = nuked;
+       }
+     }
+
+     //Start step5b.
+     var step5b = step5a;
+     //Only do anything if the previous step has not changed the token.
+     if (step5b == token){
+       if (step5b.match(/ll$/)){
+         var nuked = step5b.replace(/l$/, '');
+         if ((nuked.length + 2) > R2){
+           step5b = nuked;
+         }
+       }
+     }
+     return step5b.replace(/Y/g, 'y');
+   }
+
+
 
 }

@@ -62,6 +62,9 @@ var preflightData =[["'yesterday", 'YesterdaY'],
  ['able', 'able'],
  ['achille', 'achille']];
 
+ var step5Data=[['able', 'abl'],
+ ['achille', 'achill']];
+
  var R1R2Data=[['generates', {r1: 'ates',  r2: 'es', r1of: 6, r2of: 8}],
  ['communication', {r1: 'ication',  r2: 'ation', r1of: 7, r2of: 9}],
  ['asking', {r1: 'king',  r2: 'g', r1of: 3, r2of: 6}],
@@ -160,6 +163,13 @@ function runTests(){
     var r2of = pt2.getR1AndR2(step4Data[i][0]).r2of;
     var result = pt2.step4(step4Data[i][0], r2of);
     showTestLog('step4', step4Data[i][0], step4Data[i][1], result);
+  }
+  for (var i=0; i<step5Data.length; i++){
+    var R1R2 = pt2.getR1AndR2(step5Data[i][0])
+    var r1of = R1R2.r1of;
+    var r2of = R1R2.r2of;
+    var result = pt2.step5(step5Data[i][0], r1of, r2of);
+    showTestLog('step5', step5Data[i][0], step5Data[i][1], result);
   }
 }
 
