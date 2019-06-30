@@ -103,24 +103,24 @@ class PT2{
     // So for example: "al" matches, but the match must be in R2
     // to satisfy the condition.
       this.arrStep4Seq = [
-                      ['ement', 'ement'],
-                      ['ment', 'ment'],
-                      ['ance', 'ance'],
-                      ['ence', 'ence'],
-                      ['able', 'able'],
-                      ['ible', 'ible'],
-                      ['ant', 'ant'],
-                      ['ent', 'ent'],
-                      ['ism', 'ism'],
-                      ['ate', 'ate'],
-                      ['iti', 'iti'],
-                      ['ous', 'ous'],
-                      ['ive', 'ive'],
-                      ['ize', 'ize'],
-                      ['[st]|ion', 'ion'],
-                      ['al', 'al'],
-                      ['er', 'er'],
-                      ['ic', 'ic']
+                      [/ement$/, /ement$/],
+                      [/ment$/, /ment$/],
+                      [/ance$/, /ance$/],
+                      [/ence$/, /ence$/],
+                      [/able$/, /able$/],
+                      [/ible$/, /ible$/],
+                      [/[st]ion$/, /ion$/],
+                      [/ant$/, /ant$/],
+                      [/ent$/, /ent$/],
+                      [/ism$/, /ism$/],
+                      [/ate$/, /ate$/],
+                      [/iti$/, /iti$/],
+                      [/ous$/, /ous$/],
+                      [/ive$/, /ive$/],
+                      [/ize$/, /ize$/],
+                      [/al$/, /al$/],
+                      [/er$/, /er$/],
+                      [/ic$/, /ic$/]
                     ];
     // arrExeptions is a list of exceptional forms and their matching
     // stems, to be processed before the rest of the stemming takes place.
@@ -358,6 +358,30 @@ class PT2{
        if (nuked !== token){
          if ((nuked.length + 1) >= offset){
            result = token.replace(this.arrStep3Seq[i][1], this.arrStep3Seq[i][2]);
+         }
+         break;
+       }
+     }
+     return result;
+   }
+
+   /**
+     * step4 consists of a sequence of items to be evaluated against the
+     * input token; if a match occurs, then a) a deletion operation is
+     * done ONLY IF the match is in R2, and b) the process exits whether
+     * or not a replacement was done.
+     * @param  {String} token the input token
+     * @param  {Number} R2    the offset of the R1 region in the token
+     * @return {String}       the result of the replacement operations
+     */
+   step4(token, R2){
+     var result = token;
+     for (var i=0; i<this.arrStep4Seq.length; i++){
+       var nuked = token.replace(this.arrStep4Seq[i][0], '');
+       if (nuked !== token){
+         nuked = token.replace(this.arrStep4Seq[i][1], '')
+         if ((nuked.length + 1) >= R2){
+           result = nuked;
          }
          break;
        }
