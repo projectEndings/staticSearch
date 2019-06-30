@@ -13,6 +13,17 @@
  * Free to anyone for any purpose, but
  * acknowledgement would be appreciated. */
 
+ /** HOW TO USE:
+     var pt2 = new PT2();
+     var stemmedToken = pt2.stem(token);
+  */
+
+ /** WARNING:
+   * This lib has "use strict" defined. You may
+   * need to remove that if you are mixing this
+   * code with non-strict JavaScript.   
+   */
+
 /* jshint strict:false */
 /* jshint esversion: 6*/
 /* jshint strict: global*/
@@ -462,7 +473,7 @@ class PT2{
      //Some regexps used only in this function.
      //var reStep5a = new RegExp('(^' + this.vowel + this.nonVowel +
     //                           '$)|(' + this.reEndsWithShortSyllable + ')');
-    var reStep5a = /(^[aeiouy][^aeiouy]$)|([^aeiouy][aeiou][^aeiouywxY]$)/;
+    var reStep5a = /(^[aeiouy][^aeiouy]$)|([^aeiouy][aeiouy][^aeiouywxY]$)/;
 
      //Start step5a
      var step5a = token;
