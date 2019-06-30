@@ -14,7 +14,8 @@ var preflightData =[["'yesterday", 'YesterdaY'],
  ['knave', 'knave'],
  ['knaves', 'knaves'],
  ['knife', 'knife'],
- ['knives', 'knives']];
+ ['knives', 'knives'],
+ ['badly', 'badly']];
 
  var step0Data=[["apostrophe'", 'apostrophe'],
  ["authors'", 'authors'],
@@ -30,7 +31,8 @@ var preflightData =[["'yesterday", 'YesterdaY'],
  ['knave', 'knave'],
  ['knaves', 'knaves'],
  ['knife', 'knife'],
- ['knives', 'knives']];
+ ['knives', 'knives'],
+ ['badly', 'badly']];
 
  var step1Data=[['lasses', 'lass'],
  ['exceedingly', 'exceed'],
@@ -55,7 +57,8 @@ var preflightData =[["'yesterday", 'YesterdaY'],
  ['knave', 'knave'],
  ['knaves', 'knave'],
  ['knife', 'knife'],
- ['knives', 'knive']];
+ ['knives', 'knive'],
+ ['badly', 'badli']];
 
  var step2Data=[['abiliti', 'abiliti'],
  ['abjectness', 'abjectness'],
@@ -65,7 +68,8 @@ var preflightData =[["'yesterday", 'YesterdaY'],
  ['conversational', 'conversate'],
  ['knave', 'knave'],
  ['knife', 'knife'],
- ['knive', 'knive']];
+ ['knive', 'knive'],
+ ['badli', 'bad']];
 
  var step3Data=[['abjectness', 'abject'],
  ['able', 'able'],
@@ -116,7 +120,8 @@ var preflightData =[["'yesterday", 'YesterdaY'],
  ['knave', {r1: 'e', r2: '', r1of: 5, r2of: 6}],
  ['knaves', {r1: 'es', r2: '', r1of: 5, r2of: 7}],
  ['knife', {r1: 'e', r2: '', r1of: 5, r2of: 6}],
- ['knives', {r1: 'es', r2: '', r1of: 5, r2of: 7}]];
+ ['knives', {r1: 'es', r2: '', r1of: 5, r2of: 7}],
+ ['badly', {r1: 'ly', r2: '', r1of: 4, r2of: 6}]];
 
  var wordIsShortData=[['bed', true],
  ['shed', true],
@@ -137,7 +142,8 @@ var preflightData =[["'yesterday", 'YesterdaY'],
  ['knave', false],
  ['knaves', false],
  ['knife', false],
- ['knives', false]];
+ ['knives', false],
+ ['badly', false]];
 
  var stemData=[
                 ['consign', 'consign'],

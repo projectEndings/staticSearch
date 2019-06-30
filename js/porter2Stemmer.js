@@ -382,12 +382,14 @@ class PT2{
      //Default return if nothing happens.
      var result = token;
      for (var i=0; i<this.arrStep2Seq.length; i++){
-       var nuked = token.replace(this.arrStep2Seq[i][0], '');
-       if (nuked !== token){
-         if ((nuked.length + 1) >= R1){
-           result = token.replace(this.arrStep2Seq[i][1], this.arrStep2Seq[i][2]);
+       if (token.match(this.arrStep2Seq[i][0])){
+         var nuked = token.replace(this.arrStep2Seq[i][1], '');
+         if (nuked !== token){
+           if ((nuked.length + 1) >= R1){
+             result = token.replace(this.arrStep2Seq[i][1], this.arrStep2Seq[i][2]);
+           }
+           break;
          }
-         break;
        }
      }
      return result;
