@@ -84,15 +84,15 @@ class PT2{
     // So for example: "ative" matches, but the match must be in R2 to
     // satisfy the condition.
       this.arrStep3Seq = [
-                      [1, 'ational', 'ate'],
-                      [1, 'tional', 'tion'],
-                      [1, 'alize', 'al'],
-                      [1, 'icate', 'ic'],
-                      [1, 'iciti', 'ic'],
-                      [2, 'ative', ''],
-                      [1, 'ical', 'ic'],
-                      [1, 'ness', ''],
-                      [1, 'ful', '']
+                      [1, /ational/, 'ate'],
+                      [1, /tional/, 'tion'],
+                      [1, /alize/, 'al'],
+                      [1, /icate/, 'ic'],
+                      [1, /iciti/, 'ic'],
+                      [2, /ative/, ''],
+                      [1, /ical/, 'ic'],
+                      [1, /ness/, ''],
+                      [1, /ful/, '']
                     ];
     // arrStep4Seq is a list of suffixes to
     // be evaluated against a token; as soon as one is matched,
@@ -339,5 +339,30 @@ class PT2{
      return result;
    }
 
+   /**
+     * step3 consists of a sequence of items to be evaluated against the
+     * input token; if a match occurs, then a) a replacement operation
+     * is done ONLY IF the match is in a specified region, and b) the
+     * process exits whether or not a replacement was done.
+     * @param  {String} token the input token
+     * @param  {Number} R1    the offset of the R1 region in the token
+     * @param  {Number} R2    the offset of the R1 region in the token
+     * @return {String}       the result of the replacement operations
+     */
+   step3(token, R1, R2){
+     //Default return if nothing happens.
+     var result = token;
+     for (var i=0; i<this.arrStep3Seq.length; i++){
+       var offset = (this.arrStep3Seq[i][0] == 2)? R2 : R1;
+       var nuked = token.replace(this.arrStep3Seq[i][1], '');
+       if (nuked !== token){
+         if ((nuked.length + 1) >= offset){
+           result = token.replace(this.arrStep3Seq[i][1], this.arrStep3Seq[i][2]);
+         }
+         break;
+       }
+     }
+     return result;
+   }
 
 }
