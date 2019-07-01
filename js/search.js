@@ -103,6 +103,41 @@ class StaticSearch{
     //Clear anything in the existing array.
     this.terms = [];
     var strSearch = this.queryBox.value;
-    //TODO: complicated parsing...
+    //Start by normalizing whitespace.
+    strSearch = strSearch.replace(/((^\s+)|\s+$)/g, '');
+    strSearch = strSearch.replace(/\s+/g, ' ');
+
+    //Next, replace curly quotes/apostrophes with straight.
+    strSearch = strSearch.replace(/[“”]/g, '"');
+    strSearch = strSearch.replace(/[‘’‛]/g, "'");
+
+    //Now delete any unmatched double quotes.
+    var qCount = 0;
+    var lastQPos = -1;
+    var tmp = '';
+    for (var i=0; i<strSearch.length; i++){
+        tmp += strSearch.charAt(i);
+        if (strSearch.charAt(i) === '"'){
+          qCount++;
+          lastQPos = i;
+        }
+    }
+    if (qCount % 2 > 0){
+      strSearch = tmp.substr(0, lastQPos) + tmp.substr(lastQPos + 1, tmp.length);
+    }
+    else{
+      strSearch = tmp;
+    }
+
+    //Put that fixed string back in the box to make
+    //clear to the user what's been understood.
+    this.queryBox.value = strSearch;
+
+    //Now iterate through the string, paying attention
+    //to whether you're inside a quote or not.
+
+    //When you reach the end of a component...
+
+    //Add an item to the array.
   }
 }
