@@ -54,7 +54,7 @@
                     </xsl:for-each-group>
                 </array>-->
             <array key="instances">
-                <xsl:for-each-group select="current-group()" group-by="ancestor::html/@id">
+                <xsl:for-each-group select="current-group()" group-by="if (every $h in ancestor::html satisfies $h[@id]) then ancestor::html/@id else document-uri(/)">
                     <xsl:sort select="count(current-group()[1]/ancestor::html/descendant::span[contains-token(@data-staticSearch-stem,$term)])" order="descending"/>
                     <xsl:variable name="docId" select="current-grouping-key()"/>
                     <xsl:variable name="thisDoc" select="current-group()[1]/ancestor::html"/>

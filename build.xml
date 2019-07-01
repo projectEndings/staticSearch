@@ -12,9 +12,13 @@
     
   <property name="verbose" value="true"/>
     
+    <target name="clean">
+        <delete dir="temp"/>
+        <delete file="xsl/config.xsl"/>
+    </target>
+    
   <!--First thing, create the config file-->
    <target name="createConfig">
-       <delete file="xsl/config.xsl"/>
        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
            <arg value="-xsl:xsl/create_config_xsl.xsl"/>
            <arg value="-s:xsl/create_config_xsl.xsl"/>
@@ -45,5 +49,5 @@
         </java>
     </target>
     
-    <target name="all" depends="createConfig, tokenize, json"/>
+    <target name="all" depends="clean, createConfig, tokenize, json"/>
 </project>

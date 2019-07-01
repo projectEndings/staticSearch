@@ -22,6 +22,13 @@
     <!--Simple regular expression for match document names-->
     <xsl:variable name="docRegex">(.+)(\..?htm.?$)</xsl:variable>
     
+    <!--Apostrophes-->
+    <xsl:variable name="curlyAposOpen">‘</xsl:variable>
+    <xsl:variable name="curlyAposClose">’</xsl:variable>
+    <xsl:variable name="straightSingleApos">'</xsl:variable>
+    <xsl:variable name="curlyDoubleAposOpen">“</xsl:variable>
+    <xsl:variable name="curlyDoubleAposClose">”</xsl:variable>
+    <xsl:variable name="straightDoubleApos">"</xsl:variable>
   
     
     <!--IMPORTANT: Do this to avoid indentation-->
@@ -69,18 +76,25 @@
         <xsl:apply-templates select="node()" mode="#current"/>
     </xsl:template>
     
+    <!--Here is where we normalize the string values-->
+    <xsl:template match="text()" mode="pass1">
+        <xsl:value-of select="replace(.,string-join(($curlyAposOpen,$curlyAposClose),'|'), $straightSingleApos) => replace(string-join(($curlyDoubleAposOpen,$curlyDoubleAposClose),'|'),$straightDoubleApos)"/>
+    </xsl:template>
+    
  <!--TOKENIZE TEMPLATES -->
     
     <!--The basic thing: tokenizing the string at the text level-->
     <xsl:template match="text()[ancestor::body][not(matches(.,'^\s+$'))]" mode="tokenize">
         <xsl:variable name="currNode" select="."/>
-        
+        <xsl:variable name="regex" select="concat('[A-Za-z\d',$straightDoubleApos,$straightDoubleApos,']+')"/>
         <!--Match on word tokens-->
         <!--TODO: THIS NEEDS TO BE FINESSED TO HANDLE CONTRACTIONS, 
             DECIMALS, ET CETERA-->
-        <xsl:analyze-string select="." regex="[A-Za-z\d]+">
+        <xsl:analyze-string select="." regex="{$regex}">
             <xsl:matching-substring>
                 <xsl:variable name="word" select="."/>
+                <xsl:variable name="wordToStem" select="replace($word,$straightDoubleApos,'')"/>
+                <xsl:variable name="lcWord" select="lower-case($wordToStem)"/>
                 <xsl:if test="$verbose">
                     <xsl:message>$word: <xsl:value-of select="$word"/></xsl:message>
                 </xsl:if>
@@ -94,7 +108,10 @@
                 </xsl:if>
                 <xsl:choose>
                     <xsl:when test="$shouldIndex">
-                        <xsl:copy-of select="hcmc:performStem(.)"/>
+                        <span>
+                            <xsl:copy-of select="hcmc:getStem($wordToStem)"/>
+                            <xsl:value-of select="."/>
+                        </span>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:value-of select="."/>
@@ -111,7 +128,7 @@
 
     
     
-    <xsl:function name="hcmc:performStem">
+    <xsl:function name="hcmc:getStem" as="attribute(data-staticSearch-stem)">
         <xsl:param name="word"/>
         <xsl:variable name="lcWord" select="lower-case($word)"/>
         <xsl:variable name="startsWithCap" select="matches($word,'^[A-Z]')" as="xs:boolean"/>
@@ -132,11 +149,8 @@
                 </xsl:otherwise>
             </xsl:choose>            
         </xsl:variable>
-        <span>
-            <xsl:attribute name="data-staticSearch-stem" 
-                select="string-join($stemVal,' ')"/>
-            <xsl:value-of select="$word"/>
-        </span>
+        <xsl:attribute name="data-staticSearch-stem" 
+            select="string-join($stemVal,' ')"/>
     </xsl:function>
     
     
@@ -146,6 +160,8 @@
         <xsl:sequence select="string-length($lcWord) gt 2 and not($lcWord = $englishStopwords)"/>
     </xsl:function>
     
+    
+
     
     <!--IDenTITY-->
    <xsl:template match="@*|node()" mode="#all" priority="-1">
