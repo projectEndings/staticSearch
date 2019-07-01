@@ -54,14 +54,33 @@
                     </xsl:for-each-group>
                 </array>-->
             <array key="instances">
-                <xsl:for-each-group select="current-group()" group-by="if (every $h in ancestor::html satisfies $h[@id]) then ancestor::html/@id else document-uri(/)">
+                <!--If every HTML document processed has an @id at the root,
+                    then use that as the grouping-key; otherwise,
+                    use the document uri-->
+                <xsl:for-each-group select="current-group()" 
+                    group-by="
+                    if (every $h in ancestor::html satisfies $h[@id]) 
+                    then ancestor::html/@id 
+                    else document-uri(/)">
+                    
+                    <!--Sort the documents so that the document with the most number of this hit comes first-->
                     <xsl:sort select="count(current-group()[1]/ancestor::html/descendant::span[contains-token(@data-staticSearch-stem,$term)])" order="descending"/>
+                    
+                    <!--Current grouping key = the document id (or URI)-->
                     <xsl:variable name="docId" select="current-grouping-key()"/>
+                    
+                    <!--The document that we want to process will always be the ancestor html of 
+                        any item of the current-group()-->
                     <xsl:variable name="thisDoc" select="current-group()[1]/ancestor::html"/>
+                    
+                    <!--Span elements (created in tokenize.xsl) that are indexed to this stem-->
                     <xsl:variable name="spans" as="element(span)+" select="$thisDoc//span[@data-staticSearch-stem][contains-token(@data-staticSearch-stem,$term)]"/>
+                    
+                    <!--We assume the docTitle is in the head/title element;
+                    TODO: Make this configurable-->
                     <xsl:variable name="docTitle" select="$thisDoc/head/title[1]"/>
                     
-                    
+                    <!--Now create the XPATH map, which will become a JSON-->
                     <map xmlns="http://www.w3.org/2005/xpath-functions">
                         <string key="docId">
                             <xsl:value-of select="$docId"/>
@@ -74,17 +93,21 @@
                             <xsl:value-of select="count($spans)"/>
                         </number>
                         
+                        <!--This "forms" array contains all of the various forms
+                            that this tokenized string takes -->
                         <array key="forms">
+                            
                             <xsl:for-each select="distinct-values($spans/text())">
                                 <string><xsl:value-of select="."/></string>
                             </xsl:for-each>
                         </array>
                         
-                        <xsl:if test="$ngrams or $createContexts">
+                        
+                        <xsl:if test="$phrasalSearch or $createContexts">
                             <array key="contexts">
                                 <xsl:variable name="contexts" as="element(span)+">
                                     <xsl:choose>
-                                        <xsl:when test="$ngrams">
+                                        <xsl:when test="$phrasalSearch">
                                             <xsl:sequence select="$spans"/>
                                         </xsl:when>
                                         <xsl:otherwise>
@@ -95,16 +118,6 @@
                                 <xsl:for-each select="$contexts">
                                     <string><xsl:value-of select="hcmc:returnContext(.)"/></string>
                                 </xsl:for-each>
-                                
-                                <!--                                    <xsl:for-each select="$spans">
-                                            <xsl:variable name="term" select="text()"/>
-                                            <xsl:variable name="context" select="hcmc:returnContext(.)"/>
-                                            <map>
-                                                <string key="term"><xsl:value-of select="$term"/></string>
-                                                <string key="context"><xsl:value-of select="$context"/></string>
-                                            </map>
-                                        </xsl:for-each>-->
-                                
                             </array>
                         </xsl:if>
                     </map>
@@ -119,25 +132,26 @@
     <xsl:function name="hcmc:returnContext">
         <xsl:param name="span" as="element(span)"/>
         <xsl:variable name="thisTerm" select="$span/text()"/>
+        <xsl:variable name="contextAncestor" select="$span/ancestor::*[@data-staticSearch-context='true'][1]"/>
         <xsl:variable name="thisTermTagged">
             <xsl:element name="span" namespace="">
                 <xsl:attribute name="class">highlight</xsl:attribute>
                 <xsl:value-of select="$thisTerm"/>
             </xsl:element>
         </xsl:variable>
-        <xsl:variable name="preNodes" select="for $n in 1 to 5 return $span/preceding-sibling::node()[$n]"/>
-        <xsl:variable name="folNodes" select="for $n in 1 to 5 return $span/following-sibling::node()[$n]"/>
+        <xsl:variable name="preNodes" select="$contextAncestor/descendant::text()[. &lt;&lt; $span and not(parent::*[. is $span]) and ancestor::*[@data-staticSearch-context='true'][1][. is $contextAncestor]]"/>
+        <xsl:variable name="folNodes" select="$contextAncestor/descendant::text()[. &gt;&gt; $span and not(parent::*[. is $span]) and ancestor::*[@data-staticSearch-context='true'][1][. is $contextAncestor]]"/>
         
-        <xsl:variable name="startString" select="string-join(reverse($preNodes),'')"/>
+        <xsl:variable name="startString" select="string-join($preNodes,'')"/>
         <xsl:variable name="endString" select="string-join($folNodes,'')"/>
         
         <xsl:variable name="startTrimmed">
             <xsl:choose>
                 <xsl:when test="string-length($startString) gt 50">
-                    <xsl:value-of select="replace(substring($startString,string-length($startString) - 50),'^[a-z]+','')"/>
+                    <xsl:value-of select="substring($startString,string-length($startString) - 50)"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:value-of select="replace($startString,'^[a-z]+','')"/>
+                    <xsl:value-of select="$startString"/>
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
@@ -152,7 +166,7 @@
             </xsl:choose>
         </xsl:variable>
         <xsl:variable name="out">
-            <xsl:value-of select="normalize-space($startTrimmed)"/><xsl:text> </xsl:text><xsl:copy-of select="$thisTermTagged"/><xsl:text> </xsl:text><xsl:value-of select="normalize-space($endTrimmed)"/>
+            <xsl:value-of select="$startTrimmed"/><xsl:copy-of select="$thisTermTagged"/><xsl:value-of select="$endTrimmed"/>
         </xsl:variable>
         <xsl:value-of select="serialize($out)"/>
     </xsl:function>

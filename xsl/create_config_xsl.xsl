@@ -31,6 +31,8 @@
        </xsl:choose>
        
    </xsl:variable>
+    
+    <xsl:variable name="verbose" select="hcmc:stringToBoolean($configDoc//verbose/text())" as="xs:boolean"/>
       
     
    <xd:doc>
@@ -47,7 +49,10 @@
             specified as a context item.</xd:p>
         </xd:desc>
     </xd:doc>
-    <xsl:variable name="retainRules" select="$configDoc//rule[(xs:integer(@weight) gt 0) or parent::contexts]" as="element(rule)*"/>
+    <xsl:variable name="retainRules" 
+        select="
+        $configDoc//rule[(xs:integer(@weight) gt 0) or 
+        (parent::contexts and hcmc:stringToBoolean(@context))]" as="element(rule)*"/>
     
     
     <xd:doc>
@@ -62,13 +67,25 @@
     
     
     <xd:doc>
+        <xd:desc>
+            <xd:p>The <xd:ref name="contextRules" type="variable">contextRules</xd:ref> variable is
+                a sequence of 0 or more rules that are specified as context blocks--blocks that are to
+                be used in the JSON creation stage to create the context for the kwic.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:variable name="contextRules" select="$configDoc//contexts/rule" as="element(rule)*"/>
+    
+    <xsl:variable name="weightedRules" select="$configDoc//rule[xs:integer(@weight) gt 1]" as="element(rule)*"/>
+    
+    
+    <xd:doc>
         <xd:desc>This is the main, root template that creates config.xsl. This XSL is then imported into the 
         [[ADD TOKENIZING XSL NAME HERE]], overriding any existing rules that are included in the document.</xd:desc>
     </xd:doc>
     <xsl:template match="/">
         <xsl:message>Creating configuration file from <xsl:value-of select="$configFile"/></xsl:message>
         
-        <xsl:if test="hcmc:stringToBoolean($configDoc//verbose[1]/text())">
+        <xsl:if test="$verbose">
             <xsl:for-each select="$configDoc//params/*">
                 <xsl:message>$<xsl:value-of select="local-name()"/>: <xsl:value-of select="."/></xsl:message>
             </xsl:for-each>
@@ -98,11 +115,19 @@
                 <!--Now, create all the parameters-->
                 
                 <xsl:call-template name="createGlobals"/>
+                <xsl:if test="$verbose">
+                    <xsl:message>Create globals</xsl:message>
+                   <xsl:message> <xsl:call-template name="createGlobals"/></xsl:message>
+                </xsl:if>
                 
                 <!--If there are retain rules specified in the configuration file,
                     then call the createRetainRules template-->
                 <xsl:if test="not(empty($retainRules))">
                     <xsl:call-template name="createRetainRules"/>
+                    <xsl:if test="$verbose">
+                        <xsl:message>Create retain rules</xsl:message>
+                      <xsl:message>  <xsl:call-template name="createRetainRules"/></xsl:message>
+                    </xsl:if>
                 </xsl:if>
                 
                 
@@ -110,6 +135,31 @@
                     then call the createDeleteRules template-->
                 <xsl:if test="not(empty($deleteRules))">
                     <xsl:call-template name="createDeleteRules"/>
+                    <xsl:if test="$verbose">
+                        <xsl:message>Create delete rules</xsl:message>
+                        <xsl:message>
+                            <xsl:call-template name="createDeleteRules"/>
+                        </xsl:message>
+                    </xsl:if>
+                </xsl:if>
+                
+                <xsl:if test="not(empty($contextRules))">
+                    <xsl:call-template name="createContextRules"/>
+                    <xsl:if test="$verbose">
+                        <xsl:message>Create context rules</xsl:message>
+                        <xsl:message>
+                            <xsl:call-template name="createContextRules"/>
+                        </xsl:message>
+  
+                    </xsl:if>
+                </xsl:if>
+                
+                <xsl:if test="not(empty($weightedRules))">
+                    <xsl:call-template name="createWeightingRules"/>
+                    <xsl:if test="$verbose">
+                        <xsl:message>Create weighting rules</xsl:message>
+                        <xsl:message><xsl:call-template name="createWeightingRules"/></xsl:message>
+                    </xsl:if>
                 </xsl:if>
             </xso:stylesheet>
         </xsl:result-document>
@@ -123,13 +173,8 @@
         </xd:desc>
     </xd:doc>
     <xsl:template name="createRetainRules">
-        <xso:template match="{string-join($retainRules/@xpath,' | ')}" priority="1" mode="pass1">
+        <xso:template match="{string-join($retainRules/@xpath,' | ')}" priority="1" mode="clean">
             <xso:copy>
-                <xsl:for-each select="$retainRules[xs:integer(@weight) gt 1]">
-                    <xso:if test="self::{@xpath}">
-                        <xso:attribute name="data-staticSearch-weight" select="{@weight}"/>
-                    </xso:if>
-                </xsl:for-each>
                 <xso:apply-templates select="@*|node()" mode="#current"/>
             </xso:copy>
         </xso:template>
@@ -146,13 +191,62 @@
         </xd:desc>
     </xd:doc>
     <xsl:template name="createDeleteRules">
-        <xso:template match="{string-join($deleteRules/@xpath,' | ')}" priority="1" mode="pass1"/>
+        <xso:template match="{string-join($deleteRules/@xpath,' | ')}" priority="1" mode="clean"/>
+    </xsl:template>
+
+    <xd:doc>
+        <xd:desc>
+            <xd:p>The <xd:ref name="createDeleteRules" type="template">createDeleteRules</xd:ref> template
+                creates an XSL identity template for the xpaths specified in the configuration file that have
+                a weight of 0, which signals that these elements should be deleted from the tokenization process.
+                These are usually elements that have text content that shouldn't be analyzed (for instance, footer
+                text that appears in every document or navigation items).</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template name="createContextRules">
+        <xso:template match="{string-join($contextRules/@xpath,' | ')}" priority="1" mode="contextualize">
+            <xso:copy>
+                <xso:apply-templates select="@*" mode="#current"/>
+                <xsl:for-each select="$contextRules">
+                    <xso:if test="self::{@xpath}">
+                        <xso:attribute name="data-staticSearch-context" select="{concat('''',hcmc:stringToBoolean(@context),'''')}"/>
+                    </xso:if>
+                </xsl:for-each>
+                <xso:apply-templates select="node()" mode="#current"/>
+            </xso:copy>
+        </xso:template>
+    </xsl:template>
+    
+    <xd:doc>
+        <xd:desc>
+            <xd:p>The <xd:ref name="createDeleteRules" type="template">createDeleteRules</xd:ref> template
+                creates an XSL identity template for the xpaths specified in the configuration file that have
+                a weight of 0, which signals that these elements should be deleted from the tokenization process.
+                These are usually elements that have text content that shouldn't be analyzed (for instance, footer
+                text that appears in every document or navigation items).</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template name="createWeightingRules">
+        <xso:template match="{string-join($weightedRules/@xpath,' | ')}" priority="1" mode="weigh">
+            <xso:copy>
+                <xso:apply-templates select="@*" mode="#current"/>
+                <xsl:for-each select="$weightedRules[xs:integer(@weight) gt 1]">
+                    <xso:if test="self::{@xpath}">
+                        <xso:attribute name="data-staticSearch-weight" select="{@weight}"/>
+                    </xso:if>
+                </xsl:for-each>
+                <xso:apply-templates select="node()" mode="#current"/>
+            </xso:copy>
+        </xso:template>
     </xsl:template>
     
 
     
-    <!--This creates the global parameters and variables for the config file, which works as the global
-        document for the transformations-->
+    
+    <xd:doc>
+        <xd:desc>This creates the global parameters and variables for the config file, which works as the global
+            document for the transformations</xd:desc>
+    </xd:doc>
     <xsl:template name="createGlobals">
         <xsl:variable name="baseDir" select="$configDoc//baseDir/text()" as="xs:string"/>
         <xsl:variable name="resolvedBaseDir" select="resolve-uri($baseDir,resolve-uri($configFile))"/>
@@ -166,7 +260,7 @@
                 <xso:param>
                     <xsl:attribute name="name" select="local-name()"/>
                     <xsl:choose>
-                        <xsl:when test="local-name()=('createContexts','ngrams','verbose','recurse')">
+                        <xsl:when test="local-name()=('createContexts','phrasalSearch','verbose','recurse')">
                             <xsl:attribute name="select" select="concat(hcmc:stringToBoolean(xs:string(.)),'()')"/>
                         </xsl:when>
                         <xsl:otherwise>
@@ -222,15 +316,26 @@
     </xd:doc>
     
     <xsl:function name="hcmc:stringToBoolean" as="xs:boolean">
-        <xsl:param name="str" as="xs:string"/>
+        <xsl:param name="str" as="xs:string?"/>
         
         <xsl:choose>
+            <!--If you haven't specified a string, then we assume
+                it's true-->
+            <xsl:when test="empty($str) or $str=''">
+                <xsl:value-of select="true()"/>
+            </xsl:when>
+            
+            <!--if it looks like the word yes or true, then it's true-->
             <xsl:when test="matches(lower-case($str),'^(y(es)?|t(rue)?)')">
                 <xsl:value-of select="true()"/>
             </xsl:when>
+            
+            <!--If it equals 1, then it's true-->
             <xsl:when test="$str castable as xs:integer and xs:integer($str) = 1">
                 <xsl:value-of select="true()"/>
             </xsl:when>
+            
+            <!--All else fails, it's false-->
             <xsl:otherwise>
                 <xsl:value-of select="false()"/>
             </xsl:otherwise>

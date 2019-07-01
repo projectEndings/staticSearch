@@ -10,9 +10,11 @@
         <maxContexts>3</maxContexts>
         <!--NOTE: If NGRAMS is set to TRUE, then
         maxContents prop will be ignored-->
-        <ngrams>true</ngrams>
+        <phrasalSearch>true</phrasalSearch>
         <verbose>TRUe</verbose>
         <stopwordsFile>xsl/english_stopwords.txt</stopwordsFile>
+        <dictionaryFile></dictionaryFile>
+        <useDictionary>true</useDictionary>
     </params>
     
     <rules>
@@ -21,7 +23,7 @@
     </rules>
     
     <contexts>
-        <rule xpath="span[@class='stage']"/>
-        <rule xpath="span[@class='blockquote']"/>
+        <rule xpath="*[@class='ed_note']"/>
+        <rule xpath="div[@class='not_context']" context="false"/>
     </contexts>
 </config>

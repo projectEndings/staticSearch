@@ -11,7 +11,7 @@
     <!--JT TO ADD DOCUMENTATION HERE-->
     
     
-    <!--Include the configuration file, which is generated via another XSLT-->
+    <!--Import the configuration file, which is generated via another XSLT-->
     <xsl:include href="config.xsl"/>
     
     <!--ANd include the PORTER2STEMMER; we should also include PORTER1, I think
@@ -43,42 +43,86 @@
             <xsl:variable name="fn" select="tokenize(document-uri(),'/')[last()]" as="xs:string"/>
             <xsl:variable name="basename" select="replace($fn, $docRegex, '$1')"/>
             <xsl:variable name="extension" select="replace($fn,$docRegex,'$2')"/>
-            <xsl:variable name="pass1OutDoc" select="concat($tempDir,$basename,'_pass1',$extension)"/>
+            <xsl:variable name="cleanedOutDoc" select="concat($tempDir,$basename,'_cleaned',$extension)"/>
+            <xsl:variable name="contextualizedOutDoc" select="concat($tempDir,$basename,'_contextualized',$extension)"/>
+            <xsl:variable name="weightedOutDoc" select="concat($tempDir,$basename,'_weighted',$extension)"/>
             <xsl:variable name="tokenizedOutDoc" select="concat($tempDir,$basename,'_tokenized',$extension)"/>
             <xsl:message>Tokenizing <xsl:value-of select="document-uri()"/></xsl:message>
-            <xsl:variable name="pass1">
-                <xsl:apply-templates mode="pass1"/>
+            
+            <xsl:variable name="cleaned">
+                <xsl:apply-templates mode="clean"/>
+            </xsl:variable>
+            
+            <xsl:variable name="contextualized">
+                <xsl:apply-templates select="$cleaned" mode="contextualize"/>
+            </xsl:variable>
+            
+            <xsl:variable name="weighted">
+                <xsl:apply-templates select="$contextualized" mode="weigh"/>
             </xsl:variable>
             
             <xsl:if test="$verbose">
-                <xsl:message>Creating <xsl:value-of select="$pass1OutDoc"/></xsl:message>
-                <xsl:result-document href="{$pass1OutDoc}">
-                    <xsl:copy-of select="$pass1"/>
+                <xsl:message>Creating <xsl:value-of select="$cleanedOutDoc"/></xsl:message>
+                <xsl:result-document href="{$cleanedOutDoc}">
+                    <xsl:copy-of select="$cleaned"/>
+                </xsl:result-document>
+                <xsl:message>Creating <xsl:value-of select="$contextualizedOutDoc"/></xsl:message>
+                <xsl:result-document href="{$contextualizedOutDoc}">
+                    <xsl:copy-of select="$contextualized"/>
+                </xsl:result-document>
+                <xsl:message>Creating <xsl:value-of select="$weightedOutDoc"/></xsl:message>
+                <xsl:result-document href="{$weightedOutDoc}">
+                    <xsl:copy-of select="$weighted"/>
                 </xsl:result-document>
             </xsl:if>
             <xsl:result-document href="{$tokenizedOutDoc}">
                 <xsl:if test="$verbose">
                     <xsl:message>Creating <xsl:value-of select="$tokenizedOutDoc"/></xsl:message>
                 </xsl:if>
-                <xsl:apply-templates select="$pass1" mode="tokenize"/>
+                <xsl:apply-templates select="$weighted" mode="tokenize"/>
             </xsl:result-document>
            
         </xsl:for-each>
     </xsl:template>
     
  <!--*****************************************************
-      Pass 1 templates
+     CLEANED TEMPLATES
       ****************************************************-->
     
     <!--Basic template to strip away extraneous tags around things we don't care about-->
     <!--Note that this template is overriden with any XPATHS configured in the config file-->
-    <xsl:template match="span | br | wbr | em | b | i | a" mode="pass1">
+    <xsl:template match="span | br | wbr | em | b | i | a" mode="clean">
+        <xsl:if test="$verbose">
+            <xsl:message>TEMPLATE clean: Matching <xsl:value-of select="local-name()"/></xsl:message>
+        </xsl:if>
+
         <xsl:apply-templates select="node()" mode="#current"/>
     </xsl:template>
     
     <!--Here is where we normalize the string values-->
-    <xsl:template match="text()" mode="pass1">
+    <xsl:template match="text()" mode="clean">
         <xsl:value-of select="replace(.,string-join(($curlyAposOpen,$curlyAposClose),'|'), $straightSingleApos) => replace(string-join(($curlyDoubleAposOpen,$curlyDoubleAposClose),'|'),$straightDoubleApos)"/>
+    </xsl:template>
+    
+    
+    <!--RATIONALIZED TEMPLATES-->
+    
+    <xsl:template match="div | blockquote | p | li | section | article | nav | h1 | h2 | h3 | h4 | h5 | h6" mode="contextualize">
+        <xsl:copy>
+            <xsl:apply-templates select="@*" mode="#current"/>
+            <xsl:attribute name="data-staticSearch-context" select="'true'"/>
+            <xsl:apply-templates select="node()" mode="#current"/>
+        </xsl:copy>
+    </xsl:template>
+    
+    <!--WEIgHTIng TEMPLATE-->
+    
+    <xsl:template match="*[matches(local-name(),'^h\d$')]" mode="weigh">
+        <xsl:copy>
+            <xsl:apply-templates select="@*" mode="#current"/>
+            <xsl:attribute name="data-staticSearch-weight" select="2"/>
+            <xsl:apply-templates select="node()" mode="#current"/>
+        </xsl:copy>
     </xsl:template>
     
  <!--TOKENIZE TEMPLATES -->
@@ -86,14 +130,14 @@
     <!--The basic thing: tokenizing the string at the text level-->
     <xsl:template match="text()[ancestor::body][not(matches(.,'^\s+$'))]" mode="tokenize">
         <xsl:variable name="currNode" select="."/>
-        <xsl:variable name="regex" select="concat('[A-Za-z\d',$straightDoubleApos,$straightDoubleApos,']+')"/>
+        <xsl:variable name="regex" select="concat('[A-Za-z\d\.',$straightDoubleApos,$straightDoubleApos,']+')"/>
         <!--Match on word tokens-->
         <!--TODO: THIS NEEDS TO BE FINESSED TO HANDLE CONTRACTIONS, 
             DECIMALS, ET CETERA-->
         <xsl:analyze-string select="." regex="{$regex}">
             <xsl:matching-substring>
                 <xsl:variable name="word" select="."/>
-                <xsl:variable name="wordToStem" select="replace($word,$straightDoubleApos,'')"/>
+                <xsl:variable name="wordToStem" select="hcmc:cleanWordForStemming($word)"/>
                 <xsl:variable name="lcWord" select="lower-case($wordToStem)"/>
                 <xsl:if test="$verbose">
                     <xsl:message>$word: <xsl:value-of select="$word"/></xsl:message>
@@ -160,6 +204,12 @@
         <xsl:sequence select="string-length($lcWord) gt 2 and not($lcWord = $englishStopwords)"/>
     </xsl:function>
     
+    <xsl:function name="hcmc:cleanWordForStemming" as="xs:string">
+        <xsl:param name="word" as="xs:string"/>
+        <!--First, replace any quotation marks in the middle of the word if there happen
+            to be any; then trim off any following periods-->
+        <xsl:value-of select="replace($word, $straightDoubleApos, '') => replace('\.$','')"/>
+    </xsl:function>
     
 
     
