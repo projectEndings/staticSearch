@@ -21,6 +21,16 @@
 
 "use strict";
 
+/**
+  * First some constant values for categorizing term types.
+  * I would like to put these inside the class, but I can't
+  * find an elegant way to do that.
+  */
+  const MUST_CONTAIN         = 0;
+  const MUST_NOT_CONTAIN     = 1;
+  const MAY_CONTAIN          = 3;
+  const PHRASE               = 4;
+
 /** StaticSearch is the class that handles parsing the user's
   * input, through typed queries in the search box
   * and selections in search filters.
@@ -74,9 +84,25 @@ class StaticSearch{
            Array.from(document.querySelectorAll("input.searchFilter[type='text']"));
       //Porter2 stemmer object.
       this.stemmer = new PT2();
+
+      //Array of terms parsed out of search string.
+      this.terms = new Array();
     }
     catch(e){
       console.log('ERROR: ' + e.message);
     }
+  }
+
+/** parseSearchQuery retrieves the content of the text
+  * search box and parses it into an array of term items
+  * ready for analysis against retrieved results.
+  *
+  * @return {Boolean} true if terms found, otherwise false.
+  */
+  parseSearchQuery(){
+    //Clear anything in the existing array.
+    this.terms = [];
+    var strSearch = this.queryBox.value;
+    //TODO: complicated parsing...
   }
 }
