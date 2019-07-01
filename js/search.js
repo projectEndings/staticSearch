@@ -28,8 +28,8 @@
   */
   const MUST_CONTAIN         = 0;
   const MUST_NOT_CONTAIN     = 1;
-  const MAY_CONTAIN          = 3;
-  const PHRASE               = 4;
+  const MAY_CONTAIN          = 2;
+  const PHRASE               = 3;
 
 /** StaticSearch is the class that handles parsing the user's
   * input, through typed queries in the search box
@@ -82,6 +82,13 @@ class StaticSearch{
       //Optional type-ahead search filters.
       this.filterTexts   =
            Array.from(document.querySelectorAll("input.searchFilter[type='text']"));
+      //Configuration for phrasal searches if found.
+      //Default
+      this.allowPhrasal = true;
+      var tmp = document.querySelector("form[data-allowPhrasal]");
+      if (tmp && !/(y|Y|yes|true|True|1)/.test(tmp.getAttribute('data-AllowPhrasal'))){
+        this.allowPhrasal = false;
+      }
       //Porter2 stemmer object.
       this.stemmer = new PT2();
 
@@ -111,6 +118,9 @@ class StaticSearch{
     strSearch = strSearch.replace(/[“”]/g, '"');
     strSearch = strSearch.replace(/[‘’‛]/g, "'");
 
+    //Get rid of any quote pairs with nothing between them.
+    strSearch = strSearch.replace(/""/g, '');
+
     //Now delete any unmatched double quotes.
     var qCount = 0;
     var lastQPos = -1;
@@ -135,9 +145,66 @@ class StaticSearch{
 
     //Now iterate through the string, paying attention
     //to whether you're inside a quote or not.
+    var inPhrase = false;
+    var strSoFar = '';
+    for (var i=0; i<strSearch.length; i++){
+      var c = strSearch.charAt(i);
+      if (c === '"'){
+        this.addSearchItem(strSoFar);
+        inPhrase = !inPhrase;
+        strSoFar = '';
+      }
+      else{
+        if ((c === ' ')&&(!inPhrase)){
+          this.addSearchItem(strSoFar);
+          strSoFar = '';
+        }
+        else{
+          strSoFar += c;
+        }
+      }
+    }
+    this.addSearchItem(strSoFar);
 
-    //When you reach the end of a component...
+    console.log(JSON.stringify(this.terms));
+  }
+/** getSearchItem is passed a single component from the
+  * search box parser by parseSearchQuery. It constructs a
+  * single item from it, and adds that to this.terms.
+  *
+  * @param {String}   strInput a string of text.
+  * @return {Boolean} true if terms found, otherwise false.
+  */
+  addSearchItem(strInput){
+    //Sanity check
+    if (strInput.length < 1){
+      return;
+    }
+    console.log('Adding: ' + strInput);
+    //Is it a phrase?
+    if (/\s/.test(strInput)){
+      var firstTerm = strInput.split(/\s+/)[0].toLowerCase();
+      this.terms.push({str: strInput, stem: this.stemmer.stem(firstTerm), type: PHRASE});
+    }
+    else{
+      //Else is it a must-contain?
+      if (/^[\+]/.test(strInput)){
+        var term = strInput.substring(1).toLowerCase();
+        this.terms.push({str: strInput.substring(1), stem: this.stemmer.stem(term), type: MUST_CONTAIN});
+      }
+      else{
+      //Else is it a must-not-contain?
+        if (/^[\-]/.test(strInput)){
+          var term = strInput.substring(1).toLowerCase();
+          this.terms.push({str: strInput.substring(1), stem: this.stemmer.stem(term), type: MUST_NOT_CONTAIN});
+        }
+        else{
+        //Else may-contain.
+          var term = strInput.toLowerCase();
+          this.terms.push({str: strInput, stem: this.stemmer.stem(term), type: MAY_CONTAIN});
+        }
 
-    //Add an item to the array.
+      }
+    }
   }
 }
