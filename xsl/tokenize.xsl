@@ -151,7 +151,6 @@
         </xsl:variable>
         <xsl:attribute name="data-staticSearch-stem" 
             select="string-join($stemVal,' ')"/>
-        
     </xsl:function>
     
     
