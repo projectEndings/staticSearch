@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Search Engine Test Suite</title>
+        <script src="porter2Stemmer.js"></script>
+        <script src="search.js"></script>
+        <script src="searchTest.js"></script>
+
+        <style>
+            span#errorCount{
+                display: inline-block;
+                border: solid 1px red;
+                padding: 0.5em;
+                font-size: 120%;
+                text-align: center;
+                color: red;
+            }
+            li{
+                margin-top: 0.5em;
+            }
+            li.ok{
+                background-color: #ffffff;
+            }
+            li.broken{
+                background-color: #ffcccc;
+            }
+            input#showOnlyErrors:checked ~ ul>li.ok{
+              display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Test suite for JavaScript Search Engine</h1>
+        <form>
+          <input type="text" id="searchQuery"/>
+          <button id="doSearch">search</button>
+        </form>
+        <div id="searchResults">
+            ...results here...
+        </div>
+
+        <div>
+          <h2>Test log</h2>
+          <p>Errors: <span id="errorCount">0</span></p>
+          <input id="showOnlyErrors" type="checkbox" checked="checked"/>
+            <label for="showOnlyErrors">Show only errors</label>
+          <ul id="log">
+             <li class="ok">Starting tests...</li>
+          </ul>
+        </div>
+    </body>
+</html>
