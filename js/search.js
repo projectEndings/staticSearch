@@ -118,8 +118,14 @@ class StaticSearch{
     strSearch = strSearch.replace(/[“”]/g, '"');
     strSearch = strSearch.replace(/[‘’‛]/g, "'");
 
+    //If we're not supporting phrasal searches, get rid of double quotes.
+    if (!this.allowPhrasal){
+      strSearch = strSearch.replace(/"/g, '');
+    }
+    else{
     //Get rid of any quote pairs with nothing between them.
-    strSearch = strSearch.replace(/""/g, '');
+      strSearch = strSearch.replace(/""/g, '');
+    }
 
     //Now delete any unmatched double quotes.
     var qCount = 0;
