@@ -93,15 +93,15 @@
                             <xsl:value-of select="count($spans)"/>
                         </number>
                         
-                        <!--This "forms" array contains all of the various forms
-                            that this tokenized string takes -->
+                     <!--   <!-\-This "forms" array contains all of the various forms
+                            that this tokenized string takes -\->
                         <array key="forms">
                             
                             <xsl:for-each select="distinct-values($spans/text())">
-                                <string><xsl:value-of select="."/></string>
+                             
                             </xsl:for-each>
                         </array>
-                        
+                        -->
                         
                         <xsl:if test="$phrasalSearch or $createContexts">
                             <array key="contexts">
@@ -116,7 +116,17 @@
                                     </xsl:choose>
                                 </xsl:variable>
                                 <xsl:for-each select="$contexts">
-                                    <string><xsl:value-of select="hcmc:returnContext(.)"/></string>
+                                    <xsl:sort select="hcmc:returnWeight(.)" order="descending"/>
+                                    <map>
+                                        <string key="form"><xsl:value-of select="text()"/></string>
+                                        <string key="context"><xsl:value-of select="hcmc:returnContext(.)"/></string>
+                                        <number key="weight"><xsl:value-of select="hcmc:returnWeight(.)"/></number>
+                                    </map>
+                                    <!--<array>
+                                        <string></string>
+                                        <string><xsl:value-of select="hcmc:returnContext(.)"/></string>
+                                        <number><xsl:value-of select="hcmc:returnWeight(.)"/></number>
+                                    </array>-->
                                 </xsl:for-each>
                             </array>
                         </xsl:if>
@@ -133,12 +143,13 @@
         <xsl:param name="span" as="element(span)"/>
         <xsl:variable name="thisTerm" select="$span/text()"/>
         <xsl:variable name="contextAncestor" select="$span/ancestor::*[@data-staticSearch-context='true'][1]"/>
-        <xsl:variable name="thisTermTagged">
+        <!--No need to tag the term, I think-->
+<!--        <xsl:variable name="thisTermTagged">
             <xsl:element name="span" namespace="">
                 <xsl:attribute name="class">highlight</xsl:attribute>
                 <xsl:value-of select="$thisTerm"/>
             </xsl:element>
-        </xsl:variable>
+        </xsl:variable>-->
         <xsl:variable name="preNodes" select="$contextAncestor/descendant::text()[. &lt;&lt; $span and not(parent::*[. is $span]) and ancestor::*[@data-staticSearch-context='true'][1][. is $contextAncestor]]"/>
         <xsl:variable name="folNodes" select="$contextAncestor/descendant::text()[. &gt;&gt; $span and not(parent::*[. is $span]) and ancestor::*[@data-staticSearch-context='true'][1][. is $contextAncestor]]"/>
         
@@ -166,9 +177,14 @@
             </xsl:choose>
         </xsl:variable>
         <xsl:variable name="out">
-            <xsl:value-of select="$startTrimmed"/><xsl:copy-of select="$thisTermTagged"/><xsl:value-of select="$endTrimmed"/>
+            <xsl:value-of select="$startTrimmed"/><xsl:value-of select="$thisTerm"/><xsl:value-of select="$endTrimmed"/>
         </xsl:variable>
         <xsl:value-of select="serialize($out)"/>
+    </xsl:function>
+    
+    <xsl:function name="hcmc:returnWeight" as="xs:integer">
+        <xsl:param name="span"/>
+        <xsl:sequence select="if ($span/ancestor::*[@data-staticSearch-weight]) then $span/ancestor::*[@data-staticSearch-weight][1]/@data-staticSearch-weight/xs:integer(.) else 1"/>
     </xsl:function>
     
     <xsl:function name="hcmc:getText" as="xs:string">

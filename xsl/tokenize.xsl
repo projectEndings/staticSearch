@@ -130,7 +130,7 @@
     <!--The basic thing: tokenizing the string at the text level-->
     <xsl:template match="text()[ancestor::body][not(matches(.,'^\s+$'))]" mode="tokenize">
         <xsl:variable name="currNode" select="."/>
-        <xsl:variable name="regex" select="concat('[A-Za-z\d\.',$straightDoubleApos,$straightDoubleApos,']+')"/>
+        <xsl:variable name="regex" select="concat('[A-Za-z\d',$straightDoubleApos,$straightDoubleApos,']+(\.\d+)?')"/>
         <!--Match on word tokens-->
         <!--TODO: THIS NEEDS TO BE FINESSED TO HANDLE CONTRACTIONS, 
             DECIMALS, ET CETERA-->
