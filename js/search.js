@@ -31,6 +31,34 @@
   const MAY_CONTAIN          = 2;
   const PHRASE               = 3;
 
+/**
+  * Components in the ss namespace that are used by default, but
+  * which may easily be overridden by the project.
+  */
+/**
+  * Our handy namespace
+  * @namespace ss
+  */
+  var ss = {};
+
+/** ss.captions is the an array of languages (default contains
+  * only en), each of which has some caption properties. Extend
+  * by adding new languages or replace if necessary.
+  */
+  ss.captions = [];
+  ss.captions['en'] = {};
+  ss.captions['en'].strDocumentsFound    = 'Documents found: ';
+  ss.captions['en'][MUST_CONTAIN]        = 'Must contain: ';
+  ss.captions['en'][MUST_NOT_CONTAIN]    = 'Must not contain: ';
+  ss.captions['en'][MAY_CONTAIN]         = 'May contain: ';
+  ss.captions['en'][PHRASE]              = 'Exact phrase: ';
+
+/** ss.stopwords is a simple array of stopwords. Extend
+  * by adding new items or replace if necessary.
+  */
+  ss.stopwords = new Array('i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', 'your', 'yours', 'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', 'her', 'hers', 'herself', 'it', 'its', 'itself', 'they', 'them', 'their', 'theirs', 'themselves', 'what', 'which', 'who', 'whom', 'this', 'that', 'these', 'those', 'am', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'having', 'do', 'does', 'did', 'doing', 'a', 'an', 'the', 'and', 'but', 'if', 'or', 'because', 'as', 'until', 'while', 'of', 'at', 'by', 'for', 'with', 'about', 'against', 'between', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'to', 'from', 'up', 'down', 'in', 'out', 'on', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 's', 't', 'can', 'will', 'just', 'don', 'should', 'now');
+
+
 /** StaticSearch is the class that handles parsing the user's
   * input, through typed queries in the search box
   * and selections in search filters.
@@ -89,11 +117,29 @@ class StaticSearch{
       if (tmp && !/(y|Y|yes|true|True|1)/.test(tmp.getAttribute('data-AllowPhrasal'))){
         this.allowPhrasal = false;
       }
+      //Associative array for storing retrieved JSON data.
+      this.index = {};
+
       //Porter2 stemmer object.
       this.stemmer = new PT2();
 
       //Array of terms parsed out of search string.
       this.terms = new Array();
+
+      //Captions
+      this.captions = ss.captions; //Default; override this if you wish by setting the property after instantiation.
+      this.captionLang  = document.getElementsByTagName('html')[0].getAttribute('lang') || 'en'; //Document language.
+      this.captionSet   = this.captions[this.captionLang]; //Pointer to the caption object we're going to use.
+
+      //Stopwords
+      this.stopwords = ss.stopwords;
+
+      //Directory for JSON files.
+      this.jsonDirectory = 'js/search/'; //Default value. Override if necessary.
+
+      //Boolean: should this instance report the details of its search
+      //in human-readable form?
+      this.showSearchReport = false;
     }
     catch(e){
       console.log('ERROR: ' + e.message);
@@ -184,13 +230,22 @@ class StaticSearch{
   addSearchItem(strInput){
     //Sanity check
     if (strInput.length < 1){
-      return;
+      return false;
     }
     console.log('Adding: ' + strInput);
     //Is it a phrase?
     if (/\s/.test(strInput)){
-      var firstTerm = strInput.split(/\s+/)[0].toLowerCase();
-      this.terms.push({str: strInput, stem: this.stemmer.stem(firstTerm), type: PHRASE});
+    //We need to find the first component which is not a stopword.
+      var subterms = strInput.toLowerCase().split(/\s+/);
+      var i;
+      for (i = 0; i <= subterms.length; i++){
+        if (this.stopwords.indexOf(subterms[i]) < 0){
+          break;
+        }
+      }
+      if (i < subterms.length){
+        this.terms.push({str: strInput, stem: this.stemmer.stem(subterms[i]), type: PHRASE});
+      }
     }
     else{
       //Else is it a must-contain?
@@ -212,5 +267,34 @@ class StaticSearch{
 
       }
     }
+    return (this.terms.length > 0);
+  }
+/** writeSearchReport outputs a human-readable
+  *
+  * @return {Boolean} true if the process succeeds, otherwise false.
+  */
+  writeSearchReport(){
+    try{
+      var arrOutput = new Array();
+      var i;
+      for (i=0; i<this.terms.length; i++){
+        if (!arrOutput[this.terms[i].type]){
+          arrOutput[this.terms[i].type] = new Array();
+        }
+        arrOutput[this.terms[i].type].push('"' + this.terms[i].str + '"');
+      }
+      for (i=arrOutput.length-1; i>=0; i--){
+        var p = document.createElement('p');
+        var t = document.createTextNode(this.captionSet[i] + arrOutput[i].join(', '));
+        p.appendChild(t);
+        this.resultsDiv.insertBefore(p, this.resultsDiv.firstChild);
+      }
+      return true;
+    }
+    catch(e){
+      console.log('ERROR: ' + e.message);
+      return false;
+    }
+
   }
 }
