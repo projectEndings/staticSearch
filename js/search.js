@@ -275,6 +275,8 @@ class StaticSearch{
   */
   writeSearchReport(){
     try{
+      var sp = document.querySelector('#searchReport');
+      if (sp){sp.parentNode.removeChild(sp);}
       var arrOutput = new Array();
       var i;
       for (i=0; i<this.terms.length; i++){
@@ -283,12 +285,15 @@ class StaticSearch{
         }
         arrOutput[this.terms[i].type].push('"' + this.terms[i].str + '"');
       }
+      var d = document.createElement('div');
+      d.setAttribute('id', 'searchReport')
       for (i=arrOutput.length-1; i>=0; i--){
         var p = document.createElement('p');
         var t = document.createTextNode(this.captionSet[i] + arrOutput[i].join(', '));
         p.appendChild(t);
-        this.resultsDiv.insertBefore(p, this.resultsDiv.firstChild);
+        d.appendChild(p);
       }
+      this.resultsDiv.insertBefore(d, this.resultsDiv.firstChild);
       return true;
     }
     catch(e){
