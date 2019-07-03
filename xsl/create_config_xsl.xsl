@@ -2,7 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
-    xmlns:hcmc="http//hcmc.uvic.ca/ns/"
+    xmlns:hcmc="http://hcmc.uvic.ca/ns"
     xpath-default-namespace="http://hcmc.uvic.ca/ns"
     xmlns:xso="dummy"
     version="3.0">
@@ -31,6 +31,10 @@
        </xsl:choose>
        
    </xsl:variable>
+    
+    <xsl:variable name="baseDir" select="$configDoc//baseDir/text()" as="xs:string"/>
+    <xsl:variable name="resolvedBaseDir" select="resolve-uri($baseDir,resolve-uri($configFile))"/>
+    
     
     <xsl:variable name="verbose" select="hcmc:stringToBoolean($configDoc//verbose/text())" as="xs:boolean"/>
       
@@ -96,6 +100,7 @@
             <xso:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+                xmlns:hcmc="http://hcmc.uvic.ca/ns"
                 exclude-result-prefixes="#all"
                 xpath-default-namespace="http://www.w3.org/1999/xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"
@@ -115,10 +120,6 @@
                 <!--Now, create all the parameters-->
                 
                 <xsl:call-template name="createGlobals"/>
-                <xsl:if test="$verbose">
-                    <xsl:message>Create globals</xsl:message>
-                   <xsl:message> <xsl:call-template name="createGlobals"/></xsl:message>
-                </xsl:if>
                 
                 <!--If there are retain rules specified in the configuration file,
                     then call the createRetainRules template-->
@@ -174,6 +175,9 @@
     </xd:doc>
     <xsl:template name="createRetainRules">
         <xso:template match="{string-join($retainRules/@xpath,' | ')}" priority="1" mode="clean">
+            <xso:if test="$verbose">
+                <xso:message>Template #clean: retaining <xso:value-of select="local-name(.)"/></xso:message>
+            </xso:if>
             <xso:copy>
                 <xso:apply-templates select="@*|node()" mode="#current"/>
             </xso:copy>
@@ -191,20 +195,25 @@
         </xd:desc>
     </xd:doc>
     <xsl:template name="createDeleteRules">
-        <xso:template match="{string-join($deleteRules/@xpath,' | ')}" priority="1" mode="clean"/>
+        <xso:template match="{string-join($deleteRules/@xpath,' | ')}" priority="1" mode="clean">
+            <xso:if test="$verbose">
+                <xso:message>Template #clean: Deleting <xso:value-of select="local-name(.)"/></xso:message>
+            </xso:if>
+        </xso:template>
     </xsl:template>
 
     <xd:doc>
         <xd:desc>
-            <xd:p>The <xd:ref name="createDeleteRules" type="template">createDeleteRules</xd:ref> template
-                creates an XSL identity template for the xpaths specified in the configuration file that have
-                a weight of 0, which signals that these elements should be deleted from the tokenization process.
-                These are usually elements that have text content that shouldn't be analyzed (for instance, footer
-                text that appears in every document or navigation items).</xd:p>
+            <xd:p>The <xd:ref name="createContextRules" type="template">createContextRules</xd:ref> template
+                creates an XSL identity template for the xpaths specified in the configuration file that are
+                specified as context nodes for the kwic.</xd:p>
         </xd:desc>
     </xd:doc>
     <xsl:template name="createContextRules">
         <xso:template match="{string-join($contextRules/@xpath,' | ')}" priority="1" mode="contextualize">
+            <xso:if test="$verbose">
+                <xso:message>Template #contextualize: Adding @data-staticSearch-context flag to <xso:value-of select="local-name(.)"/></xso:message>
+            </xso:if>
             <xso:copy>
                 <xso:apply-templates select="@*" mode="#current"/>
                 <xsl:for-each select="$contextRules">
@@ -219,15 +228,16 @@
     
     <xd:doc>
         <xd:desc>
-            <xd:p>The <xd:ref name="createDeleteRules" type="template">createDeleteRules</xd:ref> template
+            <xd:p>The <xd:ref name="createWeightingRules" type="template">createWeightingRules</xd:ref> template
                 creates an XSL identity template for the xpaths specified in the configuration file that have
-                a weight of 0, which signals that these elements should be deleted from the tokenization process.
-                These are usually elements that have text content that shouldn't be analyzed (for instance, footer
-                text that appears in every document or navigation items).</xd:p>
+                some non-0 weight specified.</xd:p>
         </xd:desc>
     </xd:doc>
     <xsl:template name="createWeightingRules">
         <xso:template match="{string-join($weightedRules/@xpath,' | ')}" priority="1" mode="weigh">
+            <xso:if test="$verbose">
+                <xso:message>Template #weigh: Adding @data-weight to <xso:value-of select="local-name(.)"/></xso:message>
+            </xso:if>
             <xso:copy>
                 <xso:apply-templates select="@*" mode="#current"/>
                 <xsl:for-each select="$weightedRules[xs:integer(@weight) gt 1]">
@@ -248,8 +258,7 @@
             document for the transformations</xd:desc>
     </xd:doc>
     <xsl:template name="createGlobals">
-        <xsl:variable name="baseDir" select="$configDoc//baseDir/text()" as="xs:string"/>
-        <xsl:variable name="resolvedBaseDir" select="resolve-uri($baseDir,resolve-uri($configFile))"/>
+       
         <xsl:variable name="params" as="element()+">
             <xsl:for-each select="$configDoc//params/*" >
                 <xsl:variable name="thisParam" select="."/>
@@ -283,10 +292,8 @@
         
        <xsl:sequence select="$params"/>
         
-        <!--The stopwords file, which should probably be configured in the config.xsl transform instead-->
-        <xso:variable name="englishStopwords"
-            select="for $t in tokenize(unparsed-text($stopwordsFile),'\n') return normalize-space($t)"
-            as="xs:string+"/>
+        <xsl:call-template name="createDictionaryXML"/>
+      
         
         <!--Configure the collection use x?html? ( so htm, html, xhtml, xhtm would all work
         as files)-->
@@ -307,6 +314,26 @@
         </xso:template>
     </xsl:template>
     
+    
+    <xsl:template name="createDictionaryXML">
+        <xsl:for-each select="($configDoc//stopwordsFile, $configDoc//dictionaryFile)">
+           <xsl:variable name="path" select="resolve-uri(text(),$resolvedBaseDir)"/>
+            <xsl:message>PATH: <xsl:value-of select="$path"/></xsl:message>
+            <xsl:variable name="uri" select="concat($resolvedBaseDir,'dicts/',substring-before(tokenize($path,'/')[last()],'.txt'),'.xml')"/>
+            <xsl:result-document href="{$uri}" method="xml">
+                <hcmc:words>
+                    <xsl:for-each select="tokenize(unparsed-text($path),'\s+')">
+                        <hcmc:word><xsl:value-of select="lower-case(normalize-space(.))"/></hcmc:word>
+                    </xsl:for-each>
+                </hcmc:words>
+            </xsl:result-document>
+            <xsl:variable name="docFn">doc('<xsl:value-of select="$uri"/>')</xsl:variable>
+            <xso:variable name="{concat(local-name(),'Xml')}" select="{$docFn}"/>
+        </xsl:for-each>
+
+        <xso:key name="w" match="hcmc:word" use="."/>
+    </xsl:template>
+ 
     <xd:doc>
         <xd:desc>
             <xd:p><xd:ref name="hcmc:stringToBoolean" type="function">hcmc:stringToBoolean</xd:ref> converts a string value to a boolean. String values can be one of (case-insensitive): "T", "true", "y", "yes", "1"; anything else will evaluate to false.</xd:p>

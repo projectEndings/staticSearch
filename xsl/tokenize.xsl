@@ -186,7 +186,13 @@
                 </xsl:when>
                 <xsl:when test="$isAllCaps or $startsWithCap">
                     <xsl:value-of select="hcmc:stem($lcWord)"/>
-                    <xsl:value-of select="concat(substring($word,1,1),lower-case(substring($word,2)))"/>
+                    <xsl:if test="not(key('w', $lcWord, $dictionaryFileXml))">
+                        <xsl:if test="$verbose">
+                            <xsl:message><xsl:value-of select="$lcWord"/> not in dictionary</xsl:message>
+                        </xsl:if>
+                        <xsl:value-of select="concat(substring($word,1,1),lower-case(substring($word,2)))"/>
+                    </xsl:if>
+
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:value-of select="hcmc:stem($lcWord)"/>
@@ -201,7 +207,7 @@
     
     <xsl:function name="hcmc:shouldIndex" as="xs:boolean">
         <xsl:param name="lcWord" as="xs:string"/>
-        <xsl:sequence select="string-length($lcWord) gt 2 and not($lcWord = $englishStopwords)"/>
+        <xsl:sequence select="string-length($lcWord) gt 2 and not(key('w', $lcWord, $stopwordsFileXml))"/>
     </xsl:function>
     
     <xsl:function name="hcmc:cleanWordForStemming" as="xs:string">

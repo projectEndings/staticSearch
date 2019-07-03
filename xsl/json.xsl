@@ -8,6 +8,7 @@
     
     <xsl:include href="config.xsl"/>
     
+    <xsl:variable name="kwicLengthHalf" select="xs:integer(round(xs:integer($totalKwicLength) div 2))" as="xs:integer"/>
     
     
     <xsl:template match="/">
@@ -141,45 +142,70 @@
     
     <xsl:function name="hcmc:returnContext">
         <xsl:param name="span" as="element(span)"/>
-        <xsl:variable name="thisTerm" select="$span/text()"/>
-        <xsl:variable name="contextAncestor" select="$span/ancestor::*[@data-staticSearch-context='true'][1]"/>
-        <!--No need to tag the term, I think-->
-<!--        <xsl:variable name="thisTermTagged">
-            <xsl:element name="span" namespace="">
-                <xsl:attribute name="class">highlight</xsl:attribute>
-                <xsl:value-of select="$thisTerm"/>
-            </xsl:element>
-        </xsl:variable>-->
-        <xsl:variable name="preNodes" select="$contextAncestor/descendant::text()[. &lt;&lt; $span and not(parent::*[. is $span]) and ancestor::*[@data-staticSearch-context='true'][1][. is $contextAncestor]]"/>
-        <xsl:variable name="folNodes" select="$contextAncestor/descendant::text()[. &gt;&gt; $span and not(parent::*[. is $span]) and ancestor::*[@data-staticSearch-context='true'][1][. is $contextAncestor]]"/>
         
-        <xsl:variable name="startString" select="string-join($preNodes,'')"/>
-        <xsl:variable name="endString" select="string-join($folNodes,'')"/>
+        <!--The string term-->
+        <xsl:variable name="thisTerm"
+            select="$span/text()" 
+            as="xs:string"/>
         
-        <xsl:variable name="startTrimmed">
-            <xsl:choose>
-                <xsl:when test="string-length($startString) gt 50">
-                    <xsl:value-of select="substring($startString,string-length($startString) - 50)"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="$startString"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-        <xsl:variable name="endTrimmed">
-            <xsl:choose>
-                <xsl:when test="string-length($endString) gt 50">
-                    <xsl:value-of select="substring($endString,1,50)"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="$endString"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-        <xsl:variable name="out">
-            <xsl:value-of select="$startTrimmed"/><xsl:value-of select="$thisTerm"/><xsl:value-of select="$endTrimmed"/>
-        </xsl:variable>
-        <xsl:value-of select="serialize($out)"/>
+        <!--The first ancestor that has been signaled as an ancestor-->
+        <xsl:variable name="contextAncestor" 
+            select="$span/ancestor::*[@data-staticSearch-context='true'][1]" 
+            as="element()?"/>
+        
+        <!--These are all of the descendant text nodes of the ancestor node, which:
+            1) Precede this span element
+            2) Is not contained within this span element
+            3) And who does not have a different context ancestor
+            -->
+        <xsl:variable name="preNodes" 
+            select="$contextAncestor/descendant::text()[. &lt;&lt; $span and not(parent::*[. is $span]) and ancestor::*[@data-staticSearch-context='true'][1][. is $contextAncestor]]" as="xs:string*"/>
+        
+        
+        <!--These are all of the descendant text nodes of the ancestor node, which:
+            1) Follow this span element
+            2) Is not contained within this span element
+            3) And who does not have a different context ancestor
+            -->
+        <xsl:variable name="folNodes" 
+            select="$contextAncestor/descendant::text()[. &gt;&gt; $span and not(parent::*[. is $span]) and ancestor::*[@data-staticSearch-context='true'][1][. is $contextAncestor]]" as="xs:string*"/>
+
+        <!--The preceding text joined together-->
+        <xsl:variable name="startString" 
+            select="string-join($preNodes,'')" as="xs:string?"/>
+        
+        <!--The following string joined together-->
+        <xsl:variable name="endString" 
+            select="string-join($folNodes,'')" as="xs:string?"/>
+        
+        <!--The start string split on whitespace to be counted and 
+            reconstituted below-->
+        <xsl:variable name="startTokens" select="tokenize($startString, '\s+')"/>
+        
+        <!--The trailing string split on whitespace to be counted and
+            reconstituted below-->
+        <xsl:variable name="endTokens" select="tokenize($endString,'\s+')"/>
+        
+        <!--The starting snippet: if there are fewer than $totalKwicLength/2 words, then just leave the string
+            otherwise, trim to the $totalKwicLength/2 limit-->
+        <xsl:variable name="startSnippet" select="
+            if (count($startTokens) lt $kwicLengthHalf)
+            then $startString 
+            else concat('...',string-join($startTokens[position() = ((count($startTokens) - $kwicLengthHalf) to count($startTokens))],' '))" as="xs:string?"/>
+        
+        <!--The ending snippet: if there are fewer than $kwicLengthHalf words, then just leave the string,
+            otherwise, trim to the $kwicLengthHalf limit-->
+        <xsl:variable name="endSnippet" select="
+            if (count($endTokens) lt $kwicLengthHalf) 
+            then $endString 
+            else concat(string-join($endTokens[position() = (1 to $kwicLengthHalf)],' '),'...')" as="xs:string"/>
+        
+        <!--Now, concatenate the start snippet, the term, and the end snippet
+            and then normalize the spaces (to eliminate \n etc)-->
+        <xsl:value-of
+            select="
+            concat($startSnippet, $thisTerm, $endSnippet)
+            => normalize-space()"/>
     </xsl:function>
     
     <xsl:function name="hcmc:returnWeight" as="xs:integer">
@@ -187,9 +213,5 @@
         <xsl:sequence select="if ($span/ancestor::*[@data-staticSearch-weight]) then $span/ancestor::*[@data-staticSearch-weight][1]/@data-staticSearch-weight/xs:integer(.) else 1"/>
     </xsl:function>
     
-    <xsl:function name="hcmc:getText" as="xs:string">
-        <xsl:param name="el"/>
-        <xsl:value-of select="normalize-space(string-join($el/descendant::text(),''))"/>
-    </xsl:function>
     
 </xsl:stylesheet>
