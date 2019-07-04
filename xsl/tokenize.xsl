@@ -130,37 +130,13 @@
     <!--The basic thing: tokenizing the string at the text level-->
     <xsl:template match="text()[ancestor::body][not(matches(.,'^\s+$'))]" mode="tokenize">
         <xsl:variable name="currNode" select="."/>
-        <xsl:variable name="regex" select="concat('[A-Za-z\d',$straightDoubleApos,$straightDoubleApos,']+(\.\d+)?')"/>
+        <xsl:variable name="regex" select="concat('[A-Za-z\d\-',$straightDoubleApos,$straightDoubleApos,']+(\.\d+)?')"/>
         <!--Match on word tokens-->
         <!--TODO: THIS NEEDS TO BE FINESSED TO HANDLE CONTRACTIONS, 
             DECIMALS, ET CETERA-->
         <xsl:analyze-string select="." regex="{$regex}">
             <xsl:matching-substring>
-                <xsl:variable name="word" select="."/>
-                <xsl:variable name="wordToStem" select="hcmc:cleanWordForStemming($word)"/>
-                <xsl:variable name="lcWord" select="lower-case($wordToStem)"/>
-                <xsl:if test="$verbose">
-                    <xsl:message>$word: <xsl:value-of select="$word"/></xsl:message>
-                </xsl:if>
-                <xsl:variable name="lcWord" select="lower-case($word)"/>
-                <xsl:if test="$verbose">
-                    <xsl:message>$lcWord: <xsl:value-of select="$lcWord"/></xsl:message>
-                </xsl:if>
-                <xsl:variable name="shouldIndex" select="hcmc:shouldIndex($lcWord)"/>
-                <xsl:if test="$verbose">
-                    <xsl:message>$shouldIndex: <xsl:value-of select="$shouldIndex"/></xsl:message>
-                </xsl:if>
-                <xsl:choose>
-                    <xsl:when test="$shouldIndex">
-                        <span>
-                            <xsl:copy-of select="hcmc:getStem($wordToStem)"/>
-                            <xsl:value-of select="."/>
-                        </span>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="."/>
-                    </xsl:otherwise>
-                </xsl:choose>         
+                <xsl:copy-of select="hcmc:startStemmingProcess(.)"/>
             </xsl:matching-substring>
             <xsl:non-matching-substring>
                 <xsl:value-of select="."/>
@@ -168,39 +144,113 @@
         </xsl:analyze-string>
     </xsl:template>
     
-    
+    <xsl:function name="hcmc:startStemmingProcess" as="item()+">
+        <xsl:param name="word"/>
+        <xsl:if test="$verbose">
+            <xsl:message>$word: <xsl:value-of select="$word"/></xsl:message>
+        </xsl:if>
+        
+        <xsl:variable name="wordToStem" select="hcmc:cleanWordForStemming($word)"/>
+        
+        <xsl:if test="$verbose">
+            <xsl:message>$wordToStem: <xsl:value-of select="$wordToStem"/></xsl:message>
+        </xsl:if>
+        
+        <xsl:variable name="lcWord" select="lower-case($wordToStem)"/>
+        <xsl:if test="$verbose">
+            <xsl:message>$lcWord: <xsl:value-of select="$lcWord"/></xsl:message>
+        </xsl:if>
+        
+        <xsl:variable name="shouldIndex" select="hcmc:shouldIndex($lcWord)"/>
+        <xsl:if test="$verbose">
+            <xsl:message>$shouldIndex: <xsl:value-of select="$shouldIndex"/></xsl:message>
+        </xsl:if>
+        
+        <xsl:choose>
+            <xsl:when test="$shouldIndex">
+                <xsl:copy-of select="hcmc:getStem($word)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$word"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
 
     
-    
-    <xsl:function name="hcmc:getStem" as="attribute(data-staticSearch-stem)">
-        <xsl:param name="word"/>
-        <xsl:variable name="lcWord" select="lower-case($word)"/>
-        <xsl:variable name="startsWithCap" select="matches($word,'^[A-Z]')" as="xs:boolean"/>
-        <xsl:variable name="isAllCaps" select="matches($word,'^[A-Z]+$')" as="xs:boolean"/>
-        <xsl:variable name="containsDigit" select="matches($word,'\d+')" as="xs:boolean"/>
-        <xsl:variable name="stemVal" as="xs:string+">
+    <!--This function takes in a WORD (i.e. the source text node) and the WORD TO STEM (the cleaned up word)-->
+    <xsl:function name="hcmc:getStem" as="element(span)">
+        <xsl:param name="word" as="xs:string"/>
+        <xsl:if test="$verbose">
+            <xsl:message>hcmc:getStem: $word: <xsl:value-of select="$word"/></xsl:message>
+        </xsl:if>
+        
+        <xsl:variable name="cleanedWord" select="hcmc:cleanWordForStemming($word)" as="xs:string"/>
+        
+        <xsl:variable name="wordToStem" select="hcmc:checkWordSubstitution($cleanedWord)" as="xs:string"/>
+        
+        <xsl:variable name="lcWord" select="lower-case($wordToStem)"/>
+        <xsl:variable name="containsCapital" select="matches($wordToStem,'[A-Z]')" as="xs:boolean"/>
+        <xsl:variable name="containsDigit" select="matches($wordToStem,'\d+')" as="xs:boolean"/>
+        
+        <xsl:variable name="inDictionary" select="exists(key('w',$lcWord, $dictionaryFileXml))" as="xs:boolean"/>
+        <xsl:variable name="hyphenated" select="matches($word,'[A-Za-z]-[A-Za-z]')" as="xs:boolean"/>
+
+        
+        <xsl:variable name="stemVal" as="xs:string*">
             <xsl:choose>
                 <!--If it has a digit, then it makes no sense to stem it-->
                 <xsl:when test="$containsDigit">
                     <xsl:value-of select="$word"/>
                 </xsl:when>
-                <xsl:when test="$isAllCaps or $startsWithCap">
-                    <xsl:value-of select="hcmc:stem($lcWord)"/>
-                    <xsl:if test="not(key('w', $lcWord, $dictionaryFileXml))">
-                        <xsl:if test="$verbose">
-                            <xsl:message><xsl:value-of select="$lcWord"/> not in dictionary</xsl:message>
-                        </xsl:if>
-                        <xsl:value-of select="concat(substring($word,1,1),lower-case(substring($word,2)))"/>
-                    </xsl:if>
-
+                <xsl:when test="$containsCapital">
+                    <xsl:choose>
+                        <!--If this thing contains a capital, but it's a hyphenated construct,
+                        in the hyphenated full form, then skip it for now-->
+                        <xsl:when test="$hyphenated and not($inDictionary)"/>
+                        <xsl:otherwise>
+                            <xsl:value-of select="hcmc:stem($lcWord)"/>
+                            <xsl:if test="not($inDictionary)">
+                                <xsl:value-of select="$word"/>
+                            </xsl:if>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </xsl:when>
+                <!--Don't return it if it's not in the dictionary and it's hyphenated-->
+                <xsl:when test="not($inDictionary) and $hyphenated"/>
                 <xsl:otherwise>
                     <xsl:value-of select="hcmc:stem($lcWord)"/>
                 </xsl:otherwise>
             </xsl:choose>            
         </xsl:variable>
-        <xsl:attribute name="data-staticSearch-stem" 
-            select="string-join($stemVal,' ')"/>
+        <span>
+            <xsl:if test="not(empty($stemVal))">
+                <xsl:attribute name="data-staticSearch-stem" 
+                    select="string-join($stemVal,' ')"/>
+                <xsl:if test="not($inDictionary)">
+                    <xsl:attribute name="data-staticSearch-inDictionary" select="'false'"/>
+                </xsl:if>
+            </xsl:if>
+            <xsl:choose>
+                <xsl:when test="$hyphenated">
+                    <xsl:if test="$verbose">
+                        <xsl:message>hcmc:getStem: Found hyphenated construct: <xsl:value-of select="$word"/></xsl:message>
+                    </xsl:if>
+                    <xsl:variable name="wordTokens" select="tokenize($word,'-')" as="xs:string+"/>
+                    <xsl:for-each select="$wordTokens">
+                        <xsl:variable name="thisToken" select="."/>
+                        <xsl:variable name="thisTokenPosition" select="position()"/>
+                        <xsl:if test="$verbose">
+                            <xsl:message>hcmc:getStem: Process hyphenated segment: <xsl:value-of select="$thisToken"/> (<xsl:value-of select="$thisTokenPosition"/>/<xsl:value-of select="count($wordTokens)"/>)</xsl:message>
+                        </xsl:if>
+                        <xsl:copy-of select="hcmc:startStemmingProcess(.)"/><xsl:if test="$thisTokenPosition ne count($wordTokens)"><xsl:text>-</xsl:text></xsl:if>
+                    </xsl:for-each>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="$word"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </span>
+ 
     </xsl:function>
     
     
@@ -214,9 +264,16 @@
         <xsl:param name="word" as="xs:string"/>
         <!--First, replace any quotation marks in the middle of the word if there happen
             to be any; then trim off any following periods-->
-        <xsl:value-of select="replace($word, $straightDoubleApos, '') => replace('\.$','')"/>
+        <xsl:value-of select="replace($word, $straightDoubleApos, '') => replace('\.$','') => replace('-','')"/>
     </xsl:function>
     
+    <xsl:function name="hcmc:checkWordSubstitution" as="xs:string">
+        <xsl:param name="word"/>
+        <xsl:if test="$verbose">
+            <xsl:message>hcmc:checkWordSubstitution: DOING NOTHING SO FAR</xsl:message>
+        </xsl:if>
+        <xsl:value-of select="$word"/>
+    </xsl:function>
 
     
     <!--IDenTITY-->
