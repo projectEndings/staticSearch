@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://hcmc.uvic.ca/ns">
+    <params>
+        <baseDir>.</baseDir>
+        <collectionDir>../wea/products/site</collectionDir>
+        <recurse>false</recurse>
+        <tempDir>temp</tempDir>
+        <totalKwicLength>10</totalKwicLength>
+        <outDir>site/js/</outDir>
+        <createContexts>true</createContexts>
+        <maxContexts>3</maxContexts>
+        <!--NOTE: If NGRAMS is set to TRUE, then
+        maxContents prop will be ignored-->
+        <phrasalSearch>true</phrasalSearch>
+        <verbose>no</verbose>
+        <stopwordsFile>xsl/english_stopwords.txt</stopwordsFile>
+        <dictionaryFile>xsl/english_words.txt</dictionaryFile>
+    </params>
+    
+    <rules>
+        <rule xpath="div[@id='info']" weight="0"/>
+        <rule xpath="footer" weight="0"/>
+        <rule xpath="div[@id='appendix']" weight="0"/>
+        <rule xpath="div[@id='metadata']" weight="0"/>
+        <rule xpath="*[contains(@class,'noteNum')]" weight="0"/>
+        <rule xpath="header" weight="0"/>
+        <rule xpath="*[matches(local-name(),'^h\d+$')]" weight="0"/>
+        <rule xpath="a[span[@data-el='pb']]" weight="0"/>
+        <rule xpath="div[@id='tools_container']" weight="0"/>
+    </rules>
+    
+    <contexts>
+    </contexts>
+</config>
