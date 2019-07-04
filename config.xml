@@ -15,6 +15,7 @@
         <verbose>TRUe</verbose>
         <stopwordsFile>xsl/english_stopwords.txt</stopwordsFile>
         <dictionaryFile>xsl/english_words.txt</dictionaryFile>
+        <replacementsFile>xsl/replacements.txt</replacementsFile>
     </params>
     
     <rules>
