@@ -8,9 +8,15 @@
     
     <xsl:include href="config.xsl"/>
     
+    
+    <xsl:key name="docs" match="span[@data-staticSearch-stem]" 
+        use="tokenize(@data-staticSearch-stem,'\s+')"/>
+    
+    
+    
     <xsl:variable name="kwicLengthHalf" select="xs:integer(round(xs:integer($totalKwicLength) div 2))" as="xs:integer"/>
     
-    <xsl:key name="docs" match="span" use="tokenize(@data-staticSearch-stem,'\s+')"/>
+  
     
     <xsl:template match="/">
         <xsl:call-template name="createJson"/>
@@ -74,25 +80,9 @@
                         any item of the current-group()-->
                     <xsl:variable name="thisDoc" select="current-group()[1]/ancestor::html"/>
                     
+                    <!--Now get the spans, using the declared key-->
                     <xsl:variable name="spans" select="$thisDoc/key('docs',$term)" as="element(span)+"/>
                     
-                  <!--  <xsl:variable name="spans" as="element(span)+">
-                        <xsl:for-each-group select="$thisDoc//span[contains(@data-staticSearch-stem,$term)]" group-by="contains-token(@data-staticSearch-stem,$term)">
-                            <xsl:if test="current-grouping-key()">
-                                <xsl:sequence select="current-group()"/>
-                            </xsl:if>
-                        </xsl:for-each-group>
-                    </xsl:variable>-->
-                    
-                    <!--<!-\-Span elements (created in tokenize.xsl) that are indexed to this stem-\->
-                    <xsl:variable name="spanCandidates" select="$thisDoc//span[contains(@data-staticSearch-stem, $term)]" as="element(span)+"/>
-                    
-                    <xsl:variable name="spans" as="element(span)+" 
-                        select="$spanCandidates[
-                        if ($isInteger and (@data-staticSearch-stem castable as xs:integer)) 
-                        then (xs:integer($term) = @data-staticSearch-stem)
-                        else contains-token(@data-staticSearch-stem,$term)]"
-                    />-->
                     
                     <!--We assume the docTitle is in the head/title element;
                     TODO: Make this configurable-->

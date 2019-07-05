@@ -239,7 +239,7 @@
         </xsl:if>
         
    
-        <xsl:variable name="inDictionary" select="exists($dictionaryFileXml/key('w',$lcWord))" as="xs:boolean"/>
+        <xsl:variable name="inDictionary" select="exists(key('w',$lcWord, $dictionaryFileXml))" as="xs:boolean"/>
         <xsl:if test="$verbose">
             <xsl:message>hcmc:getStem: $inDictionary: <xsl:value-of select="$inDictionary"/></xsl:message>
         </xsl:if>

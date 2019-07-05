@@ -27,6 +27,7 @@
         <rule xpath="*[matches(local-name(),'^h\d+$')]" weight="0"/>
         <rule xpath="a[span[@data-el='pb']]" weight="0"/>
         <rule xpath="div[@id='tools_container']" weight="0"/>
+        <rule xpath="table[ancestor::div[@id='mainBody'][contains(@class,'docBornDigitalListing')]]" weight="0"/>
     </rules>
     
     <contexts>

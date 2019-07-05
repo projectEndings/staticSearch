@@ -193,7 +193,7 @@
         <section>
             <h2>Foreign Words</h2>
             <xsl:variable name="foreignWords" as="xs:string*">
-                <xsl:for-each-group select="$spans[ancestor::*[@lang]]" group-by="@data-staticSearch-stem">
+                <xsl:for-each-group select="$spans[@data-staticSearch-notInDictionary]" group-by="tokenize(@data-staticSearch-stem,'\s+')">
                     <xsl:value-of select="current-grouping-key()"/>
                 </xsl:for-each-group>
             </xsl:variable>
