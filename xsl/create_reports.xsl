@@ -71,72 +71,74 @@
         <xsl:message>Generating frequency tables...</xsl:message>
         <section>
             <h2>Word Frequency</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <td>Stem</td>
-                        <td>Total Instances</td>
-                        <td>Total Variants</td>
-                        <td>Variant List</td>
-                        <td>Number of Documents</td>
-                        <td>Average use per document</td>
-<!--                        <td>Document List</td>-->
-                    </tr>
-                </thead>
-                <tbody>
-                    <xsl:for-each-group select="$spans" group-by="tokenize(@data-staticSearch-stem,'\s+')">
-                        <xsl:sort select="count(current-group())" order="descending"/>
-                        <xsl:variable name="tokenGroup" select="current-group()"/>
-                        <xsl:variable name="thisToken" select="current-grouping-key()"/>
-                        <xsl:variable name="instancesCount" select="count(current-group())"/>
-                        <xsl:variable name="variants" as="xs:string+">
-                            <xsl:for-each-group select="current-group()" group-by="text()">
-                                <xsl:sort select="string-length(.)" order="ascending"/>
-                               <xsl:value-of select="."/>
-                            </xsl:for-each-group>
-                        </xsl:variable>
-                        
-                        <xsl:variable name="docIds" as="xs:string+">
-                            <xsl:for-each-group select="$tokenGroup" group-by="ancestor::html/@id">
-                                <xsl:value-of select="current-grouping-key()"/>
-                            </xsl:for-each-group>
-                        </xsl:variable>
-                        
-                        <xsl:variable name="distinctDocIds" select="distinct-values($docIds)" as="xs:string+"/>
-                        <xsl:variable name="distinctDocCount" select="count($distinctDocIds)"/>
-                        
+            <details>
+                <summary>All stems found in the document collection.</summary>
+                <table>
+                    <thead>
                         <tr>
+                            <td>Stem</td>
+                            <td>Total Instances</td>
+                            <td>Total Variants</td>
+                            <td>Variant List</td>
+                            <td>Number of Documents</td>
+                            <td>Average use per document</td>
+                            <!--                        <td>Document List</td>-->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <xsl:for-each-group select="$spans" group-by="tokenize(@data-staticSearch-stem,'\s+')">
+                            <xsl:sort select="count(current-group())" order="descending"/>
+                            <xsl:variable name="tokenGroup" select="current-group()"/>
+                            <xsl:variable name="thisToken" select="current-grouping-key()"/>
+                            <xsl:variable name="instancesCount" select="count(current-group())"/>
+                            <xsl:variable name="variants" as="xs:string+">
+                                <xsl:for-each-group select="current-group()" group-by="text()">
+                                    <xsl:sort select="string-length(.)" order="ascending"/>
+                                    <xsl:value-of select="."/>
+                                </xsl:for-each-group>
+                            </xsl:variable>
                             
-                            <!--STEM-->
-                            <td><xsl:value-of select="current-grouping-key()"/></td>
+                            <xsl:variable name="docIds" as="xs:string+">
+                                <xsl:for-each-group select="$tokenGroup" group-by="ancestor::html/@id">
+                                    <xsl:value-of select="current-grouping-key()"/>
+                                </xsl:for-each-group>
+                            </xsl:variable>
                             
-                            <!--TOTAL INSTANCes-->
-                            <td><xsl:value-of select="$instancesCount"/></td>
+                            <xsl:variable name="distinctDocIds" select="distinct-values($docIds)" as="xs:string+"/>
+                            <xsl:variable name="distinctDocCount" select="count($distinctDocIds)"/>
                             
-                            <!--TOTAL VARIANTS-->
-                            <td><xsl:value-of select="count($variants)"/></td>
-                            
-                            <!--LIST OF VARIANTS-->
-                            <td>
-                                <ul>
-                                    <xsl:for-each select="$variants">
-                                        <xsl:sort select="string-length(.)" order="ascending"/>
-                                        <li><xsl:value-of select="."/></li>
-                                    </xsl:for-each>
-                                </ul>
-                            </td>
-                            
-                            <!--TOTAL DOCS-->
-                            <td>
-                                <xsl:value-of select="$distinctDocCount"/>
-                            </td>
-                            
-                            <td>
-                                <xsl:value-of select="format-number($instancesCount div $distinctDocCount,'#.##')"/>
-                            </td>
-                            
-                            <!--LIST OF DOCS-->
-                           <!-- <td>
+                            <tr>
+                                
+                                <!--STEM-->
+                                <td><xsl:value-of select="current-grouping-key()"/></td>
+                                
+                                <!--TOTAL INSTANCes-->
+                                <td><xsl:value-of select="$instancesCount"/></td>
+                                
+                                <!--TOTAL VARIANTS-->
+                                <td><xsl:value-of select="count($variants)"/></td>
+                                
+                                <!--LIST OF VARIANTS-->
+                                <td>
+                                    <ul>
+                                        <xsl:for-each select="$variants">
+                                            <xsl:sort select="string-length(.)" order="ascending"/>
+                                            <li><xsl:value-of select="."/></li>
+                                        </xsl:for-each>
+                                    </ul>
+                                </td>
+                                
+                                <!--TOTAL DOCS-->
+                                <td>
+                                    <xsl:value-of select="$distinctDocCount"/>
+                                </td>
+                                
+                                <td>
+                                    <xsl:value-of select="format-number($instancesCount div $distinctDocCount,'#.##')"/>
+                                </td>
+                                
+                                <!--LIST OF DOCS-->
+                                <!-- <td>
                                 <xsl:choose>
                                     <xsl:when test="count(distinct-values($docIds)) = count($docs)">
                                         All
@@ -152,12 +154,14 @@
                                 </xsl:choose>
                                 
                             </td>-->
-                           
-                        </tr>
-                       
-                    </xsl:for-each-group>
-                </tbody>
-            </table>
+                                
+                            </tr>
+                            
+                        </xsl:for-each-group>
+                    </tbody>
+                </table>
+            </details>
+            
         </section>
         
     </xsl:template>
@@ -175,16 +179,19 @@
             </xsl:variable>
             
             <xsl:variable name="wordsNotInDictionaryCount" select="count($wordsNotInDictionary)" as="xs:integer"/>
+            <details>
+                <summary>Total words not in dictionary: <xsl:value-of select="$wordsNotInDictionaryCount"/></summary>
+                
+                <xsl:if test="not(empty($wordsNotInDictionary))">
+                    <ul>
+                        <xsl:for-each select="$wordsNotInDictionary">
+                            <xsl:sort select="lower-case(.)"/>
+                            <li><xsl:value-of select="."/></li>
+                        </xsl:for-each>
+                    </ul>
+                </xsl:if>
+            </details>
             
-            <p>Total words not in dictionary: <xsl:value-of select="$wordsNotInDictionaryCount"/></p>
-            <xsl:if test="not(empty($wordsNotInDictionary))">
-                <ul>
-                    <xsl:for-each select="$wordsNotInDictionary">
-                        <xsl:sort select="lower-case(.)"/>
-                        <li><xsl:value-of select="."/></li>
-                    </xsl:for-each>
-                </ul>
-            </xsl:if>
         </section>
     </xsl:template>
     
@@ -193,22 +200,25 @@
         <section>
             <h2>Foreign Words</h2>
             <xsl:variable name="foreignWords" as="xs:string*">
-                <xsl:for-each-group select="$spans[@data-staticSearch-notInDictionary]" group-by="tokenize(@data-staticSearch-stem,'\s+')">
+                <xsl:for-each-group select="$spans[@data-staticSearch-foreign]" group-by="tokenize(@data-staticSearch-stem,'\s+')">
                     <xsl:value-of select="current-grouping-key()"/>
                 </xsl:for-each-group>
             </xsl:variable>
-         <p>Total foreign words: <xsl:value-of select="count($foreignWords)"/></p>
-            <xsl:if test="not(empty($foreignWords))">
-                <ul>
-                    <xsl:for-each select="$foreignWords">
-                        <xsl:sort/>
-                        <li>
-                            <xsl:value-of select="."/>
-                        </li>
-                    </xsl:for-each>
-                </ul>
-            </xsl:if>
-        </section>
+            <details>
+                <summary>Total foreign words: <xsl:value-of select="count($foreignWords)"/></summary>
+                <xsl:if test="not(empty($foreignWords))">
+                    <ul>
+                        <xsl:for-each select="$foreignWords">
+                            <xsl:sort/>
+                            <li>
+                                <xsl:value-of select="."/>
+                            </li>
+                        </xsl:for-each>
+                    </ul>
+                </xsl:if>
+            </details>
+        </section>           
+         
     </xsl:template>
     
     

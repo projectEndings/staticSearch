@@ -149,11 +149,33 @@
     <!--The basic thing: tokenizing the string at the text level-->
     <xsl:template match="text()[ancestor::body][not(matches(.,'^\s+$'))]" mode="tokenize">
         <xsl:variable name="currNode" select="."/>
-        <xsl:variable name="langAncestor" select="ancestor::*[@lang][1]" as="element()?"/>
- 
-        <xsl:variable name="isForeign" 
-            select="if (exists($langAncestor) and not($langAncestor/self::html)) then ($langAncestor/@lang = ancestor::html/@lang) else false()"
-            as="xs:boolean"/>
+        <xsl:variable name="rootLangDeclared" select="boolean(ancestor::html[@lang])" as="xs:boolean"/>
+        <xsl:variable name="langAncestor" select="ancestor::*[not(self::html)][@lang][1]" as="element()?"/>
+        
+        <!--Now to check to see whether or not this thing is declared
+            as a foreign language to the root of the document-->
+        <xsl:variable name="isForeign">
+            <xsl:choose>
+                <!--If there is a declared language at the top and theres a lang ancestor
+                    then return the negation of whether or not they are equal
+                i.e. if they are equal, then return false (since it is NOT foreign)
+                -->
+                <xsl:when test="$rootLangDeclared and $langAncestor">
+                    <xsl:value-of select="not(boolean(ancestor::html/@lang = $langAncestor/@lang))"/>
+                </xsl:when>
+                
+                <!--If there is a lang ancestor but no root lang declared,
+                    then we must assume that it is foreign-->
+                <xsl:when test="$langAncestor and not($rootLangDeclared)">
+                    <xsl:value-of select="true()"/>
+                </xsl:when>
+                
+                <!--Otherwise, just make it false-->
+                <xsl:otherwise>
+                    <xsl:value-of select="false()"/>
+                </xsl:otherwise>
+            </xsl:choose>            
+        </xsl:variable>
         
         <!--Match on word tokens-->
         <!--TODO: THIS NEEDS TO BE FINESSED TO HANDLE CONTRACTIONS, 
@@ -173,7 +195,7 @@
     
     <xsl:function name="hcmc:startStemmingProcess" as="item()+">
         <xsl:param name="word"/>
-        <xsl:param name="foreign" as="xs:boolean"/>
+        <xsl:param name="isForeign" as="xs:boolean"/>
         <xsl:if test="$verbose">
             <xsl:message>$word: <xsl:value-of select="$word"/></xsl:message>
         </xsl:if>
@@ -196,7 +218,7 @@
         
         <xsl:choose>
             <xsl:when test="$shouldIndex">
-                <xsl:copy-of select="hcmc:getStem($word, $foreign)"/>
+                <xsl:copy-of select="hcmc:getStem($word, $isForeign)"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="$word"/>
@@ -208,7 +230,7 @@
     <!--This function takes in a WORD (i.e. the source text node) and the WORD TO STEM (the cleaned up word)-->
     <xsl:function name="hcmc:getStem" as="element(span)">
         <xsl:param name="word" as="xs:string"/>
-        <xsl:param name="foreign" as="xs:boolean"/>
+        <xsl:param name="isForeign" as="xs:boolean"/>
         <xsl:if test="$verbose">
             <xsl:message>hcmc:getStem: $word: <xsl:value-of select="$word"/></xsl:message>
         </xsl:if>
@@ -258,7 +280,7 @@
                 </xsl:when>
                 
                 <!--If it's foreign, just proceed-->
-                <xsl:when test="$foreign">
+                <xsl:when test="$isForeign">
                     <xsl:value-of select="$wordToStem"/>
                 </xsl:when>
                 
@@ -311,9 +333,12 @@
                         (assuming here that we don't want digits cross-referenced against
                         the dictionary), then put another attribute to signal that this word doesn't
                         exist in the dictionary-->
-                        <xsl:if test="not($inDictionary) and not($containsDigit) and not($foreign)">
+                        <xsl:if test="not($inDictionary) and not($containsDigit) and not($isForeign)">
                             <xsl:attribute name="data-staticSearch-notInDictionary" select="$cleanedWord"/>
-                        </xsl:if>                        
+                        </xsl:if>
+                        <xsl:if test="$isForeign">
+                            <xsl:attribute name="data-staticSearch-foreign" select="$isForeign"/>
+                        </xsl:if>
                     </xsl:if>
                     
                     <!--Fork again, in case we have a hyphenated construct-->
@@ -339,7 +364,7 @@
                                 </xsl:if>
                                 
                                 <!--Now run each hyphen through the process again, and add hyphens after each word-->
-                                <xsl:copy-of select="hcmc:startStemmingProcess(., $foreign)"/><xsl:if test="$thisTokenPosition ne count($wordTokens)"><xsl:text>-</xsl:text></xsl:if>
+                                <xsl:copy-of select="hcmc:startStemmingProcess(., $isForeign)"/><xsl:if test="$thisTokenPosition ne count($wordTokens)"><xsl:text>-</xsl:text></xsl:if>
                             </xsl:for-each>
                         </xsl:when>
                        
