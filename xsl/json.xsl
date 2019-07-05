@@ -145,19 +145,28 @@
         
         <!--The string term-->
         <xsl:variable name="thisTerm"
-            select="$span/text()" 
+            select="string-join($span/descendant::text(),'')" 
             as="xs:string"/>
         
         <!--The first ancestor that has been signaled as an ancestor-->
         <xsl:variable name="contextAncestor" 
             select="$span/ancestor::*[@data-staticSearch-context='true'][1]" 
-            as="element()?"/>
+            as="element()"/>
+        
+       
+        <!--THE FOLLOWING SIMPLE SOLUTION DOESN'T WORK DUE TO A java.lang.RuntimeException: Internal error evaluating function
+            ERROR...NEED TO INVESTIGATE-->
+        
+    <!--    <xsl:variable name="preNodes" select="reverse($span/preceding::text()[ancestor::*[. is $contextAncestor]])"/>
+        <xsl:variable name="folNodes" select="$span/following::text()[ancestor::*[. is $contextAncestor]]"/>-->
+        
         
         <!--These are all of the descendant text nodes of the ancestor node, which:
             1) Precede this span element
             2) Is not contained within this span element
             3) And who does not have a different context ancestor
             -->
+        
         <xsl:variable name="preNodes" 
             select="$contextAncestor/descendant::text()[. &lt;&lt; $span and not(parent::*[. is $span]) and ancestor::*[@data-staticSearch-context='true'][1][. is $contextAncestor]]" as="xs:string*"/>
         

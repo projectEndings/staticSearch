@@ -49,5 +49,13 @@
         </java>
     </target>
     
-    <target name="all" depends="clean, createConfig, tokenize, json"/>
+    <target name="report">
+        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
+            <arg value="-xsl:xsl/create_reports.xsl"/>
+            <arg value="-s:xsl/create_reports.xsl"/>
+            <arg value="--suppressXsltNamespaceCheck:on"/>
+        </java>
+    </target>
+    
+    <target name="all" depends="clean, createConfig, tokenize, json, report"/>
 </project>
