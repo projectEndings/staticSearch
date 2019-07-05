@@ -5,7 +5,8 @@
   xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
   exclude-result-prefixes="#all"
   version="3.0"
-  xmlns:hcmc="http://hcmc.uvic.ca/ns">
+  xmlns:hcmc="http://hcmc.uvic.ca/ns"
+  xmlns:pt="http://hcmc.uvic.ca/ns/porter2">
   <xd:doc scope="stylesheet">
     <xd:desc>
       <xd:p><xd:b>Started on:</xd:b> May 17, 2019</xd:p>
@@ -40,7 +41,7 @@
   <xsl:variable name="vowel" as="xs:string">[aeiouy]</xsl:variable>
   
   <xd:doc>
-    <xd:desc>The <xd:Achref name="nonVowel">nonVowel</xd:Achref> variable is 
+    <xd:desc>The <xd:ref name="nonVowel">nonVowel</xd:ref> variable is 
       a character class of non-vowels.</xd:desc>
   </xd:doc>
   <xsl:variable name="nonVowel">[^aeiouy]</xsl:variable>
@@ -237,31 +238,31 @@
        **************************************************************-->
   
   <xd:doc scope="component">
-    <xd:desc><xd:ref name="hcmc:stem" type="function">hcmc:stem</xd:ref> is the core function that
+    <xd:desc><xd:ref name="pt:stem" type="function">pt:stem</xd:ref> is the core function that
       takes a single token and returns its stemmed version.
     </xd:desc>
     <xd:param name="token">Input token string</xd:param>
     <xd:result>The stemmed version of the token.</xd:result>
   </xd:doc>
-  <xsl:function name="hcmc:stem" as="xs:string">
+  <xsl:function name="pt:stem" as="xs:string">
     <xsl:param name="token" as="xs:string"/>
     <xsl:choose>
       <xsl:when test="string-length($token) lt 3"><xsl:value-of select="$token"/></xsl:when>
       <xsl:when test="$token = $exceptionsTokens"><xsl:value-of select="$exceptionsStems[index-of($exceptionsTokens, $token)]"/></xsl:when>
       <xsl:otherwise>
         <xsl:variable name="preflight" select="replace(replace(replace($token, '^''', ''), '^y', 'Y'), concat('(', $vowel, ')y'), '$1Y')"/>
-        <xsl:variable name="R" select="hcmc:getR1AndR2($preflight)"/>
-        <xsl:variable name="step0" select="hcmc:step0($preflight)"/>
-        <xsl:variable name="step1" select="hcmc:step1($step0, $R[3])"/>
+        <xsl:variable name="R" select="pt:getR1AndR2($preflight)"/>
+        <xsl:variable name="step0" select="pt:step0($preflight)"/>
+        <xsl:variable name="step1" select="pt:step1($step0, $R[3])"/>
         <xsl:choose>
           <xsl:when test="$step1 = $step1aExceptions">
             <xsl:value-of select="$step1"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:variable name="step2" select="hcmc:step2($step1, $R[3])"/>
-            <xsl:variable name="step3" select="hcmc:step3($step2, $R[3], $R[4])"/>
-            <xsl:variable name="step4" select="hcmc:step4($step3, $R[4])"/>
-            <xsl:variable name="step5" select="hcmc:step5($step4, $R[3], $R[4])"/>
+            <xsl:variable name="step2" select="pt:step2($step1, $R[3])"/>
+            <xsl:variable name="step3" select="pt:step3($step2, $R[3], $R[4])"/>
+            <xsl:variable name="step4" select="pt:step4($step3, $R[4])"/>
+            <xsl:variable name="step5" select="pt:step5($step4, $R[3], $R[4])"/>
             <xsl:value-of select="$step5"/>
           </xsl:otherwise>
         </xsl:choose>
@@ -271,38 +272,38 @@
   </xsl:function>
   
   <xd:doc scope="component">
-    <xd:desc><xd:ref name="hcmc:preflight" type="function">hcmc:preflight</xd:ref> does a couple of simple
+    <xd:desc><xd:ref name="pt:preflight" type="function">pt:preflight</xd:ref> does a couple of simple
       replacements that need to precede the actual stemming process.
     </xd:desc>
     <xd:param name="token">Input token string</xd:param>
     <xd:result>The treated version of the token.</xd:result>
   </xd:doc>
-  <xsl:function name="hcmc:preflight" as="xs:string">
+  <xsl:function name="pt:preflight" as="xs:string">
     <xsl:param name="token" as="xs:string"/>
     <xsl:value-of select="replace(replace(replace($token, '^''', ''), '^y', 'Y'), concat('(', $vowel, ')y'), '$1Y')"/>
   </xsl:function>
   
   <xd:doc scope="component">
-    <xd:desc><xd:ref name="hcmc:step0" type="function">hcmc:step0</xd:ref> trims plural/possessive
+    <xd:desc><xd:ref name="pt:step0" type="function">pt:step0</xd:ref> trims plural/possessive
       type suffixes from the end,
     </xd:desc>
     <xd:param name="token">Input token string</xd:param>
     <xd:result>The treated version of the token.</xd:result>
   </xd:doc>
-  <xsl:function name="hcmc:step0" as="xs:string">
+  <xsl:function name="pt:step0" as="xs:string">
     <xsl:param name="token" as="xs:string"/>
     <xsl:value-of select="replace($token, '''(s('')?)?$', '')"/>
   </xsl:function>
   
   <xd:doc scope="component">
-    <xd:desc><xd:ref name="hcmc:step1" type="function">hcmc:step1</xd:ref> performs three replacements
+    <xd:desc><xd:ref name="pt:step1" type="function">pt:step1</xd:ref> performs three replacements
       on the end of a token (1a, 1b and 1c).
     </xd:desc>
     <xd:param name="token">Input token string</xd:param>
     <xd:param name="R1">Offset of the R1 region in the token</xd:param>
     <xd:result>The treated version of the token.</xd:result>
   </xd:doc>
-  <xsl:function name="hcmc:step1" as="xs:string">
+  <xsl:function name="pt:step1" as="xs:string">
     <xsl:param name="token" as="xs:string"/>
     <xsl:param name="R1" as="xs:integer"/>
     
@@ -345,7 +346,7 @@
                 <xsl:value-of select="if (matches($step1b2a, '((at)|(bl)|(iz))$')) then concat($step1b2a, 'e') 
                   else if (matches($step1b2a, concat($dbl, '$'))) then 
                   substring($step1b2a, 1, string-length($step1b2a) - 1) 
-                  else if (hcmc:wordIsShort($step1b2a, $R1)) then concat($step1b2a, 'e')
+                  else if (pt:wordIsShort($step1b2a, $R1)) then concat($step1b2a, 'e')
                   else $step1b2a"/>
               </xsl:when>
               <xsl:otherwise><xsl:value-of select="$step1a"/></xsl:otherwise>
@@ -357,7 +358,7 @@
   </xsl:function>
   
   <xd:doc scope="component">
-    <xd:desc><xd:ref name="hcmc:step2" type="function">hcmc:step2</xd:ref> consists
+    <xd:desc><xd:ref name="pt:step2" type="function">pt:step2</xd:ref> consists
       of a sequence of items to be evaluated against the input token; if a match
       occurs, then a) a replacement operation is done ONLY IF the match is in
       R1, and b) the process exits whether or not a replacement was done.
@@ -366,7 +367,7 @@
     <xd:param name="R1">Offset of the R1 region in the token</xd:param>
     <xd:result>The treated version of the token.</xd:result>
   </xd:doc>
-  <xsl:function name="hcmc:step2" as="xs:string">
+  <xsl:function name="pt:step2" as="xs:string">
     <xsl:param name="token" as="xs:string"/>
     <xsl:param name="R1" as="xs:integer"/>
     <xsl:variable name="resultToken" as="xs:string">
@@ -403,7 +404,7 @@
   </xsl:function>
   
   <xd:doc scope="component">
-    <xd:desc><xd:ref name="hcmc:step3" type="function">hcmc:step3</xd:ref> consists
+    <xd:desc><xd:ref name="pt:step3" type="function">pt:step3</xd:ref> consists
       of a sequence of items to be evaluated against the input token; if a match
       occurs, then a) a replacement operation is done ONLY IF the match is in
       a specified region, and b) the process exits whether or not a replacement 
@@ -414,7 +415,7 @@
     <xd:param name="R2">Offset of the R2 region in the token</xd:param>
     <xd:result>The treated version of the token.</xd:result>
   </xd:doc>
-  <xsl:function name="hcmc:step3" as="xs:string">
+  <xsl:function name="pt:step3" as="xs:string">
     <xsl:param name="token" as="xs:string"/>
     <xsl:param name="R1" as="xs:integer"/>
     <xsl:param name="R2" as="xs:integer"/>
@@ -447,7 +448,7 @@
   </xsl:function>
   
   <xd:doc scope="component">
-    <xd:desc><xd:ref name="hcmc:step4" type="function">hcmc:step4</xd:ref> consists
+    <xd:desc><xd:ref name="pt:step4" type="function">pt:step4</xd:ref> consists
       of a sequence of items to be evaluated against the input token; if a match
       occurs, then a) a deletion operation is done ONLY IF the match is in
       R2, and b) the process exits whether or not a replacement was done.
@@ -456,7 +457,7 @@
     <xd:param name="R2">Offset of the R2 region in the token</xd:param>
     <xd:result>The treated version of the token.</xd:result>
   </xd:doc>
-  <xsl:function name="hcmc:step4" as="xs:string">
+  <xsl:function name="pt:step4" as="xs:string">
     <xsl:param name="token" as="xs:string"/>
     <xsl:param name="R2" as="xs:integer"/>
     <xsl:variable name="resultToken" as="xs:string">
@@ -495,7 +496,7 @@
   </xsl:function>
   
   <xd:doc scope="component">
-    <xd:desc><xd:ref name="hcmc:step5" type="function">hcmc:step5</xd:ref> consists
+    <xd:desc><xd:ref name="pt:step5" type="function">pt:step5</xd:ref> consists
       of two specific replacements which are context-dependent:
       "Search for the the following suffixes, and, if found, perform the action indicated.
         e delete if in R2, or in R1 and not preceded by a short syllable* 
@@ -510,7 +511,7 @@
     <xd:param name="R2">Offset of the R2 region in the token</xd:param>
     <xd:result>The treated version of the token.</xd:result>
   </xd:doc>
-  <xsl:function name="hcmc:step5" as="xs:string">
+  <xsl:function name="pt:step5" as="xs:string">
     <xsl:param name="token" as="xs:string"/>
     <xsl:param name="R1" as="xs:integer"/>
     <xsl:param name="R2" as="xs:integer"/>
@@ -546,14 +547,14 @@
   </xsl:function>
   
   <xd:doc scope="component">
-    <xd:desc><xd:ref name="hcmc:getR1AndR2" type="function">hcmc:getR1AndR2</xd:ref>
+    <xd:desc><xd:ref name="pt:getR1AndR2" type="function">pt:getR1AndR2</xd:ref>
       decomposes an input token to get the R1 and R2 regions, and returns the string values of those two 
       regions, along with their offsets.</xd:desc>
     <xd:param name="token">Input token string</xd:param>
     <xd:result>A sequence consisting of two integers for the offsets of R1 and
     R2, and two strings consisting of R1 and R2 respectively.</xd:result>
   </xd:doc>
-  <xsl:function name="hcmc:getR1AndR2" as="item()+">
+  <xsl:function name="pt:getR1AndR2" as="item()+">
     <xsl:param name="token" as="xs:string"/>
     <xsl:variable name="R1" as="xs:string" select="if (matches($token, $R1ExceptRex)) 
                                                    then replace($token, $R1ExceptRex, '$2') 
@@ -581,7 +582,7 @@
     <xd:param name="R1">Integer position of R1 in this token.</xd:param>
     <xd:result>True or false</xd:result>
   </xd:doc>
-  <xsl:function name="hcmc:wordIsShort" as="xs:boolean">
+  <xsl:function name="pt:wordIsShort" as="xs:boolean">
     <xsl:param name="token" as="xs:string"/>
     <xsl:param name="R1" as="xs:integer"/>
     <xsl:variable name="R1IsNull" as="xs:boolean" select="string-length($token) lt $R1"/>
@@ -698,18 +699,18 @@
     )"/>
     
   <xd:doc scope="component">
-    <xd:desc><xd:ref name="hcmc:runTests" type="function">hcmc:runTests</xd:ref>
-      feeds all of the test data into the hcmc:stem function and checks the 
+    <xd:desc><xd:ref name="pt:runTests" type="function">pt:runTests</xd:ref>
+      feeds all of the test data into the pt:stem function and checks the 
      results. There is a local set of test data used for development, but 
      that test is commented out in favour of downloading and running
     the full set of 29,000+ items from the tartarus site.</xd:desc>
     <xd:result>A sequence consisting of boolean true or false: tests all passed = true, 
     any test failed = false, and an empty message or an error report.</xd:result>
   </xd:doc>
-  <xsl:function name="hcmc:runTests" as="item()+">
+  <xsl:function name="pt:runTests" as="item()+">
     <!--<xsl:iterate select="$porterTestData">
       <xsl:on-completion select="(true(), '')"/>
-      <xsl:variable name="result" select="hcmc:stem(substring-before(., ':'))"/>
+      <xsl:variable name="result" select="pt:stem(substring-before(., ':'))"/>
       <xsl:choose>
         <xsl:when test="$result = substring-after(., ':')">
           <xsl:next-iteration/>
@@ -734,7 +735,7 @@
       <xsl:on-completion select="(true(), '')"/>
       <xsl:variable name="pos" select="position()"/>
       <xsl:variable name="stem" select="$fullStemSet[$pos]"/>
-      <xsl:variable name="result" select="hcmc:stem(.)"/>
+      <xsl:variable name="result" select="pt:stem(.)"/>
       <xsl:choose>
         <xsl:when test="$result = $stem">
           <xsl:next-iteration/>
