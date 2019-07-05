@@ -18,7 +18,7 @@
     </target>
     
   <!--First thing, create the config file-->
-   <target name="createConfig">
+   <target name="config">
        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
            <arg value="-xsl:xsl/create_config_xsl.xsl"/>
            <arg value="-s:xsl/create_config_xsl.xsl"/>
@@ -57,5 +57,5 @@
         </java>
     </target>
     
-    <target name="all" depends="clean, createConfig, tokenize, json, report"/>
+    <target name="all" depends="clean, config, tokenize, json, report"/>
 </project>

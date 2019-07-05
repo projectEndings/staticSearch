@@ -79,6 +79,7 @@
                         <td>Total Variants</td>
                         <td>Variant List</td>
                         <td>Number of Documents</td>
+                        <td>Average use per document</td>
 <!--                        <td>Document List</td>-->
                     </tr>
                 </thead>
@@ -87,7 +88,7 @@
                         <xsl:sort select="count(current-group())" order="descending"/>
                         <xsl:variable name="tokenGroup" select="current-group()"/>
                         <xsl:variable name="thisToken" select="current-grouping-key()"/>
-                        <xsl:variable name="instances" select="count(current-group())"/>
+                        <xsl:variable name="instancesCount" select="count(current-group())"/>
                         <xsl:variable name="variants" as="xs:string+">
                             <xsl:for-each-group select="current-group()" group-by="text()">
                                 <xsl:sort select="string-length(.)" order="ascending"/>
@@ -101,13 +102,16 @@
                             </xsl:for-each-group>
                         </xsl:variable>
                         
+                        <xsl:variable name="distinctDocIds" select="distinct-values($docIds)" as="xs:string+"/>
+                        <xsl:variable name="distinctDocCount" select="count($distinctDocIds)"/>
+                        
                         <tr>
                             
                             <!--STEM-->
                             <td><xsl:value-of select="current-grouping-key()"/></td>
                             
                             <!--TOTAL INSTANCes-->
-                            <td><xsl:value-of select="count(current-group())"/></td>
+                            <td><xsl:value-of select="$instancesCount"/></td>
                             
                             <!--TOTAL VARIANTS-->
                             <td><xsl:value-of select="count($variants)"/></td>
@@ -124,7 +128,11 @@
                             
                             <!--TOTAL DOCS-->
                             <td>
-                                <xsl:value-of select="count(distinct-values($docIds))"/>
+                                <xsl:value-of select="$distinctDocCount"/>
+                            </td>
+                            
+                            <td>
+                                <xsl:value-of select="format-number($instancesCount div $distinctDocCount,'#.##')"/>
                             </td>
                             
                             <!--LIST OF DOCS-->

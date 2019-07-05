@@ -21,7 +21,7 @@
     <rules>
         <rule xpath="*[matches(@class,'(^|\s)toponym(\s|$)')]" weight="2"/>
         <rule xpath="abbr[parent::span/span[@class='expan']]" weight="0"/>
-        <rule xpath="body[not(ancestor::html/@id ='foreign')]" weight="0"/>
+      <!--  <rule xpath="body[not(ancestor::html/@id ='foreign')]" weight="0"/>-->
     </rules>
     
     <contexts>

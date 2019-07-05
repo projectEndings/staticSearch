@@ -10,6 +10,7 @@
     
     <xsl:variable name="kwicLengthHalf" select="xs:integer(round(xs:integer($totalKwicLength) div 2))" as="xs:integer"/>
     
+    <xsl:key name="docs" match="span" use="tokenize(@data-staticSearch-stem,'\s+')"/>
     
     <xsl:template match="/">
         <xsl:call-template name="createJson"/>
@@ -49,11 +50,10 @@
             <string key="token">
                 <xsl:value-of select="$term"/>
             </string>
-            <!--                <array key="forms">
-                    <xsl:for-each-group select="current-group()" group-by="text()">
-                        <string><xsl:value-of select="current-grouping-key()"/></string>
-                    </xsl:for-each-group>
-                </array>-->
+            
+            <!--Boolean value to evaluate whether or not this "string" is actually an integer-->
+            <xsl:variable name="isInteger" select="$term castable as xs:integer" as="xs:boolean"/>
+            
             <array key="instances">
                 <!--If every HTML document processed has an @id at the root,
                     then use that as the grouping-key; otherwise,
@@ -65,7 +65,7 @@
                     else document-uri(/)">
                     
                     <!--Sort the documents so that the document with the most number of this hit comes first-->
-                    <xsl:sort select="count(current-group()[1]/ancestor::html/descendant::span[contains-token(@data-staticSearch-stem,$term)])" order="descending"/>
+                    <xsl:sort select="count(current-group()[1]/ancestor::html/key('docs',$term))" order="descending"/>
                     
                     <!--Current grouping key = the document id (or URI)-->
                     <xsl:variable name="docId" select="current-grouping-key()"/>
@@ -74,8 +74,25 @@
                         any item of the current-group()-->
                     <xsl:variable name="thisDoc" select="current-group()[1]/ancestor::html"/>
                     
-                    <!--Span elements (created in tokenize.xsl) that are indexed to this stem-->
-                    <xsl:variable name="spans" as="element(span)+" select="$thisDoc//span[@data-staticSearch-stem][contains-token(@data-staticSearch-stem,$term)]"/>
+                    <xsl:variable name="spans" select="$thisDoc/key('docs',$term)" as="element(span)+"/>
+                    
+                  <!--  <xsl:variable name="spans" as="element(span)+">
+                        <xsl:for-each-group select="$thisDoc//span[contains(@data-staticSearch-stem,$term)]" group-by="contains-token(@data-staticSearch-stem,$term)">
+                            <xsl:if test="current-grouping-key()">
+                                <xsl:sequence select="current-group()"/>
+                            </xsl:if>
+                        </xsl:for-each-group>
+                    </xsl:variable>-->
+                    
+                    <!--<!-\-Span elements (created in tokenize.xsl) that are indexed to this stem-\->
+                    <xsl:variable name="spanCandidates" select="$thisDoc//span[contains(@data-staticSearch-stem, $term)]" as="element(span)+"/>
+                    
+                    <xsl:variable name="spans" as="element(span)+" 
+                        select="$spanCandidates[
+                        if ($isInteger and (@data-staticSearch-stem castable as xs:integer)) 
+                        then (xs:integer($term) = @data-staticSearch-stem)
+                        else contains-token(@data-staticSearch-stem,$term)]"
+                    />-->
                     
                     <!--We assume the docTitle is in the head/title element;
                     TODO: Make this configurable-->
@@ -221,6 +238,8 @@
         <xsl:param name="span"/>
         <xsl:sequence select="if ($span/ancestor::*[@data-staticSearch-weight]) then $span/ancestor::*[@data-staticSearch-weight][1]/@data-staticSearch-weight/xs:integer(.) else 1"/>
     </xsl:function>
+    
+    
     
     
 </xsl:stylesheet>
