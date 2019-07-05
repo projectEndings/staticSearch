@@ -37,7 +37,7 @@
      <!--purely digits (or decimals) -->
     <xsl:variable name="numericWithDecimal">[<xsl:value-of select="$straightDoubleApos"/>\d]+(\.\d+)</xsl:variable>
     
-    <xsl:variable name="alphanumeric">[A-Za-z\d<xsl:value-of select="$straightDoubleApos"/>]+</xsl:variable>
+    <xsl:variable name="alphanumeric">[	\p{L}<xsl:value-of select="$straightDoubleApos"/>]+</xsl:variable>
     
     
     <xsl:variable name="hyphenatedWord"><xsl:value-of select="$alphanumeric"/>\-<xsl:value-of select="$alphanumeric"/></xsl:variable>
@@ -126,7 +126,7 @@
     
     <!--RATIONALIZED TEMPLATES-->
     
-    <xsl:template match="div | blockquote | p | li | section | article | nav | h1 | h2 | h3 | h4 | h5 | h6" mode="contextualize">
+    <xsl:template match="div | blockquote | p | li | section | article | nav | h1 | h2 | h3 | h4 | h5 | h6 | td" mode="contextualize">
         <xsl:copy>
             <xsl:apply-templates select="@*" mode="#current"/>
             <xsl:attribute name="data-staticSearch-context" select="'true'"/>

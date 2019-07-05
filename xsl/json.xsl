@@ -135,6 +135,7 @@
                                 <xsl:if test="$verbose">
                                     <xsl:message><xsl:value-of select="$term"/>: <xsl:value-of select="current-grouping-key()"/>: Processing <xsl:value-of select="$contextsCount"/> contexts.</xsl:message>
                                 </xsl:if>
+
                                 <xsl:for-each select="$contexts">
                                     <xsl:sort select="hcmc:returnWeight(.)" order="descending"/>
                                     <map>
@@ -157,6 +158,13 @@
         
     </xsl:template>
     
+    <xsl:template match="span" mode="context">
+        <xsl:message>Here is this span: <xsl:copy-of select="."/></xsl:message>
+        <xsl:message>Here is this span's first preceding element: <xsl:copy-of select="preceding::span[1]"/></xsl:message>
+        <xsl:message> Here is this span's first preceding text node: <xsl:value-of select="preceding::text()[1]"/></xsl:message>
+        <xsl:message>Here is the span's ALL preceding text: <xsl:value-of select="preceding::node()[. instance of text()]"/></xsl:message>
+    </xsl:template>
+    
     
     
     <xsl:function name="hcmc:returnContext">
@@ -167,18 +175,17 @@
             select="string-join($span/descendant::text(),'')" 
             as="xs:string"/>
         
+      
+        
         <!--The first ancestor that has been signaled as an ancestor-->
         <xsl:variable name="contextAncestor" 
             select="$span/ancestor::*[@data-staticSearch-context='true'][1]" 
-            as="element()"/>
+            as="element()?"/>
         
-       
-        <!--THE FOLLOWING SIMPLE SOLUTION DOESN'T WORK DUE TO A java.lang.RuntimeException: Internal error evaluating function
-            ERROR...NEED TO INVESTIGATE-->
-        
-    <!--    <xsl:variable name="preNodes" select="reverse($span/preceding::text()[ancestor::*[. is $contextAncestor]])"/>
-        <xsl:variable name="folNodes" select="$span/following::text()[ancestor::*[. is $contextAncestor]]"/>-->
-        
+        <xsl:if test="empty($contextAncestor)">
+            <xsl:message terminate="yes">THIS SPAN CAUSED A PROBLEM! <xsl:copy-of select="$span"/> / <xsl:value-of select="$span/ancestor::html/@id"/></xsl:message>
+            
+        </xsl:if>
         
         <!--These are all of the descendant text nodes of the ancestor node, which:
             1) Precede this span element
@@ -196,7 +203,7 @@
             3) And who does not have a different context ancestor
             -->
         <xsl:variable name="folNodes" 
-            select="$contextAncestor/descendant::text()[. &gt;&gt; $span and not(parent::*[. is $span]) and ancestor::*[@data-staticSearch-context='true'][1][. is $contextAncestor]]" as="xs:string*"/>
+            select="$contextAncestor/descendant::text()[. &gt;&gt; $span and not(parent::*[. is $span])][ancestor::*[@data-staticSearch-context='true'][1][. is $contextAncestor]]" as="xs:string*"/>
 
         <!--The preceding text joined together-->
         <xsl:variable name="startString" 
@@ -232,14 +239,23 @@
             and then normalize the spaces (to eliminate \n etc)-->
         <xsl:value-of
             select="
-            concat($startSnippet, $thisTerm, $endSnippet)
-            => normalize-space()"/>
+            concat(string-join($preNodes,''), $thisTerm, string-join($folNodes,''))
+            => replace('\s+\n+\t+',' ') => normalize-space()"/>
     </xsl:function>
     
     <xsl:function name="hcmc:returnWeight" as="xs:integer">
         <xsl:param name="span"/>
         <xsl:sequence select="if ($span/ancestor::*[@data-staticSearch-weight]) then $span/ancestor::*[@data-staticSearch-weight][1]/@data-staticSearch-weight/xs:integer(.) else 1"/>
     </xsl:function>
+    
+    <xs:function name="hcmc:getPrecedingText" as="xs:string">
+        <xsl:param name="node"/>
+        <xsl:param name="startString"/>
+        <xsl:choose>
+            
+        </xsl:choose>
+        
+    </xs:function>
     
     
     

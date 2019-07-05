@@ -9,12 +9,12 @@
             <section>
                 <h3>Block Quotation</h3>
                 <p>In any instance, we want the block-quotation to be the primary part of the search context. Let's take this paragraph from the Unicode <cite>UNICODE TEXT SEGMENTATION</cite> standard:</p>
-                <blockquote>The correct interpretation of hyphens in the context of word boundaries is challenging. It is quite common for separate words to be connected with a hyphen: “out-of-the-box,” “under-the-table,” “Italian-American,” and so on. A significant number are hyphenated names, such as “Smith-Hawkins.” When doing a Whole Word Search or query, users expect to find the word within those hyphens. While there are some cases where they are separate words (usually to resolve some ambiguity such as “re-sort” as opposed to “resort”), it is better overall to keep the hyphen out of the default definition. Hyphens include U+002D HYPHEN-MINUS, U+2010 HYPHEN, possibly also U+058A ARMENIAN HYPHEN, and U+30A0 KATAKANA-HIRAGANA DOUBLE HYPHEN.</blockquote>
+                <blockquote>The correct interpretation of hyphens in the context of word boundaries is challenging. It is quite common for separate words to be connected with a hyphen: “out-of-the-box,” “under-the-table,” “Italian-American,” and so on. A significant number are hyphenated names, such as “Smith-Hawkins.” When doing a Whole Word Search or query, users <span>expect</span> to find the word within those hyphens. <span>While</span> there are some cases where they are separate words (usually to resolve some ambiguity such as “re-sort” as opposed to “resort”), it is better overall to keep the hyphen out of the default definition. Hyphens include U+002D HYPHEN-MINUS, U+2010 HYPHEN, possibly also U+058A ARMENIAN HYPHEN, and U+30A0 KATAKANA-HIRAGANA DOUBLE HYPHEN.</blockquote>
             </section>
             <section>
                 <h3>Editorial Notes context test</h3>
                 <p>There are many instances of so-called <q>inline quotations</q> that should not be treated as context bits. Note here that arbitrary <span>span elements</span> will not be processed.<br/>
-                That's a break in a paragraph, which should also be ignored in processing. Even possible frag<wbr/>ments of words should be ignored.</p>
+                That's a break in a paragraph, which <span>should</span> also be ignored in processing. Even possible frag<wbr/>ments of words should be ignored.</p>
                 <p>But if, for some reason, you think a note, for instance, should be processed as a definable bit then it will be so. <span class="ed_note">Editorial notes, for instance, which we will float to the side, should have their own context.</span> This means that editorial notes will be ignored from the other processing, too, for context, methinks.</p>
             </section>
             <section>
