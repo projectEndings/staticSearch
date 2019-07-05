@@ -53,6 +53,7 @@
     <xsl:template name="makeMap">
         <xsl:param name="term"/>
         <xsl:variable name="termRegex" select="concat('(^|\s)',$term,'(\s|$)')"/>
+        <xsl:variable name="termGroup" select="current-group()"/>
         <map xmlns="http://www.w3.org/2005/xpath-functions">
             <string key="token">
                 <xsl:value-of select="$term"/>
@@ -71,9 +72,14 @@
                     if (every $h in ancestor::html satisfies $h[@id]) 
                     then ancestor::html/@id 
                     else document-uri(/)">
+                  
                     
                     <!--Sort the documents so that the document with the most number of this hit comes first-->
-                    <xsl:sort select="count(current-group()[1]/ancestor::html/key('docs',$term))" order="descending"/>
+                    <xsl:sort select="count(current-group())" order="descending"/>
+                    <xsl:if test="$verbose">
+                        <xsl:message><xsl:value-of select="$term"/>: Processing <xsl:value-of select="current-grouping-key()"/> (<xsl:value-of select="position()"/> / <xsl:value-of select="count(current-group())"/>)</xsl:message>
+                    </xsl:if>
+              
                     
                     <!--Current grouping key = the document id (or URI)-->
                     <xsl:variable name="docId" select="current-grouping-key()"/>
@@ -83,7 +89,7 @@
                     <xsl:variable name="thisDoc" select="current-group()[1]/ancestor::html"/>
                     
                     <!--Now get the spans, using the declared key-->
-                    <xsl:variable name="spans" select="$thisDoc/key('docs',$term)" as="element(span)+"/>
+                    <xsl:variable name="spans" select="current-group()" as="element(span)+"/>
                     
                     
                     <!--We assume the docTitle is in the head/title element;
@@ -125,6 +131,10 @@
                                         </xsl:otherwise>
                                     </xsl:choose>
                                 </xsl:variable>
+                                <xsl:variable name="contextsCount" select="count($contexts)"/>
+                                <xsl:if test="$verbose">
+                                    <xsl:message><xsl:value-of select="$term"/>: <xsl:value-of select="current-grouping-key()"/>: Processing <xsl:value-of select="$contextsCount"/> contexts.</xsl:message>
+                                </xsl:if>
                                 <xsl:for-each select="$contexts">
                                     <xsl:sort select="hcmc:returnWeight(.)" order="descending"/>
                                     <map>
