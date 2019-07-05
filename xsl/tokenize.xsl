@@ -362,7 +362,7 @@
         <xsl:param name="word" as="xs:string"/>
         <!--First, replace any quotation marks in the middle of the word if there happen
             to be any; then trim off any following periods; and trim hyphens -->
-        <xsl:value-of select="replace($word, $straightDoubleApos, '') => replace('\.$','') => replace('-','') => normalize-space()"/>
+        <xsl:value-of select="replace($word, $straightDoubleApos, '') => replace('\.$','') => replace('-','') => translate('ſ','s')"/>
     </xsl:function>
     
     <xsl:function name="hcmc:checkWordSubstitution" as="xs:string">

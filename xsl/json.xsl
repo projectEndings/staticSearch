@@ -9,8 +9,9 @@
     <xsl:include href="config.xsl"/>
     
     
-    <xsl:key name="docs" match="span[@data-staticSearch-stem]" 
+    <xsl:key name="docs" match="span[contains(@data-staticSearch-stem,' ')]" 
         use="tokenize(@data-staticSearch-stem,'\s+')"/>
+    <xsl:key name="docs" match="span[not(contains(@data-staticSearch-stem,' '))]" use="@data-staticSearch-stem"/>
     
     
     
@@ -59,6 +60,7 @@
             
             <!--Boolean value to evaluate whether or not this "string" is actually an integer-->
             <xsl:variable name="isInteger" select="$term castable as xs:integer" as="xs:boolean"/>
+
             
             <array key="instances">
                 <!--If every HTML document processed has an @id at the root,
