@@ -269,8 +269,8 @@ class StaticSearch{
     }
     return (this.terms.length > 0);
   }
-/** writeSearchReport outputs a human-readable
-  *
+/** writeSearchReport outputs a human-readable explanation of the search
+  * that's being done, to clarify for users what they've chosen to look for.
   * @return {Boolean} true if the process succeeds, otherwise false.
   */
   writeSearchReport(){
@@ -300,6 +300,23 @@ class StaticSearch{
       console.log('ERROR: ' + e.message);
       return false;
     }
-
   }
+
+/**
+  * populateIndex is passed an array of tokens, and its job is
+  * to ensure that the index is ready to handle a search with
+  * those tokens. The index is deemed ready when either a) the
+  * JSON file for that token has been retrieved and its contents
+  * merged into the index, or b) a retrieval has failed, so an
+  * empty placeholder has been inserted to signify that there is
+  * no such dataset.
+  *
+  * The function works with fetch and promises, and its final
+  * .then() calls the processResults function.
+  * @param {Array} arrTokens An array of tokens.
+  */
+  populateIndex(arrTokens){
+    
+  }
+
 }
