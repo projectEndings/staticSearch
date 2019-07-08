@@ -391,15 +391,56 @@ class StaticSearch{
     }
   }
 
-  processResults(){
-
+/**
+  * @function StaticSearch~tokenFound
+  * @description When a request for a JSON file for a specific
+  *              token results in a JSON file with data, we store
+  *              the data in the index, indexed under the token.
+  *              Sometimes the data coming in may be an instance
+  *              of an empty index, if the retrieval code knows it
+  *              got nothing.
+  * @param {Object} data the data structure retrieved for the token.
+  */
+  tokenFound(data){
+    try{
+      this,index[data.token] = data;
+    }
+    catch(e){
+      console.log('ERROR: ' + e.message);
+    }
   }
 
-  tokenFound(token){
-
-  }
-
+/**
+  * @function StaticSearch~tokenNotFound
+  * @description When a request for a JSON file for a specific
+  *              token results in no retrieval, we store an empty
+  *              item so that we don't need to check again. We can
+  *              also use this function for debugging.
+  * @param token {String} the token not found.
+  */
   tokenNotFound(token){
-
+    if (!this.index.hasOwnProperty(token)){
+      this.index[token] = {'token': tokensToFind[i], 'instances': []};
+    }
   }
+
+/**
+  * @function StaticSearch~processResults
+  * @description When we are satisfied that all relevant search data
+  *              has been retrieved and added to the index, this
+  *              function is called to process the search and show
+  *              any results found.
+  * @return {Boolean} true if there are results to show; false if not.
+  */
+  processResults(){
+    try{
+//TODO.
+      return true;
+    }
+    catch(e){
+      console.log('ERROR: ' + e.message);
+      return false;
+    }
+  }
+
 }
