@@ -316,7 +316,90 @@ class StaticSearch{
   * @param {Array} arrTokens An array of tokens.
   */
   populateIndex(arrTokens){
-    
+    var i, imax, tokensToFind = [], promises = [], emptyIndex;
+//We need a self pointer because this will go out of scope.
+    var self = this;
+    try{
+  //For each token in the search string
+      for (i=0, imax=this.arrTokens.length; i<imax; i++){
+  //Now check whether we already have an index entry for this token
+        if (!this.index.hasOwnProperty(this.arrTokens[i])){
+  //If not, add it to the array of tokens we want to retrieve.
+          tokensToFind.push(this.arrTokens[i]);
+        }
+      }
+      //If we do need to retrieve JSON index data, then do it
+      if (tokensToFind.length > 0){
+
+//Set off fetch operations for the things we don't have yet.
+        for (i=0, imax=tokensToFind.length; i<imax; i++){
+
+//We will add an empty entry for anything that's not found, so we don't
+//have to retrieve it again.
+          emptyIndex = {'token': tokensToFind[i], 'instances': []}; //used as return value when nothing retrieved.
+
+//We create an array of fetches to get the json file for each token,
+//assuming it's there.
+          promises[i] = fetch(this.jsonDirectory + tokensToFind[i] + '.json', {
+                              credentials: 'same-origin',
+                              cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                              headers: {
+                                'Accept': 'application/json'
+                              },
+                              method: 'GET',
+                              redirect: 'follow', // *manual, follow, error
+                              referrer: 'no-referrer' // *client, no-referrer
+              })
+//If we get a response, and it looks good
+              .then(function(response){
+                if ((response.status >= 200) &&
+                    (response.status < 300) &&
+                    (response.headers.get('content-type')) &&
+                    (response.headers.get('content-type').includes('application/json'))) {
+//then we ask for response.json(), which is itself a promise, to which we add a .then to store the data.
+                  return response.json().then(function(data){ self.tokenFound(data); }.bind(self));
+                }
+                else {
+//Otherwise, we store the pre-created emptyIndex, so we don't have to look
+//for this token again in a future search.
+                  self.tokenFound(emptyIndex);
+                }
+              })
+//If something goes wrong, then we again try to store an empty index
+//through the notFound function.
+//This is not really necessary -- we could call the found method
+//instead -- but we may want to do better debugging in the future.
+              .catch(function(e, token){
+                console.log('Failed to retrieve ' + token + ': ' + e);
+                self.tokenNotFound(token);
+              }.bind(self, tokensToFind[i]));
+            }
+
+//Now set up a Promise.all to fire the rest of the work when all fetches have
+//completed or failed.
+        Promise.all(promises).then(function(values) {
+          this.processResults();
+        }.bind(this));
+      }
+  //Otherwise we can just do the search with the index data we already have.
+      else{
+        this.processResults();
+      }
+    }
+    catch(e){
+      console.log('ERROR: ' + e.message);
+    }
   }
 
+  processResults(){
+
+  }
+
+  tokenFound(token){
+
+  }
+
+  tokenNotFound(token){
+
+  }
 }
