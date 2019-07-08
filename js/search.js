@@ -26,6 +26,9 @@
   * I would like to put these inside the class, but I can't
   * find an elegant way to do that.
   */
+/**@constant MUST_CONTAIN, MUST_NOT_CONTAIN, MAY_CONTAIN, PHRASE
+  * @type {Number}
+  */
   const MUST_CONTAIN         = 0;
   const MUST_NOT_CONTAIN     = 1;
   const MAY_CONTAIN          = 2;
@@ -41,7 +44,10 @@
   */
   var ss = {};
 
-/** ss.captions is the an array of languages (default contains
+/**
+  * @property ss.captions
+  * @type {Array}
+  * @description ss.captions is the an array of languages (default contains
   * only en), each of which has some caption properties. Extend
   * by adding new languages or replace if necessary.
   */
@@ -53,15 +59,19 @@
   ss.captions['en'][MAY_CONTAIN]         = 'May contain: ';
   ss.captions['en'][PHRASE]              = 'Exact phrase: ';
 
-/** ss.stopwords is a simple array of stopwords. Extend
+/**
+  * @property ss.stopwords
+  * @type {Array}
+  * @description a simple array of stopwords. Extend
   * by adding new items or replace if necessary.
   */
   ss.stopwords = new Array('i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', 'your', 'yours', 'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', 'her', 'hers', 'herself', 'it', 'its', 'itself', 'they', 'them', 'their', 'theirs', 'themselves', 'what', 'which', 'who', 'whom', 'this', 'that', 'these', 'those', 'am', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'having', 'do', 'does', 'did', 'doing', 'a', 'an', 'the', 'and', 'but', 'if', 'or', 'because', 'as', 'until', 'while', 'of', 'at', 'by', 'for', 'with', 'about', 'against', 'between', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'to', 'from', 'up', 'down', 'in', 'out', 'on', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 's', 't', 'can', 'will', 'just', 'don', 'should', 'now');
 
 
-/** StaticSearch is the class that handles parsing the user's
-  * input, through typed queries in the search box
-  * and selections in search filters.
+/** @class StaticSearch
+  * @description This is the class that handles parsing the user's
+  * input, through typed queries in the search box and selections in
+  * search filters.
   *
   * It expects to find the following HTML items in
   * the HTML of the search page which includes it
@@ -146,7 +156,8 @@ class StaticSearch{
     }
   }
 
-/** parseSearchQuery retrieves the content of the text
+/** @function StaticSearch~parseSearchQuery
+  * @description this retrieves the content of the text
   * search box and parses it into an array of term items
   * ready for analysis against retrieved results.
   *
@@ -220,10 +231,10 @@ class StaticSearch{
 
     console.log(JSON.stringify(this.terms));
   }
-/** getSearchItem is passed a single component from the
+/** @function StaticSearch~getSearchItem
+  * @description this is passed a single component from the
   * search box parser by parseSearchQuery. It constructs a
   * single item from it, and adds that to this.terms.
-  *
   * @param {String}   strInput a string of text.
   * @return {Boolean} true if terms found, otherwise false.
   */
@@ -269,7 +280,8 @@ class StaticSearch{
     }
     return (this.terms.length > 0);
   }
-/** writeSearchReport outputs a human-readable explanation of the search
+/** @function StaticSearch~writeSearchReport
+  * @description this outputs a human-readable explanation of the search
   * that's being done, to clarify for users what they've chosen to look for.
   * @return {Boolean} true if the process succeeds, otherwise false.
   */
@@ -303,7 +315,8 @@ class StaticSearch{
   }
 
 /**
-  * populateIndex is passed an array of tokens, and its job is
+  * @function StaticSearch~populateIndex
+  * @description this is passed an array of tokens, and its job is
   * to ensure that the index is ready to handle a search with
   * those tokens. The index is deemed ready when either a) the
   * JSON file for that token has been retrieved and its contents
