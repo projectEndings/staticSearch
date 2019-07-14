@@ -6,6 +6,7 @@
     xmlns="http://www.w3.org/1999/xhtml"
     exclude-result-prefixes="#all"
     xpath-default-namespace="http://www.w3.org/1999/xhtml"
+    xmlns:pt="http://hcmc.uvic.ca/ns/porter2"
     version="3.0">
     
     <!--JT TO ADD DOCUMENTATION HERE-->
@@ -294,7 +295,7 @@
                         <!--Otherwise,...-->
                         <xsl:otherwise>
                             <!--Produce the stem of the lowercase version-->
-                            <xsl:value-of select="hcmc:stem($lcWord)"/>
+                            <xsl:value-of select="pt:stem($lcWord)"/>
                             
                             <!--And if it's not in the dictionary, then return the cleaned word-->
                             <xsl:if test="not($inDictionary)">
@@ -309,7 +310,7 @@
                 
                 <!--If it's just a regular word, then stem it-->
                 <xsl:otherwise>
-                    <xsl:value-of select="hcmc:stem($lcWord)"/>
+                    <xsl:value-of select="pt:stem($lcWord)"/>
                 </xsl:otherwise>
             </xsl:choose>            
         </xsl:variable>
