@@ -158,14 +158,6 @@
         
     </xsl:template>
     
-    <xsl:template match="span" mode="context">
-        <xsl:message>Here is this span: <xsl:copy-of select="."/></xsl:message>
-        <xsl:message>Here is this span's first preceding element: <xsl:copy-of select="preceding::span[1]"/></xsl:message>
-        <xsl:message> Here is this span's first preceding text node: <xsl:value-of select="preceding::text()[1]"/></xsl:message>
-        <xsl:message>Here is the span's ALL preceding text: <xsl:value-of select="preceding::node()[. instance of text()]"/></xsl:message>
-    </xsl:template>
-    
-    
     
     <xsl:function name="hcmc:returnContext">
         <xsl:param name="span" as="element(span)"/>
@@ -239,8 +231,9 @@
             and then normalize the spaces (to eliminate \n etc)-->
         <xsl:value-of
             select="
-            concat(string-join($preNodes,''), $thisTerm, string-join($folNodes,''))
-            => replace('\s+\n+\t+',' ') => normalize-space()"/>
+            concat(string-join($startSnippet,''), '&lt;mark&gt;',$thisTerm,'&lt;/mark&gt;', string-join($endSnippet,''))
+            => replace('\s+\n+\t+',' ') 
+            => normalize-space()"/>
     </xsl:function>
     
     <xsl:function name="hcmc:returnWeight" as="xs:integer">
