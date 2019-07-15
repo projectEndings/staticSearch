@@ -108,6 +108,9 @@ class StaticSearch{
       if (!this.searchButton){
        throw new Error('Failed to find search button. Cannot provide search functionality.');
       }
+      else{
+        this.searchButton.addEventListener('click', function(){this.doSearch(); return false;}.bind(this));
+      }
       //Essential results div.
       this.resultsDiv =
            document.querySelector("div#searchResults");
@@ -127,13 +130,16 @@ class StaticSearch{
       if (tmp && !/(y|Y|yes|true|True|1)/.test(tmp.getAttribute('data-AllowPhrasal'))){
         this.allowPhrasal = false;
       }
-      //Associative array for storing retrieved JSON data.
+      //Associative array for storing retrieved JSON data. Any retrieved
+      //data stored in here is retained between searches to avoid having
+      //to retrieve it twice.
       this.index = {};
 
       //Porter2 stemmer object.
       this.stemmer = new PT2();
 
-      //Array of terms parsed out of search string.
+      //Array of terms parsed out of search string. This is emptied
+      //at the beginning of every new search.
       this.terms = new Array();
 
       //Captions
@@ -155,6 +161,26 @@ class StaticSearch{
       console.log('ERROR: ' + e.message);
     }
   }
+
+/** @function StaticSearch~doSearch
+  * @description this function initiates the search process,
+  *              taking it as far as creating the promises
+  *              for retrieval of JSON files. After that, the
+  *              resolution of the promises carries the process
+  *              on.
+  *
+  * @return {Boolean} true if a search is initiated otherwise false.
+  */
+  doSearch(){
+    var result = false; //default.
+    if (this.parseSearchQuery()){
+      if (this.writeSearchReport()){
+          result = true;
+      }
+    }
+    return result;
+  }
+
 
 /** @function StaticSearch~parseSearchQuery
   * @description this retrieves the content of the text
@@ -228,10 +254,10 @@ class StaticSearch{
       }
     }
     this.addSearchItem(strSoFar);
-
+    return (this.terms.length > 0);
     console.log(JSON.stringify(this.terms));
   }
-/** @function StaticSearch~getSearchItem
+/** @function StaticSearch~addSearchItem
   * @description this is passed a single component from the
   * search box parser by parseSearchQuery. It constructs a
   * single item from it, and adds that to this.terms.
