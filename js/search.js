@@ -150,8 +150,10 @@ class StaticSearch{
       //Stopwords
       this.stopwords = ss.stopwords;
 
-      //Directory for JSON files.
-      this.jsonDirectory = 'js/search/'; //Default value. Override if necessary.
+      //Directory for JSON files. Inside this directory will be a
+      //'lower' dir and an 'upper' dir, where the two sets of case-
+      //distinguished JSON files are stored.
+      this.jsonDirectory = 'js/'; //Default value. Override if necessary.
 
       //Boolean: should this instance report the details of its search
       //in human-readable form?
