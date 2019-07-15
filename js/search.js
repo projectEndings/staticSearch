@@ -254,9 +254,10 @@ class StaticSearch{
       }
     }
     this.addSearchItem(strSoFar);
-    return (this.terms.length > 0);
     console.log(JSON.stringify(this.terms));
+    return (this.terms.length > 0);
   }
+
 /** @function StaticSearch~addSearchItem
   * @description this is passed a single component from the
   * search box parser by parseSearchQuery. It constructs a
@@ -270,6 +271,11 @@ class StaticSearch{
       return false;
     }
     console.log('Adding: ' + strInput);
+
+    //Set a flag if it starts with a cap.
+    var firstLetter = strInput.replace(/^[\+\-]/, '').substring(0, 1);
+    var startsWithCap = (firstLetter.toLowerCase() !== firstLetter);
+
     //Is it a phrase?
     if (/\s/.test(strInput)){
     //We need to find the first component which is not a stopword.
@@ -281,25 +287,25 @@ class StaticSearch{
         }
       }
       if (i < subterms.length){
-        this.terms.push({str: strInput, stem: this.stemmer.stem(subterms[i]), type: PHRASE});
+        this.terms.push({str: strInput, stem: this.stemmer.stem(subterms[i]), capFirst: startsWithCap, type: PHRASE});
       }
     }
     else{
       //Else is it a must-contain?
       if (/^[\+]/.test(strInput)){
         var term = strInput.substring(1).toLowerCase();
-        this.terms.push({str: strInput.substring(1), stem: this.stemmer.stem(term), type: MUST_CONTAIN});
+        this.terms.push({str: strInput.substring(1), stem: this.stemmer.stem(term), capFirst: startsWithCap, type: MUST_CONTAIN});
       }
       else{
       //Else is it a must-not-contain?
         if (/^[\-]/.test(strInput)){
           var term = strInput.substring(1).toLowerCase();
-          this.terms.push({str: strInput.substring(1), stem: this.stemmer.stem(term), type: MUST_NOT_CONTAIN});
+          this.terms.push({str: strInput.substring(1), stem: this.stemmer.stem(term), capFirst: startsWithCap, type: MUST_NOT_CONTAIN});
         }
         else{
         //Else may-contain.
           var term = strInput.toLowerCase();
-          this.terms.push({str: strInput, stem: this.stemmer.stem(term), type: MAY_CONTAIN});
+          this.terms.push({str: strInput, stem: this.stemmer.stem(term), capFirst: startsWithCap, type: MAY_CONTAIN});
         }
 
       }
