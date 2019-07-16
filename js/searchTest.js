@@ -5,7 +5,7 @@ var Sch;
 
 var searchQueryTests = [
   'appearance',
-  '+yellow  -red "two colours"  Green'
+  '+yellow  -red "two colours" better  Green ambiguous'
 ];
 
 function setupTests(){

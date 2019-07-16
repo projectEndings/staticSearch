@@ -204,6 +204,9 @@ class StaticSearch{
     strSearch = strSearch.replace(/[“”]/g, '"');
     strSearch = strSearch.replace(/[‘’‛]/g, "'");
 
+    //Strip out all other punctuation
+    strSearch = strSearch.replace(/[\.',!@#$%\^&*]+/, '');
+
     //If we're not supporting phrasal searches, get rid of double quotes.
     if (!this.allowPhrasal){
       strSearch = strSearch.replace(/"/g, '');
@@ -389,9 +392,10 @@ class StaticSearch{
 //Set off fetch operations for the things we don't have yet.
         for (i=0, imax=tokensToFind.length; i<imax; i++){
 
-//We will add an empty entry for anything that's not found, so we don't
-//have to retrieve it again.
+//We will first add an empty index so that if nothing is found, we won't need
+//to search again.
           emptyIndex = {'token': tokensToFind[i], 'instances': []}; //used as return value when nothing retrieved.
+          self.tokenFound(emptyIndex);
 
 //Figure out whether we're retrieving a lower-case or an upper-case token.
           jsonSubfolder = (tokensToFind[i].toLowerCase() == tokensToFind[i])? 'lower/' : 'upper/';
@@ -417,27 +421,22 @@ class StaticSearch{
 //then we ask for response.json(), which is itself a promise, to which we add a .then to store the data.
                   return response.json().then(function(data){ self.tokenFound(data); }.bind(self));
                 }
-                else {
-//Otherwise, we store the pre-created emptyIndex, so we don't have to look
-//for this token again in a future search.
-                  self.tokenFound(emptyIndex);
-                }
               })
 //If something goes wrong, then we again try to store an empty index
 //through the notFound function.
 //This is not really necessary -- we could call the found method
 //instead -- but we may want to do better debugging in the future.
-              .catch(function(e, token){
-                console.log('Failed to retrieve ' + token + ': ' + e);
-                self.tokenNotFound(token);
-              }.bind(self, tokensToFind[i]));
+              .catch(function(e){
+                console.log('Error attempting to retrieve ' + tokensToFind[i] + ': ' + e);
+                return function(emptyIndex){self.tokenFound(emptyIndex);}.bind(self, emptyIndex);
+              }.bind(self));
             }
 
 //Now set up a Promise.all to fire the rest of the work when all fetches have
 //completed or failed.
         Promise.all(promises).then(function(values) {
-          self.processResults();
-        }.bind(self));
+          this.processResults();
+        }.bind(this));
       }
   //Otherwise we can just do the search with the index data we already have.
       else{
@@ -469,20 +468,6 @@ class StaticSearch{
   }
 
 /**
-  * @function StaticSearch~tokenNotFound
-  * @description When a request for a JSON file for a specific
-  *              token results in no retrieval, we store an empty
-  *              item so that we don't need to check again. We can
-  *              also use this function for debugging.
-  * @param token {String} the token not found.
-  */
-  tokenNotFound(token){
-    if (!this.index.hasOwnProperty(token)){
-      this.index[token] = {'token': token, 'instances': []};
-    }
-  }
-
-/**
   * @function StaticSearch~processResults
   * @description When we are satisfied that all relevant search data
   *              has been retrieved and added to the index, this
@@ -493,6 +478,7 @@ class StaticSearch{
   processResults(){
     try{
       console.log(JSON.stringify(this.index));
+      console.log(Object.keys(this.index).toString());
 //TODO.
       return true;
     }
