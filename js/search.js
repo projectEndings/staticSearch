@@ -450,8 +450,13 @@ class StaticSearch{
 
 /**
   * @function StaticSearch~tokenFound
-  * @description When a request for a JSON file for a specific
-  *              token results in a JSON file with data, we store
+  * @description Before a request for a JSON file is initially made,
+  *              an empty index is stored, indexed under the token
+  *              which is being searched, so that whether or not we
+  *              successfully retrieve data, we won't have to try
+  *              again in a subsequent search in the same session.
+  *              Then, when a request for a JSON file for a specific
+  *              token results in a JSON file with data, we overwrite
   *              the data in the index, indexed under the token.
   *              Sometimes the data coming in may be an instance
   *              of an empty index, if the retrieval code knows it
