@@ -68,10 +68,7 @@
                     then use that as the grouping-key; otherwise,
                     use the document uri-->
                 <xsl:for-each-group select="current-group()" 
-                    group-by="
-                    if (every $h in ancestor::html satisfies $h[@id]) 
-                    then ancestor::html/@id 
-                    else document-uri(/)">
+                    group-by="document-uri(/)">
                   
                     
                     <!--Sort the documents so that the document with the most number of this hit comes first-->
@@ -80,21 +77,43 @@
                         <xsl:message><xsl:value-of select="$term"/>: Processing <xsl:value-of select="current-grouping-key()"/> (<xsl:value-of select="position()"/> / <xsl:value-of select="count(current-group())"/>)</xsl:message>
                     </xsl:if>
               
-                    
-                    <!--Current grouping key = the document id (or URI)-->
-                    <xsl:variable name="docId" select="current-grouping-key()"/>
-                    
                     <!--The document that we want to process will always be the ancestor html of 
                         any item of the current-group()-->
-                    <xsl:variable name="thisDoc" select="current-group()[1]/ancestor::html"/>
+                    <xsl:variable name="thisDoc" 
+                        select="current-group()[1]/ancestor::html"
+                        as="element(html)"/>
+                    
+                    <!--Now the document ID, which we've created (if necessary) in the 
+                        tokenization step-->
+                    <xsl:variable name="docId" select="$thisDoc/@id" as="xs:string"/>
+                    
+                    <!--Now we get the document title:
+                    
+                    If there is something usable in the title, then use that;
+                    otherwise, just use the document id as the title
+                    -->
+                    <xsl:variable name="docTitle" 
+                        select="
+                        let $t := string-join($thisDoc//head/title[1]/descendant::text(),'') 
+                        return 
+                            if (normalize-space(string-join($t,'')) ne '') 
+                            then $t 
+                            else $docId"
+                    />
+                    
+                    <!--And the relative URI from the document, which is to be used
+                        for linking from the KWIC to the document. We've created this
+                        already in the tokenization stage and stored it in a custom
+                        data-attribute-->
+                    <xsl:variable name="relativeUri" 
+                        select="$thisDoc/@data-staticSearch-relativeUri"
+                        as="xs:string"/>
                     
                     <!--Now get the spans, using the declared key-->
                     <xsl:variable name="spans" select="current-group()" as="element(span)+"/>
                     
                     
-                    <!--We assume the docTitle is in the head/title element;
-                    TODO: Make this configurable-->
-                    <xsl:variable name="docTitle" select="$thisDoc/head/title[1]"/>
+           
                     
                     <!--Now create the XPATH map, which will become a JSON-->
                     <map xmlns="http://www.w3.org/2005/xpath-functions">
@@ -104,20 +123,13 @@
                         <string key="docTitle">
                             <xsl:value-of select="$docTitle"/>
                         </string>
+                        <string key="docUri">
+                            <xsl:value-of select="$relativeUri"/>
+                        </string>
                         
                         <number key="count">
                             <xsl:value-of select="count($spans)"/>
                         </number>
-                        
-                     <!--   <!-\-This "forms" array contains all of the various forms
-                            that this tokenized string takes -\->
-                        <array key="forms">
-                            
-                            <xsl:for-each select="distinct-values($spans/text())">
-                             
-                            </xsl:for-each>
-                        </array>
-                        -->
                         
                         <xsl:if test="$phrasalSearch or $createContexts">
                             <array key="contexts">
@@ -143,11 +155,6 @@
                                         <string key="context"><xsl:value-of select="hcmc:returnContext(.)"/></string>
                                         <number key="weight"><xsl:value-of select="hcmc:returnWeight(.)"/></number>
                                     </map>
-                                    <!--<array>
-                                        <string></string>
-                                        <string><xsl:value-of select="hcmc:returnContext(.)"/></string>
-                                        <number><xsl:value-of select="hcmc:returnWeight(.)"/></number>
-                                    </array>-->
                                 </xsl:for-each>
                             </array>
                         </xsl:if>
@@ -240,15 +247,23 @@
         <xsl:param name="span"/>
         <xsl:sequence select="if ($span/ancestor::*[@data-staticSearch-weight]) then $span/ancestor::*[@data-staticSearch-weight][1]/@data-staticSearch-weight/xs:integer(.) else 1"/>
     </xsl:function>
-    
-    <xs:function name="hcmc:getPrecedingText" as="xs:string">
-        <xsl:param name="node"/>
-        <xsl:param name="startString"/>
+
+    <xsl:function name="hcmc:getDocTitle">
+        <xsl:param name="docNode"/>
+        <xsl:variable name="titleEl" select="$docNode//head/title[1]" as="element()?"/>
         <xsl:choose>
-            
+            <xsl:when test="exists($titleEl) 
+                and normalize-space(string-join($titleEl/descendant::text(),'')) ne ''">
+                <xsl:value-of select="normalize-space(string-join($titleEl/descendant::text(),''))"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$docNode/@id"/>
+            </xsl:otherwise>
         </xsl:choose>
-        
-    </xs:function>
+    </xsl:function>
+
+    
+    
     
     
     

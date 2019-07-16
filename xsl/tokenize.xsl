@@ -53,17 +53,32 @@
         <xsl:message>Found <xsl:value-of select="count($docs)"/> documents to process...</xsl:message>
         <xsl:call-template name="echoParams"/>
         <xsl:for-each select="$docs">
-            <xsl:variable name="fn" select="tokenize(document-uri(),'/')[last()]" as="xs:string"/>
-            <xsl:variable name="basename" select="replace($fn, $docRegex, '$1')"/>
-            <xsl:variable name="extension" select="replace($fn,$docRegex,'$2')"/>
-            <xsl:variable name="cleanedOutDoc" select="concat($tempDir,$basename,'_cleaned',$extension)"/>
-            <xsl:variable name="contextualizedOutDoc" select="concat($tempDir,$basename,'_contextualized',$extension)"/>
-            <xsl:variable name="weightedOutDoc" select="concat($tempDir,$basename,'_weighted',$extension)"/>
-            <xsl:variable name="tokenizedOutDoc" select="concat($tempDir,$basename,'_tokenized',$extension)"/>
+            
+            <!--First, get the URI-->
+            <xsl:variable name="uri" select="xs:string(document-uri(.))" as="xs:string"/>
+            
+            <!--Now find the relative uri from the root:
+            this is the full URI minus the collection dir.-->
+            
+            <xsl:variable name="relativeUri" select="substring-after($uri,$collectionDir)" as="xs:string"/>
+            
+            <!--This is the IDENTIFIER for the static search, which is just the relative URI with some stuff
+             could all conceivably be files in the system, all of which need to be handled properly--> 
+            
+            <xsl:variable name="searchIdentifier" select="replace($relativeUri,'\.x?html?$','') => replace('\s+|\\|/|\.','_')" as="xs:string"/>
+
+            
+            <xsl:variable name="cleanedOutDoc" select="concat($tempDir,$searchIdentifier,'_cleaned.html')"/>
+            <xsl:variable name="contextualizedOutDoc" select="concat($tempDir,$searchIdentifier,'_contextualized.html')"/>
+            <xsl:variable name="weightedOutDoc" select="concat($tempDir,$searchIdentifier,'_weighted.html')"/>
+            <xsl:variable name="tokenizedOutDoc" select="concat($tempDir,$searchIdentifier,'_tokenized.html')"/>
             <xsl:message>Tokenizing <xsl:value-of select="document-uri()"/></xsl:message>
             
             <xsl:variable name="cleaned">
-                <xsl:apply-templates mode="clean"/>
+                <xsl:apply-templates mode="clean">
+                    <xsl:with-param name="relativeUri" select="$relativeUri" tunnel="yes"/>
+                    <xsl:with-param name="searchIdentifier" select="$searchIdentifier" tunnel="yes"/>
+                </xsl:apply-templates>
             </xsl:variable>
             
             <xsl:variable name="contextualized">
@@ -102,6 +117,31 @@
      CLEANED TEMPLATES
       ****************************************************-->
     
+    <!--This template matches the root HTML element with some parameters
+        calculated from before for adding some identifying attributes-->
+    <xsl:template match="html" mode="clean">
+        <xsl:param name="relativeUri" tunnel="yes" as="xs:string"/>
+        <xsl:param name="searchIdentifier" tunnel="yes" as="xs:string"/>
+        <xsl:copy>
+            <!--Apply templates to all of the attributes on the HTML element
+                EXCEPT the id, which we might just duplicate or we might fill in-->
+            <xsl:apply-templates select="@*[not(local-name()='id')]" mode="#current"/>
+            
+            <!--Now (potentially re-)make the id, either using the declared value
+                or an inserted value-->
+            <xsl:attribute name="id" select="if (@id) then @id else $searchIdentifier"/>
+            
+            <!--And create a relativeUri in the attribute, so we know where to point
+                things if ids and filenames don't match or if nesting-->
+            <xsl:attribute name="data-staticSearch-relativeUri" select="$relativeUri"/>
+            
+            <!--And process nodes normally-->
+            <xsl:apply-templates select="node()" mode="#current"/>
+        </xsl:copy>
+    </xsl:template>
+    
+    
+    
     <!--Basic template to strip away extraneous tags around things we don't care about-->
     <!--Note that this template is overriden with any XPATHS configured in the config file-->
     <xsl:template match="span | br | wbr | em | b | i | a" mode="clean">
@@ -117,13 +157,13 @@
         <xsl:value-of select="replace(.,string-join(($curlyAposOpen,$curlyAposClose),'|'), $straightSingleApos) => replace(string-join(($curlyDoubleAposOpen,$curlyDoubleAposClose),'|'),$straightDoubleApos)"/>
     </xsl:template>
     
-    <xsl:template match="*[@lang]" mode="clean" priority="1">
-        
+    <xsl:template match="*[@lang][ancestor::body]" mode="clean" priority="1">
         <xsl:copy>
             <xsl:apply-templates select="@*|node()" mode="#current"/>
         </xsl:copy>
     </xsl:template>
     
+
     
     <!--RATIONALIZED TEMPLATES-->
     
