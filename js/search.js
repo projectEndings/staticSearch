@@ -177,7 +177,8 @@ class StaticSearch{
     var result = false; //default.
     if (this.parseSearchQuery()){
       if (this.writeSearchReport()){
-          result = true;
+        this.populateIndex();
+        result = true;
       }
     }
     return result;
@@ -350,7 +351,7 @@ class StaticSearch{
 
 /**
   * @function StaticSearch~populateIndex
-  * @description this is passed an array of tokens, and its job is
+  * @description The task of this function is basically
   * to ensure that the index is ready to handle a search with
   * those tokens. The index is deemed ready when either a) the
   * JSON file for that token has been retrieved and its contents
@@ -360,23 +361,30 @@ class StaticSearch{
   *
   * The function works with fetch and promises, and its final
   * .then() calls the processResults function.
-  * @param {Array} arrTokens An array of tokens.
   */
-  populateIndex(arrTokens){
-    var i, imax, tokensToFind = [], promises = [], emptyIndex;
+  populateIndex(){
+    var i, imax, tokensToFind = [], promises = [], emptyIndex, jsonSubfolder;
 //We need a self pointer because this will go out of scope.
     var self = this;
     try{
   //For each token in the search string
-      for (i=0, imax=this.arrTokens.length; i<imax; i++){
+      for (i=0, imax=this.terms.length; i<imax; i++){
   //Now check whether we already have an index entry for this token
-        if (!this.index.hasOwnProperty(this.arrTokens[i])){
+        if (!this.index.hasOwnProperty(this.terms[i].stem)){
   //If not, add it to the array of tokens we want to retrieve.
-          tokensToFind.push(this.arrTokens[i]);
+          tokensToFind.push(this.terms[i].stem);
+        }
+        if (this.terms[i].capFirst){
+          if (!this.index.hasOwnProperty(this.terms[i].str)){
+    //If not, add it to the array of tokens we want to retrieve.
+            tokensToFind.push(this.terms[i].str);
+          }
         }
       }
       //If we do need to retrieve JSON index data, then do it
       if (tokensToFind.length > 0){
+
+        console.log(JSON.stringify(tokensToFind));
 
 //Set off fetch operations for the things we don't have yet.
         for (i=0, imax=tokensToFind.length; i<imax; i++){
@@ -385,9 +393,12 @@ class StaticSearch{
 //have to retrieve it again.
           emptyIndex = {'token': tokensToFind[i], 'instances': []}; //used as return value when nothing retrieved.
 
+//Figure out whether we're retrieving a lower-case or an upper-case token.
+          jsonSubfolder = (tokensToFind[i].toLowerCase() == tokensToFind[i])? 'lower/' : 'upper/';
+
 //We create an array of fetches to get the json file for each token,
 //assuming it's there.
-          promises[i] = fetch(this.jsonDirectory + tokensToFind[i] + '.json', {
+          promises[i] = fetch(self.jsonDirectory + jsonSubfolder + tokensToFind[i] + '.json', {
                               credentials: 'same-origin',
                               cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
                               headers: {
@@ -425,8 +436,8 @@ class StaticSearch{
 //Now set up a Promise.all to fire the rest of the work when all fetches have
 //completed or failed.
         Promise.all(promises).then(function(values) {
-          this.processResults();
-        }.bind(this));
+          self.processResults();
+        }.bind(self));
       }
   //Otherwise we can just do the search with the index data we already have.
       else{
@@ -450,7 +461,7 @@ class StaticSearch{
   */
   tokenFound(data){
     try{
-      this,index[data.token] = data;
+      this.index[data.token] = data;
     }
     catch(e){
       console.log('ERROR: ' + e.message);
@@ -467,7 +478,7 @@ class StaticSearch{
   */
   tokenNotFound(token){
     if (!this.index.hasOwnProperty(token)){
-      this.index[token] = {'token': tokensToFind[i], 'instances': []};
+      this.index[token] = {'token': token, 'instances': []};
     }
   }
 
@@ -481,6 +492,7 @@ class StaticSearch{
   */
   processResults(){
     try{
+      console.log(JSON.stringify(this.index));
 //TODO.
       return true;
     }
