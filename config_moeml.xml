@@ -23,11 +23,14 @@
       <rule xpath="div[contains-token(@class,'relatedInfo')]" weight="0"/>
       <rule xpath="div[contains-token(@class,'breadCrumbs')]" weight="0"/>
       <rule xpath="a[@href]" weight="2"/>
-      <rule xpath="body[ancestor::html[@id=('BIBL1','PERS1','azindex','spelling_variants','agas','boilerplate','includes','missing','rescinded')]]" weight="0"/>
+      <rule xpath="body[ancestor::html[@id=('BIBL1','PERS1','azindex','spelling_variants','agas','boilerplate','includes','missing','rescinded','regnal_calendar')]]" weight="0"/>
       <rule xpath="script" weight="0"/>
       <rule xpath="td[matches(@title,'([sS]tatus)|(Agas)')]" weight="0"/>
       <rule xpath="div[@class='egXML']" weight="0"/>
       <rule xpath="code" weight="0"/>
    </rules>
+   <contexts>
+      <rule xpath="a[starts-with(@href,'#spelling_variant')]"/>
+   </contexts>
   
 </config>

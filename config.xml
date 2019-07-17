@@ -3,7 +3,7 @@
     <params>
         <baseDir>.</baseDir>
         <collectionDir>test</collectionDir>
-        <recurse>false</recurse>
+        <recurse>true<!--Need to set recurse to true for the test--></recurse>
         <tempDir>temp</tempDir>
         <outDir>site/js/</outDir>
         <createContexts>true</createContexts>
@@ -16,6 +16,8 @@
         <stopwordsFile>xsl/english_stopwords.txt</stopwordsFile>
         <dictionaryFile>xsl/english_words.txt</dictionaryFile>
         <replacementsFile>xsl/replacements.txt</replacementsFile>
+        <searchPage><!--Here is where we can point to a pre-existing search page--></searchPage>
+        <searchInputId><!--The id of the search input to look for in the search page--></searchInputId>
     </params>
     
     <rules>
