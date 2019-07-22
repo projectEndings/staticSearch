@@ -18,6 +18,7 @@
 /* jshint strict:false */
 /* jshint esversion: 6*/
 /* jshint strict: global*/
+/* jshint browser: true */
 
 "use strict";
 
@@ -193,6 +194,7 @@ class StaticSearch{
   * @return {Boolean} true if terms found, otherwise false.
   */
   parseSearchQuery(){
+    var i;
     //Clear anything in the existing array.
     this.terms = [];
     var strSearch = this.queryBox.value;
@@ -220,7 +222,7 @@ class StaticSearch{
     var qCount = 0;
     var lastQPos = -1;
     var tmp = '';
-    for (var i=0; i<strSearch.length; i++){
+    for (i=0; i<strSearch.length; i++){
         tmp += strSearch.charAt(i);
         if (strSearch.charAt(i) === '"'){
           qCount++;
@@ -242,7 +244,7 @@ class StaticSearch{
     //to whether you're inside a quote or not.
     var inPhrase = false;
     var strSoFar = '';
-    for (var i=0; i<strSearch.length; i++){
+    for (i=0; i<strSearch.length; i++){
       var c = strSearch.charAt(i);
       if (c === '"'){
         this.addSearchItem(strSoFar);
