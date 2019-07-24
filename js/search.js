@@ -30,10 +30,11 @@
 /**@constant MUST_CONTAIN, MUST_NOT_CONTAIN, MAY_CONTAIN, PHRASE
   * @type {Number}
   */
-  const MUST_CONTAIN         = 0;
-  const MUST_NOT_CONTAIN     = 1;
-  const MAY_CONTAIN          = 2;
-  const PHRASE               = 3;
+
+  const PHRASE               = 0;
+  const MUST_CONTAIN         = 1;
+  const MUST_NOT_CONTAIN     = 2;
+  const MAY_CONTAIN          = 3;
 
 /**
   * Components in the ss namespace that are used by default, but
@@ -55,10 +56,11 @@
   ss.captions = [];
   ss.captions['en'] = {};
   ss.captions['en'].strDocumentsFound    = 'Documents found: ';
+  ss.captions['en'][PHRASE]              = 'Exact phrase: ';
   ss.captions['en'][MUST_CONTAIN]        = 'Must contain: ';
   ss.captions['en'][MUST_NOT_CONTAIN]    = 'Must not contain: ';
   ss.captions['en'][MAY_CONTAIN]         = 'May contain: ';
-  ss.captions['en'][PHRASE]              = 'Exact phrase: ';
+
 
 /**
   * @property ss.stopwords
@@ -262,6 +264,9 @@ class StaticSearch{
       }
     }
     this.addSearchItem(strSoFar);
+    //We always want to handle the terms in order of
+    //precedence, starting with phrases.
+    this.terms.sort(function(a, b){return a.type - b.type;});
     console.log(JSON.stringify(this.terms));
     return (this.terms.length > 0);
   }
@@ -337,6 +342,8 @@ class StaticSearch{
         }
         arrOutput[this.terms[i].type].push('"' + this.terms[i].str + '"');
       }
+      arrOutput.sort(function(a, b){return a - b;})
+      //TODO: WHAT FOLLOWS IS BROKEN. Array length is not the same as array max, REDO.
       var d = document.createElement('div');
       d.setAttribute('id', 'searchReport')
       for (i=arrOutput.length-1; i>=0; i--){
