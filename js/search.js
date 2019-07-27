@@ -27,7 +27,7 @@
   * I would like to put these inside the class, but I can't
   * find an elegant way to do that.
   */
-/**@constant MUST_CONTAIN, MUST_NOT_CONTAIN, MAY_CONTAIN, PHRASE
+/**@constant PHRASE, MUST_CONTAIN, MUST_NOT_CONTAIN, MAY_CONTAIN
   * @type {Number}
   */
 
@@ -35,6 +35,13 @@
   const MUST_CONTAIN         = 1;
   const MUST_NOT_CONTAIN     = 2;
   const MAY_CONTAIN          = 3;
+
+/**@constant arrTermTypes
+   * @type {Array}
+   * @description array of PHRASE, MUST_CONTAIN, MUST_NOT_CONTAIN, MAY_CONTAIN
+   *              used so we can easily iterate through them.
+   */
+  const arrTermTypes = [PHRASE, MUST_CONTAIN, MUST_NOT_CONTAIN, MAY_CONTAIN];
 
 /**
   * Components in the ss namespace that are used by default, but
@@ -334,24 +341,25 @@ class StaticSearch{
     try{
       var sp = document.querySelector('#searchReport');
       if (sp){sp.parentNode.removeChild(sp);}
-      var arrOutput = new Array();
-      var i;
+      var arrOutput = [];
+      var i, d, p, t;
       for (i=0; i<this.terms.length; i++){
         if (!arrOutput[this.terms[i].type]){
-          arrOutput[this.terms[i].type] = new Array();
+          arrOutput[this.terms[i].type] = {type: this.terms[i].type, terms: []};
         }
-        arrOutput[this.terms[i].type].push('"' + this.terms[i].str + '"');
+        arrOutput[this.terms[i].type].terms.push('"' + this.terms[i].str + '"');
       }
-      arrOutput.sort(function(a, b){return a - b;})
-      //TODO: WHAT FOLLOWS IS BROKEN. Array length is not the same as array max, REDO.
-      var d = document.createElement('div');
-      d.setAttribute('id', 'searchReport')
-      for (i=arrOutput.length-1; i>=0; i--){
-        var p = document.createElement('p');
-        var t = document.createTextNode(this.captionSet[i] + arrOutput[i].join(', '));
+      arrOutput.sort(function(a, b){return a.type - b.type;})
+
+      d = document.createElement('div');
+      d.setAttribute('id', 'searchReport');
+
+      arrOutput.forEach((obj)=>{
+        p = document.createElement('p');
+        t = document.createTextNode(this.captionSet[obj.type] + obj.terms.join(', '));
         p.appendChild(t);
         d.appendChild(p);
-      }
+      });
       this.resultsDiv.insertBefore(d, this.resultsDiv.firstChild);
       return true;
     }
