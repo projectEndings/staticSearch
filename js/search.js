@@ -509,5 +509,88 @@ class StaticSearch{
       return false;
     }
   }
-
 }
+
+/** @class SSResultSet
+  * @description This is the class that handles the building of the
+  * search result set, and then its display, paged or not. An
+  * instance of this class is instantiated by the host StaticSearch
+  * class. It manages search hits using a Map(), with document ids
+  * forming the keys, and values being objects based on the JSON
+  * objects returned from the search index queries.
+  */
+  class SSResultSet{
+    constructor(kwicLimit){
+      try{
+        this.mapDocs = new Map([]);
+//The maximum allowed number of keyword-in-context results to be
+//included in output.
+        this.kwicLimit = kwicLimit;
+      }
+      catch(e){
+        console.log('ERROR: ' + e.message);
+      }
+    }
+/**
+  * @function SSResultSet~has
+  * @description Provides access to the Map.prototype.has() function
+  * to check whether a document is already in the result set.
+  * @param {String} docId The id of the document to check, which will
+  * be the key to the entry in the map.
+  * @return {Boolean} true if this document is in the map; false if not.
+  */
+    has(docId){
+      return this.mapDocs.has(docId);
+    }
+/**
+  * @function SSResultSet~set
+  * @description Provides access to the Map.prototype.set() function
+  * to add data to the result set. This first checks whether there
+  * is already an entry for this docId, and if there is, it merges the
+  * data instead; otherwise, it sets the data.
+  * @param {String} docId The id of the document to check, which will
+  * be the key to the entry in the map.
+  * @param {Object} data The structured data from the query index.
+  * @return {Boolean} true if successful, false if not.
+  */
+    set(docId, data){
+      try{
+        if (this.mapDocs.has(docId)){
+          this.merge(docId, data);
+        }
+        else{
+          this.mapDocs.set(docId, data);
+        }
+      }
+      catch(e){
+        console.log('ERROR: ' + e.message);
+        return false;
+      }
+    }
+/**
+  * @function SSResultSet~merge
+  * @description Merges an incoming dataset for a document id with an
+  * existing entry for that docId. This involves two steps: first,
+  * increment the score for the document, and second, add any keyword-
+  * in-context strings from the new item up to the limit of kwics allowed.
+  * @param {String} docId The id of the document to check, which will
+  * be the key to the entry in the map.
+  * @param {Object} data The structured data from the query index.
+  * @return {Boolean} true if successful, false if not.
+  */
+    merge(docId, data){
+      try{
+        if (!this.mapDocs.has(docId)){
+          this.mapDocs.set(docId, data);
+        }
+        else{
+//TODO: FINISH THIS FUNCTION!!!!
+
+        }
+      }
+      catch(e){
+        console.log('ERROR: ' + e.message);
+        return false;
+      }
+    }
+  }
