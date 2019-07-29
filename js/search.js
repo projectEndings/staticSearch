@@ -586,7 +586,26 @@ class StaticSearch{
         else{
 //TODO: FINISH THIS FUNCTION!!!!
 
+
+
         }
+        return true;
+      }
+      catch(e){
+        console.log('ERROR: ' + e.message);
+        return false;
+      }
+    }
+/**
+  * @function SSResultSet~delete
+  * @description Deletes an existing entry from the map.
+  * @param {String} docId The id of the document to delete.
+  * @return {Boolean} true if the item existed and was successfully
+  * deleted, false if not, or if there is an error.
+  */
+    delete(docId){
+      try{
+        return this.mapDocs.delete(docId);
       }
       catch(e){
         console.log('ERROR: ' + e.message);
