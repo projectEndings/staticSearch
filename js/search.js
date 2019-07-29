@@ -612,4 +612,24 @@ class StaticSearch{
         return false;
       }
     }
+/**
+  * @function SSResultSet~deleteArray
+  * @description Deletes a collection of existing entries from the map.
+  * @param {Array.<String>} arrDocIds The ids of the document to delete.
+  * @return {Boolean} true if any of the items existed and was successfully
+  * deleted, false if not, or if there is an error.
+  */
+    delete(arrDocIds){
+      var result = false;
+      try{
+        for (var i=0; i<arrDocIds.length; i++){
+          result = result || this.mapDocs.delete(arrDocIds[i]);
+        }
+        return result;
+      }
+      catch(e){
+        console.log('ERROR: ' + e.message);
+        return false;
+      }
+    }
   }
