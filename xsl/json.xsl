@@ -21,6 +21,34 @@
     
     <xsl:template match="/">
         <xsl:call-template name="createJson"/>
+        <xsl:call-template name="createStopwordsJson"/>
+    </xsl:template>
+    
+    <xsl:template name="createStopwordsJson">
+        <xsl:message>Creating stopwords array...</xsl:message>
+        <xsl:result-document href="{$outDir}/stopwords.json" method="text">
+            <xsl:variable name="map">
+                <xsl:apply-templates select="$stopwordsFileXml" mode="dictToArray"/>
+            </xsl:variable>
+            <xsl:value-of select="xml-to-json($map, map{'indent': true()})"/>
+        </xsl:result-document>
+    </xsl:template>
+    
+    <!--Templates for converting the HCMC words files
+        to a simple array for use in the Javascript;
+        these are in templates in case we need to do
+        any more creation of a words file into a JSON-->
+    
+    <xsl:template match="hcmc:words" mode="dictToArray">
+        <map:map>
+            <map:array key="words">
+                <xsl:apply-templates mode="#current"/>
+            </map:array>
+        </map:map>
+    </xsl:template>
+    
+    <xsl:template match="hcmc:word" mode="dictToArray">
+        <map:string><xsl:value-of select="."/></map:string>
     </xsl:template>
     
     <xsl:template name="createJson">
