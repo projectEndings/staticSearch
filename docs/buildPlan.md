@@ -77,9 +77,9 @@ are added to the configuration if they haven't been overridden by the basic conf
 
 #### STEPS:
 
-    1. Run config against <xmlvalidate> to ensure it's properly formed
-    1. Run config against the RNG using Jing
-    1. Run config against the Schematron
+1. Run config against <xmlvalidate> to ensure it's properly formed
+1. Run config against the RNG using Jing
+1. Run config against the Schematron
 
 
 ### TASK: `makeConfigAnt`
@@ -107,8 +107,8 @@ suite that outlines if there are any problems or things that can be fixed up in 
 
 #### STEPS:
 
-    1. Run the collection fileset against the <xmlvalidate> to ensure that they are well-formed
-    1. Take the collection fileset and run against the XHTML Static Search diagnostics suite to 
+1. Run the collection fileset against the <xmlvalidate> to ensure that they are well-formed
+1. Take the collection fileset and run against the XHTML Static Search diagnostics suite to 
 flag any potential problems, et cetera. DECISION: Should this return a formatted report or should it
 just report messages to sdout and bail on any egregious errors?
 
