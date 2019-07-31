@@ -107,6 +107,7 @@ class StaticSearch{
   constructor(){
     //Essential query text box.
     try {
+      var tmp;
       this.queryBox =
            document.querySelector("input#searchQuery[type='text']");
       if (!this.queryBox){
@@ -136,7 +137,7 @@ class StaticSearch{
       //Configuration for phrasal searches if found.
       //Default
       this.allowPhrasal = true;
-      var tmp = document.querySelector("form[data-allowPhrasal]");
+      tmp = document.querySelector("form[data-allowPhrasal]");
       if (tmp && !/(y|Y|yes|true|True|1)/.test(tmp.getAttribute('data-AllowPhrasal'))){
         this.allowPhrasal = false;
       }
@@ -168,6 +169,28 @@ class StaticSearch{
       //Boolean: should this instance report the details of its search
       //in human-readable form?
       this.showSearchReport = false;
+
+      //How many results should be shown per page?
+      //Default
+      this.resultsPerPage = 10;
+      tmp = document.querySelector("form[data-resultsPerPage]");
+      if (tmp){
+        var parsed = parseInt(tmp.getAttribute('data-resultsPerPage'));
+        if (!isNaN(parsed)){this.resultsPerPage = parsed;}
+      }
+
+      //How many keyword in context strings should be included
+      //in search results?
+      //Default
+      this.kwicLimit = 10;
+      tmp = document.querySelector("form[data-kwicLimit]");
+      if (tmp){
+        var parsed = parseInt(tmp.getAttribute('data-kwicLimit'));
+        if (!isNaN(parsed)){this.kwicLimit = parsed;}
+      }
+
+      //Result handling object
+      this.resultSet = new SSResultSet(this.kwicLimit);
     }
     catch(e){
       console.log('ERROR: ' + e.message);
