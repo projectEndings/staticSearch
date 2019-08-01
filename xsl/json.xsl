@@ -154,10 +154,15 @@
                         <string key="docUri">
                             <xsl:value-of select="$relativeUri"/>
                         </string>
-                        
+
                         <number key="count">
                             <xsl:value-of select="count($spans)"/>
                         </number>
+                        
+                        <number key="weight">
+                            <xsl:value-of select="sum(for $s in $spans return hcmc:returnWeight($s))"/>
+                        </number>
+                        
                         
                         <xsl:if test="$phrasalSearch or $createContexts">
                             <array key="contexts">
