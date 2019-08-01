@@ -655,4 +655,22 @@ class StaticSearch{
         return false;
       }
     }
+/**
+  * @function SSResultSet~sortByScoreDesc
+  * @description Sorts the collection of documents so that the highest
+  *              scoring items come at the top.
+  * @return {Boolean} true if successful, false on error.
+  */
+    sortByScoreAsc(){
+      try{
+        var s = this.mapDocs.size;
+        this.mapDocs = new Map([...this.mapDocs.entries()].sort((a, b) => a[1].count < b[1].count));
+        return (s === this.mapDocs.size);
+      }
+      catch(e){
+        console.log('ERROR: ' + e.message);
+        return false;
+      }
+    }
+
   }
