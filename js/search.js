@@ -664,7 +664,7 @@ class StaticSearch{
     sortByScoreAsc(){
       try{
         var s = this.mapDocs.size;
-        this.mapDocs = new Map([...this.mapDocs.entries()].sort((a, b) => a[1].count < b[1].count));
+        this.mapDocs = new Map([...this.mapDocs.entries()].sort((a, b) => a[1].score < b[1].score));
         return (s === this.mapDocs.size);
       }
       catch(e){
