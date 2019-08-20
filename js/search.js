@@ -607,10 +607,13 @@ class StaticSearch{
           this.mapDocs.set(docId, data);
         }
         else{
-//TODO: FINISH THIS FUNCTION!!!!
-
-
-
+          var currEntry = this.mapDocs.get(docId);
+          currEntry.score += data.score;
+          let i = 0;
+          while ((currEntry.contexts.length < this.kwicLimit)&&(i < data.contexts.length)){
+            currEntry.contexts.push(data.contexts[i]);
+            i++;
+          }
         }
         return true;
       }
