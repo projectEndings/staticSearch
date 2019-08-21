@@ -393,6 +393,25 @@ class StaticSearch{
   }
 
 /**
+  * @function StaticSearch~getTermsByType
+  * @description This method returns an array of indexes in the
+  * StaticSearch.terms array, being the terms which match the
+  * supplied term type (PHRASE, MUST_CONTAIN etc.).
+  * @param {integer} termType One of PHRASE, MUST_CONTAIN, MUST_NOT_CONTAIN,
+                              MAY_CONTAIN.
+  * @return {Array} An array of zero or more integers.
+  */
+  getTermsByType(termType){
+    var result = [];
+    for (var i=0; i<this.terms.length; i++){
+      if (this.terms[i].type == termType){
+        result.push(i);
+      }
+    }
+    return result;
+  }
+
+/**
   * @function StaticSearch~populateIndex
   * @description The task of this function is basically
   * to ensure that the index is ready to handle a search with
@@ -522,8 +541,60 @@ class StaticSearch{
   */
   processResults(){
     try{
+//Debugging only.
       console.log(JSON.stringify(this.index));
       console.log(Object.keys(this.index).toString());
+
+//Start by clearing any previous results.
+      this.resultSet.clear();
+
+//The sequence of result processing is highly dependent on the
+//query components entered by the user. First, we discover what
+//term types we have in the list.
+      var phrases           = this.getTermsByType(PHRASE);
+      var must_contains     = this.getTermsByType(MUST_CONTAIN);
+      var must_not_contains = this.getTermsByType(MUST_NOT_CONTAIN);
+      var may_contains      = this.getTermsByType(MAY_CONTAIN);
+
+      if (phrases.length > 0){
+//We have phrases. They take priority. Get results if there are any.
+//For each phrase we're looking for...
+        for (var phr of phrases){
+//Get the term we decided to use to retrieve index data.
+          var stem = this.terms[phr].stem;
+//Make the phrase into a regex for matching.
+          var rePhr = new Regex(this.terms[phr].stem, 'i');
+//If that term is in the index (it should be, even if it's empty, but still...)
+          if (this.index[stem]){
+//Look at each of the document instances for that term...
+            for (var inst of this.index[stem].instances){
+//Now look at each context for that instance, if any...
+              for (cntxt of inst.contexts){
+//Check whether our phrase matches that context (remembering to strip
+//out any <mark> tags)...
+                if (rePhr.test(cntxt.context.replace(/<[^>]+>/, ''))){
+//We have a candidate document for inclusion, and a candidate context.
+                  
+                }
+              }
+            }
+          }
+        }
+      }
+      else{
+        if (must_contains.length > 0){
+//We have no phrases, but we do have musts, so these are the priority.
+        }
+        else{
+          if (may_contains.length > 0){
+//We have no phrases or musts, so we fall back to mays.
+
+          }
+          else{
+            console.log('No useful search terms found.');
+          }
+        }
+      }
 //TODO.
       return true;
     }
@@ -554,6 +625,21 @@ class StaticSearch{
         console.log('ERROR: ' + e.message);
       }
     }
+
+/**
+  * @function SSResultSet~clear
+  * @description Clears all content from the result map.
+  * @return {Boolean} true if successful, false if not.
+  */
+  clear(){
+    try{
+      this.mapDocs.clear();
+    }
+    catch(e){
+      console.log('ERROR: ' + e.message);
+    }
+  }
+
 /**
   * @function SSResultSet~has
   * @description Provides access to the Map.prototype.has() function
