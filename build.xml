@@ -59,6 +59,14 @@
         <open file="${basedir}/staticSearch_report.html"/>
     </target>
     
+    <target name="makeTestCopy">
+        <copy todir="js">
+            <fileset dir="site">
+                <include name="js/**"/>
+            </fileset>
+        </copy>
+    </target>
+    
     <!--Javascript OPEN task-->
     
     <!--  This is taken with thanks from:
@@ -78,5 +86,5 @@
     ]]>
     </scriptdef>
     
-    <target name="all" depends="clean, config, tokenize, json, report"/>
+    <target name="all" depends="clean, config, tokenize, json, makeTestCopy, report"/>
 </project>
