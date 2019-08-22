@@ -107,7 +107,7 @@ class StaticSearch{
   constructor(){
     //Essential query text box.
     try {
-      var tmp;
+      let tmp;
       this.queryBox =
            document.querySelector("input#searchQuery[type='text']");
       if (!this.queryBox){
@@ -175,7 +175,7 @@ class StaticSearch{
       this.resultsPerPage = 10;
       tmp = document.querySelector("form[data-resultsPerPage]");
       if (tmp){
-        var parsed = parseInt(tmp.getAttribute('data-resultsPerPage'));
+        let parsed = parseInt(tmp.getAttribute('data-resultsPerPage'));
         if (!isNaN(parsed)){this.resultsPerPage = parsed;}
       }
 
@@ -185,7 +185,7 @@ class StaticSearch{
       this.kwicLimit = 10;
       tmp = document.querySelector("form[data-kwicLimit]");
       if (tmp){
-        var parsed = parseInt(tmp.getAttribute('data-kwicLimit'));
+        let parsed = parseInt(tmp.getAttribute('data-kwicLimit'));
         if (!isNaN(parsed)){this.kwicLimit = parsed;}
       }
 
@@ -207,7 +207,7 @@ class StaticSearch{
   * @return {Boolean} true if a search is initiated otherwise false.
   */
   doSearch(){
-    var result = false; //default.
+    let result = false; //default.
     if (this.parseSearchQuery()){
       if (this.writeSearchReport()){
         this.populateIndex();
@@ -226,10 +226,10 @@ class StaticSearch{
   * @return {Boolean} true if terms found, otherwise false.
   */
   parseSearchQuery(){
-    var i;
+    let i;
     //Clear anything in the existing array.
     this.terms = [];
-    var strSearch = this.queryBox.value;
+    let strSearch = this.queryBox.value;
     //Start by normalizing whitespace.
     strSearch = strSearch.replace(/((^\s+)|\s+$)/g, '');
     strSearch = strSearch.replace(/\s+/g, ' ');
@@ -251,9 +251,9 @@ class StaticSearch{
     }
 
     //Now delete any unmatched double quotes.
-    var qCount = 0;
-    var lastQPos = -1;
-    var tmp = '';
+    let qCount = 0;
+    let lastQPos = -1;
+    let tmp = '';
     for (i=0; i<strSearch.length; i++){
         tmp += strSearch.charAt(i);
         if (strSearch.charAt(i) === '"'){
@@ -274,10 +274,10 @@ class StaticSearch{
 
     //Now iterate through the string, paying attention
     //to whether you're inside a quote or not.
-    var inPhrase = false;
-    var strSoFar = '';
-    for (i=0; i<strSearch.length; i++){
-      var c = strSearch.charAt(i);
+    let inPhrase = false;
+    let strSoFar = '';
+    for (let i=0; i<strSearch.length; i++){
+      let c = strSearch.charAt(i);
       if (c === '"'){
         this.addSearchItem(strSoFar);
         inPhrase = !inPhrase;
@@ -316,14 +316,14 @@ class StaticSearch{
     console.log('Adding: ' + strInput);
 
     //Set a flag if it starts with a cap.
-    var firstLetter = strInput.replace(/^[\+\-]/, '').substring(0, 1);
-    var startsWithCap = (firstLetter.toLowerCase() !== firstLetter);
+    let firstLetter = strInput.replace(/^[\+\-]/, '').substring(0, 1);
+    let startsWithCap = (firstLetter.toLowerCase() !== firstLetter);
 
     //Is it a phrase?
     if (/\s/.test(strInput)){
     //We need to find the first component which is not a stopword.
-      var subterms = strInput.toLowerCase().split(/\s+/);
-      var i;
+      let subterms = strInput.toLowerCase().split(/\s+/);
+      let i;
       for (i = 0; i <= subterms.length; i++){
         if (this.stopwords.indexOf(subterms[i]) < 0){
           break;
@@ -336,18 +336,18 @@ class StaticSearch{
     else{
       //Else is it a must-contain?
       if (/^[\+]/.test(strInput)){
-        var term = strInput.substring(1).toLowerCase();
+        let term = strInput.substring(1).toLowerCase();
         this.terms.push({str: strInput.substring(1), stem: this.stemmer.stem(term), capFirst: startsWithCap, type: MUST_CONTAIN});
       }
       else{
       //Else is it a must-not-contain?
         if (/^[\-]/.test(strInput)){
-          var term = strInput.substring(1).toLowerCase();
+          let term = strInput.substring(1).toLowerCase();
           this.terms.push({str: strInput.substring(1), stem: this.stemmer.stem(term), capFirst: startsWithCap, type: MUST_NOT_CONTAIN});
         }
         else{
         //Else may-contain.
-          var term = strInput.toLowerCase();
+          let term = strInput.toLowerCase();
           this.terms.push({str: strInput, stem: this.stemmer.stem(term), capFirst: startsWithCap, type: MAY_CONTAIN});
         }
 
@@ -362,10 +362,10 @@ class StaticSearch{
   */
   writeSearchReport(){
     try{
-      var sp = document.querySelector('#searchReport');
+      let sp = document.querySelector('#searchReport');
       if (sp){sp.parentNode.removeChild(sp);}
-      var arrOutput = [];
-      var i, d, p, t;
+      let arrOutput = [];
+      let i, d, p, t;
       for (i=0; i<this.terms.length; i++){
         if (!arrOutput[this.terms[i].type]){
           arrOutput[this.terms[i].type] = {type: this.terms[i].type, terms: []};
@@ -402,8 +402,8 @@ class StaticSearch{
   * @return {Array} An array of zero or more integers.
   */
   getTermsByType(termType){
-    var result = [];
-    for (var i=0; i<this.terms.length; i++){
+    let result = [];
+    for (let i=0; i<this.terms.length; i++){
       if (this.terms[i].type == termType){
         result.push(i);
       }
@@ -551,31 +551,39 @@ class StaticSearch{
 //The sequence of result processing is highly dependent on the
 //query components entered by the user. First, we discover what
 //term types we have in the list.
-      var phrases           = this.getTermsByType(PHRASE);
-      var must_contains     = this.getTermsByType(MUST_CONTAIN);
-      var must_not_contains = this.getTermsByType(MUST_NOT_CONTAIN);
-      var may_contains      = this.getTermsByType(MAY_CONTAIN);
+      let phrases           = this.getTermsByType(PHRASE);
+      let must_contains     = this.getTermsByType(MUST_CONTAIN);
+      let must_not_contains = this.getTermsByType(MUST_NOT_CONTAIN);
+      let may_contains      = this.getTermsByType(MAY_CONTAIN);
 
       if (phrases.length > 0){
 //We have phrases. They take priority. Get results if there are any.
 //For each phrase we're looking for...
-        for (var phr of phrases){
+        for (let phr of phrases){
 //Get the term we decided to use to retrieve index data.
-          var stem = this.terms[phr].stem;
+          let stem = this.terms[phr].stem;
 //Make the phrase into a regex for matching.
-          var rePhr = new Regex(this.terms[phr].stem, 'i');
+          let rePhr = new RegExp(this.terms[phr].stem, 'i');
 //If that term is in the index (it should be, even if it's empty, but still...)
           if (this.index[stem]){
 //Look at each of the document instances for that term...
-            for (var inst of this.index[stem].instances){
+            for (let inst of this.index[stem].instances){
+//Create an array to hold the contexts
+              let currContexts = [];
 //Now look at each context for that instance, if any...
-              for (cntxt of inst.contexts){
+              for (let cntxt of inst.contexts){
 //Check whether our phrase matches that context (remembering to strip
 //out any <mark> tags)...
                 if (rePhr.test(cntxt.context.replace(/<[^>]+>/, ''))){
 //We have a candidate document for inclusion, and a candidate context.
-                  
+                  currContexts.push(cntext.context);
                 }
+              }
+//If we've found contexts, we know we have a document to add to the results.
+              if (currContexts.length > 0){
+//The resultSet object will automatically merge this data if there's already
+//an entry for the document.
+                this.resultSet.add(inst.docId, {contexts: currContexts, score: currContexts.length});
               }
             }
           }
@@ -693,7 +701,7 @@ class StaticSearch{
           this.mapDocs.set(docId, data);
         }
         else{
-          var currEntry = this.mapDocs.get(docId);
+          let currEntry = this.mapDocs.get(docId);
           currEntry.score += data.score;
           let i = 0;
           while ((currEntry.contexts.length < this.kwicLimit)&&(i < data.contexts.length)){
@@ -732,9 +740,9 @@ class StaticSearch{
   * deleted, false if not, or if there is an error.
   */
     delete(arrDocIds){
-      var result = false;
+      let result = false;
       try{
-        for (var i=0; i<arrDocIds.length; i++){
+        for (let i=0; i<arrDocIds.length; i++){
           result = result || this.mapDocs.delete(arrDocIds[i]);
         }
         return result;
@@ -752,7 +760,7 @@ class StaticSearch{
   */
     sortByScoreAsc(){
       try{
-        var s = this.mapDocs.size;
+        let s = this.mapDocs.size;
         this.mapDocs = new Map([...this.mapDocs.entries()].sort((a, b) => a[1].score < b[1].score));
         return (s === this.mapDocs.size);
       }
