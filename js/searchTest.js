@@ -5,6 +5,7 @@ var Sch;
 
 var searchQueryTests = [
   'appearance',
+  'note "a definable bit" flow specialized +context',
   '+yellow  -red "two colours" better  Green ambiguous'
 ];
 

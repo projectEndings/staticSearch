@@ -532,6 +532,22 @@ class StaticSearch{
   }
 
 /**
+  * @function StaticSearch~reportNoResults
+  * @description Reports that no results have been found.
+  *              Also optionally configures and runs a
+  *              simpler version of the current search, with
+  *              phrases tokenized, etc.
+  * @param {Boolean} trySimplerSearch a flag to determine whether
+  *              this search should be simplified and automatically
+  *              run again.
+  * @return {Boolean} true if successful, false if not.
+  */
+  reportNoResults(trySimplerSearch){
+    //TODO: NOT IMPLEMENTED YET.
+    console.log('No results. Try simpler search? ' + trySimplerSearch);
+  }
+
+/**
   * @function StaticSearch~processResults
   * @description When we are satisfied that all relevant search data
   *              has been retrieved and added to the index, this
@@ -576,17 +592,26 @@ class StaticSearch{
 //out any <mark> tags)...
                 if (rePhr.test(cntxt.context.replace(/<[^>]+>/, ''))){
 //We have a candidate document for inclusion, and a candidate context.
-                  currContexts.push(cntext.context);
+                  currContexts.push(cntxt.context);
                 }
               }
 //If we've found contexts, we know we have a document to add to the results.
               if (currContexts.length > 0){
 //The resultSet object will automatically merge this data if there's already
 //an entry for the document.
-                this.resultSet.add(inst.docId, {contexts: currContexts, score: currContexts.length});
+                this.resultSet.set(inst.docId, {contexts: currContexts, score: currContexts.length});
               }
             }
           }
+        }
+//Bail out if nothing found, and suggest a simpler search.
+        if (this.resultSet.getSize() < 1){
+          this.reportNoResults(true);
+        }
+        else{
+          console.log('Results found from phrase: ' + this.resultSet.getSize());
+//We can continue. Now we check for any must_contains.
+//DONE TO HERE.
         }
       }
       else{
@@ -716,6 +741,7 @@ class StaticSearch{
         return false;
       }
     }
+
 /**
   * @function SSResultSet~delete
   * @description Deletes an existing entry from the map.
@@ -732,6 +758,7 @@ class StaticSearch{
         return false;
       }
     }
+
 /**
   * @function SSResultSet~deleteArray
   * @description Deletes a collection of existing entries from the map.
@@ -752,6 +779,22 @@ class StaticSearch{
         return false;
       }
     }
+
+/**
+  * @function SSResultSet~getSize
+  * @description Returns the number of items in the result set.
+  * @return {integer} number of documents in the result set.
+  */
+    getSize(){
+      try{
+        return this.mapDocs.size;
+      }
+      catch(e){
+        console.log('ERROR: ' + e.message);
+        return 0;
+      }
+    }
+
 /**
   * @function SSResultSet~sortByScoreDesc
   * @description Sorts the collection of documents so that the highest
