@@ -339,8 +339,9 @@
         it does so by gathering up the text before the span and the text after the span, and then trims the length of the overall string
         to whatever the $kwicLimit ought to be.</xd:desc>
         <xd:param name="span">The span from which to return the context.</xd:param>
+        <xd:return>A string with the term included in $span tagged as a mark element.</xd:return>
     </xd:doc>
-    <xsl:function name="hcmc:returnContext">
+    <xsl:function name="hcmc:returnContext" as="xs:string">
         <xsl:param name="span" as="element(span)"/>
         
 <!--        The string term: String joining is overly cautious here.-->
@@ -433,6 +434,10 @@
         
 <!--        Now, concatenate the start snippet, the term, and the end snippet
             and then normalize the spaces (to eliminate \n etc)-->
+        
+<!--        Note that we output the serialized version of the <mark> element for simplicities sake;
+            it will be escaped in the JSON output anyway and the Javascript is able to handle the
+            escaped version of the mark element.-->
         <xsl:value-of
             select="
             string-join($startSnippet,'') || '&lt;mark&gt;' || $thisTerm || '&lt;/mark&gt;' || string-join($endSnippet,'')
@@ -450,6 +455,7 @@
         The weight of the span would be 1, and not 6.
         </xd:desc>
         <xd:param name="span">The span element for which to retrieve the weight.</xd:param>
+        <xd:return>The value of the span's weight derived from the ancestor or, if no ancestor, then 1.</xd:return>
     </xd:doc>
     <xsl:function name="hcmc:returnWeight" as="xs:integer">
         <xsl:param name="span"/>
@@ -464,16 +470,24 @@
     
     <xd:doc>
         <xd:desc><xd:ref name="hcmc:joinSubseq" type="function">hcmc:joinSubseq</xd:ref> is a simple utility function
-        for joining sequences of strings</xd:desc>
+        for joining sequences of strings.</xd:desc>
+        <xd:param name="seq">The sequence from which to derive the subset. 
+            Example: ("A", "Bob ", "fourteen", "Fred Bloggs")</xd:param>
+        <xd:param name="start">An integer that denotes the start of the subsequence. 
+            Example: 2</xd:param>
+        <xd:param name="end">An integer that denotes the end of the subsequence. 
+            Example: 4</xd:param>
+        <xd:return>A string joined version of the sequence from sequence[start] to sequence [end].
+            Example:  "BobfourteenFred Bloggs"</xd:return>
     </xd:doc>
     <xsl:function name="hcmc:joinSubseq" as="xs:string">
-        <xsl:param name="seq"/>
-        <xsl:param name="start"/>
-        <xsl:param name="end"/>
+        <xsl:param name="seq" as="item()+"/>
+        <xsl:param name="start" as="xs:integer"/>
+        <xsl:param name="end" as="xs:integer"/>
         <xsl:value-of select="string-join(subsequence($seq, $start, $end),'')"/>
     </xsl:function>
     
-    
+    <!--TO DO: DOCUMENT THE BELOW (OR THINK ABOUT SPLITTING THEM INTO SEPARATE MODULES)-->
     
     
     <xd:doc>
