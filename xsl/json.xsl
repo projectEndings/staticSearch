@@ -17,6 +17,7 @@
             via the process described in <xd:a href="tokenize.xsl">tokenize.xsl</xd:a>) and creates
             a JSON file for each stemmed token.</xd:p>
         </xd:desc>
+        <xd:param name="ellipses">A string parameter to denote what sorts of ellipses one wants in the KWIC.</xd:param>
     </xd:doc>
     
     <!--**************************************************************
@@ -31,6 +32,15 @@
         full documentation of how the configuration file is created.</xd:desc>
     </xd:doc>
     <xsl:include href="config.xsl"/>    
+    
+    <!--**************************************************************
+       *                                                            * 
+       *                      Parameters                            *
+       *                                                            *
+       **************************************************************-->
+   
+    <xsl:param name="ellipses" as="xs:string">...</xsl:param>
+    
     
     <!--**************************************************************
        *                                                            * 
@@ -95,21 +105,22 @@
     <xsl:template name="createMap">
         <xsl:param name="stems"/>
         
-        <!--Group by staticSearch-stem-->
+<!--        Group by staticSearch-stem-->
         <xsl:for-each-group select="$stems" group-by="tokenize(@data-staticSearch-stem,'\s+')">
-            <!--Sort these (for no reason, really).-->
+            
+<!--            Sort these (for no reason, really).-->
             <xsl:sort select="current-grouping-key()" case-order="upper-first"/>
             
-            <!--Variable that is simply the current-grouping-key (i.e. the stem from which
+<!--            Variable that is simply the current-grouping-key (i.e. the stem from which
                 a JSON is being created)-->
             <xsl:variable name="token" select="current-grouping-key()"/>
             
-            <!--Simple message-->
+<!--            Simple message-->
             <xsl:if test="$verbose">
                 <xsl:message>Processing <xsl:value-of select="$token"/></xsl:message>
             </xsl:if>
       
-            <!--Now create the map element by passing the current grouping key as a term and
+<!--            Now create the map element by passing the current grouping key as a term and
                 note that the current context items for the makeMap template is the current group
                 of the for-each-group-->
             <xsl:variable name="map" as="element()">
@@ -118,13 +129,12 @@
                 </xsl:call-template>
             </xsl:variable>
             
-            <!--Now create the result document. Note that the JSONs are output into two directories (upper and lower)
+<!--            Now create the result document. Note that the JSONs are output into two directories (upper and lower)
                 as operating systems other than Linux tend to be case-insensitive, meaning that the last of
                     August.json
                     august.json
                 
                 would silently (as of Saxon 9.8) overwrite the first.-->
-            
             <xsl:result-document href="{$outDir}/{if (matches($token,'^[A-Z]')) then 'upper' else 'lower'}/{$token}.json" method="text">
                 <xsl:value-of select="xml-to-json($map, map{'indent': true()})"/>
             </xsl:result-document>
@@ -189,45 +199,48 @@
         <xsl:param name="term"/>
         <xsl:variable name="termRegex" select="concat('(^|\s)',$term,'(\s|$)')"/>
         <xsl:variable name="termGroup" select="current-group()"/>
+        
+<!--        Start map-->
         <map xmlns="http://www.w3.org/2005/xpath-functions">
+            
+<!--            The token is the top level string key for this map; it should be 
+                the same as the JSON file name.-->
             <string key="token">
                 <xsl:value-of select="$term"/>
             </string>
             
-            <!--Boolean value to evaluate whether or not this "string" is actually an integer-->
-            <xsl:variable name="isInteger" select="$term castable as xs:integer" as="xs:boolean"/>
-
-            
+<!--            Start instances array -->
             <array key="instances">
-                <!--If every HTML document processed has an @id at the root,
+                
+<!--                If every HTML document processed has an @id at the root,
                     then use that as the grouping-key; otherwise,
-                    use the document uri-->
+                    use the document uri -->
                 <xsl:for-each-group select="current-group()" 
                     group-by="document-uri(/)">
                   
                     
-                    <!--Sort the documents so that the document with the most number of this hit comes first-->
+<!--                    Sort the documents so that the document with the most number of this hit comes first-->
                     <xsl:sort select="count(current-group())" order="descending"/>
                     <xsl:if test="$verbose">
                         <xsl:message><xsl:value-of select="$term"/>: Processing <xsl:value-of select="current-grouping-key()"/> (<xsl:value-of select="position()"/> / <xsl:value-of select="count(current-group())"/>)</xsl:message>
                     </xsl:if>
               
-                    <!--The document that we want to process will always be the ancestor html of 
-                        any item of the current-group()-->
+<!--                    The document that we want to process will always be the ancestor html of 
+                        any item of the current-group() -->
                     <xsl:variable name="thisDoc" 
                         select="current-group()[1]/ancestor::html"
                         as="element(html)"/>
                     
-                    <!--Now the document ID, which we've created (if necessary) in the 
-                        tokenization step-->
+<!--                    Now the document ID, which we've created (if necessary) in the 
+                        tokenization step -->
                     <xsl:variable name="docId" select="$thisDoc/@id" as="xs:string"/>
                     
-                    <!--Now we get the document title:
+<!--                Now we get the document title:
                     
                     If there is something usable in the title, then use that;
                     otherwise, just use the document id as the title
                     -->
-                    <xsl:variable name="docTitle" 
+                    <xsl:variable name="docTitle" as="xs:string"
                         select="
                         let $t := normalize-space(string-join($thisDoc//head/title[1]/descendant::text(),'')) 
                         return 
@@ -236,7 +249,7 @@
                             else $docId"
                     />
                     
-                    <!--And the relative URI from the document, which is to be used
+<!--                    And the relative URI from the document, which is to be used
                         for linking from the KWIC to the document. We've created this
                         already in the tokenization stage and stored it in a custom
                         data-attribute-->
@@ -244,53 +257,69 @@
                         select="$thisDoc/@data-staticSearch-relativeUri"
                         as="xs:string"/>
                     
-                    <!--Now get the spans, using the declared key-->
+<!--                   Stash the spans in a variable; they are the current-group -->
                     <xsl:variable name="spans" select="current-group()" as="element(span)+"/>
                     
-                    
-           
-                    
-                    <!--Now create the XPATH map, which will become a JSON-->
+
+<!--                    Now create the XPATH map, which will become a JSON -->
                     <map xmlns="http://www.w3.org/2005/xpath-functions">
+<!--                        Document id -->
                         <string key="docId">
                             <xsl:value-of select="$docId"/>
                         </string>
+                        
+<!--                        Document title -->
                         <string key="docTitle">
                             <xsl:value-of select="$docTitle"/>
                         </string>
+                        
+<!--                        Document URI (relative) -->
                         <string key="docUri">
                             <xsl:value-of select="$relativeUri"/>
                         </string>
-
-             
                         
+<!--                       Document score -->
                         <number key="score">
                             <xsl:value-of select="sum(for $s in $spans return hcmc:returnWeight($s))"/>
                         </number>
                         
-                        
+<!--                        Now add the contexts array, if specified to do so -->
                         <xsl:if test="$phrasalSearch or $createContexts">
                             <array key="contexts">
-                                <xsl:variable name="contexts" as="element(span)+">
-                                    <xsl:choose>
-                                        <xsl:when test="$phrasalSearch">
-                                            <xsl:sequence select="$spans"/>
-                                        </xsl:when>
-                                        <xsl:otherwise>
-                                            <xsl:sequence select="for $n in 1 to $maxContexts return $spans[$n]"/>
-                                        </xsl:otherwise>
-                                    </xsl:choose>
-                                </xsl:variable>
-                                <xsl:variable name="contextsCount" select="count($contexts)"/>
+                                
+<!--                                Return only the number of contexts we want;
+                                    if a limit has been specified, only return
+                                    up to the limit; otherwise, return them all. -->
+                                <xsl:variable name="contexts" as="element(span)+"
+                                    select="
+                                    if ($phrasalSearch) 
+                                    then $spans
+                                    else subsequence($spans, 1, $maxContexts)"
+                                 />
+                                
+<!--                                Count the contexts -->
+                                <xsl:variable name="contextsCount" select="count($contexts)" as="xs:integer"/>
+                                
+<!--                                Debugging message, if we're in verbose mode-->
                                 <xsl:if test="$verbose">
                                     <xsl:message><xsl:value-of select="$term"/>: <xsl:value-of select="current-grouping-key()"/>: Processing <xsl:value-of select="$contextsCount"/> contexts.</xsl:message>
                                 </xsl:if>
-
+                                
+<!--                                Now iterate through the contexts, returning a simple map that gives its
+                                    form, context, and weight.-->
                                 <xsl:for-each select="$contexts">
+                                    
+<!--                                    Sort by weight, since we want the highest weighted first -->
                                     <xsl:sort select="hcmc:returnWeight(.)" order="descending"/>
                                     <map>
+                                        
+<!--                                        Get the form (which is just the text value of the span) -->
                                         <string key="form"><xsl:value-of select="text()"/></string>
+                                        
+<!--                                        Get the context using the hcmc:returnContext function -->
                                         <string key="context"><xsl:value-of select="hcmc:returnContext(.)"/></string>
+                                        
+<!--                                        Get the weight, using hcmc:returnWeight function -->
                                         <number key="weight"><xsl:value-of select="hcmc:returnWeight(.)"/></number>
                                     </map>
                                 </xsl:for-each>
@@ -304,32 +333,36 @@
     </xsl:template>
     
     
+    
+    <xd:doc>
+        <xd:desc><xd:ref name="hcmc:returnContext" type="function">hcmc:returnContext</xd:ref> returns the context string for a span;
+        it does so by gathering up the text before the span and the text after the span, and then trims the length of the overall string
+        to whatever the $kwicLimit ought to be.</xd:desc>
+        <xd:param name="span">The span from which to return the context.</xd:param>
+    </xd:doc>
     <xsl:function name="hcmc:returnContext">
         <xsl:param name="span" as="element(span)"/>
         
-        <!--The string term-->
+<!--        The string term: String joining is overly cautious here.-->
         <xsl:variable name="thisTerm"
             select="string-join($span/descendant::text(),'')" 
             as="xs:string"/>
-        
-      
-        
-        <!--The first ancestor that has been signaled as an ancestor-->
+
+<!--        The first ancestor that has been signaled as an ancestor-->
         <xsl:variable name="contextAncestor" 
             select="$span/ancestor::*[@data-staticSearch-context='true'][1]" 
             as="element()?"/>
         
+<!--        If there's no context ancestor, then something's wrong-->
         <xsl:if test="empty($contextAncestor)">
             <xsl:message terminate="yes">THIS SPAN CAUSED A PROBLEM! <xsl:copy-of select="$span"/> / <xsl:value-of select="$span/ancestor::html/@id"/></xsl:message>
-            
         </xsl:if>
         
-        <!--Note that the below approaches to pre and fol nodes cannot be done using
+<!--        Note that the below approaches to pre and fol nodes cannot be done using
             the simpler $span/preceding::text()[ancestor::*[@data-staticSearch-context='true'][1] is $contextAncestor]
             as it causes some error in Saxon (9.8.) TinyTreeImpl.-->
         
-        
-        <!--These are all of the descendant text nodes of the ancestor node, which:
+<!--        These are all of the descendant text nodes of the ancestor node, which:
             1) Precede this span element
             2) Is not contained within this span element
             3) And who does not have a different context ancestor
@@ -339,7 +372,7 @@
             select="$contextAncestor/descendant::text()[. &lt;&lt; $span and not(parent::*[. is $span]) and ancestor::*[@data-staticSearch-context='true'][1][. is $contextAncestor]]" as="xs:string*"/>
         
         
-        <!--These are all of the descendant text nodes of the ancestor node, which:
+<!--        These are all of the descendant text nodes of the ancestor node, which:
             1) Follow this span element
             2) Is not contained within this span element
             3) And who does not have a different context ancestor
@@ -347,41 +380,62 @@
         <xsl:variable name="folNodes" 
             select="$contextAncestor/descendant::text()[. &gt;&gt; $span and not(parent::*[. is $span])][ancestor::*[@data-staticSearch-context='true'][1][. is $contextAncestor]]" as="xs:string*"/>
 
-        <!--The preceding text joined together-->
+<!--        The preceding text joined together-->
         <xsl:variable name="startString" 
             select="string-join($preNodes,'')" as="xs:string?"/>
         
-        <!--The following string joined together-->
+<!--        The following string joined together-->
         <xsl:variable name="endString" 
             select="string-join($folNodes,'')" as="xs:string?"/>
         
-        <!--The start string split on whitespace to be counted and 
+<!--        The start string split on whitespace to be counted and 
             reconstituted below-->
         <xsl:variable name="startTokens" select="tokenize($startString, '\s+')"/>
+        
+<!--        Count of how many tokens there are in the start sequence-->
+        <xsl:variable name="startTokensCount" select="count($startTokens)" as="xs:integer"/>
         
         <!--The trailing string split on whitespace to be counted and
             reconstituted below-->
         <xsl:variable name="endTokens" select="tokenize($endString,'\s+')"/>
         
+        
+        <!--Count of how many tokens there are in the end sequence-->
+        <xsl:variable name="endTokensCount" select="count($endTokens)" as="xs:integer"/>
+        
         <!--The starting snippet: if there are fewer than $totalKwicLength/2 words, then just leave the string
             otherwise, trim to the $totalKwicLength/2 limit-->
         <xsl:variable name="startSnippet" select="
-            if (count($startTokens) lt $kwicLengthHalf)
-            then $startString 
-            else concat('...',string-join($startTokens[position() = ((count($startTokens) - $kwicLengthHalf) to count($startTokens))],' '))" as="xs:string?"/>
+            
+            (:If the number of start tokens is less than half the kwicLimit:)
+            if ($startTokensCount lt $kwicLengthHalf) 
+            
+            (: Then just return the start string :)
+            then $startString  
+            
+            (:Otherwise, concatenate the sequence:)
+            else $ellipses || hcmc:joinSubseq($startTokens, $startTokensCount - $kwicLengthHalf, $startTokensCount)"
+            as="xs:string?"/>
         
-        <!--The ending snippet: if there are fewer than $kwicLengthHalf words, then just leave the string,
+<!--        The ending snippet: if there are fewer than $kwicLengthHalf words, then just leave the string,
             otherwise, trim to the $kwicLengthHalf limit-->
         <xsl:variable name="endSnippet" select="
-            if (count($endTokens) lt $kwicLengthHalf) 
+            
+            (: if the number of words is less than the kwic length:)
+            if ($endTokensCount lt $kwicLengthHalf) 
+            
+            (: Then just return the end string:)
             then $endString 
-            else concat(string-join($endTokens[position() = (1 to $kwicLengthHalf)],' '),'...')" as="xs:string"/>
+            
+            (: Otherwise, get as many words as we can and concatenate an ellipses:)
+            else hcmc:joinSubseq($endTokens, 1, $kwicLengthHalf) || $ellipses" 
+            as="xs:string"/>
         
-        <!--Now, concatenate the start snippet, the term, and the end snippet
+<!--        Now, concatenate the start snippet, the term, and the end snippet
             and then normalize the spaces (to eliminate \n etc)-->
         <xsl:value-of
             select="
-            concat(string-join($startSnippet,''), '&lt;mark&gt;',$thisTerm,'&lt;/mark&gt;', string-join($endSnippet,''))
+            string-join($startSnippet,'') || '&lt;mark&gt;' || $thisTerm || '&lt;/mark&gt;' || string-join($endSnippet,'')
             => replace('\s+\n+\t+',' ') 
             => normalize-space()"/>
     </xsl:function>
@@ -399,7 +453,24 @@
     </xd:doc>
     <xsl:function name="hcmc:returnWeight" as="xs:integer">
         <xsl:param name="span"/>
-        <xsl:sequence select="if ($span/ancestor::*[@data-staticSearch-weight]) then $span/ancestor::*[@data-staticSearch-weight][1]/@data-staticSearch-weight/xs:integer(.) else 1"/>
+        <xsl:variable name="ancestor" select="$span/ancestor::*[@data-staticSearch-weight][1]" as="element()?"/>
+        <xsl:sequence select="
+                if (not(empty($ancestor)))
+                then $ancestor/@data-staticSearch-weight/xs:integer(.) 
+                else 1"
+        />
+    </xsl:function>
+    
+    
+    <xd:doc>
+        <xd:desc><xd:ref name="hcmc:joinSubseq" type="function">hcmc:joinSubseq</xd:ref> is a simple utility function
+        for joining sequences of strings</xd:desc>
+    </xd:doc>
+    <xsl:function name="hcmc:joinSubseq" as="xs:string">
+        <xsl:param name="seq"/>
+        <xsl:param name="start"/>
+        <xsl:param name="end"/>
+        <xsl:value-of select="string-join(subsequence($seq, $start, $end),'')"/>
     </xsl:function>
     
     
@@ -418,7 +489,7 @@
         </xsl:result-document>
     </xsl:template>
     
-    <!--Create a config file for the JSON-->
+<!--    Create a config file for the JSON-->
     <xsl:template name="createConfigJson">
         <xsl:message>Creating Configuration JSON file....</xsl:message>
         <xsl:result-document href="{$outDir}/config.json" method="text">
@@ -429,7 +500,7 @@
         </xsl:result-document>
     </xsl:template>
     
-    <!--Templates for converting the HCMC words files
+<!--    Templates for converting the HCMC words files
         to a simple array for use in the Javascript;
         these are in templates in case we need to do
         any more creation of a words file into a JSON-->
@@ -447,7 +518,7 @@
     </xsl:template>
     
     
-    <!--Templates for converting the HCMC config file
+<!--    Templates for converting the HCMC config file
         into a simple JSON for use in the Javascript.-->
     
     
