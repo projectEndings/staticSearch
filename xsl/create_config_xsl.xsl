@@ -164,6 +164,8 @@
                 </xsl:if>
             </xso:stylesheet>
         </xsl:result-document>
+          
+        
     </xsl:template>
     
     <xd:doc>
@@ -260,6 +262,8 @@
     <xsl:template name="createGlobals">
        
         <xsl:variable name="params" as="element()+">
+            <!--First, create the actual configuration file thing-->
+            <xso:param name="configFile"><xsl:value-of select="resolve-uri($configFile)"/></xso:param>
             <xsl:for-each select="$configDoc//params/*" >
                 <xsl:variable name="thisParam" select="."/>
                 <xsl:variable name="paramName" select="local-name()"/>

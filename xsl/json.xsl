@@ -22,6 +22,7 @@
     <xsl:template match="/">
         <xsl:call-template name="createJson"/>
         <xsl:call-template name="createStopwordsJson"/>
+        <xsl:call-template name="createConfigJson"/>
     </xsl:template>
     
     <xsl:template name="createStopwordsJson">
@@ -29,6 +30,17 @@
         <xsl:result-document href="{$outDir}/stopwords.json" method="text">
             <xsl:variable name="map">
                 <xsl:apply-templates select="$stopwordsFileXml" mode="dictToArray"/>
+            </xsl:variable>
+            <xsl:value-of select="xml-to-json($map, map{'indent': true()})"/>
+        </xsl:result-document>
+    </xsl:template>
+    
+    <!--Create a config file for the JSON-->
+    <xsl:template name="createConfigJson">
+        <xsl:message>Creating Configuration JSON file....</xsl:message>
+        <xsl:result-document href="{$outDir}/config.json" method="text">
+            <xsl:variable name="map">
+                <xsl:apply-templates select="doc($configFile)" mode="configToArray"/>
             </xsl:variable>
             <xsl:value-of select="xml-to-json($map, map{'indent': true()})"/>
         </xsl:result-document>
@@ -50,6 +62,34 @@
     <xsl:template match="hcmc:word" mode="dictToArray">
         <map:string><xsl:value-of select="."/></map:string>
     </xsl:template>
+    
+    
+    <!--Templates for converting the HCMC config file
+        into a simple JSON for use in the Javascript.-->
+    
+    
+    <xsl:template match="hcmc:config" mode="configToArray">
+        <map:map key="config">
+            <xsl:apply-templates mode="#current"/>
+        </map:map>
+    </xsl:template>
+    
+    <xsl:template match="hcmc:params" mode="configToArray">
+        <map:array key="params">
+            <map:map>
+                <xsl:apply-templates mode="#current"/>
+            </map:map>
+        </map:array>
+    </xsl:template>
+    
+    <xsl:template match="hcmc:params/hcmc:*" mode="configToArray">
+        <xsl:element namespace="http://www.w3.org/2005/xpath-functions" name="{if (text() castable as xs:integer) then 'number' else 'string'}">
+            <xsl:attribute name="key" select="local-name()"/>
+            <xsl:apply-templates mode="#current"/>
+        </xsl:element>
+    </xsl:template>
+    
+    
     
     <xsl:template name="createJson">
         <xsl:message>Found <xsl:value-of select="count($tokenizedDocs)"/> tokenized documents...</xsl:message>
