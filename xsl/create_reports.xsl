@@ -32,6 +32,7 @@
                     <div>
                         <h1>Static Search Report: <xsl:value-of select="$collectionDir"/></h1>
                         <xsl:call-template name="createStats"/>
+                        <xsl:call-template name="createDiagnostics"/>
                         <xsl:call-template name="createWordTables"/>
                         <xsl:call-template name="createNonDictionaryList"/>
                         <xsl:call-template name="createForeignWordList"/>
@@ -39,6 +40,47 @@
                 </body>
             </html>
         </xsl:result-document>
+    </xsl:template>
+    
+    <xsl:template name="createDiagnostics">
+        <xsl:variable name="docsWithoutIds" select="$docs//html[not(@id)]"/>
+        <xsl:variable name="docsWithoutLang" select="$docs//html[not(@lang)]"/>
+        <section>
+            <h2>Diagnostics</h2>
+            <details>
+                <summary>Documents without html/@id (<xsl:value-of select="count($docsWithoutIds)"/>)</summary>
+   
+                    <xsl:choose>
+                        <xsl:when test="count($docsWithoutIds) gt 0">
+                            <ul>
+                                <xsl:for-each select="$docsWithoutIds">
+                                    <li><xsl:value-of select="document-uri(root(.))"/></li>
+                                </xsl:for-each>
+                            </ul>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <p>None found!</p>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                
+            </details>
+            <details>
+                <summary>Documents without html/@lang (<xsl:value-of select="count($docsWithoutLang)"/>)</summary>
+                    <xsl:choose>
+                        <xsl:when test="count($docsWithoutLang) gt 0">
+                            <ul>
+                                <xsl:for-each select="$docsWithoutLang">
+                                    <li><xsl:value-of select="document-uri(root(.))"/></li>
+                                </xsl:for-each>
+                            </ul>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <p>None found!</p>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                
+            </details>
+        </section>
     </xsl:template>
  
     
