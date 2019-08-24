@@ -1,96 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
-    exclude-result-prefixes="#all" xpath-default-namespace="http://www.w3.org/1999/xhtml"
-    xmlns="http://www.w3.org/1999/xhtml" xmlns:hcmc="http://hcmc.uvic.ca/ns" version="3.0"
-    xmlns:map="http://www.w3.org/2005/xpath-functions">
+<xsl:stylesheet
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+    xmlns:map="http://www.w3.org/2005/xpath-functions"
+    xmlns:hcmc="http://hcmc.uvic.ca/ns"
+    xpath-default-namespace="http://www.w3.org/1999/xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    exclude-result-prefixes="#all"
+    version="3.0">
+    <xd:doc scope="stylesheet">
+        <xd:desc>
+            <xd:p><xd:b>Created on:</xd:b> June 26, 2019</xd:p>
+            <xd:p><xd:b>Authors:</xd:b> Joey Takeda and Martin Holmes</xd:p>            
+            <xd:p>This transformation takes a collection of tokenized and stemmed documents (tokenized
+            via the process described in <xd:a href="tokenize.xsl">tokenize.xsl</xd:a>) and creates
+            a JSON file for each stemmed token.</xd:p>
+        </xd:desc>
+    </xd:doc>
     
+    <!--**************************************************************
+       *                                                            * 
+       *                         Includes                           *
+       *                                                            *
+       **************************************************************-->
     
-    <xsl:include href="config.xsl"/>
+    <xd:doc>
+        <xd:desc>Include the generated configuration file. See 
+        <xd:a href="create_config_xsl.xsl">create_config_xsl.xsl</xd:a> for
+        full documentation of how the configuration file is created.</xd:desc>
+    </xd:doc>
+    <xsl:include href="config.xsl"/>    
     
-    
-    <xsl:key name="docs" match="span[contains(@data-staticSearch-stem,' ')]" 
-        use="tokenize(@data-staticSearch-stem,'\s+')"/>
-    <xsl:key name="docs" match="span[not(contains(@data-staticSearch-stem,' '))]" use="@data-staticSearch-stem"/>
-    
-    
-    
+    <!--**************************************************************
+       *                                                            * 
+       *                      Global Variables                      *
+       *                                                            *
+       **************************************************************-->
+    <xd:doc>
+        <xd:desc><xd:ref name="kwicLengthHalf" type="variable">$kwicLengthHalf</xd:ref> is simply
+        rounded half of the length of the KWIC word limit. This helps when creating the KWIC
+        in the later stages of the process.</xd:desc>
+    </xd:doc>
     <xsl:variable name="kwicLengthHalf" select="xs:integer(round(xs:integer($totalKwicLength) div 2))" as="xs:integer"/>
     
-  
+    <!--**************************************************************
+       *                                                            * 
+       *                        Templates                           *
+       *                                                            *
+       **************************************************************-->
     
+<!--    ROOT TEMPLATE -->
+    
+    <xd:doc>
+        <xd:desc>Root template, which calls the rest of the templates.</xd:desc>
+    </xd:doc>
     <xsl:template match="/">
         <xsl:call-template name="createJson"/>
         <xsl:call-template name="createStopwordsJson"/>
         <xsl:call-template name="createConfigJson"/>
     </xsl:template>
     
-    <xsl:template name="createStopwordsJson">
-        <xsl:message>Creating stopwords array...</xsl:message>
-        <xsl:result-document href="{$outDir}/stopwords.json" method="text">
-            <xsl:variable name="map">
-                <xsl:apply-templates select="$stopwordsFileXml" mode="dictToArray"/>
-            </xsl:variable>
-            <xsl:value-of select="xml-to-json($map, map{'indent': true()})"/>
-        </xsl:result-document>
-    </xsl:template>
     
-    <!--Create a config file for the JSON-->
-    <xsl:template name="createConfigJson">
-        <xsl:message>Creating Configuration JSON file....</xsl:message>
-        <xsl:result-document href="{$outDir}/config.json" method="text">
-            <xsl:variable name="map">
-                <xsl:apply-templates select="doc($configFile)" mode="configToArray"/>
-            </xsl:variable>
-            <xsl:value-of select="xml-to-json($map, map{'indent': true()})"/>
-        </xsl:result-document>
-    </xsl:template>
+    <!--**************************************************************
+       *                                                            * 
+       *                       Named Templates                      *
+       *                                                            *
+       **************************************************************-->
     
-    <!--Templates for converting the HCMC words files
-        to a simple array for use in the Javascript;
-        these are in templates in case we need to do
-        any more creation of a words file into a JSON-->
+<!--    Start create JSON process ... -->
     
-    <xsl:template match="hcmc:words" mode="dictToArray">
-        <map:map>
-            <map:array key="words">
-                <xsl:apply-templates mode="#current"/>
-            </map:array>
-        </map:map>
-    </xsl:template>
-    
-    <xsl:template match="hcmc:word" mode="dictToArray">
-        <map:string><xsl:value-of select="."/></map:string>
-    </xsl:template>
-    
-    
-    <!--Templates for converting the HCMC config file
-        into a simple JSON for use in the Javascript.-->
-    
-    
-    <xsl:template match="hcmc:config" mode="configToArray">
-        <map:map key="config">
-            <xsl:apply-templates mode="#current"/>
-        </map:map>
-    </xsl:template>
-    
-    <xsl:template match="hcmc:params" mode="configToArray">
-        <map:array key="params">
-            <map:map>
-                <xsl:apply-templates mode="#current"/>
-            </map:map>
-        </map:array>
-    </xsl:template>
-    
-    <xsl:template match="hcmc:params/hcmc:*" mode="configToArray">
-        <xsl:element namespace="http://www.w3.org/2005/xpath-functions" name="{if (text() castable as xs:integer) then 'number' else 'string'}">
-            <xsl:attribute name="key" select="local-name()"/>
-            <xsl:apply-templates mode="#current"/>
-        </xsl:element>
-    </xsl:template>
-    
-    
-    
+    <xd:doc>
+        <xd:desc>The <xd:ref name="createJson" type="template">createJson</xd:ref> is the meat of this process;
+        it kicks of the process by calling the createMap template with a selection of spans derived from the
+        tokenized docs.</xd:desc>
+    </xd:doc>
     <xsl:template name="createJson">
         <xsl:message>Found <xsl:value-of select="count($tokenizedDocs)"/> tokenized documents...</xsl:message>
         <xsl:variable name="stems" select="$tokenizedDocs//span[@data-staticSearch-stem]" as="element(span)*"/>
@@ -99,25 +83,108 @@
         </xsl:call-template>
     </xsl:template>
     
+    
+    <xd:doc>
+        <xd:desc>The <xd:ref name="createMap" type="template">createMap</xd:ref> processes 
+            the XML map (created in the makeMap template) and converts it into a JSON for 
+            each unique stem. It does so by first grouping the HTML span elements by their 
+            @data-staticSearch-stem (and note this is tokenized, since @data-staticSearch-stem
+            can contain more than one token) and then passing those spans to the makeMap template.</xd:desc>
+        <xd:param name="stems">The collection of span[@data-staticSearch-stem[ passed from the tokenized documents.</xd:param>
+    </xd:doc>
     <xsl:template name="createMap">
         <xsl:param name="stems"/>
+        
+        <!--Group by staticSearch-stem-->
         <xsl:for-each-group select="$stems" group-by="tokenize(@data-staticSearch-stem,'\s+')">
+            <!--Sort these (for no reason, really).-->
             <xsl:sort select="current-grouping-key()" case-order="upper-first"/>
+            
+            <!--Variable that is simply the current-grouping-key (i.e. the stem from which
+                a JSON is being created)-->
             <xsl:variable name="token" select="current-grouping-key()"/>
-                 <xsl:message>Processing <xsl:value-of select="$token"/></xsl:message>
+            
+            <!--Simple message-->
+            <xsl:if test="$verbose">
+                <xsl:message>Processing <xsl:value-of select="$token"/></xsl:message>
+            </xsl:if>
+      
+            <!--Now create the map element by passing the current grouping key as a term and
+                note that the current context items for the makeMap template is the current group
+                of the for-each-group-->
             <xsl:variable name="map" as="element()">
                 <xsl:call-template name="makeMap">
                     <xsl:with-param name="term" select="$token"/>
                 </xsl:call-template>
             </xsl:variable>
-            <!--            <xsl:message>Creating <xsl:value-of select="$token"/>.json</xsl:message>-->
+            
+            <!--Now create the result document. Note that the JSONs are output into two directories (upper and lower)
+                as operating systems other than Linux tend to be case-insensitive, meaning that the last of
+                    August.json
+                    august.json
+                
+                would silently (as of Saxon 9.8) overwrite the first.-->
+            
             <xsl:result-document href="{$outDir}/{if (matches($token,'^[A-Z]')) then 'upper' else 'lower'}/{$token}.json" method="text">
                 <xsl:value-of select="xml-to-json($map, map{'indent': true()})"/>
             </xsl:result-document>
         </xsl:for-each-group>
     </xsl:template>
     
-    
+    <xd:doc>
+        <xd:desc>
+            <xd:p>
+                The <xd:ref name="makeMap" type="template">makeMap</xd:ref> creates the XML map from a set
+                of spans (compiled in the createMap template). This map has a number of fields necessary for
+                the search interface:
+            </xd:p>
+           <xd:ul>
+               <xd:li>
+                   <xd:b>token (string):</xd:b> the stem, passed as a parameter
+               </xd:li>
+               <xd:li><xd:b>instances (array):</xd:b> an array of all the documents that contain that stem
+                   <xd:ul>
+                       <xd:li><xd:b>docId (string):</xd:b> The document id, which is taken from the document's
+                       declared html/@id. (Note that this may be a value derived from the document's URI, which
+                       is placed into the html/@id in the absence of a pre-existing id during the 
+                           <xd:a href="tokenize.xsl">tokenization tranformation</xd:a>.</xd:li>
+                       <xd:li><xd:b>docTitle (string):</xd:b> The title of the document, which may come from
+                           the html/head/title or, if that is missing, is constructed from the document URI</xd:li>
+                       <xd:li><xd:b>docUri (string):</xd:b> The URI of the source document.</xd:li>
+                       <xd:li><xd:b>score (number):</xd:b> The sum of the weighted scores of each span that
+                           is in that document. For instance, if some document had n instances of token x
+                           ({x1, x2, ..., xn}) with corresponding scores ({s1, s2, ..., sn}), then the score
+                           for the document is the sum of all s: s1 + s2 + . . . + sn.</xd:li>
+                       <xd:li><xd:b>contexts (array)</xd:b>: an array of all of the contexts in which the 
+                           stem appears in the tokenized document; an entry is created for each span in the current group.
+                           Note that the contexts array is created iff the contexts parameter in the config file 
+                           is set to true (or 1, T, yes, y). Also note
+                           that the number of contexts depends on the limit set in the config file. If no limit
+                           is set, then all contexts are used in the document. While this creates larger JSON 
+                           files, this provides the search Javascript with enough information to do more precise 
+                           phrasal searches.
+                          <xd:ul>
+                              <xd:li><xd:b>form (string):</xd:b> The text associated with the stemmed token 
+                                 (for instance, for the word "ending", "end" is the stem, while "ending" is 
+                                 the form).</xd:li>
+                              <xd:li><xd:b>context (string):</xd:b> The context of this span for use in the KWIC.
+                              The context string is determined by the KWIC length parameter (i.e. how many words
+                              can the KWIC be) and by the context weight attributes described in 
+                              <xd:a href="tokenize.xsl">tokenize.xsl</xd:a>. The string returned from the 
+                               context also contains the term pre-marked using the HTML mark element.</xd:li>
+                              <xd:li><xd:b>weight (number):</xd:b> The weight of this span in context.</xd:li>
+                          </xd:ul>
+                       
+                       </xd:li>
+                   </xd:ul>
+               
+               </xd:li>
+           </xd:ul>
+        </xd:desc>
+        <xd:param name="term">The current stem from which the map is being created.</xd:param> <!--Note: Not 
+            sure we actually need this parameter; we can probably just use current-grouping-key() since 
+            we're in the context of the group-->
+    </xd:doc>
     <xsl:template name="makeMap">
         <xsl:param name="term"/>
         <xsl:variable name="termRegex" select="concat('(^|\s)',$term,'(\s|$)')"/>
@@ -162,9 +229,9 @@
                     -->
                     <xsl:variable name="docTitle" 
                         select="
-                        let $t := string-join($thisDoc//head/title[1]/descendant::text(),'') 
+                        let $t := normalize-space(string-join($thisDoc//head/title[1]/descendant::text(),'')) 
                         return 
-                            if (normalize-space(string-join($t,'')) ne '') 
+                            if ($t ne '') 
                             then $t 
                             else $docId"
                     />
@@ -257,6 +324,11 @@
             
         </xsl:if>
         
+        <!--Note that the below approaches to pre and fol nodes cannot be done using
+            the simpler $span/preceding::text()[ancestor::*[@data-staticSearch-context='true'][1] is $contextAncestor]
+            as it causes some error in Saxon (9.8.) TinyTreeImpl.-->
+        
+        
         <!--These are all of the descendant text nodes of the ancestor node, which:
             1) Precede this span element
             2) Is not contained within this span element
@@ -314,24 +386,92 @@
             => normalize-space()"/>
     </xsl:function>
     
+    <xd:doc>
+        <xd:desc><xd:ref name="hcmc:returnWeight" type="function">hcmc:returnWeight</xd:ref> returns the 
+        weight of a span based off of the first ancestor's weight. Note that weighting is not accumulative;
+        if, for instance, a structure looking something like (where W# = Weight):
+        
+        W2 > W3 > W1 > thisSpan
+        
+        The weight of the span would be 1, and not 6.
+        </xd:desc>
+        <xd:param name="span">The span element for which to retrieve the weight.</xd:param>
+    </xd:doc>
     <xsl:function name="hcmc:returnWeight" as="xs:integer">
         <xsl:param name="span"/>
         <xsl:sequence select="if ($span/ancestor::*[@data-staticSearch-weight]) then $span/ancestor::*[@data-staticSearch-weight][1]/@data-staticSearch-weight/xs:integer(.) else 1"/>
     </xsl:function>
-
-    <xsl:function name="hcmc:getDocTitle">
-        <xsl:param name="docNode"/>
-        <xsl:variable name="titleEl" select="$docNode//head/title[1]" as="element()?"/>
-        <xsl:choose>
-            <xsl:when test="exists($titleEl) 
-                and normalize-space(string-join($titleEl/descendant::text(),'')) ne ''">
-                <xsl:value-of select="normalize-space(string-join($titleEl/descendant::text(),''))"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="$docNode/@id"/>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:function>
+    
+    
+    
+    
+    <xd:doc>
+        <xd:desc></xd:desc>
+    </xd:doc>
+    <xsl:template name="createStopwordsJson">
+        <xsl:message>Creating stopwords array...</xsl:message>
+        <xsl:result-document href="{$outDir}/stopwords.json" method="text">
+            <xsl:variable name="map">
+                <xsl:apply-templates select="$stopwordsFileXml" mode="dictToArray"/>
+            </xsl:variable>
+            <xsl:value-of select="xml-to-json($map, map{'indent': true()})"/>
+        </xsl:result-document>
+    </xsl:template>
+    
+    <!--Create a config file for the JSON-->
+    <xsl:template name="createConfigJson">
+        <xsl:message>Creating Configuration JSON file....</xsl:message>
+        <xsl:result-document href="{$outDir}/config.json" method="text">
+            <xsl:variable name="map">
+                <xsl:apply-templates select="doc($configFile)" mode="configToArray"/>
+            </xsl:variable>
+            <xsl:value-of select="xml-to-json($map, map{'indent': true()})"/>
+        </xsl:result-document>
+    </xsl:template>
+    
+    <!--Templates for converting the HCMC words files
+        to a simple array for use in the Javascript;
+        these are in templates in case we need to do
+        any more creation of a words file into a JSON-->
+    
+    <xsl:template match="hcmc:words" mode="dictToArray">
+        <map:map>
+            <map:array key="words">
+                <xsl:apply-templates mode="#current"/>
+            </map:array>
+        </map:map>
+    </xsl:template>
+    
+    <xsl:template match="hcmc:word" mode="dictToArray">
+        <map:string><xsl:value-of select="."/></map:string>
+    </xsl:template>
+    
+    
+    <!--Templates for converting the HCMC config file
+        into a simple JSON for use in the Javascript.-->
+    
+    
+    <xsl:template match="hcmc:config" mode="configToArray">
+        <map:map key="config">
+            <xsl:apply-templates mode="#current"/>
+        </map:map>
+    </xsl:template>
+    
+    <xsl:template match="hcmc:params" mode="configToArray">
+        <map:array key="params">
+            <map:map>
+                <xsl:apply-templates mode="#current"/>
+            </map:map>
+        </map:array>
+    </xsl:template>
+    
+    <xsl:template match="hcmc:params/hcmc:*" mode="configToArray">
+        <xsl:element namespace="http://www.w3.org/2005/xpath-functions" name="{if (text() castable as xs:integer) then 'number' else 'string'}">
+            <xsl:attribute name="key" select="local-name()"/>
+            <xsl:apply-templates mode="#current"/>
+        </xsl:element>
+    </xsl:template>
+    
 
     
     
