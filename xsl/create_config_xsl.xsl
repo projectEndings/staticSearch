@@ -273,7 +273,7 @@
                 <xso:param>
                     <xsl:attribute name="name" select="local-name()"/>
                     <xsl:choose>
-                        <xsl:when test="local-name()=('createContexts','phrasalSearch','verbose','recurse')">
+                        <xsl:when test="local-name()=('createContexts','phrasalSearch','verbose','recurse', 'indentJSON')">
                             <xsl:attribute name="select" select="concat(hcmc:stringToBoolean(xs:string(.)),'()')"/>
                         </xsl:when>
                         <xsl:otherwise>

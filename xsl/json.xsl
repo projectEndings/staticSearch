@@ -35,15 +35,6 @@
     
     <!--**************************************************************
        *                                                            * 
-       *                      Parameters                            *
-       *                                                            *
-       **************************************************************-->
-   
-    <xsl:param name="ellipses" as="xs:string">...</xsl:param>
-    
-    
-    <!--**************************************************************
-       *                                                            * 
        *                      Global Variables                      *
        *                                                            *
        **************************************************************-->
@@ -136,7 +127,7 @@
                 
                 would silently (as of Saxon 9.8) overwrite the first.-->
             <xsl:result-document href="{$outDir}/{if (matches($token,'^[A-Z]')) then 'upper' else 'lower'}/{$token}.json" method="text">
-                <xsl:value-of select="xml-to-json($map, map{'indent': true()})"/>
+                <xsl:value-of select="xml-to-json($map, map{'indent': $indentJSON})"/>
             </xsl:result-document>
         </xsl:for-each-group>
     </xsl:template>
@@ -415,7 +406,7 @@
             then $startString  
             
             (:Otherwise, concatenate the sequence:)
-            else $ellipses || hcmc:joinSubseq($startTokens, $startTokensCount - $kwicLengthHalf, $startTokensCount)"
+            else $kwicTruncateString || hcmc:joinSubseq($startTokens, $startTokensCount - $kwicLengthHalf, $startTokensCount)"
             as="xs:string?"/>
         
 <!--        The ending snippet: if there are fewer than $kwicLengthHalf words, then just leave the string,
@@ -429,7 +420,7 @@
             then $endString 
             
             (: Otherwise, get as many words as we can and concatenate an ellipses:)
-            else hcmc:joinSubseq($endTokens, 1, $kwicLengthHalf) || $ellipses" 
+            else hcmc:joinSubseq($endTokens, 1, $kwicLengthHalf) || $kwicTruncateString" 
             as="xs:string"/>
         
 <!--        Now, concatenate the start snippet, the term, and the end snippet
@@ -470,7 +461,7 @@
     
     <xd:doc>
         <xd:desc><xd:ref name="hcmc:joinSubseq" type="function">hcmc:joinSubseq</xd:ref> is a simple utility function
-        for joining sequences of strings.</xd:desc>
+        for joining sequences of strings with spaces.</xd:desc>
         <xd:param name="seq">The sequence from which to derive the subset. 
             Example: ("A", "Bob ", "fourteen", "Fred Bloggs")</xd:param>
         <xd:param name="start">An integer that denotes the start of the subsequence. 
@@ -478,13 +469,13 @@
         <xd:param name="end">An integer that denotes the end of the subsequence. 
             Example: 4</xd:param>
         <xd:return>A string joined version of the sequence from sequence[start] to sequence [end].
-            Example:  "BobfourteenFred Bloggs"</xd:return>
+            Example:  "Bob fourteen Fred Bloggs"</xd:return>
     </xd:doc>
     <xsl:function name="hcmc:joinSubseq" as="xs:string">
         <xsl:param name="seq" as="item()+"/>
         <xsl:param name="start" as="xs:integer"/>
         <xsl:param name="end" as="xs:integer"/>
-        <xsl:value-of select="string-join(subsequence($seq, $start, $end),'')"/>
+        <xsl:value-of select="string-join(subsequence($seq, $start, $end),' ')"/>
     </xsl:function>
     
     <!--TO DO: DOCUMENT THE BELOW (OR THINK ABOUT SPLITTING THEM INTO SEPARATE MODULES)-->
@@ -499,7 +490,7 @@
             <xsl:variable name="map">
                 <xsl:apply-templates select="$stopwordsFileXml" mode="dictToArray"/>
             </xsl:variable>
-            <xsl:value-of select="xml-to-json($map, map{'indent': true()})"/>
+            <xsl:value-of select="xml-to-json($map, map{'indent': $indentJSON})"/>
         </xsl:result-document>
     </xsl:template>
     
@@ -510,7 +501,7 @@
             <xsl:variable name="map">
                 <xsl:apply-templates select="doc($configFile)" mode="configToArray"/>
             </xsl:variable>
-            <xsl:value-of select="xml-to-json($map, map{'indent': true()})"/>
+            <xsl:value-of select="xml-to-json($map, map{'indent': $indentJSON})"/>
         </xsl:result-document>
     </xsl:template>
     
