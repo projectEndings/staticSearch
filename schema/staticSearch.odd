@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:svg="http://www.w3.org/2000/svg"
+  xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns="http://www.tei-c.org/ns/1.0">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>Title</title>
+      </titleStmt>
+      <publicationStmt>
+        <p>Publication Information</p>
+      </publicationStmt>
+      <sourceDesc>
+        <p>Information about the source</p>
+      </sourceDesc>
+    </fileDesc>
+  </teiHeader>
+  <text>
+    <body>
+      <div>
+        <head>Introduction</head>
+        <p>Stuff here...</p>
+      </div>
+    </body>
+    <back>
+      <div>
+        <schemaSpec ident="staticSearch" start="config" ns="http://hcmc.uvic.ca/ns"
+          defaultExceptions="http://hcmc.uvic.ca/ns">
+          <moduleSpec ident="ss">
+            <desc>Module for all of the static search elements.</desc>
+          </moduleSpec>
+
+          <elementSpec ident="config" ns="http://hcmc.uvic.ca/ns" module="ss">
+            <content>
+              <elementRef key="params"/>
+              <elementRef key="rules" minOccurs="0"/>
+              <elementRef key="contexts" minOccurs="0"/>
+            </content>
+          </elementSpec>
+
+          <elementSpec ident="params" ns="http://hcmc.uvic.ca/ns" module="ss">
+
+            <content>
+              <sequence>
+                <!--Think about refactoring the params like so:
+                  
+                  <dirs>
+                    <baseDir></baseDir>
+                    <collectionDir recurse="true|false">...</collectionDir>
+                    <tempDir>...</tempDir>
+                    <outDir>...</outDir>
+                  </dirs>
+                  
+                  
+                  <files>
+                    <stopwordsFile></stopwordsFile>
+                    <dictionaryFile></dictionaryFile>
+                    <replacementsFile><replacementsFile>
+                  </files>
+                  
+                  
+                  <params>
+                    <phrasalSearch />
+                    :SChemATRON for if phrasal search is false, then must set max contexts:
+                    <maxContexts></maxContexts?
+                    
+                    
+                  </params>-->
+                  
+                 
+                <elementRef key="baseDir"/>
+                <elementRef key="collectionDir"/>
+                <elementRef key="tempDir"/>
+                <elementRef key="outDir"/>
+                <elementRef key="recurse"/>
+                <elementRef key="phrasalSearch" minOccurs="0"/>
+                <elementRef key="createContexts" minOccurs="0"/>
+                <elementRef key="maxContexts" minOccurs="0"/>
+                <elementRef key="totalKwicLength" minOccurs="0"/>
+                <elementRef key="kwicTruncateString" minOccurs="0"/>
+                <elementRef key="verbose" minOccurs="0"/>
+                <elementRef key="stopwordsFile" minOccurs="0"/>
+                <elementRef key="dictionaryFile" minOccurs="0"/>
+                <elementRef key="replacementsFile" minOccurs="0"/>
+                <elementRef key="searchPage" minOccurs="0"/>
+                <elementRef key="searchInputId" minOccurs="0"/>
+                <elementRef key="indentJSON" minOccurs="0"/>
+ 
+              </sequence>
+              
+             
+            </content>
+            
+          </elementSpec>
+
+          <elementSpec ident="rules" ns="http://hcmc.uvic.ca/ns" module="ss">
+            <content>
+              <elementRef key="rule" minOccurs="1" maxOccurs="unbounded"/>
+            </content>
+          </elementSpec>
+
+          <elementSpec ident="contexts" ns="http://hcmc.uvic.ca/ns" module="ss">
+            <content>
+              <elementRef key="rule" minOccurs="1" maxOccurs="unbounded"/>
+            </content>
+          </elementSpec>
+
+          <elementSpec ident="rule" ns="http://hcmc.uvic.ca/ns" module="ss">
+            <classes>
+              <memberOf key="att.xpathRule"/>
+            </classes>
+            <content>
+              <empty/>
+            </content>
+          </elementSpec>
+
+          <classSpec ident="att.xpathRule" module="ss" type="atts">
+            <attList>
+              <attDef ident="xpath">
+                <datatype>
+                  <dataRef name="string"/>
+                </datatype>
+              </attDef>
+              <attDef ident="weight" usage="opt">
+                <datatype>
+                  <dataRef name="nonNegativeInteger"/>
+                </datatype>
+              </attDef>
+              <attDef ident="context" usage="opt">
+                <datatype>
+                  <dataRef name="boolean"/>
+                </datatype>
+              </attDef>
+            </attList>
+          </classSpec>
+
+
+          <elementSpec ident="baseDir" module="ss" ns="http://hcmc.uvic.ca/ns">
+            <content>
+              <dataRef name="anyURI"/>
+            </content>
+          </elementSpec>
+          
+          <elementSpec ident="collectionDir" module="ss" ns="http://hcmc.uvic.ca/ns">
+            <content>
+              <dataRef name="anyURI"/>
+            </content>
+          </elementSpec>
+          
+          <elementSpec ident="recurse" module="ss" ns="http://hcmc.uvic.ca/ns">
+            <content>
+              <dataRef name="boolean"/>
+            </content>
+          </elementSpec>
+          <elementSpec ident="tempDir" module="ss" ns="http://hcmc.uvic.ca/ns">
+            <content>
+              <dataRef name="anyURI"/>
+            </content>
+          </elementSpec>
+          <elementSpec ident="outDir" module="ss" ns="http://hcmc.uvic.ca/ns">
+            <content>
+              <dataRef name="anyURI"/>
+            </content>
+          </elementSpec>
+          <elementSpec ident="createContexts" module="ss" ns="http://hcmc.uvic.ca/ns">
+            <content>
+                <dataRef name="boolean"/>
+              
+            </content>
+          </elementSpec>
+          <elementSpec ident="totalKwicLength" module="ss" ns="http://hcmc.uvic.ca/ns">
+              <content>
+                <dataRef name="nonNegativeInteger"/>
+              </content>
+            
+          </elementSpec>
+          <elementSpec ident="maxContexts" module="ss" ns="http://hcmc.uvic.ca/ns">
+    
+              <content>
+                <dataRef name="nonNegativeInteger"/>
+              </content>
+            
+          </elementSpec>
+          
+          <elementSpec ident="kwicTruncateString" module="ss" ns="http://hcmc.uvic.ca/ns">
+            <content>
+              <textNode/>
+            </content>
+          </elementSpec>
+          
+          <elementSpec ident="indentJSON" module="ss" ns="http://hcmc.uvic.ca/ns">
+            <content>
+              <dataRef name="boolean"/>
+            </content>
+          </elementSpec>
+          <elementSpec ident="phrasalSearch" module="ss" ns="http://hcmc.uvic.ca/ns">
+ 
+              <content>
+                <dataRef name="boolean"/>
+                
+              </content>
+            
+          </elementSpec>
+          <elementSpec ident="verbose" module="ss" ns="http://hcmc.uvic.ca/ns">
+
+              <content>
+                <dataRef name="boolean"/>
+              </content>
+            
+          </elementSpec>
+          <elementSpec ident="stopwordsFile" module="ss" ns="http://hcmc.uvic.ca/ns">
+            <content>
+              <dataRef name="anyURI"/>
+            </content>
+          </elementSpec>
+          <elementSpec ident="dictionaryFile" module="ss" ns="http://hcmc.uvic.ca/ns">
+            <content>
+              <dataRef name="anyURI"/>
+            </content>
+          </elementSpec>
+          <elementSpec ident="replacementsFile" module="ss" ns="http://hcmc.uvic.ca/ns">
+            <content>
+              <dataRef name="anyURI"/>
+            </content>
+          </elementSpec>
+          <elementSpec ident="searchPage" module="ss" ns="http://hcmc.uvic.ca/ns">
+            <content>
+              <dataRef name="anyURI"/>
+            </content>
+          </elementSpec>
+          <elementSpec ident="searchInputId" module="ss" ns="http://hcmc.uvic.ca/ns">
+            <content>
+              <dataRef name="anyURI"/>
+            </content>
+          </elementSpec>
+
+
+        </schemaSpec>
+      </div>
+    </back>
+  </text>
+</TEI>
