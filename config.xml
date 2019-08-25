@@ -8,6 +8,7 @@
         <outDir>site/js/</outDir>
         <createContexts>true</createContexts>
         <totalKwicLength>15</totalKwicLength>
+        <kwicTruncateString>...</kwicTruncateString>
         <maxContexts>3</maxContexts>
         <!--NOTE: If NGRAMS is set to TRUE, then
         maxContents prop will be ignored-->
@@ -18,6 +19,7 @@
         <replacementsFile>xsl/replacements.txt</replacementsFile>
         <searchPage><!--Here is where we can point to a pre-existing search page--></searchPage>
         <searchInputId><!--The id of the search input to look for in the search page--></searchInputId>
+        <indentJSON>true</indentJSON>
     </params>
     
     <rules>
