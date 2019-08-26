@@ -579,7 +579,7 @@ class StaticSearch{
 //Get the term we decided to use to retrieve index data.
           let stem = this.terms[phr].stem;
 //Make the phrase into a regex for matching.
-          let rePhr = new RegExp(this.terms[phr].stem, 'i');
+          let rePhr = new RegExp(this.terms[phr].str, 'i');
 //If that term is in the index (it should be, even if it's empty, but still...)
           if (this.index[stem]){
 //Look at each of the document instances for that term...
@@ -590,15 +590,18 @@ class StaticSearch{
               for (let cntxt of inst.contexts){
 //Check whether our phrase matches that context (remembering to strip
 //out any <mark> tags)...
-                if (rePhr.test(cntxt.context.replace(/<[^>]+>/, ''))){
+                let unmarkedContext = cntxt.context.replace(/<[^>]+>/g, '');
+                console.log(unmarkedContext);
+                if (rePhr.test(unmarkedContext)){
 //We have a candidate document for inclusion, and a candidate context.
-                  currContexts.push(cntxt.context);
+                  currContexts.push(unmarkedContext.replace(rePhr, '<mark>' + this.terms[phr].str + '</mark>'));
                 }
               }
 //If we've found contexts, we know we have a document to add to the results.
               if (currContexts.length > 0){
 //The resultSet object will automatically merge this data if there's already
 //an entry for the document.
+                console.log(currContexts);
                 this.resultSet.set(inst.docId, {contexts: currContexts, score: currContexts.length});
               }
             }
