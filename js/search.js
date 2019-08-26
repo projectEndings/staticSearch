@@ -558,8 +558,8 @@ class StaticSearch{
   processResults(){
     try{
 //Debugging only.
-      console.log(JSON.stringify(this.index));
-      console.log(Object.keys(this.index).toString());
+      console.log('index: ' + JSON.stringify(this.index));
+      console.log('index keys: ' + Object.keys(this.index).toString());
 
 //Start by clearing any previous results.
       this.resultSet.clear();
@@ -591,7 +591,6 @@ class StaticSearch{
 //Check whether our phrase matches that context (remembering to strip
 //out any <mark> tags)...
                 let unmarkedContext = cntxt.context.replace(/<[^>]+>/g, '');
-                console.log(unmarkedContext);
                 if (rePhr.test(unmarkedContext)){
 //We have a candidate document for inclusion, and a candidate context.
                   currContexts.push(unmarkedContext.replace(rePhr, '<mark>' + this.terms[phr].str + '</mark>'));
@@ -601,7 +600,6 @@ class StaticSearch{
               if (currContexts.length > 0){
 //The resultSet object will automatically merge this data if there's already
 //an entry for the document.
-                console.log(currContexts);
                 this.resultSet.set(inst.docId, {contexts: currContexts, score: currContexts.length});
               }
             }
@@ -612,10 +610,61 @@ class StaticSearch{
           this.reportNoResults(true);
         }
         else{
-          console.log('Results found from phrase: ' + this.resultSet.getSize());
+//Continue, because we have results. Now we check for must_not_contains.
+          if (must_not_contains.length > 0){
+            for (let mnc of must_not_contains){
+              let stem = this.terms[mnc].stem;
+              if (this.index[stem]){
+//Look at each of the document instances for that term...
+                for (let inst of this.index[stem].instances){
+//Delete it from the result set.
+                  if (this.resultSet.has(inst.docId)){
+                    console.log('Calling for deletion of document: ' + inst.docId);
+//THIS IS NOT WORKING FOR SOME REASON.
+                    this.resultSet.delete(inst.docId);
+                  }
+                }
+              }
+            }
+          }
+//Bail out if no items are left, and suggest a simpler search.
+          if (this.resultSet.getSize() < 1){
+            this.reportNoResults(true);
+          }
+
 //We can continue. Now we check for any must_contains.
-//DONE TO HERE.
+          if (must_contains.length > 0){
+            for (let must_contain of must_contains){
+              let stem = this.terms[must_contain].stem;
+              if (this.index[stem]){
+//Look at each of the document instances for that term...
+                for (let inst of this.index[stem].instances){
+//We only include it if if matches a document already found for a phrase.
+                  if (this.resultSet.has(inst.docId)){
+                    this.resultSet.merge(inst.docId, inst);
+                  }
+                }
+              }
+            }
+          }
+//Finally the may_contains.
+          if (may_contains.length > 0){
+            for (let may_contain of may_contains){
+              let stem = this.terms[may_contain].stem;
+              if (this.index[stem]){
+//Look at each of the document instances for that term...
+                for (let inst of this.index[stem].instances){
+//We only include it if if matches a document already found for a phrase.
+                  if (this.resultSet.has(inst.docId)){
+                    this.resultSet.merge(inst.docId, inst);
+                  }
+                }
+              }
+            }
+          }
         }
+        console.log('Result set: ');
+        console.log(this.resultSet);
       }
       else{
         if (must_contains.length > 0){
@@ -754,6 +803,7 @@ class StaticSearch{
   */
     delete(docId){
       try{
+        console.log('Trying to delete ' + docId);
         return this.mapDocs.delete(docId);
       }
       catch(e){
@@ -769,7 +819,7 @@ class StaticSearch{
   * @return {Boolean} true if any of the items existed and was successfully
   * deleted, false if not, or if there is an error.
   */
-    delete(arrDocIds){
+    deleteArray(arrDocIds){
       let result = false;
       try{
         for (let i=0; i<arrDocIds.length; i++){
