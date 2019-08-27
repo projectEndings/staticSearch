@@ -572,187 +572,229 @@ class StaticSearch{
       let must_not_contains = this.getTermsByType(MUST_NOT_CONTAIN);
       let may_contains      = this.getTermsByType(MAY_CONTAIN);
 
-      if (phrases.length > 0){
-//We have phrases. They take priority. Get results if there are any.
-//For each phrase we're looking for...
-        for (let phr of phrases){
-//Get the term we decided to use to retrieve index data.
-          let stem = this.terms[phr].stem;
-//Make the phrase into a regex for matching.
-          let rePhr = new RegExp(this.terms[phr].str, 'i');
-//If that term is in the index (it should be, even if it's empty, but still...)
-          if (this.index[stem]){
-//Look at each of the document instances for that term...
-            for (let inst of this.index[stem].instances){
-//Create an array to hold the contexts
-              let currContexts = [];
-//Now look at each context for that instance, if any...
-              for (let cntxt of inst.contexts){
-//Check whether our phrase matches that context (remembering to strip
-//out any <mark> tags)...
-                let unmarkedContext = cntxt.context.replace(/<[^>]+>/g, '');
-                if (rePhr.test(unmarkedContext)){
-//We have a candidate document for inclusion, and a candidate context.
-                  currContexts.push(unmarkedContext.replace(rePhr, '<mark>' + this.terms[phr].str + '</mark>'));
-                }
-              }
-//If we've found contexts, we know we have a document to add to the results.
-              if (currContexts.length > 0){
-//The resultSet object will automatically merge this data if there's already
-//an entry for the document.
-                this.resultSet.set(inst.docId, {contexts: currContexts, score: currContexts.length});
-              }
-            }
-          }
-        }
-//Bail out if nothing found, and suggest a simpler search.
-        if (this.resultSet.getSize() < 1){
-          this.reportNoResults(true);
-        }
-        else{
-//Continue, because we have results. Now we check for must_not_contains.
-          if (must_not_contains.length > 0){
-            for (let mnc of must_not_contains){
-              let stem = this.terms[mnc].stem;
-              if (this.index[stem]){
-//Look at each of the document instances for that term...
-                for (let inst of this.index[stem].instances){
-//Delete it from the result set.
-                  if (this.resultSet.has(inst.docId)){
-                    this.resultSet.delete(inst.docId);
-                  }
-                }
-              }
-            }
-          }
-//Bail out if no items are left, and suggest a simpler search.
-          if (this.resultSet.getSize() < 1){
-            this.reportNoResults(true);
-          }
+//For nested functions, we need a reference to this.
+      var self = this;
 
-//We can continue. Now we check for any must_contains.
-          if (must_contains.length > 0){
-            for (let must_contain of must_contains){
-              let stem = this.terms[must_contain].stem;
-              if (this.index[stem]){
+//Now we have a few embedded functions to avoid duplicating code.
+/**
+  * @function StaticSearch~processResults~processPhrases
+  * @description Embedded function to retrieve the results from
+  *              phrasal searches.
+  * @return true if succeeds, false if not.
+  */
+      function processPhrases(){
+        try{
+          for (let phr of phrases){
+  //Get the term we decided to use to retrieve index data.
+            let stem = self.terms[phr].stem;
+  //Make the phrase into a regex for matching.
+            let rePhr = new RegExp(self.terms[phr].str, 'i');
+  //If that term is in the index (it should be, even if it's empty, but still...)
+            if (self.index[stem]){
+  //Look at each of the document instances for that term...
+              for (let inst of self.index[stem].instances){
+  //Create an array to hold the contexts
+                let currContexts = [];
+  //Now look at each context for that instance, if any...
+                for (let cntxt of inst.contexts){
+  //Check whether our phrase matches that context (remembering to strip
+  //out any <mark> tags)...
+                  let unmarkedContext = cntxt.context.replace(/<[^>]+>/g, '');
+                  if (rePhr.test(unmarkedContext)){
+  //We have a candidate document for inclusion, and a candidate context.
+                    currContexts.push(unmarkedContext.replace(rePhr, '<mark>' + self.terms[phr].str + '</mark>'));
+                  }
+                }
+  //If we've found contexts, we know we have a document to add to the results.
+                if (currContexts.length > 0){
+  //The resultSet object will automatically merge this data if there's already
+  //an entry for the document.
+                  self.resultSet.set(inst.docId, {contexts: currContexts, score: currContexts.length});
+                }
+              }
+            }
+          }
+          return true;
+        }
+        catch(e){
+          console.log('ERROR: ' + e.message);
+          return false;
+        }
+      }
+//End of nested function getPhrasalResults.
+
+/**
+  * @function StaticSearch~processResults~processMustNotContains
+  * @description Embedded function to remove from the result set all
+  *              documents which contain terms which have been designated
+  *              as excluded.
+  * @return true if succeeds, false if not.
+  */
+      function processMustNotContains(){
+        try{
+          for (let mnc of must_not_contains){
+            let stem = self.terms[mnc].stem;
+            if (self.index[stem]){
 //Look at each of the document instances for that term...
-                for (let inst of this.index[stem].instances){
+              for (let inst of self.index[stem].instances){
+//Delete it from the result set.
+                if (self.resultSet.has(inst.docId)){
+                  self.resultSet.delete(inst.docId);
+                }
+              }
+            }
+          }
+          return true;
+        }
+        catch(e){
+          console.log('ERROR: ' + e.message);
+          return false;
+        }
+      }
+//End of nested function processMustNotContains.
+
+/**
+  * @function StaticSearch~processResults~processMustContains
+  * @description Embedded function to retrieve all documents containing
+  *              terms designated as required. This function works in
+  *              two ways; if running after a phrasal search has been
+  *              done, it simply acts as a filter on the document set
+  *              already retrieved; if running as the initial retrieval
+  *              mechanism (where there are no phrasal searches), it
+  *              populates the result set itself.
+  * @param {Boolean} runAsFilter controls which mode the process runs in.
+  * @return true if succeeds, false if not.
+  */
+      function processMustContains(runAsFilter){
+        try{
+          if (runAsFilter){
+            if (self.resultSet.getSize() < 1){
+              return true; //nothing to do.
+            }
+            for (let must_contain of must_contains){
+              let stem = self.terms[must_contain].stem;
+              if (self.index[stem]){
+//Look at each of the document instances for that term...
+                for (let inst of self.index[stem].instances){
 //We only include it if if matches a document already found for a phrase.
-                  if (this.resultSet.has(inst.docId)){
-                    this.resultSet.merge(inst.docId, inst);
+                  if (self.resultSet.has(inst.docId)){
+                    self.resultSet.merge(inst.docId, inst);
                   }
                 }
               }
             }
           }
-//Finally the may_contains.
-          if (may_contains.length > 0){
-            for (let may_contain of may_contains){
-              let stem = this.terms[may_contain].stem;
-              if (this.index[stem]){
-//Look at each of the document instances for that term...
-                for (let inst of this.index[stem].instances){
-//We only include it if if matches a document already found for a phrase.
-                  if (this.resultSet.has(inst.docId)){
-                    this.resultSet.merge(inst.docId, inst);
-                  }
+          else{
+            for (let must_contain of must_contains){
+              let stem = self.terms[must_contain].stem;
+              if (self.index[stem]){
+            //Look at each of the document instances for that term...
+                for (let inst of self.index[stem].instances){
+                  self.resultSet.set(inst.docId, inst);
                 }
+              }
+            }
+          }
+        }
+        catch(e){
+          console.log('ERROR: ' + e.message);
+          return false;
+        }
+      }
+//End of nested function processMustContains.
+
+/**
+  * @function StaticSearch~processResults~processMayContains
+  * @description Embedded function to process may_contain search terms.
+  *              This function runs in two modes: if it's being called
+  *              after prior imperative search terms have been processed,
+  *              then it adds no new documents to the set, just enhances
+  *              their scores. But if there are no imperative search
+  *              terms, then all documents found are added to the set.
+  * @param {Boolean} addAllFound controls which mode the process runs in.
+  * @return true if succeeds, false if not.
+  */
+      function processMayContains(addAllFound){
+        for (let may_contain of may_contains){
+          let stem = self.terms[may_contain].stem;
+          if (self.index[stem]){
+//Look at each of the document instances for that term...
+            for (let inst of self.index[stem].instances){
+//We only include it if if matches a document already found for a phrase.
+              if ((self.resultSet.has(inst.docId))||(addAllFound)){
+//We can call set() here, since the result set will merge if necessary.
+                self.resultSet.set(inst.docId, inst);
               }
             }
           }
         }
       }
+
+      if (phrases.length > 0){
+//We have phrases. They take priority. Get results if there are any.
+//For each phrase we're looking for...
+        processPhrases();
+//Bail out if nothing found, and suggest a simpler search.
+        if (this.resultSet.getSize() < 1){
+          this.reportNoResults(true);
+          return false;
+        }
+//Continue, because we have results. Now we check for must_not_contains.
+        if (must_not_contains.length > 0){
+          processMustNotContains();
+        }
+//Bail out if no items are left, and suggest a simpler search.
+        if (this.resultSet.getSize() < 1){
+          this.reportNoResults(true);
+          return false;
+        }
+
+//We can continue. Now we check for any must_contains.
+        if (must_contains.length > 0){
+          processMustNotContains(true);
+        }
+//Finally the may_contains.
+        if (may_contains.length > 0){
+          processMayContains(false);
+        }
+      }
       else{
         if (must_contains.length > 0){
 //We have no phrases, but we do have musts, so these are the priority.
-          for (let must_contain of must_contains){
-            let stem = this.terms[must_contain].stem;
-            if (this.index[stem]){
-          //Look at each of the document instances for that term...
-              for (let inst of this.index[stem].instances){
-                this.resultSet.set(inst.docId, inst);
-              }
-            }
-          }
+          processMustNotContains(false);
 //Bail out if nothing found, and suggest a simpler search.
           if (this.resultSet.getSize() < 1){
             this.reportNoResults(true);
+            return false;
           }
 //Now we trim down the dataset using must_not_contains.
-          else{
-//Continue, because we have results. Now we check for must_not_contains.
-            if (must_not_contains.length > 0){
-              for (let mnc of must_not_contains){
-                let stem = this.terms[mnc].stem;
-                if (this.index[stem]){
-//Look at each of the document instances for that term...
-                  for (let inst of this.index[stem].instances){
-//Delete it from the result set.
-                    if (this.resultSet.has(inst.docId)){
-                      this.resultSet.delete(inst.docId);
-                    }
-                  }
-                }
-              }
-            }
-//Bail out if no items are left, and suggest a simpler search.
-            if (this.resultSet.getSize() < 1){
-              this.reportNoResults(true);
-            }
-            else{
-//Finally the may_contains.
-              if (may_contains.length > 0){
-                for (let may_contain of may_contains){
-                  let stem = this.terms[may_contain].stem;
-                  if (this.index[stem]){
-//Look at each of the document instances for that term...
-                    for (let inst of this.index[stem].instances){
-//We only include it if if matches a document already found for a phrase.
-                      if (this.resultSet.has(inst.docId)){
-                        this.resultSet.merge(inst.docId, inst);
-                      }
-                    }
-                  }
-                }
-              }
-            }
+          if (must_not_contains.length > 0){
+            processMustNotContains();
           }
+//Bail out if no items are left, and suggest a simpler search.
           if (this.resultSet.getSize() < 1){
             this.reportNoResults(true);
+            return false;
+          }
+//Finally the may_contains.
+          if (may_contains.length > 0){
+            processMayContains(false);
+          }
+
+          if (this.resultSet.getSize() < 1){
+            this.reportNoResults(true);
+            return false;
           }
         }
         else{
           if (may_contains.length > 0){
             //We have no phrases or musts, so we fall back to mays.
-            for (let may_contain of may_contains){
-              let stem = this.terms[may_contain].stem;
-              if (this.index[stem]){
-            //Look at each of the document instances for that term...
-                for (let inst of this.index[stem].instances){
-            //We only include it if if matches a document already found for a phrase.
-                  this.resultSet.set(inst.docId, inst)
-                }
-              }
-            }
+            processMayContains(true);
             if (this.resultSet.getSize() < 1){
               this.reportNoResults(true);
+              return false;
             }
-            else{
-              if (must_not_contains.length > 0){
-                for (let mnc of must_not_contains){
-                  let stem = this.terms[mnc].stem;
-                  if (this.index[stem]){
-  //Look at each of the document instances for that term...
-                    for (let inst of this.index[stem].instances){
-  //Delete it from the result set.
-                      if (this.resultSet.has(inst.docId)){
-                        this.resultSet.delete(inst.docId);
-                      }
-                    }
-                  }
-                }
-              }
-            }
+            processMustNotContains();
           }
           else{
             console.log('No useful search terms found.');
