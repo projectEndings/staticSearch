@@ -433,7 +433,7 @@
             escaped version of the mark element.-->
         <xsl:value-of
             select="
-            string-join($startSnippet,'') || '&lt;mark&gt;' || $thisTerm || '&lt;/mark&gt;' || $preSpace || string-join($endSnippet,'')
+            $startSnippet || '&lt;mark&gt;' || $thisTerm || '&lt;/mark&gt;' || $preSpace || $endSnippet
             => replace('\s+\n+\t+',' ') 
             => normalize-space()"/>
     </xsl:function>
