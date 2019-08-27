@@ -394,7 +394,11 @@
         
         <!--Count of how many tokens there are in the end sequence-->
         <xsl:variable name="endTokensCount" select="count($endTokens)" as="xs:integer"/>
+      
+        <!--Variables for detecting when we may need to add a space before the <mark>-->
+        <xsl:variable name="preSpace" select=" if (matches($startString,'\s+$'))  then ' ' else ()" as="xs:string?"/>
         
+        <xsl:variable name="endSpace" select="if (matches($endString,'^\s+')) then ' ' else ()"/>
         <!--The starting snippet: if there are fewer than $totalKwicLength/2 words, then just leave the string
             otherwise, trim to the $totalKwicLength/2 limit-->
         <xsl:variable name="startSnippet" select="
@@ -403,13 +407,14 @@
             if ($startTokensCount lt $kwicLengthHalf) 
             
             (: Then just return the start string :)
-            then $startString  
+            then normalize-space($startString)  
             
             (:Otherwise, concatenate the sequence:)
-            else $kwicTruncateString || hcmc:joinSubseq($startTokens, $startTokensCount - $kwicLengthHalf, $startTokensCount)"
+            else 
+            $kwicTruncateString || hcmc:joinSubseq($startTokens, $startTokensCount - $kwicLengthHalf, $startTokensCount)"
             as="xs:string?"/>
         
-        <xsl:variable name="preSpace" select="if (matches($endString,'^\s+')) then ' ' else ()" as="xs:string?"/>
+
         
 <!--        The ending snippet: if there are fewer than $kwicLengthHalf words, then just leave the string,
             otherwise, trim to the $kwicLengthHalf limit-->
@@ -419,7 +424,7 @@
             if ($endTokensCount lt $kwicLengthHalf) 
             
             (: Then just return the end string:)
-            then $endString 
+            then normalize-space($endString)
             
             (: Otherwise, get as many words as we can and concatenate an ellipses:)
             else hcmc:joinSubseq($endTokens, 1, $kwicLengthHalf) || $kwicTruncateString" 
@@ -433,7 +438,7 @@
             escaped version of the mark element.-->
         <xsl:value-of
             select="
-            $startSnippet || '&lt;mark&gt;' || $thisTerm || '&lt;/mark&gt;' || $preSpace || $endSnippet
+            $startSnippet || $preSpace || '&lt;mark&gt;' || $thisTerm || '&lt;/mark&gt;' || $endSpace || $endSnippet
             => replace('\s+\n+\t+',' ') 
             => normalize-space()"/>
     </xsl:function>
@@ -477,7 +482,7 @@
         <xsl:param name="seq" as="item()+"/>
         <xsl:param name="start" as="xs:integer"/>
         <xsl:param name="end" as="xs:integer"/>
-        <xsl:value-of select="string-join(subsequence($seq, $start, $end),' ')"/>
+        <xsl:value-of select="normalize-space(string-join(subsequence($seq, $start, $end),' '))"/>
     </xsl:function>
     
     <!--TO DO: DOCUMENT THE BELOW (OR THINK ABOUT SPLITTING THEM INTO SEPARATE MODULES)-->
