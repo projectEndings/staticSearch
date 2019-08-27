@@ -532,6 +532,28 @@ class StaticSearch{
   }
 
 /**
+  * @function staticSearch~indexTokenHasDoc
+  * @description This function, given an index token and a docId, searches
+  *              to see if there is an entry in the token's instances for
+  *              that docId.
+  * @param {String} token the index token to search for.
+  * @param {String} docId the docId to search for.
+  * @return {Boolean} true if found, false if not.
+  */
+  indexTokenHasDoc(token, docId){
+    let result = false;
+    if (this.index[token]){
+      for (let i=0; i<this.index[token].instances.length; i++){
+        if (this.index[token].instances[i].docId == docId){
+          result = true;
+          break;
+        }
+      }
+    }
+    return result;
+  }
+
+/**
   * @function StaticSearch~reportNoResults
   * @description Reports that no results have been found.
   *              Also optionally configures and runs a
@@ -661,17 +683,22 @@ class StaticSearch{
   *              done, it simply acts as a filter on the document set
   *              already retrieved; if running as the initial retrieval
   *              mechanism (where there are no phrasal searches), it
-  *              populates the result set itself.
+  *              populates the result set itself. It's doubly complicated
+  *              because it must also eliminate from the existing result
+  *              set any document that doesn't contain a term.
+  * @param {Array<integer>} indexes a list of indexes into the terms array.
+  *              This needs to be a parameter because the function is calls
+  *              itself recursively with a reduced array.
   * @param {Boolean} runAsFilter controls which mode the process runs in.
   * @return true if succeeds, false if not.
   */
-      function processMustContains(runAsFilter){
+      function processMustContains(indexes, runAsFilter){
         try{
           if (runAsFilter){
             if (self.resultSet.getSize() < 1){
               return true; //nothing to do.
             }
-            for (let must_contain of must_contains){
+            for (let must_contain of indexes){
               let stem = self.terms[must_contain].stem;
               if (self.index[stem]){
 //Look at each of the document instances for that term...
@@ -683,18 +710,33 @@ class StaticSearch{
                 }
               }
             }
-          }
-          else{
-            for (let must_contain of must_contains){
-              let stem = self.terms[must_contain].stem;
-              if (self.index[stem]){
-            //Look at each of the document instances for that term...
-                for (let inst of self.index[stem].instances){
-                  self.resultSet.set(inst.docId, inst);
+  //Now weed out results which don't have matches in other terms.
+  //TODO: THIS DOESN"T SEEM TO BE WORKING YET. THE ARRAY IS CREATED
+  //BUT THE DELETION FAILS.
+            let docIdsToDelete = [];
+            for (let docId of self.resultSet.mapDocs.keys()){
+              console.log(docId);
+              for (let mc of must_contains){
+                if (! self.indexTokenHasDoc(self.terms[mc].stem, docId)){
+                  docIdsToDelete.push(docId);
                 }
               }
             }
+            console.log(docIdsToDelete);
+            self.resultSet.deleteArray(docIdsToDelete);
           }
+          else{
+//Here we start by processing the first only.
+            let stem = self.terms[0].stem;
+            if (self.index[stem]){
+            //Look at each of the document instances for that term...
+              for (let inst of self.index[stem].instances){
+                self.resultSet.set(inst.docId, inst);
+              }
+            }
+            processMustContains(must_contains.slice(1), true);
+          }
+          return true;
         }
         catch(e){
           console.log('ERROR: ' + e.message);
@@ -751,7 +793,7 @@ class StaticSearch{
 
 //We can continue. Now we check for any must_contains.
         if (must_contains.length > 0){
-          processMustNotContains(true);
+          processMustContains(must_contains, true);
         }
 //Finally the may_contains.
         if (may_contains.length > 0){
@@ -761,7 +803,7 @@ class StaticSearch{
       else{
         if (must_contains.length > 0){
 //We have no phrases, but we do have musts, so these are the priority.
-          processMustNotContains(false);
+          processMustContains(must_contains, false);
 //Bail out if nothing found, and suggest a simpler search.
           if (this.resultSet.getSize() < 1){
             this.reportNoResults(true);

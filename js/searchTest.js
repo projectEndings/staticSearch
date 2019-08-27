@@ -5,13 +5,13 @@ var Sch;
 
 var searchQueryTests = [
   'appearance',
+  '+document +flow +specialized',
   'note "document contains" flow specialized +context',
   '+yellow  -red "two colours" better  Green ambiguous'
 ];
 
 function setupTests(){
   Sch = new StaticSearch();
-  //document.getElementById('doSearch').addEventListener('click', function(){Sch.parseSearchQuery(); Sch.writeSearchReport(); return false;});
   document.getElementById('searchQuery').value = searchQueryTests[1];
 }
 
