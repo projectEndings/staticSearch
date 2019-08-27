@@ -619,8 +619,6 @@ class StaticSearch{
                 for (let inst of this.index[stem].instances){
 //Delete it from the result set.
                   if (this.resultSet.has(inst.docId)){
-                    console.log('Calling for deletion of document: ' + inst.docId);
-//THIS IS NOT WORKING FOR SOME REASON.
                     this.resultSet.delete(inst.docId);
                   }
                 }
@@ -663,24 +661,108 @@ class StaticSearch{
             }
           }
         }
-        console.log('Result set: ');
-        console.log(this.resultSet);
       }
       else{
         if (must_contains.length > 0){
 //We have no phrases, but we do have musts, so these are the priority.
+          for (let must_contain of must_contains){
+            let stem = this.terms[must_contain].stem;
+            if (this.index[stem]){
+          //Look at each of the document instances for that term...
+              for (let inst of this.index[stem].instances){
+                this.resultSet.set(inst.docId, inst);
+              }
+            }
+          }
+//Bail out if nothing found, and suggest a simpler search.
+          if (this.resultSet.getSize() < 1){
+            this.reportNoResults(true);
+          }
+//Now we trim down the dataset using must_not_contains.
+          else{
+//Continue, because we have results. Now we check for must_not_contains.
+            if (must_not_contains.length > 0){
+              for (let mnc of must_not_contains){
+                let stem = this.terms[mnc].stem;
+                if (this.index[stem]){
+//Look at each of the document instances for that term...
+                  for (let inst of this.index[stem].instances){
+//Delete it from the result set.
+                    if (this.resultSet.has(inst.docId)){
+                      this.resultSet.delete(inst.docId);
+                    }
+                  }
+                }
+              }
+            }
+//Bail out if no items are left, and suggest a simpler search.
+            if (this.resultSet.getSize() < 1){
+              this.reportNoResults(true);
+            }
+            else{
+//Finally the may_contains.
+              if (may_contains.length > 0){
+                for (let may_contain of may_contains){
+                  let stem = this.terms[may_contain].stem;
+                  if (this.index[stem]){
+//Look at each of the document instances for that term...
+                    for (let inst of this.index[stem].instances){
+//We only include it if if matches a document already found for a phrase.
+                      if (this.resultSet.has(inst.docId)){
+                        this.resultSet.merge(inst.docId, inst);
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          if (this.resultSet.getSize() < 1){
+            this.reportNoResults(true);
+          }
         }
         else{
           if (may_contains.length > 0){
-//We have no phrases or musts, so we fall back to mays.
-
+            //We have no phrases or musts, so we fall back to mays.
+            for (let may_contain of may_contains){
+              let stem = this.terms[may_contain].stem;
+              if (this.index[stem]){
+            //Look at each of the document instances for that term...
+                for (let inst of this.index[stem].instances){
+            //We only include it if if matches a document already found for a phrase.
+                  this.resultSet.set(inst.docId, inst)
+                }
+              }
+            }
+            if (this.resultSet.getSize() < 1){
+              this.reportNoResults(true);
+            }
+            else{
+              if (must_not_contains.length > 0){
+                for (let mnc of must_not_contains){
+                  let stem = this.terms[mnc].stem;
+                  if (this.index[stem]){
+  //Look at each of the document instances for that term...
+                    for (let inst of this.index[stem].instances){
+  //Delete it from the result set.
+                      if (this.resultSet.has(inst.docId)){
+                        this.resultSet.delete(inst.docId);
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
           else{
             console.log('No useful search terms found.');
+            return false;
           }
         }
       }
-//TODO.
+      if (this.resultSet.getSize() < 1){
+        this.reportNoResults(true);
+      }
       return true;
     }
     catch(e){
