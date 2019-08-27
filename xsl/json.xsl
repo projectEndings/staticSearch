@@ -409,6 +409,8 @@
             else $kwicTruncateString || hcmc:joinSubseq($startTokens, $startTokensCount - $kwicLengthHalf, $startTokensCount)"
             as="xs:string?"/>
         
+        <xsl:variable name="preSpace" select="if (matches($endString,'^\s+')) then ' ' else ()" as="xs:string?"/>
+        
 <!--        The ending snippet: if there are fewer than $kwicLengthHalf words, then just leave the string,
             otherwise, trim to the $kwicLengthHalf limit-->
         <xsl:variable name="endSnippet" select="
@@ -431,7 +433,7 @@
             escaped version of the mark element.-->
         <xsl:value-of
             select="
-            string-join($startSnippet,'') || '&lt;mark&gt;' || $thisTerm || '&lt;/mark&gt;' || string-join($endSnippet,'')
+            string-join($startSnippet,'') || '&lt;mark&gt;' || $thisTerm || '&lt;/mark&gt;' || $preSpace || string-join($endSnippet,'')
             => replace('\s+\n+\t+',' ') 
             => normalize-space()"/>
     </xsl:function>
