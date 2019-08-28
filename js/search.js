@@ -720,7 +720,6 @@ class StaticSearch{
                 }
               }
             }
-            console.log(docIdsToDelete);
             self.resultSet.deleteArray(docIdsToDelete);
           }
           else{
@@ -845,6 +844,11 @@ class StaticSearch{
       if (this.resultSet.getSize() < 1){
         this.reportNoResults(true);
       }
+      this.resultSet.sortByScoreDesc();
+      while (this.resultsDiv.firstChild) {
+        this.resultsDiv.removeChild(this.resultsDiv.firstChild);
+      }
+      this.resultsDiv.appendChild(this.resultSet.resultsAsHtml());
       return true;
     }
     catch(e){
@@ -1019,7 +1023,7 @@ class StaticSearch{
   *              scoring items come at the top.
   * @return {Boolean} true if successful, false on error.
   */
-    sortByScoreAsc(){
+    sortByScoreDesc(){
       try{
         let s = this.mapDocs.size;
         this.mapDocs = new Map([...this.mapDocs.entries()].sort((a, b) => a[1].score < b[1].score));
@@ -1031,4 +1035,34 @@ class StaticSearch{
       }
     }
 
+/**
+  * @function SSResultSet~resultsAsHtml
+  * @description Outputs a ul element containing an li element for each
+  *              result in the search; context strings are also included.
+  * @return {Element(ul)} an unordered list ready for insertion into the
+  *                       host document.
+  */
+    resultsAsHtml(){
+      let ul = document.createElement('ul');
+      for (let [key, value] of this.mapDocs){
+        let li = document.createElement('li');
+        let a = document.createElement('a');
+        a.setAttribute('href', value.docUri);
+        let t = document.createTextNode(value.docTitle);
+        a.appendChild(t);
+        li.appendChild(a);
+        if (value.contexts.length > 0){
+          let ul2 = document.createElement('ul');
+          ul2.setAttribute('class', 'kwic');
+          for (let c of value.contexts){
+            let li2 = document.createElement('li');
+            li2.innerHTML = c.context;
+            ul2.appendChild(li2);
+          }
+          li.appendChild(ul2);
+        }
+        ul.appendChild(li);
+      }
+      return ul;
+    }
   }
