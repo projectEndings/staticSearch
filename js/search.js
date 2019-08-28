@@ -67,6 +67,7 @@
   ss.captions['en'][MUST_CONTAIN]        = 'Must contain: ';
   ss.captions['en'][MUST_NOT_CONTAIN]    = 'Must not contain: ';
   ss.captions['en'][MAY_CONTAIN]         = 'May contain: ';
+  ss.captions['en'].strScore             = 'Score: ';
 
 
 /**
@@ -854,7 +855,11 @@ class StaticSearch{
       while (this.resultsDiv.firstChild) {
         this.resultsDiv.removeChild(this.resultsDiv.firstChild);
       }
-      this.resultsDiv.appendChild(this.resultSet.resultsAsHtml());
+      this.resultsDiv.appendChild(document.createElement('p')
+                     .appendChild(document.createTextNode(
+                       this.captionSet.strDocumentsFound + this.resultSet.getSize()
+                     )));
+      this.resultsDiv.appendChild(this.resultSet.resultsAsHtml(this.captionSet.strScore));
       return true;
     }
     catch(e){
@@ -1045,10 +1050,11 @@ class StaticSearch{
   * @function SSResultSet~resultsAsHtml
   * @description Outputs a ul element containing an li element for each
   *              result in the search; context strings are also included.
+  * @param {String} strScore caption for the score assigned to a hit document.
   * @return {Element(ul)} an unordered list ready for insertion into the
   *                       host document.
   */
-    resultsAsHtml(){
+    resultsAsHtml(strScore){
       let ul = document.createElement('ul');
       for (let [key, value] of this.mapDocs){
         let li = document.createElement('li');
@@ -1057,6 +1063,8 @@ class StaticSearch{
         let t = document.createTextNode(value.docTitle);
         a.appendChild(t);
         li.appendChild(a);
+        t = document.createTextNode(' ' + strScore + value.score);
+        li.append(t);
         if (value.contexts.length > 0){
           let ul2 = document.createElement('ul');
           ul2.setAttribute('class', 'kwic');
