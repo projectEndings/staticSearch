@@ -568,6 +568,7 @@ class StaticSearch{
   reportNoResults(trySimplerSearch){
     //TODO: NOT IMPLEMENTED YET.
     console.log('No results. Try simpler search? ' + trySimplerSearch);
+
   }
 
 /**
@@ -780,21 +781,10 @@ class StaticSearch{
 //We have phrases. They take priority. Get results if there are any.
 //For each phrase we're looking for...
         processPhrases();
-//Bail out if nothing found, and suggest a simpler search.
-        if (this.resultSet.getSize() < 1){
-          this.reportNoResults(true);
-          return false;
-        }
 //Continue, because we have results. Now we check for must_not_contains.
         if (must_not_contains.length > 0){
           processMustNotContains();
         }
-//Bail out if no items are left, and suggest a simpler search.
-        if (this.resultSet.getSize() < 1){
-          this.reportNoResults(true);
-          return false;
-        }
-
 //We can continue. Now we check for any must_contains.
         if (must_contains.length > 0){
           processMustContains(must_contains, true);
@@ -808,38 +798,19 @@ class StaticSearch{
         if (must_contains.length > 0){
 //We have no phrases, but we do have musts, so these are the priority.
           processMustContains(must_contains, false);
-//Bail out if nothing found, and suggest a simpler search.
-          if (this.resultSet.getSize() < 1){
-            this.reportNoResults(true);
-            return false;
-          }
 //Now we trim down the dataset using must_not_contains.
           if (must_not_contains.length > 0){
             processMustNotContains();
           }
-//Bail out if no items are left, and suggest a simpler search.
-          if (this.resultSet.getSize() < 1){
-            this.reportNoResults(true);
-            return false;
-          }
 //Finally the may_contains.
           if (may_contains.length > 0){
             processMayContains(false);
-          }
-
-          if (this.resultSet.getSize() < 1){
-            this.reportNoResults(true);
-            return false;
           }
         }
         else{
           if (may_contains.length > 0){
             //We have no phrases or musts, so we fall back to mays.
             processMayContains(true);
-            if (this.resultSet.getSize() < 1){
-              this.reportNoResults(true);
-              return false;
-            }
             processMustNotContains();
           }
           else{
@@ -847,9 +818,6 @@ class StaticSearch{
             return false;
           }
         }
-      }
-      if (this.resultSet.getSize() < 1){
-        this.reportNoResults(true);
       }
       this.resultSet.sortByScoreDesc();
       while (this.resultsDiv.firstChild) {
@@ -860,7 +828,10 @@ class StaticSearch{
                        this.captionSet.strDocumentsFound + this.resultSet.getSize()
                      )));
       this.resultsDiv.appendChild(this.resultSet.resultsAsHtml(this.captionSet.strScore));
-      return true;
+      if (this.resultSet.getSize() < 1){
+        this.reportNoResults(true);
+      }
+      return (this.resultSet.getSize() > 0);
     }
     catch(e){
       console.log('ERROR: ' + e.message);
