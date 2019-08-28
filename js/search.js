@@ -624,14 +624,20 @@ class StaticSearch{
                   let unmarkedContext = cntxt.context.replace(/<[^>]+>/g, '');
                   if (rePhr.test(unmarkedContext)){
   //We have a candidate document for inclusion, and a candidate context.
-                    currContexts.push(unmarkedContext.replace(rePhr, '<mark>' + self.terms[phr].str + '</mark>'));
+                    let c = unmarkedContext.replace(rePhr, '<mark>' + self.terms[phr].str + '</mark>');
+                    currContexts.push({form: self.terms[phr].str, context: c, weight: 2});
                   }
                 }
   //If we've found contexts, we know we have a document to add to the results.
                 if (currContexts.length > 0){
   //The resultSet object will automatically merge this data if there's already
   //an entry for the document.
-                  self.resultSet.set(inst.docId, {contexts: currContexts, score: currContexts.length});
+                  self.resultSet.set(inst.docId, {docId: inst.docId,
+                    docTitle: inst.docTitle,
+                    docUri: inst.docUri,
+                    score: inst.score,
+                    contexts: currContexts,
+                    score: currContexts.length});
                 }
               }
             }
