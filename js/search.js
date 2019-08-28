@@ -711,8 +711,6 @@ class StaticSearch{
               }
             }
   //Now weed out results which don't have matches in other terms.
-  //TODO: THIS DOESN"T SEEM TO BE WORKING YET. THE ARRAY IS CREATED
-  //BUT THE DELETION FAILS.
             let docIdsToDelete = [];
             for (let docId of self.resultSet.mapDocs.keys()){
               console.log(docId);
@@ -989,7 +987,8 @@ class StaticSearch{
       let result = false;
       try{
         for (let i=0; i<arrDocIds.length; i++){
-          result = result || this.mapDocs.delete(arrDocIds[i]);
+          let deleted = this.mapDocs.delete(arrDocIds[i]);
+          result = result || deleted;
         }
         return result;
       }
