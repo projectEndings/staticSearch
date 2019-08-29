@@ -534,18 +534,18 @@ class StaticSearch{
 
 /**
   * @function staticSearch~indexTokenHasDoc
-  * @description This function, given an index token and a docId, searches
+  * @description This function, given an index token and a docUri, searches
   *              to see if there is an entry in the token's instances for
-  *              that docId.
+  *              that docUri.
   * @param {String} token the index token to search for.
-  * @param {String} docId the docId to search for.
+  * @param {String} docUri the docUri to search for.
   * @return {Boolean} true if found, false if not.
   */
-  indexTokenHasDoc(token, docId){
+  indexTokenHasDoc(token, docUri){
     let result = false;
     if (this.index[token]){
       for (let i=0; i<this.index[token].instances.length; i++){
-        if (this.index[token].instances[i].docId == docId){
+        if (this.index[token].instances[i].docUri == docUri){
           result = true;
           break;
         }
@@ -634,9 +634,8 @@ class StaticSearch{
                 if (currContexts.length > 0){
   //The resultSet object will automatically merge this data if there's already
   //an entry for the document.
-                  self.resultSet.set(inst.docId, {docId: inst.docId,
+                  self.resultSet.set(inst.docUri, {docUri: inst.docUri,
                     docTitle: inst.docTitle,
-                    docUri: inst.docUri,
                     score: inst.score,
                     contexts: currContexts,
                     score: currContexts.length});
@@ -668,8 +667,8 @@ class StaticSearch{
 //Look at each of the document instances for that term...
               for (let inst of self.index[stem].instances){
 //Delete it from the result set.
-                if (self.resultSet.has(inst.docId)){
-                  self.resultSet.delete(inst.docId);
+                if (self.resultSet.has(inst.docUri)){
+                  self.resultSet.delete(inst.docUri);
                 }
               }
             }
@@ -712,23 +711,23 @@ class StaticSearch{
 //Look at each of the document instances for that term...
                 for (let inst of self.index[stem].instances){
 //We only include it if if matches a document already found for a phrase.
-                  if (self.resultSet.has(inst.docId)){
-                    self.resultSet.merge(inst.docId, inst);
+                  if (self.resultSet.has(inst.docUri)){
+                    self.resultSet.merge(inst.docUri, inst);
                   }
                 }
               }
             }
   //Now weed out results which don't have matches in other terms.
-            let docIdsToDelete = [];
-            for (let docId of self.resultSet.mapDocs.keys()){
-              console.log(docId);
+            let docUrisToDelete = [];
+            for (let docUri of self.resultSet.mapDocs.keys()){
+              console.log(docUri);
               for (let mc of must_contains){
-                if (! self.indexTokenHasDoc(self.terms[mc].stem, docId)){
-                  docIdsToDelete.push(docId);
+                if (! self.indexTokenHasDoc(self.terms[mc].stem, docUri)){
+                  docUrisToDelete.push(docUri);
                 }
               }
             }
-            self.resultSet.deleteArray(docIdsToDelete);
+            self.resultSet.deleteArray(docUrisToDelete);
           }
           else{
 //Here we start by processing the first only.
@@ -736,7 +735,7 @@ class StaticSearch{
             if (self.index[stem]){
             //Look at each of the document instances for that term...
               for (let inst of self.index[stem].instances){
-                self.resultSet.set(inst.docId, inst);
+                self.resultSet.set(inst.docUri, inst);
               }
             }
             processMustContains(must_contains.slice(1), true);
@@ -768,9 +767,9 @@ class StaticSearch{
 //Look at each of the document instances for that term...
             for (let inst of self.index[stem].instances){
 //We only include it if if matches a document already found for a phrase.
-              if ((self.resultSet.has(inst.docId))||(addAllFound)){
+              if ((self.resultSet.has(inst.docUri))||(addAllFound)){
 //We can call set() here, since the result set will merge if necessary.
-                self.resultSet.set(inst.docId, inst);
+                self.resultSet.set(inst.docUri, inst);
               }
             }
           }
@@ -879,31 +878,31 @@ class StaticSearch{
   * @function SSResultSet~has
   * @description Provides access to the Map.prototype.has() function
   * to check whether a document is already in the result set.
-  * @param {String} docId The id of the document to check, which will
+  * @param {String} docUri The URI of the document to check, which will
   * be the key to the entry in the map.
   * @return {Boolean} true if this document is in the map; false if not.
   */
-    has(docId){
-      return this.mapDocs.has(docId);
+    has(docUri){
+      return this.mapDocs.has(docUri);
     }
 /**
   * @function SSResultSet~set
   * @description Provides access to the Map.prototype.set() function
   * to add data to the result set. This first checks whether there
-  * is already an entry for this docId, and if there is, it merges the
+  * is already an entry for this docUri, and if there is, it merges the
   * data instead; otherwise, it sets the data.
-  * @param {String} docId The id of the document to check, which will
+  * @param {String} docUri The URI of the document to check, which will
   * be the key to the entry in the map.
   * @param {Object} data The structured data from the query index.
   * @return {Boolean} true if successful, false if not.
   */
-    set(docId, data){
+    set(docUri, data){
       try{
-        if (this.mapDocs.has(docId)){
-          this.merge(docId, data);
+        if (this.mapDocs.has(docUri)){
+          this.merge(docUri, data);
         }
         else{
-          this.mapDocs.set(docId, data);
+          this.mapDocs.set(docUri, data);
         }
       }
       catch(e){
@@ -914,21 +913,21 @@ class StaticSearch{
 /**
   * @function SSResultSet~merge
   * @description Merges an incoming dataset for a document id with an
-  * existing entry for that docId. This involves two steps: first,
+  * existing entry for that docUri. This involves two steps: first,
   * increment the score for the document, and second, add any keyword-
   * in-context strings from the new item up to the limit of kwics allowed.
-  * @param {String} docId The id of the document to check, which will
+  * @param {String} docUri The URI of the document to check, which will
   * be the key to the entry in the map.
   * @param {Object} data The structured data from the query index.
   * @return {Boolean} true if successful, false if not.
   */
-    merge(docId, data){
+    merge(docUri, data){
       try{
-        if (!this.mapDocs.has(docId)){
-          this.mapDocs.set(docId, data);
+        if (!this.mapDocs.has(docUri)){
+          this.mapDocs.set(docUri, data);
         }
         else{
-          let currEntry = this.mapDocs.get(docId);
+          let currEntry = this.mapDocs.get(docUri);
           currEntry.score += data.score;
           let i = 0;
           while ((currEntry.contexts.length < this.kwicLimit)&&(i < data.contexts.length)){
@@ -947,14 +946,14 @@ class StaticSearch{
 /**
   * @function SSResultSet~delete
   * @description Deletes an existing entry from the map.
-  * @param {String} docId The id of the document to delete.
+  * @param {String} docUri The URI of the document to delete.
   * @return {Boolean} true if the item existed and was successfully
   * deleted, false if not, or if there is an error.
   */
-    delete(docId){
+    delete(docUri){
       try{
-        console.log('Trying to delete ' + docId);
-        return this.mapDocs.delete(docId);
+        console.log('Trying to delete ' + docUri);
+        return this.mapDocs.delete(docUri);
       }
       catch(e){
         console.log('ERROR: ' + e.message);
@@ -965,15 +964,15 @@ class StaticSearch{
 /**
   * @function SSResultSet~deleteArray
   * @description Deletes a collection of existing entries from the map.
-  * @param {Array.<String>} arrDocIds The ids of the document to delete.
+  * @param {Array.<String>} arrDocUris The URIs of the document to delete.
   * @return {Boolean} true if any of the items existed and was successfully
   * deleted, false if not, or if there is an error.
   */
-    deleteArray(arrDocIds){
+    deleteArray(arrDocUris){
       let result = false;
       try{
-        for (let i=0; i<arrDocIds.length; i++){
-          let deleted = this.mapDocs.delete(arrDocIds[i]);
+        for (let i=0; i<arrDocUris.length; i++){
+          let deleted = this.mapDocs.delete(arrDocUris[i]);
           result = result || deleted;
         }
         return result;
