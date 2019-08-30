@@ -400,7 +400,7 @@ class StaticSearch{
   * supplied term type (PHRASE, MUST_CONTAIN etc.).
   * @param {integer} termType One of PHRASE, MUST_CONTAIN, MUST_NOT_CONTAIN,
                               MAY_CONTAIN.
-  * @return {Array} An array of zero or more integers.
+  * @return {Array<integer>} An array of zero or more integers.
   */
   getTermsByType(termType){
     let result = [];
@@ -455,7 +455,8 @@ class StaticSearch{
 //We will first add an empty index so that if nothing is found, we won't need
 //to search again.
           emptyIndex = {'token': tokensToFind[i], 'instances': []}; //used as return value when nothing retrieved.
-          self.tokenFound(emptyIndex);
+
+          this.tokenFound(emptyIndex);
 
 //Figure out whether we're retrieving a lower-case or an upper-case token.
           jsonSubfolder = (tokensToFind[i].toLowerCase() == tokensToFind[i])? 'lower/' : 'upper/';
@@ -710,7 +711,8 @@ class StaticSearch{
               if (self.index[stem]){
 //Look at each of the document instances for that term...
                 for (let inst of self.index[stem].instances){
-//We only include it if if matches a document already found for a phrase.
+//We only include it if if matches a document already found for a phrase
+//or the first must_contain.
                   if (self.resultSet.has(inst.docUri)){
                     self.resultSet.merge(inst.docUri, inst);
                   }
@@ -780,31 +782,23 @@ class StaticSearch{
 //We have phrases. They take priority. Get results if there are any.
 //For each phrase we're looking for...
         processPhrases();
-//Continue, because we have results. Now we check for must_not_contains.
-        if (must_not_contains.length > 0){
-          processMustNotContains();
-        }
+//Continue, because we have results. Now we process any must_not_contains.
+        processMustNotContains();
+
 //We can continue. Now we check for any must_contains.
-        if (must_contains.length > 0){
-          processMustContains(must_contains, true);
-        }
+        processMustContains(must_contains, true);
+
 //Finally the may_contains.
-        if (may_contains.length > 0){
-          processMayContains(false);
-        }
+        processMayContains(false);
       }
       else{
         if (must_contains.length > 0){
 //We have no phrases, but we do have musts, so these are the priority.
           processMustContains(must_contains, false);
-//Now we trim down the dataset using must_not_contains.
-          if (must_not_contains.length > 0){
-            processMustNotContains();
-          }
+//Now we trim down the dataset using any must_not_contains.
+          processMustNotContains();
 //Finally the may_contains.
-          if (may_contains.length > 0){
-            processMayContains(false);
-          }
+          processMayContains(false);
         }
         else{
           if (may_contains.length > 0){
@@ -928,10 +922,12 @@ class StaticSearch{
         }
         else{
           let currEntry = this.mapDocs.get(docUri);
-          currEntry.score += data.score;
           let i = 0;
           while ((currEntry.contexts.length < this.kwicLimit)&&(i < data.contexts.length)){
-            currEntry.contexts.push(data.contexts[i]);
+            if (currEntry.contexts.indexOf(data.contexts[i]) < 0){
+              currEntry.contexts.push(data.contexts[i]);
+              currEntry.score += data.score;
+            }
             i++;
           }
         }
