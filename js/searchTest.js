@@ -12,7 +12,9 @@ var searchQueryTests = [
 
 function setupTests(){
   Sch = new StaticSearch();
-  document.getElementById('searchQuery').value = searchQueryTests[1];
+  if (document.getElementById('searchQuery').value == ''){
+    document.getElementById('searchQuery').value = searchQueryTests[1];
+  }
 }
 
 window.addEventListener('load', setupTests);

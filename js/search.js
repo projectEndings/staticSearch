@@ -192,9 +192,29 @@ class StaticSearch{
 
       //Result handling object
       this.resultSet = new SSResultSet(this.kwicLimit);
+
+      //Now we're instantiated, check to see if there's a query
+      //string that should initiate a search.
+      this.parseQueryString();
     }
     catch(e){
       console.log('ERROR: ' + e.message);
+    }
+  }
+
+/** @function StaticSearch~parseQueryString
+  * @description this function is run after the class is instantiated
+  *              to check whether there is a query string in the
+  *              browser URL. If so, it parses it out and runs the
+  *              query.
+  *
+  * @return {Boolean} true if a search is initiated otherwise false.
+  */
+  parseQueryString(){
+    let searchParams = new URLSearchParams(document.location.search);
+    if (searchParams.has('q')){
+      this.queryBox.value = searchParams.get('q');
+      this.doSearch();
     }
   }
 
