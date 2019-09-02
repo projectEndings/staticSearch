@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://hcmc.uvic.ca/ns">
+   <params>
+      <baseDir>.</baseDir>
+      <collectionDir>keats</collectionDir>
+      <recurse>false</recurse>
+      <tempDir>keats_temp</tempDir>
+      <totalKwicLength>10</totalKwicLength>
+      <outDir>js/</outDir>
+      <createContexts></createContexts>
+      <maxContexts>3</maxContexts>
+      <!--NOTE: If NGRAMS is set to TRUE, then
+        maxContents prop will be ignored-->
+      <phrasalSearch>true</phrasalSearch>
+      <verbose>fa</verbose>
+      <stopwordsFile>xsl/english_stopwords.txt</stopwordsFile>
+      <dictionaryFile>xsl/english_words.txt</dictionaryFile>
+   </params>
+   
+   <rules>
+      <rule xpath="h4" weight="2"/>
+      <rule xpath="h4" weight="2"/>
+      <rule xpath="nav" weight="0"/>
+      <rule xpath="div[id='footer']" weight="0"/>
+      <rule xpath="a[@href]" weight="2"/>
+      <rule xpath="script" weight="0"/>
+   </rules>
+   <contexts>
+   </contexts>
+  
+</config>
