@@ -19,6 +19,7 @@
     
     <rules>
         <rule xpath="div[@id=('navbar','header','footer')]" weight="0"/>
+        <rule xpath="ul[@class='topicIndex']" weight="0"/>
     </rules>
     
     <contexts>
