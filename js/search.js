@@ -129,9 +129,9 @@ class StaticSearch{
       if (!this.resultsDiv){
        throw new Error('Failed to find div with id "searchResults". Cannot provide search functionality.');
       }
-      //Optional drop-down list search filters.
-      this.filterSelects =
-           Array.from(document.querySelectorAll("select.searchFilter"));
+      //Optional checkbox search filters.
+      this.filterCheckboxes =
+           Array.from(document.querySelectorAll("input[type='checkbox'].staticSearch.filter"));
       //Optional type-ahead search filters.
       this.filterTexts   =
            Array.from(document.querySelectorAll("input.searchFilter[type='text']"));

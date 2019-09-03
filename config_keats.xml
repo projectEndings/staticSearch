@@ -8,11 +8,11 @@
       <totalKwicLength>10</totalKwicLength>
       <outDir>site/js/</outDir>
       <createContexts></createContexts>
-      <maxContexts>3</maxContexts>
+      <maxContexts>1</maxContexts>
       <!--NOTE: If NGRAMS is set to TRUE, then
         maxContents prop will be ignored-->
       <phrasalSearch>true</phrasalSearch>
-      <stopwordsFile>xsl/english_stopwords.txt</stopwordsFile>
+      <stopwordsFile>xsl/keats_stopwords.txt</stopwordsFile>
       <dictionaryFile>xsl/english_words.txt</dictionaryFile>
       <kwicTruncateString>. . .</kwicTruncateString>
       <verbose>no</verbose>
@@ -21,11 +21,11 @@
    
    <rules>
       <rule xpath="h4" weight="2"/>
-      <rule xpath="h4" weight="2"/>
       <rule xpath="nav" weight="0"/>
       <rule xpath="div[id='footer']" weight="0"/>
       <rule xpath="a[@href]" weight="2"/>
       <rule xpath="script" weight="0"/>
+      <rule xpath="ul[class='topicIndex']" weight="0"/>
    </rules>
    <contexts>
    </contexts>
