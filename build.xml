@@ -59,7 +59,7 @@
     </target>
     
     <target name="makeTestCopy">
-        <copy todir="js">
+        <delete dir="${basedir}/js/js"/>        <copy todir="js">
             <fileset dir="site">
                 <include name="js/**"/>
             </fileset>
@@ -108,5 +108,5 @@
     ]]>
     </scriptdef>
     
-    <target name="all" depends="clean, config, tokenize, json, report"/>
+    <target name="all" depends="clean, config, tokenize, json, makeTestCopy, report"/>
 </project>
