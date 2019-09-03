@@ -9,7 +9,6 @@
   
     <property name="keatsBuildUrl" value="https://jenkins.hcmc.uvic.ca/job/Keats/lastSuccessfulBuild/artifact/site/*zip*/site.zip"/>
     
-    
   <property name="verbose" value="true"/>
     
     <target name="clean">
@@ -109,5 +108,5 @@
     ]]>
     </scriptdef>
     
-    <target name="all" depends="clean, config, tokenize, json, makeTestCopy, report"/>
+    <target name="all" depends="clean, config, tokenize, json, report"/>
 </project>
