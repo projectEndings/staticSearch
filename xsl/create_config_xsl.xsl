@@ -2,8 +2,8 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
-    xmlns:hcmc="http://hcmc.uvic.ca/ns"
-    xpath-default-namespace="http://hcmc.uvic.ca/ns"
+    xmlns:hcmc="http://hcmc.uvic.ca/ns/staticSearch"
+    xpath-default-namespace="http://hcmc.uvic.ca/ns/staticSearch"
     xmlns:xso="dummy"
     version="3.0">
     <xd:doc scope="stylesheet">
@@ -100,7 +100,7 @@
             <xso:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
-                xmlns:hcmc="http://hcmc.uvic.ca/ns"
+                xmlns:hcmc="http://hcmc.uvic.ca/ns/staticSearch"
                 exclude-result-prefixes="#all"
                 xpath-default-namespace="http://www.w3.org/1999/xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"

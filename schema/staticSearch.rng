@@ -4,8 +4,8 @@
          xmlns:tei="http://www.tei-c.org/ns/1.0"
          xmlns:teix="http://www.tei-c.org/ns/Examples"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
-         ns="http://hcmc.uvic.ca/ns"><!--
-Schema generated from ODD source 2019-09-04T18:33:44Z. .
+         ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
+Schema generated from ODD source 2019-09-04T18:43:13Z. .
 TEI Edition: Version 3.6.0a. Last updated on
 	27th August 2019, revision ded483f6e
 TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0a./
@@ -15,7 +15,7 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0a./
            prefix="tei"
            uri="http://www.tei-c.org/ns/1.0"/>
    <define name="config">
-      <element name="config" ns="http://hcmc.uvic.ca/ns">
+      <element name="config" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
          <ref name="params"/>
          <optional>
@@ -27,7 +27,7 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0a./
       </element>
    </define>
    <define name="params">
-      <element name="params" ns="http://hcmc.uvic.ca/ns">
+      <element name="params" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
          <group>
             <ref name="baseDir"/>
@@ -75,7 +75,7 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0a./
       </element>
    </define>
    <define name="rules">
-      <element name="rules" ns="http://hcmc.uvic.ca/ns">
+      <element name="rules" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
          <oneOrMore>
             <ref name="rule"/>
@@ -83,7 +83,7 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0a./
       </element>
    </define>
    <define name="contexts">
-      <element name="contexts" ns="http://hcmc.uvic.ca/ns">
+      <element name="contexts" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
          <oneOrMore>
             <ref name="rule"/>
@@ -91,7 +91,7 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0a./
       </element>
    </define>
    <define name="rule">
-      <element name="rule" ns="http://hcmc.uvic.ca/ns">
+      <element name="rule" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
          <empty/>
          <ref name="att.xpathRule.attributes"/>
@@ -128,103 +128,103 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0a./
       </optional>
    </define>
    <define name="baseDir">
-      <element name="baseDir" ns="http://hcmc.uvic.ca/ns">
+      <element name="baseDir" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
          <data type="anyURI"/>
       </element>
    </define>
    <define name="collectionDir">
-      <element name="collectionDir" ns="http://hcmc.uvic.ca/ns">
+      <element name="collectionDir" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
          <data type="anyURI"/>
       </element>
    </define>
    <define name="recurse">
-      <element name="recurse" ns="http://hcmc.uvic.ca/ns">
+      <element name="recurse" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
          <data type="boolean"/>
       </element>
    </define>
    <define name="tempDir">
-      <element name="tempDir" ns="http://hcmc.uvic.ca/ns">
+      <element name="tempDir" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
          <data type="anyURI"/>
       </element>
    </define>
    <define name="outDir">
-      <element name="outDir" ns="http://hcmc.uvic.ca/ns">
+      <element name="outDir" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
          <data type="anyURI"/>
       </element>
    </define>
    <define name="createContexts">
-      <element name="createContexts" ns="http://hcmc.uvic.ca/ns">
+      <element name="createContexts" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
          <data type="boolean"/>
       </element>
    </define>
    <define name="totalKwicLength">
-      <element name="totalKwicLength" ns="http://hcmc.uvic.ca/ns">
+      <element name="totalKwicLength" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
          <data type="nonNegativeInteger"/>
       </element>
    </define>
    <define name="maxContexts">
-      <element name="maxContexts" ns="http://hcmc.uvic.ca/ns">
+      <element name="maxContexts" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
          <data type="nonNegativeInteger"/>
       </element>
    </define>
    <define name="kwicTruncateString">
-      <element name="kwicTruncateString" ns="http://hcmc.uvic.ca/ns">
+      <element name="kwicTruncateString" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
          <text/>
       </element>
    </define>
    <define name="indentJSON">
-      <element name="indentJSON" ns="http://hcmc.uvic.ca/ns">
+      <element name="indentJSON" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
          <data type="boolean"/>
       </element>
    </define>
    <define name="phrasalSearch">
-      <element name="phrasalSearch" ns="http://hcmc.uvic.ca/ns">
+      <element name="phrasalSearch" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
          <data type="boolean"/>
       </element>
    </define>
    <define name="verbose">
-      <element name="verbose" ns="http://hcmc.uvic.ca/ns">
+      <element name="verbose" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
          <data type="boolean"/>
       </element>
    </define>
    <define name="stopwordsFile">
-      <element name="stopwordsFile" ns="http://hcmc.uvic.ca/ns">
+      <element name="stopwordsFile" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
          <data type="anyURI"/>
       </element>
    </define>
    <define name="dictionaryFile">
-      <element name="dictionaryFile" ns="http://hcmc.uvic.ca/ns">
+      <element name="dictionaryFile" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
          <data type="anyURI"/>
       </element>
    </define>
    <define name="replacementsFile">
-      <element name="replacementsFile" ns="http://hcmc.uvic.ca/ns">
+      <element name="replacementsFile" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
          <data type="anyURI"/>
       </element>
    </define>
    <define name="searchPage">
-      <element name="searchPage" ns="http://hcmc.uvic.ca/ns">
+      <element name="searchPage" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
          <data type="anyURI"/>
       </element>
    </define>
    <define name="searchInputId">
-      <element name="searchInputId" ns="http://hcmc.uvic.ca/ns">
+      <element name="searchInputId" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
          <data type="anyURI"/>
       </element>

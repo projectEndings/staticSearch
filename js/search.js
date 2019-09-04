@@ -917,6 +917,8 @@ class StaticSearch{
         }
         else{
           this.mapDocs.set(docUri, data);
+//Now we need to truncate the list of kwic contexts in case it's too long.
+          this.mapDocs.get(docUri).contexts = this.mapDocs.get(docUri).contexts.slice(0, this.kwicLimit);
         }
       }
       catch(e){

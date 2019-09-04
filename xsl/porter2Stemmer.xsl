@@ -5,7 +5,7 @@
   xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
   exclude-result-prefixes="#all"
   version="3.0"
-  xmlns:hcmc="http://hcmc.uvic.ca/ns"
+  xmlns:hcmc="http://hcmc.uvic.ca/ns/staticSearch"
   xmlns:pt="http://hcmc.uvic.ca/ns/porter2">
   <xd:doc scope="stylesheet">
     <xd:desc>

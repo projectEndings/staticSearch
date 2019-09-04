@@ -4,7 +4,7 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
     xmlns:map="http://www.w3.org/2005/xpath-functions"
-    xmlns:hcmc="http://hcmc.uvic.ca/ns"
+    xmlns:hcmc="http://hcmc.uvic.ca/ns/staticSearch"
     xpath-default-namespace="http://www.w3.org/1999/xhtml"
     xmlns="http://www.w3.org/1999/xhtml"
     exclude-result-prefixes="#all"

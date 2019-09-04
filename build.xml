@@ -7,13 +7,18 @@
   
   <property name="configFile" value="${basedir}/${config}"/>
   
-    <property name="keatsBuildUrl" value="https://jenkins.hcmc.uvic.ca/job/Keats/lastSuccessfulBuild/artifact/site/*zip*/site.zip"/>
+  <property name="keatsBuildUrl" value="https://jenkins.hcmc.uvic.ca/job/Keats/lastSuccessfulBuild/artifact/site/*zip*/site.zip"/>
     
   <property name="verbose" value="true"/>
     
     <target name="clean">
         <delete dir="temp"/>
         <delete file="xsl/config.xsl"/>
+        <xmlproperty file="${configFile}" keeproot="true"/>
+        <delete dir="${config.params.outDir}/upper"/>
+        <delete dir="${config.params.outDir}/lower"/>
+        <mkdir dir="${config.params.outDir}/upper"/>
+        <mkdir dir="${config.params.outDir}/lower"/>
     </target>
     
   <!--First thing, create the config file-->
@@ -26,6 +31,8 @@
        </java>
    </target>
     
+  <!--Then tokenize-->
+    
     <target name="tokenize">
         <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
             <arg value="-xsl:xsl/tokenize.xsl"/>
@@ -33,9 +40,6 @@
             <arg value="--suppressXsltNamespaceCheck:on"/>
         </java>
     </target>
-    
-  <!--Then tokenize-->
-    
     
     
   <!--Then create JSON-->
@@ -59,7 +63,8 @@
     </target>
     
     <target name="makeTestCopy">
-        <delete dir="${basedir}/js/js"/>        <copy todir="js">
+        <delete dir="${basedir}/js/js"/>
+        <copy todir="js">
             <fileset dir="site">
                 <include name="js/**"/>
             </fileset>

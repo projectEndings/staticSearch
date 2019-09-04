@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<config xmlns="http://hcmc.uvic.ca/ns">
+<config xmlns="http://hcmc.uvic.ca/ns/staticSearch">
    <params>
       <baseDir>.</baseDir>
       <collectionDir>keats</collectionDir>
-      <recurse>false</recurse>
       <tempDir>keats_temp</tempDir>
-      <totalKwicLength>10</totalKwicLength>
       <outDir>site/js/</outDir>
-      <createContexts></createContexts>
-      <maxContexts>1</maxContexts>
+      <recurse>false</recurse>
       <!--NOTE: If NGRAMS is set to TRUE, then
         maxContents prop will be ignored-->
       <phrasalSearch>true</phrasalSearch>
+      <createContexts>true</createContexts>
+      <maxContexts>1</maxContexts>
+      <totalKwicLength>10</totalKwicLength>
+      <kwicTruncateString>…</kwicTruncateString>
+      <verbose>false</verbose>
       <stopwordsFile>xsl/keats_stopwords.txt</stopwordsFile>
       <dictionaryFile>xsl/english_words.txt</dictionaryFile>
-      <kwicTruncateString>. . .</kwicTruncateString>
-      <verbose>no</verbose>
       <indentJSON>true</indentJSON>
    </params>
    
@@ -25,9 +25,11 @@
       <rule xpath="div[id='footer']" weight="0"/>
       <rule xpath="a[@href]" weight="2"/>
       <rule xpath="script" weight="0"/>
-      <rule xpath="ul[class='topicIndex']" weight="0"/>
+      <rule xpath="ul[@class='topicIndex']" weight="0"/>
+      <rule xpath="div[@class='backMatter']/div[@class='poem']" weight="0"/>
    </rules>
-   <contexts>
-   </contexts>
+   <!--<contexts>
+      
+   </contexts>-->
   
 </config>

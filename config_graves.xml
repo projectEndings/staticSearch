@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<config xmlns="http://hcmc.uvic.ca/ns">
+<config xmlns="http://hcmc.uvic.ca/ns/staticSearch">
     <params>
         <baseDir>.</baseDir>
         <collectionDir>../graves/products/site</collectionDir>
-        <recurse>false</recurse>
         <tempDir>temp</tempDir>
         <outDir>site/js/</outDir>
-        <createContexts>true</createContexts>
-        <totalKwicLength>15</totalKwicLength>
-        <maxContexts>3</maxContexts>
-        <!--NOTE: If NGRAMS is set to TRUE, then
-        maxContents prop will be ignored-->
+        <recurse>false</recurse>
         <phrasalSearch>true</phrasalSearch>
-        <verbose>f</verbose>
+        <createContexts>true</createContexts>
+        <maxContexts>3</maxContexts>
+        <totalKwicLength>15</totalKwicLength>
+        <!--NOTE: If phrasalSearch is set to TRUE, then
+        maxContents prop will be ignored-->
+        <verbose>false</verbose>
         <stopwordsFile>../graves/utilities/english_stopwords.txt</stopwordsFile>
         <dictionaryFile>xsl/english_words.txt</dictionaryFile>
     </params>
@@ -22,7 +22,7 @@
         <rule xpath="ul[@class='topicIndex']" weight="0"/>
     </rules>
     
-    <contexts>
+    <!--<contexts>
        
-    </contexts>
+    </contexts>-->
 </config>
