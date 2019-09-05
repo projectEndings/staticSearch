@@ -134,7 +134,10 @@ class StaticSearch{
       //Optional checkbox search filters.
       this.filterCheckboxes =
            Array.from(document.querySelectorAll("input[type='checkbox'].staticSearch.filter"));
-      //Optional type-ahead search filters.
+
+      //Any / all selector for combining filters. TODO.
+
+      //Optional type-ahead search filters. NOT IMPLEMENTED IN THE PROJECT YET.
       this.filterTexts   =
            Array.from(document.querySelectorAll("input.searchFilter[type='text']"));
       //Configuration for phrasal searches if found.
