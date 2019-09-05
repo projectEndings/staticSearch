@@ -27,6 +27,7 @@
       <rule xpath="script" weight="0"/>
       <rule xpath="ul[@class='topicIndex']" weight="0"/>
       <rule xpath="div[@class='backMatter']/div[@class='poem']" weight="0"/>
+      <rule xpath="div[@class='chronology'][following::div[@class='content']]" weight="0"/>
    </rules>
    <!--<contexts>
       

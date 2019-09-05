@@ -74,7 +74,9 @@
   * @property ss.stopwords
   * @type {Array}
   * @description a simple array of stopwords. Extend
-  * by adding new items or replace if necessary.
+  * by adding new items or replace if necessary. If a local
+  * stopwords.json file exists, that will be loaded and overwrite
+  * this set.
   */
   ss.stopwords = new Array('i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', 'your', 'yours', 'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', 'her', 'hers', 'herself', 'it', 'its', 'itself', 'they', 'them', 'their', 'theirs', 'themselves', 'what', 'which', 'who', 'whom', 'this', 'that', 'these', 'those', 'am', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'having', 'do', 'does', 'did', 'doing', 'a', 'an', 'the', 'and', 'but', 'if', 'or', 'because', 'as', 'until', 'while', 'of', 'at', 'by', 'for', 'with', 'about', 'against', 'between', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'to', 'from', 'up', 'down', 'in', 'out', 'on', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 's', 't', 'can', 'will', 'just', 'don', 'should', 'now');
 
@@ -159,13 +161,21 @@ class StaticSearch{
       this.captionLang  = document.getElementsByTagName('html')[0].getAttribute('lang') || 'en'; //Document language.
       this.captionSet   = this.captions[this.captionLang]; //Pointer to the caption object we're going to use.
 
-      //Stopwords
-      this.stopwords = ss.stopwords;
-
       //Directory for JSON files. Inside this directory will be a
       //'lower' dir and an 'upper' dir, where the two sets of case-
       //distinguished JSON files are stored.
       this.jsonDirectory = 'js/'; //Default value. Override if necessary.
+
+      //Default set of stopwords
+      this.stopwords = ss.stopwords;
+      //Now check for a local stopwords file.
+      fetch(this.jsonDirectory + 'stopwords.json')
+        .then(function(response) {
+          return response.json();
+        }).then(function(jsonStopwords) {
+          this.stopwords = jsonStopwords.words;
+          console.log(JSON.stringify(this.stopwords));
+        }.bind(this));
 
       //Boolean: should this instance report the details of its search
       //in human-readable form?
