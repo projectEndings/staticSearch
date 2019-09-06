@@ -110,6 +110,12 @@ class StaticSearch{
   constructor(){
     //Essential query text box.
     try {
+
+      //Directory for JSON files. Inside this directory will be a
+      //'lower' dir and an 'upper' dir, where the two sets of case-
+      //distinguished JSON files are stored.
+      this.jsonDirectory = 'js/'; //Default value. Override if necessary.
+
       let tmp;
       this.queryBox =
            document.querySelector("input#searchQuery[type='text']");
@@ -134,6 +140,10 @@ class StaticSearch{
       //Optional checkbox search filters.
       this.filterCheckboxes =
            Array.from(document.querySelectorAll("input[type='checkbox'].staticSearch.filter"));
+
+      //Object for handling filter checkboxes that will only be used if there
+      //are any.
+      this.docMetadata = {};
 
       //Any / all selector for combining filters. TODO.
 
@@ -164,11 +174,6 @@ class StaticSearch{
       this.captionLang  = document.getElementsByTagName('html')[0].getAttribute('lang') || 'en'; //Document language.
       this.captionSet   = this.captions[this.captionLang]; //Pointer to the caption object we're going to use.
 
-      //Directory for JSON files. Inside this directory will be a
-      //'lower' dir and an 'upper' dir, where the two sets of case-
-      //distinguished JSON files are stored.
-      this.jsonDirectory = 'js/'; //Default value. Override if necessary.
-
       //Default set of stopwords
       this.stopwords = ss.stopwords;
       //Now check for a local stopwords file.
@@ -177,7 +182,6 @@ class StaticSearch{
           return response.json();
         }).then(function(jsonStopwords) {
           this.stopwords = jsonStopwords.words;
-          console.log(JSON.stringify(this.stopwords));
         }.bind(this));
 
       //Boolean: should this instance report the details of its search
@@ -453,13 +457,16 @@ class StaticSearch{
   * JSON file for that token has been retrieved and its contents
   * merged into the index, or b) a retrieval has failed, so an
   * empty placeholder has been inserted to signify that there is
-  * no such dataset.
+  * no such dataset. If search filters are also active, the
+  * function checks whether document metadata has been retrieved,
+  * and if not, gets that as well.
   *
   * The function works with fetch and promises, and its final
   * .then() calls the processResults function.
   */
   populateIndex(){
-    var i, imax, tokensToFind = [], promises = [], emptyIndex, jsonSubfolder;
+    var i, imax, tokensToFind = [], promises = [], emptyIndex,
+    jsonSubfolder, needDocMetadata = false;
 //We need a self pointer because this will go out of scope.
     var self = this;
     try{
@@ -477,8 +484,15 @@ class StaticSearch{
           }
         }
       }
+
+      //Do we need to get document metadata for filters?
+      if ((Object.keys(this.docMetadata).length === 0) &&
+         (this.docMetadata.constructor === Object)){
+        needDocMetadata = true;
+      }
+
       //If we do need to retrieve JSON index data, then do it
-      if (tokensToFind.length > 0){
+      if ((tokensToFind.length > 0) ||(needDocMetadata)){
 
         console.log(JSON.stringify(tokensToFind));
 
@@ -516,15 +530,25 @@ class StaticSearch{
                   return response.json().then(function(data){ self.tokenFound(data); }.bind(self));
                 }
               })
-//If something goes wrong, then we again try to store an empty index
+//If something goes wrong, then we store an empty index
 //through the notFound function.
-//This is not really necessary -- we could call the found method
-//instead -- but we may want to do better debugging in the future.
               .catch(function(e){
                 console.log('Error attempting to retrieve ' + tokensToFind[i] + ': ' + e);
                 return function(emptyIndex){self.tokenFound(emptyIndex);}.bind(self, emptyIndex);
               }.bind(self));
             }
+
+        promises[promises.length] = fetch(self.jsonDirectory + 'docs.json')
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(docMeta) {
+            self.docMetadata = docMeta;
+          }.bind(self))
+          .catch(function(e){
+            console.log('Error attempting to retrieve docMetadata: ' + e);
+            return function(){self.docMetadata = {'noMetadataFound': true};}.bind(self);
+          }.bind(self));
 
 //Now set up a Promise.all to fire the rest of the work when all fetches have
 //completed or failed.
@@ -582,6 +606,46 @@ class StaticSearch{
         if (this.index[token].instances[i].docUri == docUri){
           result = true;
           break;
+        }
+      }
+    }
+    return result;
+  }
+
+/**
+  * @function StaticSearch~docMatchesFilters
+  * @description Checks a document against the set of filters to
+  *              determine whether it matches or not.
+  * @param {String} docUri id of the document to be checked.
+  * @param {Array<Array<string>, <Array>>} filters an array of descriptors
+  *                each with an array of values.
+  * @param {Boolean} matchAll If true, the document must match all
+  *                   filters to pass; otherwise, it need only match
+  *                   one or more.
+  * @return {Boolean} true if the document matches, or if there are no
+  *                   filters defined; otherwise false.
+  */
+  docMatchesFilters(docUri, filters, matchAll){
+    let result = true; //default in case there are no filters.
+    let doc = this.docMetadata[docUri];
+    if (!doc){
+      return result;
+    }
+    for (let f of filters){
+      let fName = f[0];
+      let fVals = f[1];
+      console.log(fName);
+      console.log(fVals);
+      for (let fVal of fVals){
+        if (doc[fName].indexOf(fVal) > -1){
+          if (!matchAll){
+            return true;
+          }
+        }
+        else{
+          if (matchAll){
+            return false;
+          }
         }
       }
     }

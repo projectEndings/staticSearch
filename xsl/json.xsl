@@ -499,8 +499,7 @@
                     <xsl:variable name="thisDoc" select="."/>
                     <xsl:variable name="relativeUri" select="$thisDoc//html/@data-staticSearch-relativeUri"/>
                     <xsl:message>Processing <xsl:value-of select="$relativeUri"/></xsl:message>
-                    <array key="{$relativeUri}">
-                        <map>
+                    <map key="{$relativeUri}">
                             <xsl:for-each-group select="//meta[contains-token(@class,'staticSearch.filter')]" group-by="@name">
                                 <xsl:message expand-text="yes">Processing {current-grouping-key()}</xsl:message>
                                 <array key="{current-grouping-key()}">
@@ -509,8 +508,7 @@
                                     </xsl:for-each>
                                 </array>
                             </xsl:for-each-group>
-                        </map>
-                    </array>
+                    </map>
                 </xsl:for-each>
             </map>
         </xsl:variable>
