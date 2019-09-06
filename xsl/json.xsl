@@ -500,14 +500,14 @@
                     <xsl:variable name="relativeUri" select="$thisDoc//html/@data-staticSearch-relativeUri"/>
                     <xsl:message>Processing <xsl:value-of select="$relativeUri"/></xsl:message>
                     <map key="{$relativeUri}">
-                            <xsl:for-each-group select="//meta[contains-token(@class,'staticSearch.filter')]" group-by="@name">
-                                <xsl:message expand-text="yes">Processing {current-grouping-key()}</xsl:message>
-                                <array key="{current-grouping-key()}">
-                                    <xsl:for-each select="current-group()">
-                                        <string><xsl:value-of select="@content"/></string>
-                                    </xsl:for-each>
-                                </array>
-                            </xsl:for-each-group>
+                        <xsl:for-each-group select="//meta[contains-token(@class,'staticSearch.filter')]" group-by="@name">
+                            <xsl:message expand-text="yes">Processing {current-grouping-key()}</xsl:message>
+                            <array key="{current-grouping-key()}">
+                                <xsl:for-each select="current-group()">
+                                    <string><xsl:value-of select="@content"/></string>
+                                </xsl:for-each>
+                            </array>
+                        </xsl:for-each-group>
                     </map>
                 </xsl:for-each>
             </map>
