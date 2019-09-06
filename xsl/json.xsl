@@ -58,6 +58,7 @@
     </xd:doc>
     <xsl:template match="/">
         <xsl:call-template name="createJson"/>
+        <xsl:call-template name="createDocFiltersJson"/>
         <xsl:call-template name="createStopwordsJson"/>
         <xsl:call-template name="createConfigJson"/>
     </xsl:template>
@@ -484,6 +485,40 @@
         <xsl:param name="end" as="xs:integer"/>
         <xsl:value-of select="normalize-space(string-join(subsequence($seq, $start, $end),' '))"/>
     </xsl:function>
+    
+    
+    
+    <xd:doc>
+        <xd:desc>createDocFiltersJson is a named template that creates a large JSON object for all documents
+        and their filters.</xd:desc>
+    </xd:doc>
+    <xsl:template name="createDocFiltersJson">
+        <xsl:variable name="filterMap" as="element()">
+            <map xmlns="http://www.w3.org/2005/xpath-functions">
+                <xsl:for-each select="$tokenizedDocs">
+                    <xsl:variable name="thisDoc" select="."/>
+                    <xsl:variable name="relativeUri" select="$thisDoc//html/@data-staticSearch-relativeUri"/>
+                    <xsl:message>Processing <xsl:value-of select="$relativeUri"/></xsl:message>
+                    <array key="{$relativeUri}">
+                        <map>
+                            <xsl:for-each-group select="//meta[contains-token(@class,'staticSearch.filter')]" group-by="@name">
+                                <xsl:message expand-text="yes">Processing {current-grouping-key()}</xsl:message>
+                                <array key="{current-grouping-key()}">
+                                    <xsl:for-each select="current-group()">
+                                        <string><xsl:value-of select="@content"/></string>
+                                    </xsl:for-each>
+                                </array>
+                            </xsl:for-each-group>
+                        </map>
+                    </array>
+                </xsl:for-each>
+            </map>
+        </xsl:variable>
+        <xsl:result-document href="{$outDir}/docs.json" method="text">
+            <xsl:message><xsl:copy-of select="$filterMap"/></xsl:message>
+            <xsl:value-of select="xml-to-json($filterMap, map{'indent': $indentJSON})"/>
+        </xsl:result-document>
+    </xsl:template>
     
     <!--TO DO: DOCUMENT THE BELOW (OR THINK ABOUT SPLITTING THEM INTO SEPARATE MODULES)-->
     
