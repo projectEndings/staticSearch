@@ -6,6 +6,8 @@
   <property name="config" value="config.xml"/>
   
   <property name="configFile" value="${basedir}/${config}"/>
+    
+  <xmlproperty file="${configFile}" keeproot="true"/>
   
   <property name="keatsBuildUrl" value="https://jenkins.hcmc.uvic.ca/job/Keats/lastSuccessfulBuild/artifact/site/*zip*/site.zip"/>
     
@@ -14,7 +16,7 @@
     <target name="clean">
         <delete dir="temp"/>
         <delete file="xsl/config.xsl"/>
-        <xmlproperty file="${configFile}" keeproot="true"/>
+
         <delete dir="${config.params.outDir}/upper"/>
         <delete dir="${config.params.outDir}/lower"/>
         <mkdir dir="${config.params.outDir}/upper"/>
@@ -24,21 +26,26 @@
     
     <target name="validate">
         <description>Task to validate that the source XHTML is well-formed XHTML. Note
-        that this DOES NOT check whether or not it is valid XHTML: only that it is well-formed.</description>
+        that this DOES NOT check whether or not it is valid XHTML: only that it is well-formed.
+        This target also checks the config file and sees if it's invalid. We don't fail if it's invalid,
+        though, since we must assume that some people just don't care: but raise the error anyway.
+        </description>
         
-        <!--First thing to do is use Jing to make sure the document is valid against the
-            RNG schema-->
-        
-        
+        <echo message="Validating ${config.params.collectionDir} for well-formedness"/>
         <!--@lenient='true' since we are only checking well-formedness-->
         <xmlvalidate lenient="true">
-            
-            <!--TODO: Create filesets-->
-            <fileset dir="test">
-                <include name="**/**.html"/>
+            <fileset dir="${config.params.collectionDir}">
+                <include name="**/**.*htm*"/>
             </fileset>
         </xmlvalidate>
         
+        <echo message="Validating ${configFile} against the staticSearch schema..."/>
+        <exec executable="java" failonerror="false">
+            <arg line="-jar ${basedir}/lib/jing.jar"/>
+            <arg value="${basedir}/schema/staticSearch.rng"/>
+            <arg value="${configFile}"/>
+        </exec>
+      
         
     </target>
 
@@ -54,7 +61,6 @@
    </target>
     
   <!--Then tokenize-->
-    
     <target name="tokenize">
         <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
             <arg value="-xsl:xsl/tokenize.xsl"/>
@@ -76,7 +82,6 @@
     
     <target name="report">
         <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
-
             <arg value="-xsl:xsl/create_reports.xsl"/>
             <arg value="-s:xsl/create_reports.xsl"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
@@ -135,5 +140,5 @@
     ]]>
     </scriptdef>
     
-    <target name="all" depends="clean, config, tokenize, json, makeTestCopy, report"/>
+    <target name="all" depends="clean, validate, config, tokenize, json, makeTestCopy, report"/>
 </project>
