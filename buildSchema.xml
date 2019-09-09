@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." name="buildSchema" default="all">
+<description>This build creates the RelaxNG schema, the derived schematron, and the documentation for the static search.</description>
+    
+    
+    <!--****************************************************************
+     *                                                              *
+     *                           PROPERTIES                         *
+     *                                                              *
+     ****************************************************************-->
+    
+    <!--Echo separator for output messages-->
+    <property name="echo.separator" value="*************************************"/>
+    
+    <!--****************** DIRECTORIES ******************-->
+    
+    <!--The project directory as supplied by oXygen; if run at the
+  command line, using -Dproject.dir=../../ -->
+    <dirname property="project.dir" file="staticSearch.xpr"/>
+    
+    <!--Schema building dir; equivalent to ${basedir}.-->
+    <property name="schema.dir" value="${project.dir}/schema"/>
+    
+    <!--Schema XSLT dir-->
+    <property name="xsl.dir" value="${project.dir}/xsl"/>
+    
+    <!--Documentation directory-->
+    <property name="documentation.dir" value="${project.dir}/docs"/>
+    
+    
+    <!--Library dir-->
+    <property name="lib.dir" value="${project.dir}/lib"/>
+    
+    <!--****************** FILES ******************-->
+    
+    
+    <!--********* Schemas ********** -->
+    
+    <!--The base odd-->
+    <property name="odd.src" value="${schema.dir}/staticSearch.odd"/>
+    
+    <!--Processed (i.e. combined with P5)-->
+    <property name="odd.processed" value="${schema.dir}/staticSearch-processed.odd"/>
+    
+    <!--The LITE ODD-->
+    <property name="odd.lite" value="${schema.dir}/staticSearch-lite.odd"/>
+    
+    <!--The HTML documentation-->
+    <property name="odd.doc" value="${documentation.dir}/staticSearch.html"/>
+    
+    <!--Result RNG -->
+    <property name="rng" value="${schema.dir}/staticSearch.rng"/>
+    
+    <!--Result schematron-->
+    <property name="sch" value="${schema.dir}/staticSearch.sch"/>
+    
+    
+    <!--************ XSLTs ************** -->
+    
+    <!--ODD 2 ODD XSLT (from the TEI framework)-->
+    <property name="odd2odd.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/master/odds/odd2odd.xsl"/>
+    
+    <!--ODD 2 RNG XSLT (from the TEI framework)-->
+    <property name="odd2rng.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/master/profiles/tei/relaxng/to.xsl"/>
+    
+    <!--ODD 2 Schematron XSLT (from the TEI framework)-->
+    <property name="odd2sch.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/master/odds/extract-isosch.xsl"/>
+    
+    <!--ODD 2 HTML XSLT -->
+    <property name="odd2html.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/master/odds/odd2html.xsl"/>
+    
+    <!--ODD 2 Lite XSLT-->
+    <property name="odd2Lite.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/dev/odds/odd2lite.xsl"/>
+    
+    
+    <!--Saxon-->
+    <property name="saxon" value="${lib.dir}/saxon9he.jar"/>
+    
+    <!--Condition set for the TEI server, since the TEI site can go down periodically:
+  If we can reach the TEI guidelines-->
+    <condition property="useLiveTEI" value="true" else="false">
+        <http url="https://www.tei-c.org/Vault/P5/"/>
+    </condition>
+    
+    <!--Default TEI Server property; fallback if the TEI server isn't working...-->
+    <condition property="defaultTEIServer" value="https://www.tei-c.org/Vault/P5/" else="https://teijenkins.hcmc.uvic.ca/job/TEIP5/lastSuccessfulBuild/artifact/P5/release/" >
+        <istrue value="${useLiveTEI}"/>
+    </condition>
+    
+    <!--The defaultTEIVersion-->
+    <condition property="defaultTEIVersion" value="current" else="''">
+        <istrue value="${useLiveTEI}"/>
+    </condition>
+    
+    <property name="tei_all.odd" value="${schema.dir}/tei_all.odd"/>
+    <property name="tei_all.odd.processed" value="${schema.dir}/tei_all.odd.processed"/>
+    <property name="tei_all.rng" value="${schema.dir}/tei_all.rng"/>
+    
+    
+    <!--****************************************************************
+     *                                                              *
+     *                           Targets                            *
+     *                                                              *
+     ****************************************************************-->
+    
+    
+    
+    <target name="odd2processedOdd">
+        <description>Processes the Static Search ODD against the TEI All using
+            TEI stylesheets.</description>
+        <echo message="${echo.separator}"/>
+        <echo message="Processing the Static Search ODD ..."/>
+        <echo message="${echo.separator}"/>
+        <java jar="${saxon}" fork="true" failonerror="true">
+            <arg line="-s:${odd.src}"/>
+            <arg line="-o:${odd.processed}"/>
+            <arg line="-xsl:'${odd2odd.xsl}'"/>
+            <arg line="defaultTEIServer=${defaultTEIServer}"/>
+            <arg line="defaultTEIVersion=${defaultTEIVersion}"/>
+        </java>
+    </target>
+    
+    <target name="odd2rng">
+        <description>Creates a RelaxNG schema from the processed ODD file.</description>
+        <echo>Building RelaxNG schema: ${rng}</echo>
+        <java jar="${saxon}" fork="true" failonerror="true">
+            <arg line="-s:${odd.processed}"/>
+            <arg line="-o:${rng}"/>
+            <arg line="-xsl:'${odd2rng.xsl}'"/>
+        </java>
+    </target>
+    
+    <target name="odd2Doc">
+        <description>
+            TARGET: odd2Doc
+            
+            This target turns the ODD into full HTML documentation. This code is taken near
+            verbatim from Martin Holmes' implementation for the Keats project.
+        </description>
+        <echo>${echo.separator}</echo>
+        <echo>*Create documentation from ODD file.*</echo>
+        <echo>${echo.separator}</echo>
+        
+        <!--First, create the Lite output-->
+        <java jar="${saxon}" fork="true" failonerror="true">
+            <arg line="-s:${odd.processed}"/>
+            <arg line="-o:${odd.lite}"/>
+            <arg line="-xsl:'${odd2Lite.xsl}'"/>
+        </java>
+      
+      <!--Now create the first HTML-->
+        <java jar="${saxon}" fork="true" failonerror="true">
+            <arg line="-s:${odd.lite}"/>
+            <arg line="-o:${odd.doc}"/>
+            <arg line="-xsl:'${odd2html.xsl}'"/>
+        </java>
+        
+        <!--Now clean up the awfulness from the result HTML output-->
+        
+        <replaceregexp file="${odd.doc}" match="&lt;!DOCTYPE html" replace=""/>
+        <replaceregexp file="${odd.doc}" match="SYSTEM .about:legacy-compat.&gt;" replace=""/>
+        
+        <!--And now spiff it up to our standards-->
+        <java jar="${saxon}" fork="true" failonerror="true">
+            <arg line="-s:${odd.doc}"/>
+            <arg line="-o:${odd.doc}_temp"/>
+            <arg line="-xsl:${xsl.dir}/spiff_up_documentation.xsl"/>
+        </java>
+
+        <move file="${odd.doc}_temp" tofile="${odd.doc}"/>
+        
+    </target>
+    
+    
+    <target name="clean">
+        <delete file="${odd.processed}"/>
+    </target>
+    
+    
+    
+    <target name="all" depends="odd2processedOdd, odd2rng, odd2Doc, clean">
+        <description>
+            TARGET: all
+            
+            This target is the main driver for the process: it performs all of the regular schema creation
+            and documentation creation tasks.</description>
+    </target>
+    
+    
+    
+</project>

@@ -25,6 +25,7 @@
       <div>
         <schemaSpec ident="staticSearch" start="config" ns="http://hcmc.uvic.ca/ns/staticSearch"
           defaultExceptions="http://hcmc.uvic.ca/ns/staticSearch">
+          
           <moduleSpec ident="ss">
             <desc>Module for all of the static search elements.</desc>
           </moduleSpec>
@@ -41,32 +42,6 @@
 
             <content>
               <sequence preserveOrder="false">
-                <!--Think about refactoring the params like so:
-                  
-                  <dirs>
-                    <baseDir></baseDir>
-                    <collectionDir recurse="true|false">...</collectionDir>
-                    <tempDir>...</tempDir>
-                    <outDir>...</outDir>
-                  </dirs>
-                  
-                  
-                  <files>
-                    <stopwordsFile></stopwordsFile>
-                    <dictionaryFile></dictionaryFile>
-                    <replacementsFile><replacementsFile>
-                  </files>
-                  
-                  
-                  <params>
-                    <phrasalSearch />
-                    :SChemATRON for if phrasal search is false, then must set max contexts:
-                    <maxContexts></maxContexts?
-                    
-                    
-                  </params>-->
-                  
-                 
                 <elementRef key="baseDir"/>
                 <elementRef key="collectionDir"/>
                 <elementRef key="tempDir"/>
