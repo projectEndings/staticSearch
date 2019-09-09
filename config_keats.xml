@@ -6,8 +6,8 @@
       <tempDir>keats_temp</tempDir>
       <outDir>site/js/</outDir>
       <recurse>false</recurse>
-      <!--NOTE: If NGRAMS is set to TRUE, then
-        maxContents prop will be ignored-->
+      <!--NOTE: If phrasalSearch is set to TRUE, then
+        maxContexts prop will be ignored-->
       <phrasalSearch>true</phrasalSearch>
       <createContexts>true</createContexts>
       <maxContexts>1</maxContexts>
