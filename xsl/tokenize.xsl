@@ -38,7 +38,7 @@
      <!--purely digits (or decimals) -->
     <xsl:variable name="numericWithDecimal">[<xsl:value-of select="$straightDoubleApos"/>\d]+(\.\d+)</xsl:variable>
     
-    <xsl:variable name="alphanumeric">[	\p{L}<xsl:value-of select="$straightDoubleApos"/>]+</xsl:variable>
+    <xsl:variable name="alphanumeric">[	\p{L}<xsl:value-of select="$straightDoubleApos"/>-]+</xsl:variable>
     
     
     <xsl:variable name="hyphenatedWord"><xsl:value-of select="$alphanumeric"/>\-<xsl:value-of select="$alphanumeric"/></xsl:variable>
@@ -327,31 +327,22 @@
                 
                 <!--If it contains a capital, then we fork-->
                 <xsl:when test="$containsCapital">
-                    <xsl:choose>
-                        <!--If this thing contains a capital, but it's a hyphenated construct,
-                        in the hyphenated full form, then skip it for now-->
-                        <xsl:when test="$hyphenated and not($inDictionary)"/>
-                        
-                        <!--Otherwise,...-->
-                        <xsl:otherwise>
-                            <!--Produce the stem of the lowercase version-->
-                            <xsl:value-of select="pt:stem($lcWord)"/>
-                            
-                            <!--And if it's not in the dictionary, then return the cleaned word-->
-                            <xsl:if test="not($inDictionary)">
-                                <xsl:value-of select="concat(substring($wordToStem,1,1),substring($lcWord,2))"/>
-                            </xsl:if>
-                        </xsl:otherwise>
-                    </xsl:choose>
+
+                    <!--Produce the stem of the lowercase version-->
+                    <xsl:value-of select="pt:stem($lcWord)"/>
+                    
+                    <!--And if it's not in the dictionary, then return the cleaned word-->
+                    <xsl:if test="not($inDictionary)">
+                        <xsl:value-of select="concat(substring($wordToStem,1,1),substring($lcWord,2))"/>
+                    </xsl:if>
+                    
                 </xsl:when>
-                <!--Don't return it if it's not in the dictionary and it's hyphenated;
-                    we'll process each individual token instead-->
-                <xsl:when test="not($inDictionary) and $hyphenated"/>
-                
-                <!--If it's just a regular word, then stem it-->
                 <xsl:otherwise>
                     <xsl:value-of select="pt:stem($lcWord)"/>
                 </xsl:otherwise>
+                <!--Don't return it if it's not in the dictionary and it's hyphenated;
+                    we'll process each individual token instead-->
+                
             </xsl:choose>            
         </xsl:variable>
         
@@ -427,8 +418,8 @@
     <xsl:function name="hcmc:cleanWordForStemming" as="xs:string">
         <xsl:param name="word" as="xs:string"/>
         <!--First, replace any quotation marks in the middle of the word if there happen
-            to be any; then trim off any following periods; and trim hyphens -->
-        <xsl:value-of select="replace($word, $straightDoubleApos, '') => replace('\.$','') => replace('-','') => translate('ſ','s')"/>
+            to be any; then trim off any following periods -->
+        <xsl:value-of select="replace($word, $straightDoubleApos, '') => replace('\.$','') => translate('ſ','s')"/>
     </xsl:function>
     
     <xsl:function name="hcmc:checkWordSubstitution" as="xs:string">

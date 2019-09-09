@@ -362,7 +362,7 @@
             -->
         
         <xsl:variable name="preNodes" 
-            select="$contextAncestor/descendant::text()[. &lt;&lt; $span and not(parent::*[. is $span]) and ancestor::*[@data-staticSearch-context='true'][1][. is $contextAncestor]]" as="xs:string*"/>
+            select="$contextAncestor/descendant::text()[. &lt;&lt; $span and not(ancestor::*[. is $span]) and ancestor::*[@data-staticSearch-context='true'][1][. is $contextAncestor]]" as="xs:string*"/>
         
         
 <!--        These are all of the descendant text nodes of the ancestor node, which:
@@ -371,7 +371,7 @@
             3) And who does not have a different context ancestor
             -->
         <xsl:variable name="folNodes" 
-            select="$contextAncestor/descendant::text()[. &gt;&gt; $span and not(parent::*[. is $span])][ancestor::*[@data-staticSearch-context='true'][1][. is $contextAncestor]]" as="xs:string*"/>
+            select="$contextAncestor/descendant::text()[. &gt;&gt; $span and not(ancestor::*[. is $span])][ancestor::*[@data-staticSearch-context='true'][1][. is $contextAncestor]]" as="xs:string*"/>
 
 <!--        The preceding text joined together-->
         <xsl:variable name="startString" 
