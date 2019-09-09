@@ -21,6 +21,28 @@
         <mkdir dir="${config.params.outDir}/lower"/>
     </target>
     
+    
+    <target name="validate">
+        <description>Task to validate that the source XHTML is well-formed XHTML. Note
+        that this DOES NOT check whether or not it is valid XHTML: only that it is well-formed.</description>
+        
+        <!--First thing to do is use Jing to make sure the document is valid against the
+            RNG schema-->
+        
+        
+        <!--@lenient='true' since we are only checking well-formedness-->
+        <xmlvalidate lenient="true">
+            
+            <!--TODO: Create filesets-->
+            <fileset dir="test">
+                <include name="**/**.html"/>
+            </fileset>
+        </xmlvalidate>
+        
+        
+    </target>
+
+
   <!--First thing, create the config file-->
    <target name="config">
        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
