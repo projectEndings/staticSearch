@@ -305,8 +305,8 @@
                                     <xsl:sort select="hcmc:returnWeight(.)" order="descending"/>
                                     <map>
                                         
-<!--                                        Get the form (which is just the text value of the span) -->
-                                        <string key="form"><xsl:value-of select="text()"/></string>
+<!--                                        Get the form (which is just the text value of the span and any descendant spans) -->
+                                        <string key="form"><xsl:value-of select="string-join(descendant::text(),'')"/></string>
                                         
 <!--                                        Get the context using the hcmc:returnContext function -->
                                         <string key="context"><xsl:value-of select="hcmc:returnContext(.)"/></string>
