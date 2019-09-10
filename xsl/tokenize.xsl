@@ -38,12 +38,13 @@
      <!--purely digits (or decimals) -->
     <xsl:variable name="numericWithDecimal">[<xsl:value-of select="$straightDoubleApos"/>\d]+(\.\d+)</xsl:variable>
     
-    <xsl:variable name="alphanumeric">[	\p{L}<xsl:value-of select="$straightDoubleApos"/>-]+</xsl:variable>
+    <xsl:variable name="alphanumeric">[\p{L}<xsl:value-of select="$straightDoubleApos"/>]+</xsl:variable>
     
     
-    <xsl:variable name="hyphenatedWord"><xsl:value-of select="$alphanumeric"/>\-<xsl:value-of select="$alphanumeric"/></xsl:variable>
+    <xsl:variable name="hyphenatedWord">(<xsl:value-of select="$alphanumeric"/>-<xsl:value-of select="$alphanumeric"/>(-<xsl:value-of select="$alphanumeric"/>)*)</xsl:variable>
     
-    <xsl:variable name="tokenRegex">(<xsl:value-of select="string-join(($numericWithDecimal,$alphanumeric,$hyphenatedWord),'|')"/>)</xsl:variable>
+    
+    <xsl:variable name="tokenRegex">(<xsl:value-of select="string-join(($numericWithDecimal,$hyphenatedWord,$alphanumeric),'|')"/>)</xsl:variable>
     <!--IMPORTANT: Do this to avoid indentation-->
     <xsl:output indent="no" method="xml"/>
     
