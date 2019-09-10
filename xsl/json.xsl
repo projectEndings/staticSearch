@@ -513,7 +513,6 @@
             </map>
         </xsl:variable>
         <xsl:result-document href="{$outDir}/docs.json" method="text">
-            <xsl:message><xsl:copy-of select="$filterMap"/></xsl:message>
             <xsl:value-of select="xml-to-json($filterMap, map{'indent': $indentJSON})"/>
         </xsl:result-document>
     </xsl:template>
