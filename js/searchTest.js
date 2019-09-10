@@ -5,6 +5,7 @@ var Sch;
 
 var searchQueryTests = [
   'appearance',
+  'Hazlitt journalist',
   '+document +flow +specialized',
   'note "document contains" flow specialized +context',
   '+yellow  -red "two colours" better  Green ambiguous'

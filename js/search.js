@@ -139,17 +139,19 @@ class StaticSearch{
       }
       //Optional checkbox search filters.
       this.filterCheckboxes =
-           Array.from(document.querySelectorAll("input[type='checkbox'].staticSearch.filter"));
+           Array.from(document.querySelectorAll("input[type='checkbox'][class='staticSearch.filter']"));
 
       //Object for handling filter checkboxes that will only be used if there
       //are any.
       this.docMetadata = {};
 
       //Any / all selector for combining filters. TODO.
+      this.matchAllFilters = false;
 
       //Optional type-ahead search filters. NOT IMPLEMENTED IN THE PROJECT YET.
       this.filterTexts   =
            Array.from(document.querySelectorAll("input.searchFilter[type='text']"));
+
       //Configuration for phrasal searches if found.
       //Default
       this.allowPhrasal = true;
@@ -634,8 +636,6 @@ class StaticSearch{
     for (let f of filters){
       let fName = f[0];
       let fVals = f[1];
-      console.log(fName);
-      console.log(fVals);
       for (let fVal of fVals){
         if (doc[fName].indexOf(fVal) > -1){
           if (!matchAll){
@@ -909,6 +909,39 @@ class StaticSearch{
           }
         }
       }
+
+//Now we filter the results based on filter checkboxes, if any.
+      let filters = new Map();
+      for (let cbx of this.filterCheckboxes){
+        if (cbx.checked){
+          let title = cbx.getAttribute('title');
+          let val   = cbx.getAttribute('value');
+          if (filters.has(title)){
+            let arr = filters.get(title);
+            arr.push(val);
+            filters.set(title, arr);
+          }
+          else{
+            filters.set(title, new Array(val));
+          }
+        }
+      }
+
+      let arrFilters = Array.from(filters);
+      console.log(arrFilters);
+
+      if (arrFilters.length > 0){
+        let docUrisToDelete = [];
+        for (let docUri of self.resultSet.mapDocs.keys()){
+          //console.log(docUri);
+          if (! this.docMatchesFilters(docUri, arrFilters, this.matchAllFilters)){
+            docUrisToDelete.push(docUri);
+          }
+        }
+        console.log(docUrisToDelete);
+        this.resultSet.deleteArray(docUrisToDelete);
+      }
+
       this.resultSet.sortByScoreDesc();
       while (this.resultsDiv.firstChild) {
         this.resultsDiv.removeChild(this.resultsDiv.firstChild);
