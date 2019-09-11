@@ -646,6 +646,9 @@ class StaticSearch{
           if (matchAll){
             return false;
           }
+          else{
+            result = false;
+          }
         }
       }
     }
