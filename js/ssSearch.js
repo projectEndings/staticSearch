@@ -90,11 +90,11 @@
   * the HTML of the search page which includes it
   * (expressed as CSS selectors):
   *
-  * input#searchQuery[type='text']   (the main search box)
-  * button#doSearch                  (button for invoking search)
-  * div.searchResults                (div in which to outpu the results)
-  * select.searchFilter              (drop-down lists for filtering search)
-  * input.searchFilter[type='text']  (type-ahead search filter boxes)
+  * input#ssQuery[type='text']   (the main search box)
+  * button#ssDoSearch                  (button for invoking search)
+  * div.ssResults                (div in which to outpu the results)
+  * input[type='checkbox'].ssFilter              (optional; checkbox lists for filtering search)
+  * input[type='text'].ssFilter  (NOT YET IMPLEMENTED: type-ahead search filter boxes)
   *
   * The first is mandatory, although the user is
   * not required to use it; they may choose simply
@@ -118,13 +118,13 @@ class StaticSearch{
 
       let tmp;
       this.queryBox =
-           document.querySelector("input#searchQuery[type='text']");
+           document.querySelector("input#ssQuery[type='text']");
       if (!this.queryBox){
-        throw new Error('Failed to find text input box with id "searchQuery". Cannot provide search functionality.');
+        throw new Error('Failed to find text input box with id "ssQuery". Cannot provide search functionality.');
       }
       //Essential search button.
       this.searchButton =
-           document.querySelector("button#doSearch");
+           document.querySelector("button#ssDoSearch");
       if (!this.searchButton){
        throw new Error('Failed to find search button. Cannot provide search functionality.');
       }
@@ -133,13 +133,13 @@ class StaticSearch{
       }
       //Essential results div.
       this.resultsDiv =
-           document.querySelector("div#searchResults");
+           document.querySelector("div#ssResults");
       if (!this.resultsDiv){
-       throw new Error('Failed to find div with id "searchResults". Cannot provide search functionality.');
+       throw new Error('Failed to find div with id "ssResults". Cannot provide search functionality.');
       }
       //Optional checkbox search filters.
       this.filterCheckboxes =
-           Array.from(document.querySelectorAll("input[type='checkbox'][class='staticSearch.filter']"));
+           Array.from(document.querySelectorAll("input[type='checkbox'][class='ssFilter']"));
 
       //Object for handling filter checkboxes that will only be used if there
       //are any.
@@ -150,7 +150,7 @@ class StaticSearch{
 
       //Optional type-ahead search filters. NOT IMPLEMENTED IN THE PROJECT YET.
       this.filterTexts   =
-           Array.from(document.querySelectorAll("input.searchFilter[type='text']"));
+           Array.from(document.querySelectorAll("input.ssFilter[type='text']"));
 
       //Configuration for phrasal searches if found.
       //Default

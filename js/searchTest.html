@@ -3,8 +3,6 @@
     <head>
         <meta charset="UTF-8"/>
         <title>Search Engine Test Suite</title>
-        <script src="porter2Stemmer.js"></script>
-        <script src="ssSearch.js"></script>
         <script src="searchTest.js"></script>
 
         <style>
@@ -48,33 +46,26 @@
     </head>
     <body>
         <h1>Test suite for JavaScript Search Engine</h1>
-        <form accept-charset="UTF-8" id="searchForm" data-allowPhrasal="yes" onsubmit="return false;">
-            <label>Document type</label>
-            <ul class="checkboxList">
-                <li><input type="checkbox" title="Document type" value="Timeline articles" class="staticSearch.filter"/> <label>Timeline articles</label></li>
-                <li><input type="checkbox" title="Document type" value="Chronology pages" class="staticSearch.filter"/> <label>Chronology pages</label></li>
-                <li><input type="checkbox" title="Document type" value="Poems" class="staticSearch.filter"/> <label>Poems</label></li>
-                <li><input type="checkbox" title="Document type" value="Other pages" class="staticSearch.filter"/> <label>Other pages</label></li>
-            </ul>
+        <div id="staticSearch">
+          <script src="porter2Stemmer.js"></script>
+          <script src="ssSearch.js"></script>
+
+          <form accept-charset="UTF-8" id="ssForm" data-allowPhrasal="yes" onsubmit="return false;">
+              <label>Document type</label>
+              <ul class="checkboxList">
+                  <li><input type="checkbox" title="Document type" value="Timeline articles" class="ssFilter"/> <label>Timeline articles</label></li>
+                  <li><input type="checkbox" title="Document type" value="Chronology pages" class="ssFilter"/> <label>Chronology pages</label></li>
+                  <li><input type="checkbox" title="Document type" value="Poems" class="ssFilter"/> <label>Poems</label></li>
+                  <li><input type="checkbox" title="Document type" value="Other pages" class="ssFilter"/> <label>Other pages</label></li>
+              </ul>
 
 
-          <input type="text" id="searchQuery"/>
-          <button id="doSearch">search</button>
-        </form>
-        <div id="searchResults">
-            ...results here...
+            <input type="text" id="ssQuery"/>
+            <button id="ssDoSearch">Search</button>
+          </form>
+          <div id="ssResults">
+              ...results here...
+          </div>
         </div>
-
-
-
-        <!-- <div>
-          <h2>Test log</h2>
-          <p>Errors: <span id="errorCount">0</span></p>
-          <input id="showOnlyErrors" type="checkbox" checked="checked"/>
-            <label for="showOnlyErrors">Show only errors</label>
-          <ul id="log">
-             <li class="ok">Starting tests...</li>
-          </ul>
-        </div> -->
     </body>
 </html>
