@@ -4,33 +4,110 @@
   <teiHeader>
     <fileDesc>
       <titleStmt>
-        <title>Title</title>
+        <title>Project Endings Static Search Generator</title>
+        <author>Martin Holmes</author>
+        <author>Joey Takeda</author>
       </titleStmt>
       <publicationStmt>
-        <p>Publication Information</p>
+        <publisher>University of Victoria Humanities Computing and Media Centre</publisher>
+        <availability><licence>Free to anyone for anhy purpose</licence></availability>
       </publicationStmt>
       <sourceDesc>
-        <p>Information about the source</p>
+        <p>Born-digital document</p>
       </sourceDesc>
     </fileDesc>
   </teiHeader>
   <text>
     <body>
       <div>
-        <head>Introduction</head>
-        <p>Stuff here...</p>
+        <head>Project Endings Static Search Generator</head>
+        <p>This documentation provides instructions on how to use the Project Endings
+        Static Search Generator to provide a fully-functional search <soCalled>engine</soCalled>
+        to your website without any dependency on server-side code such as a database.</p>
+        <div>
+          <head>How does it work?</head>
+          <p>The generator tool processes your site to create an index of all the words appearing
+          in the site, stemmed using a Porter2 stemmer, and stores the index in the form of a
+          large number of small JSON files. It also creates a search page for your site, which 
+          processes user search terms and retrieves the required JSON files to provide search results.</p>
+        </div>
+        <div>
+          <head>Search features</head>
+          <p>The Generator supports the following features:</p>
+          <list>
+            <item>Porter 2 stemming of terms (so searching for <q>wait</q> will also
+            retrieve <q>waiting</q>, <q>waits</q>, <q>waited</q> etc.). Our stemmer
+            is for English, but if you have documents in another language, you can create
+            and plug in your own stemmer.</item>
+            <item>Boolean search operators. Adding <code>+</code> (plus) before a word means that
+            search results <emph>must contain</emph> that word, and adding a <code>-</code> (minus) means
+            that results <emph>must not contain</emph> that word. Words without plus or minus are treated
+            as <emph>may contain</emph>, contributing to the score of any retrieved document.</item>
+            <item>Phrasal searches. Any quoted phrase will be searched as-is, and when quoted phrases 
+            are included in a search, any hit document must contain at least one of them. Note that phrasal
+            search support requires a specific setting in your configuration file, because it increases the
+            size of the index.</item>
+            <item>Keyword-in-context search results. This is also configurable, since including contexts
+            increases the size of the index.</item>
+            <item>Search filtering using any metadata you like, allowing users to limit their search to specific
+            document types.</item>
+          </list>
+        </div>
+        <div>
+          <head>How do I use it?</head>
+          
+          <p>First, you will have to make sure your site pages are correctly configured so that the Generator can
+          parse them. Then, you will have to create a configuration file specifying what options you want to use. 
+          Then you run the generator, and the search functionality should be added to your site.</p>
+          
+          <div>
+            <head>Configuring your site</head>
+            <p>The generator is expecting to parse <emph>well-formed XHTML5 web pages</emph>. That means
+            web pages which are well-formed XML, using the XHTML namespace. If your site is just raggedy tag-soup,
+            then you can't use this tool.</p>
+            <p>Next, you will need to decide whether you want search filters or not. If you want to allow
+            your users to search (for example) only in poems, or only in articles, or only in blog posts, or 
+            any combination of these document types, you will need to add <gi>meta</gi> tags to the heads of
+            your documents to specify what these filters are. Here is a simple example:
+            
+            <egXML xmlns="http://www.tei-c.org/ns/Examples">
+              <meta name="Document type" class="staticSearch.filter" content="Poems" />
+            </egXML>
+              
+              This specifies that there is to be a search filter called <q>Document type</q>, and one of the
+              types is <q>Poems</q>; the document containing this <gi>meta</gi> tag is one of the Poems. Another
+              type might be:
+              
+              <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                <meta name="Document type" class="staticSearch.filter" content="Short stories" />
+              </egXML>
+              
+              If the Generator finds such meta tags when it is indexing, it will create a set of filter controls
+              on the search page, enabling the user to constrain the search to a specific set of filter settings.
+            </p>
+          </div>
+          
+          <div>
+            <head>Creating a configuration file</head>
+            
+            <p>The configuration file is an XML document which tells the Generator where to find your site,
+            and what search features you would like to include. The configuration file conforms to a schema which is
+            documented here...</p>
+          </div>
+        </div>
       </div>
     </body>
     <back>
       <div>
         <schemaSpec ident="staticSearch" start="config" ns="http://hcmc.uvic.ca/ns/staticSearch"
           defaultExceptions="http://hcmc.uvic.ca/ns/staticSearch">
-          
+
           <moduleSpec ident="ss">
             <desc>Module for all of the static search elements.</desc>
           </moduleSpec>
 
           <elementSpec ident="config" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
+            <gloss>The root element for the Search Generator configuration file.</gloss>
             <content>
               <elementRef key="params"/>
               <elementRef key="rules" minOccurs="0"/>
@@ -39,7 +116,8 @@
           </elementSpec>
 
           <elementSpec ident="params" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
-
+            <gloss>Element containing most of the settings which enable the Generator to
+            find the target website content and process it appropriately.</gloss>
             <content>
               <sequence preserveOrder="false">
                 <elementRef key="baseDir"/>
@@ -59,15 +137,17 @@
                 <elementRef key="searchPage" minOccurs="0"/>
                 <elementRef key="searchInputId" minOccurs="0"/>
                 <elementRef key="indentJSON" minOccurs="0"/>
- 
+
               </sequence>
-              
-             
+
+
             </content>
-            
+
           </elementSpec>
 
           <elementSpec ident="rules" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
+            <gloss>The set of rules, expressed as XPath, that control weighting of search terms
+              found in specific contexts.</gloss>
             <content>
               <elementRef key="rule" minOccurs="1" maxOccurs="unbounded"/>
             </content>
@@ -80,6 +160,8 @@
           </elementSpec>
 
           <elementSpec ident="rule" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
+            <gloss>A rule that specifies a document path in XPath, and provides weighting for search
+              terms found in that context.</gloss>
             <classes>
               <memberOf key="att.xpathRule"/>
             </classes>
@@ -89,13 +171,20 @@
           </elementSpec>
 
           <classSpec ident="att.xpathRule" module="ss" type="atts">
+            <gloss>A class providing attributes that enable specification of document locations and
+              weighting.</gloss>
             <attList>
               <attDef ident="xpath">
+                <gloss>An XPath equivalent to the @match attribute of an xsl:template, which
+                  specifies a context in a document.</gloss>
                 <datatype>
                   <dataRef name="string"/>
                 </datatype>
               </attDef>
               <attDef ident="weight" usage="opt">
+                <gloss>The weighting to give to a search token found in the context specified by the
+                    <att>xpath</att> attribute. Set to 0 to completely suppress indexing for a
+                  specific context, or greater than 1 to give stronger weighting.</gloss>
                 <datatype>
                   <dataRef name="nonNegativeInteger"/>
                 </datatype>
@@ -110,97 +199,132 @@
 
 
           <elementSpec ident="baseDir" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>The base directory from which relative paths will be resolved.</gloss>
             <content>
               <dataRef name="anyURI"/>
             </content>
           </elementSpec>
-          
+
           <elementSpec ident="collectionDir" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>The directory which contains XHTML5 web pages to be indexed.</gloss>
             <content>
               <dataRef name="anyURI"/>
             </content>
           </elementSpec>
-          
+
           <elementSpec ident="recurse" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>Whether to recurse into subdirectories of the collection directory or
+              not.</gloss>
             <content>
               <dataRef name="boolean"/>
             </content>
           </elementSpec>
           <elementSpec ident="tempDir" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>The location of a temporary directory to be used by the tokenization
+              process.</gloss>
             <content>
               <dataRef name="anyURI"/>
             </content>
           </elementSpec>
           <elementSpec ident="outDir" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>The directory in which to place the generated JavaScript and JSON files.</gloss>
             <content>
               <dataRef name="anyURI"/>
             </content>
           </elementSpec>
           <elementSpec ident="createContexts" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>Whether to include keyword-in-context extracts in the index. This increases the
+              size of the index considerably, but it allows for more user-friendly search results,
+              as well as phrasal searches.</gloss>
             <content>
-                <dataRef name="boolean"/>
-              
+              <dataRef name="boolean"/>
             </content>
           </elementSpec>
           <elementSpec ident="totalKwicLength" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
-              <content>
-                <dataRef name="nonNegativeInteger"/>
-              </content>
-            
+            <gloss>If <gi>createContexts</gi> is set to true, then this parameter controls how long
+              the contexts will be.</gloss>
+            <content>
+              <dataRef name="nonNegativeInteger"/>
+            </content>
+
           </elementSpec>
           <elementSpec ident="maxContexts" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
-              <content>
-                <dataRef name="nonNegativeInteger"/>
-              </content>
+            <gloss>This controls the maximum number of keyword-in-context extracts that will be
+              stored for each term. If <gi>phrasalSearch</gi> is set to true, this parameter is
+              ignored, because phrasal searches will only work properly if all contexts are
+              stored.</gloss>
+            <content>
+              <dataRef name="nonNegativeInteger"/>
+            </content>
           </elementSpec>
-          
-          <elementSpec ident="kwicTruncateString" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+
+          <elementSpec ident="kwicTruncateString" module="ss"
+            ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>The string that will be used to signal ellipsis at the beginning and end of a
+              keyword-in-context extract. Conventionally three periods, or an ellipsis
+              character.</gloss>
             <content>
               <textNode/>
             </content>
           </elementSpec>
-          
+
           <elementSpec ident="indentJSON" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>Whether or not to indent code in the JSON index files. Indenting increases the
+              file size, but it can be useful if you need to read the files for debugging
+              purposes.</gloss>
             <content>
               <dataRef name="boolean"/>
             </content>
           </elementSpec>
           <elementSpec ident="phrasalSearch" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
- 
-              <content>
-                <dataRef name="boolean"/>
-                
-              </content>
-            
+            <gloss>Whether or not to support phrasal searches. If this is true, then the <gi>maxContexts</gi>
+            setting will be ignored, because all contexts are required to properly support phrasal search.</gloss>
+            <content>
+              <dataRef name="boolean"/>
+            </content>
+
           </elementSpec>
           <elementSpec ident="verbose" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>Turns on more detailed reporting during the indexing process.</gloss>
+            <content>
+              <dataRef name="boolean"/>
+            </content>
 
-              <content>
-                <dataRef name="boolean"/>
-              </content>
-            
           </elementSpec>
           <elementSpec ident="stopwordsFile" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>The location of a text file containing a list of stopwords (words to be ignored
+            when indexing). These are typically words too common to be worth searching for, but 
+            every site will also have some specific terms which are used so widely across the site
+            that they should be suppressed to control the index size. The list should be in plain text
+            with one word per line.</gloss>
             <content>
               <dataRef name="anyURI"/>
             </content>
           </elementSpec>
           <elementSpec ident="dictionaryFile" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>The location of a dictionary file (one word per line) which will be used to check
+            tokens when indexing.</gloss>
+            <gloss></gloss>
             <content>
               <dataRef name="anyURI"/>
             </content>
           </elementSpec>
           <elementSpec ident="replacementsFile" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>JOEY, I CAN'T FIGURE OUT WHAT THIS IS FOR.</gloss>
             <content>
               <dataRef name="anyURI"/>
             </content>
           </elementSpec>
           <elementSpec ident="searchPage" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>The location of a search page in the site to be indexed. This page must contain
+            a div element with id="staticSearch". That div will be transformed to include the 
+            search form and all other required components.</gloss>
             <content>
               <dataRef name="anyURI"/>
             </content>
           </elementSpec>
           <elementSpec ident="searchInputId" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>JOEY, I DON'T BELIEVE WE NEED THIS. LET'S JUST INSIST ON id="staticSearch".</gloss>
             <content>
               <dataRef name="anyURI"/>
             </content>

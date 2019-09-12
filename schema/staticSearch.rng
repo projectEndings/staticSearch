@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<grammar xmlns:xlink="http://www.w3.org/1999/xlink"
+<grammar xmlns="http://relaxng.org/ns/structure/1.0"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
          xmlns:tei="http://www.tei-c.org/ns/1.0"
          xmlns:teix="http://www.tei-c.org/ns/Examples"
-         xmlns="http://relaxng.org/ns/structure/1.0"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2019-09-09T19:55:29Z. .
-TEI Edition: Version 3.6.0. Last updated on
-	16th July 2019, revision daa3cc0b9
-TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
+Schema generated from ODD source 2019-09-12T01:36:20Z. .
+TEI Edition: Version 3.6.0a. Last updated on
+	6th September 2019, revision 306d5a5dc
+TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0a./
   
 --><!---->
    <sch:ns xmlns:sch="http://purl.oclc.org/dsdl/schematron"
@@ -76,7 +76,8 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
    </define>
    <define name="rules">
       <element name="rules" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The set of rules, expressed as XPath, that control weighting of search terms
+              found in specific contexts.) </a:documentation>
          <oneOrMore>
             <ref name="rule"/>
          </oneOrMore>
@@ -92,7 +93,8 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
    </define>
    <define name="rule">
       <element name="rule" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(A rule that specifies a document path in XPath, and provides weighting for search
+              terms found in that context.) </a:documentation>
          <empty/>
          <ref name="att.xpathRule.attributes"/>
          <empty/>
@@ -106,7 +108,8 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
    <define name="att.xpathRule.attribute.xpath">
       <optional>
          <attribute name="xpath">
-            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(An XPath equivalent to the @match attribute of an xsl:template, which
+                  specifies a context in a document.) </a:documentation>
             <data type="string"/>
          </attribute>
       </optional>
@@ -114,7 +117,9 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
    <define name="att.xpathRule.attribute.weight">
       <optional>
          <attribute name="weight">
-            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The weighting to give to a search token found in the context specified by the
+                    xpath attribute. Set to 0 to completely suppress indexing for a
+                  specific context, or greater than 1 to give stronger weighting.) </a:documentation>
             <data type="nonNegativeInteger"/>
          </attribute>
       </optional>
@@ -129,103 +134,123 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
    </define>
    <define name="baseDir">
       <element name="baseDir" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The base directory from which relative paths will be resolved.) </a:documentation>
          <data type="anyURI"/>
       </element>
    </define>
    <define name="collectionDir">
       <element name="collectionDir" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The directory which contains XHTML5 web pages to be indexed.) </a:documentation>
          <data type="anyURI"/>
       </element>
    </define>
    <define name="recurse">
       <element name="recurse" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Whether to recurse into subdirectories of the collection directory or
+              not.) </a:documentation>
          <data type="boolean"/>
       </element>
    </define>
    <define name="tempDir">
       <element name="tempDir" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The location of a temporary directory to be used by the tokenization
+              process.) </a:documentation>
          <data type="anyURI"/>
       </element>
    </define>
    <define name="outDir">
       <element name="outDir" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The directory in which to place the generated JavaScript and JSON files.) </a:documentation>
          <data type="anyURI"/>
       </element>
    </define>
    <define name="createContexts">
       <element name="createContexts" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Whether to include keyword-in-context extracts in the index. This increases the
+              size of the index considerably, but it allows for more user-friendly search results,
+              as well as phrasal searches.) </a:documentation>
          <data type="boolean"/>
       </element>
    </define>
    <define name="totalKwicLength">
       <element name="totalKwicLength" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(If createContexts is set to true, then this parameter controls how long
+              the contexts will be.) </a:documentation>
          <data type="nonNegativeInteger"/>
       </element>
    </define>
    <define name="maxContexts">
       <element name="maxContexts" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(This controls the maximum number of keyword-in-context extracts that will be
+              stored for each term. If phrasalSearch is set to true, this parameter is
+              ignored, because phrasal searches will only work properly if all contexts are
+              stored.) </a:documentation>
          <data type="nonNegativeInteger"/>
       </element>
    </define>
    <define name="kwicTruncateString">
       <element name="kwicTruncateString" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The string that will be used to signal ellipsis at the beginning and end of a
+              keyword-in-context extract. Conventionally three periods, or an ellipsis
+              character.) </a:documentation>
          <text/>
       </element>
    </define>
    <define name="indentJSON">
       <element name="indentJSON" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Whether or not to indent code in the JSON index files. Indenting increases the
+              file size, but it can be useful if you need to read the files for debugging
+              purposes.) </a:documentation>
          <data type="boolean"/>
       </element>
    </define>
    <define name="phrasalSearch">
       <element name="phrasalSearch" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Whether or not to support phrasal searches. If this is true, then the maxContexts
+            setting will be ignored, because all contexts are required to properly support phrasal search.) </a:documentation>
          <data type="boolean"/>
       </element>
    </define>
    <define name="verbose">
       <element name="verbose" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Turns on more detailed reporting during the indexing process.) </a:documentation>
          <data type="boolean"/>
       </element>
    </define>
    <define name="stopwordsFile">
       <element name="stopwordsFile" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The location of a text file containing a list of stopwords (words to be ignored
+            when indexing). These are typically words too common to be worth searching for, but 
+            every site will also have some specific terms which are used so widely across the site
+            that they should be suppressed to control the index size. The list should be in plain text
+            with one word per line.) </a:documentation>
          <data type="anyURI"/>
       </element>
    </define>
    <define name="dictionaryFile">
       <element name="dictionaryFile" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The location of a dictionary file (one word per line) which will be used to check
+            tokens when indexing.) () </a:documentation>
          <data type="anyURI"/>
       </element>
    </define>
    <define name="replacementsFile">
       <element name="replacementsFile" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(JOEY, I CAN'T FIGURE OUT WHAT THIS IS FOR.) </a:documentation>
          <data type="anyURI"/>
       </element>
    </define>
    <define name="searchPage">
       <element name="searchPage" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The location of a search page in the site to be indexed. This page must contain
+            a div element with id="staticSearch". That div will be transformed to include the 
+            search form and all other required components.) </a:documentation>
          <data type="anyURI"/>
       </element>
    </define>
    <define name="searchInputId">
       <element name="searchInputId" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(JOEY, I DON'T BELIEVE WE NEED THIS. LET'S JUST INSIST ON id="staticSearch".) </a:documentation>
          <data type="anyURI"/>
       </element>
    </define>
