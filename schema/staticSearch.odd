@@ -5,12 +5,12 @@
     <fileDesc>
       <titleStmt>
         <title>Project Endings Static Search Generator</title>
-        <author>Martin Holmes</author>
-        <author>Joey Takeda</author>
+        <author><name>Martin Holmes</name></author>
+        <author><name>Joey Takeda</name></author>
       </titleStmt>
       <publicationStmt>
         <publisher>University of Victoria Humanities Computing and Media Centre</publisher>
-        <availability><licence>Free to anyone for anhy purpose</licence></availability>
+        <availability><licence>Free to anyone for any purpose</licence></availability>
       </publicationStmt>
       <sourceDesc>
         <p>Born-digital document</p>
@@ -304,7 +304,6 @@
           <elementSpec ident="dictionaryFile" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>The location of a dictionary file (one word per line) which will be used to check
             tokens when indexing.</gloss>
-            <gloss></gloss>
             <content>
               <dataRef name="anyURI"/>
             </content>

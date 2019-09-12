@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<grammar xmlns="http://relaxng.org/ns/structure/1.0"
-         xmlns:xlink="http://www.w3.org/1999/xlink"
+<grammar xmlns:xlink="http://www.w3.org/1999/xlink"
          xmlns:tei="http://www.tei-c.org/ns/1.0"
          xmlns:teix="http://www.tei-c.org/ns/Examples"
+         xmlns="http://relaxng.org/ns/structure/1.0"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2019-09-12T01:36:20Z. .
-TEI Edition: Version 3.6.0a. Last updated on
-	6th September 2019, revision 306d5a5dc
-TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0a./
+Schema generated from ODD source 2019-09-12T14:36:38Z. .
+TEI Edition: Version 3.6.0. Last updated on
+	16th July 2019, revision daa3cc0b9
+TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
   
---><!---->
+--><!--Free to anyone for any purpose-->
    <sch:ns xmlns:sch="http://purl.oclc.org/dsdl/schematron"
            prefix="tei"
            uri="http://www.tei-c.org/ns/1.0"/>
    <define name="config">
       <element name="config" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The root element for the Search Generator configuration file.) </a:documentation>
          <ref name="params"/>
          <optional>
             <ref name="rules"/>
@@ -28,7 +28,8 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0a./
    </define>
    <define name="params">
       <element name="params" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Element containing most of the settings which enable the Generator to
+            find the target website content and process it appropriately.) </a:documentation>
          <group>
             <ref name="baseDir"/>
             <ref name="collectionDir"/>
@@ -230,7 +231,7 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0a./
    <define name="dictionaryFile">
       <element name="dictionaryFile" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The location of a dictionary file (one word per line) which will be used to check
-            tokens when indexing.) () </a:documentation>
+            tokens when indexing.) </a:documentation>
          <data type="anyURI"/>
       </element>
    </define>
