@@ -11,23 +11,30 @@
       <phrasalSearch>true</phrasalSearch>
       <createContexts>true</createContexts>
       <maxContexts>3</maxContexts>
+
       <totalKwicLength>10</totalKwicLength>
+      <kwicTruncateString>...</kwicTruncateString>
       <verbose>false</verbose>
-      <stopwordsFile>xsl/english_stopwords.txt</stopwordsFile>
+      <stopwordsFile>xsl/moeml_stopwords.txt</stopwordsFile>
       <dictionaryFile>xsl/english_words.txt</dictionaryFile>
+      <indentJSON>true</indentJSON>
    </params>
    
    <rules>
+      <rule xpath="a[@href]" weight="2"/>
+      <rule xpath="div[@data-el='text']/descendant::*[matches(local-name(),'^h\d+')]" weight="2"/>
       <rule xpath="div[@id=('topBanner','leftCol', 'footer', 'draftWarning')]" weight="0"/>
       <rule xpath="div[contains-token(@class,'appendix')]/div[not(@id=('editorialNotes','thisDoc_sources'))]" weight="0"/>
       <rule xpath="div[contains-token(@class,'relatedInfo')]" weight="0"/>
       <rule xpath="div[contains-token(@class,'breadCrumbs')]" weight="0"/>
-      <rule xpath="a[@href]" weight="2"/>
       <rule xpath="body[ancestor::html[@id=('BIBL1','PERS1','azindex','spelling_variants','agas','boilerplate','includes','missing','rescinded','regnal_calendar')]]" weight="0"/>
       <rule xpath="script" weight="0"/>
       <rule xpath="td[matches(@title,'([sS]tatus)|(Agas)')]" weight="0"/>
       <rule xpath="div[@class='egXML']" weight="0"/>
       <rule xpath="code" weight="0"/>
+      <rule xpath="div[@class='appendix']/descendant::li[starts-with(@id,'bibl_')]/descendant::*[self::h2 | self::h3 | self::h4]" weight="0"/>
+      <rule xpath="div[@class='appendix']/descendant::li[starts-with(@id,'bibl_')]/descendant::div[starts-with(@id,'mentions_')]" weight="0"/>
+      <rule xpath="span[@class='pilcrow']" weight="0"/>
    </rules>
    <contexts>
       <rule xpath="a[starts-with(@href,'#spelling_variant')]"/>

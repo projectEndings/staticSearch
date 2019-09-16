@@ -114,8 +114,7 @@ class StaticSearch{
       //Directory for JSON files. Inside this directory will be a
       //'lower' dir and an 'upper' dir, where the two sets of case-
       //distinguished JSON files are stored.
-      this.jsonDirectory = 'js/'; //Default value. Override if necessary.
-
+      this.jsonDirectory = 'staticSearch/'; //Default value. Override if necessary.
       let tmp;
       this.queryBox =
            document.querySelector("input#ssQuery[type='text']");

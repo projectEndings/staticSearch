@@ -55,6 +55,8 @@
     <property name="sch" value="${schema.dir}/staticSearch.sch"/>
     
     
+    
+    
     <!--************ XSLTs ************** -->
     
     <!--ODD 2 ODD XSLT (from the TEI framework)-->
@@ -130,6 +132,16 @@
         </java>
     </target>
     
+    <target name="rng2Sch">
+        <description>Extracts the schematron from the RelaxNG File</description>
+        <echo>Extracting schematron from ${rng}</echo>
+        <java jar="${saxon}" fork="true" failonerror="${true}">
+            <arg line="-s:${rng}"/>
+            <arg line="-o:${sch}"/>
+            <arg line="-xsl:${lib.dir}/schematron/ExtractSchFromRNG-2.xsl"/>
+        </java>
+    </target>
+    
     <target name="odd2Doc">
         <description>
             TARGET: odd2Doc
@@ -178,7 +190,7 @@
     
     
     
-    <target name="all" depends="odd2processedOdd, odd2rng, odd2Doc, clean">
+    <target name="all" depends="odd2processedOdd, odd2rng, rng2Sch, odd2Doc, clean">
         <description>
             TARGET: all
             

@@ -13,16 +13,18 @@
     
   <property name="verbose" value="true"/>
     
+  <property name="searchFilePath" location="${config.params.searchFile}"/>
     
+  <dirname property="collectionDirName" file="${searchFilePath}"/>
     
-    <target name="clean">
+  <property name="staticSearchDir" value="${collectionDirName}/staticSearch/"/>
+
+    
+    <target name="init">
         <delete dir="temp"/>
         <delete file="xsl/config.xsl"/>
-
-        <delete dir="${config.params.outDir}/upper"/>
-        <delete dir="${config.params.outDir}/lower"/>
-        <mkdir dir="${config.params.outDir}/upper"/>
-        <mkdir dir="${config.params.outDir}/lower"/>
+        <delete dir="${staticSearchDir}"/>
+        <mkdir dir="${staticSearchDir}"/>
     </target>
     
     
@@ -33,10 +35,10 @@
         though, since we must assume that some people just don't care: but raise the error anyway.
         </description>
         
-        <echo message="Validating ${config.params.collectionDir} for well-formedness"/>
+        <echo message="Validating ${collectionDirName} for well-formedness"/>
         <!--@lenient='true' since we are only checking well-formedness-->
         <xmlvalidate lenient="true">
-            <fileset dir="${config.params.collectionDir}">
+            <fileset dir="${collectionDirName}">
                 <include name="**/**.*htm*"/>
             </fileset>
         </xmlvalidate>
@@ -47,6 +49,7 @@
             <arg value="${basedir}/schema/staticSearch.rng"/>
             <arg value="${configFile}"/>
         </exec>
+        
       
         
     </target>
@@ -82,22 +85,52 @@
         </java>
     </target>
     
+    <target name="makeSearchPage">
+        <basename property="searchPageBasename" file="${searchFilePath}"/>
+        <property name="tempSearchPageOutput" value="${collectionDirName}/ssTemp_${searchPageBasename}"/>
+        <echo message="Creating search page..."/>
+        <echo message="Creating temporary search page: ${tempSearchPageOutput}"/>
+        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
+            <arg value="-xsl:xsl/makeSearchPage.xsl"/>
+            <arg value="-s:${searchFilePath}"/>
+            <arg value="-o:${tempSearchPageOutput}"/>
+            <arg value="--suppressXsltNamespaceCheck:on"/>
+        </java>
+        <!--
+            <echo message="Moving ${tempSeachPageOutput} to overwrite ${searchFilePath}"/>
+            <move file="${searchFilePath}_temp" tofile="${searchFilePath}"/>
+        -->
+    </target>
+    
     <target name="report">
         <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
             <arg value="-xsl:xsl/create_reports.xsl"/>
             <arg value="-s:xsl/create_reports.xsl"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
         </java>
-        <open file="${basedir}/staticSearch_report.html"/>
+        <move file="staticSearch_report.html" tofile="${collectionDirName}/staticSearch/staticSearch_report.html"/>
+        <open file="${collectionDirName}/staticSearch/staticSearch_report.html"/>
+    </target>
+    
+    <target name="copyFiles">
+        <copy todir="${collectionDirName}/staticSearch/">
+            <fileset dir="${basedir}/js">
+                <include name="ss**.js"/>
+            </fileset>
+        </copy>
     </target>
     
     <target name="makeTestCopy">
         <delete dir="${basedir}/js/js"/>
-        <copy todir="js">
+        <copy todir="staticSearch">
             <fileset dir="site">
                 <include name="js/**"/>
             </fileset>
         </copy>
+    </target>
+    
+    <target name="clean">
+        <delete dir="${collectionDirName}/staticSearch/temp"/>
     </target>
     
     <target name="getKeats">
@@ -142,5 +175,5 @@
     ]]>
     </scriptdef>
     
-    <target name="all" depends="clean, validate, config, tokenize, json, makeTestCopy, report"/>
+    <target name="all" depends="init, validate, config, tokenize, json, copyFiles, makeSearchPage, report, clean"/>
 </project>

@@ -292,6 +292,7 @@
                     </xsl:choose>
                 </xso:param>
             </xsl:for-each>
+
         </xsl:variable>
         
        <xsl:sequence select="$params"/>
@@ -303,6 +304,19 @@
         as files)-->
         
         <!--The documents to process; also could be created in the config file-->
+        <!--Now create a set of other params, based off of the simple stuff-->
+        
+        <xso:variable name="searchDirName" select="
+            if (contains($searchFile,'/')) then
+            string-join(tokenize($searchFile,'/')[not(position() = last())],'/')
+            else ()" as="xs:string?"/>
+
+        <xso:variable name="collectionDir" select="$searchDirName"/>
+        <xso:variable name="outDir" select="$collectionDir || '/staticSearch'"/>
+        <xso:variable name="tempDir" select="$outDir || '/temp'"/>
+        
+     
+
         <xso:variable name="docs" select="collection(concat($collectionDir,'?select=*.*htm*;recurse=',if ($recurse) then 'yes' else 'no'))"/>
         
         <xso:variable name="tokenizedDocs" select="collection(concat($tempDir,'?select=*_tokenized.*htm*;recurse=',if ($recurse) then 'yes' else 'no'))"/>
@@ -314,6 +328,9 @@
                 <xsl:for-each select="$params">
                     <xso:message>$<xsl:value-of select="@name"/>: <xso:value-of select="{concat('$',@name)}"/></xso:message>
                 </xsl:for-each>
+                <xso:message>$collectionDir: <xso:value-of select="$collectionDir"/></xso:message>
+                <xso:message>$outDir: <xso:value-of select="$outDir"/></xso:message>
+                <xso:message>$tempDir: <xso:value-of select="$tempDir"/></xso:message>
             </xso:if>
         </xso:template>
     </xsl:template>

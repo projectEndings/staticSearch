@@ -59,20 +59,25 @@
             <xsl:variable name="uri" select="xs:string(document-uri(.))" as="xs:string"/>
             
             <!--Now find the relative uri from the root:
-            this is the full URI minus the collection dir.-->
+            this is the full URI minus the collection dir.
             
-            <xsl:variable name="relativeUri" select="substring-after($uri,$collectionDir)" as="xs:string"/>
+            Note that we TRIM off the leading slash since it does the root of the server.-->
             
-            <!--This is the IDENTIFIER for the static search, which is just the relative URI with some stuff
-             could all conceivably be files in the system, all of which need to be handled properly--> 
+            <xsl:variable name="relativeUri" select="substring-after($uri,$collectionDir) => replace('^(/|\\)','')" as="xs:string"/>
             
-            <xsl:variable name="searchIdentifier" select="replace($relativeUri,'\.x?html?$','') => replace('\s+|\\|/|\.','_')" as="xs:string"/>
+            <!--This is the IDENTIFIER for the static search, which is just the relative URI with all of the punctuation/
+             slashes et cetera that could conceivably be in filenames turned into underscores.
 
+            --> 
             
-            <xsl:variable name="cleanedOutDoc" select="concat($tempDir,$searchIdentifier,'_cleaned.html')"/>
-            <xsl:variable name="contextualizedOutDoc" select="concat($tempDir,$searchIdentifier,'_contextualized.html')"/>
-            <xsl:variable name="weightedOutDoc" select="concat($tempDir,$searchIdentifier,'_weighted.html')"/>
-            <xsl:variable name="tokenizedOutDoc" select="concat($tempDir,$searchIdentifier,'_tokenized.html')"/>
+           
+            <xsl:variable name="searchIdentifier" select="replace($relativeUri,'^(/|\\)','') => replace('\.x?html?$','') => replace('\s+|\\|/|\.','_')" as="xs:string"/>
+
+            <!--Now create the various documents, and we put the leading slash BACK in-->
+            <xsl:variable name="cleanedOutDoc" select="concat($tempDir,'/', $searchIdentifier,'_cleaned.html')"/>
+            <xsl:variable name="contextualizedOutDoc" select="concat($tempDir,'/',$searchIdentifier,'_contextualized.html')"/>
+            <xsl:variable name="weightedOutDoc" select="concat($tempDir,'/',$searchIdentifier,'_weighted.html')"/>
+            <xsl:variable name="tokenizedOutDoc" select="concat($tempDir,'/',$searchIdentifier,'_tokenized.html')"/>
             <xsl:message>Tokenizing <xsl:value-of select="document-uri()"/></xsl:message>
             
             <xsl:variable name="cleaned">
