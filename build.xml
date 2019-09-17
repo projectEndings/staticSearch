@@ -186,4 +186,6 @@
     </scriptdef>
     
     <target name="all" depends="init, validate, config, tokenize, json, copyFiles, makeSearchPage, report, clean"/>
+    
+    <target name="basic" depends="init, validate, config, tokenize, json, copyFiles, makeSearchPage, clean"/>
 </project>
