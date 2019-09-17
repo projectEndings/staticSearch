@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project basedir="." name="BuildStaticSearch" default="all">
+<project basedir="." name="BuildStaticSearch" default="all"
+    xmlns:if="ant:if"
+    xmlns:unless="ant:unless">
     
     <property name="saxon" value="${basedir}/lib/saxon9he.jar"/>
     
@@ -113,10 +115,8 @@
             <arg value="--suppressXsltNamespaceCheck:on"/>
         </java>
         <move file="${basedir}/staticSearch_report.html" tofile="${collectionDirName}/staticSearch/staticSearch_report.html"/>
-        <if>
-            <equals arg1="${headless}" arg2="true"/>
-            <open file="${collectionDirName}/staticSearch/staticSearch_report.html"/>
-        </if>
+
+        <open unless:true="${headless}" file="${collectionDirName}/staticSearch/staticSearch_report.html"/>
         
     </target>
     
