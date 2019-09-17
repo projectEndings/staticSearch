@@ -102,10 +102,10 @@
             <arg value="-o:${tempSearchPageOutput}"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
         </java>
-        <!--
-            <echo message="Moving ${tempSeachPageOutput} to overwrite ${searchFilePath}"/>
-            <move file="${searchFilePath}_temp" tofile="${searchFilePath}"/>
-        -->
+        
+        <echo message="Moving ${tempSeachPageOutput} to overwrite ${searchFilePath}"/>
+        <move file="${tempSearchPageOutput}" tofile="${searchFilePath}"/>
+        
     </target>
     
     <target name="report">

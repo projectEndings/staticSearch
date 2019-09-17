@@ -56,6 +56,9 @@
     
     <!--Set verbosity-->
     <xsl:variable name="verbose" select="hcmc:stringToBoolean($configDoc//verbose/text())" as="xs:boolean"/>
+    
+    <!--Set recursion-->
+    <xsl:variable name="recurse" select="hcmc:stringToBoolean($configDoc//recurse/text())" as="xs:boolean"/>
  
       
       
@@ -329,9 +332,9 @@
         
      
 
-        <xso:variable name="docs" select="collection(concat($collectionDir,'?select=*.*htm*;recurse=',if ($recurse) then 'yes' else 'no'))"/>
+        <xso:variable name="docs" select="collection(concat($collectionDir,'?select=*.*htm*;recurse=',{if ($recurse) then 'yes' else 'no'}))"/>
         
-        <xso:variable name="tokenizedDocs" select="collection(concat($tempDir,'?select=*_tokenized.*htm*;recurse=',if ($recurse) then 'yes' else 'no'))"/>
+        <xso:variable name="tokenizedDocs" select="collection(concat($tempDir,'?select=*_tokenized.*htm*;recurse=',{if ($recurse) then 'yes' else 'no'}))"/>
         
         
         
