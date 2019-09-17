@@ -371,7 +371,7 @@
                         (assuming here that we don't want digits cross-referenced against
                         the dictionary), then put another attribute to signal that this word doesn't
                         exist in the dictionary-->
-                        <xsl:if test="not($inDictionary) and not($containsDigit) and not($isForeign)">
+                        <xsl:if test="not($inDictionary) and not($containsDigit) and not($isForeign) and not($hyphenated)">
                             <xsl:attribute name="data-staticSearch-notInDictionary" select="$cleanedWord"/>
                         </xsl:if>
                         <xsl:if test="$isForeign">

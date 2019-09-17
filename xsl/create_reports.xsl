@@ -218,6 +218,9 @@
                 <xsl:for-each-group select="$spans[@data-staticSearch-notInDictionary]" group-by="@data-staticSearch-notInDictionary">
                     <xsl:value-of select="current-grouping-key()"/>
                 </xsl:for-each-group>
+                <xsl:for-each-group select="$spans[span[@data-staticSearch-stem]][every $s in span[@data-staticSearch-stem] satisfies $s[@data-staticSearch-notInDictionary]]" group-by="string-join(descendant::text(),'')">
+                    <xsl:value-of select="current-grouping-key()"/>
+                </xsl:for-each-group>
             </xsl:variable>
             
             <xsl:variable name="wordsNotInDictionaryCount" select="count($wordsNotInDictionary)" as="xs:integer"/>
