@@ -29,6 +29,12 @@
                 <xsl:message>WARNING: Contents of div/@id='staticSearch' will be overwritten</xsl:message>
             </xsl:if>
 
+            <script src="staticSearch/ssPorter2Stemmer.js"></script>
+            <script src="staticSearch/ssSearch.js"></script>
+            <script>
+                var Sch;
+                window.addEventListener('load', function(){Sch = new StaticSearch();});
+            </script>
             
             <form accept-charset="UTF-8" id="ssForm" data-allowPhrasal="{if ($phrasalSearch) then 'yes' else 'no'}" onsubmit="return false;">
                 <!--IF THERE ARE FILTERS...-->
@@ -48,9 +54,7 @@
             <div id="ssResults">
                 ...results here...
             </div>
-            <script src="staticSearch/ssPorter2Stemmer.js"></script>
-            <script src="staticSearch/ssSearch.js"></script>
-            <script>Sch = new StaticSearch();</script>
+
         </xsl:copy>
         
     </xsl:template>

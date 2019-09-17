@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns="http://hcmc.uvic.ca/ns/staticSearch">
    <params>
-      <baseDir>.</baseDir>
-      <collectionDir>keats</collectionDir>
-      <tempDir>keats_temp</tempDir>
-      <outDir>site/js/</outDir>
+      <searchFile>keats/ssSearch.html</searchFile>
       <recurse>false</recurse>
       <!--NOTE: If phrasalSearch is set to TRUE, then
         maxContexts prop will be ignored-->
