@@ -1,28 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project basedir="." name="BuildStaticSearch" default="all">
-  
-  <property name="saxon" value="${basedir}/lib/saxon9he.jar"/>
     
-  <property name="config" value="config.xml"/>
-  
-  <property name="configFile" value="${basedir}/${config}"/>
+    <property name="saxon" value="${basedir}/lib/saxon9he.jar"/>
     
-  <xmlproperty file="${configFile}" keeproot="true"/>
-  
-  <property name="keatsBuildUrl" value="https://jenkins.hcmc.uvic.ca/job/Keats/lastSuccessfulBuild/artifact/site/*zip*/site.zip"/>
+    <property name="config" value="config.xml"/>
     
-  <property name="verbose" value="true"/>
+    <property name="configFile" value="${basedir}/${config}"/>
     
-  <property name="searchFilePath" location="${config.params.searchFile}"/>
+    <dirname property="configDir" file="${configFile}"/>
     
-  <dirname property="collectionDirName" file="${searchFilePath}"/>
+    <xmlproperty file="${configFile}" keeproot="true"/>
     
-  <property name="staticSearchDir" value="${collectionDirName}/staticSearch/"/>
-
+    <property name="keatsBuildUrl" value="https://jenkins.hcmc.uvic.ca/job/Keats/lastSuccessfulBuild/artifact/site/*zip*/site.zip"/>
+    
+    <property name="verbose" value="true"/>
+    
+    <property name="searchFilePath" location="${configDir}/${config.params.searchFile}"/>
+    
+    <dirname property="collectionDirName" file="${searchFilePath}"/>
+    
+    <property name="staticSearchDir" value="${collectionDirName}/staticSearch/"/>
+    
     
     <target name="init">
         <delete dir="temp"/>
-        <delete file="xsl/config.xsl"/>
+        <delete file="${basedir}/xsl/config.xsl"/>
         <delete dir="${staticSearchDir}"/>
         <mkdir dir="${staticSearchDir}"/>
     </target>
@@ -30,9 +32,9 @@
     
     <target name="validate">
         <description>Task to validate that the source XHTML is well-formed XHTML. Note
-        that this DOES NOT check whether or not it is valid XHTML: only that it is well-formed.
-        This target also checks the config file and sees if it's invalid. We don't fail if it's invalid,
-        though, since we must assume that some people just don't care: but raise the error anyway.
+            that this DOES NOT check whether or not it is valid XHTML: only that it is well-formed.
+            This target also checks the config file and sees if it's invalid. We don't fail if it's invalid,
+            though, since we must assume that some people just don't care: but raise the error anyway.
         </description>
         
         <echo message="Validating ${collectionDirName} for well-formedness"/>
@@ -50,37 +52,37 @@
             <arg value="${configFile}"/>
         </exec>
         
-      
+        
         
     </target>
-
-
-  <!--First thing, create the config file-->
-   <target name="config">
-       <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
-           <arg value="-xsl:xsl/create_config_xsl.xsl"/>
-           <arg value="-s:xsl/create_config_xsl.xsl"/>
-           <arg value="configFile=${configFile}"/>
-           <arg value="--suppressXsltNamespaceCheck:on"/>
-       </java>
-   </target>
     
-  <!--Then tokenize-->
+    
+    <!--First thing, create the config file-->
+    <target name="config">
+        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
+            <arg value="-xsl:${basedir}/xsl/create_config_xsl.xsl"/>
+            <arg value="-s:${basedir}/xsl/create_config_xsl.xsl"/>
+            <arg value="configFile=${configFile}"/>
+            <arg value="--suppressXsltNamespaceCheck:on"/>
+        </java>
+    </target>
+    
+    <!--Then tokenize-->
     <target name="tokenize">
         <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
-            <arg value="-xsl:xsl/tokenize.xsl"/>
-            <arg value="-s:xsl/tokenize.xsl"/>
+            <arg value="-xsl:${basedir}/xsl/tokenize.xsl"/>
+            <arg value="-s:${basedir}/xsl/tokenize.xsl"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
         </java>
     </target>
     
     
-  <!--Then create JSON-->
+    <!--Then create JSON-->
     
     <target name="json">
         <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
-            <arg value="-xsl:xsl/json.xsl"/>
-            <arg value="-s:xsl/json.xsl"/>
+            <arg value="-xsl:${basedir}/xsl/json.xsl"/>
+            <arg value="-s:${basedir}/xsl/json.xsl"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
         </java>
     </target>
@@ -91,7 +93,7 @@
         <echo message="Creating search page..."/>
         <echo message="Creating temporary search page: ${tempSearchPageOutput}"/>
         <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
-            <arg value="-xsl:xsl/makeSearchPage.xsl"/>
+            <arg value="-xsl:${basedir}/xsl/makeSearchPage.xsl"/>
             <arg value="-s:${searchFilePath}"/>
             <arg value="-o:${tempSearchPageOutput}"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
@@ -104,8 +106,8 @@
     
     <target name="report">
         <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
-            <arg value="-xsl:xsl/create_reports.xsl"/>
-            <arg value="-s:xsl/create_reports.xsl"/>
+            <arg value="-xsl:${basedir}/xsl/create_reports.xsl"/>
+            <arg value="-s:${basedir}/xsl/create_reports.xsl"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
         </java>
         <move file="staticSearch_report.html" tofile="${collectionDirName}/staticSearch/staticSearch_report.html"/>
@@ -131,6 +133,14 @@
     
     <target name="clean">
         <delete dir="${collectionDirName}/staticSearch/temp"/>
+    </target>
+    
+    <target name="getWea">
+        <description>TARGET getWEA
+            This target pulls the latest build of the Winnifred Eaton Archive site
+            from the HCMC Jenkins build server, so that it can be uesd as a test for the static search.
+            
+        </description>
     </target>
     
     <target name="getKeats">

@@ -34,6 +34,8 @@
        </xsl:choose>
    </xsl:variable>
     
+    <xsl:variable name="ssBaseDir" select="substring-before(document-uri(/),'/xsl/')"/>
+    
     <!--Get the URL of the config file-->
     <xsl:variable name="configUri" select="resolve-uri($configFile)" as="xs:anyURI"/>
     
@@ -113,7 +115,7 @@
                 <xsl:message>$<xsl:value-of select="local-name()"/>: <xsl:value-of select="."/></xsl:message>
             </xsl:for-each>
         </xsl:if>
-        <xsl:result-document href="xsl/config.xsl" method="xml" encoding="UTF-8" normalization-form="NFC" indent="yes" exclude-result-prefixes="#all">
+        <xsl:result-document href="{$ssBaseDir}/xsl/config.xsl" method="xml" encoding="UTF-8" normalization-form="NFC" indent="yes" exclude-result-prefixes="#all">
             
             
             <!--Root stylesheet-->
@@ -320,12 +322,14 @@
         <xso:variable name="collectionDir"><xsl:value-of select="$searchDirName"/></xso:variable>
         <xso:variable name="outDir"><xsl:value-of select="$outDir"/></xso:variable>
         <xso:variable name="tempDir"><xsl:value-of select="$tempDir"/></xso:variable>
+        <xso:variable name="ssBaseDir"><xsl:value-of select="$ssBaseDir"/></xso:variable>
         
      
 
         <xso:variable name="docs" select="collection(concat($collectionDir,'?select=*.*htm*;recurse=',if ($recurse) then 'yes' else 'no'))"/>
         
         <xso:variable name="tokenizedDocs" select="collection(concat($tempDir,'?select=*_tokenized.*htm*;recurse=',if ($recurse) then 'yes' else 'no'))"/>
+        
         
         
 
