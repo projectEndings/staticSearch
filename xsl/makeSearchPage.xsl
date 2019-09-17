@@ -52,7 +52,7 @@
                 <button id="ssDoSearch">Search</button>
             </form>
             <div id="ssResults">
-                ...results here...
+                <!--...results here...-->
             </div>
 
         </xsl:copy>
