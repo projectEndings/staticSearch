@@ -72,23 +72,6 @@
                 </xsl:if>
                 <input type="text" id="ssQuery"/>
                 <button id="ssDoSearch">Search</button>
-
-
-
-
-
-                <!--IF THERE ARE FILTERS...-->
-                <!--    
-            <label>Document type</label>
-            <ul class="checkboxList">
-                <li><input type="checkbox" title="Document type" value="Timeline articles" class="ssFilter"/> <label>Timeline articles</label></li>
-                <li><input type="checkbox" title="Document type" value="Chronology pages" class="ssFilter"/> <label>Chronology pages</label></li>
-                <li><input type="checkbox" title="Document type" value="Poems" class="ssFilter"/> <label>Poems</label></li>
-                <li><input type="checkbox" title="Document type" value="Other pages" class="ssFilter"/> <label>Other pages</label></li>
-            </ul>
-            
-            -->
-
             </form>
             <div id="ssResults">
                 <!--...results here...-->
