@@ -20,6 +20,9 @@
     
   <xsl:param name="configFile" select="'config.xml'"/>
     
+    
+    <!--VARIABLES-->
+    
    <xsl:variable name="configDoc">
        <xsl:choose>
            <xsl:when test="doc-available($configFile)">
@@ -29,14 +32,30 @@
                <xsl:message terminate="yes">ERROR: Config file <xsl:value-of select="$configFile"/> not found.</xsl:message>
            </xsl:otherwise>
        </xsl:choose>
-       
    </xsl:variable>
     
-    <xsl:variable name="baseDir" select="$configDoc//baseDir/text()" as="xs:string"/>
-    <xsl:variable name="resolvedBaseDir" select="resolve-uri($baseDir,resolve-uri($configFile))"/>
+    <!--Get the URL of the config file-->
+    <xsl:variable name="configUri" select="resolve-uri($configFile)" as="xs:anyURI"/>
     
+    <!--Get the search document uri-->
+    <xsl:variable name="searchDocUri" select="resolve-uri($configDoc//searchFile/text(),$configUri)" as="xs:anyURI"/>
     
+    <!--Now get the directory that contains the search document-->
+    <xsl:variable name="searchDirName" select="string-join(tokenize($searchDocUri,'/')[not(position() = last())],'/')" as="xs:string?"/>
+    
+    <!--That's the same as the collectionDir-->
+    <xsl:variable name="collectionDir" select="$searchDirName"/>
+    
+    <!--Now get the output directory-->
+    <xsl:variable name="outDir" select="$collectionDir || '/staticSearch'"/>
+    
+    <!--And the temporary directory-->
+    <xsl:variable name="tempDir" select="$outDir || '/temp'"/>
+    
+    <!--Set verbosity-->
     <xsl:variable name="verbose" select="hcmc:stringToBoolean($configDoc//verbose/text())" as="xs:boolean"/>
+ 
+      
       
     
    <xd:doc>
@@ -84,7 +103,7 @@
     
     <xd:doc>
         <xd:desc>This is the main, root template that creates config.xsl. This XSL is then imported into the 
-        [[ADD TOKENIZING XSL NAME HERE]], overriding any existing rules that are included in the document.</xd:desc>
+            tokenize.xsl, overriding any existing rules that are included in the document.</xd:desc>
     </xd:doc>
     <xsl:template match="/">
         <xsl:message>Creating configuration file from <xsl:value-of select="$configFile"/></xsl:message>
@@ -95,6 +114,7 @@
             </xsl:for-each>
         </xsl:if>
         <xsl:result-document href="xsl/config.xsl" method="xml" encoding="UTF-8" normalization-form="NFC" indent="yes" exclude-result-prefixes="#all">
+            
             
             <!--Root stylesheet-->
             <xso:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -127,7 +147,7 @@
                     <xsl:call-template name="createRetainRules"/>
                     <xsl:if test="$verbose">
                         <xsl:message>Create retain rules</xsl:message>
-                      <xsl:message>  <xsl:call-template name="createRetainRules"/></xsl:message>
+                        <xsl:message>  <xsl:call-template name="createRetainRules"/></xsl:message>
                     </xsl:if>
                 </xsl:if>
                 
@@ -151,7 +171,7 @@
                         <xsl:message>
                             <xsl:call-template name="createContextRules"/>
                         </xsl:message>
-  
+                        
                     </xsl:if>
                 </xsl:if>
                 
@@ -164,7 +184,7 @@
                 </xsl:if>
             </xso:stylesheet>
         </xsl:result-document>
-          
+        
         
     </xsl:template>
     
@@ -263,7 +283,7 @@
        
         <xsl:variable name="params" as="element()+">
             <!--First, create the actual configuration file thing-->
-            <xso:param name="configFile"><xsl:value-of select="resolve-uri($configFile)"/></xso:param>
+            <xso:param name="configFile"><xsl:value-of select="$configUri"/></xso:param>
             <xsl:for-each select="$configDoc//params/*" >
                 <xsl:variable name="thisParam" select="."/>
                 <xsl:variable name="paramName" select="local-name()"/>
@@ -273,21 +293,14 @@
                 <xso:param>
                     <xsl:attribute name="name" select="local-name()"/>
                     <xsl:choose>
-                        <xsl:when test="local-name()=('createContexts','phrasalSearch','verbose','recurse', 'indentJSON')">
+                        <xsl:when test="local-name()=('verbose','indentJSON')">
                             <xsl:attribute name="select" select="concat(hcmc:stringToBoolean(xs:string(.)),'()')"/>
                         </xsl:when>
+                        <xsl:when test="ends-with(local-name(),'File')">
+                            <xsl:value-of select="resolve-uri(.,$configUri)"/>
+                        </xsl:when>
                         <xsl:otherwise>
-                            <xsl:variable name="baseVal" select="
-                                if ($prependBaseDir) 
-                                then concat($resolvedBaseDir, 
-                                if ($paramName = 'baseDir') 
-                                then ()
-                                else $thisParam/text())
-                                else ."/>
-                            <xsl:value-of select="
-                                if ($isDirProp and not(ends-with($baseVal,'/'))) 
-                                then concat($baseVal,'/') 
-                                else $baseVal"/>
+                            <xsl:value-of select="."/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xso:param>
@@ -302,18 +315,11 @@
         
         <!--Configure the collection use x?html? ( so htm, html, xhtml, xhtm would all work
         as files)-->
-        
-        <!--The documents to process; also could be created in the config file-->
-        <!--Now create a set of other params, based off of the simple stuff-->
-        
-        <xso:variable name="searchDirName" select="
-            if (contains($searchFile,'/')) then
-            string-join(tokenize($searchFile,'/')[not(position() = last())],'/')
-            else ()" as="xs:string?"/>
-
-        <xso:variable name="collectionDir" select="$searchDirName"/>
-        <xso:variable name="outDir" select="$collectionDir || '/staticSearch'"/>
-        <xso:variable name="tempDir" select="$outDir || '/temp'"/>
+       
+       <!--We've determines these above, so we can just shove in the absolute URIs-->
+        <xso:variable name="collectionDir"><xsl:value-of select="$searchDirName"/></xso:variable>
+        <xso:variable name="outDir"><xsl:value-of select="$outDir"/></xso:variable>
+        <xso:variable name="tempDir"><xsl:value-of select="$tempDir"/></xso:variable>
         
      
 
@@ -338,9 +344,8 @@
     
     <xsl:template name="createDictionaryXML">
         <xsl:for-each select="($configDoc//stopwordsFile, $configDoc//dictionaryFile)">
-           <xsl:variable name="path" select="resolve-uri(text(),$resolvedBaseDir)"/>
-            <xsl:message>PATH: <xsl:value-of select="$path"/></xsl:message>
-            <xsl:variable name="uri" select="concat($resolvedBaseDir,'dicts/',substring-before(tokenize($path,'/')[last()],'.txt'),'.xml')"/>
+           <xsl:variable name="path" select="resolve-uri(text(),$configUri)"/>
+            <xsl:variable name="uri" select="concat($outDir,'/dicts/',substring-before(tokenize($path,'/')[last()],'.txt'),'.xml')"/>
             <xsl:result-document href="{$uri}" method="xml">
                 <hcmc:words>
                     <xsl:for-each select="tokenize(unparsed-text($path),'\s+')">
