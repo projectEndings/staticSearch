@@ -21,6 +21,8 @@
     
     <property name="staticSearchDir" value="${collectionDirName}/staticSearch/"/>
     
+    <property name="headless" value="false"/>
+    
     
     <target name="init">
         <delete dir="temp"/>
@@ -111,7 +113,11 @@
             <arg value="--suppressXsltNamespaceCheck:on"/>
         </java>
         <move file="${basedir}/staticSearch_report.html" tofile="${collectionDirName}/staticSearch/staticSearch_report.html"/>
-        <open file="${collectionDirName}/staticSearch/staticSearch_report.html"/>
+        <if>
+            <equals arg1="${headless}" arg2="true"/>
+            <open file="${collectionDirName}/staticSearch/staticSearch_report.html"/>
+        </if>
+        
     </target>
     
     <target name="copyFiles">
