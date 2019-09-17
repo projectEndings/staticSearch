@@ -23,7 +23,7 @@
     
     <xsl:template match="/">
         <xsl:message>Creating reports...this might take a bit</xsl:message>
-        <xsl:result-document href="staticSearch_report.html">
+        <xsl:result-document href="{$ssBaseDir}/staticSearch_report.html">
             <html xmlns="http://www.w3.org/1999/xhtml">
                 <head>
                     <title>Static Search Report: <xsl:value-of select="$collectionDir"/></title>

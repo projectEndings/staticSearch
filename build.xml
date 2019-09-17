@@ -110,7 +110,7 @@
             <arg value="-s:${basedir}/xsl/create_reports.xsl"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
         </java>
-        <move file="staticSearch_report.html" tofile="${collectionDirName}/staticSearch/staticSearch_report.html"/>
+        <move file="${basedir}/staticSearch_report.html" tofile="${collectionDirName}/staticSearch/staticSearch_report.html"/>
         <open file="${collectionDirName}/staticSearch/staticSearch_report.html"/>
     </target>
     
