@@ -52,6 +52,8 @@
             <form accept-charset="UTF-8" id="ssForm"
                 data-allowPhrasal="{if ($phrasalSearch) then 'yes' else 'no'}"
                 onsubmit="return false;">
+                <input type="text" id="ssQuery"/>
+                <button id="ssDoSearch">Search</button>
                 <xsl:if test="$docsJSON/descendant::map:array[@key]">
                     
                     <xsl:for-each-group select="$docsJSON//map:array[@key]" group-by="@key">
@@ -70,8 +72,7 @@
                         </fieldset>
                     </xsl:for-each-group>
                 </xsl:if>
-                <input type="text" id="ssQuery"/>
-                <button id="ssDoSearch">Search</button>
+               
             </form>
             <div id="ssResults">
                 <!--...results here...-->
