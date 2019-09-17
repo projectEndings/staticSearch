@@ -295,7 +295,10 @@
                 <xso:param>
                     <xsl:attribute name="name" select="local-name()"/>
                     <xsl:choose>
-                        <xsl:when test="local-name()=('verbose','indentJSON')">
+                        <!--TODO: Make this smarter! Look at the ODD file
+                            and see if the parameter is a boolean or not. If it is, do this, otherwise, just assume its a string
+                            (or an integer or whatever else)-->
+                        <xsl:when test="local-name()=('verbose','indentJSON', 'recurse','phrasalSearch','createContexts')">
                             <xsl:attribute name="select" select="concat(hcmc:stringToBoolean(xs:string(.)),'()')"/>
                         </xsl:when>
                         <xsl:when test="ends-with(local-name(),'File')">
