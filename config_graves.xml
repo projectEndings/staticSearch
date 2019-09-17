@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns="http://hcmc.uvic.ca/ns/staticSearch">
     <params>
-        <baseDir>.</baseDir>
         <collectionDir>../graves/products/site</collectionDir>
         <tempDir>temp</tempDir>
         <outDir>site/js/</outDir>

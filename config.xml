@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns="http://hcmc.uvic.ca/ns/staticSearch">
     <params>
-        <baseDir>.</baseDir>
         <searchFile>test/search.html</searchFile>
         <recurse>true<!--Need to set recurse to true for the test--></recurse>
         <phrasalSearch>true</phrasalSearch>

@@ -92,7 +92,54 @@
             
             <p>The configuration file is an XML document which tells the Generator where to find your site,
             and what search features you would like to include. The configuration file conforms to a schema which is
-            documented here...</p>
+            documented here.</p>
+            <p>There are three main sections of the configuration file:
+              <list>
+                <item><gi>params</gi></item>
+                <item><gi>rules</gi></item>
+                <item><gi>contexts</gi></item>
+              </list>
+              Only the <gi>params</gi> element is necessary, but, as we discuss shortly, we highly suggest taking advantage of the <gi>rules</gi>
+              and <gi>contexts</gi> for the best results.
+            </p>
+            <div>
+              <head>Specifying Parameters (Required)</head>
+              <p>The <gi>params</gi> element has two required elements for determining the resource collection that you wish to index:
+              <list>
+                <item><gi>searchFile</gi></item>
+                <item><gi>recurse</gi></item>
+              </list>
+              </p>
+              <p>The <gi>searchFile</gi> element is a relative URI (resolved, like all URIs specified in the config file, against the configuration file location) that points
+              directly to the search page that will be the primary access point for the search. Since the search file must be at the root of the directory that you wish to index
+              (i.e. the directory that contains all of the XHTML you want the search to index), the searchFile parameter provides the necessary information for knowing what documents
+              to index and where to put the output JSON.</p>
+              <p>Note that all output files will be in a directory that is a sibling to the search page. For instance, in a document collection that looks something like:
+              <list style="font-family: monospace">
+                <item>myProject
+                <list>
+                  <item>novel.html</item>
+                  <item>poem.html</item>
+                  <item>shortstory.html</item>
+                  <item>search.html</item>
+                </list>
+                </item>
+              </list>
+              The collection of Javascript and JSON files will be in a directory like so:
+                <list style="font-family: monospace">
+                  <item>myProject
+                    <list>
+                      <item>novel.html</item>
+                      <item>poem.html</item>
+                      <item>shortstory.html</item>
+                      <item>search.html</item>
+                      <item><emph>staticSearch</emph></item>
+                    </list>
+                  </item>
+                </list>
+              </p>
+              <p>We also require the <gi>recurse</gi> element in the case where the document collection may be nested (as is common with static sites generated from Jekyll or Wordpress). The <gi>recurse</gi> element is a boolean (true or false) that determines whether or not to recurse into the subdirectories of the collection and index those files.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -120,10 +167,7 @@
             find the target website content and process it appropriately.</gloss>
             <content>
               <sequence preserveOrder="false">
-                <elementRef key="baseDir"/>
-                <elementRef key="collectionDir"/>
-                <elementRef key="tempDir"/>
-                <elementRef key="outDir"/>
+                <elementRef key="searchFile"/>
                 <elementRef key="recurse"/>
                 <elementRef key="phrasalSearch" minOccurs="0"/>
                 <elementRef key="createContexts" minOccurs="0"/>
@@ -137,12 +181,8 @@
                 <elementRef key="searchPage" minOccurs="0"/>
                 <elementRef key="searchInputId" minOccurs="0"/>
                 <elementRef key="indentJSON" minOccurs="0"/>
-
               </sequence>
-
-
             </content>
-
           </elementSpec>
 
           <elementSpec ident="rules" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
@@ -197,13 +237,15 @@
             </attList>
           </classSpec>
 
-
+<!--
           <elementSpec ident="baseDir" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>The base directory from which relative paths will be resolved.</gloss>
             <content>
               <dataRef name="anyURI"/>
             </content>
           </elementSpec>
+          
+          
 
           <elementSpec ident="collectionDir" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>The directory which contains XHTML5 web pages to be indexed.</gloss>
@@ -211,7 +253,16 @@
               <dataRef name="anyURI"/>
             </content>
           </elementSpec>
-
+-->
+          
+          <elementSpec ident="searchFile" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>The search file (aka page) that will be the primary access point for the static search. Note
+            that this page <emph>must</emph> be at the root of the collection directory.</gloss>
+            <content>
+              <dataRef name="anyURI"/>
+            </content>
+          </elementSpec>
+          
           <elementSpec ident="recurse" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>Whether to recurse into subdirectories of the collection directory or
               not.</gloss>
@@ -219,7 +270,7 @@
               <dataRef name="boolean"/>
             </content>
           </elementSpec>
-          <elementSpec ident="tempDir" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <!-- <elementSpec ident="tempDir" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>The location of a temporary directory to be used by the tokenization
               process.</gloss>
             <content>
@@ -231,7 +282,7 @@
             <content>
               <dataRef name="anyURI"/>
             </content>
-          </elementSpec>
+          </elementSpec>-->
           <elementSpec ident="createContexts" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>Whether to include keyword-in-context extracts in the index. This increases the
               size of the index considerably, but it allows for more user-friendly search results,
@@ -322,12 +373,12 @@
               <dataRef name="anyURI"/>
             </content>
           </elementSpec>
-          <elementSpec ident="searchInputId" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <!-- <elementSpec ident="searchInputId" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>JOEY, I DON'T BELIEVE WE NEED THIS. LET'S JUST INSIST ON id="staticSearch".</gloss>
             <content>
               <dataRef name="anyURI"/>
             </content>
-          </elementSpec>
+          </elementSpec>-->
 
 
         </schemaSpec>

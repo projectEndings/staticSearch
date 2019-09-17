@@ -5,7 +5,7 @@
          xmlns="http://relaxng.org/ns/structure/1.0"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2019-09-12T14:36:38Z. .
+Schema generated from ODD source 2019-09-17T04:01:54Z. .
 TEI Edition: Version 3.6.0. Last updated on
 	16th July 2019, revision daa3cc0b9
 TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
@@ -31,10 +31,7 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Element containing most of the settings which enable the Generator to
             find the target website content and process it appropriately.) </a:documentation>
          <group>
-            <ref name="baseDir"/>
-            <ref name="collectionDir"/>
-            <ref name="tempDir"/>
-            <ref name="outDir"/>
+            <ref name="searchFile"/>
             <ref name="recurse"/>
             <optional>
                <ref name="phrasalSearch"/>
@@ -65,9 +62,6 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
             </optional>
             <optional>
                <ref name="searchPage"/>
-            </optional>
-            <optional>
-               <ref name="searchInputId"/>
             </optional>
             <optional>
                <ref name="indentJSON"/>
@@ -133,15 +127,10 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
          </attribute>
       </optional>
    </define>
-   <define name="baseDir">
-      <element name="baseDir" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The base directory from which relative paths will be resolved.) </a:documentation>
-         <data type="anyURI"/>
-      </element>
-   </define>
-   <define name="collectionDir">
-      <element name="collectionDir" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The directory which contains XHTML5 web pages to be indexed.) </a:documentation>
+   <define name="searchFile">
+      <element name="searchFile" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The search file (aka page) that will be the primary access point for the static search. Note
+            that this page must be at the root of the collection directory.) </a:documentation>
          <data type="anyURI"/>
       </element>
    </define>
@@ -150,19 +139,6 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Whether to recurse into subdirectories of the collection directory or
               not.) </a:documentation>
          <data type="boolean"/>
-      </element>
-   </define>
-   <define name="tempDir">
-      <element name="tempDir" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The location of a temporary directory to be used by the tokenization
-              process.) </a:documentation>
-         <data type="anyURI"/>
-      </element>
-   </define>
-   <define name="outDir">
-      <element name="outDir" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The directory in which to place the generated JavaScript and JSON files.) </a:documentation>
-         <data type="anyURI"/>
       </element>
    </define>
    <define name="createContexts">
@@ -246,12 +222,6 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The location of a search page in the site to be indexed. This page must contain
             a div element with id="staticSearch". That div will be transformed to include the 
             search form and all other required components.) </a:documentation>
-         <data type="anyURI"/>
-      </element>
-   </define>
-   <define name="searchInputId">
-      <element name="searchInputId" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(JOEY, I DON'T BELIEVE WE NEED THIS. LET'S JUST INSIST ON id="staticSearch".) </a:documentation>
          <data type="anyURI"/>
       </element>
    </define>
