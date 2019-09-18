@@ -115,8 +115,8 @@
             </xsl:if>
             
             <!--Now add the scripts to the staticSearch library-->
-            <script src="staticSearch/ssPorter2Stemmer.js"/>
-            <script src="staticSearch/ssSearch.js"/>
+            <script src="staticSearch/ssPorter2Stemmer.js"><!-- Don't self-close script tags. --></script>
+            <script src="staticSearch/ssSearch.js"><!-- Don't self-close script tags. --></script>
             
             <!--Special on script onload to the start up the StaticSearch-->
             <script>
