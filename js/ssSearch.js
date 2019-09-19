@@ -413,6 +413,12 @@ class StaticSearch{
       return false;
     }
 //Check whether any filters have been selected.
+    let arrFilters = this.getActiveFiltersAsArray();
+    if (arrFilters.length < 1){
+      return false;
+    }
+    //So we have active filters. Do we have doc
+    //metadata yet?
     //TODO: CONTINUE WITH THIS.
   }
 
@@ -961,23 +967,7 @@ class StaticSearch{
       }
 
 //Now we filter the results based on filter checkboxes, if any.
-      let filters = new Map();
-      for (let cbx of this.filterCheckboxes){
-        if (cbx.checked){
-          let title = cbx.getAttribute('title');
-          let val   = cbx.getAttribute('value');
-          if (filters.has(title)){
-            let arr = filters.get(title);
-            arr.push(val);
-            filters.set(title, arr);
-          }
-          else{
-            filters.set(title, new Array(val));
-          }
-        }
-      }
-
-      let arrFilters = Array.from(filters);
+      let arrFilters = this.getActiveFiltersAsArray();
       console.log(arrFilters);
 
       if (arrFilters.length > 0){
