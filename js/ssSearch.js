@@ -253,6 +253,10 @@ class StaticSearch{
         result = true;
       }
     }
+    else{
+      //Perhaps there are filters without a search string.
+      listDocsByFilters();
+    }
     return result;
   }
 
@@ -394,6 +398,50 @@ class StaticSearch{
     }
     return (this.terms.length > 0);
   }
+
+/** @function StaticSearch~listDocsByFilters
+  * @description this function provides search results
+  * based only on the facet filters (if any), to be
+  * used when there is no search query, just a selection
+  * from the filters.
+  *
+  * @return {Boolean} true if documents found, otherwise false.
+  */
+  listDocsByFilters(){
+//Check whether we have filters on the page or not.
+    if (this.filterCheckboxes.length < 1){
+      return false;
+    }
+//Check whether any filters have been selected.
+    //TODO: CONTINUE WITH THIS.
+  }
+
+/** @function StaticSearch~getActiveFiltersAsArray
+  * @description this function harvests the selected filters
+  * in the form of a Map, then transforms the result to
+  * an array, which can be used in other methods.
+  *
+  * @return {Array} an array (which might be empty)
+  */
+  getActiveFiltersAsArray(){
+    let filters = new Map();
+    for (let cbx of this.filterCheckboxes){
+      if (cbx.checked){
+        let title = cbx.getAttribute('title');
+        let val   = cbx.getAttribute('value');
+        if (filters.has(title)){
+          let arr = filters.get(title);
+          arr.push(val);
+          filters.set(title, arr);
+        }
+        else{
+          filters.set(title, new Array(val));
+        }
+      }
+    }
+    return Array.from(filters);
+  }
+
 /** @function StaticSearch~writeSearchReport
   * @description this outputs a human-readable explanation of the search
   * that's being done, to clarify for users what they've chosen to look for.
@@ -493,7 +541,7 @@ class StaticSearch{
       }
 
       //If we do need to retrieve JSON index data, then do it
-      if ((tokensToFind.length > 0) ||(needDocMetadata)){
+      if ((tokensToFind.length > 0) || (needDocMetadata)){
 
         console.log(JSON.stringify(tokensToFind));
 
