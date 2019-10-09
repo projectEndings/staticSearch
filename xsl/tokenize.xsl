@@ -158,6 +158,10 @@
         <xsl:apply-templates select="node()" mode="#current"/>
     </xsl:template>
     
+    <!--Delete script tags by default, since they're code and won't contain anything useful-->
+    <xsl:template match="script" mode="clean"/>
+    
+    
     
   
     <!--Here is where we normalize the string values-->
