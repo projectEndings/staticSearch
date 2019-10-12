@@ -232,14 +232,9 @@
                     If there is something usable in the title, then use that;
                     otherwise, just use the document id as the title
                     -->
+                    
                     <xsl:variable name="docTitle" as="xs:string"
-                        select="
-                        let $t := normalize-space(string-join($thisDoc//head/title[1]/descendant::text(),'')) 
-                        return 
-                            if ($t ne '') 
-                            then $t 
-                            else $docId"
-                    />
+                        select="hcmc:getDocTitle($thisDoc)"/>
                     
 <!--                    And the relative URI from the document, which is to be used
                         for linking from the KWIC to the document. We've created this
@@ -498,8 +493,10 @@
                 <xsl:for-each select="$tokenizedDocs">
                     <xsl:variable name="thisDoc" select="."/>
                     <xsl:variable name="relativeUri" select="$thisDoc//html/@data-staticSearch-relativeUri"/>
+                    <xsl:variable name="thisTitle" select="hcmc:getDocTitle($thisDoc//html)"/>
                     <xsl:message>Processing <xsl:value-of select="$relativeUri"/></xsl:message>
                     <map key="{$relativeUri}">
+                        <string key="docTitle"><xsl:value-of select="$thisTitle"/></string>
                         <xsl:for-each-group select="$thisDoc//meta[contains-token(@class,'staticSearch.filter')]" group-by="@name">
                             <xsl:message expand-text="yes">Processing {current-grouping-key()}</xsl:message>
                             <array key="{current-grouping-key()}">
@@ -587,6 +584,18 @@
         </xsl:element>
     </xsl:template>
     
+    <xd:doc>
+        <xd:desc>
+            <xd:p><xd:ref name="hcmc:getDocTitle" type="function">hcmc:getDocTitle</xd:ref> is a simple function to retrieve the document title, which we may have to construct if there's nothing usable.</xd:p>
+        </xd:desc>
+        <xd:param name="doc">The input document, which must be an HTML element.</xd:param>
+        <xd:result>A string title, derived either from the document's actual title (preferable) or the document's @id if all else fails.</xd:result>
+    </xd:doc>
+    <xsl:function name="hcmc:getDocTitle" as="xs:string">
+        <xsl:param name="doc" as="element(html)"/>
+        <xsl:variable name="title" select="normalize-space(string-join($doc//head/title[1]/descendant::text(),''))" as="xs:string?"/>
+        <xsl:value-of select="if (string-length($title) gt 0) then $title else $doc/@id"/>
+    </xsl:function>
 
     
     
