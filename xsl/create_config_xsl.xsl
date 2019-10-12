@@ -82,7 +82,7 @@
             with the static search distribution), then we download it from Github.</xd:desc>
     </xd:doc>
     <xsl:variable name="schema" select="
-        if (doc-available(concat($ssBaseDir, 'schema/staticSearch.odd'))) 
+        if (doc-available(concat($ssBaseDir, '/schema/staticSearch.odd'))) 
         then document(concat($ssBaseDir,'/schema/staticSearch.odd'))
         else document('https://raw.githubusercontent.com/projectEndings/staticSearch/master/schema/staticSearch.odd')"
         as="document-node()"/>
