@@ -255,7 +255,7 @@ class StaticSearch{
     }
     else{
       //Perhaps there are filters without a search string.
-      listDocsByFilters();
+      this.listDocsByFilters();
     }
     return result;
   }
