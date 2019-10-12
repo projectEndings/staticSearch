@@ -408,6 +408,7 @@ class StaticSearch{
   * @return {Boolean} true if documents found, otherwise false.
   */
   listDocsByFilters(){
+    var self = this;
 //Check whether we have filters on the page or not.
     if (this.filterCheckboxes.length < 1){
       return false;
@@ -415,11 +416,76 @@ class StaticSearch{
 //Check whether any filters have been selected.
     let arrFilters = this.getActiveFiltersAsArray();
     if (arrFilters.length < 1){
+      //console.log('No filters set.');
       return false;
     }
     //So we have active filters. Do we have doc
     //metadata yet?
-    //TODO: CONTINUE WITH THIS.
+    if ((Object.keys(this.docMetadata).length === 0) &&
+       (this.docMetadata.constructor === Object)){
+      //We don't have doc metadata yet. Retrieve it
+      //and call this again.
+      //console.log('Doc metadata not yet retrieved.');
+      //TODO: Figure out if there's a less repetitive
+      //way to do this.
+      return fetch(self.jsonDirectory + 'docs.json')
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(docMeta) {
+          self.docMetadata = docMeta;
+          self.listDocsByFilters();
+        })
+        .catch(function(e){
+          console.log('Error attempting to retrieve docMetadata: ' + e);
+          return function(){self.docMetadata = {'noMetadataFound': true}; return false;}.bind(self);
+        }.bind(self));
+    }
+    else{
+      if (this.docMetadata.noMetadataFound == true){
+        //console.log('No metadata to work with. Do nothing.');
+        return false;
+      }
+      else{
+        //We have doc metadata. We can list documents based
+        //on the filters if any.
+        //No need for this, since we're not using it.
+        //this.resultSet.clear();
+        let docLinks = [];
+        for (let docUri of Object.keys(this.docMetadata)){
+          //console.log(docUri);
+          if (this.docMatchesFilters(docUri, arrFilters, this.matchAllFilters)){
+            //TODO: Just output a list of documents as links, since
+            //there's no real useful info to be had and no sort
+            //requirement.
+            let newLi = document.createElement('li');
+            let newA = document.createElement('a');
+            newA.setAttribute('href', docUri);
+            //TODO: Replace this with doc title when available.
+            newA.appendChild(document.createTextNode(docUri));
+            newLi.appendChild(newA);
+            docLinks.push(newLi);
+          }
+        }
+        if (docLinks.length > 0){
+          let newUl = document.createElement('ul');
+          for (let docLink of docLinks){
+            newUl.appendChild(docLink);
+          }
+          while (this.resultsDiv.firstChild){this.resultsDiv.removeChild(this.resultsDiv.firstChild);}
+          this.resultsDiv.appendChild(document.createElement('p')
+                         .appendChild(document.createTextNode(
+                           this.captionSet.strDocumentsFound + docLinks.length
+                         )));
+          this.resultsDiv.appendChild(newUl);
+          return true;
+        }
+        else{
+          this.reportNoResults(true);
+          return false;
+        }
+      }
+    }
   }
 
 /** @function StaticSearch~getActiveFiltersAsArray
