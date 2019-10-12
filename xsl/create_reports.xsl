@@ -19,12 +19,18 @@
     
     <xsl:include href="config.xsl"/>
     
+    <xd:doc>
+        <xd:desc>Output as XHTML with HTML version 5.0; this is necessary for adding the
+            proper DOCTYPE and to create a valid file.</xd:desc>
+    </xd:doc>
+    <xsl:output method="xhtml" encoding="UTF-8" normalization-form="NFC"
+        exclude-result-prefixes="#all" omit-xml-declaration="yes" html-version="5.0"/>
     <xsl:variable name="spans" select="$tokenizedDocs//span[@data-staticSearch-stem]"/>
     
     <xsl:template match="/">
         <xsl:message>Creating reports...this might take a bit</xsl:message>
         <xsl:result-document href="{$ssBaseDir}/staticSearch_report.html">
-            <html xmlns="http://www.w3.org/1999/xhtml">
+            <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
                 <head>
                     <title>Static Search Report: <xsl:value-of select="$collectionDir"/></title>
                 </head>
