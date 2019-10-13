@@ -138,9 +138,9 @@
                 
                 <!--And if the docsJson actually has useful content, create the filter selection-->
                 <xsl:if test="$docsJSON/descendant::map:array[@key]">
-                    
+                    <!--  First we handle the regular filters. -->
                     <!--Group these by keys (aka the name of the filter)-->
-                    <xsl:for-each-group select="$docsJSON//map:array[@key]" group-by="@key">
+                    <xsl:for-each-group select="$docsJSON//map:array[@key = 'filters']/array[@key]" group-by="@key">
                         <xsl:variable name="filterName" select="current-grouping-key()"/>
                         
                         <!--For each of those groups, create a fieldset-->
@@ -168,6 +168,22 @@
                                     </li>
                                 </xsl:for-each-group>
                             </ul>
+                        </fieldset>
+                    </xsl:for-each-group>
+                    <!--  Next we handle the date filters. -->
+                    <!--Group these by keys (aka the name of the filter)-->
+                    <xsl:for-each-group select="$docsJSON//map:array[@key = 'dates']/array[@key]" group-by="@key">
+                        <xsl:variable name="filterName" select="current-grouping-key()"/>
+                        
+                        <!--For each of those groups, create a fieldset-->
+                        <fieldset>
+                            <xsl:variable name="grpPos" select="position()"/>
+                            <!--And add the filter name as the legend-->
+                            <legend><xsl:value-of select="$filterName"/></legend>
+                            <!--  Create two input elements, a from date and a to date.  -->
+                            <!-- TODO: FIGURE OUT HOW TO HANDLE THE CAPTIONS REQUIRED HERE, instead of hard-coding them. -->
+                            <span><label for="date_{$grpPos}_from">From: </label> <input type="text" maxlength="10" pattern="\d\d\d\d(-\d\d(-\d\d)?)?" title="{$filterName}" id="date_{$grpPos}_from" class="ssDate" placeholder="1999-12-31"/></span>
+                            <span><label for="date_{$grpPos}_to">To: </label> <input type="text" maxlength="10" pattern="\d\d\d\d(-\d\d(-\d\d)?)?" title="{$filterName}" id="date_{$grpPos}_to" class="ssDate" placeholder="2000-01-01"/></span>
                         </fieldset>
                     </xsl:for-each-group>
                 </xsl:if>
