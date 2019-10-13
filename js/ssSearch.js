@@ -322,13 +322,13 @@ class StaticSearch{
     for (let i=0; i<strSearch.length; i++){
       let c = strSearch.charAt(i);
       if (c === '"'){
-        this.addSearchItem(strSoFar);
+        this.addSearchItem(strSoFar, inPhrase);
         inPhrase = !inPhrase;
         strSoFar = '';
       }
       else{
         if ((c === ' ')&&(!inPhrase)){
-          this.addSearchItem(strSoFar);
+          this.addSearchItem(strSoFark, false);
           strSoFar = '';
         }
         else{
@@ -336,7 +336,7 @@ class StaticSearch{
         }
       }
     }
-    this.addSearchItem(strSoFar);
+    this.addSearchItem(strSoFar, inPhrase);
     //We always want to handle the terms in order of
     //precedence, starting with phrases.
     this.terms.sort(function(a, b){return a.type - b.type;});
@@ -349,9 +349,13 @@ class StaticSearch{
   * search box parser by parseSearchQuery. It constructs a
   * single item from it, and adds that to this.terms.
   * @param {String}   strInput a string of text.
+  * @param {Boolean}  isPhrasal whether or not this is a phrasal
+  *                             search. This may be true even for
+  *                             a single word, if it is to be searched
+  *                             unstemmed.
   * @return {Boolean} true if terms found, otherwise false.
   */
-  addSearchItem(strInput){
+  addSearchItem(strInput, isPhrasal){
     //Sanity check
     if (strInput.length < 1){
       return false;
@@ -363,7 +367,7 @@ class StaticSearch{
     let startsWithCap = (firstLetter.toLowerCase() !== firstLetter);
 
     //Is it a phrase?
-    if (/\s/.test(strInput)){
+    if ((/\s/.test(strInput)) || (isPhrasal)){
     //We need to find the first component which is not a stopword.
       let subterms = strInput.toLowerCase().split(/\s+/);
       let i;
