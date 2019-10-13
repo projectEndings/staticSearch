@@ -130,8 +130,11 @@
                 onsubmit="return false;">
                 
                 <!--Standard inputs-->
-                <input type="text" id="ssQuery"/>
-                <button id="ssDoSearch">Search</button>
+                <span class="ssQueryAndButton">
+                    <input type="text" id="ssQuery"/>
+                    <button id="ssDoSearch">Search</button>
+                </span>
+               
                 
                 <!--And if the docsJson actually has useful content, create the filter selection-->
                 <xsl:if test="$docsJSON/descendant::map:array[@key]">

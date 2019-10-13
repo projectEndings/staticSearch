@@ -85,6 +85,22 @@
               If the Generator finds such meta tags when it is indexing, it will create a set of filter controls
               on the search page, enabling the user to constrain the search to a specific set of filter settings.
             </p>
+            
+            <p>Another slightly different kind of search control is a document date. If your collection of 
+            documents has items from different dates, you can add a <gi>meta</gi> tag like this:
+            
+              <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                <meta name="Date of publication" class="staticSearch.date" content="1895-01-05" />
+              </egXML>
+              
+              The date may take any of the following forms:
+              
+              <list>
+                <item>1895 (year only)</item>
+                <item>1895-01 (year and month)</item>
+                <item>1895-01-05 (year, month and day)</item>
+              </list>
+            </p>
           </div>
           
           <div>
