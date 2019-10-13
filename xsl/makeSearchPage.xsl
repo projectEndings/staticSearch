@@ -140,7 +140,7 @@
                 <xsl:if test="$docsJSON/descendant::map:array[@key]">
                     <!--  First we handle the regular filters. -->
                     <!--Group these by keys (aka the name of the filter)-->
-                    <xsl:for-each-group select="$docsJSON//map:array[@key = 'filters']/array[@key]" group-by="@key">
+                    <xsl:for-each-group select="$docsJSON//map:map[@key = 'filters']/map:array[@key]" group-by="@key">
                         <xsl:variable name="filterName" select="current-grouping-key()"/>
                         
                         <!--For each of those groups, create a fieldset-->
@@ -172,7 +172,7 @@
                     </xsl:for-each-group>
                     <!--  Next we handle the date filters. -->
                     <!--Group these by keys (aka the name of the filter)-->
-                    <xsl:for-each-group select="$docsJSON//map:array[@key = 'dates']/array[@key]" group-by="@key">
+                    <xsl:for-each-group select="$docsJSON//map:map[@key = 'dates']/map:array[@key]" group-by="@key">
                         <xsl:variable name="filterName" select="current-grouping-key()"/>
                         
                         <!--For each of those groups, create a fieldset-->

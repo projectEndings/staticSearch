@@ -497,7 +497,7 @@
                     <xsl:message>Processing <xsl:value-of select="$relativeUri"/></xsl:message>
                     <map key="{$relativeUri}">
                         <string key="docTitle"><xsl:value-of select="$thisTitle"/></string>
-                        <array key="filters">
+                        <map key="filters">
                             <xsl:for-each-group select="$thisDoc//meta[contains-token(@class,'staticSearch.filter')]" group-by="@name">
                                 <xsl:message expand-text="yes">Processing {current-grouping-key()}</xsl:message>
                                 <array key="{current-grouping-key()}">
@@ -506,18 +506,18 @@
                                     </xsl:for-each>
                                 </array>
                             </xsl:for-each-group>
-                        </array>
+                        </map>
                         
 <!--                  For date filters, we have to insist that there's only one date for each named filter, otherwise it 
                         becomes impossible to use them. So we take only the first one. -->
-                        <array key="dates">
+                        <map key="dates">
                             <xsl:for-each-group select="$thisDoc//meta[contains-token(@class,'staticSearch.date')]" group-by="@name">
                                 <xsl:message expand-text="yes">Processing date filter {current-grouping-key()}</xsl:message>
                                 <array key="{current-grouping-key()}">
                                     <string><xsl:value-of select="current-group[1]/@content"/></string>
                                 </array>
                             </xsl:for-each-group>
-                        </array>
+                        </map>
                     </map>
                 </xsl:for-each>
             </map>
