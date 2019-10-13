@@ -466,7 +466,7 @@ class StaticSearch{
             let newA = document.createElement('a');
             newA.setAttribute('href', docUri);
             //TODO: Replace this with doc title when available.
-            newA.appendChild(document.createTextNode(docUri));
+            newA.appendChild(document.createTextNode(this.docMetadata[docUri].docTitle));
             newLi.appendChild(newA);
             docLinks.push(newLi);
           }
