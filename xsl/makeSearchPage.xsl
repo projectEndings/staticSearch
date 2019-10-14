@@ -77,33 +77,37 @@
         It is provided as a parameter so that it can be overridden if required.</xd:desc>
     </xd:doc>
     <xsl:param name="css" as="xs:string">
-            span.ssQueryAndButton{
-                display: flex;
-                flex-direction: row;
-                margin-bottom: 0.5rem;
-            }
-            input#ssQuery{
-                flex: 1;
-            }
+        span.ssQueryAndButton{
+            display: flex;
+            flex-direction: row;
+            margin: 0.25em auto;
+        }
+        input#ssQuery{
+            flex: 1;
+        }
             div.ssFilters, div.ssDates{
-                display: flex;
-                flex-direction: row;
-                flex-wrap: wrap;
-            }
-            div.ssFilters fieldset, div.ssDates fieldset{
-                flex-grow: 1;   
-            }
-            ul.ssCheckboxList{
-                list-style-type: none;
-                max-height: 8em;
-                overflow-y: auto;
-            }
-            ul.ssCheckboxList li{
-                display: flex;
-                flex-direction: row;
-                flex-wrap: nowrap;
-                align-items: flex-start;
-            }
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+        div.ssFilters fieldset, div.ssDates fieldset{
+            margin: 0.25em auto;
+            flex-grow: 1;   
+        }
+        ul.ssCheckboxList{
+            list-style-type: none;
+            max-height: 8em;
+            overflow-y: auto;
+        }
+        ul.ssCheckboxList li{
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-items: flex-start;
+        }
+        div.ssDates fieldset.ssFieldset>span{
+            padding-left: 2em;
+        }
     </xsl:param>
     
     <!--**************************************************************
