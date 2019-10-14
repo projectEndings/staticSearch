@@ -257,6 +257,7 @@ class StaticSearch{
       //Perhaps there are filters without a search string.
       this.listDocsByFilters();
     }
+    this.resultsDiv.scrollIntoView();
     return result;
   }
 

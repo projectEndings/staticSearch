@@ -57,7 +57,7 @@
 
     <!--**************************************************************
        *                                                            * 
-       *                         Variables                          *
+       *                         Variables and parameters                         *
        *                                                            *
        **************************************************************-->
     
@@ -71,6 +71,31 @@
                 as="document-node()"/>
 
 
+    <xd:doc>
+        <xd:desc><xd:ref name="css" type="parameter">$css</xd:ref> is a pre-populated
+        parameter containing the CSS code that applies to the search form components.
+        It is provided as a parameter so that it can be overridden if required.</xd:desc>
+    </xd:doc>
+    <xsl:param name="css" as="xs:string">
+            span.ssQueryAndButton{
+                display: flex;
+                flex-direction: row;
+                margin-bottom: 0.5rem;
+            }
+            input#ssQuery{
+                flex: 1;
+            }
+            ul.ssCheckboxList{
+                list-style-type: none;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            ul.ssCheckboxList li{
+                width: 30%;
+            }
+    </xsl:param>
+    
     <!--**************************************************************
        *                                                            * 
        *                         Templates                          *
@@ -93,6 +118,41 @@
         <xsl:apply-templates/>
     </xsl:template>
     
+    <xd:doc>
+        <xd:desc>This  template replaces an existing style element with the id ssCss 
+            with another one containing the code in the <xd:ref name="css">$css</xd:ref> 
+            parameter.</xd:desc>
+    </xd:doc>   
+    <xsl:template match="style[@id='ssCss']">
+        <style id="ssCss">
+            <xsl:value-of select="$css"/>
+        </style>
+    </xsl:template>
+    
+    <xd:doc>
+        <xd:desc>This  template detects an HTML head element which does not contain an 
+            existing style element with the id ssCss, and injects one containing the code in 
+            the <xd:ref name="css">$css</xd:ref> parameter. We place it first in the head element
+            so that any subsequent style element provided by the user can override it.</xd:desc>
+    </xd:doc>   
+    <xsl:template match="head[not(style[@id='ssCss'])]">
+        <xsl:copy>
+            <xsl:apply-templates select="@*"/>
+            <style id="ssCss">
+                <xsl:value-of select="$css"/>
+            </style>
+            <xsl:apply-templates select="node()"/>
+        </xsl:copy>
+    </xsl:template>
+    
+    <xd:doc>
+        <xd:desc>This  template replaces any existing style attribute with the parameter supplied.</xd:desc>
+    </xd:doc>   
+    <xsl:template match="style[@id='ssCss']">
+        <style id="ssCss">
+            <xsl:value-of select="$css"/>
+        </style>
+    </xsl:template>
     
     <xd:doc>
         <xd:desc>This is the main template for matching the staticSearch div;
@@ -144,17 +204,18 @@
                         <xsl:variable name="filterName" select="current-grouping-key()"/>
                         
                         <!--For each of those groups, create a fieldset-->
-                        <fieldset>
+                        <fieldset class="ssFieldSet">
                             <xsl:variable name="grpPos" select="position()"/>
                             <!--And add the filter name as the legend-->
                             <legend><xsl:value-of select="$filterName"/></legend>
                             
                             <!--And now make the checkbox list-->
-                            <ul class="checkboxList">
+                            <ul class="ssCheckboxList">
                                 
                                 <!--Now loop through the current set of arrays and determine all of the distinct
                                     values for that array-->
                                 <xsl:for-each-group select="current-group()" group-by="map:string/text()">
+                                    <xsl:sort select="current-grouping-key()"/>
                                     <xsl:variable name="thisPos" select="position()"/>
                                     <xsl:variable name="filterVal" select="current-grouping-key()"/> 
                                     <!--And create the input item: the input item contains:
@@ -176,7 +237,7 @@
                         <xsl:variable name="filterName" select="current-grouping-key()"/>
                         
                         <!--For each of those groups, create a fieldset-->
-                        <fieldset>
+                        <fieldset class="ssFieldset">
                             <xsl:variable name="grpPos" select="position()"/>
                             <!--And add the filter name as the legend-->
                             <legend><xsl:value-of select="$filterName"/></legend>
