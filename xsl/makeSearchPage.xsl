@@ -254,8 +254,8 @@
                                     <legend><xsl:value-of select="$filterName"/></legend>
                                     <!--  Create two input elements, a from date and a to date.  -->
                                     <!-- TODO: FIGURE OUT HOW TO HANDLE THE CAPTIONS REQUIRED HERE, instead of hard-coding them. -->
-                                    <span><label for="date_{$grpPos}_from">From: </label> <input type="text" maxlength="10" pattern="\d\d\d\d(-\d\d(-\d\d)?)?" title="{$filterName}" id="date_{$grpPos}_from" class="ssDate" placeholder="1999-12-31"/></span>
-                                    <span><label for="date_{$grpPos}_to">To: </label> <input type="text" maxlength="10" pattern="\d\d\d\d(-\d\d(-\d\d)?)?" title="{$filterName}" id="date_{$grpPos}_to" class="ssDate" placeholder="2000-01-01"/></span>
+                                    <span><label for="date_{$grpPos}_from">From: </label> <input type="text" maxlength="10" pattern="\d\d\d\d(-\d\d(-\d\d)?)?" title="{$filterName}" id="date_{$grpPos}_from" class="ssDate" placeholder="1999-12-31" onchange="this.reportValidity()"/></span>
+                                    <span><label for="date_{$grpPos}_to">To: </label> <input type="text" maxlength="10" pattern="\d\d\d\d(-\d\d(-\d\d)?)?" title="{$filterName}" id="date_{$grpPos}_to" class="ssDate" placeholder="2000-01-01" onchange="this.reportValidity()"/></span>
                                 </fieldset>
                             </xsl:for-each-group>
                         </div>
