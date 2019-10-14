@@ -90,10 +90,19 @@
                 flex-direction: row;
                 flex-wrap: wrap;
             }
+            div.ssFilters fieldset, div.ssDates fieldset{
+                flex-grow: 1;   
+            }
             ul.ssCheckboxList{
                 list-style-type: none;
                 max-height: 8em;
                 overflow-y: auto;
+            }
+            ul.ssCheckboxList li{
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                align-items: flex-start;
             }
     </xsl:param>
     
