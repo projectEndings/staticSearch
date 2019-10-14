@@ -156,15 +156,6 @@
     </xsl:template>
     
     <xd:doc>
-        <xd:desc>This  template replaces any existing style attribute with the parameter supplied.</xd:desc>
-    </xd:doc>   
-    <xsl:template match="style[@id='ssCss']">
-        <style id="ssCss">
-            <xsl:value-of select="$css"/>
-        </style>
-    </xsl:template>
-    
-    <xd:doc>
         <xd:desc>This is the main template for matching the staticSearch div;
         this is where all the work happens for create the search box and the filter
         options. This is also where we load in the Javasript; we do this here
