@@ -85,14 +85,15 @@
             input#ssQuery{
                 flex: 1;
             }
-            ul.ssCheckboxList{
-                list-style-type: none;
+            div.ssFilters, div.ssDates{
                 display: flex;
                 flex-direction: row;
                 flex-wrap: wrap;
             }
-            ul.ssCheckboxList li{
-                width: 30%;
+            ul.ssCheckboxList{
+                list-style-type: none;
+                max-height: 8em;
+                overflow-y: auto;
             }
     </xsl:param>
     
@@ -194,59 +195,67 @@
                     <input type="text" id="ssQuery"/>
                     <button id="ssDoSearch">Search</button>
                 </span>
-               
                 
                 <!--And if the docsJson actually has useful content, create the filter selection-->
                 <xsl:if test="$docsJSON/descendant::map:array[@key]">
-                    <!--  First we handle the regular filters. -->
-                    <!--Group these by keys (aka the name of the filter)-->
-                    <xsl:for-each-group select="$docsJSON//map:map[@key = 'filters']/map:array[@key]" group-by="@key">
-                        <xsl:variable name="filterName" select="current-grouping-key()"/>
-                        
-                        <!--For each of those groups, create a fieldset-->
-                        <fieldset class="ssFieldSet">
-                            <xsl:variable name="grpPos" select="position()"/>
-                            <!--And add the filter name as the legend-->
-                            <legend><xsl:value-of select="$filterName"/></legend>
-                            
-                            <!--And now make the checkbox list-->
-                            <ul class="ssCheckboxList">
+                    <!--  First we handle the regular filters. We contain them in a div for layout purposes. -->
+                    <xsl:if test="$docsJSON//map:map[@key = 'filters']/map:array[@key]">
+                        <div class="ssFilters">
+                            <!--Group these by keys (aka the name of the filter)-->
+                            <xsl:for-each-group select="$docsJSON//map:map[@key = 'filters']/map:array[@key]" group-by="@key">
+                                <xsl:variable name="filterName" select="current-grouping-key()"/>
                                 
-                                <!--Now loop through the current set of arrays and determine all of the distinct
+                                <!--For each of those groups, create a fieldset-->
+                                <fieldset class="ssFieldSet">
+                                    <xsl:variable name="grpPos" select="position()"/>
+                                    <!--And add the filter name as the legend-->
+                                    <legend><xsl:value-of select="$filterName"/></legend>
+                                    
+                                    <!--And now make the checkbox list-->
+                                    <ul class="ssCheckboxList">
+                                        
+                                        <!--Now loop through the current set of arrays and determine all of the distinct
                                     values for that array-->
-                                <xsl:for-each-group select="current-group()" group-by="map:string/text()">
-                                    <xsl:sort select="current-grouping-key()"/>
-                                    <xsl:variable name="thisPos" select="position()"/>
-                                    <xsl:variable name="filterVal" select="current-grouping-key()"/> 
-                                    <!--And create the input item: the input item contains:
+                                        <xsl:for-each-group select="current-group()" group-by="map:string/text()">
+                                            <xsl:sort select="replace(current-grouping-key(), '^The\s+', '')"/>
+                                            <xsl:variable name="thisPos" select="position()"/>
+                                            <xsl:variable name="filterVal" select="current-grouping-key()"/> 
+                                            <!--And create the input item: the input item contains:
                                         * an @title that specifies the filter name (e.g. Genre)
                                         * an @value that specifies the filter value (e.g. Poem)
                                         * an @id to associate the label for A11Y; we just make the ids arbitrary
                                           based off group numbers-->
-                                    <li>
-                                        <input type="checkbox" title="{$filterName}" value="{$filterVal}" id="opt_{$grpPos}_{$thisPos}" class="ssFilter"/>
-                                        <label for="opt_{$grpPos}_{$thisPos}"><xsl:value-of select="$filterVal"/></label>
-                                    </li>
-                                </xsl:for-each-group>
-                            </ul>
-                        </fieldset>
-                    </xsl:for-each-group>
-                    <!--  Next we handle the date filters. -->
-                    <!--Group these by keys (aka the name of the filter)-->
-                    <xsl:for-each-group select="$docsJSON//map:map[@key = 'dates']/map:array[@key]" group-by="@key">
-                        <xsl:variable name="filterName" select="current-grouping-key()"/>
-                        
-                        <!--For each of those groups, create a fieldset-->
-                        <fieldset class="ssFieldset">
-                            <xsl:variable name="grpPos" select="position()"/>
-                            <!--And add the filter name as the legend-->
-                            <legend><xsl:value-of select="$filterName"/></legend>
-                            <!--  Create two input elements, a from date and a to date.  -->
-                            <!-- TODO: FIGURE OUT HOW TO HANDLE THE CAPTIONS REQUIRED HERE, instead of hard-coding them. -->
-                            <span><label for="date_{$grpPos}_from">From: </label> <input type="text" maxlength="10" pattern="\d\d\d\d(-\d\d(-\d\d)?)?" title="{$filterName}" id="date_{$grpPos}_from" class="ssDate" placeholder="1999-12-31"/></span>
-                            <span><label for="date_{$grpPos}_to">To: </label> <input type="text" maxlength="10" pattern="\d\d\d\d(-\d\d(-\d\d)?)?" title="{$filterName}" id="date_{$grpPos}_to" class="ssDate" placeholder="2000-01-01"/></span>
-                        </fieldset>
-                    </xsl:for-each-group>
+                                            <li>
+                                                <input type="checkbox" title="{$filterName}" value="{$filterVal}" id="opt_{$grpPos}_{$thisPos}" class="ssFilter"/>
+                                                <label for="opt_{$grpPos}_{$thisPos}"><xsl:value-of select="$filterVal"/></label>
+                                            </li>
+                                        </xsl:for-each-group>
+                                    </ul>
+                                </fieldset>
+                            </xsl:for-each-group>
+                        </div>
+                    </xsl:if>
+                    
+                    <!--  Next we handle the date filters. We contain them in a div. -->
+                    <xsl:if test="$docsJSON//map:map[@key = 'dates']/map:array[@key]">
+                        <div class="ssDates">
+                        <!--Group these by keys (aka the name of the filter)-->
+                            <xsl:for-each-group select="$docsJSON//map:map[@key = 'dates']/map:array[@key]" group-by="@key">
+                                <xsl:variable name="filterName" select="replace(current-grouping-key(), '^The\s+', '')"/>
+                                
+                                <!--For each of those groups, create a fieldset-->
+                                <fieldset class="ssFieldset">
+                                    <xsl:variable name="grpPos" select="position()"/>
+                                    <!--And add the filter name as the legend-->
+                                    <legend><xsl:value-of select="$filterName"/></legend>
+                                    <!--  Create two input elements, a from date and a to date.  -->
+                                    <!-- TODO: FIGURE OUT HOW TO HANDLE THE CAPTIONS REQUIRED HERE, instead of hard-coding them. -->
+                                    <span><label for="date_{$grpPos}_from">From: </label> <input type="text" maxlength="10" pattern="\d\d\d\d(-\d\d(-\d\d)?)?" title="{$filterName}" id="date_{$grpPos}_from" class="ssDate" placeholder="1999-12-31"/></span>
+                                    <span><label for="date_{$grpPos}_to">To: </label> <input type="text" maxlength="10" pattern="\d\d\d\d(-\d\d(-\d\d)?)?" title="{$filterName}" id="date_{$grpPos}_to" class="ssDate" placeholder="2000-01-01"/></span>
+                                </fieldset>
+                            </xsl:for-each-group>
+                        </div>
+                    </xsl:if>
                 </xsl:if>
             </form>
             
