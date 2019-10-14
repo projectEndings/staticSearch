@@ -761,7 +761,7 @@ class StaticSearch{
       let fName = f[0];
       let fVals = f[1];
       for (let fVal of fVals){
-        if (doc.filters[fName].indexOf(fVal) > -1){
+        if ((doc.filters[fName] != null) && (doc.filters[fName].indexOf(fVal) > -1)){
           if (!matchAll){
             return true;
           }
