@@ -105,7 +105,7 @@
             flex-wrap: nowrap;
             align-items: flex-start;
         }
-        div.ssDates fieldset.ssFieldset>span{
+        div.ssDates fieldset.ssFieldset span{
             padding-left: 2em;
         }
     </xsl:param>
