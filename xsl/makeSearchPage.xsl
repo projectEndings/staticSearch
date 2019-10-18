@@ -210,7 +210,7 @@
                                 <xsl:variable name="filterName" select="current-grouping-key()"/>
                                 
                                 <!--For each of those groups, create a fieldset-->
-                                <fieldset class="ssFieldSet">
+                                <fieldset class="ssFieldset">
                                     <xsl:variable name="grpPos" select="position()"/>
                                     <!--And add the filter name as the legend-->
                                     <legend><xsl:value-of select="$filterName"/></legend>
