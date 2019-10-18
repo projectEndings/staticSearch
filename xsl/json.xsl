@@ -526,6 +526,12 @@
         <xsl:result-document href="{$outDir}/docs.json" method="text">
             <xsl:value-of select="xml-to-json($filterMap, map{'indent': $indentJSON})"/>
         </xsl:result-document>
+        
+<!--      For debugging purposes: TODO: REMOVE WHEN NO LONGER NEEDED.  -->
+        
+        <xsl:result-document href="{$outDir}/docs.xml" method="xml" indent="yes">
+            <xsl:sequence select="$filterMap"/>
+        </xsl:result-document>
     </xsl:template>
     
     <!--TO DO: DOCUMENT THE BELOW (OR THINK ABOUT SPLITTING THEM INTO SEPARATE MODULES)-->

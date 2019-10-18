@@ -254,8 +254,11 @@
                                     <legend><xsl:value-of select="$filterName"/></legend>
                                     <!--  Create two input elements, a from date and a to date.  -->
                                     <!-- TODO: FIGURE OUT HOW TO HANDLE THE CAPTIONS REQUIRED HERE, instead of hard-coding them. -->
-                                    <span><label for="date_{$grpPos}_from">From: </label> <input type="text" maxlength="10" pattern="\d\d\d\d(-\d\d(-\d\d)?)?" title="{$filterName}" id="date_{$grpPos}_from" class="ssDate" placeholder="1999-12-31" onchange="this.reportValidity()"/></span>
-                                    <span><label for="date_{$grpPos}_to">To: </label> <input type="text" maxlength="10" pattern="\d\d\d\d(-\d\d(-\d\d)?)?" title="{$filterName}" id="date_{$grpPos}_to" class="ssDate" placeholder="2000-01-01" onchange="this.reportValidity()"/></span>
+                                    <!--<xsl:message>Dates found in the docs.json: <xsl:value-of select="string-join()"/></xsl:message>-->
+                                    <xsl:variable name="minDate" as="xs:date" select="min((for $d in $docsJSON//map:map[@key = 'dates']/map:array[@key = current-grouping-key()]/map:string[1][matches(., '^\d\d\d\d(-[01]\d(-\d\d)?)?$')] return hcmc:normalizeDateString($d, true())))"/>
+                                    <xsl:variable name="maxDate" as="xs:date" select="max((for $d in $docsJSON//map:map[@key = 'dates']/map:array[@key = current-grouping-key()]/map:string[1][matches(., '^\d\d\d\d(-[01]\d(-\d\d)?)?$')] return hcmc:normalizeDateString($d, false())))"/>
+                                    <span><label for="date_{$grpPos}_from">From: </label> <input type="text" maxlength="10" pattern="\d\d\d\d(-[01]\d(-\d\d)?)?" title="{$filterName}" id="date_{$grpPos}_from" class="ssDate" placeholder="{format-date($minDate, '[Y0001]-[M01]-[D01]')}" onchange="this.reportValidity()"/></span>
+                                    <span><label for="date_{$grpPos}_to">To: </label> <input type="text" maxlength="10" pattern="\d\d\d\d(-[01]\d(-\d\d)?)?" title="{$filterName}" id="date_{$grpPos}_to" class="ssDate" placeholder="{format-date($maxDate, '[Y0001]-[M01]-[D01]')}" onchange="this.reportValidity()"/></span>
                                 </fieldset>
                             </xsl:for-each-group>
                         </div>
@@ -270,6 +273,51 @@
         </xsl:copy>
     </xsl:template>
 
-
+    <xd:doc>
+        <xd:desc><xd:ref name="hcmc:normalizeDateString" type="function">hcmc:normalizeDateString</xd:ref> 
+        converts truncated dates (yyyy, or yyyy-mm) to fully-specified dates. It ignores leap years.
+        </xd:desc>
+        <xd:param name="dateString">dateString is the incoming string representation of a date.</xd:param>
+        <xd:param name="earliest">earliest is a boolean parameter specifying whether
+            it should be the earliest possible date or the latest.</xd:param>
+        <xd:return>An xs:date or the null sequence</xd:return>
+    </xd:doc>
+    <xsl:function name="hcmc:normalizeDateString" as="xs:date?">
+        <xsl:param name="dateString" as="xs:string"/>
+        <xsl:param name="earliest" as="xs:boolean"/>
+        <xsl:message>Processing date <xsl:value-of select="$dateString"/></xsl:message>
+        <xsl:choose>
+            <xsl:when test="matches($dateString, '^\d\d\d\d$')">
+                <xsl:choose>
+                    <xsl:when test="$earliest"><xsl:sequence select="xs:date(concat($dateString, '-01-01'))"/></xsl:when>
+                    <xsl:otherwise><xsl:sequence select="xs:date(concat($dateString, '-12-31'))"/></xsl:otherwise>
+                </xsl:choose>
+            </xsl:when>
+            <xsl:when test="matches($dateString, '^\d\d\d\d-\d\d$')">
+                <xsl:choose>
+                    <xsl:when test="$earliest"><xsl:sequence select="xs:date(concat($dateString, '-01'))"/></xsl:when>
+                    <xsl:otherwise>
+                        <xsl:choose>
+                            <xsl:when test="matches($dateString, '^\d\d\d\d-((01)|(03)|(05)|(07)|(08)|(10)|(12))$')">
+                                <xsl:sequence select="xs:date(concat($dateString, '-31'))"/>
+                            </xsl:when>
+                            <xsl:when test="matches($dateString, '^\d\d\d\d-((04)|(06)|(09)|(11))$')">
+                                <xsl:sequence select="xs:date(concat($dateString, '-30'))"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:sequence select="xs:date(concat($dateString, '-28'))"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:when>
+            <xsl:when test="matches($dateString, '^\d\d\d\d-\d\d-\d\d$')">
+                <xsl:sequence select="xs:date($dateString)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="()"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
 
 </xsl:stylesheet>
