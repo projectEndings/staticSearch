@@ -2,8 +2,10 @@
 <project basedir="." name="buildTestSite" default="all">
   <description>This build builds the test site for development.</description>
     
+    <property name="branch" value=""/>
+    
     <target name="all">
-        <echo>Doing nothing yet...</echo>
+        <echo>Doing nothing yet and working on this branch: ${branch}.</echo>
     </target>
     
 </project>
