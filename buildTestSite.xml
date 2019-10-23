@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." name="buildTestSite" default="all">
+  <description>This build builds the test site for development.</description>
+    
+    <target name="all">
+        <echo>Doing nothing yet...</echo>
+    </target>
+    
+</project>
