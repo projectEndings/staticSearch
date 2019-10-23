@@ -1,4 +1,8 @@
 language: java
+addons:
+  apt:
+    packages:
+      - ant
 script: ant -f buildTestSite.xml -Dbranch=$TRAVIS_BRANCH -lib lib
 notifications:
   email:
