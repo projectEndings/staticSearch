@@ -4,7 +4,13 @@
     
     <property name="branch" value=""/>
     
-    <target name="all">
+    <target name="buildStaticSearch">
+        <ant antfile="build.xml">
+            <property name="headless" value="true"/>
+        </ant>
+    </target>
+    
+    <target name="all" depends="buildStaticSearch">
         <echo>Doing nothing yet and working on this branch: ${branch}.</echo>
     </target>
     

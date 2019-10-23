@@ -1,0 +1,59 @@
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+   
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+      <style id="ssCss">
+        span.ssQueryAndButton{
+            display: flex;
+            flex-direction: row;
+            margin: 0.25em auto;
+        }
+        input#ssQuery{
+            flex: 1;
+        }
+            div.ssFilters, div.ssDates{
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+        div.ssFilters fieldset, div.ssDates fieldset{
+            margin: 0.25em auto;
+            flex-grow: 1;   
+        }
+        ul.ssCheckboxList{
+            list-style-type: none;
+            max-height: 8em;
+            overflow-y: auto;
+        }
+        ul.ssCheckboxList li{
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-items: flex-start;
+        }
+        div.ssDates fieldset.ssFieldset span{
+            padding-left: 2em;
+        }
+    </style>
+      
+      <title>Search</title>
+      </head>
+   
+   <body>
+      
+      <div id="staticSearch"><script src="staticSearch/ssPorter2Stemmer.js"></script><script src="staticSearch/ssSearch.js"></script><script>
+                var Sch;
+                window.addEventListener('load', function(){Sch = new StaticSearch();});
+            </script><form accept-charset="UTF-8" id="ssForm" data-allowPhrasal="yes" onsubmit="return false;"><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><div class="ssFilters">
+               <fieldset class="ssFieldset">
+                  <legend>Document Subject</legend>
+                  <ul class="ssCheckboxList">
+                     <li><input type="checkbox" title="Document Subject" value="Hyphenation" id="opt_1_1" class="ssFilter"/><label for="opt_1_1">Hyphenation</label></li>
+                  </ul>
+               </fieldset>
+            </div>
+         </form>
+         <div id="ssResults"></div>
+      </div>
+      </body>
+   </html>
