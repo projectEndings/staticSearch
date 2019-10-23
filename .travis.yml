@@ -1,5 +1,5 @@
 language: java
-script: ant -f buildTestSite.xml -Dbranch=$TRAVIS_BRANCH
+script: ant -f buildTestSite.xml -Dbranch=$TRAVIS_BRANCH -lib lib
 notifications:
   email:
     on_success: change
