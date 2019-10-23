@@ -3,6 +3,8 @@ addons:
   apt:
     packages:
       - ant
+before_script:
+   - sudo apt-get install ant-optional
 script: ant -f buildTestSite.xml -Dbranch=$TRAVIS_BRANCH -lib lib
 notifications:
   email:
