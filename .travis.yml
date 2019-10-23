@@ -1,0 +1,16 @@
+language: java
+script: ant -f buildTestSite.xml
+notifications:
+  email:
+    on_success: change
+    on_failure: always
+#deploy:
+#  provider: pages
+#  skip-cleanup: true
+#  github-token: $GH_TOKEN 
+#  keep-history: true
+#  local-dir: products
+#  target-branch: master
+#  repo: projectEndings/staticSearchSite
+#  on:
+#    branch: master
