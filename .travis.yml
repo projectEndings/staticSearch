@@ -1,9 +1,9 @@
 language: java
-script: ant -f buildTestSite.xml
+script: ant -f buildTestSite.xml -Dbranch=$TRAVIS_BRANCH
 notifications:
   email:
     on_success: change
-    on_failure: always
+    on_failure: never
 #deploy:
 #  provider: pages
 #  skip-cleanup: true
