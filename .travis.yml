@@ -1,7 +1,5 @@
-dist: trusty
 jdk:
   - oraclejdk8
-  - openjdk11
 language: java
 script: ant -f buildTestSite.xml -Dbranch=$TRAVIS_BRANCH -lib lib
 notifications:
