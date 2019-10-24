@@ -21,7 +21,18 @@
         </copy>
     </target>
     
-    <target name="all" depends="buildStaticSearch, move">
+    <target name="createIndexPage">
+        <java classpath="lib/saxon9he.jar" classname="net.sf.saxon.Transform" failonerror="true" >
+            <arg value="-xsl:${basedir}/site/makeIndexPage.xsl"/>
+            <arg value="-o:deploy/index.html"/>
+            <arg value="-it:go"/>
+            <arg value="--suppressXsltNamespaceCheck:on"/>
+        </java>
+    </target>
+    
+    
+    
+    <target name="all" depends="buildStaticSearch, move, createIndexPage">
         <echo>Doing nothing yet and working on this branch: ${branch}.</echo>
     </target>
     
