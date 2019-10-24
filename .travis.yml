@@ -1,3 +1,6 @@
+dist: trusty
+jdk:
+  - oraclejdk8
 language: java
 script: ant -f buildTestSite.xml -Dbranch=$TRAVIS_BRANCH -lib lib
 notifications:
@@ -14,3 +17,4 @@ deploy:
   repo: projectEndings/staticSearchSite
   on:
     branch: master
+
