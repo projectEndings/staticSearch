@@ -16,5 +16,5 @@ deploy:
   target-branch: master
   repo: projectEndings/staticSearchSite
   on:
-    branch: master
+    all_branches: true
 
