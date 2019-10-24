@@ -1,0 +1,20 @@
+dist: trusty
+jdk:
+  - oraclejdk8
+language: java
+script: ant -f buildTestSite.xml -Dbranch=$TRAVIS_BRANCH -lib lib
+notifications:
+  email:
+    on_success: change
+    on_failure: never
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GH_TOKEN 
+  keep-history: true
+  local-dir: deploy
+  target-branch: master
+  repo: projectEndings/staticSearchSite
+  on:
+    all_branches: true
+
