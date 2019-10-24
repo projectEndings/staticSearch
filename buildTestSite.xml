@@ -2,7 +2,7 @@
 <project basedir="." name="buildTestSite" default="all">
   <description>This build builds the test site for development.</description>
     
-    <property name="branch" value=""/>
+    <property name="branch" value="master"/>
     
     <target name="buildStaticSearch">
         <ant antfile="build.xml" usenativebasedir="true" inheritall="false">
@@ -12,7 +12,11 @@
     
     <target name="move">
         <mkdir dir="${branch}"/>
-        <copy dir="site" todir="${branch}"/>
+        <copy todir="${branch}">
+            <fileset dir="test">
+                <include name="**"/>
+            </fileset>
+        </copy>
     </target>
     
     <target name="all" depends="buildStaticSearch, move">
