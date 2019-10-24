@@ -1,20 +1,16 @@
 language: java
-addons:
-  apt:
-    packages:
-      - ant
 script: ant -f buildTestSite.xml -Dbranch=$TRAVIS_BRANCH -lib lib
 notifications:
   email:
     on_success: change
     on_failure: never
-#deploy:
-#  provider: pages
-#  skip-cleanup: true
-#  github-token: $GH_TOKEN 
-#  keep-history: true
-#  local-dir: products
-#  target-branch: master
-#  repo: projectEndings/staticSearchSite
-#  on:
-#    branch: master
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GH_TOKEN 
+  keep-history: true
+  local-dir: $TRAVIS_BRANCH
+  target-branch: master
+  repo: projectEndings/staticSearchSite
+  on:
+    branch: master

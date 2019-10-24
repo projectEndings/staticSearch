@@ -10,6 +10,11 @@
         </ant>
     </target>
     
+    <target name="move">
+        <mkdir dir="${branch}"/>
+        <copy dir="site" todir="${branch}"/>
+    </target>
+    
     <target name="all" depends="buildStaticSearch">
         <echo>Doing nothing yet and working on this branch: ${branch}.</echo>
     </target>
