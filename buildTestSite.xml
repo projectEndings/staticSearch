@@ -15,7 +15,7 @@
         <copy dir="site" todir="${branch}"/>
     </target>
     
-    <target name="all" depends="buildStaticSearch">
+    <target name="all" depends="buildStaticSearch, move">
         <echo>Doing nothing yet and working on this branch: ${branch}.</echo>
     </target>
     
