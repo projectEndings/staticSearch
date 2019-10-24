@@ -11,8 +11,10 @@
     </target>
     
     <target name="move">
-        <mkdir dir="${branch}"/>
-        <copy todir="${branch}">
+        <echo>Creating deploy/${branch} for deployment and
+        copying products...</echo>
+        <mkdir dir="deploy/${branch}"/>
+        <copy todir="deploy/${branch}">
             <fileset dir="test">
                 <include name="**"/>
             </fileset>
