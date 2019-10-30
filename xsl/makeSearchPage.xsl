@@ -275,7 +275,7 @@
                                     <xsl:variable name="grpPos" select="position()"/>
                                     <span>
                                         <label for="bool_{$grpPos}"><xsl:value-of select="$filterName"/>: </label>
-                                        <select id="bool_{$grpPos}" title="${filterName}" class="">
+                                        <select id="bool_{$grpPos}" title="${filterName}" class="staticSearch.bool">
                                             <option value="">?</option>
                                             <option value="true">true</option>
                                             <option value="false">false</option>
