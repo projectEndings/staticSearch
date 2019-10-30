@@ -91,10 +91,12 @@
   * (expressed as CSS selectors):
   *
   * input#ssQuery[type='text']   (the main search box)
-  * button#ssDoSearch                  (button for invoking search)
-  * div.ssResults                (div in which to outpu the results)
-  * input[type='checkbox'].ssFilter              (optional; checkbox lists for filtering search)
-  * input[type='text'].ssFilter  (NOT YET IMPLEMENTED: type-ahead search filter boxes)
+  * button#ssDoSearch            (button for invoking search)
+  * div.ssResults                (div in which to output the results)
+  * input[type='checkbox'].staticSearch.desc  (optional; checkbox lists for filtering based on text labels)
+  * input[type='text'].staticSearch.date      (optional; textboxes for date filters)
+  * input[type='checkbox'].staticSearch.bool  (optional: checkboxes for boolean filters)
+  * input[type='text'].ssText  (NOT YET IMPLEMENTED: type-ahead search filter boxes)
   *
   * The first is mandatory, although the user is
   * not required to use it; they may choose simply
@@ -103,7 +105,7 @@
   * search by pressing return while the text box has focus.
   * The third is mandatory, because there must be somewhere to
   * show the results of a search.
-  * The other two are optional, but if present,
+  * The rest are optional, but if present,
   * they will be incorporated.
   */
 class StaticSearch{
@@ -136,20 +138,21 @@ class StaticSearch{
       if (!this.resultsDiv){
        throw new Error('Failed to find div with id "ssResults". Cannot provide search functionality.');
       }
-      //Optional checkbox search filters.
-      this.filterCheckboxes =
-           Array.from(document.querySelectorAll("input[type='checkbox'][class='ssFilter']"));
+      //Optional search filters:
+      //Description label filters
+      this.descFilterCheckboxes =
+           Array.from(document.querySelectorAll("input[type='checkbox'][class='staticSearch.desc']"));
+      //Date filters
+      this.dateFilterTextboxes =
+           Array.from(document.querySelectorAll("input[type='text'][class='staticSearch.date']"));
+      //Boolean filters
+      this.boolFilterSelects =
+           Array.from(document.querySelectorAll("select[class='staticSearch.bool']"));
 
-      //Object for handling filter checkboxes that will only be used if there
-      //are any.
       this.docMetadata = {};
 
       //Any / all selector for combining filters. TODO.
       this.matchAllFilters = false;
-
-      //Optional type-ahead search filters. NOT IMPLEMENTED IN THE PROJECT YET.
-      this.filterTexts   =
-           Array.from(document.querySelectorAll("input.ssFilter[type='text']"));
 
       //Configuration for phrasal searches if found.
       //Default
@@ -493,6 +496,8 @@ class StaticSearch{
     }
   }
 
+////THIS WILL BECOME OBSOLETE WHEN THE FUNCTION BELOW
+////IT IS WORKING.                        ///////////
 /** @function StaticSearch~getActiveFiltersAsArray
   * @description this function harvests the selected filters
   * in the form of a Map, then transforms the result to
@@ -518,6 +523,54 @@ class StaticSearch{
     }
     return Array.from(filters);
   }
+
+/** @function StaticSearch~getActiveFiltersAsMap
+  * @description this function harvests the selected filters
+  * in the form of a Map. Map entries are keyed by their
+  * filter title/caption, and each entry is an object consisting
+  * of a type property (text, boolean, date) and an array
+  * whose contents depend on the type.
+  *
+  * @return {Map} a Map object (which might be empty)
+  */
+    getActiveFiltersAsMap(){
+      let filters = new Map();
+
+      //Text label description filters
+      for (let cbx of this.descFilterCheckboxes){
+        if (cbx.checked){
+          let title = cbx.getAttribute('title');
+          let val   = cbx.getAttribute('value');
+          if (filters.has(title)){
+            let obj = filters.get(title);
+            obj.arr.push(val);
+            filters.set(title, obj);
+          }
+          else{
+            filters.set(title, {type: 'text', arr: Array(val)});
+          }
+        }
+      }
+
+      //Date filters
+      for (let txt of this.dateFilterTextboxes){
+        if (txt.value.match('^\d\d\d\d')){
+          
+        }
+      }
+
+      //Boolean filters
+      for (let sel of this.boolFilterSelects){
+        if (sel.options[sel.selectedIndex].value !== ''){
+          let title = sel.getAttribute('title');
+          let val   = sel.options[sel.selectedIndex].value;
+          filters.set(title, {type: 'bool', arr: Array(val)});
+        }
+      }
+
+
+      return filters;
+    }
 
 /** @function StaticSearch~writeSearchReport
   * @description this outputs a human-readable explanation of the search
@@ -1288,5 +1341,51 @@ class StaticSearch{
         ul.appendChild(li);
       }
       return ul;
+    }
+  }
+
+/** @class XSet
+  * @extends Set
+  * @description This class inherits from the Set class but
+  * adds some key operators which are missing from that class
+  * in the current version of ECMAScript. Those methods are
+  * named with a leading x in case a future version of ECMAScript
+  * adds native versions.
+  */
+  class XSet extends Set{
+    constructor(iterable){
+      super(iterable);
+    }
+/** @function XSet~xUnion
+  * @param {XSet} xSet2 another instance of the XSet class.
+  * @description this computes the union of the two sets (all
+  * items appearing in either set) and returns the result as
+  * another XSet instance.
+  * @return {XSet} a new instance of XSet including all items
+  * from both sets.
+  */
+    xUnion(xSet2){
+      return new XSet([...this, ...xSet2]);
+    }
+/** @function XSet~xIntersection
+  * @param {XSet} xSet2 another instance of the XSet class.
+  * @description this computes the intersection of the two sets
+  * (items appearing in both sets) and returns the result as
+  * another XSet instance.
+  * @return {XSet} a new instance of XSet only the items
+  * appearing in both sets.
+  */
+    xIntersection(xSet2){
+      return new XSet([...this].filter(x => xSet2.has(x)));
+    }
+  /** @function XSet~xDifference
+    * @param {XSet} xSet2 another instance of the XSet class.
+    * @description this computes the set of items which appear
+    * in this set but not in the parameter set.
+    * @return {XSet} a new instance of XSet only the items
+    * which appear in this set but not in xSet2.
+    */
+    xDifference(xSet2){
+      return new XSet([...this].filter(x => !xSet2.has(x)));
     }
   }
