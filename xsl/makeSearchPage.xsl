@@ -85,27 +85,27 @@
         input#ssQuery{
             flex: 1;
         }
-            div.ssFilters, div.ssDates{
+            div.ssDescFilters, div.ssDateFilterss, div.ssBoolFilters{
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
         }
-        div.ssFilters fieldset, div.ssDates fieldset{
+        div.ssDescFilters fieldset, div.ssDateFilters fieldset{
             margin: 0.25em auto;
             flex-grow: 1;
         }
-        ul.ssCheckboxList{
+        ul.ssDescCheckboxList{
             list-style-type: none;
             max-height: 8em;
             overflow-y: auto;
         }
-        ul.ssCheckboxList li{
+        ul.ssDescCheckboxList li{
             display: flex;
             flex-direction: row;
             flex-wrap: nowrap;
             align-items: flex-start;
         }
-        div.ssDates fieldset.ssFieldset span{
+        div.ssDateFilters fieldset.ssFieldset span{
             padding-left: 2em;
         }
     </xsl:param>
