@@ -554,8 +554,11 @@ class StaticSearch{
 
       //Date filters
       for (let txt of this.dateFilterTextboxes){
-        if (txt.value.match('^\d\d\d\d')){
-          
+        if (txt.value.match(/^\d\d\d\d/)){
+          let title = txt.getAttribute('title');
+          let val = txt.value;
+          let dateType = txt.id.match(/_from/)? 'date_from' : 'date_to';
+          filters.set(title, {type: dateType, arr: Array(val)});
         }
       }
 
