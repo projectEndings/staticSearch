@@ -151,7 +151,11 @@ class StaticSearch{
 
       this.docMetadata = {};
 
-      //Any / all selector for combining filters. TODO.
+      //A Map object which will be repopulated on every search initiation,
+      //containing the set of active document filters to apply to the search.
+      this.mapActiveFilters = new Map();
+
+      //Any / all selector for combining filters. TODO. MAY NOT BE USED.
       this.matchAllFilters = false;
 
       //Configuration for phrasal searches if found.
@@ -251,14 +255,12 @@ class StaticSearch{
   doSearch(){
     let result = false; //default.
     if (this.parseSearchQuery()){
-      if (this.writeSearchReport()){
-        this.populateIndex();
-        result = true;
+      if (this.getActiveFilters()){
+        if (this.writeSearchReport()){
+          this.populateIndex();
+          result = true;
+        }
       }
-    }
-    else{
-      //Perhaps there are filters without a search string.
-      this.listDocsByFilters();
     }
     this.resultsDiv.scrollIntoView();
     return result;
@@ -268,84 +270,97 @@ class StaticSearch{
 /** @function StaticSearch~parseSearchQuery
   * @description this retrieves the content of the text
   * search box and parses it into an array of term items
-  * ready for analysis against retrieved results.
+  * ready for analysis against retrieved results. Even if
+  * no search terms are found, it returns true so that filter-only
+  * searches may proceed.
   *
-  * @return {Boolean} true if terms found, otherwise false.
+  * @return {Boolean} true if no errors occur, otherwise false.
   */
   parseSearchQuery(){
-    let i;
-    //Clear anything in the existing array.
-    this.terms = [];
-    let strSearch = this.queryBox.value;
-    //Start by normalizing whitespace.
-    strSearch = strSearch.replace(/((^\s+)|\s+$)/g, '');
-    strSearch = strSearch.replace(/\s+/g, ' ');
+    try{
+      let i;
+      //Clear anything in the existing array.
+      this.terms = [];
+      let strSearch = this.queryBox.value;
+      //Start by normalizing whitespace.
+      strSearch = strSearch.replace(/((^\s+)|\s+$)/g, '');
+      strSearch = strSearch.replace(/\s+/g, ' ');
 
-    //Next, replace curly quotes/apostrophes with straight.
-    strSearch = strSearch.replace(/[“”]/g, '"');
-    strSearch = strSearch.replace(/[‘’‛]/g, "'");
+      //Next, replace curly quotes/apostrophes with straight.
+      strSearch = strSearch.replace(/[“”]/g, '"');
+      strSearch = strSearch.replace(/[‘’‛]/g, "'");
 
-    //Strip out all other punctuation
-    strSearch = strSearch.replace(/[\.',!@#$%\^&*]+/, '');
+      //Strip out all other punctuation
+      strSearch = strSearch.replace(/[\.',!@#$%\^&*]+/, '');
 
-    //If we're not supporting phrasal searches, get rid of double quotes.
-    if (!this.allowPhrasal){
-      strSearch = strSearch.replace(/"/g, '');
-    }
-    else{
-    //Get rid of any quote pairs with nothing between them.
-      strSearch = strSearch.replace(/""/g, '');
-    }
-
-    //Now delete any unmatched double quotes.
-    let qCount = 0;
-    let lastQPos = -1;
-    let tmp = '';
-    for (i=0; i<strSearch.length; i++){
-        tmp += strSearch.charAt(i);
-        if (strSearch.charAt(i) === '"'){
-          qCount++;
-          lastQPos = i;
-        }
-    }
-    if (qCount % 2 > 0){
-      strSearch = tmp.substr(0, lastQPos) + tmp.substr(lastQPos + 1, tmp.length);
-    }
-    else{
-      strSearch = tmp;
-    }
-
-    //Put that fixed string back in the box to make
-    //clear to the user what's been understood.
-    this.queryBox.value = strSearch;
-
-    //Now iterate through the string, paying attention
-    //to whether you're inside a quote or not.
-    let inPhrase = false;
-    let strSoFar = '';
-    for (let i=0; i<strSearch.length; i++){
-      let c = strSearch.charAt(i);
-      if (c === '"'){
-        this.addSearchItem(strSoFar, inPhrase);
-        inPhrase = !inPhrase;
-        strSoFar = '';
+      //If we're not supporting phrasal searches, get rid of double quotes.
+      if (!this.allowPhrasal){
+        strSearch = strSearch.replace(/"/g, '');
       }
       else{
-        if ((c === ' ')&&(!inPhrase)){
-          this.addSearchItem(strSoFark, false);
+      //Get rid of any quote pairs with nothing between them.
+        strSearch = strSearch.replace(/""/g, '');
+      }
+
+      //Now delete any unmatched double quotes.
+      let qCount = 0;
+      let lastQPos = -1;
+      let tmp = '';
+      for (i=0; i<strSearch.length; i++){
+          tmp += strSearch.charAt(i);
+          if (strSearch.charAt(i) === '"'){
+            qCount++;
+            lastQPos = i;
+          }
+      }
+      if (qCount % 2 > 0){
+        strSearch = tmp.substr(0, lastQPos) + tmp.substr(lastQPos + 1, tmp.length);
+      }
+      else{
+        strSearch = tmp;
+      }
+
+      //Put that fixed string back in the box to make
+      //clear to the user what's been understood.
+      this.queryBox.value = strSearch;
+
+      //Now iterate through the string, paying attention
+      //to whether you're inside a quote or not.
+      let inPhrase = false;
+      let strSoFar = '';
+      for (let i=0; i<strSearch.length; i++){
+        let c = strSearch.charAt(i);
+        if (c === '"'){
+          this.addSearchItem(strSoFar, inPhrase);
+          inPhrase = !inPhrase;
           strSoFar = '';
         }
         else{
-          strSoFar += c;
+          if ((c === ' ')&&(!inPhrase)){
+            this.addSearchItem(strSoFark, false);
+            strSoFar = '';
+          }
+          else{
+            strSoFar += c;
+          }
         }
       }
+      this.addSearchItem(strSoFar, inPhrase);
+      //We always want to handle the terms in order of
+      //precedence, starting with phrases.
+      this.terms.sort(function(a, b){return a.type - b.type;});
+      console.log(JSON.stringify(this.terms));
+      //return (this.terms.length > 0);
+//Even if we found no terms to search for, we should go
+//ahead with the search, either listing all the documents
+//or listing them based on the filters.
+      return true;
     }
-    this.addSearchItem(strSoFar, inPhrase);
-    //We always want to handle the terms in order of
-    //precedence, starting with phrases.
-    this.terms.sort(function(a, b){return a.type - b.type;});
-    console.log(JSON.stringify(this.terms));
-    return (this.terms.length > 0);
+    catch(e){
+      console.log('ERROR: ' + e.message);
+      return false;
+    }
+
   }
 
 /** @function StaticSearch~addSearchItem
@@ -418,7 +433,7 @@ class StaticSearch{
   listDocsByFilters(){
     var self = this;
 //Check whether we have filters on the page or not.
-    if (this.filterCheckboxes.length < 1){
+    if (this.descFilterCheckboxes.length < 1){
       return false;
     }
 //Check whether any filters have been selected.
@@ -524,56 +539,77 @@ class StaticSearch{
     return Array.from(filters);
   }
 
-/** @function StaticSearch~getActiveFiltersAsMap
+/** @function StaticSearch~getActiveFilters
   * @description this function harvests the selected filters
-  * in the form of a Map. Map entries are keyed by their
-  * filter title/caption, and each entry is an object consisting
-  * of a type property (text, boolean, date) and an array
-  * whose contents depend on the type.
+  * and stores them in the Map object this.mapActiveFilters.
+  * Map entries are keyed by their filter title/caption, and
+  * each entry is an object consisting of a type property
+  * (text, boolean, date) and an array whose contents depend
+  * on the type.
   *
-  * @return {Map} a Map object (which might be empty)
+  * @return {Boolean} true if succeeded, false if not.
   */
-    getActiveFiltersAsMap(){
-      let filters = new Map();
+    getActiveFilters(){
 
-      //Text label description filters
-      for (let cbx of this.descFilterCheckboxes){
-        if (cbx.checked){
-          let title = cbx.getAttribute('title');
-          let val   = cbx.getAttribute('value');
-          if (filters.has(title)){
-            let obj = filters.get(title);
-            obj.arr.push(val);
-            filters.set(title, obj);
+      try{
+        this.mapActiveFilters.clear();
+
+        //Text label description filters
+        for (let cbx of this.descFilterCheckboxes){
+          if (cbx.checked){
+            let title = cbx.getAttribute('title');
+            let val   = cbx.getAttribute('value');
+            if (this.mapActiveFilters.has(title)){
+              let obj = this.mapActiveFilters.get(title);
+              obj.arr.push(val);
+              this.mapActiveFilters.set(title, obj);
+            }
+            else{
+              this.mapActiveFilters.set(title, {type: 'text', arr: Array(val)});
+            }
           }
-          else{
-            filters.set(title, {type: 'text', arr: Array(val)});
+        }
+
+        //Date filters
+        for (let txt of this.dateFilterTextboxes){
+          if (txt.value.match(/^\d\d\d\d/)){
+            let title = txt.getAttribute('title');
+            let val = txt.value;
+            let dateType = txt.id.match(/_from/)? '_from' : '_to';
+            this.mapActiveFilters.set(title + dateType, {type: 'date_' + dateType, arr: Array(val)});
           }
         }
-      }
 
-      //Date filters
-      for (let txt of this.dateFilterTextboxes){
-        if (txt.value.match(/^\d\d\d\d/)){
-          let title = txt.getAttribute('title');
-          let val = txt.value;
-          let dateType = txt.id.match(/_from/)? 'date_from' : 'date_to';
-          filters.set(title, {type: dateType, arr: Array(val)});
+        //Boolean filters
+        for (let sel of this.boolFilterSelects){
+          if (sel.options[sel.selectedIndex].value !== ''){
+            let title = sel.getAttribute('title');
+            let val   = sel.options[sel.selectedIndex].value;
+            this.mapActiveFilters.set(title, {type: 'bool', arr: Array(val)});
+          }
         }
+        return true;
       }
-
-      //Boolean filters
-      for (let sel of this.boolFilterSelects){
-        if (sel.options[sel.selectedIndex].value !== ''){
-          let title = sel.getAttribute('title');
-          let val   = sel.options[sel.selectedIndex].value;
-          filters.set(title, {type: 'bool', arr: Array(val)});
-        }
+      catch(e){
+        console.log('Error attempting retrieve active filter settings: ' + e);
+        return false;
       }
-
-
-      return filters;
     }
+
+/** @function StaticSearch~getDocIdsForFilters
+  * @description this function gets the set of currently-configured
+  * filters by calling getActiveFiltersAsMap(), then creates a
+  * set (in the form of an XSet object) of all the document ids
+  * that qualify according to the filters.
+  *
+  * @return {XSet} an XSet object (which might be empty)
+  */
+  getDocIdsForFilters(){
+    let filters = this.getActiveFiltersAsMap();
+    if (filters.size() < 1){
+
+    }
+  }
 
 /** @function StaticSearch~writeSearchReport
   * @description this outputs a human-readable explanation of the search
@@ -634,14 +670,15 @@ class StaticSearch{
 /**
   * @function StaticSearch~populateIndex
   * @description The task of this function is basically
-  * to ensure that the index is ready to handle a search with
-  * those tokens. The index is deemed ready when either a) the
-  * JSON file for that token has been retrieved and its contents
+  * to ensure that the index is ready to handle a search, in that
+  * attempts have been made to retrieve all JSON files relating
+  * to the current search, including the docs.json file if that
+  * has not already been retrieved.
+  * The index is deemed ready when either a) all the JSON files
+  * for required tokens have been retrieved and their contents
   * merged into the index, or b) a retrieval has failed, so an
   * empty placeholder has been inserted to signify that there is
-  * no such dataset. If search filters are also active, the
-  * function checks whether document metadata has been retrieved,
-  * and if not, gets that as well.
+  * no such dataset.
   *
   * The function works with fetch and promises, and its final
   * .then() calls the processResults function.
@@ -676,7 +713,7 @@ class StaticSearch{
       //If we do need to retrieve JSON index data, then do it
       if ((tokensToFind.length > 0) || (needDocMetadata)){
 
-        console.log(JSON.stringify(tokensToFind));
+        //console.log(JSON.stringify(tokensToFind));
 
 //Set off fetch operations for the things we don't have yet.
         for (i=0, imax=tokensToFind.length; i<imax; i++){
