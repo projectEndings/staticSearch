@@ -605,10 +605,8 @@ class StaticSearch{
   * @return {XSet} an XSet object (which might be empty)
   */
   getDocIdsForFilters(){
-    let filters = this.getActiveFiltersAsMap();
-    if (filters.size() < 1){
+    
 
-    }
   }
 
 /** @function StaticSearch~writeSearchReport
