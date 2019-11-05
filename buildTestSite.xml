@@ -10,11 +10,24 @@
         </ant>
     </target>
     
+    <target name="getOldSite">
+        <mkdir dir="oldSite"/>
+        <exec executable="git">
+            <arg line="clone https://github.com/projectEndings/staticSearchSite oldSite"/>
+        </exec>
+    </target>
+    
+    
     <target name="move">
         <echo>Creating deploy/${branch} for deployment and
         copying products...</echo>
         <mkdir dir="deploy/${branch}"/>
-        <copy todir="deploy/${branch}">
+        <copy todir="deploy">
+            <fileset dir="oldSite">
+                <include name="**"/>
+            </fileset>
+        </copy>
+        <copy todir="deploy/${branch}" overwrite="true">
             <fileset dir="test">
                 <include name="**"/>
             </fileset>
@@ -32,7 +45,7 @@
     
     
     
-    <target name="all" depends="buildStaticSearch, move, createIndexPage">
+    <target name="all" depends="buildStaticSearch, getOldSite, move, createIndexPage">
         <echo>Doing nothing yet and working on this branch: ${branch}.</echo>
     </target>
     
