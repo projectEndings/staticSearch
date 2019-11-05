@@ -328,7 +328,7 @@ class StaticSearch{
       }
       else{
         if ((c === ' ')&&(!inPhrase)){
-          this.addSearchItem(strSoFark, false);
+          this.addSearchItem(strSoFar, false);
           strSoFar = '';
         }
         else{
