@@ -612,9 +612,10 @@ class StaticSearch{
     }
     else{
       //Create an array to hold each of the distinct sets.
-      let xSets = [];
+      var xSets = [];
+      var currXSet;
       for (var [key, value] of this.mapActiveFilters){
-        let currXSet = new XSet();
+        currXSet = new XSet();
         switch(value.type){
           case 'desc':
             for (let docUri of Object.keys(this.docMetadata)){
@@ -636,8 +637,9 @@ class StaticSearch{
             //If it's a date_from, then we can leave partial dates alone, since
             //the Date() constructor defaults to first month, first day.
             let fromDate = new Date(value.arr[0]);
+            let fromKey = key.replace(/_from$/, '');
             for (let docUri of Object.keys(this.docMetadata)){
-              if ((this.docMetadata[docUri].dateFilters[key] !== null) && (new Date(this.docMetadata[docUri].dateFilters[key]) >= fromDate)){
+              if ((this.docMetadata[docUri].dateFilters[fromKey] !== null) && (new Date(this.docMetadata[docUri].dateFilters[fromKey]) >= fromDate)){
                 currXSet.add(docUri);
               }
             }
@@ -661,16 +663,31 @@ class StaticSearch{
                 txtDate = '2050-12-31'; //Random future date.
             }
             let toDate = new Date(txtDate);
+            let toKey = key.replace(/_to$/, '');
             for (let docUri of Object.keys(this.docMetadata)){
-              if ((this.docMetadata[docUri].dateFilters[key] !== null) && (new Date(this.docMetadata[docUri].dateFilters[key]) <= toDate)){
+              if ((this.docMetadata[docUri].dateFilters[toKey] !== null) && (new Date(this.docMetadata[docUri].dateFilters[toKey]) <= toDate)){
                 currXSet.add(docUri);
               }
             }
             break;
           default: console.log('Unknown filter type: ' + value.type);
         }
-        console.dir(currXSet);
+        //console.dir(currXSet);
+        xSets[xSets.length] = currXSet;
       }
+    }
+    console.log('xSets.length = ' + xSets.length);
+    if (xSets.length > 0){
+      let result = xSets[0];
+      for (var i=1; i<xSets.length; i++){
+        console.dir(result);
+        result = result.xIntersection(xSets[i]);
+      }
+      //console.dir(result);
+      return result;
+    }
+    else{
+      return new XSet();
     }
   }
 
