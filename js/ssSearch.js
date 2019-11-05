@@ -635,13 +635,37 @@ class StaticSearch{
           case 'date_from':
             //If it's a date_from, then we can leave partial dates alone, since
             //the Date() constructor defaults to first month, first day.
-//TODO!!!!!!!!!!!!!!!!
+            let fromDate = new Date(value.arr[0]);
+            for (let docUri of Object.keys(this.docMetadata)){
+              if ((this.docMetadata[docUri].dateFilters[key] !== null) && (new Date(this.docMetadata[docUri].dateFilters[key]) >= fromDate)){
+                currXSet.add(docUri);
+              }
+            }
             break;
           case 'date_to':
             //If it's a date_to, we need to complete partial dates; year-only
             //dates have -12-31 appended, while year-month dates need to be
             //incremented by a month and decremented by a day.
-//TODO!!!!!!!!!!!!!!!!
+            let txtDate = value.arr[0];
+            switch (txtDate.length){
+              case 10:
+                break;
+              case 4:
+                txtDate = txtDate + '-12-31';
+                break;
+              case 7:
+                //Complicated month stuff. Ignore leap years.
+                txtDate = txtDate.replace(/(\d\d\d\d-)((0[13578])|(1[02]))$/, '$1$2-31').replace(/(\d\d\d\d-)((0[469])|(11))$/, '$1$2-30').replace(/02$/, '02-28');
+                break;
+              default:
+                txtDate = '2050-12-31'; //Random future date.
+            }
+            let toDate = new Date(txtDate);
+            for (let docUri of Object.keys(this.docMetadata)){
+              if ((this.docMetadata[docUri].dateFilters[key] !== null) && (new Date(this.docMetadata[docUri].dateFilters[key]) <= toDate)){
+                currXSet.add(docUri);
+              }
+            }
             break;
           default: console.log('Unknown filter type: ' + value.type);
         }
