@@ -565,7 +565,7 @@ class StaticSearch{
               this.mapActiveFilters.set(title, obj);
             }
             else{
-              this.mapActiveFilters.set(title, {type: 'text', arr: Array(val)});
+              this.mapActiveFilters.set(title, {type: 'desc', arr: Array(val)});
             }
           }
         }
@@ -576,7 +576,7 @@ class StaticSearch{
             let title = txt.getAttribute('title');
             let val = txt.value;
             let dateType = txt.id.match(/_from/)? '_from' : '_to';
-            this.mapActiveFilters.set(title + dateType, {type: 'date_' + dateType, arr: Array(val)});
+            this.mapActiveFilters.set(title + dateType, {type: 'date' + dateType, arr: Array(val)});
           }
         }
 
@@ -584,7 +584,7 @@ class StaticSearch{
         for (let sel of this.boolFilterSelects){
           if (sel.options[sel.selectedIndex].value !== ''){
             let title = sel.getAttribute('title');
-            let val   = sel.options[sel.selectedIndex].value;
+            let val   = (sel.options[sel.selectedIndex].value == 'true')? true : false;
             this.mapActiveFilters.set(title, {type: 'bool', arr: Array(val)});
           }
         }
@@ -605,8 +605,49 @@ class StaticSearch{
   * @return {XSet} an XSet object (which might be empty)
   */
   getDocIdsForFilters(){
-    
-
+    this.getActiveFilters();
+    //If we didn't find any filters, return the empty set.
+    if (this.mapActiveFilters.size < 1){
+      return new XSet();
+    }
+    else{
+      //Create an array to hold each of the distinct sets.
+      let xSets = [];
+      for (var [key, value] of this.mapActiveFilters){
+        let currXSet = new XSet();
+        switch(value.type){
+          case 'desc':
+            for (let docUri of Object.keys(this.docMetadata)){
+              for (let d of value.arr){
+                if ((this.docMetadata[docUri].descFilters[key] !== null) && (this.docMetadata[docUri].descFilters[key].indexOf(d) > -1)){
+                  currXSet.add(docUri);
+                }
+              }
+            }
+            break;
+          case 'bool':
+            for (let docUri of Object.keys(this.docMetadata)){
+              if ((this.docMetadata[docUri].boolFilters[key] !== null) && (this.docMetadata[docUri].boolFilters[key] === value.arr[0])){
+                currXSet.add(docUri);
+              }
+            }
+            break;
+          case 'date_from':
+            //If it's a date_from, then we can leave partial dates alone, since
+            //the Date() constructor defaults to first month, first day.
+//TODO!!!!!!!!!!!!!!!!
+            break;
+          case 'date_to':
+            //If it's a date_to, we need to complete partial dates; year-only
+            //dates have -12-31 appended, while year-month dates need to be
+            //incremented by a month and decremented by a day.
+//TODO!!!!!!!!!!!!!!!!
+            break;
+          default: console.log('Unknown filter type: ' + value.type);
+        }
+        console.dir(currXSet);
+      }
+    }
   }
 
 /** @function StaticSearch~writeSearchReport
