@@ -155,6 +155,11 @@ class StaticSearch{
       //containing the set of active document filters to apply to the search.
       this.mapActiveFilters = new Map();
 
+      //An XSet object which will contain a list of docUris which pass the
+      //test of the currently-configured set of filters. This is recreated
+      //for every search.
+      this.docsMatchingFilters = new XSet();
+
       //Any / all selector for combining filters. TODO. MAY NOT BE USED.
       this.matchAllFilters = false;
 
@@ -255,11 +260,9 @@ class StaticSearch{
   doSearch(){
     let result = false; //default.
     if (this.parseSearchQuery()){
-      if (this.getActiveFilters()){
-        if (this.writeSearchReport()){
-          this.populateIndex();
-          result = true;
-        }
+      if (this.writeSearchReport()){
+        this.populateIndex();
+        result = true;
       }
     }
     this.resultsDiv.scrollIntoView();
@@ -591,10 +594,30 @@ class StaticSearch{
         return true;
       }
       catch(e){
-        console.log('Error attempting retrieve active filter settings: ' + e);
+        console.log('Error attempting to retrieve active filter settings: ' + e);
         return false;
       }
     }
+
+/** @function StaticSearch~processFilters
+  * @description this function calls StaticSearch~getDocIdsForFilters(),
+  * and if the function succeeds, it sets the docsMatchingFilters to
+  * the returned XSet and returns true, otherwise it clears the current
+  * set of filters (THINK: IS THIS CORRECT BEHAVIOUR?) and returns false.
+  *
+  * @return {Boolean} true on success, false on failure.
+  */
+  processFilters(){
+    try{
+      this.docsMatchingFilters = this.getDocIdsForFilters();
+      console.log('this.docsMatchingFilters.filtersActive = ' + this.docsMatchingFilters.filtersActive);
+      return true;
+    }
+    catch(e){
+      console.log('Error attempting to generate the set of docs matching filters: ' + e);
+      return false;
+    }
+  }
 
 /** @function StaticSearch~getDocIdsForFilters
   * @description this function gets the set of currently-configured
@@ -608,7 +631,9 @@ class StaticSearch{
     this.getActiveFilters();
     //If we didn't find any filters, return the empty set.
     if (this.mapActiveFilters.size < 1){
-      return new XSet();
+      var result = new XSet();
+      result.filtersActive = false; //There were no filters.
+      return result;
     }
     else{
       //Create an array to hold each of the distinct sets.
@@ -676,18 +701,23 @@ class StaticSearch{
         xSets[xSets.length] = currXSet;
       }
     }
-    console.log('xSets.length = ' + xSets.length);
+    //console.log('xSets.length = ' + xSets.length);
     if (xSets.length > 0){
       let result = xSets[0];
       for (var i=1; i<xSets.length; i++){
         console.dir(result);
         result = result.xIntersection(xSets[i]);
       }
-      //console.dir(result);
+      result.filtersActive = true;
       return result;
     }
     else{
-      return new XSet();
+    //This represents a situation in which we appear to have filters active,
+    //but they don't match any of the known types, so behave as though no
+    //filters were specified.
+      let result = new XSet();
+      result.filtersActive = false;
+      return result;
     }
   }
 
@@ -794,6 +824,26 @@ class StaticSearch{
       if ((tokensToFind.length > 0) || (needDocMetadata)){
 
         //console.log(JSON.stringify(tokensToFind));
+        if (needDocMetadata){
+          promises[promises.length] = fetch(self.jsonDirectory + 'docs.json', {
+                  credentials: 'same-origin',
+                  cache: 'no-cache',
+                  headers: {'Accept': 'application/json'},
+                  method: 'GET',
+                  redirect: 'follow',
+                  referrer: 'no-referrer'
+            })
+            .then(function(response) {
+              return response.json();
+            })
+            .then(function(docMeta) {
+              self.docMetadata = docMeta;
+            }.bind(self))
+            .catch(function(e){
+              console.log('Error attempting to retrieve docMetadata: ' + e);
+              return function(){self.docMetadata = {'noMetadataFound': true};}.bind(self);
+            }.bind(self));
+        }
 
 //Set off fetch operations for the things we don't have yet.
         for (i=0, imax=tokensToFind.length; i<imax; i++){
@@ -805,19 +855,18 @@ class StaticSearch{
           this.tokenFound(emptyIndex);
 
 //Figure out whether we're retrieving a lower-case or an upper-case token.
+//TODO: Do we need to worry about camel-case?
           jsonSubfolder = (tokensToFind[i].toLowerCase() == tokensToFind[i])? 'lower/' : 'upper/';
 
 //We create an array of fetches to get the json file for each token,
 //assuming it's there.
-          promises[i] = fetch(self.jsonDirectory + jsonSubfolder + tokensToFind[i] + '.json', {
-                              credentials: 'same-origin',
-                              cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-                              headers: {
-                                'Accept': 'application/json'
-                              },
-                              method: 'GET',
-                              redirect: 'follow', // *manual, follow, error
-                              referrer: 'no-referrer' // *client, no-referrer
+          promises[promises.length] = fetch(self.jsonDirectory + jsonSubfolder + tokensToFind[i] + '.json', {
+                  credentials: 'same-origin',
+                  cache: 'no-cache',
+                  headers: {'Accept': 'application/json'},
+                  method: 'GET',
+                  redirect: 'follow',
+                  referrer: 'no-referrer'
               })
 //If we get a response, and it looks good
               .then(function(response){
@@ -837,17 +886,7 @@ class StaticSearch{
               }.bind(self));
             }
 
-        promises[promises.length] = fetch(self.jsonDirectory + 'docs.json')
-          .then(function(response) {
-            return response.json();
-          })
-          .then(function(docMeta) {
-            self.docMetadata = docMeta;
-          }.bind(self))
-          .catch(function(e){
-            console.log('Error attempting to retrieve docMetadata: ' + e);
-            return function(){self.docMetadata = {'noMetadataFound': true};}.bind(self);
-          }.bind(self));
+
 
 //Now set up a Promise.all to fire the rest of the work when all fetches have
 //completed or failed.
@@ -911,47 +950,6 @@ class StaticSearch{
     return result;
   }
 
-/**
-  * @function StaticSearch~docMatchesFilters
-  * @description Checks a document against the set of filters to
-  *              determine whether it matches or not. TODO: Add handling
-  *              for date filters to this function.
-  * @param {String} docUri id of the document to be checked.
-  * @param {Array<Array<string>, <Array>>} filters an array of descriptors
-  *                each with an array of values.
-  * @param {Boolean} matchAll If true, the document must match all
-  *                   filters to pass; otherwise, it need only match
-  *                   one or more.
-  * @return {Boolean} true if the document matches, or if there are no
-  *                   filters defined; otherwise false.
-  */
-  docMatchesFilters(docUri, filters, matchAll){
-    let result = true; //default in case there are no filters.
-    let doc = this.docMetadata[docUri];
-    if (!doc){
-      return result;
-    }
-    for (let f of filters){
-      let fName = f[0];
-      let fVals = f[1];
-      for (let fVal of fVals){
-        if ((doc.filters[fName] != null) && (doc.filters[fName].indexOf(fVal) > -1)){
-          if (!matchAll){
-            return true;
-          }
-        }
-        else{
-          if (matchAll){
-            return false;
-          }
-          else{
-            result = false;
-          }
-        }
-      }
-    }
-    return result;
-  }
 
 /**
   * @function StaticSearch~reportNoResults
@@ -967,7 +965,6 @@ class StaticSearch{
   reportNoResults(trySimplerSearch){
     //TODO: NOT IMPLEMENTED YET.
     console.log('No results. Try simpler search? ' + trySimplerSearch);
-
   }
 
 /**
@@ -981,11 +978,56 @@ class StaticSearch{
   processResults(){
     try{
 //Debugging only.
-      console.log('index: ' + JSON.stringify(this.index));
-      console.log('index keys: ' + Object.keys(this.index).toString());
+      //console.log('index: ' + JSON.stringify(this.index));
+      //console.log('index keys: ' + Object.keys(this.index).toString());
 
 //Start by clearing any previous results.
       this.resultSet.clear();
+
+//Process any filters that may be active.
+      this.processFilters();
+
+//Now we have to fork, depending on whether we have search terms and filters
+//or not. There are several scenarios:
+/*
+  1. There are active filters and also search terms.
+  2. There are search terms but no active filters.
+  3. There are active filters but no search terms.
+  4. There are no active filters and no search terms.
+
+  For #1, process the term searches into the result set, and then
+     filter it using the active filter matching doc list.
+  For #2, process the results into the result set, but don't filter it.
+  For #3, construct the result set directly from the filter doc list,
+     passing only ids and titles, for a simple listing display.
+  For #4, do nothing at all (or possibly display an error message).
+  */
+
+//Easy ones first: #4
+      if ((this.terms.length < 1)&&(this.docsMatchingFilters.size < 1)){
+        return false;
+      }
+//#3
+      if ((this.terms.length < 1)&&(this.docsMatchingFilters.size > 0)){
+        console.log('Filters active but no search terms.')
+        for (let docUri of this.docsMatchingFilters){
+          this.resultSet.set(docUri, {docUri: docUri,
+                             docTitle: this.docMetadata[docUri].docTitle,
+                             score: 0, contexts: []});
+        }
+        while (this.resultsDiv.firstChild) {
+          this.resultsDiv.removeChild(this.resultsDiv.firstChild);
+        }
+        this.resultsDiv.appendChild(document.createElement('p')
+                       .appendChild(document.createTextNode(
+                         this.captionSet.strDocumentsFound + this.resultSet.getSize()
+                       )));
+        this.resultsDiv.appendChild(this.resultSet.resultsAsHtml(this.captionSet.strScore));
+        if (this.resultSet.getSize() < 1){
+          this.reportNoResults(true);
+        }
+        return (this.resultSet.getSize() > 0);
+      }
 
 //The sequence of result processing is highly dependent on the
 //query components entered by the user. First, we discover what
@@ -1175,7 +1217,8 @@ class StaticSearch{
           }
         }
       }
-
+//End of nested function processMayContains.
+//Main function code resumes here.
       if (phrases.length > 0){
 //We have phrases. They take priority. Get results if there are any.
 //For each phrase we're looking for...
@@ -1212,19 +1255,9 @@ class StaticSearch{
       }
 
 //Now we filter the results based on filter checkboxes, if any.
-      let arrFilters = this.getActiveFiltersAsArray();
-      console.log(arrFilters);
-
-      if (arrFilters.length > 0){
-        let docUrisToDelete = [];
-        for (let docUri of self.resultSet.mapDocs.keys()){
-          //console.log(docUri);
-          if (! this.docMatchesFilters(docUri, arrFilters, this.matchAllFilters)){
-            docUrisToDelete.push(docUri);
-          }
-        }
-        console.log(docUrisToDelete);
-        this.resultSet.deleteArray(docUrisToDelete);
+//This is #1
+      if (this.docsMatchingFilters.size > 0){
+        this.resultSet.filterBySet(this.docsMatchingFilters);
       }
 
       this.resultSet.sortByScoreDesc();
@@ -1397,6 +1430,28 @@ class StaticSearch{
     }
 
 /**
+  * @function SSResultSet~filterBySet
+  * @description Deletes any entry in the list which doesn't match an item
+  * in the paramter set.
+  * @param {Set.<String>} acceptableDocUris The URIs of docs to retain.
+  * @return {Boolean} true if any items remain, false if not.
+  */
+    filterBySet(acceptableDocUris){
+      try{
+        for (let [key, value] of this.mapDocs){
+          if (! acceptableDocUris.has(key)){
+            this.mapDocs.delete(key);
+          }
+        }
+        return (this.mapDocs.size > 0);
+      }
+      catch(e){
+        console.log('ERROR: ' + e.message);
+        return false;
+      }
+    }
+
+/**
   * @function SSResultSet~getSize
   * @description Returns the number of items in the result set.
   * @return {integer} number of documents in the result set.
@@ -1446,8 +1501,10 @@ class StaticSearch{
         let t = document.createTextNode(value.docTitle);
         a.appendChild(t);
         li.appendChild(a);
-        t = document.createTextNode(' ' + strScore + value.score);
-        li.append(t);
+        if (strScore !== '0'){
+          t = document.createTextNode(' ' + strScore + value.score);
+          li.append(t);
+        }
         if (value.contexts.length > 0){
           let ul2 = document.createElement('ul');
           ul2.setAttribute('class', 'kwic');
@@ -1473,6 +1530,9 @@ class StaticSearch{
   * adds native versions.
   */
   class XSet extends Set{
+    filtersActive = false; //Used when a set is empty, to distinguish
+                           //between filters-active-but-no-matches-found
+                           //and no-filters-selected.
     constructor(iterable){
       super(iterable);
     }
