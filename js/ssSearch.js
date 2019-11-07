@@ -950,6 +950,17 @@ class StaticSearch{
     return result;
   }
 
+/**
+  * @function StaticSearch~clearResultsDiv
+  * @description This clears out and sets up the results div, ready for
+  * reporting of results.
+  * @return {Boolean} true if successful, false if not.
+  */
+  clearResultsDiv(){
+    while (this.resultsDiv.firstChild) {
+      this.resultsDiv.removeChild(this.resultsDiv.firstChild);
+    }
+  }
 
 /**
   * @function StaticSearch~reportNoResults
@@ -1005,6 +1016,11 @@ class StaticSearch{
 
 //Easy ones first: #4
       if ((this.terms.length < 1)&&(this.docsMatchingFilters.size < 1)){
+        this.clearResultsDiv();
+        this.resultsDiv.appendChild(document.createElement('p')
+                       .appendChild(document.createTextNode(
+                         this.captionSet.strDocumentsFound + '0'
+                       )));
         return false;
       }
 //#3
@@ -1015,9 +1031,7 @@ class StaticSearch{
                              docTitle: this.docMetadata[docUri].docTitle,
                              score: 0, contexts: []});
         }
-        while (this.resultsDiv.firstChild) {
-          this.resultsDiv.removeChild(this.resultsDiv.firstChild);
-        }
+        this.clearResultsDiv();
         this.resultsDiv.appendChild(document.createElement('p')
                        .appendChild(document.createTextNode(
                          this.captionSet.strDocumentsFound + this.resultSet.getSize()
@@ -1261,9 +1275,7 @@ class StaticSearch{
       }
 
       this.resultSet.sortByScoreDesc();
-      while (this.resultsDiv.firstChild) {
-        this.resultsDiv.removeChild(this.resultsDiv.firstChild);
-      }
+      this.clearResultsDiv();
       this.resultsDiv.appendChild(document.createElement('p')
                      .appendChild(document.createTextNode(
                        this.captionSet.strDocumentsFound + this.resultSet.getSize()
