@@ -256,6 +256,7 @@ class StaticSearch{
   * @return {Boolean} true if a search is initiated otherwise false.
   */
   doSearch(){
+    this.docsMatchingFilters.filtersActive = false; //initialize.
     let result = false; //default.
     if (this.parseSearchQuery()){
       if (this.writeSearchReport()){
@@ -1270,7 +1271,7 @@ class StaticSearch{
 //This is #1
 console.log('#2: docsMatchingFilters.filtersActive = ' + this.docsMatchingFilters.filtersActive);
       if (this.docsMatchingFilters.filtersActive == true){
-console.log('docsMatchingFilters.size = ' + docsMatchingFilters.size);
+console.log('docsMatchingFilters.size = ' + this.docsMatchingFilters.size);
         this.resultSet.filterBySet(this.docsMatchingFilters);
       }
 
