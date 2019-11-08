@@ -96,7 +96,7 @@
   * input[type='checkbox'].staticSearch.desc  (optional; checkbox lists for filtering based on text labels)
   * input[type='text'].staticSearch.date      (optional; textboxes for date filters)
   * input[type='checkbox'].staticSearch.bool  (optional: checkboxes for boolean filters)
-  * input[type='text'].ssText  (NOT YET IMPLEMENTED: type-ahead search filter boxes)
+  * input[type='text'].staticSearch.text  (NOT YET IMPLEMENTED: type-in search filter boxes)
   *
   * The first is mandatory, although the user is
   * not required to use it; they may choose simply
@@ -110,9 +110,7 @@
   */
 class StaticSearch{
   constructor(){
-    //Essential query text box.
     try {
-
       //Directory for JSON files. Inside this directory will be a
       //'lower' dir and an 'upper' dir, where the two sets of case-
       //distinguished JSON files are stored.
