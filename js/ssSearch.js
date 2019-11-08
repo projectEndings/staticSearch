@@ -318,6 +318,7 @@ class StaticSearch{
         strSearch = tmp.substr(0, lastQPos) + tmp.substr(lastQPos + 1, tmp.length);
       }
       else{
+<<<<<<< HEAD
         strSearch = tmp;
       }
 
