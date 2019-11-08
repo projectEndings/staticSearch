@@ -632,7 +632,7 @@ class StaticSearch{
     //If we didn't find any filters, return the empty set.
     if (this.mapActiveFilters.size < 1){
       var result = new XSet();
-      result.filtersActive = false; //There were no filters.
+      result.filtersActive = false; //There were no filters selected.
       return result;
     }
     else{
@@ -1270,7 +1270,9 @@ class StaticSearch{
 
 //Now we filter the results based on filter checkboxes, if any.
 //This is #1
-      if (this.docsMatchingFilters.size > 0){
+console.log('#2: docsMatchingFilters.filtersActive = ' + this.docsMatchingFilters.filtersActive);
+      if (this.docsMatchingFilters.filtersActive == true){
+console.log('docsMatchingFilters.size = ' + docsMatchingFilters.size);
         this.resultSet.filterBySet(this.docsMatchingFilters);
       }
 
@@ -1513,7 +1515,7 @@ class StaticSearch{
         let t = document.createTextNode(value.docTitle);
         a.appendChild(t);
         li.appendChild(a);
-        if (strScore !== '0'){
+        if (value.score > 0){
           t = document.createTextNode(' ' + strScore + value.score);
           li.append(t);
         }
