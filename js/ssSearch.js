@@ -264,7 +264,7 @@ class StaticSearch{
         result = true;
       }
     }
-    this.resultsDiv.scrollIntoView();
+    this.resultsDiv.scrollIntoView({behavior: smooth, block: center});
     return result;
   }
 
