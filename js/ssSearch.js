@@ -644,7 +644,7 @@ class StaticSearch{
           case 'desc':
             for (let docUri of Object.keys(this.docMetadata)){
               for (let d of value.arr){
-                if ((this.docMetadata[docUri].descFilters[key] !== null) && (this.docMetadata[docUri].descFilters[key].indexOf(d) > -1)){
+                if ((this.docMetadata[docUri].descFilters[key] != null) && (this.docMetadata[docUri].descFilters[key].indexOf(d) > -1)){
                   currXSet.add(docUri);
                 }
               }
@@ -652,7 +652,7 @@ class StaticSearch{
             break;
           case 'bool':
             for (let docUri of Object.keys(this.docMetadata)){
-              if ((this.docMetadata[docUri].boolFilters[key] !== null) && (this.docMetadata[docUri].boolFilters[key] === value.arr[0])){
+              if ((this.docMetadata[docUri].boolFilters[key] != null) && (this.docMetadata[docUri].boolFilters[key] === value.arr[0])){
                 currXSet.add(docUri);
               }
             }
