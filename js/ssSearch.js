@@ -264,7 +264,8 @@ class StaticSearch{
         result = true;
       }
     }
-    this.resultsDiv.scrollIntoView({behavior: "smooth", block: "nearest"});
+    window.scroll({ top: this.resultsDiv.offsetTop, behavior: "smooth" });
+    /*this.resultsDiv.scrollIntoView({behavior: "smooth", block: "nearest"});*/
     return result;
   }
 
