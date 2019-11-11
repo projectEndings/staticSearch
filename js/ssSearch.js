@@ -539,9 +539,8 @@ class StaticSearch{
       }
     }
     catch(e){
-      catch(e){
-        console.log('Error attempting to clear search form: ' + e);
-        return false;
+      console.log('Error attempting to clear search form: ' + e);
+      return false;
     }
   }
 
