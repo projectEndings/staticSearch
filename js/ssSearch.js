@@ -130,6 +130,12 @@ class StaticSearch{
       else{
         this.searchButton.addEventListener('click', function(){this.doSearch(); return false;}.bind(this));
       }
+      //Clear button will be there if there are filter controls.
+      this.clearButton = document.querySelector("button#ssClear");
+      if (this.clearButton){
+        this.clearButton.addEventListener('click', function(){this.clearSearchForm(); return false;}.bind(this));
+      }
+
       //Essential results div.
       this.resultsDiv =
            document.querySelector("div#ssResults");
@@ -511,6 +517,31 @@ class StaticSearch{
           return false;
         }
       }
+    }
+  }
+/** @function StaticSearch~clearSearchForm
+  * @description this function removes all previously-selected
+  * filter control settings, and empties the search query box.
+  *
+  * @return {Boolean} true on success, false on failure.
+  */
+  clearSearchForm(){
+    try{
+      this.queryBox.value = '';
+      for (let cbx of this.descFilterCheckboxes){
+        cbx.checked = false;
+      }
+      for (let txt of this.dateFilterTextboxes){
+        txt.value = '';
+      }
+      for (let sel of this.boolFilterSelects){
+        sel.selectedIndex = 0;
+      }
+    }
+    catch(e){
+      catch(e){
+        console.log('Error attempting to clear search form: ' + e);
+        return false;
     }
   }
 
