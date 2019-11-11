@@ -1,0 +1,26 @@
+Requirements for a test set of documents for static search:
+
+1. Tokenizing testing:
+
+	Nested folders
+	With and without ids
+	With and without titles
+	Good range of HTML elements providing scope for testing context stuff
+	Foreign languages and non-latin stuff (Japanese)
+	Hyphenated terms, single and double
+	Names, both in sentence-initial and sentence medial positions
+	Numbers
+
+2. JSON generation testing:
+
+	Examples of desc, bool and date filters, with multiples of each
+
+3. Search operation testing:
+
+	A variety of documents matching different combinations of search filters
+	Some documents matching no search filters
+	Date filters including yyyy-mm-dd, yyyy-mm and yyyy
+	Desc filter sets including short sets (3-4) and long sets (10+)
+	
+
+	
