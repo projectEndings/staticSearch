@@ -202,6 +202,9 @@
 
                 <!--And if the docsJson actually has useful content, create the filter selection-->
                 <xsl:if test="$docsJSON/descendant::map:array[@key]">
+                    <!--  We'll need a Clear button if there are other controls.  -->
+                    <span class="clearButton"><button id="ssClear">Clear</button></span>
+                    
                     <!--  First we handle the regular filters. We contain them in a div for layout purposes. -->
                     <xsl:if test="$docsJSON//map:map[@key = 'descFilters']/map:array[@key]">
                         <div class="ssDescFilters">
