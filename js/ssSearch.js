@@ -666,7 +666,7 @@ class StaticSearch{
             let fromDate = new Date(value.arr[0]);
             let fromKey = key.replace(/_from$/, '');
             for (let docUri of Object.keys(this.docMetadata)){
-              if (this.docMetadata[docUri].dateFilters[fromKey] !== null){
+              if (Array.isArray(this.docMetadata[docUri].dateFilters[fromKey])){
                 //It may be a range (slash-separated) or it may not. In either case,
                 //we want to use the final component.
                 let dateToUse = this.docMetadata[docUri].dateFilters[fromKey][this.docMetadata[docUri].dateFilters[fromKey].length - 1];
@@ -697,10 +697,10 @@ class StaticSearch{
             let toDate = new Date(txtDate);
             let toKey = key.replace(/_to$/, '');
             for (let docUri of Object.keys(this.docMetadata)){
-              if (this.docMetadata[docUri].dateFilters[toKey] !== null){
+              if (Array.isArray(this.docMetadata[docUri].dateFilters[toKey])){
                 //As above, it may be a range, and in either case we need to
                 //use the first component.
-                let dateToUse = this.docMetadata[docUri].dateFilters[fromKey][0];
+                let dateToUse = this.docMetadata[docUri].dateFilters[toKey][0];
                 if (new Date(dateToUse) <= toDate){
                   currXSet.add(docUri);
                 }
