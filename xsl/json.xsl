@@ -514,7 +514,9 @@
                             <xsl:for-each-group select="$thisDoc//meta[contains-token(@class,'staticSearch.date')]" group-by="@name">
                                 <xsl:message expand-text="yes">Processing date filter {current-grouping-key()}</xsl:message>
                                 <array key="{current-grouping-key()}">
-                                    <string><xsl:value-of select="current-group()[1]/@content"/></string>
+                                    <xsl:for-each select="tokenize(current-group()[1]/@content, '/')">
+                                        <string><xsl:value-of select="."/></string>
+                                    </xsl:for-each>
                                 </array>
                             </xsl:for-each-group>
                         </map>

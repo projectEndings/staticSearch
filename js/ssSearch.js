@@ -544,34 +544,6 @@ class StaticSearch{
     }
   }
 
-////THIS WILL BECOME OBSOLETE WHEN THE FUNCTION BELOW
-////IT IS WORKING.                        ///////////
-/** @function StaticSearch~getActiveFiltersAsArray
-  * @description this function harvests the selected filters
-  * in the form of a Map, then transforms the result to
-  * an array, which can be used in other methods.
-  *
-  * @return {Array} an array (which might be empty)
-  */
-  getActiveFiltersAsArray(){
-    let filters = new Map();
-    for (let cbx of this.filterCheckboxes){
-      if (cbx.checked){
-        let title = cbx.getAttribute('title');
-        let val   = cbx.getAttribute('value');
-        if (filters.has(title)){
-          let arr = filters.get(title);
-          arr.push(val);
-          filters.set(title, arr);
-        }
-        else{
-          filters.set(title, new Array(val));
-        }
-      }
-    }
-    return Array.from(filters);
-  }
-
 /** @function StaticSearch~getActiveFilters
   * @description this function harvests the selected filters
   * and stores them in the Map object this.mapActiveFilters.
@@ -694,8 +666,13 @@ class StaticSearch{
             let fromDate = new Date(value.arr[0]);
             let fromKey = key.replace(/_from$/, '');
             for (let docUri of Object.keys(this.docMetadata)){
-              if ((this.docMetadata[docUri].dateFilters[fromKey] !== null) && (new Date(this.docMetadata[docUri].dateFilters[fromKey]) >= fromDate)){
-                currXSet.add(docUri);
+              if (Array.isArray(this.docMetadata[docUri].dateFilters[fromKey])){
+                //It may be a range (slash-separated) or it may not. In either case,
+                //we want to use the final component.
+                let dateToUse = this.docMetadata[docUri].dateFilters[fromKey][this.docMetadata[docUri].dateFilters[fromKey].length - 1];
+                if (new Date(dateToUse) >= fromDate){
+                  currXSet.add(docUri);
+                }
               }
             }
             break;
@@ -720,8 +697,13 @@ class StaticSearch{
             let toDate = new Date(txtDate);
             let toKey = key.replace(/_to$/, '');
             for (let docUri of Object.keys(this.docMetadata)){
-              if ((this.docMetadata[docUri].dateFilters[toKey] !== null) && (new Date(this.docMetadata[docUri].dateFilters[toKey]) <= toDate)){
-                currXSet.add(docUri);
+              if (Array.isArray(this.docMetadata[docUri].dateFilters[toKey])){
+                //As above, it may be a range, and in either case we need to
+                //use the first component.
+                let dateToUse = this.docMetadata[docUri].dateFilters[toKey][0];
+                if (new Date(dateToUse) <= toDate){
+                  currXSet.add(docUri);
+                }
               }
             }
             break;
@@ -1574,11 +1556,11 @@ console.log('docsMatchingFilters.size = ' + this.docsMatchingFilters.size);
   * adds native versions.
   */
   class XSet extends Set{
-    filtersActive = false; //Used when a set is empty, to distinguish
-                           //between filters-active-but-no-matches-found
-                           //and no-filters-selected.
     constructor(iterable){
       super(iterable);
+      this.filtersActive = false; //Used when a set is empty, to distinguish
+                               //between filters-active-but-no-matches-found
+                               //and no-filters-selected.
     }
 /** @function XSet~xUnion
   * @param {XSet} xSet2 another instance of the XSet class.

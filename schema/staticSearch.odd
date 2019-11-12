@@ -18,8 +18,19 @@
     </fileDesc>
   </teiHeader>
   <text>
+    <front>
+      <titlePage>
+        <docTitle>
+          <titlePart type="main">Project Endings Static Search Generator</titlePart>
+          <titlePart type="sub">Schema and guidelines for creating a static search engine for your HTML5 site</titlePart>
+        </docTitle>
+        <docAuthor>Martin Holmes</docAuthor>
+        <docAuthor>Joey Takeda</docAuthor>
+        <docDate>2019</docDate>
+      </titlePage>
+      <divGen type="toc"/>
+    </front>
     <body>
-      <div>
         <head>Project Endings Static Search Generator</head>
         <p>This documentation provides instructions on how to use the Project Endings
         Static Search Generator to provide a fully-functional search <soCalled>engine</soCalled>
@@ -100,6 +111,15 @@
                 <item>1895-01 (year and month)</item>
                 <item>1895-01-05 (year, month and day)</item>
               </list>
+              
+              For some documents, it may not be possible to specify a single date in this form,
+              so you can specify a range instead, using a slash to separate the start and end
+              dates of the range (following ISO 8601):
+              
+              <list>
+                <item>1895/1897</item>
+               <item>1903-01-02/1905-05-31</item>
+              </list>
             </p>
           </div>
           
@@ -158,7 +178,7 @@
             </div>
           </div>
         </div>
-      </div>
+      
     </body>
     <back>
       <div>
