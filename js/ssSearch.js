@@ -1556,11 +1556,11 @@ console.log('docsMatchingFilters.size = ' + this.docsMatchingFilters.size);
   * adds native versions.
   */
   class XSet extends Set{
-    this.filtersActive = false; //Used when a set is empty, to distinguish
-                           //between filters-active-but-no-matches-found
-                           //and no-filters-selected.
     constructor(iterable){
       super(iterable);
+      this.filtersActive = false; //Used when a set is empty, to distinguish
+                               //between filters-active-but-no-matches-found
+                               //and no-filters-selected.
     }
 /** @function XSet~xUnion
   * @param {XSet} xSet2 another instance of the XSet class.
