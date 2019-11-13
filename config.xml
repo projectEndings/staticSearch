@@ -13,7 +13,6 @@
         <verbose>true</verbose>
         <stopwordsFile>xsl/english_stopwords.txt</stopwordsFile>
         <dictionaryFile>xsl/english_words.txt</dictionaryFile>
-        <replacementsFile>xsl/replacements.txt</replacementsFile>
         <indentJSON>true</indentJSON>
     </params>
     

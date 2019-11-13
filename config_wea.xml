@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns="http://hcmc.uvic.ca/ns/staticSearch">
     <params>
-        <baseDir>.</baseDir>
-        <collectionDir>../wea/products/site</collectionDir>
-        <tempDir>temp</tempDir>
-        <outDir>site/js/</outDir>
-        <recurse>false</recurse><!--NOTE: If phrasalSearch is set to TRUE, then
-        maxContexts prop will be ignored-->
+        <searchFile>../../products/site/statSearch.html</searchFile>
+        <recurse>false</recurse>
         <phrasalSearch>true</phrasalSearch>
         <createContexts>true</createContexts>
+        <!--NOTE: If phrasalSearch is set to TRUE, then
+        maxContexts prop will be ignored-->
         <maxContexts>3</maxContexts>
-        <totalKwicLength>10</totalKwicLength>
-        <kwicTruncateString>. . .</kwicTruncateString>
+        <totalKwicLength>15</totalKwicLength>
+        <kwicTruncateString>...</kwicTruncateString>
         <verbose>false</verbose>
-        <stopwordsFile>xsl/english_stopwords.txt</stopwordsFile>
-        <dictionaryFile>xsl/english_words.txt</dictionaryFile>
+        <stopwordsFile>code/xsl/english_stopwords.txt</stopwordsFile>
+        <dictionaryFile>code/xsl/english_words.txt</dictionaryFile>
         <indentJSON>true</indentJSON>
     </params>
     
