@@ -5,7 +5,7 @@
          xmlns="http://relaxng.org/ns/structure/1.0"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2019-11-12T04:21:59Z. 2019.
+Schema generated from ODD source 2019-11-13T05:11:20Z. 2019.
 TEI Edition: Version 3.6.0. Last updated on
 	16th July 2019, revision daa3cc0b9
 TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
@@ -56,9 +56,6 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
             </optional>
             <optional>
                <ref name="dictionaryFile"/>
-            </optional>
-            <optional>
-               <ref name="replacementsFile"/>
             </optional>
             <optional>
                <ref name="searchPage"/>
@@ -127,6 +124,17 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
          </attribute>
       </optional>
    </define>
+   <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
+            id="staticSearch-att.xpathRule-rules.ruleMustHaveWeight-constraint-rule-1">
+      <sch:rule xmlns:xi="http://www.w3.org/2001/XInclude"
+                xmlns:svg="http://www.w3.org/2000/svg"
+                xmlns:math="http://www.w3.org/1998/Math/MathML"
+                xmlns="http://www.tei-c.org/ns/1.0"
+                xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+                context="*:rules/*:rule">
+         <sch:assert test="@weight">ERROR: All weighting rules must have a weight.</sch:assert>
+      </sch:rule>
+   </pattern>
    <define name="searchFile">
       <element name="searchFile" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The search file (aka page) that will be the primary access point for the static search. Note
@@ -208,12 +216,6 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
       <element name="dictionaryFile" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The location of a dictionary file (one word per line) which will be used to check
             tokens when indexing.) </a:documentation>
-         <data type="anyURI"/>
-      </element>
-   </define>
-   <define name="replacementsFile">
-      <element name="replacementsFile" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(JOEY, I CAN'T FIGURE OUT WHAT THIS IS FOR.) </a:documentation>
          <data type="anyURI"/>
       </element>
    </define>
