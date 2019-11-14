@@ -254,7 +254,9 @@ class StaticSearch{
       searchToDo = true;
     }
     for (let cbx of this.descFilterCheckboxes){
-      if ((searchParams.has(cbx.getAttribute('title'))) && (searchParams.getAll(cbx.getAttribute('title')).indexOf(cbx.value) > -1)){
+      let key = cbx.getAttribute('title');
+console.log('Looking for key ' + key + ': searchParams has it? ' + searchParams.has(key));
+      if ((searchParams.has(key)) && (searchParams.getAll(key).indexOf(cbx.value) > -1)){
           cbx.checked = true;
           searchToDo = true;
       }
@@ -264,6 +266,7 @@ class StaticSearch{
     }
     for (let txt of this.dateFilterTextboxes){
       let key = txt.getAttribute('title') + txt.id.replace(/^.+((_from)|(_to))$/, '$1');
+console.log('Looking for key ' + key + ': searchParams has it? ' + searchParams.has(key));
       if ((searchParams.has(key)) && (searchParams.get(key).length > 3)){
         txt.value = searchParams.get(key);
         searchToDo = true;
@@ -274,6 +277,7 @@ class StaticSearch{
     }
     for (let sel of this.boolFilterSelects){
       let key = sel.getAttribute('title');
+console.log('Looking for key ' + key + ': searchParams has it? ' + searchParams.has(key));
       let val = (searchParams.has(key))? searchParams.get(key) : '';
       switch (val){
         case 'true':
@@ -291,6 +295,10 @@ class StaticSearch{
 
     if (searchToDo === true){
       this.doSearch();
+      return true;
+    }
+    else{
+      return false;
     }
   }
 
@@ -400,7 +408,6 @@ class StaticSearch{
       //We always want to handle the terms in order of
       //precedence, starting with phrases.
       this.terms.sort(function(a, b){return a.type - b.type;});
-      console.log(JSON.stringify(this.terms));
       //return (this.terms.length > 0);
 //Even if we found no terms to search for, we should go
 //ahead with the search, either listing all the documents
@@ -430,7 +437,6 @@ class StaticSearch{
     if (strInput.length < 1){
       return false;
     }
-    console.log('Adding: ' + strInput);
 
     //Set a flag if it starts with a cap.
     let firstLetter = strInput.replace(/^[\+\-]/, '').substring(0, 1);
@@ -490,7 +496,6 @@ class StaticSearch{
 //Check whether any filters have been selected.
     let arrFilters = this.getActiveFiltersAsArray();
     if (arrFilters.length < 1){
-      //console.log('No filters set.');
       return false;
     }
     //So we have active filters. Do we have doc
@@ -499,7 +504,6 @@ class StaticSearch{
        (this.docMetadata.constructor === Object)){
       //We don't have doc metadata yet. Retrieve it
       //and call this again.
-      //console.log('Doc metadata not yet retrieved.');
       //TODO: Figure out if there's a less repetitive
       //way to do this.
       return fetch(self.jsonDirectory + 'docs.json')
@@ -517,7 +521,6 @@ class StaticSearch{
     }
     else{
       if (this.docMetadata.noMetadataFound == true){
-        //console.log('No metadata to work with. Do nothing.');
         return false;
       }
       else{
@@ -527,7 +530,6 @@ class StaticSearch{
         //this.resultSet.clear();
         let docLinks = [];
         for (let docUri of Object.keys(this.docMetadata)){
-          //console.log(docUri);
           if (this.docMatchesFilters(docUri, arrFilters, this.matchAllFilters)){
             //TODO: Just output a list of documents as links, since
             //there's no real useful info to be had and no sort
@@ -654,7 +656,6 @@ class StaticSearch{
   processFilters(){
     try{
       this.docsMatchingFilters = this.getDocIdsForFilters();
-      console.log('this.docsMatchingFilters.filtersActive = ' + this.docsMatchingFilters.filtersActive);
       return true;
     }
     catch(e){
@@ -751,15 +752,12 @@ class StaticSearch{
             break;
           default: console.log('Unknown filter type: ' + value.type);
         }
-        //console.dir(currXSet);
         xSets[xSets.length] = currXSet;
       }
     }
-    //console.log('xSets.length = ' + xSets.length);
     if (xSets.length > 0){
       let result = xSets[0];
       for (var i=1; i<xSets.length; i++){
-        console.dir(result);
         result = result.xIntersection(xSets[i]);
       }
       result.filtersActive = true;
@@ -877,7 +875,6 @@ class StaticSearch{
       //If we do need to retrieve JSON index data, then do it
       if ((tokensToFind.length > 0) || (needDocMetadata)){
 
-        //console.log(JSON.stringify(tokensToFind));
         if (needDocMetadata){
           promises[promises.length] = fetch(self.jsonDirectory + 'docs.json', {
                   credentials: 'same-origin',
@@ -1043,8 +1040,6 @@ class StaticSearch{
   processResults(){
     try{
 //Debugging only.
-      //console.log('index: ' + JSON.stringify(this.index));
-      //console.log('index keys: ' + Object.keys(this.index).toString());
 
 //Start by clearing any previous results.
       this.resultSet.clear();
@@ -1079,7 +1074,6 @@ class StaticSearch{
       }
 //#3
       if ((this.terms.length < 1)&&(this.docsMatchingFilters.size > 0)){
-        console.log('Filters active but no search terms.')
         for (let docUri of this.docsMatchingFilters){
           this.resultSet.set(docUri, {docUri: docUri,
                              docTitle: this.docMetadata[docUri].docTitle,
@@ -1230,7 +1224,6 @@ class StaticSearch{
   //Now weed out results which don't have matches in other terms.
             let docUrisToDelete = [];
             for (let docUri of self.resultSet.mapDocs.keys()){
-              console.log(docUri);
               for (let mc of must_contains){
                 if (! self.indexTokenHasDoc(self.terms[mc].stem, docUri)){
                   docUrisToDelete.push(docUri);
@@ -1324,9 +1317,7 @@ class StaticSearch{
 
 //Now we filter the results based on filter checkboxes, if any.
 //This is #1
-console.log('#2: docsMatchingFilters.filtersActive = ' + this.docsMatchingFilters.filtersActive);
       if (this.docsMatchingFilters.filtersActive == true){
-console.log('docsMatchingFilters.size = ' + this.docsMatchingFilters.size);
         this.resultSet.filterBySet(this.docsMatchingFilters);
       }
 
@@ -1466,7 +1457,6 @@ console.log('docsMatchingFilters.size = ' + this.docsMatchingFilters.size);
   */
     delete(docUri){
       try{
-        console.log('Trying to delete ' + docUri);
         return this.mapDocs.delete(docUri);
       }
       catch(e){
