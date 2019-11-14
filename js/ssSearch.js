@@ -273,7 +273,7 @@ class StaticSearch{
       }
     }
     for (let sel of this.boolFilterSelects){
-      let val = (searchParams.get(sel.getAttribute('title'));
+      let val = searchParams.get(sel.getAttribute('title'));
       switch val{
         case 'true':
           sel.selectedIndex = 1;
