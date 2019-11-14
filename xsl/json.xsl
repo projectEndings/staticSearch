@@ -228,9 +228,9 @@
                     <xsl:variable name="docId" select="$thisDoc/@id" as="xs:string"/>
 
 <!--                Now we get the document title:
-
-                    If there is something usable in the title, then use that;
-                    otherwise, just use the document id as the title
+                    If there is a specially-constructed meta tag for this purpose,
+                    we use that; otherwise, if there is something usable in the title, 
+                    then use that; otherwise, just use the document id as the title.
                     -->
 
                     <xsl:variable name="docTitle" as="xs:string"
@@ -627,14 +627,18 @@
     </xd:doc>
     <xsl:function name="hcmc:getDocTitle" as="xs:string">
         <xsl:param name="doc" as="element(html)"/>
-        <xsl:variable name="title" select="normalize-space(string-join($doc//head/title[1]/descendant::text(),''))" as="xs:string?"/>
-        <xsl:value-of select="if (string-length($title) gt 0) then $title else $doc/@id"/>
+        <xsl:variable name="defaultTitle" select="normalize-space(string-join($doc//head/title[1]/descendant::text(),''))" as="xs:string?"/>
+        <xsl:choose>
+            <xsl:when test="$doc/head/meta[@name='docTitle'][@class='staticSearch.docTitle']">
+                <xsl:value-of select="normalize-space($doc/head/meta[@name='docTitle'][@class='staticSearch.docTitle'][1]/@content)"/>
+            </xsl:when>
+            <xsl:when test="string-length($defaultTitle) gt 0">
+                <xsl:value-of select="$defaultTitle"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$doc/@id"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
-
-
-
-
-
-
 
 </xsl:stylesheet>
