@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns="http://hcmc.uvic.ca/ns/staticSearch">
    <params>
-      <baseDir>.</baseDir>
-      <collectionDir>../london/static/site</collectionDir>
-      <tempDir>moeml_temp</tempDir>
-      <outDir>moeml_site/js/</outDir>
-      <recurse>false</recurse>
+      <searchFile>london/static/site/search.html</searchFile>
       <!--NOTE: If phrasalSearch is set to TRUE, then
         maxContexts prop will be ignored-->
+      <recurse>false</recurse>
       <phrasalSearch>true</phrasalSearch>
       <createContexts>true</createContexts>
       <maxContexts>3</maxContexts>

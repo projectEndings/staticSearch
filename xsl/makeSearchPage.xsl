@@ -85,12 +85,12 @@
         input#ssQuery{
             flex: 1;
         }
-            div.ssDescFilters, div.ssDateFilterss, div.ssBoolFilters{
+        div.ssDescFilters, div.ssDateFilters, div.ssBoolFilters{
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
         }
-        div.ssDescFilters fieldset, div.ssDateFilters fieldset{
+        div.ssDescFilters fieldset, div.ssDateFilters fieldset, div.ssBoolFilters fieldset{
             margin: 0.25em auto;
             flex-grow: 1;
         }
@@ -105,7 +105,7 @@
             flex-wrap: nowrap;
             align-items: flex-start;
         }
-        div.ssDateFilters fieldset.ssFieldset span{
+        div.ssDateFilters fieldset.ssFieldset span, div.ssBoolFilters fieldset.ssFieldset span{
             padding-left: 2em;
         }
     </xsl:param>
