@@ -274,7 +274,7 @@ class StaticSearch{
     }
     for (let sel of this.boolFilterSelects){
       let val = searchParams.get(sel.getAttribute('title'));
-      switch val{
+      switch (val){
         case 'true':
           sel.selectedIndex = 1;
           searchToDo = true;
