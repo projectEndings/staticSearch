@@ -263,7 +263,7 @@ class StaticSearch{
       }
     }
     for (let txt of this.dateFilterTextboxes){
-      let key = txt.getAttribute('title' + replace(txt.id, /^.+((_from)|(_to))$/, '$1');
+      let key = txt.getAttribute('title') + replace(txt.id, /^.+((_from)|(_to))$/, '$1');
       if (searchParams.get(key).length > 3){
         txt.value = searchParams.get(key);
         searchToDo = true;
