@@ -254,8 +254,7 @@ class StaticSearch{
       searchToDo = true;
     }
     for (let cbx of this.descFilterCheckboxes){
-      if ((searchParams.has(cbx.getAttribute('title')))
-        &&(searchParams.getAll(cbx.getAttribute('title')).indexOf(cbx.value) > -1)){
+      if ((searchParams.has(cbx.getAttribute('title'))) && (searchParams.getAll(cbx.getAttribute('title')).indexOf(cbx.value) > -1)){
           cbx.checked = true;
           searchToDo = true;
       }
