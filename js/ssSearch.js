@@ -254,9 +254,10 @@ class StaticSearch{
       searchToDo = true;
     }
     for (let cbx of this.descFilterCheckboxes){
-      if (searchParams.getAll(cbx.getAttribute('title')).indexOf(cbx.value) > -1){
-        cbx.checked = true;
-        searchToDo = true;
+      if ((searchParams.has(cbx.getAttribute('title')))
+        &&(searchParams.getAll(cbx.getAttribute('title')).indexOf(cbx.value) > -1)){
+          cbx.checked = true;
+          searchToDo = true;
       }
       else{
         cbx.checked = false;
@@ -264,7 +265,7 @@ class StaticSearch{
     }
     for (let txt of this.dateFilterTextboxes){
       let key = txt.getAttribute('title') + txt.id.replace(/^.+((_from)|(_to))$/, '$1');
-      if (searchParams.get(key).length > 3){
+      if (searchParams.has(key))&&(searchParams.get(key).length > 3){
         txt.value = searchParams.get(key);
         searchToDo = true;
       }
@@ -273,7 +274,8 @@ class StaticSearch{
       }
     }
     for (let sel of this.boolFilterSelects){
-      let val = searchParams.get(sel.getAttribute('title'));
+      let key = sel.getAttribute('title');
+      let val = (searchParams.has(key))? searchParams.get(key) : '';
       switch (val){
         case 'true':
           sel.selectedIndex = 1;
