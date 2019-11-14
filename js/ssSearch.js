@@ -238,16 +238,57 @@ class StaticSearch{
 
 /** @function StaticSearch~parseQueryString
   * @description this function is run after the class is instantiated
-  *              to check whether there is a query string in the
+  *              to check whether there is a search string in the
   *              browser URL. If so, it parses it out and runs the
   *              query.
   *
   * @return {Boolean} true if a search is initiated otherwise false.
   */
   parseQueryString(){
-    let searchParams = new URLSearchParams(document.location.search);
+    let searchParams = new URLSearchParams(decodeURI(document.location.search));
+    //Do we need to do a search?
+    let searchToDo = false; //default
+
     if (searchParams.has('q')){
       this.queryBox.value = searchParams.get('q');
+      searchToDo = true;
+    }
+    for (let cbx of this.descFilterCheckboxes){
+      if (searchParams.getAll(cbx.getAttribute('title')).indexOf(cbx.value) > -1){
+        cbx.checked = true;
+        searchToDo = true;
+      }
+      else{
+        cbx.checked = false;
+      }
+    }
+    for (let txt of this.dateFilterTextboxes){
+      let key = txt.getAttribute('title' + replace(txt.id, /^.+((_from)|(_to))$/, '$1');
+      if (searchParams.get(key).length > 3){
+        txt.value = searchParams.get(key);
+        searchToDo = true;
+      }
+      else{
+        txt.value = '';
+      }
+    }
+    for (let sel of this.boolFilterSelects){
+      let val = (searchParams.get(sel.getAttribute('title'));
+      switch val{
+        case 'true':
+          sel.selectedIndex = 1;
+          searchToDo = true;
+          break;
+        case 'false':
+          sel.selectedIndex = 2;
+          searchToDo = true;
+          break;
+        default:
+          sel.selectedIndex = 0;
+      }
+    }
+
+    if (searchToDo === true){
       this.doSearch();
     }
   }
