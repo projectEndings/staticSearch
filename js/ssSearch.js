@@ -227,11 +227,10 @@ class StaticSearch{
       //Result handling object
       this.resultSet = new SSResultSet(this.kwicLimit);
 
-//NOTE: THIS CAN'T WORK as it is, because we no sooner run
-//the search than we pushState again, creating a mess of the
-//history. We have to know whether a search we're running is
-//as a result of a popstate or not.
-      //window.onpopstate = this.parseQueryString.bind(this);
+//This allows the user to navigate through searches using the back and
+//forward buttons; to avoid repeatedly pushing state when this happens,
+//we pass popping = true.
+      window.onpopstate = function(){this.parseQueryString(true)}.bind(this);
 
       //Now we're instantiated, check to see if there's a query
       //string that should initiate a search.
@@ -248,9 +247,12 @@ class StaticSearch{
   *              browser URL. If so, it parses it out and runs the
   *              query.
   *
+  * @param {Boolean} popping specifies whether this parse has been triggered
+  *                  by window.onpopstate (meaning the user is moving through
+  *                  the browser history)
   * @return {Boolean} true if a search is initiated otherwise false.
   */
-  parseQueryString(){
+  parseQueryString(popping = false){
     let searchParams = new URLSearchParams(decodeURI(document.location.search));
     //Do we need to do a search?
     let searchToDo = false; //default
@@ -297,7 +299,7 @@ class StaticSearch{
     }
 
     if (searchToDo === true){
-      this.doSearch();
+      this.doSearch(popping);
       return true;
     }
     else{
@@ -311,16 +313,20 @@ class StaticSearch{
   *              for retrieval of JSON files. After that, the
   *              resolution of the promises carries the process
   *              on.
-  *
+  * @param {Boolean} popping specifies whether this parse has been triggered
+  *                  by window.onpopstate (meaning the user is moving through
+  *                  the browser history)
   * @return {Boolean} true if a search is initiated otherwise false.
   */
-  doSearch(){
+  doSearch(popping = false){
     this.docsMatchingFilters.filtersActive = false; //initialize.
     let result = false; //default.
     if (this.parseSearchQuery()){
       if (this.writeSearchReport()){
         this.populateIndex();
-        this.setQueryString();
+        if (!popping){
+          this.setQueryString();
+        }
         result = true;
       }
     }
