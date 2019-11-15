@@ -546,6 +546,29 @@
             <xsl:value-of select="xml-to-json($filterMap, map{'indent': $indentJSON})"/>
         </xsl:result-document>
         
+        <!--Now create the individual files for the filter maps;
+            we do this using templates rather than grouping, since that's simpler
+            and the grouping has already been done for us-->
+        
+        <!--First iterate through the relevant keys-->
+        <xsl:for-each select="$filterMap/map:map/map:map/*/@key">
+            <xsl:variable name="thisKey" select="."/>
+            
+            <!--Create a variable to process into JSON-->
+            <xsl:variable name="result">
+                
+                <!--Process the filterMap XML through templates-->
+                <xsl:apply-templates select="$filterMap" mode="makeFilterDocs">
+                    <xsl:with-param name="key" select="$thisKey" tunnel="yes"/>
+                </xsl:apply-templates>
+            </xsl:variable>
+            
+            <!--And then create the output file, carefully escaping names etc-->
+            <xsl:variable name="outFile" select="$outDir || '/' || encode-for-uri($thisKey) || '.json'" as="xs:string"/>
+            <xsl:result-document href="{$outFile}" method="text">
+                <xsl:value-of select="xml-to-json($result, map{'indent': $indentJSON})"/>
+            </xsl:result-document>
+        </xsl:for-each>
         
 
 <!--      For debugging purposes: TODO: REMOVE WHEN NO LONGER NEEDED.  -->
@@ -553,6 +576,36 @@
         <xsl:result-document href="{$outDir}/docs.xml" method="xml" indent="yes">
             <xsl:sequence select="$filterMap"/>
         </xsl:result-document>
+        
+        
+        
+        
+    </xsl:template>
+    
+    
+    <!--Simple set of templates for creating the filter docs:
+        
+        Match every map and if a map either is the thing we want,
+        or contains the thing we want, then keep it;
+        otherwise, delete it-->
+    <xsl:template match="map:map[@key]" mode="makeFilterDocs">
+        <xsl:param name="key" tunnel="yes"/>
+        <xsl:choose>
+            <xsl:when test="@key = $key or descendant::*[@key=$key]">
+                <xsl:copy>
+                    <xsl:apply-templates select="@*|node()" mode="#current"/>
+                </xsl:copy>
+            </xsl:when>
+            <xsl:otherwise/>
+        </xsl:choose>
+    </xsl:template>
+    
+    
+    <!--And identity-->
+    <xsl:template match="@*|node()" mode="makeFilterDocs" priority="-1">
+        <xsl:copy>
+            <xsl:apply-templates select="@*|node()" mode="#current"/>
+        </xsl:copy>
     </xsl:template>
 
     <!--TO DO: DOCUMENT THE BELOW (OR THINK ABOUT SPLITTING THEM INTO SEPARATE MODULES)-->
