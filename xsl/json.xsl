@@ -58,6 +58,7 @@
     </xd:doc>
     <xsl:template match="/">
         <xsl:call-template name="createJson"/>
+        <xsl:call-template name="createTitleJson"/>
         <xsl:call-template name="createDocFiltersJson"/>
         <xsl:call-template name="createStopwordsJson"/>
         <xsl:call-template name="createWordListJson"/>
@@ -537,10 +538,15 @@
                 </xsl:for-each>
             </map>
         </xsl:variable>
+        
+        
+        
 
         <xsl:result-document href="{$outDir}/docs.json" method="text">
             <xsl:value-of select="xml-to-json($filterMap, map{'indent': $indentJSON})"/>
         </xsl:result-document>
+        
+        
 
 <!--      For debugging purposes: TODO: REMOVE WHEN NO LONGER NEEDED.  -->
 
@@ -566,6 +572,25 @@
     </xsl:template>
     
     
+    <xsl:template name="createTitleJson">
+        <xsl:result-document href="{$outDir}/titles.json" method="text">
+            <xsl:variable name="map">
+                <map:map>
+                    <xsl:for-each select="$tokenizedDocs//html">
+                        <map:array key="{@data-staticSearch-relativeUri}">
+                            <map:string><xsl:value-of select="hcmc:getDocTitle(.)"/></map:string>
+                        </map:array>
+                    </xsl:for-each>
+                </map:map>
+            </xsl:variable>
+            <xsl:value-of select="xml-to-json($map, map{'indent': $indentJSON})"/>
+        </xsl:result-document>
+    </xsl:template>
+    
+    <xd:doc>
+        <xd:desc>This template creates a list of the all of the tokens that have been
+        created by the process; primarily, this JSON will be used for wildcard searches.</xd:desc>
+    </xd:doc>
     <xsl:template name="createWordListJson">
         <xsl:message>Creating word list JSON...</xsl:message>
         <xsl:variable name="lowerWords" select="uri-collection(concat($outDir,'/lower?select=*.json'))"/>
