@@ -255,7 +255,6 @@ class StaticSearch{
     }
     for (let cbx of this.descFilterCheckboxes){
       let key = cbx.getAttribute('title');
-console.log('Looking for key ' + key + ': searchParams has it? ' + searchParams.has(key));
       if ((searchParams.has(key)) && (searchParams.getAll(key).indexOf(cbx.value) > -1)){
           cbx.checked = true;
           searchToDo = true;
@@ -266,7 +265,6 @@ console.log('Looking for key ' + key + ': searchParams has it? ' + searchParams.
     }
     for (let txt of this.dateFilterTextboxes){
       let key = txt.getAttribute('title') + txt.id.replace(/^.+((_from)|(_to))$/, '$1');
-console.log('Looking for key ' + key + ': searchParams has it? ' + searchParams.has(key));
       if ((searchParams.has(key)) && (searchParams.get(key).length > 3)){
         txt.value = searchParams.get(key);
         searchToDo = true;
@@ -277,7 +275,6 @@ console.log('Looking for key ' + key + ': searchParams has it? ' + searchParams.
     }
     for (let sel of this.boolFilterSelects){
       let key = sel.getAttribute('title');
-console.log('Looking for key ' + key + ': searchParams has it? ' + searchParams.has(key));
       let val = (searchParams.has(key))? searchParams.get(key) : '';
       switch (val){
         case 'true':
@@ -317,12 +314,57 @@ console.log('Looking for key ' + key + ': searchParams has it? ' + searchParams.
     if (this.parseSearchQuery()){
       if (this.writeSearchReport()){
         this.populateIndex();
+        this.setQueryString();
         result = true;
       }
     }
     window.scroll({ top: this.resultsDiv.offsetTop, behavior: "smooth" });
     /*this.resultsDiv.scrollIntoView({behavior: "smooth", block: "nearest"});*/
     return result;
+  }
+
+/** @function StaticSearch~setQueryString
+  * @description this function is run once a search is initiated,
+  * and it takes the search parameters and creates a browser URL
+  * search string, then pushes this into the History object so that
+  * all searches are bookmarkable.
+  *
+  * @return {Boolean} true if successful, otherwise false.
+  */
+  setQueryString(){
+    try{
+      let url = window.location.href.split(/[?#]/)[0];
+      let search = [];
+      let q = this.queryBox.value.replace(/\s+/, ' ').replace(/(^\s+)|(\s+$)/g, '');
+      if (q.length > 0){
+        search.push('q=' + q);
+      }
+      for (let cbx of this.descFilterCheckboxes){
+        if (cbx.checked){
+          search.push(cbx.title + '=' + cbx.value);
+        }
+      }
+      for (let txt of this.dateFilterTextboxes){
+        if (txt.value.match(/\d\d\d\d(-\d\d(-\d\d)?)?/)){
+          let key = txt.getAttribute('title') + txt.id.replace(/^.+((_from)|(_to))$/, '$1');
+          search.push(key + '=' + txt.value);
+        }
+      }
+      for (let sel of this.boolFilterSelects){
+        if (sel.selectedIndex > 0){
+          search.push(sel.getAttribute('title') + '=' + (sel.selectedIndex == 1)? 'true' : 'false');
+        }
+      }
+
+      if (search.length > 0){
+        url += '?' + encodeURI(search.join('&'));
+        history.pushState({time: Date.now()}, '', url);
+      }
+      return true;
+    }
+    catch(e){
+      console.log('ERROR: failed to push search into browser history: ' + e.message);
+    }
   }
 
 
