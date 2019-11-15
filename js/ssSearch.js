@@ -227,6 +227,12 @@ class StaticSearch{
       //Result handling object
       this.resultSet = new SSResultSet(this.kwicLimit);
 
+//NOTE: THIS CAN'T WORK as it is, because we no sooner run
+//the search than we pushState again, creating a mess of the
+//history. We have to know whether a search we're running is
+//as a result of a popstate or not.
+      //window.onpopstate = this.parseQueryString.bind(this);
+
       //Now we're instantiated, check to see if there's a query
       //string that should initiate a search.
       this.parseQueryString();
@@ -352,7 +358,7 @@ class StaticSearch{
       }
       for (let sel of this.boolFilterSelects){
         if (sel.selectedIndex > 0){
-          search.push(sel.getAttribute('title') + '=' + (sel.selectedIndex == 1)? 'true' : 'false');
+          search.push(sel.getAttribute('title') + '=' + ((sel.selectedIndex == 1)? 'true' : 'false'));
         }
       }
 
