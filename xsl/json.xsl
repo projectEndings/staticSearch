@@ -551,7 +551,7 @@
             and the grouping has already been done for us-->
         
         <!--First iterate through the relevant keys-->
-        <xsl:for-each select="$filterMap/map:map/map:map/*/@key">
+        <xsl:for-each select="distinct-values($filterMap/map:map/map:map/*/@key)">
             <xsl:variable name="thisKey" select="."/>
             
             <!--Create a variable to process into JSON-->
