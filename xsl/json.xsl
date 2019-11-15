@@ -60,6 +60,7 @@
         <xsl:call-template name="createJson"/>
         <xsl:call-template name="createDocFiltersJson"/>
         <xsl:call-template name="createStopwordsJson"/>
+        <xsl:call-template name="createWordListJson"/>
         <xsl:call-template name="createConfigJson"/>
     </xsl:template>
 
@@ -561,6 +562,27 @@
                 <xsl:apply-templates select="$stopwordsFileXml" mode="dictToArray"/>
             </xsl:variable>
             <xsl:value-of select="xml-to-json($map, map{'indent': $indentJSON})"/>
+        </xsl:result-document>
+    </xsl:template>
+    
+    
+    <xsl:template name="createWordListJson">
+        <xsl:message>Creating word list JSON...</xsl:message>
+        <xsl:variable name="lowerWords" select="uri-collection(concat($outDir,'/lower?select=*.json'))"/>
+        <xsl:variable name="upperWords" select="uri-collection(concat($outDir,'/upper?select=*.json'))"/>
+        <xsl:variable name="map" as="element(map:map)">
+            <map:map>
+               <map:array key="tokens">
+                   <xsl:for-each select="($lowerWords,$upperWords)">
+                       <xsl:sort select="lower-case(.)"/>
+                       <xsl:sort select="string-length(.)"/>
+                       <map:string><xsl:value-of select="tokenize(.,'/')[last()] => substring-before('.json') => normalize-space()"/></map:string>
+                   </xsl:for-each>
+               </map:array>
+            </map:map>
+        </xsl:variable>
+        <xsl:result-document href="{$outDir}/tokens.json" method="text">
+            <xsl:value-of select="xml-to-json($map, map{'ident': $indentJSON})"/>
         </xsl:result-document>
     </xsl:template>
 
