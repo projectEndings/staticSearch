@@ -588,7 +588,7 @@
         Match every map and if a map either is the thing we want,
         or contains the thing we want, then keep it;
         otherwise, delete it-->
-    <xsl:template match="map:map[@key]" mode="makeFilterDocs">
+    <xsl:template match="*[@key]" mode="makeFilterDocs">
         <xsl:param name="key" tunnel="yes"/>
         <xsl:choose>
             <xsl:when test="@key = $key or descendant::*[@key=$key]">
