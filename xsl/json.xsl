@@ -564,7 +564,7 @@
             </xsl:variable>
             
             <!--And then create the output file, carefully escaping names etc-->
-            <xsl:variable name="outFile" select="$outDir || '/' || encode-for-uri($thisKey) || '.json'" as="xs:string"/>
+            <xsl:variable name="outFile" select="$outDir || '/' || encode-for-uri(encode-for-uri($thisKey)) || '.json'" as="xs:string"/>
             <xsl:result-document href="{$outFile}" method="text">
                 <xsl:value-of select="xml-to-json($result, map{'indent': $indentJSON})"/>
             </xsl:result-document>
