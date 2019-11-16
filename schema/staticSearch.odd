@@ -73,7 +73,7 @@
           Then you run the generator, and the search functionality should be added to your site.</p>
           
           <div>
-            <head>Configuring your site</head>
+            <head>Configuring your site: search filters</head>
             <p>The generator is expecting to parse <emph>well-formed XHTML5 web pages</emph>. That means
             web pages which are well-formed XML, using the XHTML namespace. If your site is just raggedy tag-soup,
             then you can't use this tool.</p>
@@ -83,15 +83,15 @@
             your documents to specify what these filters are. Here is a simple example:
             
             <egXML xmlns="http://www.tei-c.org/ns/Examples">
-              <meta name="Document type" class="staticSearch.filter" content="Poems" />
+              <meta name="Document type" class="staticSearch.desc" content="Poems" />
             </egXML>
               
-              This specifies that there is to be a search filter called <q>Document type</q>, and one of the
+              This specifies that there is to be a descriptive search filter called <q>Document type</q>, and one of the
               types is <q>Poems</q>; the document containing this <gi>meta</gi> tag is one of the Poems. Another
               type might be:
               
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
-                <meta name="Document type" class="staticSearch.filter" content="Short stories" />
+                <meta name="Document type" class="staticSearch.desc" content="Short stories" />
               </egXML>
               
               If the Generator finds such meta tags when it is indexing, it will create a set of filter controls
@@ -121,6 +121,32 @@
                 <item>1895/1897</item>
                <item>1903-01-02/1905-05-31</item>
               </list>
+            </p>
+            
+            <p>A third filter type is the boolean (true/false) filter. To use boolean filters, add meta tags like this
+            to your documents:
+            
+              <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                <meta name="Peer-reviewed" class="staticSearch.bool" content="true" />
+              </egXML>
+            
+            </p>
+          </div>
+          
+          <div>
+            <head>Configuring your site: document titles</head>
+            
+            <p>When the indexing process runs over your document collection, by default it will use the document
+            title that it finds in the <gi>title</gi> element in the document header; that title will then be 
+            shown as a link to the document when it comes up in search results. However, that may not be the ideal
+            title for this purpose; for example, all of your documents may include the site title as the first part
+            of their document title, but it would be pointless to include this in the search result links. Therefore
+            you can override the document title value by providing another meta tag, like this:
+            
+              <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                <meta name="docTitle" class="staticSearch.docTitle" content="What I did in my holidays" />
+              </egXML>
+            
             </p>
           </div>
           

@@ -227,6 +227,11 @@ class StaticSearch{
       //Result handling object
       this.resultSet = new SSResultSet(this.kwicLimit);
 
+//This allows the user to navigate through searches using the back and
+//forward buttons; to avoid repeatedly pushing state when this happens,
+//we pass popping = true.
+      window.onpopstate = function(){this.parseQueryString(true)}.bind(this);
+
       //Now we're instantiated, check to see if there's a query
       //string that should initiate a search.
       this.parseQueryString();
@@ -238,17 +243,67 @@ class StaticSearch{
 
 /** @function StaticSearch~parseQueryString
   * @description this function is run after the class is instantiated
-  *              to check whether there is a query string in the
+  *              to check whether there is a search string in the
   *              browser URL. If so, it parses it out and runs the
   *              query.
   *
+  * @param {Boolean} popping specifies whether this parse has been triggered
+  *                  by window.onpopstate (meaning the user is moving through
+  *                  the browser history)
   * @return {Boolean} true if a search is initiated otherwise false.
   */
-  parseQueryString(){
-    let searchParams = new URLSearchParams(document.location.search);
+  parseQueryString(popping = false){
+    let searchParams = new URLSearchParams(decodeURI(document.location.search));
+    //Do we need to do a search?
+    let searchToDo = false; //default
+
     if (searchParams.has('q')){
       this.queryBox.value = searchParams.get('q');
-      this.doSearch();
+      searchToDo = true;
+    }
+    for (let cbx of this.descFilterCheckboxes){
+      let key = cbx.getAttribute('title');
+      if ((searchParams.has(key)) && (searchParams.getAll(key).indexOf(cbx.value) > -1)){
+          cbx.checked = true;
+          searchToDo = true;
+      }
+      else{
+        cbx.checked = false;
+      }
+    }
+    for (let txt of this.dateFilterTextboxes){
+      let key = txt.getAttribute('title') + txt.id.replace(/^.+((_from)|(_to))$/, '$1');
+      if ((searchParams.has(key)) && (searchParams.get(key).length > 3)){
+        txt.value = searchParams.get(key);
+        searchToDo = true;
+      }
+      else{
+        txt.value = '';
+      }
+    }
+    for (let sel of this.boolFilterSelects){
+      let key = sel.getAttribute('title');
+      let val = (searchParams.has(key))? searchParams.get(key) : '';
+      switch (val){
+        case 'true':
+          sel.selectedIndex = 1;
+          searchToDo = true;
+          break;
+        case 'false':
+          sel.selectedIndex = 2;
+          searchToDo = true;
+          break;
+        default:
+          sel.selectedIndex = 0;
+      }
+    }
+
+    if (searchToDo === true){
+      this.doSearch(popping);
+      return true;
+    }
+    else{
+      return false;
     }
   }
 
@@ -258,21 +313,70 @@ class StaticSearch{
   *              for retrieval of JSON files. After that, the
   *              resolution of the promises carries the process
   *              on.
-  *
+  * @param {Boolean} popping specifies whether this parse has been triggered
+  *                  by window.onpopstate (meaning the user is moving through
+  *                  the browser history)
   * @return {Boolean} true if a search is initiated otherwise false.
   */
-  doSearch(){
+  doSearch(popping = false){
     this.docsMatchingFilters.filtersActive = false; //initialize.
     let result = false; //default.
     if (this.parseSearchQuery()){
       if (this.writeSearchReport()){
         this.populateIndex();
+        if (!popping){
+          this.setQueryString();
+        }
         result = true;
       }
     }
     window.scroll({ top: this.resultsDiv.offsetTop, behavior: "smooth" });
     /*this.resultsDiv.scrollIntoView({behavior: "smooth", block: "nearest"});*/
     return result;
+  }
+
+/** @function StaticSearch~setQueryString
+  * @description this function is run once a search is initiated,
+  * and it takes the search parameters and creates a browser URL
+  * search string, then pushes this into the History object so that
+  * all searches are bookmarkable.
+  *
+  * @return {Boolean} true if successful, otherwise false.
+  */
+  setQueryString(){
+    try{
+      let url = window.location.href.split(/[?#]/)[0];
+      let search = [];
+      let q = this.queryBox.value.replace(/\s+/, ' ').replace(/(^\s+)|(\s+$)/g, '');
+      if (q.length > 0){
+        search.push('q=' + q);
+      }
+      for (let cbx of this.descFilterCheckboxes){
+        if (cbx.checked){
+          search.push(cbx.title + '=' + cbx.value);
+        }
+      }
+      for (let txt of this.dateFilterTextboxes){
+        if (txt.value.match(/\d\d\d\d(-\d\d(-\d\d)?)?/)){
+          let key = txt.getAttribute('title') + txt.id.replace(/^.+((_from)|(_to))$/, '$1');
+          search.push(key + '=' + txt.value);
+        }
+      }
+      for (let sel of this.boolFilterSelects){
+        if (sel.selectedIndex > 0){
+          search.push(sel.getAttribute('title') + '=' + ((sel.selectedIndex == 1)? 'true' : 'false'));
+        }
+      }
+
+      if (search.length > 0){
+        url += '?' + encodeURI(search.join('&'));
+        history.pushState({time: Date.now()}, '', url);
+      }
+      return true;
+    }
+    catch(e){
+      console.log('ERROR: failed to push search into browser history: ' + e.message);
+    }
   }
 
 
@@ -358,7 +462,6 @@ class StaticSearch{
       //We always want to handle the terms in order of
       //precedence, starting with phrases.
       this.terms.sort(function(a, b){return a.type - b.type;});
-      console.log(JSON.stringify(this.terms));
       //return (this.terms.length > 0);
 //Even if we found no terms to search for, we should go
 //ahead with the search, either listing all the documents
@@ -388,7 +491,6 @@ class StaticSearch{
     if (strInput.length < 1){
       return false;
     }
-    console.log('Adding: ' + strInput);
 
     //Set a flag if it starts with a cap.
     let firstLetter = strInput.replace(/^[\+\-]/, '').substring(0, 1);
@@ -448,7 +550,6 @@ class StaticSearch{
 //Check whether any filters have been selected.
     let arrFilters = this.getActiveFiltersAsArray();
     if (arrFilters.length < 1){
-      //console.log('No filters set.');
       return false;
     }
     //So we have active filters. Do we have doc
@@ -457,7 +558,6 @@ class StaticSearch{
        (this.docMetadata.constructor === Object)){
       //We don't have doc metadata yet. Retrieve it
       //and call this again.
-      //console.log('Doc metadata not yet retrieved.');
       //TODO: Figure out if there's a less repetitive
       //way to do this.
       return fetch(self.jsonDirectory + 'docs.json')
@@ -475,7 +575,6 @@ class StaticSearch{
     }
     else{
       if (this.docMetadata.noMetadataFound == true){
-        //console.log('No metadata to work with. Do nothing.');
         return false;
       }
       else{
@@ -485,7 +584,6 @@ class StaticSearch{
         //this.resultSet.clear();
         let docLinks = [];
         for (let docUri of Object.keys(this.docMetadata)){
-          //console.log(docUri);
           if (this.docMatchesFilters(docUri, arrFilters, this.matchAllFilters)){
             //TODO: Just output a list of documents as links, since
             //there's no real useful info to be had and no sort
@@ -612,7 +710,6 @@ class StaticSearch{
   processFilters(){
     try{
       this.docsMatchingFilters = this.getDocIdsForFilters();
-      console.log('this.docsMatchingFilters.filtersActive = ' + this.docsMatchingFilters.filtersActive);
       return true;
     }
     catch(e){
@@ -709,15 +806,12 @@ class StaticSearch{
             break;
           default: console.log('Unknown filter type: ' + value.type);
         }
-        //console.dir(currXSet);
         xSets[xSets.length] = currXSet;
       }
     }
-    //console.log('xSets.length = ' + xSets.length);
     if (xSets.length > 0){
       let result = xSets[0];
       for (var i=1; i<xSets.length; i++){
-        console.dir(result);
         result = result.xIntersection(xSets[i]);
       }
       result.filtersActive = true;
@@ -835,7 +929,6 @@ class StaticSearch{
       //If we do need to retrieve JSON index data, then do it
       if ((tokensToFind.length > 0) || (needDocMetadata)){
 
-        //console.log(JSON.stringify(tokensToFind));
         if (needDocMetadata){
           promises[promises.length] = fetch(self.jsonDirectory + 'docs.json', {
                   credentials: 'same-origin',
@@ -1001,8 +1094,6 @@ class StaticSearch{
   processResults(){
     try{
 //Debugging only.
-      //console.log('index: ' + JSON.stringify(this.index));
-      //console.log('index keys: ' + Object.keys(this.index).toString());
 
 //Start by clearing any previous results.
       this.resultSet.clear();
@@ -1037,7 +1128,6 @@ class StaticSearch{
       }
 //#3
       if ((this.terms.length < 1)&&(this.docsMatchingFilters.size > 0)){
-        console.log('Filters active but no search terms.')
         for (let docUri of this.docsMatchingFilters){
           this.resultSet.set(docUri, {docUri: docUri,
                              docTitle: this.docMetadata[docUri].docTitle,
@@ -1188,7 +1278,6 @@ class StaticSearch{
   //Now weed out results which don't have matches in other terms.
             let docUrisToDelete = [];
             for (let docUri of self.resultSet.mapDocs.keys()){
-              console.log(docUri);
               for (let mc of must_contains){
                 if (! self.indexTokenHasDoc(self.terms[mc].stem, docUri)){
                   docUrisToDelete.push(docUri);
@@ -1282,9 +1371,7 @@ class StaticSearch{
 
 //Now we filter the results based on filter checkboxes, if any.
 //This is #1
-console.log('#2: docsMatchingFilters.filtersActive = ' + this.docsMatchingFilters.filtersActive);
       if (this.docsMatchingFilters.filtersActive == true){
-console.log('docsMatchingFilters.size = ' + this.docsMatchingFilters.size);
         this.resultSet.filterBySet(this.docsMatchingFilters);
       }
 
@@ -1424,7 +1511,6 @@ console.log('docsMatchingFilters.size = ' + this.docsMatchingFilters.size);
   */
     delete(docUri){
       try{
-        console.log('Trying to delete ' + docUri);
         return this.mapDocs.delete(docUri);
       }
       catch(e){

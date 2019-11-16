@@ -58,8 +58,10 @@
     </xd:doc>
     <xsl:template match="/">
         <xsl:call-template name="createJson"/>
+        <xsl:call-template name="createTitleJson"/>
         <xsl:call-template name="createDocFiltersJson"/>
         <xsl:call-template name="createStopwordsJson"/>
+        <xsl:call-template name="createWordListJson"/>
         <xsl:call-template name="createConfigJson"/>
     </xsl:template>
 
@@ -228,9 +230,9 @@
                     <xsl:variable name="docId" select="$thisDoc/@id" as="xs:string"/>
 
 <!--                Now we get the document title:
-
-                    If there is something usable in the title, then use that;
-                    otherwise, just use the document id as the title
+                    If there is a specially-constructed meta tag for this purpose,
+                    we use that; otherwise, if there is something usable in the title, 
+                    then use that; otherwise, just use the document id as the title.
                     -->
 
                     <xsl:variable name="docTitle" as="xs:string"
@@ -536,16 +538,74 @@
                 </xsl:for-each>
             </map>
         </xsl:variable>
+        
+        
+        
 
         <xsl:result-document href="{$outDir}/docs.json" method="text">
             <xsl:value-of select="xml-to-json($filterMap, map{'indent': $indentJSON})"/>
         </xsl:result-document>
+        
+        <!--Now create the individual files for the filter maps;
+            we do this using templates rather than grouping, since that's simpler
+            and the grouping has already been done for us-->
+        
+        <!--First iterate through the relevant keys-->
+        <xsl:for-each select="distinct-values($filterMap//map:map[ends-with(@key,'Filters')]/*/@key)">
+            <xsl:variable name="thisKey" select="."/>
+            
+            <!--Create a variable to process into JSON-->
+            <xsl:variable name="result">
+                
+                <!--Process the filterMap XML through templates-->
+                <xsl:apply-templates select="$filterMap" mode="makeFilterDocs">
+                    <xsl:with-param name="key" select="$thisKey" tunnel="yes"/>
+                </xsl:apply-templates>
+            </xsl:variable>
+            
+            <!--And then create the output file, carefully escaping names etc-->
+            <xsl:variable name="outFile" select="$outDir || '/' || encode-for-uri(encode-for-uri($thisKey)) || '.json'" as="xs:string"/>
+            <xsl:result-document href="{$outFile}" method="text">
+                <xsl:value-of select="xml-to-json($result, map{'indent': $indentJSON})"/>
+            </xsl:result-document>
+        </xsl:for-each>
+        
 
 <!--      For debugging purposes: TODO: REMOVE WHEN NO LONGER NEEDED.  -->
 
         <xsl:result-document href="{$outDir}/docs.xml" method="xml" indent="yes">
             <xsl:sequence select="$filterMap"/>
         </xsl:result-document>
+        
+        
+        
+        
+    </xsl:template>
+    
+    
+    <!--Simple set of templates for creating the filter docs:
+        
+        Match every map and if a map either is the thing we want,
+        or contains the thing we want, then keep it;
+        otherwise, delete it-->
+    <xsl:template match="*[@key]" mode="makeFilterDocs">
+        <xsl:param name="key" tunnel="yes"/>
+        <xsl:choose>
+            <xsl:when test="@key = $key or descendant::*[@key=$key]">
+                <xsl:copy>
+                    <xsl:apply-templates select="@*|node()" mode="#current"/>
+                </xsl:copy>
+            </xsl:when>
+            <xsl:otherwise/>
+        </xsl:choose>
+    </xsl:template>
+    
+    
+    <!--And identity-->
+    <xsl:template match="@*|node()" mode="makeFilterDocs" priority="-1">
+        <xsl:copy>
+            <xsl:apply-templates select="@*|node()" mode="#current"/>
+        </xsl:copy>
     </xsl:template>
 
     <!--TO DO: DOCUMENT THE BELOW (OR THINK ABOUT SPLITTING THEM INTO SEPARATE MODULES)-->
@@ -561,6 +621,46 @@
                 <xsl:apply-templates select="$stopwordsFileXml" mode="dictToArray"/>
             </xsl:variable>
             <xsl:value-of select="xml-to-json($map, map{'indent': $indentJSON})"/>
+        </xsl:result-document>
+    </xsl:template>
+    
+    
+    <xsl:template name="createTitleJson">
+        <xsl:result-document href="{$outDir}/titles.json" method="text">
+            <xsl:variable name="map">
+                <map:map>
+                    <xsl:for-each select="$tokenizedDocs//html">
+                        <map:array key="{@data-staticSearch-relativeUri}">
+                            <map:string><xsl:value-of select="hcmc:getDocTitle(.)"/></map:string>
+                        </map:array>
+                    </xsl:for-each>
+                </map:map>
+            </xsl:variable>
+            <xsl:value-of select="xml-to-json($map, map{'indent': $indentJSON})"/>
+        </xsl:result-document>
+    </xsl:template>
+    
+    <xd:doc>
+        <xd:desc>This template creates a list of the all of the tokens that have been
+        created by the process; primarily, this JSON will be used for wildcard searches.</xd:desc>
+    </xd:doc>
+    <xsl:template name="createWordListJson">
+        <xsl:message>Creating word list JSON...</xsl:message>
+        <xsl:variable name="lowerWords" select="uri-collection(concat($outDir,'/lower?select=*.json'))"/>
+        <xsl:variable name="upperWords" select="uri-collection(concat($outDir,'/upper?select=*.json'))"/>
+        <xsl:variable name="map" as="element(map:map)">
+            <map:map>
+               <map:array key="tokens">
+                   <xsl:for-each select="($lowerWords,$upperWords)">
+                       <xsl:sort select="lower-case(.)"/>
+                       <xsl:sort select="string-length(.)"/>
+                       <map:string><xsl:value-of select="tokenize(.,'/')[last()] => substring-before('.json') => normalize-space()"/></map:string>
+                   </xsl:for-each>
+               </map:array>
+            </map:map>
+        </xsl:variable>
+        <xsl:result-document href="{$outDir}/tokens.json" method="text">
+            <xsl:value-of select="xml-to-json($map, map{'ident': $indentJSON})"/>
         </xsl:result-document>
     </xsl:template>
 
@@ -627,14 +727,18 @@
     </xd:doc>
     <xsl:function name="hcmc:getDocTitle" as="xs:string">
         <xsl:param name="doc" as="element(html)"/>
-        <xsl:variable name="title" select="normalize-space(string-join($doc//head/title[1]/descendant::text(),''))" as="xs:string?"/>
-        <xsl:value-of select="if (string-length($title) gt 0) then $title else $doc/@id"/>
+        <xsl:variable name="defaultTitle" select="normalize-space(string-join($doc//head/title[1]/descendant::text(),''))" as="xs:string?"/>
+        <xsl:choose>
+            <xsl:when test="$doc/head/meta[@name='docTitle'][@class='staticSearch.docTitle']">
+                <xsl:value-of select="normalize-space($doc/head/meta[@name='docTitle'][@class='staticSearch.docTitle'][1]/@content)"/>
+            </xsl:when>
+            <xsl:when test="string-length($defaultTitle) gt 0">
+                <xsl:value-of select="$defaultTitle"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$doc/@id"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
-
-
-
-
-
-
 
 </xsl:stylesheet>
