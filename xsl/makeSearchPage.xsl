@@ -262,7 +262,10 @@
                                 <!--And the maximum date-->
                                 <xsl:variable name="maxDate" as="xs:date" 
                                     select="max((for $d in $jsonDoc//map:string[1][matches(., $dateRegex)] return hcmc:normalizeDateString($d, false())))"/>
-                                <div id="{$filterId}">
+                                
+                                <fieldset class="ssFieldset" title="{$filterName}" id="{$filterId}">
+                                    <!--And add the filter name as the legend-->
+                                    <legend><xsl:value-of select="$filterName"/></legend>
                                     <span>
                                         <label for="date_{$filterId}_from">From: </label>
                                         <input type="text" maxlength="10" pattern="{$dateRegex}" title="{$filterName}" id="date_{$filterId}_from" class="staticSearch.date" placeholder="{format-date($minDate, '[Y0001]-[M01]-[D01]')}" onchange="this.reportValidity()"/>
@@ -272,7 +275,7 @@
                                         <label for="date_{$filterId}_to">To: </label>
                                         <input type="text" maxlength="10" pattern="{$dateRegex}" title="{$filterName}" id="date_{$filterId}_to" class="staticSearch.date" placeholder="{format-date($maxDate, '[Y0001]-[M01]-[D01]')}" onchange="this.reportValidity()"/>
                                     </span>
-                                </div>
+                                </fieldset>
                             </xsl:for-each>
                         </div>
                     </xsl:if>
