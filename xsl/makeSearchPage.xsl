@@ -210,10 +210,12 @@
                         <div class="ssDescFilters">
                             <!--Group these by keys (aka the name of the filter)-->
                             <xsl:for-each-group select="$docsJSON//map:map[@key = 'descFilters']/map:array[@key]" group-by="@key">
-                                <xsl:variable name="filterName" select="current-grouping-key()"/>
-
+                                <xsl:variable name="filterName" select="current-group()[1]/map:string[1]"/>
+<xsl:message>Filter name: <xsl:value-of select="$filterName"/>
+             Current group 1: <xsl:copy-of select="current-group()[1]"/>
+</xsl:message>
                                 <!--For each of those groups, create a fieldset-->
-                                <fieldset class="ssFieldset">
+                                <fieldset class="ssFieldset" title="{$filterName}" id="{current-grouping-key()}">
                                     <xsl:variable name="grpPos" select="position()"/>
                                     <!--And add the filter name as the legend-->
                                     <legend><xsl:value-of select="$filterName"/></legend>
@@ -248,10 +250,10 @@
                         <div class="ssDateFilters">
                         <!--Group these by keys (aka the name of the filter)-->
                             <xsl:for-each-group select="$docsJSON//map:map[@key = 'dateFilters']/map:array[@key]" group-by="@key">
-                                <xsl:variable name="filterName" select="replace(current-grouping-key(), '^The\s+', '')"/>
+                                <xsl:variable name="filterName" select="replace(current-group()[1]/map:string[1], '^The\s+', '')"/>
 
                                 <!--For each of those groups, create a fieldset-->
-                                <fieldset class="ssFieldset">
+                                <fieldset class="ssFieldset" title="{$filterName}" id="{current-grouping-key()}">
                                     <xsl:variable name="grpPos" select="position()"/>
                                     <!--And add the filter name as the legend-->
                                     <legend><xsl:value-of select="$filterName"/></legend>
@@ -274,7 +276,7 @@
                             <fieldset class="ssFieldset">
                                 <!--For each group, we create a single label and select element.-->
                                 <xsl:for-each-group select="$docsJSON//map:map[@key = 'boolFilters']/map:boolean[@key]" group-by="@key">
-                                    <xsl:variable name="filterName" select="replace(current-grouping-key(), '^The\s+', '')"/>
+                                    <xsl:variable name="filterName" select="replace(current-group()[1]/map:string[1], '^The\s+', '')"/>
                                     <xsl:variable name="grpPos" select="position()"/>
                                     <span>
                                         <label for="bool_{$grpPos}"><xsl:value-of select="$filterName"/>: </label>
