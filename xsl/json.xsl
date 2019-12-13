@@ -608,7 +608,7 @@
                         <string key="docTitle"><xsl:value-of select="$thisTitle"/></string>
                         <map key="descFilters">
                             <xsl:for-each-group select="$thisDoc//meta[contains-token(@class,'staticSearch.desc')]" group-by="@data-staticSearch-filter-id">
-                                <string key="name"><xsl:value-of select="current-group()[1]/@name"/></string>
+                                <string><xsl:value-of select="current-group()[1]/@name"/></string>
                                 <xsl:message expand-text="yes">Processing {current-grouping-key()}</xsl:message>
                                 <array key="{current-grouping-key()}">
                                     <xsl:for-each select="current-group()">
@@ -622,7 +622,7 @@
                         becomes impossible to use them. So we take only the first one. -->
                         <map key="dateFilters">
                             <xsl:for-each-group select="$thisDoc//meta[contains-token(@class,'staticSearch.date')]" group-by="@data-staticSearch-filter-id">
-                                <string key="name"><xsl:value-of select="current-group()[1]/@name"/></string>
+                                <string><xsl:value-of select="current-group()[1]/@name"/></string>
                                 <xsl:message expand-text="yes">Processing date filter {current-grouping-key()}</xsl:message>
                                 <array key="{current-grouping-key()}">
                                     <xsl:for-each select="tokenize(current-group()[1]/@content, '/')">
@@ -635,7 +635,7 @@
                         <map key="boolFilters">
                             <xsl:for-each-group select="$thisDoc//meta[contains-token(@class,'staticSearch.bool')]" group-by="@data-staticSearch-filter-id">
                                 <xsl:message expand-text="yes">Processing boolean filter {current-grouping-key()}</xsl:message>
-                                <string key="name"><xsl:value-of select="current-group()[1]/@name"/></string>
+                                <string><xsl:value-of select="current-group()[1]/@name"/></string>
                                 <boolean key="{current-grouping-key()}">
                                     <xsl:choose>
                                         <xsl:when test="matches(current-group()[1]/@content, '^\s*(true)|(TRUE)|(1)')">true</xsl:when>
