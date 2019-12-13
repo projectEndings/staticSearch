@@ -72,8 +72,6 @@
     
     <xsl:variable name="filterJSONURIs" select="
         uri-collection(concat($outDir,'/filters/?select=*.json'))"/>
-    
-    <xsl:variable name="filterJSONs" select="for $f in $filterJSONURIs return json-to-xml(unparsed-text($f))" as="document-node()*"/>
 
     <xd:doc>
         <xd:desc><xd:ref name="css" type="parameter">$css</xd:ref> is a pre-populated
@@ -211,17 +209,30 @@
                     <xsl:variable name="dateFilters" select="$filterJSONURIs[matches(.,'ssDate\d+\.json')]"/>
                     <xsl:variable name="boolFilters" select="$filterJSONURIs[matches(.,'ssBool\d+\.json')]"/>
                     
+                    
+                    <!--First, handle the desc filters-->
                     <xsl:if test="not(empty($descFilters))">
                         <div class="ssDescFilters">
                             <xsl:for-each select="$descFilters">
+                                
+                                <!--Get the document-->
                                 <xsl:variable name="jsonDoc" select="unparsed-text(.) => json-to-xml()" as="document-node()"/>
-                                <xsl:message>JSON DOC: <xsl:sequence select="$jsonDoc"/></xsl:message>
+                               
+                               <!--And its name and id -->
                                 <xsl:variable name="filterName" select="$jsonDoc//map:string[@key='filterName']"/>
                                 <xsl:variable name="filterId" select="$jsonDoc//map:string[@key='filterId']"/>
+                                
+                                <!--And now create the fieldset and legend-->
                                 <fieldset class="ssFieldset" title="{$filterName}" id="{$filterId}">
                                     <legend><xsl:value-of select="$filterName"/></legend>
+                                    
+                                    <!--And create a ul from each of the embedded maps-->
                                     <ul class="ssDescCheckboxList">
                                         <xsl:for-each select="$jsonDoc//map:map[@key]">
+                                            <!--And create the input item: the input item contains:
+                                            * an @title that specifies the filter name (e.g. Genre)
+                                            * an @value that specifies the filter value (e.g. Poem)
+                                            * an @id to associate the label for A11Y-->
                                             <xsl:variable name="thisOptId" select="@key"/>
                                             <xsl:variable name="thisOptName" select="map:string[@key='name']"/>
                                             <li>
@@ -235,22 +246,38 @@
                         </div>
                     </xsl:if>
                     
+                    <!--Now create date boxes, if necessary-->
+                    
                     <xsl:if test="not(empty($dateFilters))">
                         <div class="ssDateFilters">
                             <xsl:for-each select="$dateFilters">
                                 <xsl:variable name="jsonDoc" select="unparsed-text(.) => json-to-xml()" as="document-node()"/>
                                 <xsl:variable name="filterName" select="$jsonDoc//map:string[@key='filterName']"/>
                                 <xsl:variable name="filterId" select="$jsonDoc//map:string[@key='filterId']"/>
-                                <xsl:variable name="minDate" as="xs:date" 
-                                    select="min((for $d in $jsonDoc//map:string[1][matches(., '^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$')] return hcmc:normalizeDateString($d, true())))"/>
-                                <xsl:variable name="maxDate" as="xs:date" select="max((for $d in $jsonDoc//map:string[1][matches(., '^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$')] return hcmc:normalizeDateString($d, false())))"/>
                                 
-                                <span><label for="date_{$filterId}_from">From: </label> <input type="text" maxlength="10" pattern="{$dateRegex}" title="{$filterName}" id="date_{$filterId}_from" class="staticSearch.date" placeholder="{format-date($minDate, '[Y0001]-[M01]-[D01]')}" onchange="this.reportValidity()"/></span>
-                                <span><label for="date_{$filterId}_to">To: </label> <input type="text" maxlength="10" pattern="{$dateRegex}" title="{$filterName}" id="date_{$filterId}_to" class="staticSearch.date" placeholder="{format-date($maxDate, '[Y0001]-[M01]-[D01]')}" onchange="this.reportValidity()"/></span>
+                                <!--Get the minimum from the date regex-->
+                                <xsl:variable name="minDate" as="xs:date" 
+                                    select="min((for $d in $jsonDoc//map:string[1][matches(., $dateRegex)] return hcmc:normalizeDateString($d, true())))"/>
+                                
+                                <!--And the maximum date-->
+                                <xsl:variable name="maxDate" as="xs:date" 
+                                    select="max((for $d in $jsonDoc//map:string[1][matches(., $dateRegex)] return hcmc:normalizeDateString($d, false())))"/>
+                                <div id="{$filterId}">
+                                    <span>
+                                        <label for="date_{$filterId}_from">From: </label>
+                                        <input type="text" maxlength="10" pattern="{$dateRegex}" title="{$filterName}" id="date_{$filterId}_from" class="staticSearch.date" placeholder="{format-date($minDate, '[Y0001]-[M01]-[D01]')}" onchange="this.reportValidity()"/>
+                                    </span>
+                                    
+                                    <span>
+                                        <label for="date_{$filterId}_to">To: </label>
+                                        <input type="text" maxlength="10" pattern="{$dateRegex}" title="{$filterName}" id="date_{$filterId}_to" class="staticSearch.date" placeholder="{format-date($maxDate, '[Y0001]-[M01]-[D01]')}" onchange="this.reportValidity()"/>
+                                    </span>
+                                </div>
                             </xsl:for-each>
                         </div>
                     </xsl:if>
                     
+                    <!--And now handle booleans-->
                     <xsl:if test="not(empty($boolFilters))">
                         <div class="ssBoolFilters">
                             <!-- We create a single fieldset for all these filters, since they're individual. -->
