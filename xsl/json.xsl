@@ -594,7 +594,7 @@
     
     <xd:doc>
         <xd:desc>createDocsJson is a named template that creates a large JSON object for all documents
-        and their filters. This is the template that creates docs.json, which may end up going away.</xd:desc>
+            and their filters. This is the template that creates docs.json, which may end up going away.</xd:desc>
     </xd:doc>
     <xsl:template name="createDocsJson">
         <xsl:variable name="filterMap" as="element()">
@@ -607,7 +607,7 @@
                     <map key="{$relativeUri}">
                         <string key="docTitle"><xsl:value-of select="$thisTitle"/></string>
                         <map key="descFilters">
-                            <xsl:for-each-group select="$thisDoc//meta[contains-token(@class,'staticSearch.desc')]" group-by="@data-staticSearch-filter-id">
+                            <xsl:for-each-group select="$thisDoc//meta[contains-token(@class,'staticSearch.desc')]" group-by="@name">
                                 <xsl:message expand-text="yes">Processing {current-grouping-key()}</xsl:message>
                                 <array key="{current-grouping-key()}">
                                     <xsl:for-each select="current-group()">
@@ -616,11 +616,11 @@
                                 </array>
                             </xsl:for-each-group>
                         </map>
-
-<!--                  For date filters, we have to insist that there's only one date for each named filter, otherwise it
+                        
+                        <!--                  For date filters, we have to insist that there's only one date for each named filter, otherwise it
                         becomes impossible to use them. So we take only the first one. -->
                         <map key="dateFilters">
-                            <xsl:for-each-group select="$thisDoc//meta[contains-token(@class,'staticSearch.date')]" group-by="@data-staticSearch-filter-id">
+                            <xsl:for-each-group select="$thisDoc//meta[contains-token(@class,'staticSearch.date')]" group-by="@name">
                                 <xsl:message expand-text="yes">Processing date filter {current-grouping-key()}</xsl:message>
                                 <array key="{current-grouping-key()}">
                                     <xsl:for-each select="tokenize(current-group()[1]/@content, '/')">
@@ -629,9 +629,9 @@
                                 </array>
                             </xsl:for-each-group>
                         </map>
-<!--                  Boolean filters are just true or false, and default to false. -->
+                        <!--                  Boolean filters are just true or false, and default to false. -->
                         <map key="boolFilters">
-                            <xsl:for-each-group select="$thisDoc//meta[contains-token(@class,'staticSearch.bool')]" group-by="@data-staticSearch-filter-id">
+                            <xsl:for-each-group select="$thisDoc//meta[contains-token(@class,'staticSearch.bool')]" group-by="@name">
                                 <xsl:message expand-text="yes">Processing boolean filter {current-grouping-key()}</xsl:message>
                                 <boolean key="{current-grouping-key()}">
                                     <xsl:choose>
@@ -648,7 +648,7 @@
         
         
         
-
+        
         <xsl:result-document href="{$outDir}/docs.json" method="text">
             <xsl:value-of select="xml-to-json($filterMap, map{'indent': $indentJSON})"/>
         </xsl:result-document>
@@ -677,9 +677,9 @@
             </xsl:result-document>
         </xsl:for-each>
         
-
-<!--      For debugging purposes: TODO: REMOVE WHEN NO LONGER NEEDED.  -->
-
+        
+        <!--      For debugging purposes: TODO: REMOVE WHEN NO LONGER NEEDED.  -->
+        
         <xsl:result-document href="{$outDir}/docs.xml" method="xml" indent="yes">
             <xsl:sequence select="$filterMap"/>
         </xsl:result-document>
