@@ -61,7 +61,7 @@
     <xsl:variable name="dateFilterMap" as="map(xs:string,xs:string)">
         <xsl:map>
             <xsl:for-each-group select="$docs//meta[contains-token(@class,'staticSearch.date')]" group-by="@name">
-                <xsl:map-entry key="xs:string(current-grouping-key())" select="'ssDesc' || position()"/>
+                <xsl:map-entry key="xs:string(current-grouping-key())" select="'ssDate' || position()"/>
             </xsl:for-each-group>
         </xsl:map>
     </xsl:variable>
@@ -70,7 +70,7 @@
     <xsl:variable name="boolFilterMap" as="map(xs:string,xs:string)">
         <xsl:map>
             <xsl:for-each-group select="$docs//meta[contains-token(@class,'staticSearch.bool')]" group-by="@name">
-                <xsl:map-entry key="xs:string(current-grouping-key())" select="'ssDesc' || position()"/>
+                <xsl:map-entry key="xs:string(current-grouping-key())" select="'ssBool' || position()"/>
             </xsl:for-each-group>
         </xsl:map>
     </xsl:variable>
