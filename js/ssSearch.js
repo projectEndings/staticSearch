@@ -27,8 +27,10 @@
   * I would like to put these inside the class, but I can't
   * find an elegant way to do that.
   */
-/**@constant PHRASE, MUST_CONTAIN, MUST_NOT_CONTAIN, MAY_CONTAIN
+/**
+  * @constant PHRASE, MUST_CONTAIN, MUST_NOT_CONTAIN, MAY_CONTAIN
   * @type {Number}
+  * @description Constants representing different types of search command.
   */
 
   const PHRASE               = 0;
@@ -42,6 +44,18 @@
    *              used so we can easily iterate through them.
    */
   const arrTermTypes = [PHRASE, MUST_CONTAIN, MUST_NOT_CONTAIN, MAY_CONTAIN];
+
+/**
+  * @constant TO_GET, GETTING, GOT, FAILED
+  * @type {Number}
+  * @description Constants representing states of files that may be
+  *              retrieved by AJAX.
+  */
+
+  const TO_GET  = 0;
+  const GETTING = 1;
+  const GOT     = 2;
+  const FAILED  = 3;
 
 /**
   * Components in the ss namespace that are used by default, but
@@ -142,6 +156,7 @@ class StaticSearch{
       if (!this.resultsDiv){
        throw new Error('Failed to find div with id "ssResults". Cannot provide search functionality.');
       }
+
       //Optional search filters:
       //Description label filters
       this.descFilterCheckboxes =
@@ -154,6 +169,14 @@ class StaticSearch{
            Array.from(document.querySelectorAll("select[class='staticSearch.bool']"));
 
       this.docMetadata = {};
+
+      //An object which will be filled with a complete list of all the
+      //individual tokens indexed for the site. Data retrieved later by
+      //AJAX.
+      this.tokens = null;
+
+      //A Map object that will be populated with filter data retrieved by AJAX.
+      this.mapFilterData = new Map();
 
       //A Map object which will be repopulated on every search initiation,
       //containing the set of active document filters to apply to the search.
@@ -174,9 +197,9 @@ class StaticSearch{
       if (tmp && !/(y|Y|yes|true|True|1)/.test(tmp.getAttribute('data-AllowPhrasal'))){
         this.allowPhrasal = false;
       }
-      //Associative array for storing retrieved JSON data. Any retrieved
-      //data stored in here is retained between searches to avoid having
-      //to retrieve it twice.
+      //Associative array for storing retrieved JSON search string data.
+      //Any retrieved data stored in here is retained between searches
+      //to avoid having to retrieve it twice.
       this.index = {};
 
       //Porter2 stemmer object.
@@ -191,7 +214,18 @@ class StaticSearch{
       this.captionLang  = document.getElementsByTagName('html')[0].getAttribute('lang') || 'en'; //Document language.
       this.captionSet   = this.captions[this.captionLang]; //Pointer to the caption object we're going to use.
 
+      //The collection of JSON filter files that we need to retrieve.
+      this.jsonToRetrieve = [];
+      this.jsonToRetrieve.push({path: this.jsonDirectory + 'stopwords.json', state: TO_GET});
+      this.jsonToRetrieve.push({path: this.jsonDirectory + 'titles.json', state: TO_GET});
+      this.jsonToRetrieve.push({path: this.jsonDirectory + 'tokens.json', state: TO_GET});
+      for (var f of document.querySelectorAll('fieldset.ssFieldset[id]')){
+        this.jsonToRetrieve.push({path: this.jsonDirectory + 'filters/' + f.id + '.json', state: TO_GET});
+      }
+      console.dir(this.jsonToRetrieve);
+
       //Default set of stopwords
+      //TODO: THIS SHOULD NOT BE RETRIEVED HERE, but as part of the regular array.
       this.stopwords = ss.stopwords;
       //Now check for a local stopwords file.
       fetch(this.jsonDirectory + 'stopwords.json')
@@ -227,10 +261,13 @@ class StaticSearch{
       //Result handling object
       this.resultSet = new SSResultSet(this.kwicLimit);
 
-//This allows the user to navigate through searches using the back and
-//forward buttons; to avoid repeatedly pushing state when this happens,
-//we pass popping = true.
+      //This allows the user to navigate through searches using the back and
+      //forward buttons; to avoid repeatedly pushing state when this happens,
+      //we pass popping = true.
       window.onpopstate = function(){this.parseQueryString(true)}.bind(this);
+
+      //Now we can start trickle-downloading the various JSON files.
+      this.getJson(0);
 
       //Now we're instantiated, check to see if there's a query
       //string that should initiate a search.
@@ -238,6 +275,64 @@ class StaticSearch{
     }
     catch(e){
       console.log('ERROR: ' + e.message);
+    }
+  }
+
+/** @function staticSearch~jsonRetrieved
+  * @description this function is called whenever a JSON resource is retrieved
+  *              by the trickle-download process initiated on startup. It
+  *              stores the data in the right place, and sets a flag to say
+  *              that the data has been retrieved (or was not available).
+  *
+  * @param json {json} the JSON retrieved by the AJAX request.
+  * @param path {String} the path from which it was retrieved.
+  */
+  jsonRetrieved(json, path){
+    console.log('Got ' + path);
+    if (path.match(/stopwords\.json$/)){
+      this.stopwords = json.words;
+      console.dir(this.stopwords);
+      return;
+    }
+    if (path.match(/tokens\.json$/)){
+      this.tokens = json;
+      console.log(this.tokens);
+      return;
+    }
+    if (path.match(/\/filters\//)){
+      this.mapFilterData.set(json.filterName, json);
+      console.dir(this.mapFilterData);
+      return;
+    }
+
+    //TODO: CONTINUE THIS FUNCTION.
+  }
+
+/** @function staticSearch~getJson
+  * @description this function trickle-downloads a series of JSON files
+  *              which the object has determined it may need, getting
+  *              them one at a time to avoid saturating the connection;
+  *              while this is happening, a live search may be initiated
+  *              which needs to get a lot of resources quickly.
+  *
+  * @param jsonIndex {Number} the index of the item in the array of items
+  *               that need to be retrieved.
+  */
+  async getJson(jsonIndex){
+    if (jsonIndex < this.jsonToRetrieve.length){
+      try{
+        this.jsonToRetrieve[jsonIndex].state = GETTING;
+        let fch = await fetch(this.jsonToRetrieve[jsonIndex].path);
+        let json = await fch.json();
+        this.jsonRetrieved(json, this.jsonToRetrieve[jsonIndex].path);
+        this.jsonToRetrieve[jsonIndex].state = GOT;
+      }
+      catch(e){
+        console.log('ERROR: failed to retrieve JSON resource ' + this.jsonToRetrieve[jsonIndex].path + ': ' + e.message);
+        this.jsonToRetrieve[jsonIndex].state = FAILED;
+      }
+
+      return this.getJson(jsonIndex + 1);
     }
   }
 
