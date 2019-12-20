@@ -1,8 +1,20 @@
 <!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
    
    
+   
+   
+   
+   
    <head>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+      
+      
+      
+      
+      
+      
+      
+      
       
       <style>
           #testResults{
@@ -17,6 +29,10 @@
             background-color: #ffcccc;
          }
       </style>
+      
+      
+      
+      
       
       <style id="ssCss">
         span.ssQueryAndButton{
@@ -54,17 +70,37 @@
       
       
       
+      
+      
+      
+      
       <title>Test search page</title>
       </head>
+   
+   
+   
+   
    
    
    <body>
       
       
+      
+      
+      
+      
       <h1>Test search page</h1>
       
       
+      
+      
+      
+      
       <p>This is a simple search page for the test collection.</p>
+      
+      
+      
+      
       
       
       
@@ -96,27 +132,100 @@
            //we're getting the results we expect back from the search object.
            var reportDiv = null;
            
+           
+           var currTestNum = -1;
+           var tests = [];
+           
+           //Simple one-word search.
+           tests.push({setup: function(){Sch.queryBox.value = 'elephant';}, 
+                       check: function(num){console.log('Search hook ' + num); 
+                                            reportTestResults('Testing results for the word "elephant".', true);
+                                            reportTestResults('Expected result set size: 2; actual size: ' + this.resultSet.getSize(), (this.resultSet.getSize() === 2));
+                                            nextTest();}});
+                                            
+           //Another simple one-word search.
+           tests.push({setup: function(){Sch.queryBox.value = 'twilight';}, 
+                       check: function(num){console.log('Search hook ' + num);
+                                            reportTestResults('Testing results for the word "twilight".', true);
+                                            reportTestResults('Expected result set size: 2; actual size: ' + this.resultSet.getSize(), (this.resultSet.getSize() === 2));
+                                            nextTest();}});
+           
+           //Third simple one-word search.
+           tests.push({setup: function(){Sch.queryBox.value = 'across';}, 
+                       check: function(num){console.log('Search hook ' + num);
+                                            reportTestResults('Testing results for the word "across".', true);
+                                            reportTestResults('Expected result set size: 2; actual size: ' + this.resultSet.getSize() +
+                                                              '; Expected contexts: 2; actual count ' + this.resultSet.getContextCount(), 
+                                                              (this.resultSet.getContextCount() === 2 && this.resultSet.getContextCount() === 2));
+                                            nextTest();}});
+                                           
+           //Same word with date.
+           tests.push({setup: function(){Sch.queryBox.value = 'across'; document.getElementById('date_ssDate1_from').value = '2000';}, 
+                       check: function(num){console.log('Search hook ' + num);
+                                            reportTestResults('Testing results for the word "across" in documents since 2000.', true);
+                                            reportTestResults('Expected result set size: 1; actual size: ' + this.resultSet.getSize() +
+                                                              '; Expected contexts: 1; actual count ' + this.resultSet.getContextCount(), 
+                                                              (this.resultSet.getContextCount() === 1 && this.resultSet.getContextCount() === 1));
+                                            nextTest();}});
+                                            
+           //Phrasal search. This one tests ignored inlines.
+           tests.push({setup: function(){Sch.queryBox.value = '"summer day—our day"';}, 
+                                         check: function(num){console.log('Search hook ' + num);
+                                         reportTestResults('Testing results for the phrase "summer day—our day".', true);
+                                         reportTestResults('Expected result set size: 2; actual size: ' + this.resultSet.getSize() +
+                                                              '; Expected contexts: 2; actual count ' + this.resultSet.getContextCount(), 
+                                                              (this.resultSet.getContextCount() === 2 && this.resultSet.getContextCount() === 2));
+                                         nextTest();}});
+                                         
+           //Phrasal search with boundary contexts.
+           tests.push({setup: function(){Sch.queryBox.value = '"our day Was clouded"';}, 
+                                         check: function(num){console.log('Search hook ' + num);
+                                         reportTestResults('Testing results for the phrase "our day Was clouded".', true);
+                                         reportTestResults('Expected result set size: 1; actual size: ' + this.resultSet.getSize() +
+                                                              '; Expected contexts: 1; actual count ' + this.resultSet.getContextCount(), 
+                                                              (this.resultSet.getContextCount() === 1 && this.resultSet.getContextCount() === 1));
+                                         nextTest();}});
            function runTests(){
              reportDiv = document.querySelector('div#testResults');
+             
+            //Turn off browser history tracking otherwise life gets complicated
+            //when running a sequence of automated tests.
+             Sch.storeSearchesInBrowserHistory = false;
              reportTestResults('Running automated tests.', true);
-             reportTestResults('Testing results for the word "elephant".', true);
-             Sch.queryBox.value = 'elephant';
-             Sch.searchFinishedHook = function(num){console.log('Search hook ' + num);reportTestResults('Expected result set size: 2; actual size: ' + this.resultSet.getSize(), (this.resultSet.getSize() === 2));}
-             Sch.doSearch();
+             nextTest();
+             
            }
            
            function reportTestResults(msg, succeed){
              reportDiv.innerHTML += '<p class="' + (succeed ? 'success':'failure') + '">' + msg + '</p>';
            }
            
+           function nextTest(){
+             currTestNum++;
+             if (currTestNum >= tests.length){
+                reportTestResults('Done!', true);
+                Sch.searchFinishedHook = null;
+                return;
+             }
+             //Clear the search form every time.
+             Sch.clearSearchForm(); 
+             tests[currTestNum].setup.call();
+             Sch.searchFinishedHook = tests[currTestNum].check;
+             Sch.doSearch();
+           }
+           
            window.addEventListener('load', runTests);
            
            -->
        </script>
-       
-       <div id="testResults">
-           
-       </div>
+      
+      
+      
+      
+      
+      <div id="testResults">
+         
+         </div>
       
       </body>
    </html>

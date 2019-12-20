@@ -193,5 +193,8 @@
     
     <target name="all" depends="init, validate, config, tokenize, json, copyFiles, makeSearchPage, report, clean"/>
     
+    <!-- Don't clean up so we can see what's happening. -->
+    <target name="test" depends="init, validate, config, tokenize, json, copyFiles, makeSearchPage, report"/>
+    
     <target name="basic" depends="init, validate, config, tokenize, json, copyFiles, makeSearchPage, clean"/>
 </project>

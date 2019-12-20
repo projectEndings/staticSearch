@@ -266,6 +266,10 @@ class StaticSearch{
       //we pass popping = true.
       window.onpopstate = function(){this.parseQueryString(true)}.bind(this);
 
+      //We may need to turn off the browser history manipulation to do
+      //automated tests, so make this switchable.
+      this.storeSearchesInBrowserHistory = true;
+
       //Now we can start trickle-downloading the various JSON files.
       this.getJson(0);
 
@@ -444,32 +448,37 @@ class StaticSearch{
   */
   setQueryString(){
     try{
-      let url = window.location.href.split(/[?#]/)[0];
-      let search = [];
-      let q = this.queryBox.value.replace(/\s+/, ' ').replace(/(^\s+)|(\s+$)/g, '');
-      if (q.length > 0){
-        search.push('q=' + q);
-      }
-      for (let cbx of this.descFilterCheckboxes){
-        if (cbx.checked){
-          search.push(cbx.title + '=' + cbx.value);
+      if (this.storeSearchesInBrowserHistory == true){
+        let url = window.location.href.split(/[?#]/)[0];
+        let search = [];
+        let q = this.queryBox.value.replace(/\s+/, ' ').replace(/(^\s+)|(\s+$)/g, '');
+        if (q.length > 0){
+          search.push('q=' + q);
         }
-      }
-      for (let txt of this.dateFilterTextboxes){
-        if (txt.value.match(/\d\d\d\d(-\d\d(-\d\d)?)?/)){
-          let key = txt.getAttribute('title') + txt.id.replace(/^.+((_from)|(_to))$/, '$1');
-          search.push(key + '=' + txt.value);
+        for (let cbx of this.descFilterCheckboxes){
+          if (cbx.checked){
+            search.push(cbx.title + '=' + cbx.value);
+          }
         }
-      }
-      for (let sel of this.boolFilterSelects){
-        if (sel.selectedIndex > 0){
-          search.push(sel.getAttribute('title') + '=' + ((sel.selectedIndex == 1)? 'true' : 'false'));
+        for (let txt of this.dateFilterTextboxes){
+          if (txt.value.match(/\d\d\d\d(-\d\d(-\d\d)?)?/)){
+            let key = txt.getAttribute('title') + txt.id.replace(/^.+((_from)|(_to))$/, '$1');
+            search.push(key + '=' + txt.value);
+          }
         }
-      }
+        for (let sel of this.boolFilterSelects){
+          if (sel.selectedIndex > 0){
+            search.push(sel.getAttribute('title') + '=' + ((sel.selectedIndex == 1)? 'true' : 'false'));
+          }
+        }
 
-      if (search.length > 0){
-        url += '?' + encodeURI(search.join('&'));
-        history.pushState({time: Date.now()}, '', url);
+        if (search.length > 0){
+          url += '?' + encodeURI(search.join('&'));
+          history.pushState({time: Date.now()}, '', url);
+        }
+      }
+      else{
+        console.log('Not storing search in browser history.');
       }
       return true;
     }
@@ -502,8 +511,8 @@ class StaticSearch{
       strSearch = strSearch.replace(/[“”]/g, '"');
       strSearch = strSearch.replace(/[‘’‛]/g, "'");
 
-      //Strip out all other punctuation
-      strSearch = strSearch.replace(/[\.',!@#$%\^&*]+/, '');
+      //Strip out all other punctuation that isn't between numbers
+      strSearch = strSearch.replace(/(^|[^\d])[\.',!;:@#$%\^&*]+([^\d]|$)/g, '$1$2');
 
       //If we're not supporting phrasal searches, get rid of double quotes.
       if (!this.allowPhrasal){
@@ -1683,6 +1692,25 @@ class StaticSearch{
     }
 
 /**
+  * @function SSResultSet~getContextCount
+  * @description Returns the number of kwic contexts in the result set.
+  * @return {integer} number of kwic contexts in the result set.
+  */
+    getContextCount(){
+      try{
+        let arr = [];
+        for (let [key, value] of this.mapDocs){
+          arr.push(value.contexts.length);
+        }
+        return arr.reduce(function(a, b){return a + b;}, 0);
+      }
+      catch(e){
+        console.log('ERROR: ' + e.message);
+        return 0;
+      }
+    }
+
+/**
   * @function SSResultSet~sortByScoreDesc
   * @description Sorts the collection of documents so that the highest
   *              scoring items come at the top.
@@ -1734,6 +1762,30 @@ class StaticSearch{
         ul.appendChild(li);
       }
       return ul;
+    }
+
+  /**
+    * @function SSResultSet~resultsAsArray
+    * @description Outputs an array containing result set counts, to be
+    *              used in automated testing.
+    * @return {Array} an array structure containing counts of docs found,
+    *                  scores and individual contexts
+    */
+    resultsAsObject(){
+      let retArr = [];
+        for (let [key, value] of this.mapDocs){
+          let contexts = [];
+          for (let c of value.contexts){
+            contexts.push(c.context);
+          }
+          let obj = {
+            uri: value.docUri,
+            score: value.score,
+            contexts: contexts
+          };
+          retArr.push(obj);
+        }
+      return retArr;
     }
   }
 

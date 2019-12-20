@@ -36,7 +36,7 @@
         THE QUOTATION MARKS, SINCE WE JUST NORMALIZE THEM AFTER THE FACT-->
     
      <!--purely digits (or decimals) -->
-    <xsl:variable name="numericWithDecimal">[<xsl:value-of select="$straightDoubleApos"/>\d]+(\.\d+)</xsl:variable>
+    <xsl:variable name="numericWithDecimal">[<xsl:value-of select="$straightDoubleApos"/>\d]+([\.,]?\d+)</xsl:variable>
     
     <xsl:variable name="alphanumeric">[\p{L}<xsl:value-of select="$straightDoubleApos"/>]+</xsl:variable>
     
