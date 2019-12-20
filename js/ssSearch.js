@@ -269,6 +269,10 @@ class StaticSearch{
       //Now we can start trickle-downloading the various JSON files.
       this.getJson(0);
 
+      //We add a hook which external code can call to be notified when a
+      //search has completed.
+      this.searchFinishedHook = function(num){};
+
       //Now we're instantiated, check to see if there's a query
       //string that should initiate a search.
       this.parseQueryString();
@@ -1188,7 +1192,6 @@ class StaticSearch{
   */
   processResults(){
     try{
-//Debugging only.
 
 //Start by clearing any previous results.
       this.resultSet.clear();
@@ -1219,6 +1222,7 @@ class StaticSearch{
                        .appendChild(document.createTextNode(
                          this.captionSet.strDocumentsFound + '0'
                        )));
+        this.searchFinishedHook(1);
         return false;
       }
 //#3
@@ -1237,6 +1241,7 @@ class StaticSearch{
         if (this.resultSet.getSize() < 1){
           this.reportNoResults(true);
         }
+        this.searchFinishedHook(2);
         return (this.resultSet.getSize() > 0);
       }
 
@@ -1302,7 +1307,7 @@ class StaticSearch{
           return false;
         }
       }
-//End of nested function getPhrasalResults.
+//End of nested function processPhrases.
 
 /**
   * @function StaticSearch~processResults~processMustNotContains
@@ -1428,6 +1433,7 @@ class StaticSearch{
         }
       }
 //End of nested function processMayContains.
+
 //Main function code resumes here.
       if (phrases.length > 0){
 //We have phrases. They take priority. Get results if there are any.
@@ -1459,6 +1465,7 @@ class StaticSearch{
           }
           else{
             console.log('No useful search terms found.');
+            this.searchFinishedHook(3);
             return false;
           }
         }
@@ -1480,10 +1487,12 @@ class StaticSearch{
       if (this.resultSet.getSize() < 1){
         this.reportNoResults(true);
       }
+      this.searchFinishedHook(4);
       return (this.resultSet.getSize() > 0);
     }
     catch(e){
       console.log('ERROR: ' + e.message);
+      this.searchFinishedHook(5);
       return false;
     }
   }

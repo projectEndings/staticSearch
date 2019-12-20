@@ -27,5 +27,6 @@
     
     <contexts>
         <rule xpath="div[@class='l']"/>
+        <rule xpath="span[@class='note']"/>
     </contexts>
 </config>

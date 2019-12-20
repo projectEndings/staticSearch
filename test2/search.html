@@ -1,7 +1,23 @@
 <!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
    
+   
    <head>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+      
+      <style>
+          #testResults{
+            margin: 2em;
+            border-top: solid 1pt black;
+          }
+          
+         .success{
+            background-color: #ccffcc;
+         }
+         .failure{
+            background-color: #ffcccc;
+         }
+      </style>
+      
       <style id="ssCss">
         span.ssQueryAndButton{
             display: flex;
@@ -37,14 +53,19 @@
     </style>
       
       
+      
       <title>Test search page</title>
       </head>
    
+   
    <body>
+      
       
       <h1>Test search page</h1>
       
-      <p>This is a simple search page for the test colletion.</p>
+      
+      <p>This is a simple search page for the test collection.</p>
+      
       
       
       <div id="staticSearch"><script src="staticSearch/ssPorter2Stemmer.js"></script><script src="staticSearch/ssSearch.js"></script><script>
@@ -68,6 +89,34 @@
          </form>
          <div id="ssResults"></div>
       </div>
+      
+      <script>
+          <!-- 
+           //This is a set of automated tests which are intended to check whether 
+           //we're getting the results we expect back from the search object.
+           var reportDiv = null;
+           
+           function runTests(){
+             reportDiv = document.querySelector('div#testResults');
+             reportTestResults('Running automated tests.', true);
+             reportTestResults('Testing results for the word "elephant".', true);
+             Sch.queryBox.value = 'elephant';
+             Sch.searchFinishedHook = function(num){console.log('Search hook ' + num);reportTestResults('Expected result set size: 2; actual size: ' + this.resultSet.getSize(), (this.resultSet.getSize() === 2));}
+             Sch.doSearch();
+           }
+           
+           function reportTestResults(msg, succeed){
+             reportDiv.innerHTML += '<p class="' + (succeed ? 'success':'failure') + '">' + msg + '</p>';
+           }
+           
+           window.addEventListener('load', runTests);
+           
+           -->
+       </script>
+       
+       <div id="testResults">
+           
+       </div>
       
       </body>
    </html>
