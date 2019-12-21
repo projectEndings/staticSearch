@@ -537,7 +537,7 @@
                     </xsl:when>
                     
                     
-                    <xsl:when test="$thisClass='staticSearch.boolean'">
+                    <xsl:when test="$thisClass='staticSearch.bool'">
                         <xsl:variable name="tmpMap" as="element(map:map)">
                             <map xmlns="http://www.w3.org/2005/xpath-functions">
                                 <string key="filterId"><xsl:value-of select="$thisId"/></string>

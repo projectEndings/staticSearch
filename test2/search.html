@@ -5,8 +5,14 @@
    
    
    
+   
+   
    <head>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+      
+      
+      
+      
       
       
       
@@ -29,6 +35,8 @@
             background-color: #ffcccc;
          }
       </style>
+      
+      
       
       
       
@@ -74,8 +82,12 @@
       
       
       
+      
+      
       <title>Test search page</title>
       </head>
+   
+   
    
    
    
@@ -89,6 +101,8 @@
       
       
       
+      
+      
       <h1>Test search page</h1>
       
       
@@ -96,7 +110,11 @@
       
       
       
+      
+      
       <p>This is a simple search page for the test collection.</p>
+      
+      
       
       
       
@@ -121,6 +139,12 @@
             <div class="ssDateFilters">
                <fieldset class="ssFieldset" title="Date range" id="ssDate1">
                   <legend>Date range</legend><span><label for="date_ssDate1_from">From: </label><input type="text" maxlength="10" pattern="^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$" title="Date range" id="date_ssDate1_from" class="staticSearch.date" placeholder="1689-01-01" onchange="this.reportValidity()"/></span><span><label for="date_ssDate1_to">To: </label><input type="text" maxlength="10" pattern="^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$" title="Date range" id="date_ssDate1_to" class="staticSearch.date" placeholder="2019-12-31" onchange="this.reportValidity()"/></span></fieldset>
+            </div>
+            <div class="ssBoolFilters">
+               <fieldset class="ssFieldset"><span><label for="bool_ssBool1">Worth reading: </label><select id="bool_ssBool1" title="Worth reading" class="staticSearch.bool">
+                        <option value="">?</option>
+                        <option value="true">true</option>
+                        <option value="false">false</option></select></span></fieldset>
             </div>
          </form>
          <div id="ssResults"></div>
@@ -156,7 +180,7 @@
                                             reportTestResults('Testing results for the word "across".', true);
                                             reportTestResults('Expected result set size: 2; actual size: ' + this.resultSet.getSize() +
                                                               '; Expected contexts: 2; actual count ' + this.resultSet.getContextCount(), 
-                                                              (this.resultSet.getContextCount() === 2 && this.resultSet.getContextCount() === 2));
+                                                              (this.resultSet.getSize() === 2 && this.resultSet.getContextCount() === 2));
                                             nextTest();}});
                                            
            //Same word with date.
@@ -165,7 +189,7 @@
                                             reportTestResults('Testing results for the word "across" in documents since 2000.', true);
                                             reportTestResults('Expected result set size: 1; actual size: ' + this.resultSet.getSize() +
                                                               '; Expected contexts: 1; actual count ' + this.resultSet.getContextCount(), 
-                                                              (this.resultSet.getContextCount() === 1 && this.resultSet.getContextCount() === 1));
+                                                              (this.resultSet.getSize() === 1 && this.resultSet.getContextCount() === 1));
                                             nextTest();}});
                                             
            //Phrasal search. This one tests ignored inlines.
@@ -174,7 +198,7 @@
                                          reportTestResults('Testing results for the phrase "summer day—our day".', true);
                                          reportTestResults('Expected result set size: 2; actual size: ' + this.resultSet.getSize() +
                                                               '; Expected contexts: 2; actual count ' + this.resultSet.getContextCount(), 
-                                                              (this.resultSet.getContextCount() === 2 && this.resultSet.getContextCount() === 2));
+                                                              (this.resultSet.getSize() === 2 && this.resultSet.getContextCount() === 2));
                                          nextTest();}});
                                          
            //Phrasal search with boundary contexts.
@@ -183,8 +207,18 @@
                                          reportTestResults('Testing results for the phrase "our day Was clouded".', true);
                                          reportTestResults('Expected result set size: 1; actual size: ' + this.resultSet.getSize() +
                                                               '; Expected contexts: 1; actual count ' + this.resultSet.getContextCount(), 
-                                                              (this.resultSet.getContextCount() === 1 && this.resultSet.getContextCount() === 1));
+                                                              (this.resultSet.getSize() === 1 && this.resultSet.getContextCount() === 1));
                                          nextTest();}});
+                                         
+           //Two MUST_CONTAINs with boolean flag.
+           tests.push({setup: function(){Sch.queryBox.value = '+green +golden'; document.getElementById('bool_ssBool1').selectedIndex = 2;}, 
+                                         check: function(num){console.log('Search hook ' + num);
+                                         reportTestResults('Testing results for the phrase "+green +golden" with boolean flag "Worth reading" false.', true);
+                                         reportTestResults('Expected result set size: 1; actual size: ' + this.resultSet.getSize() +
+                                                              '; Expected contexts: 2; actual count ' + this.resultSet.getContextCount(), 
+                                                              (this.resultSet.getSize() === 1 && this.resultSet.getContextCount() === 2));
+                                         nextTest();}});
+                                         
            function runTests(){
              reportDiv = document.querySelector('div#testResults');
              
@@ -201,14 +235,15 @@
            }
            
            function nextTest(){
+             //Clear the search form every time.
+             Sch.clearSearchForm(); 
              currTestNum++;
              if (currTestNum >= tests.length){
                 reportTestResults('Done!', true);
                 Sch.searchFinishedHook = null;
                 return;
              }
-             //Clear the search form every time.
-             Sch.clearSearchForm(); 
+             //Sch.clearSearchForm();
              tests[currTestNum].setup.call();
              Sch.searchFinishedHook = tests[currTestNum].check;
              Sch.doSearch();
@@ -218,6 +253,8 @@
            
            -->
        </script>
+      
+      
       
       
       
