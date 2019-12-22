@@ -195,7 +195,7 @@
         <xsl:value-of select="replace(.,string-join(($curlyAposOpen,$curlyAposClose),'|'), $straightSingleApos) => replace(string-join(($curlyDoubleAposOpen,$curlyDoubleAposClose),'|'),$straightDoubleApos)"/>
     </xsl:template>
     
-    <xsl:template match="*[@lang][ancestor::body]" mode="clean" priority="1">
+    <xsl:template match="*[@lang or @xml:lang][ancestor::body]" mode="clean" priority="1">
         <xsl:copy>
             <xsl:apply-templates select="@*|node()" mode="#current"/>
         </xsl:copy>
@@ -249,8 +249,8 @@
     <!--The basic thing: tokenizing the string at the text level-->
     <xsl:template match="text()[ancestor::body][not(matches(.,'^\s+$'))]" mode="tokenize">
         <xsl:variable name="currNode" select="."/>
-        <xsl:variable name="rootLangDeclared" select="boolean(ancestor::html[@lang])" as="xs:boolean"/>
-        <xsl:variable name="langAncestor" select="ancestor::*[not(self::html)][@lang][1]" as="element()?"/>
+        <xsl:variable name="rootLangDeclared" select="boolean(ancestor::html[@lang or @xml:lang])" as="xs:boolean"/>
+        <xsl:variable name="langAncestor" select="ancestor::*[not(self::html)][@*:lang][1]" as="element()?"/>
         
         <!--Now to check to see whether or not this thing is declared
             as a foreign language to the root of the document-->
@@ -261,7 +261,7 @@
                 i.e. if they are equal, then return false (since it is NOT foreign)
                 -->
                 <xsl:when test="$rootLangDeclared and $langAncestor">
-                    <xsl:value-of select="not(boolean(ancestor::html/@lang = $langAncestor/@lang))"/>
+                    <xsl:value-of select="not(boolean(ancestor::html/@*:lang = $langAncestor/@*:lang))"/>
                 </xsl:when>
                 
                 <!--If there is a lang ancestor but no root lang declared,
