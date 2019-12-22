@@ -406,7 +406,17 @@
             </div>
         </xsl:copy>
     </xsl:template>
-
+    
+    <xd:doc>
+        <xd:desc>Repeated running of this process over the same document can 
+        result in excessive quantities of whitespace. Rather than try to figure out
+        where to preserve whitespace and where not, we just constrain it with this
+        template.</xd:desc>
+    </xd:doc>
+    <xsl:template match="text()[matches(., '^(\n\s*\n)+$')][not(ancestor::script or ancestor::style)]">
+        <xsl:text>&#x0a;&#x0a;</xsl:text>
+    </xsl:template>
+    
     <xd:doc>
         <xd:desc><xd:ref name="hcmc:normalizeDateString" type="function">hcmc:normalizeDateString</xd:ref>
         converts truncated dates (yyyy, or yyyy-mm) to fully-specified dates. It ignores leap years.

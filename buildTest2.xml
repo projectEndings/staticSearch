@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." name="buildTest2" default="all">
+  <description>This builds the test2 site.</description>
+    
+    <target name="buildStaticSearch">
+        <ant antfile="build.xml" usenativebasedir="true" inheritall="false">
+            <property name="configFile" value="${basedir}/config2.xml"/>
+        </ant>
+    </target>
+    
+    <target name="all">
+        <echo>Building test2 materials into a site.</echo>
+        <antcall target="buildStaticSearch"/>
+        <echo>
+            To run the tests, you will need to start a web server in the test2
+            folder and navigate to the test2/search.html page.
+        </echo>
+    </target>
+    
+</project>
