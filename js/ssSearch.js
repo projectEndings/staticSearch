@@ -1765,27 +1765,27 @@ class StaticSearch{
     }
 
   /**
-    * @function SSResultSet~resultsAsArray
-    * @description Outputs an array containing result set counts, to be
+    * @function SSResultSet~resultsAsObject
+    * @description Outputs an object containing result set counts, to be
     *              used in automated testing.
-    * @return {Array} an array structure containing counts of docs found,
-    *                  scores and individual contexts
+    * @return {Object} an object structure containing counts of docs found,
+    *                  total contexts, and total score. Totting them up in
+    *                  this way doesn't mean anything in particular, but it
+    *                  provides a quick way to check whether things have
+    *                  changed and a test is not returning what it used to.
     */
     resultsAsObject(){
-      let retArr = [];
-        for (let [key, value] of this.mapDocs){
-          let contexts = [];
-          for (let c of value.contexts){
-            contexts.push(c.context);
-          }
-          let obj = {
-            uri: value.docUri,
-            score: value.score,
-            contexts: contexts
-          };
-          retArr.push(obj);
-        }
-      return retArr;
+      let scoreTotal = 0;
+      let contextsTotal = 0;
+      for (let [key, value] of this.mapDocs){
+        scoreTotal += value.score;
+        contextsTotal += value.contexts.length;
+      }
+      return {
+        docsFound: this.mapDocs.size,
+        contextsFound: contextsTotal,
+        scoreTotal: scoreTotal
+      }
     }
   }
 

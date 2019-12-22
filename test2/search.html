@@ -1,47 +1,23 @@
 <!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
-   
-   
-   
-   
-   
-   
-   
-   
+
+
    <head>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
+
       <style>
-          #testResults{
-            margin: 2em;
-            border-top: solid 1pt black;
+        #testResults{
+          margin: 2em;
+          border-top: solid 1pt black;
           }
-          
-         .success{
-            background-color: #ccffcc;
-         }
-         .failure{
-            background-color: #ffcccc;
-         }
+        .success{
+          background-color: #ccffcc;
+          }
+        .failure{
+          background-color: #ffcccc;
+          }
       </style>
-      
-      
-      
-      
-      
-      
-      
+
+
       <style id="ssCss">
         span.ssQueryAndButton{
             display: flex;
@@ -75,53 +51,21 @@
             padding-left: 2em;
         }
     </style>
-      
-      
-      
-      
-      
-      
-      
-      
-      
+
+
       <title>Test search page</title>
       </head>
-   
-   
-   
-   
-   
-   
-   
-   
+
+
    <body>
-      
-      
-      
-      
-      
-      
-      
-      
+
+
       <h1>Test search page</h1>
-      
-      
-      
-      
-      
-      
-      
-      
+
+
       <p>This is a simple search page for the test collection.</p>
-      
-      
-      
-      
-      
-      
-      
-      
-      
+
+
       <div id="staticSearch"><script src="staticSearch/ssPorter2Stemmer.js"></script><script src="staticSearch/ssSearch.js"></script><script>
                 var Sch;
                 window.addEventListener('load', function(){Sch = new StaticSearch();});
@@ -129,9 +73,9 @@
                <fieldset class="ssFieldset" title="Document type" id="ssDesc1">
                   <legend>Document type</legend>
                   <ul class="ssDescCheckboxList">
-                     <li><input type="checkbox" title="Document type" value="Site info files" id="ssDesc1_1" class="staticSearch.desc"/><label for="ssDesc1_1">Site info files</label></li>
-                     <li><input type="checkbox" title="Document type" value="Poems" id="ssDesc1_2" class="staticSearch.desc"/><label for="ssDesc1_2">Poems</label></li>
-                     <li><input type="checkbox" title="Document type" value="Documents with tables" id="ssDesc1_3" class="staticSearch.desc"/><label for="ssDesc1_3">Documents with tables</label></li>
+                     <li><input type="checkbox" title="Document type" value="Poems" id="ssDesc1_1" class="staticSearch.desc"/><label for="ssDesc1_1">Poems</label></li>
+                     <li><input type="checkbox" title="Document type" value="Documents with tables" id="ssDesc1_2" class="staticSearch.desc"/><label for="ssDesc1_2">Documents with tables</label></li>
+                     <li><input type="checkbox" title="Document type" value="Site info files" id="ssDesc1_3" class="staticSearch.desc"/><label for="ssDesc1_3">Site info files</label></li>
                      <li><input type="checkbox" title="Document type" value="Article extracts" id="ssDesc1_4" class="staticSearch.desc"/><label for="ssDesc1_4">Article extracts</label></li>
                   </ul>
                </fieldset>
@@ -149,120 +93,124 @@
          </form>
          <div id="ssResults"></div>
       </div>
-      
+
       <script>
-          <!-- 
-           //This is a set of automated tests which are intended to check whether 
+          <!--
+           //This is a set of automated tests which are intended to check whether
            //we're getting the results we expect back from the search object.
            var reportDiv = null;
-           
-           
+
+
            var currTestNum = -1;
            var tests = [];
-           
+
            //Simple one-word search.
-           tests.push({setup: function(){Sch.queryBox.value = 'elephant';}, 
-                       check: function(num){console.log('Search hook ' + num); 
-                                            reportTestResults('Testing results for the word "elephant".', true);
-                                            reportTestResults('Expected result set size: 2; actual size: ' + this.resultSet.getSize(), (this.resultSet.getSize() === 2));
-                                            nextTest();}});
-                                            
+           tests.push({setup: function(){Sch.queryBox.value = 'elephant';},
+                       check: function(num){console.log('Search hook ' + num);
+                                            console.log('Testing results for the word "elephant".');
+                                            checkResults({docsFound: 2, contextsFound: 4, scoreTotal: 4});}});
+
            //Another simple one-word search.
-           tests.push({setup: function(){Sch.queryBox.value = 'twilight';}, 
+           tests.push({setup: function(){Sch.queryBox.value = 'twilight';},
                        check: function(num){console.log('Search hook ' + num);
-                                            reportTestResults('Testing results for the word "twilight".', true);
-                                            reportTestResults('Expected result set size: 2; actual size: ' + this.resultSet.getSize(), (this.resultSet.getSize() === 2));
-                                            nextTest();}});
-           
+                                            console.log('Testing results for the word "twilight".');
+                                            checkResults({docsFound: 2, contextsFound: 3, scoreTotal: 3});}});
+
+           //Another simple one-word search but using a desc filter.
+           tests.push({setup: function(){Sch.queryBox.value = 'twilight'; document.getElementById('ssDesc1_1').checked = 'checked';},
+                       check: function(num){console.log('Search hook ' + num);
+                                            console.log('Testing results for the word "twilight with Poems desc filter".');
+                                            checkResults({docsFound: 1, contextsFound: 2, scoreTotal: 2});}});
+
            //Third simple one-word search.
-           tests.push({setup: function(){Sch.queryBox.value = 'across';}, 
+           tests.push({setup: function(){Sch.queryBox.value = 'across';},
                        check: function(num){console.log('Search hook ' + num);
-                                            reportTestResults('Testing results for the word "across".', true);
-                                            reportTestResults('Expected result set size: 2; actual size: ' + this.resultSet.getSize() +
-                                                              '; Expected contexts: 2; actual count ' + this.resultSet.getContextCount(), 
-                                                              (this.resultSet.getSize() === 2 && this.resultSet.getContextCount() === 2));
-                                            nextTest();}});
-                                           
+                                            console.log('Testing results for the word "across".', true);
+                                            checkResults({docsFound: 2, contextsFound: 2, scoreTotal: 2});}});
+
            //Same word with date.
-           tests.push({setup: function(){Sch.queryBox.value = 'across'; document.getElementById('date_ssDate1_from').value = '2000';}, 
+           tests.push({setup: function(){Sch.queryBox.value = 'across'; document.getElementById('date_ssDate1_from').value = '2000';},
                        check: function(num){console.log('Search hook ' + num);
-                                            reportTestResults('Testing results for the word "across" in documents since 2000.', true);
-                                            reportTestResults('Expected result set size: 1; actual size: ' + this.resultSet.getSize() +
-                                                              '; Expected contexts: 1; actual count ' + this.resultSet.getContextCount(), 
-                                                              (this.resultSet.getSize() === 1 && this.resultSet.getContextCount() === 1));
-                                            nextTest();}});
-                                            
+                                            console.log('Testing results for the word "across" in documents since 2000.');
+                                            checkResults({docsFound: 1, contextsFound: 1, scoreTotal: 1});}});
+
            //Phrasal search. This one tests ignored inlines.
-           tests.push({setup: function(){Sch.queryBox.value = '"summer day—our day"';}, 
+           tests.push({setup: function(){Sch.queryBox.value = '"summer day—our day"';},
                                          check: function(num){console.log('Search hook ' + num);
-                                         reportTestResults('Testing results for the phrase "summer day—our day".', true);
-                                         reportTestResults('Expected result set size: 2; actual size: ' + this.resultSet.getSize() +
-                                                              '; Expected contexts: 2; actual count ' + this.resultSet.getContextCount(), 
-                                                              (this.resultSet.getSize() === 2 && this.resultSet.getContextCount() === 2));
-                                         nextTest();}});
-                                         
+                                         console.log('Testing results for the phrase "summer day—our day".');
+                                         checkResults({docsFound: 2, contextsFound: 2, scoreTotal: 2});}});
+
            //Phrasal search with boundary contexts.
-           tests.push({setup: function(){Sch.queryBox.value = '"our day Was clouded"';}, 
+           tests.push({setup: function(){Sch.queryBox.value = '"our day Was clouded"';},
                                          check: function(num){console.log('Search hook ' + num);
-                                         reportTestResults('Testing results for the phrase "our day Was clouded".', true);
-                                         reportTestResults('Expected result set size: 1; actual size: ' + this.resultSet.getSize() +
-                                                              '; Expected contexts: 1; actual count ' + this.resultSet.getContextCount(), 
-                                                              (this.resultSet.getSize() === 1 && this.resultSet.getContextCount() === 1));
-                                         nextTest();}});
-                                         
+                                         console.log('Testing results for the phrase "our day Was clouded".');
+                                         checkResults({docsFound: 1, contextsFound: 1, scoreTotal: 1});}});
+
+           //Phrasal search with boundary contexts.
+           tests.push({setup: function(){Sch.queryBox.value = '"our day Was clouded"'; document.getElementById('date_ssDate1_to').value = '2000';},
+                                         check: function(num){console.log('Search hook ' + num);
+                                         console.log('Testing results for the phrase "our day Was clouded" with max date 2000.');
+                                         checkResults({docsFound: 0, contextsFound: 0, scoreTotal: 0});}});
+
            //Two MUST_CONTAINs with boolean flag.
-           tests.push({setup: function(){Sch.queryBox.value = '+green +golden'; document.getElementById('bool_ssBool1').selectedIndex = 2;}, 
+           tests.push({setup: function(){Sch.queryBox.value = '+green +golden'; document.getElementById('bool_ssBool1').selectedIndex = 2;},
                                          check: function(num){console.log('Search hook ' + num);
-                                         reportTestResults('Testing results for the phrase "+green +golden" with boolean flag "Worth reading" false.', true);
-                                         reportTestResults('Expected result set size: 1; actual size: ' + this.resultSet.getSize() +
-                                                              '; Expected contexts: 2; actual count ' + this.resultSet.getContextCount(), 
-                                                              (this.resultSet.getSize() === 1 && this.resultSet.getContextCount() === 2));
-                                         nextTest();}});
-                                         
+                                         console.log('Testing results for the phrase "+green +golden" with boolean flag "Worth reading" false.');
+                                         checkResults({docsFound: 1, contextsFound: 2, scoreTotal: 2});}});
+
            function runTests(){
              reportDiv = document.querySelector('div#testResults');
-             
+
             //Turn off browser history tracking otherwise life gets complicated
             //when running a sequence of automated tests.
              Sch.storeSearchesInBrowserHistory = false;
-             reportTestResults('Running automated tests.', true);
+             reportResults('Running automated tests.', true);
              nextTest();
-             
+
            }
-           
-           function reportTestResults(msg, succeed){
+
+           function reportResults(msg, succeed){
              reportDiv.innerHTML += '<p class="' + (succeed ? 'success':'failure') + '">' + msg + '</p>';
-           }
-           
-           function nextTest(){
-             //Clear the search form every time.
-             Sch.clearSearchForm(); 
-             currTestNum++;
-             if (currTestNum >= tests.length){
-                reportTestResults('Done!', true);
-                Sch.searchFinishedHook = null;
-                return;
+             if (succeed){
+               Sch.clearSearchForm();
+               currTestNum++;
+               if (currTestNum >= tests.length){
+                  reportTestResults('Done!', true);
+                  Sch.searchFinishedHook = null;
+                  return;
+               }
+               //Sch.clearSearchForm();
+               tests[currTestNum].setup.call();
+               Sch.searchFinishedHook = tests[currTestNum].check;
+               Sch.doSearch();
              }
-             //Sch.clearSearchForm();
-             tests[currTestNum].setup.call();
-             Sch.searchFinishedHook = tests[currTestNum].check;
-             Sch.doSearch();
            }
-           
+
+           //This calls the search object's resultSet instance to get a
+           //set of totals to compare with what we expect.
+           function checkResults(obj){
+             let results = Sch.resultSet.resultsAsObject();
+             let msg = 'Hit documents: expected ' + obj.docsFound;
+             msg += '; found ' + results.docsFound + '. ';
+             msg += 'Hit contexts: expected ' + obj.contextsFound;
+             msg += '; found ' + results.contextsFound + '. ';
+             msg += 'Total of all scores: expected ' + obj.scoreTotal;
+             msg += '; found ' + results.scoreTotal + '. ';
+             let succeed = ((obj.docsFound === results.docsFound)
+                          &&(obj.contextsFound === results.contextsFound)
+                          &&(obj.scoreTotal === results.scoreTotal));
+             reportResults(msg, succeed);
+           }
+
            window.addEventListener('load', runTests);
-           
+
            -->
        </script>
-      
-      
-      
-      
-      
-      
-      
+
+
       <div id="testResults">
-         
+
          </div>
-      
+
       </body>
    </html>
