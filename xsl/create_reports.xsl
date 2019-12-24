@@ -4,6 +4,7 @@
     xmlns:hcmc="http://hcmc.uvic.ca/ns/staticSearch"
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+    xmlns:map="http://www.w3.org/2005/xpath-functions"
     exclude-result-prefixes="#all"
     xpath-default-namespace="http://www.w3.org/1999/xhtml"
     version="3.0">
@@ -28,17 +29,61 @@
     <xsl:variable name="spans" select="$tokenizedDocs//span[@data-staticSearch-stem]"/>
     
     <xsl:template match="/">
-        <xsl:message>Creating reports...this might take a bit</xsl:message>
+        <xsl:message>Creating reports...this might take a while</xsl:message>
         <xsl:result-document href="{$ssBaseDir}/staticSearch_report.html">
             <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
                 <head>
                     <title>Static Search Report: <xsl:value-of select="$collectionDir"/></title>
+                    <style>
+                        <xsl:comment>
+                            body{
+                                font-family: sans-serif;
+                                margin: 1em 10%;
+                            }
+                            section{
+                                padding: 1em;
+                                margin: 0.25rem 0;
+                                border-radius: 0.5em;
+                            }
+                            section:nth-of-type(odd){
+                                background-color: #ddddff;
+                            }
+                            section:nth-of-type(even){
+                                background-color: #ddffdd;
+                            }
+                            h1{
+                                text-align: center;
+                                margin: 1em 5%;
+                            }
+                            h2{
+                                margin: 0.25em;
+                            }
+                            summary{
+                                cursor: pointer;
+                            }
+                            summary:hover{
+                                color: #990000;
+                            }
+                            table{
+                                border: solid 1pt gray;
+                                border-collapse: collapse;
+                            }
+                            td{
+                                border: solid 1pt gray;
+                                padding: 0.25em;
+                            }
+                            li{
+                                margin: 0.25em;
+                            }
+                        </xsl:comment>
+                    </style>
                 </head>
                 <body>
                     <div>
                         <h1>Static Search Report: <xsl:value-of select="$collectionDir"/></h1>
                         <xsl:call-template name="createStats"/>
                         <xsl:call-template name="createDiagnostics"/>
+                        <xsl:call-template name="createFilters"/>
                         <xsl:call-template name="createWordTables"/>
                         <xsl:call-template name="createNonDictionaryList"/>
                         <xsl:call-template name="createForeignWordList"/>
@@ -89,7 +134,30 @@
         </section>
     </xsl:template>
  
-    
+    <xsl:template name="createFilters">
+        <xsl:message>Generating report on search filters...</xsl:message>
+        <section>
+            <h2>Search Filters</h2>
+            <xsl:variable name="filterFiles" select="uri-collection(concat($outDir, '/filters/?*.json'))"/>
+            <xsl:choose>
+                <xsl:when test="count($filterFiles) gt 0">
+                    <details>
+                        <summary>Total filters: <xsl:value-of select="count($filterFiles)"/></summary>
+                        <ul>
+                            <xsl:for-each select="$filterFiles">
+                                <xsl:variable name="jDoc" select="json-to-xml(unparsed-text(.))"/>
+                                <li>id: <xsl:value-of select="$jDoc//map:string[@key='filterId']"/>; type: <xsl:value-of select="replace($jDoc//map:string[@key='filterId'], '^ss([^\d]+)+\d+$', '$1')"/>; caption: "<xsl:value-of select="$jDoc//map:string[@key='filterName']"/>"</li>
+                            </xsl:for-each>
+                        </ul>
+                        
+                    </details>
+                </xsl:when>
+                <xsl:otherwise>
+                    <p>None found!</p>
+                </xsl:otherwise>
+            </xsl:choose>
+        </section>
+    </xsl:template>
     
     <xsl:template name="createStats">
         <xsl:message>Generating statistics...</xsl:message>
@@ -160,7 +228,7 @@
                                 <!--STEM-->
                                 <td><xsl:value-of select="current-grouping-key()"/></td>
                                 
-                                <!--TOTAL INSTANCes-->
+                                <!--TOTAL INSTANCES-->
                                 <td><xsl:value-of select="$instancesCount"/></td>
                                 
                                 <!--TOTAL VARIANTS-->

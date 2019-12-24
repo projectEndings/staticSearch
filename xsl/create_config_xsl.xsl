@@ -225,17 +225,17 @@
                 <!--Now, create all the parameters-->
                 
                 <!--First, create the global varialbes and parameters-->
-                <xsl:call-template name="createGlobals"/>
+                <xsl:call-template name="createGlobals" exclude-result-prefixes="#all"/>
                 
                 <!--Now create the DICTIONARY xml files-->
-                <xsl:call-template name="createDictionaryXML"/>
+                <xsl:call-template name="createDictionaryXML" exclude-result-prefixes="#all"/>
                 
                 
                 <!--And now create the sets of templates that will be used in the later tokenization stages-->
                 <!--If there are retain rules specified in the configuration file,
                     then call the createRetainRules template-->
                 <xsl:if test="not(empty($retainRules))">
-                    <xsl:call-template name="createRetainRules"/>
+                    <xsl:call-template name="createRetainRules" exclude-result-prefixes="#all"/>
                     <xsl:if test="$verbose">
                         <xsl:message>Create retain rules</xsl:message>
                         <xsl:message>  <xsl:call-template name="createRetainRules"/></xsl:message>
@@ -246,7 +246,7 @@
                 <!--If there are deletion rules specified in the configuration file,
                     then call the createDeleteRules template-->
                 <xsl:if test="not(empty($deleteRules))">
-                    <xsl:call-template name="createDeleteRules"/>
+                    <xsl:call-template name="createDeleteRules" exclude-result-prefixes="#all"/>
                     <xsl:if test="$verbose">
                         <xsl:message>Create delete rules</xsl:message>
                         <xsl:message>
@@ -256,11 +256,11 @@
                 </xsl:if>
                 
                 <xsl:if test="not(empty($contextRules))">
-                    <xsl:call-template name="createContextRules"/>
+                    <xsl:call-template name="createContextRules" exclude-result-prefixes="#all"/>
                     <xsl:if test="$verbose">
                         <xsl:message>Create context rules</xsl:message>
                         <xsl:message>
-                            <xsl:call-template name="createContextRules"/>
+                            <xsl:call-template name="createContextRules" exclude-result-prefixes="#all"/>
                         </xsl:message>
                         
                     </xsl:if>
@@ -270,7 +270,7 @@
                     <xsl:call-template name="createWeightingRules"/>
                     <xsl:if test="$verbose">
                         <xsl:message>Create weighting rules</xsl:message>
-                        <xsl:message><xsl:call-template name="createWeightingRules"/></xsl:message>
+                        <xsl:message><xsl:call-template name="createWeightingRules" exclude-result-prefixes="#all"/></xsl:message>
                     </xsl:if>
                 </xsl:if>
             </xso:stylesheet>
@@ -291,7 +291,7 @@
         <xd:desc>This creates the global parameters and variables for the config file, which works as the global
             document for the transformations</xd:desc>
     </xd:doc>
-    <xsl:template name="createGlobals">
+    <xsl:template name="createGlobals" exclude-result-prefixes="#all">
         
         <xsl:variable name="params" as="element()+">
             <!--First, create the actual configuration file thing-->
@@ -323,7 +323,7 @@
             
         </xsl:variable>
         
-        <xsl:sequence select="$params"/>
+        <xsl:sequence select="$params" exclude-result-prefixes="#all"/>
         
 
         
@@ -359,7 +359,7 @@
     </xsl:template>
     
     
-    <xsl:template name="createDictionaryXML">
+    <xsl:template name="createDictionaryXML" exclude-result-prefixes="xs xd tei">
         <xsl:for-each select="($configDoc//stopwordsFile, $configDoc//dictionaryFile)">
             <xsl:variable name="path" select="resolve-uri(text(),$configUri)"/>
             <xsl:variable name="uri" select="concat($outDir,'/dicts/',substring-before(tokenize($path,'/')[last()],'.txt'),'.xml')"/>
@@ -385,7 +385,7 @@
             either a weight greater than 0 OR want to be retained as a context item for the kwic.</xd:p>
         </xd:desc>
     </xd:doc>
-    <xsl:template name="createRetainRules">
+    <xsl:template name="createRetainRules" exclude-result-prefixes="#all">
         <xso:template match="{string-join($retainRules/@xpath,' | ')}" priority="1" mode="clean">
             <xso:if test="$verbose">
                 <xso:message>Template #clean: retaining <xso:value-of select="local-name(.)"/></xso:message>
@@ -406,7 +406,7 @@
                 text that appears in every document or navigation items).</xd:p>
         </xd:desc>
     </xd:doc>
-    <xsl:template name="createDeleteRules">
+    <xsl:template name="createDeleteRules" exclude-result-prefixes="#all">
         <xso:template match="{string-join($deleteRules/@xpath,' | ')}" priority="1" mode="clean">
             <xso:if test="$verbose">
                 <xso:message>Template #clean: Deleting <xso:value-of select="local-name(.)"/></xso:message>
@@ -421,7 +421,7 @@
                 specified as context nodes for the kwic.</xd:p>
         </xd:desc>
     </xd:doc>
-    <xsl:template name="createContextRules">
+    <xsl:template name="createContextRules" exclude-result-prefixes="#all">
         <xso:template match="{string-join($contextRules/@xpath,' | ')}" priority="1" mode="contextualize">
             <xso:if test="$verbose">
                 <xso:message>Template #contextualize: Adding @data-staticSearch-context flag to <xso:value-of select="local-name(.)"/></xso:message>
@@ -445,7 +445,7 @@
                 some non-0 weight specified.</xd:p>
         </xd:desc>
     </xd:doc>
-    <xsl:template name="createWeightingRules">
+    <xsl:template name="createWeightingRules" exclude-result-prefixes="#all">
         <xso:template match="{string-join($weightedRules/@xpath,' | ')}" priority="1" mode="weigh">
             <xso:if test="$verbose">
                 <xso:message>Template #weigh: Adding @data-weight to <xso:value-of select="local-name(.)"/></xso:message>
