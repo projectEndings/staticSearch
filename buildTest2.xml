@@ -7,7 +7,7 @@
             <property name="configFile" value="${basedir}/config2.xml"/>
         </ant>
     </target>
-    
+
     <target name="all">
         <echo>Building test2 materials into a site.</echo>
         <antcall target="buildStaticSearch"/>
