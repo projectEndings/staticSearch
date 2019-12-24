@@ -95,6 +95,8 @@
         div.ssDescFilters fieldset, div.ssDateFilters fieldset, div.ssBoolFilters fieldset{
             margin: 0.25em auto;
             flex-grow: 1;
+            display: flex;
+            flex-wrap: wrap;
         }
         ul.ssDescCheckboxList{
             list-style-type: none;
@@ -108,7 +110,7 @@
             align-items: flex-start;
         }
         div.ssDateFilters fieldset.ssFieldset span, div.ssBoolFilters fieldset.ssFieldset span{
-            padding-left: 2em;
+            padding: 0.5em 1em;
         }
     </xsl:param>
     
