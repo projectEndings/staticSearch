@@ -3,8 +3,17 @@
    
    
    
+   
+   
+   
    <head>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+      
+      
+      
+      
+      
+      
       
       
       
@@ -26,6 +35,9 @@
       
       
       
+      
+      
+      
       <style id="ssCss">
         span.ssQueryAndButton{
             display: flex;
@@ -43,6 +55,8 @@
         div.ssDescFilters fieldset, div.ssDateFilters fieldset, div.ssBoolFilters fieldset{
             margin: 0.25em auto;
             flex-grow: 1;
+            display: flex;
+            flex-wrap: wrap;
         }
         ul.ssDescCheckboxList{
             list-style-type: none;
@@ -56,9 +70,12 @@
             align-items: flex-start;
         }
         div.ssDateFilters fieldset.ssFieldset span, div.ssBoolFilters fieldset.ssFieldset span{
-            padding-left: 2em;
+            padding: 0.5em 1em;
         }
     </style>
+      
+      
+      
       
       
       
@@ -69,7 +86,13 @@
    
    
    
+   
+   
+   
    <body>
+      
+      
+      
       
       
       
@@ -79,7 +102,13 @@
       
       
       
+      
+      
+      
       <p>This is a simple search page for the test collection.</p>
+      
+      
+      
       
       
       
@@ -91,9 +120,9 @@
                <fieldset class="ssFieldset" title="Document type" id="ssDesc1">
                   <legend>Document type</legend>
                   <ul class="ssDescCheckboxList">
-                     <li><input type="checkbox" title="Document type" value="Poems" id="ssDesc1_1" class="staticSearch.desc"/><label for="ssDesc1_1">Poems</label></li>
-                     <li><input type="checkbox" title="Document type" value="Documents with tables" id="ssDesc1_2" class="staticSearch.desc"/><label for="ssDesc1_2">Documents with tables</label></li>
-                     <li><input type="checkbox" title="Document type" value="Site info files" id="ssDesc1_3" class="staticSearch.desc"/><label for="ssDesc1_3">Site info files</label></li>
+                     <li><input type="checkbox" title="Document type" value="Site info files" id="ssDesc1_1" class="staticSearch.desc"/><label for="ssDesc1_1">Site info files</label></li>
+                     <li><input type="checkbox" title="Document type" value="Poems" id="ssDesc1_2" class="staticSearch.desc"/><label for="ssDesc1_2">Poems</label></li>
+                     <li><input type="checkbox" title="Document type" value="Documents with tables" id="ssDesc1_3" class="staticSearch.desc"/><label for="ssDesc1_3">Documents with tables</label></li>
                      <li><input type="checkbox" title="Document type" value="Article extracts" id="ssDesc1_4" class="staticSearch.desc"/><label for="ssDesc1_4">Article extracts</label></li>
                   </ul>
                </fieldset>
@@ -138,7 +167,7 @@
            tests.push({setup: function(){Sch.queryBox.value = 'twilight'; document.getElementById('ssDesc1_1').checked = 'checked';},
                        check: function(num){console.log('Search hook ' + num);
                                             console.log('Testing results for the word "twilight with Poems desc filter".');
-                                            checkResults({docsFound: 1, contextsFound: 2, scoreTotal: 2});}});
+                                            checkResults({docsFound: 1, contextsFound: 1, scoreTotal: 1});}});
 
            //Third simple one-word search.
            tests.push({setup: function(){Sch.queryBox.value = 'across';},
@@ -224,6 +253,9 @@
 
            -->
        </script>
+      
+      
+      
       
       
       
