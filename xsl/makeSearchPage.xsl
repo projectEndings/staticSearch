@@ -415,7 +415,7 @@
         where to preserve whitespace and where not, we just constrain it with this
         template.</xd:desc>
     </xd:doc>
-    <xsl:template match="text()[matches(., '^(\n\s*\n)+$')][not(ancestor::script or ancestor::style)]">
+    <xsl:template match="text()[matches(., '^(\s*\n\s*\n\s*)+$')][not(ancestor::script or ancestor::style)]">
         <xsl:text>&#x0a;&#x0a;</xsl:text>
     </xsl:template>
     

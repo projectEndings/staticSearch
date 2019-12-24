@@ -1,97 +1,7 @@
 <!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
    
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
    <head>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
       
       
       <style>
@@ -106,36 +16,6 @@
           background-color: #ffcccc;
           }
       </style>
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
       
       
       <style id="ssCss">
@@ -175,167 +55,17 @@
     </style>
       
       
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
       <title>Test search page</title>
       </head>
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
    
    
    <body>
       
       
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
       <h1>Test search page</h1>
       
       
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
       <p>This is a simple search page for the test collection.</p>
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
       
       
       <div id="staticSearch"><script src="staticSearch/ssPorter2Stemmer.js"></script><script src="staticSearch/ssSearch.js"></script><script>
@@ -429,6 +159,12 @@
                                          check: function(num){console.log('Search hook ' + num);
                                          console.log('Testing results for the phrase "+green +golden" with boolean flag "Worth reading" false.');
                                          checkResults({docsFound: 1, contextsFound: 2, scoreTotal: 2});}});
+                                         
+           //Search for a word that's in the stopword list
+           tests.push({setup: function(){Sch.queryBox.value = 'artichoke';},
+                                         check: function(num){console.log('Search hook ' + num);
+                                         console.log('Testing results for the word "artichoke", which is in the stopwords list.');
+                                         checkResults({docsFound: 0, contextsFound: 0, scoreTotal: 0});}});
 
            function runTests(){
              reportDiv = document.querySelector('div#testResults');
@@ -476,36 +212,6 @@
 
            -->
        </script>
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
       
       
       <div id="testResults">
