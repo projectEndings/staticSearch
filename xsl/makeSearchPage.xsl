@@ -293,8 +293,8 @@
                                     <xsl:variable name="filterName" select="$jsonDoc//map:string[@key='filterName']"/>
                                     <xsl:variable name="filterId" select="$jsonDoc//map:string[@key='filterId']"/>
                                     <span>
-                                        <label for="bool_{$filterId}"><xsl:value-of select="$filterName"/>: </label>
-                                        <select id="bool_{$filterId}" title="{$filterName}" class="staticSearch.bool">
+                                        <label for="{$filterId}"><xsl:value-of select="$filterName"/>: </label>
+                                        <select id="{$filterId}" title="{$filterName}" class="staticSearch.bool">
                                             <option value="">?</option>
                                             <option value="true">true</option>
                                             <option value="false">false</option>

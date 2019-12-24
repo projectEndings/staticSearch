@@ -219,7 +219,7 @@ class StaticSearch{
       this.jsonToRetrieve.push({path: this.jsonDirectory + 'stopwords.json', state: TO_GET});
       this.jsonToRetrieve.push({path: this.jsonDirectory + 'titles.json', state: TO_GET});
       this.jsonToRetrieve.push({path: this.jsonDirectory + 'tokens.json', state: TO_GET});
-      for (var f of document.querySelectorAll('fieldset.ssFieldset[id]')){
+      for (var f of document.querySelectorAll('fieldset.ssFieldset[id], fieldset.ssFieldset select[id]')){
         this.jsonToRetrieve.push({path: this.jsonDirectory + 'filters/' + f.id + '.json', state: TO_GET});
       }
       console.dir(this.jsonToRetrieve);
