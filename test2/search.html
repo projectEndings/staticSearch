@@ -212,7 +212,6 @@
             //when running a sequence of automated tests.
              Sch.storeSearchesInBrowserHistory = false;
              reportResults('Running automated tests.', true);
-             nextTest();
 
            }
 
@@ -222,11 +221,10 @@
                Sch.clearSearchForm();
                currTestNum++;
                if (currTestNum >= tests.length){
-                  reportTestResults('Done!', true);
+                  reportDiv.innerHTML += '<p class="success">Done!</p>';
                   Sch.searchFinishedHook = null;
                   return;
                }
-               //Sch.clearSearchForm();
                tests[currTestNum].setup.call();
                Sch.searchFinishedHook = tests[currTestNum].check;
                Sch.doSearch();
