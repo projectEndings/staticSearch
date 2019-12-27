@@ -1,7 +1,9 @@
 <!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
    
+   
    <head>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+      
       
       
       <style>
@@ -75,9 +77,9 @@
                <fieldset class="ssFieldset" title="Document type" id="ssDesc1">
                   <legend>Document type</legend>
                   <ul class="ssDescCheckboxList">
-                     <li><input type="checkbox" title="Document type" value="Site info files" id="ssDesc1_1" class="staticSearch.desc"/><label for="ssDesc1_1">Site info files</label></li>
-                     <li><input type="checkbox" title="Document type" value="Poems" id="ssDesc1_2" class="staticSearch.desc"/><label for="ssDesc1_2">Poems</label></li>
-                     <li><input type="checkbox" title="Document type" value="Documents with tables" id="ssDesc1_3" class="staticSearch.desc"/><label for="ssDesc1_3">Documents with tables</label></li>
+                     <li><input type="checkbox" title="Document type" value="Poems" id="ssDesc1_1" class="staticSearch.desc"/><label for="ssDesc1_1">Poems</label></li>
+                     <li><input type="checkbox" title="Document type" value="Documents with tables" id="ssDesc1_2" class="staticSearch.desc"/><label for="ssDesc1_2">Documents with tables</label></li>
+                     <li><input type="checkbox" title="Document type" value="Site info files" id="ssDesc1_3" class="staticSearch.desc"/><label for="ssDesc1_3">Site info files</label></li>
                      <li><input type="checkbox" title="Document type" value="Article extracts" id="ssDesc1_4" class="staticSearch.desc"/><label for="ssDesc1_4">Article extracts</label></li>
                   </ul>
                </fieldset>
@@ -119,7 +121,7 @@
                                             checkResults({docsFound: 2, contextsFound: 3, scoreTotal: 3});}});
 
            //Another simple one-word search but using a desc filter.
-           tests.push({setup: function(){Sch.queryBox.value = 'twilight'; document.getElementById('ssDesc1_1').checked = 'checked';},
+           tests.push({setup: function(){Sch.queryBox.value = 'twilight'; document.querySelector('input[value="Site info files"]').checked = 'checked';},
                        check: function(num){console.log('Search hook ' + num);
                                             console.log('Testing results for the word "twilight with Poems desc filter".');
                                             checkResults({docsFound: 1, contextsFound: 1, scoreTotal: 1});}});
@@ -131,7 +133,7 @@
                                             checkResults({docsFound: 2, contextsFound: 2, scoreTotal: 2});}});
 
            //Same word with date.
-           tests.push({setup: function(){Sch.queryBox.value = 'across'; document.getElementById('date_ssDate1_from').value = '2000';},
+           tests.push({setup: function(){Sch.queryBox.value = 'across'; document.querySelector('input[title="Date range"][id$="_from"]').value = '2000';},
                        check: function(num){console.log('Search hook ' + num);
                                             console.log('Testing results for the word "across" in documents since 2000.');
                                             checkResults({docsFound: 1, contextsFound: 1, scoreTotal: 1});}});
@@ -149,13 +151,13 @@
                                          checkResults({docsFound: 1, contextsFound: 1, scoreTotal: 1});}});
 
            //Phrasal search with boundary contexts.
-           tests.push({setup: function(){Sch.queryBox.value = '"our day Was clouded"'; document.getElementById('date_ssDate1_to').value = '2000';},
+           tests.push({setup: function(){Sch.queryBox.value = '"our day Was clouded"'; document.querySelector('input[title="Date range"][id$="_to"]').value = '2000';},
                                          check: function(num){console.log('Search hook ' + num);
                                          console.log('Testing results for the phrase "our day Was clouded" with max date 2000.');
                                          checkResults({docsFound: 0, contextsFound: 0, scoreTotal: 0});}});
 
            //Two MUST_CONTAINs with boolean flag.
-           tests.push({setup: function(){Sch.queryBox.value = '+green +golden'; document.getElementById('bool_ssBool1').selectedIndex = 2;},
+           tests.push({setup: function(){Sch.queryBox.value = '+green +golden'; document.querySelector('select[title="Worth reading"]').selectedIndex = 2;},
                                          check: function(num){console.log('Search hook ' + num);
                                          console.log('Testing results for the phrase "+green +golden" with boolean flag "Worth reading" false.');
                                          checkResults({docsFound: 1, contextsFound: 2, scoreTotal: 2});}});
