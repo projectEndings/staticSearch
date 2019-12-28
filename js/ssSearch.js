@@ -216,13 +216,12 @@ class StaticSearch{
 
       //The collection of JSON filter files that we need to retrieve.
       this.jsonToRetrieve = [];
-      this.jsonToRetrieve.push({path: this.jsonDirectory + 'stopwords.json', state: TO_GET});
-      this.jsonToRetrieve.push({path: this.jsonDirectory + 'titles.json', state: TO_GET});
-      this.jsonToRetrieve.push({path: this.jsonDirectory + 'tokens.json', state: TO_GET});
+      this.jsonToRetrieve.push({path: this.jsonDirectory + 'ssStopwords.json', state: TO_GET});
+      this.jsonToRetrieve.push({path: this.jsonDirectory + 'ssTitles.json', state: TO_GET});
+      this.jsonToRetrieve.push({path: this.jsonDirectory + 'ssTokens.json', state: TO_GET});
       for (var f of document.querySelectorAll('fieldset.ssFieldset[id], fieldset.ssFieldset select[id]')){
         this.jsonToRetrieve.push({path: this.jsonDirectory + 'filters/' + f.id + '.json', state: TO_GET});
       }
-      console.dir(this.jsonToRetrieve);
 
       //Default set of stopwords
       //TODO: THIS SHOULD NOT BE RETRIEVED HERE, but as part of the regular array.
@@ -296,20 +295,20 @@ class StaticSearch{
   * @param path {String} the path from which it was retrieved.
   */
   jsonRetrieved(json, path){
-    console.log('Got ' + path);
-    if (path.match(/stopwords\.json$/)){
+    if (path.match(/ssStopwords\.json$/)){
       this.stopwords = json.words;
-      console.dir(this.stopwords);
       return;
     }
-    if (path.match(/tokens\.json$/)){
+    if (path.match(/ssTokens\.json$/)){
       this.tokens = json;
-      console.log(this.tokens);
+      return;
+    }
+    if (path.match(/ssTitles\.json$/)){
+      this.titles = json;
       return;
     }
     if (path.match(/\/filters\//)){
       this.mapFilterData.set(json.filterName, json);
-      console.dir(this.mapFilterData);
       return;
     }
 
@@ -410,6 +409,21 @@ class StaticSearch{
     }
   }
 
+/** @function StaticSearch~getTitleByDocId
+  * @description this function returns the title of a document based on
+  *              its id.
+  * @param {String} docId the id of the document.
+  * @return {String} the title, or a placeholder if not found.
+  */
+  getTitleByDocId(docId){
+    try{
+      return this.titles[docId][0];
+    }
+    catch(e){
+      return '[No title]';
+    }
+  }
+
 /** @function StaticSearch~doSearch
   * @description this function initiates the search process,
   *              taking it as far as creating the promises
@@ -477,9 +491,9 @@ class StaticSearch{
           history.pushState({time: Date.now()}, '', url);
         }
       }
-      else{
+      /*else{
         console.log('Not storing search in browser history.');
-      }
+      }*/
       return true;
     }
     catch(e){

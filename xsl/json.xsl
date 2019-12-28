@@ -723,7 +723,7 @@
     </xd:doc>
     <xsl:template name="createStopwordsJson">
         <xsl:message>Creating stopwords array...</xsl:message>
-        <xsl:result-document href="{$outDir}/stopwords.json" method="text">
+        <xsl:result-document href="{$outDir}/ssStopwords.json" method="text">
             <xsl:variable name="map">
                 <xsl:apply-templates select="$stopwordsFileXml" mode="dictToArray"/>
             </xsl:variable>
@@ -733,7 +733,7 @@
     
     
     <xsl:template name="createTitleJson">
-        <xsl:result-document href="{$outDir}/titles.json" method="text">
+        <xsl:result-document href="{$outDir}/ssTitles.json" method="text">
             <xsl:variable name="map">
                 <map:map>
                     <xsl:for-each select="$tokenizedDocs//html">
@@ -766,7 +766,7 @@
                </map:array>
             </map:map>
         </xsl:variable>
-        <xsl:result-document href="{$outDir}/tokens.json" method="text">
+        <xsl:result-document href="{$outDir}/ssTokens.json" method="text">
             <xsl:value-of select="xml-to-json($map, map{'ident': $indentJSON})"/>
         </xsl:result-document>
     </xsl:template>
