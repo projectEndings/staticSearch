@@ -1005,14 +1005,14 @@ class StaticSearch{
           currXSet = new XSet();
           fromDate = new Date(fromVal);
           for (const docUri in docs){
-            if (new Date(docs[docUri][0]) >= fromDate){
+            if ((docs[docUri].length > 0) && (new Date(docs[docUri][docs[docUri].length-1]) >= fromDate)){
               currXSet.add(docUri);
             }
           }
           xSets.push(currXSet);
         }
         //If it's a to date, we have to append stuff.
-        let toVal = date.querySelector('input[type="text"][id $= "_from"]').value;
+        let toVal = date.querySelector('input[type="text"][id $= "_to"]').value;
         if (toVal.length > 0){
           currXSet = new XSet();
           switch (toVal.length){
@@ -1022,7 +1022,7 @@ class StaticSearch{
             default: toDate = new Date('3000'); //random future date.
           }
           for (const docUri in docs){
-            if ((docs[docUri].length > 1) && (new Date(docs[docUri][1]) <= toDate)){
+            if ((docs[docUri].length > 0) && (new Date(docs[docUri][0]) <= toDate)){
               currXSet.add(docUri);
             }
           }
