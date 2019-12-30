@@ -949,6 +949,171 @@ class StaticSearch{
     }
   }
 
+  /** @function StaticSearch~getDocIdsForFilters2
+    * @description this function gets the set of currently-configured
+    * filters by calling getActiveFiltersAsMap(), then creates a
+    * set (in the form of an XSet object) of all the document ids
+    * that qualify according to the filters.
+    *
+    * @return {XSet} an XSet object (which might be empty)
+    */
+    getDocIdsForFilters2(){
+
+      var xSets = [];
+      var currXSet;
+
+      //Find each desc fieldset and get its descriptor.
+      let descs = document.querySelectorAll('fieldset[id ^= "ssDesc"]');
+      for (let desc of descs){
+        currXSet = new XSet();
+        let descName = desc.getAttribute('title');
+        //console.log(descName);
+        let cbxs = desc.querySelectorAll('input[type="checkbox"]:checked');
+        for (let cbx of cbxs){
+          //console.log(cbx.value);
+          currXSet.addArray(this.mapFilterData.get(descName)[cbx.id].docs);
+        }
+        console.dir(currXSet);
+        if (currXSet.size > 0){
+          xSets.push(currXSet);
+        }
+      }
+
+      //Find each bool selector and get its descriptor.
+      let bools = document.querySelectorAll('select[id ^= "ssBool"]');
+      for (let bool of bools){
+        let sel = bool.selectedIndex;
+        if (sel > 0){
+          currXSet = new XSet();
+          let valueId = bool.id + '_' + bool.selectedIndex;
+          let boolName = bool.getAttribute('title');
+          currXSet.addArray(this.mapFilterData.get(boolName)[valueId].docs);
+          console.dir(currXSet);
+          if (currXSet.size > 0){
+            xSets.push(currXSet);
+          }
+        }
+      }
+
+//DONE TO HERE: Next is dates.
+
+      /*
+      this.getActiveFilters();
+      //If we didn't find any filters, return the empty set.
+      if (this.mapActiveFilters.size < 1){
+        var result = new XSet();
+        result.filtersActive = false; //There were no filters selected.
+        return result;
+      }
+
+      else{
+        //Create an array to hold each of the distinct sets.
+        var xSets = [];
+        var currXSet;
+        for (var [key, value] of this.mapActiveFilters){
+          currXSet = new XSet();
+          switch(value.type){
+            case 'desc':
+              for (let docUri of Object.keys(this.docMetadata)){
+                for (let d of value.arr){
+                  if ((this.docMetadata[docUri].descFilters[key] != null) && (this.docMetadata[docUri].descFilters[key].indexOf(d) > -1)){
+                    currXSet.add(docUri);
+                  }
+                }
+              }
+              break;
+            case 'bool':
+              for (let docUri of Object.keys(this.docMetadata)){
+                if ((this.docMetadata[docUri].boolFilters[key] != null) && (this.docMetadata[docUri].boolFilters[key] === value.arr[0])){
+                  currXSet.add(docUri);
+                }
+              }
+              break;
+            case 'date_from':
+              //If it's a date_from, then we can leave partial dates alone, since
+              //the Date() constructor defaults to first month, first day.
+              let fromDate = new Date(value.arr[0]);
+              let fromKeif (xSets.length > 0){
+        let result = xSets[0];
+        for (var i=1; i<xSets.length; i++){
+          result = result.xIntersection(xSets[i]);
+        }
+        result.filtersActive = true;
+        return result;
+      }
+      else{
+      //This represents a situation in which we appear to have filters active,
+      //but they don't match any of the known types, so behave as though no
+      //filters were specified.
+        let result = new XSet();
+        result.filtersActive = false;
+        return result;
+      }y = key.replace(/_from$/, '');
+              for (let docUri of Object.keys(this.docMetadata)){
+                if (Array.isArray(this.docMetadata[docUri].dateFilters[fromKey])){
+                  //It may be a range (slash-separated) or it may not. In either case,
+                  //we want to use the final component.
+                  let dateToUse = this.docMetadata[docUri].dateFilters[fromKey][this.docMetadata[docUri].dateFilters[fromKey].length - 1];
+                  if (new Date(dateToUse) >= fromDate){
+                    currXSet.add(docUri);
+                  }
+                }
+              }
+              break;
+            case 'date_to':
+              //If it's a date_to, we need to complete partial dates; year-only
+              //dates have -12-31 appended, while year-month dates need to be
+              //incremented by a month and decremented by a day.
+              let txtDate = value.arr[0];
+              switch (txtDate.length){
+                case 10:
+                  break;
+                case 4:
+                  txtDate = txtDate + '-12-31';
+                  break;
+                case 7:
+                  //Complicated month stuff. Ignore leap years.
+                  txtDate = txtDate.replace(/(\d\d\d\d-)((0[13578])|(1[02]))$/, '$1$2-31').replace(/(\d\d\d\d-)((0[469])|(11))$/, '$1$2-30').replace(/02$/, '02-28');
+                  break;
+                default:
+                  txtDate = '2050-12-31'; //Random future date.
+              }
+              let toDate = new Date(txtDate);
+              let toKey = key.replace(/_to$/, '');
+              for (let docUri of Object.keys(this.docMetadata)){
+                if (Array.isArray(this.docMetadata[docUri].dateFilters[toKey])){
+                  //As above, it may be a range, and in either case we need to
+                  //use the first component.
+                  let dateToUse = this.docMetadata[docUri].dateFilters[toKey][0];
+                  if (new Date(dateToUse) <= toDate){
+                    currXSet.add(docUri);
+                  }
+                }
+              }
+              break;
+            default: console.log('Unknown filter type: ' + value.type);
+          }
+          xSets[xSets.length] = currXSet;
+        }
+      }*/
+      if (xSets.length > 0){
+        let result = xSets[0];
+        for (var i=1; i<xSets.length; i++){
+          result = result.xIntersection(xSets[i]);
+        }
+        result.filtersActive = true;
+        return result;
+      }
+      else{
+      //This represents a situation in which we appear to have filters active,
+      //but they don't match any of the known types, so behave as though no
+      //filters were specified.
+        let result = new XSet();
+        result.filtersActive = false;
+        return result;
+      }
+    }
+
 /** @function StaticSearch~writeSearchReport
   * @description this outputs a human-readable explanation of the search
   * that's being done, to clarify for users what they've chosen to look for.
@@ -1849,5 +2014,15 @@ class StaticSearch{
     */
     xDifference(xSet2){
       return new XSet([...this].filter(x => !xSet2.has(x)));
+    }
+/** @function XSet~addArray
+  * @param {Array} arr an array of values that are to be added.
+  * @description this is a convenience function for adding a set of
+  * values in a single operation.
+  */
+    addArray(arr){
+      for (let item of arr){
+        this.add(item);
+      }
     }
   }
