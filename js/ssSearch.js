@@ -969,12 +969,11 @@ class StaticSearch{
         let descName = desc.getAttribute('title');
         //console.log(descName);
         let cbxs = desc.querySelectorAll('input[type="checkbox"]:checked');
-        for (let cbx of cbxs){
-          //console.log(cbx.value);
-          currXSet.addArray(this.mapFilterData.get(descName)[cbx.id].docs);
-        }
-        console.dir(currXSet);
-        if (currXSet.size > 0){
+        if (cbxs.length > 0){
+          for (let cbx of cbxs){
+            //console.log(cbx.value);
+            currXSet.addArray(this.mapFilterData.get(descName)[cbx.id].docs);
+          }
           xSets.push(currXSet);
         }
       }
@@ -988,114 +987,49 @@ class StaticSearch{
           let valueId = bool.id + '_' + bool.selectedIndex;
           let boolName = bool.getAttribute('title');
           currXSet.addArray(this.mapFilterData.get(boolName)[valueId].docs);
-          console.dir(currXSet);
-          if (currXSet.size > 0){
-            xSets.push(currXSet);
-          }
+          xSets.push(currXSet);
         }
       }
 
-//DONE TO HERE: Next is dates.
-
-      /*
-      this.getActiveFilters();
-      //If we didn't find any filters, return the empty set.
-      if (this.mapActiveFilters.size < 1){
-        var result = new XSet();
-        result.filtersActive = false; //There were no filters selected.
-        return result;
-      }
-
-      else{
-        //Create an array to hold each of the distinct sets.
-        var xSets = [];
-        var currXSet;
-        for (var [key, value] of this.mapActiveFilters){
+      //Find each date pair and get its descriptor.
+      let dates = document.querySelectorAll('fieldset[id ^= "ssDate"]');
+      for (let date of dates){
+        let dateName = date.title;
+        let docs = this.mapFilterData.get(dateName).docs;
+        //If it's a from date, partial dates are OK because the date constructor
+        //defaults to -01-01.
+        let fromDate = null;
+        let toDate = null;
+        let fromVal = date.querySelector('input[type="text"][id $= "_from"]').value;
+        if (fromVal.length > 0){
           currXSet = new XSet();
-          switch(value.type){
-            case 'desc':
-              for (let docUri of Object.keys(this.docMetadata)){
-                for (let d of value.arr){
-                  if ((this.docMetadata[docUri].descFilters[key] != null) && (this.docMetadata[docUri].descFilters[key].indexOf(d) > -1)){
-                    currXSet.add(docUri);
-                  }
-                }
-              }
-              break;
-            case 'bool':
-              for (let docUri of Object.keys(this.docMetadata)){
-                if ((this.docMetadata[docUri].boolFilters[key] != null) && (this.docMetadata[docUri].boolFilters[key] === value.arr[0])){
-                  currXSet.add(docUri);
-                }
-              }
-              break;
-            case 'date_from':
-              //If it's a date_from, then we can leave partial dates alone, since
-              //the Date() constructor defaults to first month, first day.
-              let fromDate = new Date(value.arr[0]);
-              let fromKeif (xSets.length > 0){
-        let result = xSets[0];
-        for (var i=1; i<xSets.length; i++){
-          result = result.xIntersection(xSets[i]);
-        }
-        result.filtersActive = true;
-        return result;
-      }
-      else{
-      //This represents a situation in which we appear to have filters active,
-      //but they don't match any of the known types, so behave as though no
-      //filters were specified.
-        let result = new XSet();
-        result.filtersActive = false;
-        return result;
-      }y = key.replace(/_from$/, '');
-              for (let docUri of Object.keys(this.docMetadata)){
-                if (Array.isArray(this.docMetadata[docUri].dateFilters[fromKey])){
-                  //It may be a range (slash-separated) or it may not. In either case,
-                  //we want to use the final component.
-                  let dateToUse = this.docMetadata[docUri].dateFilters[fromKey][this.docMetadata[docUri].dateFilters[fromKey].length - 1];
-                  if (new Date(dateToUse) >= fromDate){
-                    currXSet.add(docUri);
-                  }
-                }
-              }
-              break;
-            case 'date_to':
-              //If it's a date_to, we need to complete partial dates; year-only
-              //dates have -12-31 appended, while year-month dates need to be
-              //incremented by a month and decremented by a day.
-              let txtDate = value.arr[0];
-              switch (txtDate.length){
-                case 10:
-                  break;
-                case 4:
-                  txtDate = txtDate + '-12-31';
-                  break;
-                case 7:
-                  //Complicated month stuff. Ignore leap years.
-                  txtDate = txtDate.replace(/(\d\d\d\d-)((0[13578])|(1[02]))$/, '$1$2-31').replace(/(\d\d\d\d-)((0[469])|(11))$/, '$1$2-30').replace(/02$/, '02-28');
-                  break;
-                default:
-                  txtDate = '2050-12-31'; //Random future date.
-              }
-              let toDate = new Date(txtDate);
-              let toKey = key.replace(/_to$/, '');
-              for (let docUri of Object.keys(this.docMetadata)){
-                if (Array.isArray(this.docMetadata[docUri].dateFilters[toKey])){
-                  //As above, it may be a range, and in either case we need to
-                  //use the first component.
-                  let dateToUse = this.docMetadata[docUri].dateFilters[toKey][0];
-                  if (new Date(dateToUse) <= toDate){
-                    currXSet.add(docUri);
-                  }
-                }
-              }
-              break;
-            default: console.log('Unknown filter type: ' + value.type);
+          fromDate = new Date(fromVal);
+          for (const docUri in docs){
+            if (new Date(docs[docUri][0]) >= fromDate){
+              currXSet.add(docUri);
+            }
           }
-          xSets[xSets.length] = currXSet;
+          xSets.push(currXSet);
         }
-      }*/
+        //If it's a to date, we have to append stuff.
+        let toVal = date.querySelector('input[type="text"][id $= "_from"]').value;
+        if (toVal.length > 0){
+          currXSet = new XSet();
+          switch (toVal.length){
+            case 10: toDate = new Date(toVal);
+            case 4:  toDate = new Date(toVal + '-12-31');
+            case 7:  toDate = new Date(toVal.replace(/(\d\d\d\d-)((0[13578])|(1[02]))$/, '$1$2-31').replace(/(\d\d\d\d-)((0[469])|(11))$/, '$1$2-30').replace(/02$/, '02-28'));
+            default: toDate = new Date('3000'); //random future date.
+          }
+          for (const docUri in docs){
+            if ((docs[docUri].length > 1) && (new Date(docs[docUri][1]) <= toDate)){
+              currXSet.add(docUri);
+            }
+          }
+          xSets.push(currXSet);
+        }
+      }
+
       if (xSets.length > 0){
         let result = xSets[0];
         for (var i=1; i<xSets.length; i++){

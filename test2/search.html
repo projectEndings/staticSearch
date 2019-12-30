@@ -185,7 +185,7 @@
                currTestNum++;
                if (currTestNum >= tests.length){
                   reportDiv.innerHTML += '<p class="success">Done!</p>';
-                  Sch.searchFinishedHook = null;
+                  Sch.searchFinishedHook = function(){};
                   return;
                }
                tests[currTestNum].setup.call();

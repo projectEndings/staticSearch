@@ -565,16 +565,19 @@
                             <map xmlns="http://www.w3.org/2005/xpath-functions">
                                 <string key="filterId"><xsl:value-of select="$thisId"/></string>
                                 <string key="filterName"><xsl:value-of select="$thisName"/></string>
-                                <xsl:for-each-group select="current-group()" group-by="ancestor::html/@data-staticSearch-relativeUri">
-                                    <xsl:variable name="filterId" select="concat($thisId,'_',position())"/>
-                                    <array key="{current-grouping-key()}">
-                                        <xsl:for-each select="current-group()">
-                                            <xsl:for-each select="tokenize(@content,'/')">
-                                                <string><xsl:value-of select="."/></string>
+                                <map key="docs">
+                                    <xsl:for-each-group select="current-group()" group-by="ancestor::html/@data-staticSearch-relativeUri">
+                                        <xsl:variable name="filterId" select="concat($thisId,'_',position())"/>
+                                        <array key="{current-grouping-key()}">
+                                            <xsl:for-each select="current-group()">
+                                                <xsl:for-each select="tokenize(@content,'/')">
+                                                    <string><xsl:value-of select="."/></string>
+                                                </xsl:for-each>
                                             </xsl:for-each>
-                                        </xsl:for-each>
-                                    </array>
-                                </xsl:for-each-group>
+                                        </array>
+                                    </xsl:for-each-group>
+                                </map>
+                                
                             </map>
                         </xsl:variable>
                         <xsl:result-document href="{$outDir || '/filters/' || $thisId || '.json'}" method="text">
