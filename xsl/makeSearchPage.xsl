@@ -270,12 +270,12 @@
                                     <legend><xsl:value-of select="$filterName"/></legend>
                                     <span>
                                         <label for="{$filterId}_from">From: </label>
-                                        <input type="text" maxlength="10" pattern="{$dateRegex}" title="{$filterName}" id="date_{$filterId}_from" class="staticSearch.date" placeholder="{format-date($minDate, '[Y0001]-[M01]-[D01]')}" onchange="this.reportValidity()"/>
+                                        <input type="text" maxlength="10" pattern="{$dateRegex}" title="{$filterName}" id="{$filterId}_from" class="staticSearch.date" placeholder="{format-date($minDate, '[Y0001]-[M01]-[D01]')}" onchange="this.reportValidity()"/>
                                     </span>
                                     
                                     <span>
                                         <label for="{$filterId}_to">To: </label>
-                                        <input type="text" maxlength="10" pattern="{$dateRegex}" title="{$filterName}" id="date_{$filterId}_to" class="staticSearch.date" placeholder="{format-date($maxDate, '[Y0001]-[M01]-[D01]')}" onchange="this.reportValidity()"/>
+                                        <input type="text" maxlength="10" pattern="{$dateRegex}" title="{$filterName}" id="{$filterId}_to" class="staticSearch.date" placeholder="{format-date($maxDate, '[Y0001]-[M01]-[D01]')}" onchange="this.reportValidity()"/>
                                     </span>
                                 </fieldset>
                             </xsl:for-each>

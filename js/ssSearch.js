@@ -129,6 +129,15 @@ class StaticSearch{
       //'lower' dir and an 'upper' dir, where the two sets of case-
       //distinguished JSON files are stored.
       this.jsonDirectory = 'staticSearch/'; //Default value. Override if necessary.
+      //Headers used for all AJAX fetch requests.
+      this.fetchHeaders = {
+              credentials: 'same-origin',
+              cache: 'no-cache',
+              headers: {'Accept': 'application/json'},
+              method: 'GET',
+              redirect: 'follow',
+              referrer: 'no-referrer'
+        };
       let tmp;
       this.queryBox =
            document.querySelector("input#ssQuery[type='text']");
@@ -229,14 +238,8 @@ class StaticSearch{
 
       //Default set of stopwords
       //TODO: THIS SHOULD NOT BE RETRIEVED HERE, but as part of the regular array.
-      this.stopwords = ss.stopwords;
-      //Now check for a local stopwords file.
-      fetch(this.jsonDirectory + 'stopwords.json')
-        .then(function(response) {
-          return response.json();
-        }).then(function(jsonStopwords) {
-          this.stopwords = jsonStopwords.words;
-        }.bind(this));
+      this.stopwords = ss.stopwords; //temporary default.
+      this.stopwordsRetrieved = false; //flag for retrieval.
 
       //Boolean: should this instance report the details of its search
       //in human-readable form?
@@ -301,6 +304,7 @@ class StaticSearch{
   jsonRetrieved(json, path){
     if (path.match(/ssStopwords\.json$/)){
       this.stopwords = json.words;
+      this.stopwordsRetrieved = true;
       return;
     }
     if (path.match(/ssTokens\.json$/)){
@@ -432,7 +436,7 @@ class StaticSearch{
     document.body.style.cursor = 'progress';
     if (this.parseSearchQuery()){
       if (this.writeSearchReport()){
-        this.populateIndex();
+        this.populateIndexes();
         if (!popping){
           this.setQueryString();
         }
@@ -1105,24 +1109,23 @@ class StaticSearch{
   }
 
 /**
-  * @function StaticSearch~populateIndex
+  * @function StaticSearch~populateIndexes
   * @description The task of this function is basically
-  * to ensure that the index is ready to handle a search, in that
-  * attempts have been made to retrieve all JSON files relating
-  * to the current search, including the docs.json file if that
-  * has not already been retrieved.
+  * to ensure that the various indexes (search terms and facet filters)
+  * are ready to handle a search, in that attempts have been made to
+  * retrieve all JSON files relating to the current search.
   * The index is deemed ready when either a) all the JSON files
-  * for required tokens have been retrieved and their contents
-  * merged into the index, or b) a retrieval has failed, so an
-  * empty placeholder has been inserted to signify that there is
-  * no such dataset.
+  * for required tokens and filters have been retrieved and their
+  * contents merged into the required structures, or b) a retrieval
+  * has failed, so an empty placeholder has been inserted to signify
+  * that there is no such dataset.
   *
   * The function works with fetch and promises, and its final
   * .then() calls the processResults function.
   */
-  populateIndex(){
+  populateIndexes(){
     var i, imax, tokensToFind = [], promises = [], emptyIndex,
-    jsonSubfolder, needDocMetadata = false;
+    jsonSubfolder, filterSelector, filterIds, needDocMetadata = false;
 //We need a self pointer because this will go out of scope.
     var self = this;
     try{
@@ -1141,35 +1144,90 @@ class StaticSearch{
         }
       }
 
+      filterIds = new Set();
       //Do we need to get document metadata for filters?
-      if ((Object.keys(this.docMetadata).length === 0) &&
-         (this.docMetadata.constructor === Object)){
-        needDocMetadata = true;
-      }
+      if (this.allJsonRetrieved === false){
+        //First get a list of active filters.
 
-      //If we do need to retrieve JSON index data, then do it
-      if ((tokensToFind.length > 0) || (needDocMetadata)){
-
-        if (needDocMetadata){
-          promises[promises.length] = fetch(self.jsonDirectory + 'docs.json', {
-                  credentials: 'same-origin',
-                  cache: 'no-cache',
-                  headers: {'Accept': 'application/json'},
-                  method: 'GET',
-                  redirect: 'follow',
-                  referrer: 'no-referrer'
-            })
+        for (let ctrl of document.querySelectorAll('input[type="checkbox"][class="staticSearch.desc"]:checked')){
+          filterIds.add(ctrl.id.split('_')[0]);
+        }
+        for (let ctrl of document.querySelectorAll('select[class="staticSearch.bool"]')){
+          if (ctrl.selectedIndex > 0){
+            filterIds.add(ctrl.id.split('_')[0]);
+          }
+        }
+        for (let ctrl of document.querySelectorAll('input[type="text"][class="staticSearch.date"]')){
+          if (ctrl.value.length > 3){
+            filterIds.add(ctrl.id.split('_')[0]);
+          }
+        }
+        //Create promises for all of the required filters.
+        for (let filterId of filterIds){
+          promises[promises.length] = fetch(self.jsonDirectory + 'filters/' + filterId + '.json', this.fetchHeaders)
             .then(function(response) {
               return response.json();
             })
-            .then(function(docMeta) {
-              self.docMetadata = docMeta;
+            .then(function(json) {
+              self.mapFilterData.set(json.filterName, json);
             }.bind(self))
             .catch(function(e){
-              console.log('Error attempting to retrieve docMetadata: ' + e);
-              return function(){self.docMetadata = {'noMetadataFound': true};}.bind(self);
+              console.log('Error attempting to retrieve filter data: ' + e);
             }.bind(self));
         }
+        //What else do we need to retrieve?
+
+        //Get the stopwords if needed.
+        if (this.stopwordsRetrieved == false){
+          promises[promises.length] = fetch(self.jsonDirectory + 'ssStopwords.json', this.fetchHeaders)
+            .then(function(response) {
+              return response.json();
+            })
+            .then(function(json) {
+              self.stopwords = json.words;
+              self.stopwordsRetrieved = true;
+            }.bind(self))
+            .catch(function(e){
+              console.log('Error attempting to retrieve stopword list: ' + e);
+            }.bind(self));
+        }
+
+        if (!this.resultSet.titles){
+          promises[promises.length] = fetch(self.jsonDirectory + 'ssTitles.json', this.fetchHeaders)
+            .then(function(response) {
+              return response.json();
+            })
+            .then(function(json) {
+              self.resultSet.titles = json;
+            }.bind(self))
+            .catch(function(e){
+              console.log('Error attempting to retrieve title list: ' + e);
+            }.bind(self));
+        }
+//TODO: When we add glob searching, we'll need to care about the list of tokens too.
+
+      }
+
+
+
+      //TODO: SHOULD BE OBSOLETE.
+      if ((Object.keys(this.docMetadata).length === 0) &&
+         (this.docMetadata.constructor === Object)){
+         promises[promises.length] = fetch(self.jsonDirectory + 'docs.json', this.fetchHeaders)
+           .then(function(response) {
+             return response.json();
+           })
+           .then(function(docMeta) {
+             self.docMetadata = docMeta;
+           }.bind(self))
+           .catch(function(e){
+             console.log('Error attempting to retrieve docMetadata: ' + e);
+             return function(){self.docMetadata = {'noMetadataFound': true};}.bind(self);
+           }.bind(self));
+      }
+
+      //If we do need to retrieve JSON index data, then do it
+      if (tokensToFind.length > 0){
 
 //Set off fetch operations for the things we don't have yet.
         for (i=0, imax=tokensToFind.length; i<imax; i++){
@@ -1186,14 +1244,7 @@ class StaticSearch{
 
 //We create an array of fetches to get the json file for each token,
 //assuming it's there.
-          promises[promises.length] = fetch(self.jsonDirectory + jsonSubfolder + tokensToFind[i] + '.json', {
-                  credentials: 'same-origin',
-                  cache: 'no-cache',
-                  headers: {'Accept': 'application/json'},
-                  method: 'GET',
-                  redirect: 'follow',
-                  referrer: 'no-referrer'
-              })
+          promises[promises.length] = fetch(self.jsonDirectory + jsonSubfolder + tokensToFind[i] + '.json', this.fetchHeaders)
 //If we get a response, and it looks good
               .then(function(response){
                 if ((response.status >= 200) &&
@@ -1211,16 +1262,16 @@ class StaticSearch{
                 return function(emptyIndex){self.tokenFound(emptyIndex);}.bind(self, emptyIndex);
               }.bind(self));
             }
+      }
 
-
-
-//Now set up a Promise.all to fire the rest of the work when all fetches have
-//completed or failed.
+      //Now set up a Promise.all to fire the rest of the work when all fetches have
+      //completed or failed.
+      if (promises.length > 0){
         Promise.all(promises).then(function(values) {
           this.processResults();
         }.bind(this));
       }
-  //Otherwise we can just do the search with the index data we already have.
+      //Otherwise we can just do the search with the index data we already have.
       else{
         this.processResults();
       }
