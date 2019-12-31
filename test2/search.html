@@ -161,12 +161,19 @@
                                          check: function(num){console.log('Search hook ' + num);
                                          console.log('Testing results for the phrase "+green +golden" with boolean flag "Worth reading" false.');
                                          checkResults({docsFound: 1, contextsFound: 2, scoreTotal: 2});}});
+                                                                                  
+            //Search based only on filters, no terms.
+             tests.push({setup: function(){Sch.queryBox.value = ''; document.querySelector('input[value="Poems"]').checked = 'checked'; document.querySelector('select[title="Worth reading"]').selectedIndex = 1;},
+                                         check: function(num){console.log('Search hook ' + num);
+                                         console.log('Testing results for pure filter search: poems worth reading.');
+                                         checkResults({docsFound: 2, contextsFound: 0, scoreTotal: 0});}});
                                          
            //Search for a word that's in the stopword list
            tests.push({setup: function(){Sch.queryBox.value = 'artichoke';},
                                          check: function(num){console.log('Search hook ' + num);
                                          console.log('Testing results for the word "artichoke", which is in the stopwords list.');
                                          checkResults({docsFound: 0, contextsFound: 0, scoreTotal: 0});}});
+
 
            function runTests(){
              reportDiv = document.querySelector('div#testResults');

@@ -177,9 +177,6 @@ class StaticSearch{
       this.boolFilterSelects =
            Array.from(document.querySelectorAll("select[class='staticSearch.bool']"));
 
-      //THIS WILL BE OBSOLETE ONCE THE NEW DISTRIBUTED METADATA CODE IS WORKING.
-      this.docMetadata = {};
-
       //An object which will be filled with a complete list of all the
       //individual tokens indexed for the site. Data retrieved later by
       //AJAX.
@@ -312,7 +309,7 @@ class StaticSearch{
       return;
     }
     if (path.match(/ssTitles\.json$/)){
-      this.resultSet.titles = json;
+      this.resultSet.titles = new Map(Object.entries(json));
       return;
     }
     if (path.match(/\/filters\//)){
@@ -657,90 +654,6 @@ class StaticSearch{
     return (this.terms.length > 0);
   }
 
-/** @function StaticSearch~listDocsByFilters
-  * @description this function provides search results
-  * based only on the facet filters (if any), to be
-  * used when there is no search query, just a selection
-  * from the filters.
-  *
-  * @return {Boolean} true if documents found, otherwise false.
-  */
-  listDocsByFilters(){
-    var self = this;
-//Check whether we have filters on the page or not.
-    if (this.descFilterCheckboxes.length < 1){
-      return false;
-    }
-//Check whether any filters have been selected.
-    let arrFilters = this.getActiveFiltersAsArray();
-    if (arrFilters.length < 1){
-      return false;
-    }
-    //So we have active filters. Do we have doc
-    //metadata yet?
-    if ((Object.keys(this.docMetadata).length === 0) &&
-       (this.docMetadata.constructor === Object)){
-      //We don't have doc metadata yet. Retrieve it
-      //and call this again.
-      //TODO: Figure out if there's a less repetitive
-      //way to do this.
-      return fetch(self.jsonDirectory + 'docs.json')
-        .then(function(response) {
-          return response.json();
-        })
-        .then(function(docMeta) {
-          self.docMetadata = docMeta;
-          self.listDocsByFilters();
-        })
-        .catch(function(e){
-          console.log('Error attempting to retrieve docMetadata: ' + e);
-          return function(){self.docMetadata = {'noMetadataFound': true}; return false;}.bind(self);
-        }.bind(self));
-    }
-    else{
-      if (this.docMetadata.noMetadataFound == true){
-        return false;
-      }
-      else{
-        //We have doc metadata. We can list documents based
-        //on the filters if any.
-        //No need for this, since we're not using it.
-        //this.resultSet.clear();
-        let docLinks = [];
-        for (let docUri of Object.keys(this.docMetadata)){
-          if (this.docMatchesFilters(docUri, arrFilters, this.matchAllFilters)){
-            //TODO: Just output a list of documents as links, since
-            //there's no real useful info to be had and no sort
-            //requirement.
-            let newLi = document.createElement('li');
-            let newA = document.createElement('a');
-            newA.setAttribute('href', docUri);
-            //TODO: Replace this with doc title when available.
-            newA.appendChild(document.createTextNode(this.docMetadata[docUri].docTitle));
-            newLi.appendChild(newA);
-            docLinks.push(newLi);
-          }
-        }
-        if (docLinks.length > 0){
-          let newUl = document.createElement('ul');
-          for (let docLink of docLinks){
-            newUl.appendChild(docLink);
-          }
-          while (this.resultsDiv.firstChild){this.resultsDiv.removeChild(this.resultsDiv.firstChild);}
-          this.resultsDiv.appendChild(document.createElement('p')
-                         .appendChild(document.createTextNode(
-                           this.captionSet.strDocumentsFound + docLinks.length
-                         )));
-          this.resultsDiv.appendChild(newUl);
-          return true;
-        }
-        else{
-          this.reportNoResults(true);
-          return false;
-        }
-      }
-    }
-  }
 /** @function StaticSearch~clearSearchForm
   * @description this function removes all previously-selected
   * filter control settings, and empties the search query box.
@@ -842,124 +755,17 @@ class StaticSearch{
     }
   }
 
-/** @function StaticSearch~getDocIdsForFilters
-  * @description this function gets the set of currently-configured
-  * filters by calling getActiveFiltersAsMap(), then creates a
-  * set (in the form of an XSet object) of all the document ids
-  * that qualify according to the filters.
-  *
-  * @return {XSet} an XSet object (which might be empty)
-  */
-  getDocIdsForFilters(){
-    this.getActiveFilters();
-    //If we didn't find any filters, return the empty set.
-    if (this.mapActiveFilters.size < 1){
-      var result = new XSet();
-      result.filtersActive = false; //There were no filters selected.
-      return result;
-    }
-    else{
-      //Create an array to hold each of the distinct sets.
-      var xSets = [];
-      var currXSet;
-      for (var [key, value] of this.mapActiveFilters){
-        currXSet = new XSet();
-        switch(value.type){
-          case 'desc':
-            for (let docUri of Object.keys(this.docMetadata)){
-              for (let d of value.arr){
-                if ((this.docMetadata[docUri].descFilters[key] != null) && (this.docMetadata[docUri].descFilters[key].indexOf(d) > -1)){
-                  currXSet.add(docUri);
-                }
-              }
-            }
-            break;
-          case 'bool':
-            for (let docUri of Object.keys(this.docMetadata)){
-              if ((this.docMetadata[docUri].boolFilters[key] != null) && (this.docMetadata[docUri].boolFilters[key] === value.arr[0])){
-                currXSet.add(docUri);
-              }
-            }
-            break;
-          case 'date_from':
-            //If it's a date_from, then we can leave partial dates alone, since
-            //the Date() constructor defaults to first month, first day.
-            let fromDate = new Date(value.arr[0]);
-            let fromKey = key.replace(/_from$/, '');
-            for (let docUri of Object.keys(this.docMetadata)){
-              if (Array.isArray(this.docMetadata[docUri].dateFilters[fromKey])){
-                //It may be a range (slash-separated) or it may not. In either case,
-                //we want to use the final component.
-                let dateToUse = this.docMetadata[docUri].dateFilters[fromKey][this.docMetadata[docUri].dateFilters[fromKey].length - 1];
-                if (new Date(dateToUse) >= fromDate){
-                  currXSet.add(docUri);
-                }
-              }
-            }
-            break;
-          case 'date_to':
-            //If it's a date_to, we need to complete partial dates; year-only
-            //dates have -12-31 appended, while year-month dates need to be
-            //incremented by a month and decremented by a day.
-            let txtDate = value.arr[0];
-            switch (txtDate.length){
-              case 10:
-                break;
-              case 4:
-                txtDate = txtDate + '-12-31';
-                break;
-              case 7:
-                //Complicated month stuff. Ignore leap years.
-                txtDate = txtDate.replace(/(\d\d\d\d-)((0[13578])|(1[02]))$/, '$1$2-31').replace(/(\d\d\d\d-)((0[469])|(11))$/, '$1$2-30').replace(/02$/, '02-28');
-                break;
-              default:
-                txtDate = '2050-12-31'; //Random future date.
-            }
-            let toDate = new Date(txtDate);
-            let toKey = key.replace(/_to$/, '');
-            for (let docUri of Object.keys(this.docMetadata)){
-              if (Array.isArray(this.docMetadata[docUri].dateFilters[toKey])){
-                //As above, it may be a range, and in either case we need to
-                //use the first component.
-                let dateToUse = this.docMetadata[docUri].dateFilters[toKey][0];
-                if (new Date(dateToUse) <= toDate){
-                  currXSet.add(docUri);
-                }
-              }
-            }
-            break;
-          default: console.log('Unknown filter type: ' + value.type);
-        }
-        xSets[xSets.length] = currXSet;
-      }
-    }
-    if (xSets.length > 0){
-      let result = xSets[0];
-      for (var i=1; i<xSets.length; i++){
-        result = result.xIntersection(xSets[i]);
-      }
-      result.filtersActive = true;
-      return result;
-    }
-    else{
-    //This represents a situation in which we appear to have filters active,
-    //but they don't match any of the known types, so behave as though no
-    //filters were specified.
-      let result = new XSet();
-      result.filtersActive = false;
-      return result;
-    }
-  }
-
-  /** @function StaticSearch~getDocIdsForFilters2
+  /** @function StaticSearch~getDocIdsForFilters
     * @description this function gets the set of currently-configured
-    * filters by calling getActiveFiltersAsMap(), then creates a
+    * filters by analyzing the form elements, then returns a
     * set (in the form of an XSet object) of all the document ids
     * that qualify according to the filters.
     *
-    * @return {XSet} an XSet object (which might be empty)
+    * @return {XSet} an XSet object (which might be empty) with an added
+    * boolean property filtersActive which specifies whether filters have
+    * been configured by the user.
     */
-    getDocIdsForFilters2(){
+    getDocIdsForFilters(){
 
       var xSets = [];
       var currXSet;
@@ -1125,7 +931,7 @@ class StaticSearch{
   */
   populateIndexes(){
     var i, imax, tokensToFind = [], promises = [], emptyIndex,
-    jsonSubfolder, filterSelector, filterIds, needDocMetadata = false;
+    jsonSubfolder, filterSelector, filterIds;
 //We need a self pointer because this will go out of scope.
     var self = this;
     try{
@@ -1198,7 +1004,7 @@ class StaticSearch{
               return response.json();
             })
             .then(function(json) {
-              self.resultSet.titles = json;
+              self.resultSet.titles = new Map(Object.entries(json));
             }.bind(self))
             .catch(function(e){
               console.log('Error attempting to retrieve title list: ' + e);
@@ -1206,24 +1012,6 @@ class StaticSearch{
         }
 //TODO: When we add glob searching, we'll need to care about the list of tokens too.
 
-      }
-
-
-
-      //TODO: SHOULD BE OBSOLETE.
-      if ((Object.keys(this.docMetadata).length === 0) &&
-         (this.docMetadata.constructor === Object)){
-         promises[promises.length] = fetch(self.jsonDirectory + 'docs.json', this.fetchHeaders)
-           .then(function(response) {
-             return response.json();
-           })
-           .then(function(docMeta) {
-             self.docMetadata = docMeta;
-           }.bind(self))
-           .catch(function(e){
-             console.log('Error attempting to retrieve docMetadata: ' + e);
-             return function(){self.docMetadata = {'noMetadataFound': true};}.bind(self);
-           }.bind(self));
       }
 
       //If we do need to retrieve JSON index data, then do it
@@ -1401,11 +1189,12 @@ class StaticSearch{
       }
 //#3
       if ((this.terms.length < 1)&&(this.docsMatchingFilters.size > 0)){
-        for (let docUri of this.docsMatchingFilters){
+        /*for (let docUri of this.docsMatchingFilters){
           this.resultSet.set(docUri, {docUri: docUri,
-                             docTitle: this.docMetadata[docUri].docTitle,
                              score: 0, contexts: []});
-        }
+        }*/
+        console.dir(Array.from(this.docsMatchingFilters.entries()));
+        this.resultSet.addArray([...this.docsMatchingFilters]);
         this.clearResultsDiv();
         this.resultsDiv.appendChild(document.createElement('p')
                        .appendChild(document.createTextNode(
@@ -1708,9 +1497,32 @@ class StaticSearch{
   clear(){
     try{
       this.mapDocs.clear();
+      return true;
     }
     catch(e){
       console.log('ERROR: ' + e.message);
+      return false;
+    }
+  }
+
+/** @function SSResultSet~addArray
+  * @description Adds an array of document uris to the result set. Used when
+  * only facet filters are provided, so there are no hits or document scores
+  * involved.
+  * @param {Array<string>} docUris The array of document URIs to add.
+  * @return {Boolean} true if successful; false if not.
+  */
+  addArray(docUris){
+    try{
+      console.dir(docUris);
+      for (let docUri of docUris){
+        this.mapDocs.set(docUri, {docUri: docUri, score: 0, contexts: []});
+      }
+      return true;
+    }
+    catch(e){
+      console.log('ERROR: ' + e.message);
+      return false;
     }
   }
 
@@ -1914,7 +1726,7 @@ class StaticSearch{
         let li = document.createElement('li');
         let a = document.createElement('a');
         a.setAttribute('href', value.docUri);
-        let t = document.createTextNode(value.docTitle);
+        let t = document.createTextNode(this.getTitleByDocId(value.docUri));
         a.appendChild(t);
         li.appendChild(a);
         if (value.score > 0){
@@ -1944,7 +1756,8 @@ class StaticSearch{
   */
     getTitleByDocId(docId){
       try{
-        return this.titles[docId][0];
+        console.log('Getting title for doc id: ' + docId);
+        return this.titles.get(docId)[0];
       }
       catch(e){
         return '[No title]';

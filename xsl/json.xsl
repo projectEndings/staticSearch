@@ -153,8 +153,8 @@
                        declared html/@id. (Note that this may be a value derived from the document's URI, which
                        is placed into the html/@id in the absence of a pre-existing id during the
                            <xd:a href="tokenize.xsl">tokenization tranformation</xd:a>.</xd:li>
-                       <xd:li><xd:b>docTitle (string):</xd:b> The title of the document, which may come from
-                           the html/head/title or, if that is missing, is constructed from the document URI</xd:li>
+                       <!--<xd:li><xd:b>docTitle (string):</xd:b> The title of the document, which may come from
+                           the html/head/title or, if that is missing, is constructed from the document URI</xd:li>-->
                        <xd:li><xd:b>docUri (string):</xd:b> The URI of the source document.</xd:li>
                        <xd:li><xd:b>score (number):</xd:b> The sum of the weighted scores of each span that
                            is in that document. For instance, if some document had n instances of token x
@@ -236,8 +236,8 @@
                     then use that; otherwise, just use the document id as the title.
                     -->
 
-                    <xsl:variable name="docTitle" as="xs:string"
-                        select="hcmc:getDocTitle($thisDoc)"/>
+                    <!--<xsl:variable name="docTitle" as="xs:string"
+                        select="hcmc:getDocTitle($thisDoc)"/>-->
 
 <!--                    And the relative URI from the document, which is to be used
                         for linking from the KWIC to the document. We've created this
@@ -259,9 +259,9 @@
                         </string>
 
 <!--                        Document title -->
-                        <string key="docTitle">
+                        <!--<string key="docTitle">
                             <xsl:value-of select="$docTitle"/>
-                        </string>
+                        </string>-->
 
 <!--                        Document URI (relative) -->
                         <string key="docUri">
