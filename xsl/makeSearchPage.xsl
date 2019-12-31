@@ -269,12 +269,12 @@
                                     <!--And add the filter name as the legend-->
                                     <legend><xsl:value-of select="$filterName"/></legend>
                                     <span>
-                                        <label for="date_{$filterId}_from">From: </label>
+                                        <label for="{$filterId}_from">From: </label>
                                         <input type="text" maxlength="10" pattern="{$dateRegex}" title="{$filterName}" id="date_{$filterId}_from" class="staticSearch.date" placeholder="{format-date($minDate, '[Y0001]-[M01]-[D01]')}" onchange="this.reportValidity()"/>
                                     </span>
                                     
                                     <span>
-                                        <label for="date_{$filterId}_to">To: </label>
+                                        <label for="{$filterId}_to">To: </label>
                                         <input type="text" maxlength="10" pattern="{$dateRegex}" title="{$filterName}" id="date_{$filterId}_to" class="staticSearch.date" placeholder="{format-date($maxDate, '[Y0001]-[M01]-[D01]')}" onchange="this.reportValidity()"/>
                                     </span>
                                 </fieldset>
