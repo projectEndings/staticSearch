@@ -168,6 +168,7 @@ class StaticSearch{
       this.boolFilterSelects =
            Array.from(document.querySelectorAll("select[class='staticSearch.bool']"));
 
+      //THIS WILL BE OBSOLETE ONCE THE NEW DISTRIBUTED METADATA CODE IS WORKING.
       this.docMetadata = {};
 
       //An object which will be filled with a complete list of all the
@@ -222,6 +223,9 @@ class StaticSearch{
       for (var f of document.querySelectorAll('fieldset.ssFieldset[id], fieldset.ssFieldset select[id]')){
         this.jsonToRetrieve.push({path: this.jsonDirectory + 'filters/' + f.id + '.json', state: TO_GET});
       }
+      //Flag to be set when all JSON is retrieved, to save laborious checking on
+      //every search.
+      this.allJsonRetrieved = false;
 
       //Default set of stopwords
       //TODO: THIS SHOULD NOT BE RETRIEVED HERE, but as part of the regular array.
@@ -239,7 +243,7 @@ class StaticSearch{
       this.showSearchReport = false;
 
       //How many results should be shown per page?
-      //Default
+      //Default. NOT USED, AND PROBABLY POINTLESS.
       this.resultsPerPage = 10;
       tmp = document.querySelector("form[data-resultsPerPage]");
       if (tmp){
@@ -304,7 +308,7 @@ class StaticSearch{
       return;
     }
     if (path.match(/ssTitles\.json$/)){
-      this.titles = json;
+      this.resultSet.titles = json;
       return;
     }
     if (path.match(/\/filters\//)){
@@ -338,8 +342,10 @@ class StaticSearch{
         console.log('ERROR: failed to retrieve JSON resource ' + this.jsonToRetrieve[jsonIndex].path + ': ' + e.message);
         this.jsonToRetrieve[jsonIndex].state = FAILED;
       }
-
       return this.getJson(jsonIndex + 1);
+    }
+    else{
+      this.allJsonRetrieved = true;
     }
   }
 
@@ -406,21 +412,6 @@ class StaticSearch{
     }
     else{
       return false;
-    }
-  }
-
-/** @function StaticSearch~getTitleByDocId
-  * @description this function returns the title of a document based on
-  *              its id.
-  * @param {String} docId the id of the document.
-  * @return {String} the title, or a placeholder if not found.
-  */
-  getTitleByDocId(docId){
-    try{
-      return this.titles[docId][0];
-    }
-    catch(e){
-      return '[No title]';
     }
   }
 
@@ -1646,9 +1637,12 @@ class StaticSearch{
     constructor(kwicLimit){
       try{
         this.mapDocs = new Map([]);
-//The maximum allowed number of keyword-in-context results to be
-//included in output.
+        //The maximum allowed number of keyword-in-context results to be
+        //included in output.
         this.kwicLimit = kwicLimit;
+        //A list of titles indexed by docUri is retrieved by AJAX
+        //and set later.
+        this.titles = null;
       }
       catch(e){
         console.log('ERROR: ' + e.message);
@@ -1891,16 +1885,31 @@ class StaticSearch{
       return ul;
     }
 
-  /**
-    * @function SSResultSet~resultsAsObject
-    * @description Outputs an object containing result set counts, to be
-    *              used in automated testing.
-    * @return {Object} an object structure containing counts of docs found,
-    *                  total contexts, and total score. Totting them up in
-    *                  this way doesn't mean anything in particular, but it
-    *                  provides a quick way to check whether things have
-    *                  changed and a test is not returning what it used to.
-    */
+/** @function SSResultSet~getTitleByDocId
+  * @description this function returns the title of a document based on
+  *              its id.
+  * @param {String} docId the id of the document.
+  * @return {String} the title, or a placeholder if not found.
+  */
+    getTitleByDocId(docId){
+      try{
+        return this.titles[docId][0];
+      }
+      catch(e){
+        return '[No title]';
+      }
+    }
+
+/**
+  * @function SSResultSet~resultsAsObject
+  * @description Outputs an object containing result set counts, to be
+  *              used in automated testing.
+  * @return {Object} an object structure containing counts of docs found,
+  *                  total contexts, and total score. Totting them up in
+  *                  this way doesn't mean anything in particular, but it
+  *                  provides a quick way to check whether things have
+  *                  changed and a test is not returning what it used to.
+  */
     resultsAsObject(){
       let scoreTotal = 0;
       let contextsTotal = 0;
