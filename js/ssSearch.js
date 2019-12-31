@@ -976,7 +976,7 @@ class StaticSearch{
         let descName = desc.getAttribute('title');
         //console.log(descName);
         let cbxs = desc.querySelectorAll('input[type="checkbox"]:checked');
-        if (cbxs.length > 0){
+        if ((cbxs.length > 0) && (this.mapFilterData.has(descName))){
           for (let cbx of cbxs){
             //console.log(cbx.value);
             currXSet.addArray(this.mapFilterData.get(descName)[cbx.id].docs);
@@ -989,10 +989,10 @@ class StaticSearch{
       let bools = document.querySelectorAll('select[id ^= "ssBool"]');
       for (let bool of bools){
         let sel = bool.selectedIndex;
-        if (sel > 0){
+        let valueId = bool.id + '_' + bool.selectedIndex;
+        let boolName = bool.getAttribute('title');
+        if ((sel > 0) && (this.mapFilterData.has(boolName))){
           currXSet = new XSet();
-          let valueId = bool.id + '_' + bool.selectedIndex;
-          let boolName = bool.getAttribute('title');
           currXSet.addArray(this.mapFilterData.get(boolName)[valueId].docs);
           xSets.push(currXSet);
         }
@@ -1002,38 +1002,40 @@ class StaticSearch{
       let dates = document.querySelectorAll('fieldset[id ^= "ssDate"]');
       for (let date of dates){
         let dateName = date.title;
-        let docs = this.mapFilterData.get(dateName).docs;
-        //If it's a from date, partial dates are OK because the date constructor
-        //defaults to -01-01.
-        let fromDate = null;
-        let toDate = null;
-        let fromVal = date.querySelector('input[type="text"][id $= "_from"]').value;
-        if (fromVal.length > 0){
-          currXSet = new XSet();
-          fromDate = new Date(fromVal);
-          for (const docUri in docs){
-            if ((docs[docUri].length > 0) && (new Date(docs[docUri][docs[docUri].length-1]) >= fromDate)){
-              currXSet.add(docUri);
+        if (this.mapFilterData.has(dateName)){
+          let docs = this.mapFilterData.get(dateName).docs;
+          //If it's a from date, partial dates are OK because the date constructor
+          //defaults to -01-01.
+          let fromDate = null;
+          let toDate = null;
+          let fromVal = date.querySelector('input[type="text"][id $= "_from"]').value;
+          if (fromVal.length > 0){
+            currXSet = new XSet();
+            fromDate = new Date(fromVal);
+            for (const docUri in docs){
+              if ((docs[docUri].length > 0) && (new Date(docs[docUri][docs[docUri].length-1]) >= fromDate)){
+                currXSet.add(docUri);
+              }
             }
+            xSets.push(currXSet);
           }
-          xSets.push(currXSet);
-        }
-        //If it's a to date, we have to append stuff.
-        let toVal = date.querySelector('input[type="text"][id $= "_to"]').value;
-        if (toVal.length > 0){
-          currXSet = new XSet();
-          switch (toVal.length){
-            case 10: toDate = new Date(toVal);
-            case 4:  toDate = new Date(toVal + '-12-31');
-            case 7:  toDate = new Date(toVal.replace(/(\d\d\d\d-)((0[13578])|(1[02]))$/, '$1$2-31').replace(/(\d\d\d\d-)((0[469])|(11))$/, '$1$2-30').replace(/02$/, '02-28'));
-            default: toDate = new Date('3000'); //random future date.
-          }
-          for (const docUri in docs){
-            if ((docs[docUri].length > 0) && (new Date(docs[docUri][0]) <= toDate)){
-              currXSet.add(docUri);
+          //If it's a to date, we have to append stuff.
+          let toVal = date.querySelector('input[type="text"][id $= "_to"]').value;
+          if (toVal.length > 0){
+            currXSet = new XSet();
+            switch (toVal.length){
+              case 10: toDate = new Date(toVal); break;
+              case 4:  toDate = new Date(toVal + '-12-31'); break;
+              case 7:  toDate = new Date(toVal.replace(/(\d\d\d\d-)((0[13578])|(1[02]))$/, '$1$2-31').replace(/(\d\d\d\d-)((0[469])|(11))$/, '$1$2-30').replace(/02$/, '02-28')); break;
+              default: toDate = new Date('3000'); //random future date.
             }
+            for (const docUri in docs){
+              if ((docs[docUri].length > 0) && (new Date(docs[docUri][0]) <= toDate)){
+                currXSet.add(docUri);
+              }
+            }
+            xSets.push(currXSet);
           }
-          xSets.push(currXSet);
         }
       }
 
