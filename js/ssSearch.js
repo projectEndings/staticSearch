@@ -438,6 +438,7 @@ class StaticSearch{
   doSearch(popping = false){
     this.docsMatchingFilters.filtersActive = false; //initialize.
     let result = false; //default.
+    document.body.style.cursor = 'progress';
     if (this.parseSearchQuery()){
       if (this.writeSearchReport()){
         this.populateIndex();
@@ -446,6 +447,12 @@ class StaticSearch{
         }
         result = true;
       }
+      else{
+        document.body.style.cursor = 'default';
+      }
+    }
+    else{
+      document.body.style.cursor = 'default';
     }
     window.scroll({ top: this.resultsDiv.offsetTop, behavior: "smooth" });
     /*this.resultsDiv.scrollIntoView({behavior: "smooth", block: "nearest"});*/
@@ -1345,6 +1352,7 @@ class StaticSearch{
                          this.captionSet.strDocumentsFound + '0'
                        )));
         this.searchFinishedHook(1);
+        document.body.style.cursor = 'default';
         return false;
       }
 //#3
@@ -1364,6 +1372,7 @@ class StaticSearch{
           this.reportNoResults(true);
         }
         this.searchFinishedHook(2);
+        document.body.style.cursor = 'default';
         return (this.resultSet.getSize() > 0);
       }
 
@@ -1588,6 +1597,7 @@ class StaticSearch{
           else{
             console.log('No useful search terms found.');
             this.searchFinishedHook(3);
+            document.body.style.cursor = 'default';
             return false;
           }
         }
@@ -1610,11 +1620,13 @@ class StaticSearch{
         this.reportNoResults(true);
       }
       this.searchFinishedHook(4);
+      document.body.style.cursor = 'default';
       return (this.resultSet.getSize() > 0);
     }
     catch(e){
       console.log('ERROR: ' + e.message);
       this.searchFinishedHook(5);
+      document.body.style.cursor = 'default';
       return false;
     }
   }
