@@ -86,7 +86,7 @@
             </div>
             <div class="ssDateFilters">
                <fieldset class="ssFieldset" title="Date range" id="ssDate1">
-                  <legend>Date range</legend><span><label for="date_ssDate1_from">From: </label><input type="text" maxlength="10" pattern="^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$" title="Date range" id="date_ssDate1_from" class="staticSearch.date" placeholder="1689-01-01" onchange="this.reportValidity()"/></span><span><label for="date_ssDate1_to">To: </label><input type="text" maxlength="10" pattern="^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$" title="Date range" id="date_ssDate1_to" class="staticSearch.date" placeholder="2019-12-31" onchange="this.reportValidity()"/></span></fieldset>
+                  <legend>Date range</legend><span><label for="ssDate1_from">From: </label><input type="text" maxlength="10" pattern="^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$" title="Date range" id="date_ssDate1_from" class="staticSearch.date" placeholder="1689-01-01" onchange="this.reportValidity()"/></span><span><label for="ssDate1_to">To: </label><input type="text" maxlength="10" pattern="^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$" title="Date range" id="date_ssDate1_to" class="staticSearch.date" placeholder="2019-12-31" onchange="this.reportValidity()"/></span></fieldset>
             </div>
             <div class="ssBoolFilters">
                <fieldset class="ssFieldset"><span><label for="ssBool1">Worth reading: </label><select id="ssBool1" title="Worth reading" class="staticSearch.bool">
@@ -123,7 +123,7 @@
            //Another simple one-word search but using a desc filter.
            tests.push({setup: function(){Sch.queryBox.value = 'twilight'; document.querySelector('input[value="Site info files"]').checked = 'checked';},
                        check: function(num){console.log('Search hook ' + num);
-                                            console.log('Testing results for the word "twilight with Poems desc filter".');
+                                            console.log('Testing results for the word "twilight with Site info files desc filter".');
                                             checkResults({docsFound: 1, contextsFound: 1, scoreTotal: 1});}});
 
            //Third simple one-word search.
