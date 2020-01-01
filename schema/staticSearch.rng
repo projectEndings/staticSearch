@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<grammar xmlns:xlink="http://www.w3.org/1999/xlink"
+<grammar xmlns="http://relaxng.org/ns/structure/1.0"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
          xmlns:tei="http://www.tei-c.org/ns/1.0"
          xmlns:teix="http://www.tei-c.org/ns/Examples"
-         xmlns="http://relaxng.org/ns/structure/1.0"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2019-11-14T00:16:06Z. 2019.
-TEI Edition: Version 3.6.0. Last updated on
-	16th July 2019, revision daa3cc0b9
-TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
+Schema generated from ODD source 2020-01-01T00:45:29Z. 2019.
+TEI Edition: Version 3.7.0a. Last updated on
+	29th December 2019, revision c1131e950
+TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.7.0a./
   
 --><!--Free to anyone for any purpose-->
    <sch:ns xmlns:sch="http://purl.oclc.org/dsdl/schematron"
@@ -75,20 +75,30 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
          </oneOrMore>
       </element>
    </define>
-   <define name="contexts">
-      <element name="contexts" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
-         <oneOrMore>
-            <ref name="rule"/>
-         </oneOrMore>
-      </element>
-   </define>
    <define name="rule">
       <element name="rule" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(A rule that specifies a document path in XPath, and provides weighting for search
               terms found in that context.) </a:documentation>
          <empty/>
          <ref name="att.xpathRule.attributes"/>
+         <empty/>
+      </element>
+   </define>
+   <define name="contexts">
+      <element name="contexts" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+         <oneOrMore>
+            <ref name="context"/>
+         </oneOrMore>
+      </element>
+   </define>
+   <define name="context">
+      <element name="context" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(A context definition, providing an XPath attribute that identifies the context,
+              allowing keyword-in-context fragments to be bounded by a specific context.) </a:documentation>
+         <empty/>
+         <ref name="att.xpathRule.attributes"/>
+         <ref name="att.nameable.attributes"/>
          <empty/>
       </element>
    </define>
@@ -132,9 +142,20 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
                 xmlns="http://www.tei-c.org/ns/1.0"
                 xmlns:sch="http://purl.oclc.org/dsdl/schematron"
                 context="*:rules/*:rule">
-         <sch:assert test="@weight">ERROR: All weighting rules must have a weight.</sch:assert>
-      </sch:rule>
+                  <sch:assert test="@weight">ERROR: All weighting rules must have a weight.</sch:assert>
+                </sch:rule>
    </pattern>
+   <define name="att.nameable.attributes">
+      <ref name="att.nameable.attribute.name"/>
+   </define>
+   <define name="att.nameable.attribute.name">
+      <optional>
+         <attribute name="name">
+            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(A string identifier which may be descriptive.) </a:documentation>
+            <data type="string"/>
+         </attribute>
+      </optional>
+   </define>
    <define name="searchFile">
       <element name="searchFile" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The search file (aka page) that will be the primary access point for the static search. Note

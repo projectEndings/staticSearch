@@ -26,7 +26,7 @@
     </rules>
     
     <contexts>
-        <rule xpath="div[@class='l']"/>
-        <rule xpath="span[@class='note']"/>
+        <context xpath="div[@class='l']" name="poetic lines"/>
+        <context xpath="span[@class='note']" name="notes"/>
     </contexts>
 </config>

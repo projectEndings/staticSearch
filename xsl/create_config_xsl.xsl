@@ -166,7 +166,8 @@
     
     <xd:doc>
         <xd:desc>
-            <xd:p>The <xd:ref name="contextRules" type="variable">contextRules</xd:ref> variable is
+            <xd:p>OBSOLETE: Now specified as context elements, not rule elements. 
+                The <xd:ref name="contextRules" type="variable">contextRules</xd:ref> variable is
                 a sequence of 0 or more rules that are specified as context blocks--blocks that are to
                 be used in the JSON creation stage to create the context for the kwic.</xd:p>
         </xd:desc>
@@ -174,9 +175,16 @@
     <xsl:variable name="contextRules" select="$configDoc//contexts/rule" as="element(rule)*"/>
     
     <xsl:variable name="weightedRules" select="$configDoc//rule[xs:integer(@weight) gt 1]" as="element(rule)*"/>
-      
-      
-  
+    
+    <xd:doc>
+        <xd:desc>
+            <xd:p>The <xd:ref name="contexts" type="variable">contexts</xd:ref> variable is
+                a sequence of 0 or more contexts that are specified as context blocks--blocks that are to
+                be used in the JSON creation stage to create the context for the kwic.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:variable name="contexts" select="$configDoc//contexts/context" as="element(context)*"/>
+    
     <!--**************************************************************
        *                                                            * 
        *                         TEMPLATES                          *
@@ -255,14 +263,13 @@
                     </xsl:if>
                 </xsl:if>
                 
-                <xsl:if test="not(empty($contextRules))">
+                <xsl:if test="not(empty($contexts))">
                     <xsl:call-template name="createContextRules" exclude-result-prefixes="#all"/>
                     <xsl:if test="$verbose">
                         <xsl:message>Create context rules</xsl:message>
                         <xsl:message>
                             <xsl:call-template name="createContextRules" exclude-result-prefixes="#all"/>
                         </xsl:message>
-                        
                     </xsl:if>
                 </xsl:if>
                 
@@ -422,13 +429,13 @@
         </xd:desc>
     </xd:doc>
     <xsl:template name="createContextRules" exclude-result-prefixes="#all">
-        <xso:template match="{string-join($contextRules/@xpath,' | ')}" priority="1" mode="contextualize">
+        <xso:template match="{string-join($contexts/@xpath,' | ')}" priority="1" mode="contextualize">
             <xso:if test="$verbose">
                 <xso:message>Template #contextualize: Adding @data-staticSearch-context flag to <xso:value-of select="local-name(.)"/></xso:message>
             </xso:if>
             <xso:copy>
                 <xso:apply-templates select="@*" mode="#current"/>
-                <xsl:for-each select="$contextRules">
+                <xsl:for-each select="$contexts">
                     <xso:if test="self::{@xpath}">
                         <xso:attribute name="data-staticSearch-context" select="{concat('''',hcmc:stringToBoolean(@context),'''')}"/>
                     </xso:if>

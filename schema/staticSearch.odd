@@ -350,18 +350,30 @@
               <elementRef key="rule" minOccurs="1" maxOccurs="unbounded"/>
             </content>
           </elementSpec>
-
-          <elementSpec ident="contexts" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
-            <content>
-              <elementRef key="rule" minOccurs="1" maxOccurs="unbounded"/>
-            </content>
-          </elementSpec>
-
+          
           <elementSpec ident="rule" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
             <gloss>A rule that specifies a document path in XPath, and provides weighting for search
               terms found in that context.</gloss>
             <classes>
               <memberOf key="att.xpathRule"/>
+            </classes>
+            <content>
+              <empty/>
+            </content>
+          </elementSpec>
+
+          <elementSpec ident="contexts" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
+            <content>
+              <elementRef key="context" minOccurs="1" maxOccurs="unbounded"/>
+            </content>
+          </elementSpec>
+
+          <elementSpec ident="context" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
+            <gloss>A context definition, providing an XPath attribute that identifies the context,
+              allowing keyword-in-context fragments to be bounded by a specific context.</gloss>
+            <classes>
+              <memberOf key="att.xpathRule"/>
+              <memberOf key="att.nameable"/>
             </classes>
             <content>
               <empty/>
@@ -400,7 +412,19 @@
                 </datatype>
               </attDef>
             </attList>
-           
+          </classSpec>
+          
+          <classSpec ident="att.nameable" module="ss" type="atts">
+            <gloss>A class providing a name attribute that can be used to identify contexts and other
+              things which benefit from description.</gloss>
+            <attList>
+              <attDef ident="name" usage="opt">
+                <gloss>A string identifier which may be descriptive.</gloss>
+                <datatype>
+                  <dataRef name="string"/>
+                </datatype>
+              </attDef>
+            </attList>
           </classSpec>
 
           <elementSpec ident="searchFile" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
