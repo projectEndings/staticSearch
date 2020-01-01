@@ -23,7 +23,7 @@
     </rules>
     
     <contexts>
-        <rule xpath="*[@class='ed_note']"/>
-        <rule xpath="div[@class='not_context']" context="false"/>
+        <context xpath="*[@class='ed_note']"/>
+        <context xpath="div[@class='not_context']" context="false"/>
     </contexts>
 </config>
