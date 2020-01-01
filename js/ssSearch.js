@@ -679,63 +679,6 @@ class StaticSearch{
     }
   }
 
-/** @function StaticSearch~getActiveFilters
-  * @description this function harvests the selected filters
-  * and stores them in the Map object this.mapActiveFilters.
-  * Map entries are keyed by their filter title/caption, and
-  * each entry is an object consisting of a type property
-  * (text, boolean, date) and an array whose contents depend
-  * on the type.
-  *
-  * @return {Boolean} true if succeeded, false if not.
-  */
-    getActiveFilters(){
-
-      try{
-        this.mapActiveFilters.clear();
-
-        //Text label description filters
-        for (let cbx of this.descFilterCheckboxes){
-          if (cbx.checked){
-            let title = cbx.getAttribute('title');
-            let val   = cbx.getAttribute('value');
-            if (this.mapActiveFilters.has(title)){
-              let obj = this.mapActiveFilters.get(title);
-              obj.arr.push(val);
-              this.mapActiveFilters.set(title, obj);
-            }
-            else{
-              this.mapActiveFilters.set(title, {type: 'desc', arr: Array(val)});
-            }
-          }
-        }
-
-        //Date filters
-        for (let txt of this.dateFilterTextboxes){
-          if (txt.value.match(/^\d\d\d\d/)){
-            let title = txt.getAttribute('title');
-            let val = txt.value;
-            let dateType = txt.id.match(/_from/)? '_from' : '_to';
-            this.mapActiveFilters.set(title + dateType, {type: 'date' + dateType, arr: Array(val)});
-          }
-        }
-
-        //Boolean filters
-        for (let sel of this.boolFilterSelects){
-          if (sel.options[sel.selectedIndex].value !== ''){
-            let title = sel.getAttribute('title');
-            let val   = (sel.options[sel.selectedIndex].value == 'true')? true : false;
-            this.mapActiveFilters.set(title, {type: 'bool', arr: Array(val)});
-          }
-        }
-        return true;
-      }
-      catch(e){
-        console.log('Error attempting to retrieve active filter settings: ' + e);
-        return false;
-      }
-    }
-
 /** @function StaticSearch~processFilters
   * @description this function calls StaticSearch~getDocIdsForFilters(),
   * and if the function succeeds, it sets the docsMatchingFilters to

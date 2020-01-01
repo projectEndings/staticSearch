@@ -543,6 +543,8 @@
                                 <string key="filterId"><xsl:value-of select="$thisId"/></string>
                                 <string key="filterName"><xsl:value-of select="@name"/></string>
                                 <xsl:for-each-group select="current-group()" group-by="hcmc:normalize-boolean(@content)">
+                                    <!-- We have to sort these descending so that we reliably get true followed by false. -->
+                                    <xsl:sort select="hcmc:normalize-boolean(@content)" order="descending"/>
                                     <xsl:variable name="filterId" select="concat($thisId,'_',position())"/>
                                     <map key="{$filterId}">
                                         <string key="value"><xsl:value-of select="current-grouping-key()"/></string>
