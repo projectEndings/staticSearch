@@ -7,6 +7,9 @@ ok /Warning! The child axis starting at an attribute node will never select anyt
 #Clock alignment error message is random and pointless.
 ok /WARNING: clock of the subversion server/
 
+#A warning we give to users as a matter of course.
+ok /WARNING: Contents of div/@id='staticSearch' will be overwritten/
+
 error /[Ee]rror/
 warning /[Ww]arning/
 warning /WARNING/
