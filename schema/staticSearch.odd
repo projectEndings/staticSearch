@@ -456,7 +456,7 @@
               allowing keyword-in-context fragments to be bounded by a specific context.</gloss>
             <classes>
               <memberOf key="att.xpath"/>
-              <memberOf key="att.nameable"/>
+              <memberOf key="att.labelled"/>
             </classes>
             <content>
               <empty/>
@@ -483,11 +483,11 @@
             </attList>
           </classSpec>
           
-          <classSpec ident="att.nameable" module="ss" type="atts">
-            <gloss>A class providing a name attribute that can be used to identify contexts and other
+          <classSpec ident="att.labelled" module="ss" type="atts">
+            <gloss>A class providing a label attribute that can be used to identify/describe contexts and other
               things which benefit from description.</gloss>
             <attList>
-              <attDef ident="name" usage="opt">
+              <attDef ident="label" usage="opt">
                 <gloss>A string identifier which may be descriptive.</gloss>
                 <datatype>
                   <dataRef name="string"/>

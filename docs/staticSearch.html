@@ -468,7 +468,7 @@ element config { <a class="link_ref" href="#TEI.params" title="&lt;params&gt;">p
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Attributes</span></td>
-                           <td class="wovenodd-col2"><a class="link_ref" href="#TEI.att.xpath" title="att.xpath">att.xpath</a> (<span class="attribute">@xpath</span>) <a class="link_ref" href="#TEI.att.nameable" title="att.nameable">att.nameable</a> (<span class="attribute">@name</span>) 
+                           <td class="wovenodd-col2"><a class="link_ref" href="#TEI.att.xpath" title="att.xpath">att.xpath</a> (<span class="attribute">@xpath</span>) <a class="link_ref" href="#TEI.att.labelled" title="att.labelled">att.labelled</a> (<span class="attribute">@label</span>) 
                               <div class="table">
                                  <table class="attList">
                                     <tr>
@@ -523,7 +523,7 @@ element config { <a class="link_ref" href="#TEI.params" title="&lt;params&gt;">p
 element context
 {
    <a class="link_ref" href="#TEI.att.xpath" title="att.xpath">att.xpath.attributes</a>,
-   <a class="link_ref" href="#TEI.att.nameable" title="att.nameable">att.nameable.attributes</a>,
+   <a class="link_ref" href="#TEI.att.labelled" title="att.labelled">att.labelled.attributes</a>,
    attribute context { text }?,
    empty
 }</pre>
@@ -1423,13 +1423,13 @@ element verbose { xsd:boolean }</pre>
             </div>
             <div class="teidiv1" id="index.xml-back.1_div.1_div.2">
                <h3><span class="headingNumber">Appendix A.2 </span><span class="head">Attribute classes</span></h3>
-               <div class="refdoc" id="TEI.att.nameable">
-                  <h3><span class="headingNumber">Appendix A.2.1 </span><span class="head">att.nameable</span></h3>
+               <div class="refdoc" id="TEI.att.labelled">
+                  <h3><span class="headingNumber">Appendix A.2.1 </span><span class="head">att.labelled</span></h3>
                   <div class="table">
                      <table class="wovenodd">
                         <tr>
-                           <td colspan="2" class="wovenodd-col2"><span class="label">att.nameable</span> (<span>A class providing a name attribute that can be used to identify contexts and other
-                                 things which benefit from description.</span>)</td>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">att.labelled</span> (<span>A class providing a label attribute that can be used to identify/describe contexts
+                                 and other things which benefit from description.</span>)</td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
@@ -1445,7 +1445,7 @@ element verbose { xsd:boolean }</pre>
                               <div class="table">
                                  <table class="attList">
                                     <tr>
-                                       <td class="odd_label">name</td>
+                                       <td class="odd_label">label</td>
                                        <td class="odd_value">(<span>A string identifier which may be descriptive.</span>) 
                                           <div class="table">
                                              <table class="attDef">
@@ -1527,7 +1527,7 @@ element verbose { xsd:boolean }</pre>
             	    Date: 2019<br/><!--
 	  Generated from index.xml using XSLT stylesheets version 7.48.0
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2020-01-01T05:43:53Z.
+	       on 2020-01-01T05:54:58Z.
 	       SAXON HE 9.9.1.3.
 		 --></address>
       </div>
