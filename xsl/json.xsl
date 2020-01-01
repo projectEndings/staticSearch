@@ -15,7 +15,9 @@
             <xd:p><xd:b>Authors:</xd:b> Joey Takeda and Martin Holmes</xd:p>
             <xd:p>This transformation takes a collection of tokenized and stemmed documents (tokenized
             via the process described in <xd:a href="tokenize.xsl">tokenize.xsl</xd:a>) and creates
-            a JSON file for each stemmed token.</xd:p>
+            a JSON file for each stemmed token. It also creates a separate JSON file for the project's
+            stopwords list, for all the document titles in the collection, and for each of the filter facets.
+            Finally, it creates a single JSON file listing all the tokens, which may be used for glob searches.</xd:p>
         </xd:desc>
         <xd:param name="ellipses">A string parameter to denote what sorts of ellipses one wants in the KWIC.</xd:param>
     </xd:doc>
@@ -57,7 +59,7 @@
         <xd:desc>Root template, which calls the rest of the templates.</xd:desc>
     </xd:doc>
     <xsl:template match="/">
-        <xsl:call-template name="createJson"/>
+        <xsl:call-template name="createStemmedTokenJson"/>
         <xsl:call-template name="createTitleJson"/>
         <xsl:call-template name="createFiltersJson"/>
         <xsl:call-template name="createStopwordsJson"/>
@@ -75,11 +77,12 @@
 <!--    Start create JSON process ... -->
 
     <xd:doc>
-        <xd:desc>The <xd:ref name="createJson" type="template">createJson</xd:ref> is the meat of this process;
-        it kicks of the process by calling the createMap template with a selection of spans derived from the
-        tokenized docs.</xd:desc>
+        <xd:desc>The <xd:ref name="createStemmedTokenJson" type="template">createJson</xd:ref> 
+            is the meat of this process; it kicks off the creation of a separate JSON file for each stemmed 
+            token by calling the createMap template with a selection of spans derived from the tokenized 
+            docs.</xd:desc>
     </xd:doc>
-    <xsl:template name="createJson">
+    <xsl:template name="createStemmedTokenJson">
         <xsl:message>Found <xsl:value-of select="count($tokenizedDocs)"/> tokenized documents...</xsl:message>
         <xsl:variable name="stems" select="$tokenizedDocs//span[@data-staticSearch-stem]" as="element(span)*"/>
         <xsl:call-template name="createMap">
@@ -590,17 +593,28 @@
         </xsl:for-each-group>
     </xsl:template>
     
+    <xd:doc>
+        <xd:desc><xd:ref name="hcmc:normalize-boolean">hcmc:normalize-boolean</xd:ref>
+            takes any of a variety of different boolean representations and converts them to
+            string "true" or string "false".
+        </xd:desc>
+        <xd:param name="string">The input string.</xd:param>
+    </xd:doc>
     <xsl:function name="hcmc:normalize-boolean" as="xs:string">
         <xsl:param name="string"/>
         <xsl:value-of select="if (matches(normalize-space($string),'true|1','i')) then 'true' else 'false'"/>
     </xsl:function>
     
-    
-    <!--Simple set of templates for creating the filter docs:
-        
-        Match every map and if a map either is the thing we want,
-        or contains the thing we want, then keep it;
-        otherwise, delete it-->
+    <!--Simple set of templates for creating the filter docs:   -->
+    <xd:doc>
+        <xd:desc> Match every map and if a map either is the thing we want,
+            or contains the thing we want, then keep it;
+            otherwise, delete it</xd:desc>
+        <xd:param name="key">Tunnelled parameter which enables the 
+        function to decide whether this particular item should be used or discarded.
+        It should be used when it has a matching @key, or has a descendant with
+        a matching @key.</xd:param>
+    </xd:doc>
     <xsl:template match="*[@key]" mode="makeFilterDocs">
         <xsl:param name="key" tunnel="yes"/>
         <xsl:choose>
@@ -615,6 +629,9 @@
     
     
     <!--And identity-->
+    <xd:doc>
+        <xd:desc>Default identity transform.</xd:desc>
+    </xd:doc>
     <xsl:template match="@*|node()" mode="makeFilterDocs" priority="-1">
         <xsl:copy>
             <xsl:apply-templates select="@*|node()" mode="#current"/>
@@ -625,7 +642,9 @@
 
 
     <xd:doc>
-        <xd:desc></xd:desc>
+        <xd:desc><xd:ref name="createStopwordsJson">createStopwordsJson</xd:ref>
+        builds a JSON file containing the list of stopwords (either the default list or the 
+        one provided by the project and referenced in its config file).</xd:desc>
     </xd:doc>
     <xsl:template name="createStopwordsJson">
         <xsl:message>Creating stopwords array...</xsl:message>
@@ -637,7 +656,12 @@
         </xsl:result-document>
     </xsl:template>
     
-    
+    <xd:doc>
+        <xd:desc><xd:ref name="createTitleJson">createTitleJson</xd:ref>
+            builds a JSON file containing a list of all the titles of documents in the 
+        collection, indexed by their relative URI (which serves as their identifier),
+        to be used when displaying results in the search page.</xd:desc>
+    </xd:doc>
     <xsl:template name="createTitleJson">
         <xsl:result-document href="{$outDir}/ssTitles.json" method="text">
             <xsl:variable name="map">
@@ -654,8 +678,10 @@
     </xsl:template>
     
     <xd:doc>
-        <xd:desc>This template creates a list of the all of the tokens that have been
-        created by the process; primarily, this JSON will be used for wildcard searches.</xd:desc>
+        <xd:desc><xd:ref name="createWordListJson">createWordListJson</xd:ref> 
+            creates a list of the all of the tokens that have been
+        created by the process; primarily, this JSON will be used 
+        for wildcard searches.</xd:desc>
     </xd:doc>
     <xsl:template name="createWordListJson">
         <xsl:message>Creating word list JSON...</xsl:message>
@@ -678,6 +704,13 @@
     </xsl:template>
 
 <!--    Create a config file for the JSON-->
+    <xd:doc>
+        <xd:desc><xd:ref name="createConfigJson">createConfigJson</xd:ref> 
+            creates a JSON representation of the project's configuration file.
+        This is not currently used for any specific purpose, but it may be 
+        helpful for the JS search engine to know what configuration was 
+        used to create the indexes at some point.</xd:desc>
+    </xd:doc>
     <xsl:template name="createConfigJson">
         <xsl:message>Creating Configuration JSON file....</xsl:message>
         <xsl:result-document href="{$outDir}/config.json" method="text">
@@ -693,6 +726,10 @@
         these are in templates in case we need to do
         any more creation of a words file into a JSON-->
 
+    <xd:doc>
+        <xd:desc>Template to convert an XML structure consisting
+        of word elements inside a words element to a JSON/XML structure.</xd:desc>
+    </xd:doc>
     <xsl:template match="hcmc:words" mode="dictToArray">
         <map:map>
             <map:array key="words">
@@ -701,6 +738,10 @@
         </map:map>
     </xsl:template>
 
+    <xd:doc>
+        <xd:desc>Template to convert a single word element inside 
+            a words element to a JSON/XML string.</xd:desc>
+    </xd:doc>
     <xsl:template match="hcmc:word" mode="dictToArray">
         <map:string><xsl:value-of select="."/></map:string>
     </xsl:template>
@@ -709,13 +750,18 @@
 <!--    Templates for converting the HCMC config file
         into a simple JSON for use in the Javascript.-->
 
-
+    <xd:doc>
+        <xd:desc>Template to convert an hcmc:config element to a JSON map.</xd:desc>
+    </xd:doc>
     <xsl:template match="hcmc:config" mode="configToArray">
         <map:map key="config">
             <xsl:apply-templates mode="#current"/>
         </map:map>
     </xsl:template>
 
+    <xd:doc>
+        <xd:desc>Template to convert an hcmc:params element to a JSON array.</xd:desc>
+    </xd:doc>
     <xsl:template match="hcmc:params" mode="configToArray">
         <map:array key="params">
             <map:map>
@@ -724,6 +770,9 @@
         </map:array>
     </xsl:template>
 
+    <xd:doc>
+        <xd:desc>Template to convert any child of an hcmc:params element to a JSON value.</xd:desc>
+    </xd:doc>
     <xsl:template match="hcmc:params/hcmc:*" mode="configToArray">
         <xsl:element namespace="http://www.w3.org/2005/xpath-functions" name="{if (text() castable as xs:integer) then 'number' else 'string'}">
             <xsl:attribute name="key" select="local-name()"/>
