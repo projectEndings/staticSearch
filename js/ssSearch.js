@@ -1699,7 +1699,6 @@ class StaticSearch{
   */
     getTitleByDocId(docId){
       try{
-        console.log('Getting title for doc id: ' + docId);
         return this.titles.get(docId)[0];
       }
       catch(e){

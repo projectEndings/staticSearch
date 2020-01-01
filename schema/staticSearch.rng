@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<grammar xmlns="http://relaxng.org/ns/structure/1.0"
-         xmlns:xlink="http://www.w3.org/1999/xlink"
+<grammar xmlns:xlink="http://www.w3.org/1999/xlink"
          xmlns:tei="http://www.tei-c.org/ns/1.0"
          xmlns:teix="http://www.tei-c.org/ns/Examples"
+         xmlns="http://relaxng.org/ns/structure/1.0"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2020-01-01T00:45:29Z. 2019.
-TEI Edition: Version 3.7.0a. Last updated on
-	29th December 2019, revision c1131e950
-TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.7.0a./
+Schema generated from ODD source 2020-01-01T05:43:46Z. 2019.
+TEI Edition: Version 3.6.0. Last updated on
+	16th July 2019, revision daa3cc0b9
+TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
   
 --><!--Free to anyone for any purpose-->
    <sch:ns xmlns:sch="http://purl.oclc.org/dsdl/schematron"
@@ -80,7 +80,13 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.7.0a./
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(A rule that specifies a document path in XPath, and provides weighting for search
               terms found in that context.) </a:documentation>
          <empty/>
-         <ref name="att.xpathRule.attributes"/>
+         <ref name="att.xpath.attributes"/>
+         <attribute name="weight">
+            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The weighting to give to a search token found in the context specified by the
+                  xpath attribute. Set to 0 to completely suppress indexing for a
+                  specific context, or greater than 1 to give stronger weighting.) </a:documentation>
+            <data type="nonNegativeInteger"/>
+         </attribute>
          <empty/>
       </element>
    </define>
@@ -97,17 +103,21 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.7.0a./
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(A context definition, providing an XPath attribute that identifies the context,
               allowing keyword-in-context fragments to be bounded by a specific context.) </a:documentation>
          <empty/>
-         <ref name="att.xpathRule.attributes"/>
+         <ref name="att.xpath.attributes"/>
          <ref name="att.nameable.attributes"/>
+         <optional>
+            <attribute name="context">
+               <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+               <data type="boolean"/>
+            </attribute>
+         </optional>
          <empty/>
       </element>
    </define>
-   <define name="att.xpathRule.attributes">
-      <ref name="att.xpathRule.attribute.xpath"/>
-      <ref name="att.xpathRule.attribute.weight"/>
-      <ref name="att.xpathRule.attribute.context"/>
+   <define name="att.xpath.attributes">
+      <ref name="att.xpath.attribute.xpath"/>
    </define>
-   <define name="att.xpathRule.attribute.xpath">
+   <define name="att.xpath.attribute.xpath">
       <optional>
          <attribute name="xpath">
             <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(An XPath equivalent to the @match attribute of an xsl:template, which
@@ -116,35 +126,6 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.7.0a./
          </attribute>
       </optional>
    </define>
-   <define name="att.xpathRule.attribute.weight">
-      <optional>
-         <attribute name="weight">
-            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The weighting to give to a search token found in the context specified by the
-                    xpath attribute. Set to 0 to completely suppress indexing for a
-                  specific context, or greater than 1 to give stronger weighting.) </a:documentation>
-            <data type="nonNegativeInteger"/>
-         </attribute>
-      </optional>
-   </define>
-   <define name="att.xpathRule.attribute.context">
-      <optional>
-         <attribute name="context">
-            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
-            <data type="boolean"/>
-         </attribute>
-      </optional>
-   </define>
-   <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
-            id="staticSearch-att.xpathRule-rules.ruleMustHaveWeight-constraint-rule-1">
-      <sch:rule xmlns:xi="http://www.w3.org/2001/XInclude"
-                xmlns:svg="http://www.w3.org/2000/svg"
-                xmlns:math="http://www.w3.org/1998/Math/MathML"
-                xmlns="http://www.tei-c.org/ns/1.0"
-                xmlns:sch="http://purl.oclc.org/dsdl/schematron"
-                context="*:rules/*:rule">
-                  <sch:assert test="@weight">ERROR: All weighting rules must have a weight.</sch:assert>
-                </sch:rule>
-   </pattern>
    <define name="att.nameable.attributes">
       <ref name="att.nameable.attribute.name"/>
    </define>

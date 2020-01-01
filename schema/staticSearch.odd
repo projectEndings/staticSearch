@@ -36,15 +36,17 @@
         <p>This documentation provides instructions on how to use the Project Endings
         Static Search Generator to provide a fully-functional search <soCalled>engine</soCalled>
         to your website without any dependency on server-side code such as a database.</p>
-        <div>
-          <head>How does it work?</head>
+        <div xml:id="whatDoesItDo">
+          <head>What does it do?</head>
           <p>The generator tool processes your site to create an index of all the words appearing
           in the site, stemmed using a Porter2 stemmer, and stores the index in the form of a
-          large number of small JSON files. It also creates a search page for your site, which 
+          large number of small JSON files. It also creates JSON files for other search facets that 
+          you specify in the headers of your documents, to allow searches for documents by 
+          type, by date range, and so on. Then it creates a search page for your site, which 
           processes user search terms and retrieves the required JSON files to provide search results.</p>
         </div>
-        <div>
-          <head>Search features</head>
+        <div xml:id="textSearchFeatures">
+          <head>Text search features</head>
           <p>The Generator supports the following features:</p>
           <list>
             <item>Porter 2 stemming of terms (so searching for <q>wait</q> will also
@@ -65,7 +67,20 @@
             document types.</item>
           </list>
         </div>
-        <div>
+      <div xml:id="searchFacetFeatures">
+        <head>Search facet features</head>
+        <p>The Generator supports the following search facets:</p>
+        <list>
+          <item><term>Descriptors</term>. You might for example classify your documents as poems, 
+          short stories and novels; the user can then choose to search in only poems, or poems and short stories.</item>
+          <item><term>Date ranges</term>. You might assign each document a date (or a date range) for its first 
+          publication and another for its last publication; then users could search for documents first published in a certain
+          date range and last published before another date.</item>
+          <item><term>Booleans</term> (true/false values). You might for instance specify that some poems are 
+          illustrated while others are not. The user could then limit their search only to illustrated poems.</item>
+        </list>
+      </div>
+        <div xml:id="howDoIUseIt">
           <head>How do I use it?</head>
           
           <p>First, you will have to make sure your site pages are correctly configured so that the Generator can
@@ -133,7 +148,7 @@
             </p>
           </div>
           
-          <div>
+          <div xml:id="configuringDocTitles">
             <head>Configuring your site: document titles</head>
             
             <p>When the indexing process runs over your document collection, by default it will use the document
@@ -150,7 +165,7 @@
             </p>
           </div>
           
-          <div>
+          <div xml:id="creatingConfigFile">
             <head>Creating a configuration file</head>
             
             <p>The configuration file is an XML document which tells the Generator where to find your site,
@@ -300,6 +315,64 @@
           </div>
           </div>
         </div>
+      <div xml:id="howDoesItWork">
+        <head>How does it work?</head>
+        <div xml:id="buildingTheIndex">
+          <head>Building the index</head>
+          <p>The tokenizing process first processes your configuration file to create an XSLT file
+            with all your settings embedded in it. Next, it processes your document collection using
+            those settings. Each document is tokenized, and then a separate JSON file is created for
+            each distinct token found; this file contains links to each of the documents which contain
+            that token, as well as keyword-in-context strings for the actual tokens. There will most likely
+            be thousands of these files, but most of them are quite small. These constitute the textual
+            index.</p>
+          
+          <p>In addition, separate JSON files are created for the list of document titles, and for your 
+            stopword list if you have specified one.</p>
+          
+          <p>Next, if you have specified search facets in your document headers, the processor
+            will then create a separate JSON file for each of those search facets, consisting of a list 
+            of the document identifiers for all documents which match the filters; so if some of your
+            documents are specified as <soCalled>Illustrated</soCalled> and some not (true or false),
+            a JSON file will be created for the <soCalled>Illustrated</soCalled> facet, with a list of 
+            documents which are true for this facet, and a list of documents which are false.
+          </p>
+          
+          <p>Finally, the template file you have created for the search page on your site will be 
+          processed to add the required search controls and JavaScript to make the search work.</p>
+        </div>
+       
+       <div xml:id="theSearchPage">
+         <head>The search page</head>
+         
+         <p>In order to provide fast, responsive search results, the search page must download
+         only the information it needs for each specific search. Obviously, if it were to download
+         the entire collection of thousands of token files, the process would take forever. So when 
+         you search for the word <mentioned>waiting</mentioned>, what happens is that the
+         JavaScript stems that word, producing <mentioned>wait</mentioned>, then it downloads
+         only the single file containing indexing information for that specific word, which is very 
+         rapid.</p>
+         
+         <p>However, there is some information that is required for all or many searches. To display
+           any results, the list of document titles must be downloaded, for example. A user may
+         for instance use the search facets only, not searching for a particular word or phrase but just
+         wanting a list of all the documents classified as <soCalled>Poems</soCalled>. This requires that
+         the JSON file with information about that facet be downloaded. So there is some advantage 
+         in having the JavaScript start downloading some of the essential files (titles, stopwords and
+         so on) as soon as the page loads, and it also starts downloading the facet files in the background.</p>
+         
+         <p>At the same time, though, we don't want to clog up the connection downloading these files
+         when the user may do a simple text search which doesn't depend on them, so these files
+         are retrieved using a <soCalled>trickle</soCalled> approach, one at a time. Then if a search is
+         initiated, all the files required for that specific search can be downloaded as fast as possible
+         overriding the trickle sequence for files that are needed immediately.</p>
+         
+         <p>Once the user has been on the search page for any length of time, all ancillary files will 
+         have been retrieved (assuming they weren't already cached by the browser), so the only 
+         files required for any search are those for the actual text search terms; the response should
+         therefore be even faster for later searches than for early ones.</p>
+       </div>
+      </div>
       
     </body>
     <back>
@@ -355,11 +428,21 @@
             <gloss>A rule that specifies a document path in XPath, and provides weighting for search
               terms found in that context.</gloss>
             <classes>
-              <memberOf key="att.xpathRule"/>
+              <memberOf key="att.xpath"/>
             </classes>
             <content>
               <empty/>
             </content>
+            <attList>
+              <attDef ident="weight" usage="req">
+                <gloss>The weighting to give to a search token found in the context specified by the
+                  <att>xpath</att> attribute. Set to 0 to completely suppress indexing for a
+                  specific context, or greater than 1 to give stronger weighting.</gloss>
+                <datatype>
+                  <dataRef name="nonNegativeInteger"/>
+                </datatype>
+              </attDef>
+            </attList>
           </elementSpec>
 
           <elementSpec ident="contexts" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
@@ -372,43 +455,29 @@
             <gloss>A context definition, providing an XPath attribute that identifies the context,
               allowing keyword-in-context fragments to be bounded by a specific context.</gloss>
             <classes>
-              <memberOf key="att.xpathRule"/>
+              <memberOf key="att.xpath"/>
               <memberOf key="att.nameable"/>
             </classes>
             <content>
               <empty/>
             </content>
+            <attList>
+              <attDef ident="context" usage="opt">
+                <datatype>
+                  <dataRef name="boolean"/>
+                </datatype>
+               </attDef>
+            </attList>
           </elementSpec>
 
-          <classSpec ident="att.xpathRule" module="ss" type="atts">
-            <gloss>A class providing attributes that enable specification of document locations and
-              weighting.</gloss>
-            <constraintSpec ident="rules.ruleMustHaveWeight" scheme="schematron">
-              <constraint>
-                <sch:rule context="*:rules/*:rule">
-                  <sch:assert test="@weight">ERROR: All weighting rules must have a weight.</sch:assert>
-                </sch:rule>
-              </constraint>
-            </constraintSpec>
+          <classSpec ident="att.xpath" module="ss" type="atts">
+            <gloss>A class providing attributes that enable specification of document locations.</gloss>
             <attList>
               <attDef ident="xpath">
                 <gloss>An XPath equivalent to the @match attribute of an xsl:template, which
                   specifies a context in a document.</gloss>
                 <datatype>
                   <dataRef name="string"/>
-                </datatype>
-              </attDef>
-              <attDef ident="weight" usage="opt">
-                <gloss>The weighting to give to a search token found in the context specified by the
-                    <att>xpath</att> attribute. Set to 0 to completely suppress indexing for a
-                  specific context, or greater than 1 to give stronger weighting.</gloss>
-                <datatype>
-                  <dataRef name="nonNegativeInteger"/>
-                </datatype>
-              </attDef>
-              <attDef ident="context" usage="opt">
-                <datatype>
-                  <dataRef name="boolean"/>
                 </datatype>
               </attDef>
             </attList>
