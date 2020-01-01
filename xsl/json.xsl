@@ -59,7 +59,6 @@
     <xsl:template match="/">
         <xsl:call-template name="createJson"/>
         <xsl:call-template name="createTitleJson"/>
-        <xsl:call-template name="createDocsJson"/>
         <xsl:call-template name="createFiltersJson"/>
         <xsl:call-template name="createStopwordsJson"/>
         <xsl:call-template name="createWordListJson"/>
@@ -595,104 +594,6 @@
         <xsl:param name="string"/>
         <xsl:value-of select="if (matches(normalize-space($string),'true|1','i')) then 'true' else 'false'"/>
     </xsl:function>
-    
-    
-    <xd:doc>
-        <xd:desc>createDocsJson is a named template that creates a large JSON object for all documents
-            and their filters. This is the template that creates docs.json, which may end up going away.</xd:desc>
-    </xd:doc>
-    <xsl:template name="createDocsJson">
-        <xsl:variable name="filterMap" as="element()">
-            <map xmlns="http://www.w3.org/2005/xpath-functions">
-                <xsl:for-each select="$tokenizedDocs">
-                    <xsl:variable name="thisDoc" select="."/>
-                    <xsl:variable name="relativeUri" select="$thisDoc//html/@data-staticSearch-relativeUri"/>
-                    <xsl:variable name="thisTitle" select="hcmc:getDocTitle($thisDoc//html)"/>
-                    <xsl:message>Processing <xsl:value-of select="$relativeUri"/></xsl:message>
-                    <map key="{$relativeUri}">
-                        <string key="docTitle"><xsl:value-of select="$thisTitle"/></string>
-                        <map key="descFilters">
-                            <xsl:for-each-group select="$thisDoc//meta[contains-token(@class,'staticSearch.desc')]" group-by="@name">
-                                <xsl:message expand-text="yes">Processing {current-grouping-key()}</xsl:message>
-                                <array key="{current-grouping-key()}">
-                                    <xsl:for-each select="current-group()">
-                                        <string><xsl:value-of select="@content"/></string>
-                                    </xsl:for-each>
-                                </array>
-                            </xsl:for-each-group>
-                        </map>
-                        
-                        <!--                  For date filters, we have to insist that there's only one date for each named filter, otherwise it
-                        becomes impossible to use them. So we take only the first one. -->
-                        <map key="dateFilters">
-                            <xsl:for-each-group select="$thisDoc//meta[contains-token(@class,'staticSearch.date')]" group-by="@name">
-                                <xsl:message expand-text="yes">Processing date filter {current-grouping-key()}</xsl:message>
-                                <array key="{current-grouping-key()}">
-                                    <xsl:for-each select="tokenize(current-group()[1]/@content, '/')">
-                                        <string><xsl:value-of select="."/></string>
-                                    </xsl:for-each>
-                                </array>
-                            </xsl:for-each-group>
-                        </map>
-                        <!--                  Boolean filters are just true or false, and default to false. -->
-                        <map key="boolFilters">
-                            <xsl:for-each-group select="$thisDoc//meta[contains-token(@class,'staticSearch.bool')]" group-by="@name">
-                                <xsl:message expand-text="yes">Processing boolean filter {current-grouping-key()}</xsl:message>
-                                <boolean key="{current-grouping-key()}">
-                                    <xsl:choose>
-                                        <xsl:when test="matches(current-group()[1]/@content, '^\s*(true)|(TRUE)|(1)')">true</xsl:when>
-                                        <xsl:otherwise>false</xsl:otherwise>
-                                    </xsl:choose>
-                                </boolean>
-                            </xsl:for-each-group>
-                        </map>
-                    </map>
-                </xsl:for-each>
-            </map>
-        </xsl:variable>
-        
-        
-        
-        
-        <xsl:result-document href="{$outDir}/docs.json" method="text">
-            <xsl:value-of select="xml-to-json($filterMap, map{'indent': $indentJSON})"/>
-        </xsl:result-document>
-        
-        <!--Now create the individual files for the filter maps;
-            we do this using templates rather than grouping, since that's simpler
-            and the grouping has already been done for us-->
-        
-        <!--First iterate through the relevant keys-->
-        <xsl:for-each select="distinct-values($filterMap//map:map[ends-with(@key,'Filters')]/*/@key)">
-            <xsl:variable name="thisKey" select="."/>
-            
-            <!--Create a variable to process into JSON-->
-            <xsl:variable name="result">
-                
-                <!--Process the filterMap XML through templates-->
-                <xsl:apply-templates select="$filterMap" mode="makeFilterDocs">
-                    <xsl:with-param name="key" select="$thisKey" tunnel="yes"/>
-                </xsl:apply-templates>
-            </xsl:variable>
-            
-            <!--And then create the output file, carefully escaping names etc-->
-            <xsl:variable name="outFile" select="$outDir || '/' || encode-for-uri(encode-for-uri($thisKey)) || '.json'" as="xs:string"/>
-            <xsl:result-document href="{$outFile}" method="text">
-                <xsl:value-of select="xml-to-json($result, map{'indent': $indentJSON})"/>
-            </xsl:result-document>
-        </xsl:for-each>
-        
-        
-        <!--      For debugging purposes: TODO: REMOVE WHEN NO LONGER NEEDED.  -->
-        
-        <xsl:result-document href="{$outDir}/docs.xml" method="xml" indent="yes">
-            <xsl:sequence select="$filterMap"/>
-        </xsl:result-document>
-        
-        
-        
-        
-    </xsl:template>
     
     
     <!--Simple set of templates for creating the filter docs:
