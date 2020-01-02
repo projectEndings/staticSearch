@@ -194,6 +194,10 @@ class StaticSearch{
       //A Map object that will be populated with filter data retrieved by AJAX.
       this.mapFilterData = new Map();
 
+      //A Map object that will track the retrieval of search filter data and
+      //other JSON files we need to get.
+      this.mapJsonRetrieved = new Map();
+
       //A Map object which will be repopulated on every search initiation,
       //containing the set of active document filters to apply to the search.
       this.mapActiveFilters = new Map();
@@ -232,11 +236,11 @@ class StaticSearch{
 
       //The collection of JSON filter files that we need to retrieve.
       this.jsonToRetrieve = [];
-      this.jsonToRetrieve.push({path: this.jsonDirectory + 'ssStopwords.json', state: TO_GET});
-      this.jsonToRetrieve.push({path: this.jsonDirectory + 'ssTitles.json', state: TO_GET});
-      this.jsonToRetrieve.push({path: this.jsonDirectory + 'ssTokens.json', state: TO_GET});
+      this.jsonToRetrieve.push({id: 'ssStopwords', path: this.jsonDirectory + 'ssStopwords.json'});
+      this.jsonToRetrieve.push({id: 'ssTitles', path: this.jsonDirectory + 'ssTitles.json'});
+      this.jsonToRetrieve.push({id: 'ssTokens', path: this.jsonDirectory + 'ssTokens.json'});
       for (var f of document.querySelectorAll('fieldset.ssFieldset[id], fieldset.ssFieldset select[id]')){
-        this.jsonToRetrieve.push({path: this.jsonDirectory + 'filters/' + f.id + '.json', state: TO_GET});
+        this.jsonToRetrieve.push({id: f.id, path: this.jsonDirectory + 'filters/' + f.id + '.json'});
       }
       //Flag to be set when all JSON is retrieved, to save laborious checking on
       //every search.
@@ -245,7 +249,6 @@ class StaticSearch{
       //Default set of stopwords
       //TODO: THIS SHOULD NOT BE RETRIEVED HERE, but as part of the regular array.
       this.stopwords = ss.stopwords; //temporary default.
-      this.stopwordsRetrieved = false; //flag for retrieval.
 
       //Boolean: should this instance report the details of its search
       //in human-readable form?
@@ -310,23 +313,24 @@ class StaticSearch{
   jsonRetrieved(json, path){
     if (path.match(/ssStopwords\.json$/)){
       this.stopwords = json.words;
-      this.stopwordsRetrieved = true;
+      this.mapJsonRetrieved.set('ssStopwords', GOT);
       return;
     }
     if (path.match(/ssTokens\.json$/)){
       this.tokens = json;
+      this.mapJsonRetrieved.set('ssTokens', GOT);
       return;
     }
     if (path.match(/ssTitles\.json$/)){
       this.resultSet.titles = new Map(Object.entries(json));
+      this.mapJsonRetrieved.set('ssTitles', GOT);
       return;
     }
     if (path.match(/\/filters\//)){
       this.mapFilterData.set(json.filterName, json);
+      this.mapJsonRetrieved.set(json.filterId, GOT);
       return;
     }
-
-    //TODO: CONTINUE THIS FUNCTION.
   }
 
 /** @function staticSearch~getJson
@@ -342,15 +346,19 @@ class StaticSearch{
   async getJson(jsonIndex){
     if (jsonIndex < this.jsonToRetrieve.length){
       try{
-        this.jsonToRetrieve[jsonIndex].state = GETTING;
-        let fch = await fetch(this.jsonToRetrieve[jsonIndex].path);
-        let json = await fch.json();
-        this.jsonRetrieved(json, this.jsonToRetrieve[jsonIndex].path);
-        this.jsonToRetrieve[jsonIndex].state = GOT;
+        if (this.mapJsonRetrieved.get(this.jsonToRetrieve[jsonIndex].id) != GOT){
+          this.mapJsonRetrieved.set(this.jsonToRetrieve[jsonIndex].id, GETTING);
+          let fch = await fetch(this.jsonToRetrieve[jsonIndex].path);
+          let json = await fch.json();
+          this.jsonRetrieved(json, this.jsonToRetrieve[jsonIndex].path);
+        }
+        else{
+          return this.getJson(jsonIndex + 1);
+        }
       }
       catch(e){
         console.log('ERROR: failed to retrieve JSON resource ' + this.jsonToRetrieve[jsonIndex].path + ': ' + e.message);
-        this.jsonToRetrieve[jsonIndex].state = FAILED;
+        this.mapJsonRetrieved.set(this.jsonToRetrieve[jsonIndex].id, FAILED);
       }
       return this.getJson(jsonIndex + 1);
     }
@@ -731,11 +739,9 @@ class StaticSearch{
       for (let desc of descs){
         currXSet = new XSet();
         let descName = desc.getAttribute('title');
-        //console.log(descName);
         let cbxs = desc.querySelectorAll('input[type="checkbox"]:checked');
         if ((cbxs.length > 0) && (this.mapFilterData.has(descName))){
           for (let cbx of cbxs){
-            //console.log(cbx.value);
             currXSet.addArray(this.mapFilterData.get(descName)[cbx.id].docs);
           }
           xSets.push(currXSet);
@@ -912,16 +918,25 @@ class StaticSearch{
         //First get a list of active filters.
 
         for (let ctrl of document.querySelectorAll('input[type="checkbox"][class="staticSearch.desc"]:checked')){
-          filterIds.add(ctrl.id.split('_')[0]);
+          let filterId = ctrl.id.split('_')[0];
+          if (this.mapJsonRetrieved.get(filterId) != GOT){
+            filterIds.add(filterId);
+          }
         }
         for (let ctrl of document.querySelectorAll('select[class="staticSearch.bool"]')){
           if (ctrl.selectedIndex > 0){
-            filterIds.add(ctrl.id.split('_')[0]);
+            let filterId = ctrl.id.split('_')[0];
+            if (this.mapJsonRetrieved.get(filterId) != GOT){
+              filterIds.add(filterId);
+            }
           }
         }
         for (let ctrl of document.querySelectorAll('input[type="text"][class="staticSearch.date"]')){
           if (ctrl.value.length > 3){
-            filterIds.add(ctrl.id.split('_')[0]);
+            let filterId = ctrl.id.split('_')[0];
+            if (this.mapJsonRetrieved.get(filterId) != GOT){
+              filterIds.add(filterId);
+            }
           }
         }
         //Create promises for all of the required filters.
@@ -940,7 +955,7 @@ class StaticSearch{
         //What else do we need to retrieve?
 
         //Get the stopwords if needed.
-        if (this.stopwordsRetrieved == false){
+        if (this.mapJsonRetrieved.get('ssStopwords') != GOT){
           promises[promises.length] = fetch(self.jsonDirectory + 'ssStopwords.json', this.fetchHeaders)
             .then(function(response) {
               return response.json();
@@ -954,7 +969,7 @@ class StaticSearch{
             }.bind(self));
         }
 
-        if (!this.resultSet.titles){
+        if (this.mapJsonRetrieved.get('ssTitles') != GOT){
           promises[promises.length] = fetch(self.jsonDirectory + 'ssTitles.json', this.fetchHeaders)
             .then(function(response) {
               return response.json();
