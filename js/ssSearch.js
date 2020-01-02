@@ -947,6 +947,7 @@ class StaticSearch{
             })
             .then(function(json) {
               self.mapFilterData.set(json.filterName, json);
+              self.mapJsonRetrieved.set(json.filterId, GOT);
             }.bind(self))
             .catch(function(e){
               console.log('Error attempting to retrieve filter data: ' + e);
@@ -962,7 +963,7 @@ class StaticSearch{
             })
             .then(function(json) {
               self.stopwords = json.words;
-              self.stopwordsRetrieved = true;
+              self.mapJsonRetrieved.set('ssStopWords', GOT);
             }.bind(self))
             .catch(function(e){
               console.log('Error attempting to retrieve stopword list: ' + e);
@@ -976,6 +977,7 @@ class StaticSearch{
             })
             .then(function(json) {
               self.resultSet.titles = new Map(Object.entries(json));
+              self.mapJsonRetrieved.set('ssTitles', GOT);
             }.bind(self))
             .catch(function(e){
               console.log('Error attempting to retrieve title list: ' + e);
@@ -1028,11 +1030,11 @@ class StaticSearch{
       if (promises.length > 0){
         Promise.all(promises).then(function(values) {
           this.processResults();
-        }.bind(this));
+        }.bind(self));
       }
       //Otherwise we can just do the search with the index data we already have.
       else{
-        this.processResults();
+        setTimeout(function(){this.processResults();}.bind(self), 0);
       }
     }
     catch(e){
