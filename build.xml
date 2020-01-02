@@ -13,8 +13,6 @@
     
     <xmlproperty file="${configFile}" keeproot="true"/>
     
-    <property name="keatsBuildUrl" value="https://jenkins.hcmc.uvic.ca/job/Keats/lastSuccessfulBuild/artifact/site/*zip*/site.zip"/>
-    
     <property name="verbose" value="true"/>
     
     <property name="searchFilePath" location="${configDir}/${config.params.searchFile}"/>
@@ -121,15 +119,6 @@
         <copy todir="${collectionDirName}/staticSearch/">
             <fileset dir="${basedir}/js">
                 <include name="ss**.js"/>
-            </fileset>
-        </copy>
-    </target>
-    
-    <target name="makeTestCopy">
-        <delete dir="${basedir}/js/js"/>
-        <copy todir="staticSearch">
-            <fileset dir="site">
-                <include name="js/**"/>
             </fileset>
         </copy>
     </target>
