@@ -76,6 +76,7 @@
   */
   ss.captions = [];
   ss.captions['en'] = {};
+  ss.captions['en'].strSearching         = 'Searching...';
   ss.captions['en'].strDocumentsFound    = 'Documents found: ';
   ss.captions['en'][PHRASE]              = 'Exact phrase: ';
   ss.captions['en'][MUST_CONTAIN]        = 'Must contain: ';
@@ -106,7 +107,8 @@
   *
   * input#ssQuery[type='text']   (the main search box)
   * button#ssDoSearch            (button for invoking search)
-  * div.ssResults                (div in which to output the results)
+  * div#ssSearching              (div containing message to show search is under way)
+  * div#ssResults                (div in which to output the results)
   * input[type='checkbox'].staticSearch.desc  (optional; checkbox lists for filtering based on text labels)
   * input[type='text'].staticSearch.date      (optional; textboxes for date filters)
   * input[type='checkbox'].staticSearch.bool  (optional: checkboxes for boolean filters)
@@ -157,6 +159,13 @@ class StaticSearch{
       this.clearButton = document.querySelector("button#ssClear");
       if (this.clearButton){
         this.clearButton.addEventListener('click', function(){this.clearSearchForm(); return false;}.bind(this));
+      }
+
+      //Essential "searching under way" message div.
+      this.searchingDiv =
+           document.querySelector("div#ssSearching");
+      if (!this.searchingDiv){
+       throw new Error('Failed to find div with id "ssSearching". Cannot provide search functionality.');
       }
 
       //Essential results div.
@@ -428,9 +437,11 @@ class StaticSearch{
   * @return {Boolean} true if a search is initiated otherwise false.
   */
   doSearch(popping = false){
+    setTimeout(function(){
+                this.searchingDiv.style.display = 'block';
+                document.body.style.cursor = 'progress';}.bind(this), 0);
     this.docsMatchingFilters.filtersActive = false; //initialize.
     let result = false; //default.
-    document.body.style.cursor = 'progress';
     if (this.parseSearchQuery()){
       if (this.writeSearchReport()){
         this.populateIndexes();
@@ -440,10 +451,12 @@ class StaticSearch{
         result = true;
       }
       else{
+        this.searchingDiv.style.display = 'none';
         document.body.style.cursor = 'default';
       }
     }
     else{
+      this.searchingDiv.style.display = 'none';
       document.body.style.cursor = 'default';
     }
     window.scroll({ top: this.resultsDiv.offsetTop, behavior: "smooth" });
@@ -1127,16 +1140,12 @@ class StaticSearch{
                          this.captionSet.strDocumentsFound + '0'
                        )));
         this.searchFinishedHook(1);
+        this.searchingDiv.style.display = 'none';
         document.body.style.cursor = 'default';
         return false;
       }
 //#3
       if ((this.terms.length < 1)&&(this.docsMatchingFilters.size > 0)){
-        /*for (let docUri of this.docsMatchingFilters){
-          this.resultSet.set(docUri, {docUri: docUri,
-                             score: 0, contexts: []});
-        }*/
-        console.dir(Array.from(this.docsMatchingFilters.entries()));
         this.resultSet.addArray([...this.docsMatchingFilters]);
         this.clearResultsDiv();
         this.resultsDiv.appendChild(document.createElement('p')
@@ -1148,6 +1157,7 @@ class StaticSearch{
           this.reportNoResults(true);
         }
         this.searchFinishedHook(2);
+        this.searchingDiv.style.display = 'none';
         document.body.style.cursor = 'default';
         return (this.resultSet.getSize() > 0);
       }
@@ -1373,6 +1383,7 @@ class StaticSearch{
           else{
             console.log('No useful search terms found.');
             this.searchFinishedHook(3);
+            this.searchingDiv.style.display = 'none';
             document.body.style.cursor = 'default';
             return false;
           }
@@ -1396,12 +1407,14 @@ class StaticSearch{
         this.reportNoResults(true);
       }
       this.searchFinishedHook(4);
+      this.searchingDiv.style.display = 'none';
       document.body.style.cursor = 'default';
       return (this.resultSet.getSize() > 0);
     }
     catch(e){
       console.log('ERROR: ' + e.message);
       this.searchFinishedHook(5);
+      this.searchingDiv.style.display = 'none';
       document.body.style.cursor = 'default';
       return false;
     }
@@ -1457,7 +1470,6 @@ class StaticSearch{
   */
   addArray(docUris){
     try{
-      console.dir(docUris);
       for (let docUri of docUris){
         this.mapDocs.set(docUri, {docUri: docUri, score: 0, contexts: []});
       }

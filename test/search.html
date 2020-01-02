@@ -54,6 +54,17 @@
         div.ssDateFilters fieldset.ssFieldset span, div.ssBoolFilters fieldset.ssFieldset span{
             padding: 0.5em 1em;
         }
+        div#ssSearching{
+            background-color: #000000;
+            color: #ffffff;
+            font-size: 1.5rem;
+            padding: 1rem;
+            border-radius: 0.25rem 0.25rem;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
     </style>
       
       
@@ -95,6 +106,7 @@
                         <option value="false">false</option></select></span></fieldset>
             </div>
          </form>
+         <div id="ssSearching">Searching...</div>
          <div id="ssResults"></div>
       </div>
       
