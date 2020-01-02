@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns="http://hcmc.uvic.ca/ns/staticSearch">
     <params>
-        <searchFile>test2/search.html</searchFile>
+        <searchFile>test/search.html</searchFile>
         <recurse>true<!--Need to set recurse to true for the test--></recurse>
         <phrasalSearch>true</phrasalSearch>
         <createContexts>true</createContexts>
@@ -11,7 +11,7 @@
         <totalKwicLength>15</totalKwicLength>
         <kwicTruncateString>...</kwicTruncateString>
         <verbose>false</verbose>
-        <stopwordsFile>test2/test2_stopwords.txt</stopwordsFile>
+        <stopwordsFile>test/test_stopwords.txt</stopwordsFile>
         <dictionaryFile>xsl/english_words.txt</dictionaryFile>
         <indentJSON>true</indentJSON>
     </params>
