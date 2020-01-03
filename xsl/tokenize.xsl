@@ -176,13 +176,20 @@
     
     <!--Basic template to strip away extraneous tags around things we don't care about-->
     <!--Note that this template is overriden with any XPATHS configured in the config file-->
-    <xsl:template match="span | br | wbr | em | b | i | a" mode="clean">
+    <xsl:template match="span | em | b | i | a" mode="clean">
         <xsl:if test="$verbose">
             <xsl:message>TEMPLATE clean: Matching <xsl:value-of select="local-name()"/></xsl:message>
         </xsl:if>
 
         <xsl:apply-templates select="node()" mode="#current"/>
     </xsl:template>
+    
+    <!--Treat selfclosing elements as a word separating token with the exception of wbr-->
+    <xsl:template match="br | hr | area | base | col | embed | hr | img | input | link[ancestor::body] | meta[ancestor::body] | param | source | track" mode="clean">
+        <xsl:text> </xsl:text>
+    </xsl:template>
+    
+    <xsl:template match="wbr" mode="clean"/>
     
     <!--Delete script tags by default, since they're code and won't contain anything useful-->
     <xsl:template match="script" mode="clean"/>
