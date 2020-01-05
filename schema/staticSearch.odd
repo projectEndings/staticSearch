@@ -190,8 +190,9 @@
               </p>
               <p>The <gi>searchFile</gi> element is a relative URI (resolved, like all URIs specified in the config file, against the configuration file location) that points
               directly to the search page that will be the primary access point for the search. Since the search file must be at the root of the directory that you wish to index
-              (i.e. the directory that contains all of the XHTML you want the search to index), the searchFile parameter provides the necessary information for knowing what documents
-              to index and where to put the output JSON.</p>
+              (i.e. the directory that contains all of the XHTML you want the search to index), the searchFile parameter provides the necessary information for knowing 
+              what document collection to index and where to put the output JSON. In other words, in specifying the location of your search page, you are also 
+              specifying the location of your document collection.</p>
               <p>Note that all output files will be in a directory that is a sibling to the search page. For instance, in a document collection that looks something like:
               <list style="font-family: monospace">
                 <item>myProject
@@ -314,6 +315,43 @@
             </p>
           </div>
           </div>
+          
+          <div xml:id="searchBuildProcess">
+            <head>Running the search build process</head>
+            <p>Once you have configured your HTML and your configuration file, you're ready to 
+            create a search index and a search page for your site. This requires that you run ant
+            in the root folder of the staticSearch project that you have downloaded or cloned.</p>
+            
+            <p>Before running the search on your own site, you can test that your system is able
+            to do the build by doing the (very quick) build of the test materials. If you simply run 
+            the <ident>ant</ident> command, like this:</p>
+            
+            <eg>mholmes@linuxbox:~/Documents/staticSearch$ ant</eg>
+            
+            <p>you should see a build process proceed using the small test collection of
+            documents, and at the end, a results page should open up giving you a report
+            on what was done. If this fails, then you'll need to troubleshoot the problem 
+            based on any error messages you see. (Do you have Java and Ant installed and
+            working on your system?).</p>
+            
+            <p>If the test succeeds, you can view the results by uploading the <ident>test</ident>
+            folder and all its contents to a web server, or by running a local webserver on your 
+            machine in that folder, using the 
+              <ref target="https://docs.python.org/3.8/library/http.server.html">Python HTTP server</ref>
+              or <ref target="https://www.php.net/manual/en/features.commandline.webserver.php">PHP's built-in web server</ref>.</p>
+            
+            <p>If the tests all work, then you're ready to build a search for your own site. Now you need
+            to run the same command, but this time, tell the build process where to find your custom
+            configuration file:</p>
+            
+            <eg>ant -DconfigFile=/home/mholmes/mysite/config_staticSearch.xml</eg>
+            
+            <p>The same process should run, and if it's successful, you should have a modified <ident>search.html</ident> page
+            as well as a lot of index files in JSON format in your site HTML folder. Now you can test your own 
+            search in the same ways suggested above.</p>
+            
+          </div>
+          
         </div>
       <div xml:id="howDoesItWork">
         <head>How does it work?</head>
