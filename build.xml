@@ -91,10 +91,12 @@
         <property name="tempSearchPageOutput" value="${collectionDirName}/ssTemp_${searchPageBasename}"/>
         <echo message="Creating search page..."/>
         <echo message="Creating temporary search page: ${tempSearchPageOutput}"/>
+        <available type="dir" property="hasFilters" file="${staticSearchDir}/filters" value="true"/>
         <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
             <arg value="-xsl:${basedir}/xsl/makeSearchPage.xsl"/>
             <arg value="-s:${searchFilePath}"/>
             <arg value="-o:${tempSearchPageOutput}"/>
+            <arg value="hasFilters=${hasFilters}"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
         </java>
         

@@ -62,6 +62,13 @@
        **************************************************************-->
 
     <xd:doc>
+        <xd:desc><xd:ref name="hasFilters">$hasFilters</xd:ref> is used to specify whether
+        the site build process has discovered any filter metadata in the collection. If so, then
+        we need to create appropriate form controls.</xd:desc>
+    </xd:doc>
+    <xsl:param name="hasFilters" as="xs:string" select="'false'"/>
+    
+    <xd:doc>
         <xd:desc><xd:ref name="docsJSON" type="variable">$docsJSON</xd:ref> is the previously created
         JSON file from the filters specified in the document metadata; we load this and then parse it
         as XML, since we create the filter selector from it.</xd:desc>
@@ -70,8 +77,8 @@
                 select="concat($outDir, '/docs.json') => unparsed-text() => json-to-xml()"
                 as="document-node()"/>
     
-    <xsl:variable name="filterJSONURIs" select="
-        uri-collection(concat($outDir,'/filters/?select=*.json'))"/>
+    <xsl:variable name="filterJSONURIs" select="if ($hasFilters = 'true') then
+        uri-collection(concat($outDir,'/filters/?select=*.json')) else ()"/>
 
     <xd:doc>
         <xd:desc><xd:ref name="css" type="parameter">$css</xd:ref> is a pre-populated
