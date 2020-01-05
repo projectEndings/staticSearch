@@ -21,6 +21,13 @@
     <xsl:include href="config.xsl"/>
     
     <xd:doc>
+        <xd:desc><xd:ref name="hasFilters">$hasFilters</xd:ref> is used to specify whether
+            the site build process has discovered any filter metadata in the collection. If so, then
+            we need to create appropriate form controls.</xd:desc>
+    </xd:doc>
+    <xsl:param name="hasFilters" as="xs:string" select="'false'"/>
+    
+    <xd:doc>
         <xd:desc>Output as XHTML with HTML version 5.0; this is necessary for adding the
             proper DOCTYPE and to create a valid file.</xd:desc>
     </xd:doc>
@@ -138,7 +145,8 @@
         <xsl:message>Generating report on search filters...</xsl:message>
         <section>
             <h2>Search Filters</h2>
-            <xsl:variable name="filterFiles" select="uri-collection(concat($outDir, '/filters/?*.json'))"/>
+            <xsl:variable name="filterFiles" select="if ($hasFilters = 'true') then
+                uri-collection(concat($outDir,'/filters/?select=*.json')) else ()"/>
             <xsl:choose>
                 <xsl:when test="count($filterFiles) gt 0">
                     <details>
