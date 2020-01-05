@@ -23,14 +23,17 @@
     
     <property name="headless" value="false"/>
     
+    <basename property="searchPageBasename" file="${searchFilePath}"/>
+    
+    <property name="tempSearchPageOutput" value="${collectionDirName}/ssTemp_${searchPageBasename}"/>
     
     <target name="init">
         <delete dir="temp"/>
         <delete file="${basedir}/xsl/config.xsl"/>
+        <delete file="${tempSearchPageOutput}"/>
         <delete dir="${staticSearchDir}"/>
         <mkdir dir="${staticSearchDir}"/>
     </target>
-    
     
     <target name="validate">
         <description>Task to validate that the source XHTML is well-formed XHTML. Note
@@ -87,8 +90,6 @@
     </target>
     
     <target name="makeSearchPage">
-        <basename property="searchPageBasename" file="${searchFilePath}"/>
-        <property name="tempSearchPageOutput" value="${collectionDirName}/ssTemp_${searchPageBasename}"/>
         <echo message="Creating search page..."/>
         <echo message="Creating temporary search page: ${tempSearchPageOutput}"/>
         <available type="dir" property="hasFilters" file="${staticSearchDir}/filters" value="true"/>
@@ -106,10 +107,12 @@
     </target>
     
     <target name="report">
+        <available type="dir" property="hasFilters" file="${staticSearchDir}/filters" value="true"/>
         <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
             <arg value="-xsl:${basedir}/xsl/create_reports.xsl"/>
             <arg value="-s:${basedir}/xsl/create_reports.xsl"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
+            <arg value="hasFilters=${hasFilters}"/>
         </java>
         <move file="${basedir}/staticSearch_report.html" tofile="${collectionDirName}/staticSearch/staticSearch_report.html"/>
 
