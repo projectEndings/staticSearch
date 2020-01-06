@@ -89,7 +89,7 @@
       <div id="staticSearch"><script src="staticSearch/ssPorter2Stemmer.js"></script><script src="staticSearch/ssSearch.js"></script><script>
                 var Sch;
                 window.addEventListener('load', function(){Sch = new StaticSearch();});
-            </script><form accept-charset="UTF-8" id="ssForm" data-allowPhrasal="yes" onsubmit="return false;" data-versionString="_e2dc2ce"><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><div class="ssDescFilters">
+            </script><form accept-charset="UTF-8" id="ssForm" data-allowPhrasal="yes" onsubmit="return false;" data-versionString="_b06562b"><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><div class="ssDescFilters">
                <fieldset class="ssFieldset" title="Document type" id="ssDesc1">
                   <legend>Document type</legend>
                   <ul class="ssDescCheckboxList">
@@ -190,6 +190,12 @@
                                          check: function(num){console.log('Search hook ' + num);
                                          console.log('Testing results for the word "artichoke", which is in the stopwords list.');
                                          checkResults({docsFound: 0, contextsFound: 0, scoreTotal: 0});}});
+                                         
+           //Search for a word that has no whitespace around it, just linebreaks.
+           tests.push({setup: function(){Sch.queryBox.value = 'dog';},
+                                         check: function(num){console.log('Search hook ' + num);
+                                         console.log('Testing results for the word "dog", which in one document has no spaces around it, just linebreaks.');
+                                         checkResults({docsFound: 2, contextsFound: 4, scoreTotal: 4});}});
 
 
            function runTests(){
