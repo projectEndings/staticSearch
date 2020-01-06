@@ -71,7 +71,7 @@
         <xd:desc><xd:ref name="schema" type="variable">$ssBasedir</xd:ref> is the base directory for the static
             search codebase. It is just the directory above the /xsl/ directory that contains this file.</xd:desc>
     </xd:doc>
-    <xsl:variable name="ssBaseDir" select="substring-before(document-uri(/),'/xsl/')"/>
+    <xsl:variable name="ssBaseDir" select="substring-before(document-uri(/),'/xsl/create_config_xsl.xsl')"/>
     
     
     <xd:doc>
