@@ -86,10 +86,15 @@
         It is provided as a parameter so that it can be overridden if required.</xd:desc>
     </xd:doc>
     <xsl:param name="css" as="xs:string">
+        form#ssForm{
+            display: flex;
+            flex-direction: column;
+        }
         span.ssQueryAndButton{
             display: flex;
             flex-direction: row;
             margin: 0.25em auto;
+            width: 100%;
         }
         input#ssQuery{
             flex: 1;
