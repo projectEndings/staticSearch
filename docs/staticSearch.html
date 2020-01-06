@@ -95,7 +95,11 @@ function showByMod() {
                   <li class="toc"><span class="headingNumber"> 4.1 </span><a class="toc toc_1" href="#index.xml-body.1_div.4_div.1">Configuring your site: search filters</a></li>
                   <li class="toc"><span class="headingNumber"> 4.2 </span><a class="toc toc_1" href="#configuringDocTitles" title="Configuring your site document titles">Configuring your site: document titles</a></li>
                   <li class="toc"><span class="headingNumber"> 4.3 </span><a class="toc toc_1" href="#creatingConfigFile" title="Creating a configuration file">Creating a configuration file</a><ul class="toc">
-                        <li class="toc"><span class="headingNumber">4.3.1 </span><a class="toc toc_2" href="#index.xml-body.1_div.4_div.3_div.1">Specifying Parameters (Required)</a></li>
+                        <li class="toc"><span class="headingNumber">4.3.1 </span><a class="toc toc_2" href="#index.xml-body.1_div.4_div.3_div.1">Specifying Parameters</a><ul class="toc">
+                              <li class="toc"><span class="headingNumber">4.3.1.1 </span><a class="toc toc_3" href="#paramsRequired" title="Required parameters">Required parameters</a></li>
+                              <li class="toc"><span class="headingNumber">4.3.1.2 </span><a class="toc toc_3" href="#paramsOptional" title="Optional Parameters">Optional Parameters</a></li>
+                           </ul>
+                        </li>
                         <li class="toc"><span class="headingNumber">4.3.2 </span><a class="toc toc_2" href="#index.xml-body.1_div.4_div.3_div.2">Specifying Rules (Optional)</a></li>
                         <li class="toc"><span class="headingNumber">4.3.3 </span><a class="toc toc_2" href="#index.xml-body.1_div.4_div.3_div.3">Specifying Contexts (Optional)</a></li>
                      </ul>
@@ -229,57 +233,86 @@ function showByMod() {
                <p> Only the <a class="link_ref" href="#TEI.params" title="&lt;params&gt;">&lt;params&gt;</a> element is necessary, but, as we discuss shortly, we highly suggest taking advantage
                   of the <a class="link_ref" href="#TEI.rules" title="&lt;rules&gt;">&lt;rules&gt;</a> and <a class="link_ref" href="#TEI.contexts" title="&lt;contexts&gt;">&lt;contexts&gt;</a> for the best results.</p>
                <div class="teidiv2" id="index.xml-body.1_div.4_div.3_div.1">
-                  <h3><span class="headingNumber">4.3.1 </span><span class="head">Specifying Parameters (Required)</span></h3>
-                  <p>The <a class="link_ref" href="#TEI.params" title="&lt;params&gt;">&lt;params&gt;</a> element has two required elements for determining the resource collection that you
-                     wish to index: </p>
-                  <ul>
-                     <li class="item"><a class="link_ref" href="#TEI.searchFile" title="&lt;searchFile&gt;">&lt;searchFile&gt;</a></li>
-                     <li class="item"><a class="link_ref" href="#TEI.recurse" title="&lt;recurse&gt;">&lt;recurse&gt;</a></li>
-                  </ul>
-                  <p>The <a class="link_ref" href="#TEI.searchFile" title="&lt;searchFile&gt;">&lt;searchFile&gt;</a> element is a relative URI (resolved, like all URIs specified in the config file,
-                     against the configuration file location) that points directly to the search page that
-                     will be the primary access point for the search. Since the search file must be at
-                     the root of the directory that you wish to index (i.e. the directory that contains
-                     all of the XHTML you want the search to index), the searchFile parameter provides
-                     the necessary information for knowing what document collection to index and where
-                     to put the output JSON. In other words, in specifying the location of your search
-                     page, you are also specifying the location of your document collection.</p>
-                  <p>Note that all output files will be in a directory that is a sibling to the search
-                     page. For instance, in a document collection that looks something like: </p>
-                  <ul style="font-family: monospace">
-                     <li class="item">myProject 
-                        <ul>
-                           <li class="item">novel.html</li>
-                           <li class="item">poem.html</li>
-                           <li class="item">shortstory.html</li>
-                           <li class="item">search.html</li>
-                        </ul>
-                     </li>
-                  </ul>
-                  <p> The collection of Javascript and JSON files will be in a directory like so: </p>
-                  <ul style="font-family: monospace">
-                     <li class="item">myProject 
-                        <ul>
-                           <li class="item">novel.html</li>
-                           <li class="item">poem.html</li>
-                           <li class="item">shortstory.html</li>
-                           <li class="item">search.html</li>
-                           <li class="item"><em>staticSearch</em></li>
-                        </ul>
-                     </li>
-                  </ul>
-                  <p>We also require the <a class="link_ref" href="#TEI.recurse" title="&lt;recurse&gt;">&lt;recurse&gt;</a> element in the case where the document collection may be nested (as is common with
-                     static sites generated from Jekyll or Wordpress). The <a class="link_ref" href="#TEI.recurse" title="&lt;recurse&gt;">&lt;recurse&gt;</a> element is a boolean (true or false) that determines whether or not to recurse into
-                     the subdirectories of the collection and index those files.</p>
-                  <p>[TODO: Other optional parameters will be documented here...]</p>
+                  <h3><span class="headingNumber">4.3.1 </span><span class="head">Specifying Parameters</span></h3>
+                  <div class="teidiv3" id="paramsRequired">
+                     <h4><span class="headingNumber">4.3.1.1 </span><span class="head">Required parameters</span></h4>
+                     <p>The <a class="link_ref" href="#TEI.params" title="&lt;params&gt;">&lt;params&gt;</a> element has two required elements for determining the resource collection that you
+                        wish to index: </p>
+                     <ul>
+                        <li class="item"><a class="link_ref" href="#TEI.searchFile" title="&lt;searchFile&gt;">&lt;searchFile&gt;</a></li>
+                        <li class="item"><a class="link_ref" href="#TEI.recurse" title="&lt;recurse&gt;">&lt;recurse&gt;</a></li>
+                     </ul>
+                     <p>The <a class="link_ref" href="#TEI.searchFile" title="&lt;searchFile&gt;">&lt;searchFile&gt;</a> element is a relative URI (resolved, like all URIs specified in the config file,
+                        against the configuration file location) that points directly to the search page that
+                        will be the primary access point for the search. Since the search file must be at
+                        the root of the directory that you wish to index (i.e. the directory that contains
+                        all of the XHTML you want the search to index), the searchFile parameter provides
+                        the necessary information for knowing what document collection to index and where
+                        to put the output JSON. In other words, in specifying the location of your search
+                        page, you are also specifying the location of your document collection.</p>
+                     <p>Note that all output files will be in a directory that is a sibling to the search
+                        page. For instance, in a document collection that looks something like: </p>
+                     <ul style="font-family: monospace">
+                        <li class="item">myProject 
+                           <ul>
+                              <li class="item">novel.html</li>
+                              <li class="item">poem.html</li>
+                              <li class="item">shortstory.html</li>
+                              <li class="item">search.html</li>
+                           </ul>
+                        </li>
+                     </ul>
+                     <p> The collection of Javascript and JSON files will be in a directory like so: </p>
+                     <ul style="font-family: monospace">
+                        <li class="item">myProject 
+                           <ul>
+                              <li class="item">novel.html</li>
+                              <li class="item">poem.html</li>
+                              <li class="item">shortstory.html</li>
+                              <li class="item">search.html</li>
+                              <li class="item"><em>staticSearch</em></li>
+                           </ul>
+                        </li>
+                     </ul>
+                     <p>We also require the <a class="link_ref" href="#TEI.recurse" title="&lt;recurse&gt;">&lt;recurse&gt;</a> element in the case where the document collection may be nested (as is common with
+                        static sites generated from Jekyll or Wordpress). The <a class="link_ref" href="#TEI.recurse" title="&lt;recurse&gt;">&lt;recurse&gt;</a> element is a boolean (true or false) that determines whether or not to recurse into
+                        the subdirectories of the collection and index those files.</p>
+                  </div>
+                  <div class="teidiv3" id="paramsOptional">
+                     <h4><span class="headingNumber">4.3.1.2 </span><span class="head">Optional Parameters</span></h4>
+                     <p>The following parameters are optional, but most projects will want to specify some
+                        of them:</p>
+                     <ul>
+                        <li class="item"><a class="link_ref" href="#TEI.versionFile" title="&lt;versionFile&gt;">&lt;versionFile&gt;</a> enables you to specify the path to a plain-text file containing a simple version
+                           number for the project. This might take the form of a software-release-style version
+                           number such as <span class="val">1.5</span>, or it might be a Subversion revision number or a Git commit id. It should not contain
+                           any spaces or punctuation. If you provide a version file, the version string will
+                           be used as part of the filenames for all the JSON resources created for the search.
+                           This is useful because it allows the browser to cache such resources when users repeatedly
+                           visit the search page, but if the project is rebuilt with a new version, those cached
+                           files will not be used because the new version will have different filenames. The
+                           path specified is relative to the location of the configuration file (or absolute,
+                           if you wish).</li>
+                        <li class="item"><a class="link_ref" href="#TEI.phrasalSearch" title="&lt;phrasalSearch&gt;">&lt;phrasalSearch&gt;</a> is a boolean parameter which specifies whether you want your search engine to support
+                           phrasal searches (quoted strings). Obviously this is a useful feature, but it is also
+                           costly in terms of the size of JSON token files; in order to support this kind of
+                           search, we store contexts for all hits for each token in each document, so if your
+                           site is very large, and your user base is unlikely to use phrasal searching, it may
+                           not be worth the overhead. The default value is true.</li>
+                        <li class="item"><a class="link_ref" href="#TEI.createContexts" title="&lt;createContexts&gt;">&lt;createContexts&gt;</a> is a boolean parameter that specifies whether you want the indexer to store keyword-in-context
+                           extracts for each of the hits in a document. This increases the size of the index,
+                           but of course it makes for much more user-friendly search results.</li>
+                        <li class="item">[TODO: MORE TO COME...]</li>
+                     </ul>
+                  </div>
                </div>
                <div class="teidiv2" id="index.xml-body.1_div.4_div.3_div.2">
                   <h3><span class="headingNumber">4.3.2 </span><span class="head">Specifying Rules (Optional)</span></h3>
                   <div class="p">The <a class="link_ref" href="#TEI.rules" title="&lt;rules&gt;">&lt;rules&gt;</a> elements specifies a list of conditions (using the <a class="link_ref" href="#TEI.rule" title="&lt;rule&gt;">&lt;rule&gt;</a> element) that tell the parser, using XPath statements in the <span class="att">xpath</span> attribute, specific weights to assign to particular parts of each document. For instance,
                      if you wanted all heading elements (<span class="gi">&lt;h1&gt;</span>, <span class="gi">&lt;h2&gt;</span>, etc) in documents to be given a greater weight and thus receive a higher score in
                      the results, you can do so using a rule like so: 
-                     <div id="index.xml-egXML-d38e227" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">2</span>"<br/>  <span class="attribute">xpath</span>="<span class="attributevalue">h1 | h2 | h3 | h4 | h5 | h6</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> Since we're using XPath 3.0 and XSLT 3.0, this can also be simplified to: 
-                     <div id="index.xml-egXML-d38e231" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">2</span>"<br/>  <span class="attribute">xpath</span>="<span class="attributevalue">*[matches(local-name(),'^h\d+$')]</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> (It is worth noting, however, the above example is unnecessary: all heading elements
+                     <div id="index.xml-egXML-d38e248" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">2</span>"<br/>  <span class="attribute">xpath</span>="<span class="attributevalue">h1 | h2 | h3 | h4 | h5 | h6</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> Since we're using XPath 3.0 and XSLT 3.0, this can also be simplified to: 
+                     <div id="index.xml-egXML-d38e252" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">2</span>"<br/>  <span class="attribute">xpath</span>="<span class="attributevalue">*[matches(local-name(),'^h\d+$')]</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> (It is worth noting, however, the above example is unnecessary: all heading elements
                      are given a weight of 2 by default, which is the only preconfigured weight in static
                      search.)</div>
                   <p>The value of the <span class="att">xpath</span> attribute is transformed in a XSLT template match attribute, and thus must follow
@@ -289,8 +322,8 @@ function showByMod() {
                      index its contents on every page. These elements can be ignored simply by using a
                      <a class="link_ref" href="#TEI.rule" title="&lt;rule&gt;">&lt;rule&gt;</a> and setting its weight to 0. For instance, if you want to remove the header and the
                      footer from the search indexing process, you could write something like: 
-                     <div id="index.xml-egXML-d38e250" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>" <span class="attribute">xpath</span>="<span class="attributevalue">footer | header</span>"/&gt;</span></div> Or if you want to remove XHTML anchor tags (<span class="gi">&lt;a&gt;</span>) whose text is identical to the URL specified in its <span class="att">href</span>, you could do something like: 
-                     <div id="index.xml-egXML-d38e258" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>" <span class="attribute">xpath</span>="<span class="attributevalue">a[@href=./text()]</span>"/&gt;</span></div>
+                     <div id="index.xml-egXML-d38e271" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>" <span class="attribute">xpath</span>="<span class="attributevalue">footer | header</span>"/&gt;</span></div> Or if you want to remove XHTML anchor tags (<span class="gi">&lt;a&gt;</span>) whose text is identical to the URL specified in its <span class="att">href</span>, you could do something like: 
+                     <div id="index.xml-egXML-d38e279" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>" <span class="attribute">xpath</span>="<span class="attributevalue">a[@href=./text()]</span>"/&gt;</span></div>
                   </div>
                   <p>Note that the indexer does not tokenize any content in the <span class="gi">&lt;head&gt;</span> of the document (but as noted above, metadata can be configured into filters) and
                      that all elements in the <span class="gi">&lt;body&gt;</span> of a document are considered tokenizable. However, common elements that you might
@@ -306,22 +339,22 @@ function showByMod() {
                   <div class="p">When the static search creates the keywords-in-contexts (the "kwic" or "snippets")
                      for each token, it does so by looking for the nearest block-level element that it
                      can use as its context. Take, for instance, this unordered list: 
-                     <div id="index.xml-egXML-d38e277" class="pre egXML_valid"><span class="element">&lt;ul&gt;</span><br/> <span class="element">&lt;li&gt;</span>Keyword-in-context search results. This is also configurable, since including contexts<br/>   increases the size of the index.<span class="element">&lt;/li&gt;</span><br/> <span class="element">&lt;li&gt;</span>Search filtering using any metadata you like, allowing users to limit their search
+                     <div id="index.xml-egXML-d38e298" class="pre egXML_valid"><span class="element">&lt;ul&gt;</span><br/> <span class="element">&lt;li&gt;</span>Keyword-in-context search results. This is also configurable, since including contexts<br/>   increases the size of the index.<span class="element">&lt;/li&gt;</span><br/> <span class="element">&lt;li&gt;</span>Search filtering using any metadata you like, allowing users to limit their search
                         to specific<br/>   document types.<span class="element">&lt;/li&gt;</span><br/><span class="element">&lt;/ul&gt;</span></div> Each <span class="gi">&lt;li&gt;</span> elements is, by default, a <span class="term">context</span> element, meaning that the snippet generated for each token will not extend beyond
                      the <span class="gi">&lt;li&gt;</span> element boundaries; in this case, if the <span class="gi">&lt;li&gt;</span> was not a context attribute, the term <span class="q">‘search’</span> would produce a context that looks something like: 
                      <pre class="pre_eg">"...the size of the index.<span style="font-weight:bold;">Search</span> filtering using any metadata you like,..."</pre>
                   </div>
                   <div class="p">Using the <a class="link_ref" href="#TEI.contexts" title="&lt;contexts&gt;">&lt;contexts&gt;</a> element, you can control what elements operate as contexts. For instance, say a page
                      contained a marginal note, encoded as a <span class="gi">&lt;span&gt;</span> in your document beside its point of attachment:<span id="Note1_return"><a class="notelink" title="This example taken from Thomas S. Kuhn, The Structure of Scientific Revolutions (50th anniversary edition), University of Chicago Press, 2012: p. 191." href="#Note1"><sup>1</sup></a></span> 
-                     <div id="index.xml-egXML-d38e311" class="pre egXML_valid"><span class="element">&lt;p&gt;</span>About that program I shall have nothing to say here,<span class="element">&lt;span <span class="attribute">class</span>="<span class="attributevalue">sidenote</span>"&gt;</span>Some information on this subject can be found in "Second Thoughts"<span class="element">&lt;/span&gt;</span> [...]<br/><span class="element">&lt;/p&gt;</span></div> Using CSS, the footnote might be alongside the text of the document in margin, or
+                     <div id="index.xml-egXML-d38e332" class="pre egXML_valid"><span class="element">&lt;p&gt;</span>About that program I shall have nothing to say here,<span class="element">&lt;span <span class="attribute">class</span>="<span class="attributevalue">sidenote</span>"&gt;</span>Some information on this subject can be found in "Second Thoughts"<span class="element">&lt;/span&gt;</span> [...]<br/><span class="element">&lt;/p&gt;</span></div> Using CSS, the footnote might be alongside the text of the document in margin, or
                      made into a clickable object using Javascript. However, since the tokenizer is unaware
                      of any server-side processing, it understands the <span class="gi">&lt;span&gt;</span> as an inline element and assumes the <span class="gi">&lt;p&gt;</span> constitutes the context of the element. A search for <span class="q">‘information’</span> might then return: 
                      <pre class="pre_eg">"...nothing to say here,Some <span style="font-weight:bold;">information</span> on this subject can be found...</pre> To tell the tokenizer that the <span class="gi">&lt;span&gt;</span> constitutes the context block for any of its token, use the <a class="link_ref" href="#TEI.context" title="&lt;context&gt;">&lt;context&gt;</a> element with an <span class="att">xpath</span> pattern: 
-                     <div id="index.xml-egXML-d38e340" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">xpath</span>="<span class="attributevalue">span[contains-token(@class,'sidenote')]</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
+                     <div id="index.xml-egXML-d38e361" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">xpath</span>="<span class="attributevalue">span[contains-token(@class,'sidenote')]</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
                   </div>
                   <div class="p">You can also configure it the other way: if a <span class="gi">&lt;div&gt;</span>, which is by default a context block, should not be understood as a context block,
                      then you can tell the parser to not consider it as such using <span class="att">context</span> set to false: 
-                     <div id="index.xml-egXML-d38e350" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">xpath</span>="<span class="attributevalue">div</span>" <span class="attribute">context</span>="<span class="attributevalue">false</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
+                     <div id="index.xml-egXML-d38e371" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">xpath</span>="<span class="attributevalue">div</span>" <span class="attribute">context</span>="<span class="attributevalue">false</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
                   </div>
                   <p>The default contexts elements are: </p>
                   <ul>
@@ -1607,7 +1640,7 @@ element versionFile { xsd:anyURI }</pre>
             	    Date: 2019<br/><!--
 	  Generated from index.xml using XSLT stylesheets version 7.48.0
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2020-01-06T00:26:44Z.
+	       on 2020-01-06T19:45:09Z.
 	       SAXON HE 9.9.1.3.
 		 --></address>
       </div>
