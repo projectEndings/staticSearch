@@ -1,0 +1,19 @@
+# Files from schema build. #
+*.lite.odd
+*.processedodd
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Generated version files #
+VERSION
+
+# Temporary files from the build #
+ssTemp_*

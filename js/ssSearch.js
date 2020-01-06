@@ -134,7 +134,7 @@ class StaticSearch{
       //Headers used for all AJAX fetch requests.
       this.fetchHeaders = {
               credentials: 'same-origin',
-              cache: 'no-cache',
+              cache: 'default',
               headers: {'Accept': 'application/json'},
               method: 'GET',
               redirect: 'follow',
@@ -217,6 +217,10 @@ class StaticSearch{
       if (tmp && !/(y|Y|yes|true|True|1)/.test(tmp.getAttribute('data-AllowPhrasal'))){
         this.allowPhrasal = false;
       }
+
+      //Configuration of a specific version string to avoid JSON caching.
+      this.versionString = document.querySelector('form#ssForm').getAttribute('data-versionString');
+
       //Associative array for storing retrieved JSON search string data.
       //Any retrieved data stored in here is retained between searches
       //to avoid having to retrieve it twice.
@@ -236,11 +240,11 @@ class StaticSearch{
 
       //The collection of JSON filter files that we need to retrieve.
       this.jsonToRetrieve = [];
-      this.jsonToRetrieve.push({id: 'ssStopwords', path: this.jsonDirectory + 'ssStopwords.json'});
-      this.jsonToRetrieve.push({id: 'ssTitles', path: this.jsonDirectory + 'ssTitles.json'});
-      this.jsonToRetrieve.push({id: 'ssTokens', path: this.jsonDirectory + 'ssTokens.json'});
+      this.jsonToRetrieve.push({id: 'ssStopwords', path: this.jsonDirectory + 'ssStopwords' + this.versionString + '.json'});
+      this.jsonToRetrieve.push({id: 'ssTitles', path: this.jsonDirectory + 'ssTitles' + this.versionString + '.json'});
+      this.jsonToRetrieve.push({id: 'ssTokens', path: this.jsonDirectory + 'ssTokens' + this.versionString + '.json'});
       for (var f of document.querySelectorAll('fieldset.ssFieldset[id], fieldset.ssFieldset select[id]')){
-        this.jsonToRetrieve.push({id: f.id, path: this.jsonDirectory + 'filters/' + f.id + '.json'});
+        this.jsonToRetrieve.push({id: f.id, path: this.jsonDirectory + 'filters/' + f.id + this.versionString + '.json'});
       }
       //Flag to be set when all JSON is retrieved, to save laborious checking on
       //every search.
@@ -311,17 +315,17 @@ class StaticSearch{
   * @param path {String} the path from which it was retrieved.
   */
   jsonRetrieved(json, path){
-    if (path.match(/ssStopwords\.json$/)){
+    if (path.match(/ssStopwords.*json$/)){
       this.stopwords = json.words;
       this.mapJsonRetrieved.set('ssStopwords', GOT);
       return;
     }
-    if (path.match(/ssTokens\.json$/)){
+    if (path.match(/ssTokens.*json$/)){
       this.tokens = json;
       this.mapJsonRetrieved.set('ssTokens', GOT);
       return;
     }
-    if (path.match(/ssTitles\.json$/)){
+    if (path.match(/ssTitles.*json$/)){
       this.resultSet.titles = new Map(Object.entries(json));
       this.mapJsonRetrieved.set('ssTitles', GOT);
       return;
@@ -941,7 +945,7 @@ class StaticSearch{
         }
         //Create promises for all of the required filters.
         for (let filterId of filterIds){
-          promises[promises.length] = fetch(self.jsonDirectory + 'filters/' + filterId + '.json', this.fetchHeaders)
+          promises[promises.length] = fetch(self.jsonDirectory + 'filters/' + filterId + this.versionString + '.json', this.fetchHeaders)
             .then(function(response) {
               return response.json();
             })
@@ -957,7 +961,7 @@ class StaticSearch{
 
         //Get the stopwords if needed.
         if (this.mapJsonRetrieved.get('ssStopwords') != GOT){
-          promises[promises.length] = fetch(self.jsonDirectory + 'ssStopwords.json', this.fetchHeaders)
+          promises[promises.length] = fetch(self.jsonDirectory + 'ssStopwords' + this.versionString + '.json', this.fetchHeaders)
             .then(function(response) {
               return response.json();
             })
@@ -971,7 +975,7 @@ class StaticSearch{
         }
 
         if (this.mapJsonRetrieved.get('ssTitles') != GOT){
-          promises[promises.length] = fetch(self.jsonDirectory + 'ssTitles.json', this.fetchHeaders)
+          promises[promises.length] = fetch(self.jsonDirectory + 'ssTitles' + this.versionString + '.json', this.fetchHeaders)
             .then(function(response) {
               return response.json();
             })
@@ -1005,7 +1009,7 @@ class StaticSearch{
 
 //We create an array of fetches to get the json file for each token,
 //assuming it's there.
-          promises[promises.length] = fetch(self.jsonDirectory + jsonSubfolder + tokensToFind[i] + '.json', this.fetchHeaders)
+          promises[promises.length] = fetch(self.jsonDirectory + jsonSubfolder + tokensToFind[i] + this.versionString + '.json', this.fetchHeaders)
 //If we get a response, and it looks good
               .then(function(response){
                 if ((response.status >= 200) &&

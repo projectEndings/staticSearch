@@ -3,6 +3,9 @@
     xmlns:if="ant:if"
     xmlns:unless="ant:unless">
     
+    <!--  We need ant contrib. -->
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+    
     <property name="saxon" value="${basedir}/lib/saxon9he.jar"/>
     
     <property name="config" value="configTest.xml"/>
@@ -33,6 +36,19 @@
         <delete file="${tempSearchPageOutput}"/>
         <delete dir="${staticSearchDir}"/>
         <mkdir dir="${staticSearchDir}"/>
+        <!-- If we're building the test data, we need to generate the VERSION file. -->
+        <if>
+            <equals arg1="${basedir}/configTest.xml" arg2="${configFile}"/>
+            <then>
+                <delete file="${basedir}/test/VERSION"/>
+                <exec executable="git">
+                    <arg value="rev-parse"/>
+                    <arg value="--short"/>
+                    <arg value="HEAD"/>
+                    <redirector output="${basedir}/test/VERSION"/>
+                </exec>
+            </then>
+        </if>
     </target>
     
     <target name="validate">

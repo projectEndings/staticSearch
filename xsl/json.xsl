@@ -46,6 +46,7 @@
         in the later stages of the process.</xd:desc>
     </xd:doc>
     <xsl:variable name="kwicLengthHalf" select="xs:integer(round(xs:integer($totalKwicLength) div 2))" as="xs:integer"/>
+        
 
     <!--**************************************************************
        *                                                            *
@@ -132,7 +133,7 @@
                     august.json
 
                 would silently (as of Saxon 9.8) overwrite the first.-->
-            <xsl:result-document href="{$outDir}/{if (matches($token,'^[A-Z]')) then 'upper' else 'lower'}/{$token}.json" method="text">
+            <xsl:result-document href="{$outDir}/{if (matches($token,'^[A-Z]')) then 'upper' else 'lower'}/{$token}{$versionString}.json" method="text">
                 <xsl:value-of select="xml-to-json($map, map{'indent': $indentJSON})"/>
             </xsl:result-document>
         </xsl:for-each-group>
@@ -533,7 +534,7 @@
                                 </xsl:for-each-group>
                             </map>
                         </xsl:variable>
-                        <xsl:result-document href="{$outDir || '/filters/' || $thisId || '.json'}" method="text">
+                        <xsl:result-document href="{$outDir || '/filters/' || $thisId || $versionString || '.json'}" method="text">
                             <xsl:value-of select="xml-to-json($tmpMap)"/>
                         </xsl:result-document>
                     </xsl:when>
@@ -559,7 +560,7 @@
                                 </xsl:for-each-group>
                             </map>
                         </xsl:variable>
-                        <xsl:result-document href="{$outDir || '/filters/' || $thisId || '.json'}" method="text">
+                        <xsl:result-document href="{$outDir || '/filters/' || $thisId || $versionString || '.json'}" method="text">
                             <xsl:value-of select="xml-to-json($tmpMap)"/>
                         </xsl:result-document>
                     </xsl:when>
@@ -584,7 +585,7 @@
                                 
                             </map>
                         </xsl:variable>
-                        <xsl:result-document href="{$outDir || '/filters/' || $thisId || '.json'}" method="text">
+                        <xsl:result-document href="{$outDir || '/filters/' || $thisId || $versionString || '.json'}" method="text">
                             <xsl:value-of select="xml-to-json($tmpMap)"/>
                         </xsl:result-document>
                     </xsl:when>
@@ -648,7 +649,7 @@
     </xd:doc>
     <xsl:template name="createStopwordsJson">
         <xsl:message>Creating stopwords array...</xsl:message>
-        <xsl:result-document href="{$outDir}/ssStopwords.json" method="text">
+        <xsl:result-document href="{$outDir}/ssStopwords{$versionString}.json" method="text">
             <xsl:variable name="map">
                 <xsl:apply-templates select="$stopwordsFileXml" mode="dictToArray"/>
             </xsl:variable>
@@ -663,7 +664,7 @@
         to be used when displaying results in the search page.</xd:desc>
     </xd:doc>
     <xsl:template name="createTitleJson">
-        <xsl:result-document href="{$outDir}/ssTitles.json" method="text">
+        <xsl:result-document href="{$outDir}/ssTitles{$versionString}.json" method="text">
             <xsl:variable name="map">
                 <map:map>
                     <xsl:for-each select="$tokenizedDocs//html">
@@ -698,7 +699,7 @@
                </map:array>
             </map:map>
         </xsl:variable>
-        <xsl:result-document href="{$outDir}/ssTokens.json" method="text">
+        <xsl:result-document href="{$outDir}/ssTokens{$versionString}.json" method="text">
             <xsl:value-of select="xml-to-json($map, map{'ident': $indentJSON})"/>
         </xsl:result-document>
     </xsl:template>
@@ -713,7 +714,7 @@
     </xd:doc>
     <xsl:template name="createConfigJson">
         <xsl:message>Creating Configuration JSON file....</xsl:message>
-        <xsl:result-document href="{$outDir}/config.json" method="text">
+        <xsl:result-document href="{$outDir}/config{$versionString}.json" method="text">
             <xsl:variable name="map">
                 <xsl:apply-templates select="doc($configFile)" mode="configToArray"/>
             </xsl:variable>

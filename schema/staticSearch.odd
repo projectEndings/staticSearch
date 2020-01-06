@@ -218,6 +218,7 @@
                 </list>
               </p>
               <p>We also require the <gi>recurse</gi> element in the case where the document collection may be nested (as is common with static sites generated from Jekyll or Wordpress). The <gi>recurse</gi> element is a boolean (true or false) that determines whether or not to recurse into the subdirectories of the collection and index those files.</p>
+              <p>[TODO: Other optional parameters will be documented here...]</p>
             </div>
           <div>
             <head>Specifying Rules (Optional)</head>
@@ -437,6 +438,7 @@
             <content>
               <sequence preserveOrder="false">
                 <elementRef key="searchFile"/>
+                <elementRef key="versionFile" minOccurs="0"/>
                 <elementRef key="recurse"/>
                 <elementRef key="phrasalSearch" minOccurs="0"/>
                 <elementRef key="createContexts" minOccurs="0"/>
@@ -537,6 +539,16 @@
           <elementSpec ident="searchFile" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>The search file (aka page) that will be the primary access point for the static search. Note
             that this page <emph>must</emph> be at the root of the collection directory.</gloss>
+            <content>
+              <dataRef name="anyURI"/>
+            </content>
+          </elementSpec>
+          
+          <elementSpec ident="versionFile" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>The relative path to a text file containing a single version identifier (such as 
+              <val>1.5</val>, <val>123456</val>, or <val> 06ad419</val>). This will be used to create
+            unique filenames for JSON resources, so that when a site is updated, so that the browser
+            will not use cached versions of older index files.</gloss>
             <content>
               <dataRef name="anyURI"/>
             </content>

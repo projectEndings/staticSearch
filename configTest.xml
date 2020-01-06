@@ -2,6 +2,7 @@
 <config xmlns="http://hcmc.uvic.ca/ns/staticSearch">
     <params>
         <searchFile>test/search.html</searchFile>
+        <versionFile>test/VERSION</versionFile>
         <recurse>true<!--Need to set recurse to true for the test--></recurse>
         <phrasalSearch>true</phrasalSearch>
         <createContexts>true</createContexts>

@@ -104,6 +104,18 @@
     <xsl:variable name="searchDocUri" select="resolve-uri($configDoc//searchFile/text(),$configUri)" as="xs:anyURI"/>
     
     <xd:doc>
+        <xd:desc><xd:ref name="versionDocUri" type="variable">$versionDocUri</xd:ref> is the absolute URI
+            of an optional document that contains a version string for the build to use in creating filenames.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="versionDocUri" select="if ($configDoc//versionFile) then resolve-uri($configDoc//versionFile/text(),$configUri) else ''" as="xs:string"/>
+    
+    <xd:doc>
+        <xd:desc><xd:ref name="versionString" type="variable">$versionString</xd:ref> is the version information read from the
+            versionDoc if there is one; otherwise it is an empty string.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="versionString" select="if (($versionDocUri != '') and (unparsed-text-available($versionDocUri))) then replace(normalize-space(unparsed-text($versionDocUri)), '\s+', '_') else ''" as="xs:string"/>
+    
+    <xd:doc>
         <xd:desc><xd:ref name="collectionDir" type="variable">$searchDirName</xd:ref> is the path to the
         directory that contains the search document, which we assume is the project directory that contains
         all of the files that static search is meant to index.</xd:desc>
@@ -121,8 +133,7 @@
             process stores all of the temporary outputs; it is deleted at the end of the process (in the ANT build).</xd:desc>
     </xd:doc>
     <xsl:variable name="tempDir" select="$outDir || '/temp'"/>
-    
-    
+   
     <xd:doc>
         <xd:desc><xd:ref name="recurse" type="variable">$recurse</xd:ref> is a boolean that states whether or not the 
             static search should recurse into subdirectories of the collection directory.</xd:desc>
@@ -198,6 +209,9 @@
     </xd:doc>
     <xsl:template match="/">
         <xsl:message>Creating configuration file from <xsl:value-of select="$configFile"/></xsl:message>
+        <xsl:if test="$versionString != ''">
+            <xsl:message>Version string for this build: <xsl:value-of select="$versionString"/></xsl:message>
+        </xsl:if>
         
         <xsl:if test="$verbose">
             <xsl:for-each select="$configDoc//params/*">
@@ -205,7 +219,7 @@
             </xsl:for-each>
         </xsl:if>
         
-        <!--Create teh result document, which is also an XSLT document, but placed in the dummy XSO namespace-->
+        <!--Create the result document, which is also an XSLT document, but placed in the dummy XSO namespace-->
         <xsl:result-document href="{$ssBaseDir}/xsl/config.xsl" method="xml" encoding="UTF-8" normalization-form="NFC" indent="yes" exclude-result-prefixes="#all">
             
             <!--Root stylesheet-->
@@ -327,6 +341,8 @@
                     </xsl:choose>
                 </xso:param>
             </xsl:for-each>
+            <!-- Finally, add the parsed-out version string from the versionFile. -->
+            <xso:param name="versionString"><xsl:value-of select="if (($versionDocUri != '') and (unparsed-text-available($versionDocUri))) then concat('_', replace(normalize-space(unparsed-text($versionDocUri)), '\s+', '_')) else ''"/></xso:param>
             
         </xsl:variable>
         

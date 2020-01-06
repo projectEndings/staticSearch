@@ -216,7 +216,9 @@
             <!--Now create the form-->
             <form accept-charset="UTF-8" id="ssForm"
                 data-allowPhrasal="{if ($phrasalSearch) then 'yes' else 'no'}"
-                onsubmit="return false;">
+                onsubmit="return false;"
+                data-versionString="{$versionString}"
+                >
 
                 <!--Standard inputs-->
                 <span class="ssQueryAndButton">
@@ -225,9 +227,9 @@
                 </span>
                 
                 <xsl:if test="not(empty($filterJSONURIs))">
-                    <xsl:variable name="descFilters" select="$filterJSONURIs[matches(.,'ssDesc\d+\.json')]"/>
-                    <xsl:variable name="dateFilters" select="$filterJSONURIs[matches(.,'ssDate\d+\.json')]"/>
-                    <xsl:variable name="boolFilters" select="$filterJSONURIs[matches(.,'ssBool\d+\.json')]"/>
+                    <xsl:variable name="descFilters" select="$filterJSONURIs[matches(.,'ssDesc\d+.*\.json')]"/>
+                    <xsl:variable name="dateFilters" select="$filterJSONURIs[matches(.,'ssDate\d+.*\.json')]"/>
+                    <xsl:variable name="boolFilters" select="$filterJSONURIs[matches(.,'ssBool\d+.*\.json')]"/>
                     
                     
                     <!--First, handle the desc filters-->
