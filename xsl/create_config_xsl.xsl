@@ -322,7 +322,7 @@
             <xsl:for-each select="$configDoc//params/*" >
                 <xsl:variable name="thisParam" select="."/>
                 <xsl:variable name="paramName" select="local-name()"/>
-                <xsl:variable name="thisElementSpec" select="$schema//tei:elementSpec[@ident=$paramName]" as="element(tei:elementSpec)"/>
+                <xsl:variable name="thisElementSpec" select="$schema//tei:elementSpec[@ident=$paramName]" as="element(tei:elementSpec)?"/>
                 
                 <xso:param>
                     <xsl:attribute name="name" select="$paramName"/>
@@ -331,10 +331,10 @@
                         <!--TODO: Make this smarter! Look at the ODD file
                             and see if the parameter is a boolean or not. If it is, do this, otherwise, just assume its a string
                             (or an integer or whatever else)-->
-                        <xsl:when test="$thisElementSpec[descendant::tei:dataRef[@name='boolean']]">
+                        <xsl:when test="$thisElementSpec and $thisElementSpec[descendant::tei:dataRef[@name='boolean']]">
                             <xsl:attribute name="select" select="concat(hcmc:stringToBoolean(xs:string(.)),'()')"/>
                         </xsl:when>
-                        <xsl:when test="$thisElementSpec[descendant::tei:dataRef[@name='anyURI']]">
+                        <xsl:when test="$thisElementSpec and $thisElementSpec[descendant::tei:dataRef[@name='anyURI']]">
                             <xsl:value-of select="resolve-uri(.,$configUri)"/>
                         </xsl:when>
                         <xsl:otherwise>
