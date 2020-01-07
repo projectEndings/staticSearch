@@ -124,6 +124,11 @@
         div.ssDateFilters fieldset.ssFieldset span, div.ssBoolFilters fieldset.ssFieldset span{
             padding: 0.5em 1em;
         }
+        fieldset.ssFieldset > span {
+            background-color: #ddd;
+            border: solid 1px #aaa;
+            margin: 0.2em;
+        }
         div#ssSearching{
             background-color: #000000;
             color: #ffffff;
@@ -135,6 +140,7 @@
             top: 50%;
             transform: translate(-50%, -50%);
             display: none;
+        }
     </xsl:param>
     
     <xsl:variable name="dateRegex" select="'^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$'" as="xs:string"/>
