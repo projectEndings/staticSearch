@@ -79,12 +79,14 @@
             schema written in the TEI ODD language. We load it in here during the configuration creation
             process as it can provide useful information as to what the expected values are for various
             configuration options. If, for whatever reason, the schema is not available locally (it is packed
-            with the static search distribution), then we download it from Github.</xd:desc>
+            with the static search distribution), then we download it from Github. NOTE: This is a bit
+        broken; we're currently pointing at the dev repo because some projects don't seem to be able to
+        find the local copy.</xd:desc>
     </xd:doc>
     <xsl:variable name="schema" select="
         if (doc-available(concat($ssBaseDir, '/schema/staticSearch.odd'))) 
         then document(concat($ssBaseDir,'/schema/staticSearch.odd'))
-        else document('https://raw.githubusercontent.com/projectEndings/staticSearch/master/schema/staticSearch.odd')"
+        else document('https://raw.githubusercontent.com/projectEndings/staticSearch/dev/schema/staticSearch.odd')"
         as="document-node()"/>
   
 
