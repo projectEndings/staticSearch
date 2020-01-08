@@ -174,7 +174,9 @@
     </xd:doc>
     <xsl:template match="style[@id='ssCss']">
         <style id="ssCss">
-            <xsl:value-of select="$css"/>
+            <xsl:comment>
+                <xsl:value-of select="$css" disable-output-escaping="yes"/>
+            </xsl:comment>
         </style>
     </xsl:template>
 
