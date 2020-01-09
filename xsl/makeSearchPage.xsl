@@ -141,6 +141,7 @@
             transform: translate(-50%, -50%);
             display: none;
         }
+        
     </xsl:param>
     
     <xsl:variable name="dateRegex" select="'^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$'" as="xs:string"/>
@@ -190,7 +191,9 @@
         <xsl:copy>
             <xsl:apply-templates select="@*"/>
             <style id="ssCss">
-                <xsl:value-of select="$css"/>
+                <xsl:comment>
+                    <xsl:value-of select="$css" disable-output-escaping="yes"/>
+                </xsl:comment>
             </style>
             <xsl:apply-templates select="node()"/>
         </xsl:copy>
