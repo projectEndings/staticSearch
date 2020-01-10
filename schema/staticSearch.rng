@@ -5,7 +5,7 @@
          xmlns="http://relaxng.org/ns/structure/1.0"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2020-01-10T05:29:00Z. 2019.
+Schema generated from ODD source 2020-01-10T19:15:38Z. 2019.
 TEI Edition: Version 3.6.0. Last updated on
 	16th July 2019, revision daa3cc0b9
 TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
@@ -43,7 +43,10 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
                <ref name="createContexts"/>
             </optional>
             <optional>
-               <ref name="maxContexts"/>
+               <ref name="maxKwicsToHarvest"/>
+            </optional>
+            <optional>
+               <ref name="maxKwicsToShow"/>
             </optional>
             <optional>
                <ref name="totalKwicLength"/>
@@ -178,12 +181,19 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
          <data type="nonNegativeInteger"/>
       </element>
    </define>
-   <define name="maxContexts">
-      <element name="maxContexts" ns="http://hcmc.uvic.ca/ns/staticSearch">
+   <define name="maxKwicsToHarvest">
+      <element name="maxKwicsToHarvest" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(This controls the maximum number of keyword-in-context extracts that will be
               stored for each term. If phrasalSearch is set to true, this parameter is
               ignored, because phrasal searches will only work properly if all contexts are
               stored.) </a:documentation>
+         <data type="nonNegativeInteger"/>
+      </element>
+   </define>
+   <define name="maxKwicsToShow">
+      <element name="maxKwicsToShow" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(This controls the maximum number of keyword-in-context extracts that will be shown
+              in the search page for each hit document returned.) </a:documentation>
          <data type="nonNegativeInteger"/>
       </element>
    </define>

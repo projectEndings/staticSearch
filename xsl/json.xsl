@@ -287,7 +287,7 @@
                                     select="
                                     if ($phrasalSearch)
                                     then $spans
-                                    else subsequence($spans, 1, $maxContexts)"
+                                    else subsequence($spans, 1, $maxKwicsToHarvest)"
                                  />
 
 <!--                                Count the contexts -->

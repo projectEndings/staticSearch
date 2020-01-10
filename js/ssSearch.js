@@ -261,24 +261,24 @@ class StaticSearch{
       //How many results should be shown per page?
       //Default. NOT USED, AND PROBABLY POINTLESS.
       this.resultsPerPage = 10;
-      tmp = document.querySelector("form[data-resultsPerPage]");
+      tmp = document.querySelector("form[data-resultsperpage]");
       if (tmp){
-        let parsed = parseInt(tmp.getAttribute('data-resultsPerPage'));
+        let parsed = parseInt(tmp.getAttribute('data-resultsperpage'));
         if (!isNaN(parsed)){this.resultsPerPage = parsed;}
       }
 
       //How many keyword in context strings should be included
       //in search results?
       //Default
-      this.kwicLimit = 10;
-      tmp = document.querySelector("form[data-kwicLimit]");
+      this.maxKwicsToShow = 10;
+      tmp = document.querySelector("form[data-maxkwicstoshow]");
       if (tmp){
-        let parsed = parseInt(tmp.getAttribute('data-kwicLimit'));
-        if (!isNaN(parsed)){this.kwicLimit = parsed;}
+        let parsed = parseInt(tmp.getAttribute('data-maxkwicstoshow'));
+        if (!isNaN(parsed)){this.maxKwicsToShow = parsed;}
       }
 
       //Result handling object
-      this.resultSet = new SSResultSet(this.kwicLimit);
+      this.resultSet = new SSResultSet(this.maxKwicsToShow);
 
       //This allows the user to navigate through searches using the back and
       //forward buttons; to avoid repeatedly pushing state when this happens,
@@ -1451,12 +1451,12 @@ class StaticSearch{
   * objects returned from the search index queries.
   */
   class SSResultSet{
-    constructor(kwicLimit){
+    constructor(maxKwicsToShow){
       try{
         this.mapDocs = new Map([]);
         //The maximum allowed number of keyword-in-context results to be
         //included in output.
-        this.kwicLimit = kwicLimit;
+        this.maxKwicsToShow = maxKwicsToShow;
         //A list of titles indexed by docUri is retrieved by AJAX
         //and set later.
         this.titles = null;
@@ -1532,7 +1532,7 @@ class StaticSearch{
         else{
           this.mapDocs.set(docUri, data);
 //Now we need to truncate the list of kwic contexts in case it's too long.
-          this.mapDocs.get(docUri).contexts = this.mapDocs.get(docUri).contexts.slice(0, this.kwicLimit);
+          this.mapDocs.get(docUri).contexts = this.mapDocs.get(docUri).contexts.slice(0, this.maxKwicsToShow);
         }
       }
       catch(e){
@@ -1559,7 +1559,7 @@ class StaticSearch{
         else{
           let currEntry = this.mapDocs.get(docUri);
           let i = 0;
-          while ((currEntry.contexts.length < this.kwicLimit)&&(i < data.contexts.length)){
+          while ((currEntry.contexts.length < this.maxKwicsToShow)&&(i < data.contexts.length)){
             if (currEntry.contexts.indexOf(data.contexts[i]) < 0){
               currEntry.contexts.push(data.contexts[i]);
               currEntry.score += data.score;

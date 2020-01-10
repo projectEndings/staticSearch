@@ -251,7 +251,13 @@
                   document. This increases the size of the index, but of course it makes for much 
                   more user-friendly search results.</item>
                   
-                  <item><gi>maxContexts</gi> (TO BE RENAMED AND SPLIT!)</item>
+                  <item><gi>maxKwicsToHarvest</gi> controls the number of keyword-in-context extracts
+                  that will be harvested from the data for each term in a document. If you set this to
+                  a low number, the size of the JSON files will be constrained, but of course the 
+                  user will only be able to see the KWICs that have been harvested in their search results.</item>
+                  
+                  <item><gi>maxKwicsToShow</gi> controls the number of keyword-in-context extracts
+                    that will be shown in the search results for each hit document. </item>
                   
                   <item><gi>totalKwicLength</gi> is an integer specifying how long a keyword-in-context
                   string should be. Obviously, the higher this number is, the larger the individual index
@@ -515,7 +521,8 @@
                 <elementRef key="recurse"/>
                 <elementRef key="phrasalSearch" minOccurs="0"/>
                 <elementRef key="createContexts" minOccurs="0"/>
-                <elementRef key="maxContexts" minOccurs="0"/>
+                <elementRef key="maxKwicsToHarvest" minOccurs="0"/>
+                <elementRef key="maxKwicsToShow" minOccurs="0"/>
                 <elementRef key="totalKwicLength" minOccurs="0"/>
                 <elementRef key="kwicTruncateString" minOccurs="0"/>
                 <elementRef key="verbose" minOccurs="0"/>
@@ -642,19 +649,28 @@
               <dataRef name="boolean"/>
             </content>
           </elementSpec>
+          
           <elementSpec ident="totalKwicLength" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>If <gi>createContexts</gi> is set to true, then this parameter controls how long
               the contexts will be.</gloss>
             <content>
               <dataRef name="nonNegativeInteger"/>
             </content>
-
           </elementSpec>
-          <elementSpec ident="maxContexts" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+          
+          <elementSpec ident="maxKwicsToHarvest" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>This controls the maximum number of keyword-in-context extracts that will be
               stored for each term. If <gi>phrasalSearch</gi> is set to true, this parameter is
               ignored, because phrasal searches will only work properly if all contexts are
               stored.</gloss>
+            <content>
+              <dataRef name="nonNegativeInteger"/>
+            </content>
+          </elementSpec>
+          
+          <elementSpec ident="maxKwicsToShow" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>This controls the maximum number of keyword-in-context extracts that will be shown
+              in the search page for each hit document returned.</gloss>
             <content>
               <dataRef name="nonNegativeInteger"/>
             </content>
