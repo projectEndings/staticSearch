@@ -114,6 +114,7 @@
             list-style-type: none;
             max-height: 8em;
             overflow-y: auto;
+            min-width: 90%;
         }
         ul.ssDescCheckboxList li{
             display: flex;
