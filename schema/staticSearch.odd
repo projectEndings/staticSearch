@@ -251,7 +251,42 @@
                   document. This increases the size of the index, but of course it makes for much 
                   more user-friendly search results.</item>
                   
-                  <item>[TODO: MORE TO COME...]</item>
+                  <item><gi>maxContexts</gi> (TO BE RENAMED AND SPLIT!)</item>
+                  
+                  <item><gi>totalKwicLength</gi> is an integer specifying how long a keyword-in-context
+                  string should be. Obviously, the higher this number is, the larger the individual index
+                  files will be, but the more useful the KWICs will be for users looking at the search results.</item>
+                  
+                  <item><gi>kwicTruncateString</gi> is a string containing the character you would like
+                  to use at the beginning and/or the end of a kwic which is not a full sentence. An 
+                  ellipsis character is the default.</item>
+                  
+                  <item><gi>verbose</gi> is a boolean which turns on/off detailed output messages
+                  during the indexing process. You might set this to true if something is not working 
+                  as expected and you need to do some debugging.</item>
+                  
+                  <item><gi>stopwordsFile</gi> is a string parameter containing the relative path
+                  (from the config file) to a text file containing a list of stopwords that you want to
+                  use for your site. A stopword is a word that will not be indexed, because it is too
+                  common (<mentioned>the</mentioned>, <mentioned>a</mentioned>, <mentioned>you</mentioned>
+                    and so on). The project has a built-in set of common stopwords for English, which 
+                  we recommend you start from; you'll find it in <ident>xsl/english_stopwords.txt</ident>.
+                  If your site is all about a person, a place or some other entity, then you might add 
+                  their name to the stopwords list, because it will presumably appear on almost 
+                  every page and it makes no sense to search for it. One way to find such terms is
+                  to generate your index, then search for the largest JSON index files that are 
+                  generated, to see if they might be too common to be useful as search terms.</item>
+                  
+                  <item><gi>dictionaryFile</gi> is the relative path to a file containing an English dictionary
+                  (assuming your site is in English). This is used to check words during the indexing process,
+                  and a report generated at the end will list all the terms in the site which do not appear 
+                  in the dictionary. This is a useful way to find typos in your site. Again, there is a default 
+                  dictionary in <ident>xsl/english_words.txt</ident> which you might copy and adapt.</item>
+                  
+                  <item><gi>indentJSON</gi> is a boolean parameter which controls whether the JSON
+                  files generated for the index are indented or not. Indenting makes the files easier for a human
+                  to read, if you need to understand them or debug them, but obviously it adds to their file 
+                  size. </item>
                   
                 </list>
                 
@@ -488,7 +523,6 @@
                 <elementRef key="dictionaryFile" minOccurs="0"/>
                 <elementRef key="replacementsFile" minOccurs="0"/>
                 <elementRef key="searchPage" minOccurs="0"/>
-                <elementRef key="searchInputId" minOccurs="0"/>
                 <elementRef key="indentJSON" minOccurs="0"/>
               </sequence>
             </content>

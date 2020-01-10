@@ -20,7 +20,7 @@
       </style>
       
       
-      <style id="ssCss">
+      <style id="ssCss"><!--
         form#ssForm{
             display: flex;
             flex-direction: column;
@@ -49,6 +49,7 @@
             list-style-type: none;
             max-height: 8em;
             overflow-y: auto;
+            min-width: 90%;
         }
         ul.ssDescCheckboxList li{
             display: flex;
@@ -58,6 +59,11 @@
         }
         div.ssDateFilters fieldset.ssFieldset span, div.ssBoolFilters fieldset.ssFieldset span{
             padding: 0.5em 1em;
+        }
+        fieldset.ssFieldset > span {
+            background-color: #ddd;
+            border: solid 1px #aaa;
+            margin: 0.2em;
         }
         div#ssSearching{
             background-color: #000000;
@@ -70,7 +76,9 @@
             top: 50%;
             transform: translate(-50%, -50%);
             display: none;
-    </style>
+        }
+        
+    --></style>
       
       
       <title>Test search page</title>
@@ -89,13 +97,13 @@
       <div id="staticSearch"><script src="staticSearch/ssPorter2Stemmer.js"></script><script src="staticSearch/ssSearch.js"></script><script>
                 var Sch;
                 window.addEventListener('load', function(){Sch = new StaticSearch();});
-            </script><form accept-charset="UTF-8" id="ssForm" data-allowPhrasal="yes" onsubmit="return false;" data-versionString="_b06562b"><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><div class="ssDescFilters">
+            </script><form accept-charset="UTF-8" id="ssForm" data-allowPhrasal="yes" onsubmit="return false;" data-versionString="_ce9d02c"><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><div class="ssDescFilters">
                <fieldset class="ssFieldset" title="Document type" id="ssDesc1">
                   <legend>Document type</legend>
                   <ul class="ssDescCheckboxList">
-                     <li><input type="checkbox" title="Document type" value="Article extracts" id="ssDesc1_4" class="staticSearch.desc"/><label for="ssDesc1_4">Article extracts</label></li>
-                     <li><input type="checkbox" title="Document type" value="Documents with tables" id="ssDesc1_3" class="staticSearch.desc"/><label for="ssDesc1_3">Documents with tables</label></li>
-                     <li><input type="checkbox" title="Document type" value="Poems" id="ssDesc1_2" class="staticSearch.desc"/><label for="ssDesc1_2">Poems</label></li>
+                     <li><input type="checkbox" title="Document type" value="Article extracts" id="ssDesc1_2" class="staticSearch.desc"/><label for="ssDesc1_2">Article extracts</label></li>
+                     <li><input type="checkbox" title="Document type" value="Documents with tables" id="ssDesc1_4" class="staticSearch.desc"/><label for="ssDesc1_4">Documents with tables</label></li>
+                     <li><input type="checkbox" title="Document type" value="Poems" id="ssDesc1_3" class="staticSearch.desc"/><label for="ssDesc1_3">Poems</label></li>
                      <li><input type="checkbox" title="Document type" value="Site info files" id="ssDesc1_1" class="staticSearch.desc"/><label for="ssDesc1_1">Site info files</label></li>
                   </ul>
                </fieldset>
