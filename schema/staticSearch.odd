@@ -80,6 +80,19 @@
           illustrated while others are not. The user could then limit their search only to illustrated poems.</item>
         </list>
       </div>
+      
+      <div xml:id="howDoIGetIt">
+        <head>How do I get it?</head>
+        
+        <p>There are two ways to get the staticSearch code. The first is to download a release package from 
+          the <ref target="https://github.com/projectEndings/staticSearch/releases/">project release page</ref>;
+        we recommend that you get the latest version. You can download a zip file and unzip it to create a 
+        folder containing the code.</p>
+        <p>The second way to get the codebase is to clone it from the 
+          <ref target="https://github.com/projectEndings/staticSearch">GitHub repository</ref>. If you're doing 
+        this, you can clone either the current master branch, the last release tag, or the dev branch. If you 
+        clone the dev branch, bear in mind that you're working with development code and things may break.</p>
+      </div>
         <div xml:id="howDoIUseIt">
           <head>How do I use it?</head>
           
