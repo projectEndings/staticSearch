@@ -3,17 +3,18 @@
     xmlns:if="ant:if"
     xmlns:unless="ant:unless">
     
+    <!--  We need ant contrib. -->
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+    
     <property name="saxon" value="${basedir}/lib/saxon9he.jar"/>
     
-    <property name="config" value="config.xml"/>
+    <property name="config" value="configTest.xml"/>
     
     <property name="configFile" value="${basedir}/${config}"/>
     
     <dirname property="configDir" file="${configFile}"/>
     
     <xmlproperty file="${configFile}" keeproot="true"/>
-    
-    <property name="keatsBuildUrl" value="https://jenkins.hcmc.uvic.ca/job/Keats/lastSuccessfulBuild/artifact/site/*zip*/site.zip"/>
     
     <property name="verbose" value="true"/>
     
@@ -25,14 +26,30 @@
     
     <property name="headless" value="false"/>
     
+    <basename property="searchPageBasename" file="${searchFilePath}"/>
+    
+    <property name="tempSearchPageOutput" value="${collectionDirName}/ssTemp_${searchPageBasename}"/>
     
     <target name="init">
         <delete dir="temp"/>
         <delete file="${basedir}/xsl/config.xsl"/>
+        <delete file="${tempSearchPageOutput}"/>
         <delete dir="${staticSearchDir}"/>
         <mkdir dir="${staticSearchDir}"/>
+        <!-- If we're building the test data, we need to generate the VERSION file. -->
+        <if>
+            <equals arg1="${basedir}/configTest.xml" arg2="${configFile}"/>
+            <then>
+                <delete file="${basedir}/test/VERSION"/>
+                <exec executable="git">
+                    <arg value="rev-parse"/>
+                    <arg value="--short"/>
+                    <arg value="HEAD"/>
+                    <redirector output="${basedir}/test/VERSION"/>
+                </exec>
+            </then>
+        </if>
     </target>
-    
     
     <target name="validate">
         <description>Task to validate that the source XHTML is well-formed XHTML. Note
@@ -55,9 +72,6 @@
             <arg value="${basedir}/schema/staticSearch.rng"/>
             <arg value="${configFile}"/>
         </exec>
-        
-        
-        
     </target>
     
     
@@ -92,14 +106,14 @@
     </target>
     
     <target name="makeSearchPage">
-        <basename property="searchPageBasename" file="${searchFilePath}"/>
-        <property name="tempSearchPageOutput" value="${collectionDirName}/ssTemp_${searchPageBasename}"/>
         <echo message="Creating search page..."/>
         <echo message="Creating temporary search page: ${tempSearchPageOutput}"/>
+        <available type="dir" property="hasFilters" file="${staticSearchDir}/filters" value="true"/>
         <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
             <arg value="-xsl:${basedir}/xsl/makeSearchPage.xsl"/>
             <arg value="-s:${searchFilePath}"/>
             <arg value="-o:${tempSearchPageOutput}"/>
+            <arg value="hasFilters=${hasFilters}"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
         </java>
         
@@ -109,10 +123,12 @@
     </target>
     
     <target name="report">
+        <available type="dir" property="hasFilters" file="${staticSearchDir}/filters" value="true"/>
         <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
             <arg value="-xsl:${basedir}/xsl/create_reports.xsl"/>
             <arg value="-s:${basedir}/xsl/create_reports.xsl"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
+            <arg value="hasFilters=${hasFilters}"/>
         </java>
         <move file="${basedir}/staticSearch_report.html" tofile="${collectionDirName}/staticSearch/staticSearch_report.html"/>
 
@@ -128,15 +144,6 @@
         </copy>
     </target>
     
-    <target name="makeTestCopy">
-        <delete dir="${basedir}/js/js"/>
-        <copy todir="staticSearch">
-            <fileset dir="site">
-                <include name="js/**"/>
-            </fileset>
-        </copy>
-    </target>
-    
     <target name="clean">
         <delete dir="${collectionDirName}/staticSearch/temp"/>
     </target>
@@ -147,29 +154,6 @@
             from the HCMC Jenkins build server, so that it can be uesd as a test for the static search.
             
         </description>
-    </target>
-    
-    <target name="getKeats">
-        <description>
-            TARGET getKeats
-            This target pulls the latest build of the site Mapping Keats's Progress from the 
-            HCMC Jenkins build server, so that it can be used as a testbed for staticSearch.
-            The site is large and complex enough to serve as a useful comprehensive test.
-        </description>
-        <echo message="Downloading build of Keats site from ${keatsBuildUrl} ..."/>
-        <mkdir dir="${basedir}/keatsTemp"/>
-        <get src="${keatsBuildUrl}" verbose="on" usetimestamp="true" dest="${basedir}/keatsTemp/"/>
-        <echo message="Unzipping Keats site into ${basedir}/keatsTemp/ ..."/>
-        <unzip src="${basedir}/keatsTemp/site.zip" dest="${basedir}/keatsTemp/"/>
-        <delete file="${basedir}/keatsTemp/site.zip"/>
-        <delete dir="${basedir}/keats"/>
-        <mkdir dir="${basedir}/keats"/>
-        <echo message="Copying site content into ${basedir}/keats/ ..."/>
-        <copy todir="${basedir}/keats/">
-            <fileset dir="${basedir}/keatsTemp/site" includes="**/*"/>
-        </copy>
-        <echo message="Cleaning up ..."/>
-        <delete dir="${basedir}/keatsTemp/"/>
     </target>
     
     <!--Javascript OPEN task-->
@@ -192,6 +176,9 @@
     </scriptdef>
     
     <target name="all" depends="init, validate, config, tokenize, json, copyFiles, makeSearchPage, report, clean"/>
+    
+    <!-- Don't clean up so we can see what's happening. -->
+    <target name="test" depends="init, validate, config, tokenize, json, copyFiles, makeSearchPage, report"/>
     
     <target name="basic" depends="init, validate, config, tokenize, json, copyFiles, makeSearchPage, clean"/>
 </project>

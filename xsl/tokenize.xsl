@@ -36,7 +36,7 @@
         THE QUOTATION MARKS, SINCE WE JUST NORMALIZE THEM AFTER THE FACT-->
     
      <!--purely digits (or decimals) -->
-    <xsl:variable name="numericWithDecimal">[<xsl:value-of select="$straightDoubleApos"/>\d]+(\.\d+)</xsl:variable>
+    <xsl:variable name="numericWithDecimal">[<xsl:value-of select="$straightDoubleApos"/>\d]+([\.,]?\d+)</xsl:variable>
     
     <xsl:variable name="alphanumeric">[\p{L}<xsl:value-of select="$straightDoubleApos"/>]+</xsl:variable>
     
@@ -48,6 +48,32 @@
     <!--IMPORTANT: Do this to avoid indentation-->
     <xsl:output indent="no" method="xml"/>
     
+    
+    <xsl:variable name="descFilterMap" as="map(xs:string,xs:string)">
+        <xsl:map>
+            <xsl:for-each-group select="$docs//meta[contains-token(@class,'staticSearch.desc')]" group-by="@name">
+                <xsl:map-entry key="xs:string(current-grouping-key())" select="'ssDesc' || position()"/>
+            </xsl:for-each-group>
+        </xsl:map>
+      
+    </xsl:variable>
+    
+    <xsl:variable name="dateFilterMap" as="map(xs:string,xs:string)">
+        <xsl:map>
+            <xsl:for-each-group select="$docs//meta[contains-token(@class,'staticSearch.date')]" group-by="@name">
+                <xsl:map-entry key="xs:string(current-grouping-key())" select="'ssDate' || position()"/>
+            </xsl:for-each-group>
+        </xsl:map>
+    </xsl:variable>
+    
+    
+    <xsl:variable name="boolFilterMap" as="map(xs:string,xs:string)">
+        <xsl:map>
+            <xsl:for-each-group select="$docs//meta[contains-token(@class,'staticSearch.bool')]" group-by="@name">
+                <xsl:map-entry key="xs:string(current-grouping-key())" select="'ssBool' || position()"/>
+            </xsl:for-each-group>
+        </xsl:map>
+    </xsl:variable>
     
     <!--Basic template-->
     <xsl:template match="/">
@@ -150,13 +176,20 @@
     
     <!--Basic template to strip away extraneous tags around things we don't care about-->
     <!--Note that this template is overriden with any XPATHS configured in the config file-->
-    <xsl:template match="span | br | wbr | em | b | i | a" mode="clean">
+    <xsl:template match="span | em | b | i | a" mode="clean">
         <xsl:if test="$verbose">
             <xsl:message>TEMPLATE clean: Matching <xsl:value-of select="local-name()"/></xsl:message>
         </xsl:if>
 
         <xsl:apply-templates select="node()" mode="#current"/>
     </xsl:template>
+    
+    <!--Treat selfclosing elements as a word separating token with the exception of wbr-->
+    <xsl:template match="br | hr | area | base | col | embed | hr | img | input | link[ancestor::body] | meta[ancestor::body] | param | source | track" mode="clean">
+        <xsl:text> </xsl:text>
+    </xsl:template>
+    
+    <xsl:template match="wbr" mode="clean"/>
     
     <!--Delete script tags by default, since they're code and won't contain anything useful-->
     <xsl:template match="script" mode="clean"/>
@@ -169,7 +202,7 @@
         <xsl:value-of select="replace(.,string-join(($curlyAposOpen,$curlyAposClose),'|'), $straightSingleApos) => replace(string-join(($curlyDoubleAposOpen,$curlyDoubleAposClose),'|'),$straightDoubleApos)"/>
     </xsl:template>
     
-    <xsl:template match="*[@lang][ancestor::body]" mode="clean" priority="1">
+    <xsl:template match="*[@lang or @xml:lang][ancestor::body]" mode="clean" priority="1">
         <xsl:copy>
             <xsl:apply-templates select="@*|node()" mode="#current"/>
         </xsl:copy>
@@ -197,13 +230,34 @@
         </xsl:copy>
     </xsl:template>
     
+    <xsl:template match="meta[contains-token(@class,'staticSearch.desc')]" mode="tokenize">
+        <xsl:copy>
+            <xsl:attribute name="data-staticSearch-filter-id" select="$descFilterMap(normalize-space(@name))"/>
+            <xsl:apply-templates select="@*|node()" mode="#current"/>
+        </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="meta[contains-token(@class,'staticSearch.date')]" mode="tokenize">
+        <xsl:copy>
+            <xsl:attribute name="data-staticSearch-filter-id" select="$dateFilterMap(normalize-space(@name))"/>
+            <xsl:apply-templates select="@*|node()" mode="#current"/>
+        </xsl:copy>
+    </xsl:template>
+    <xsl:template match="meta[contains-token(@class,'staticSearch.bool')]" mode="tokenize">
+        <xsl:copy>
+            <xsl:attribute name="data-staticSearch-filter-id" select="$boolFilterMap(normalize-space(@name))"/>
+            <xsl:apply-templates select="@*|node()" mode="#current"/>
+        </xsl:copy>
+    </xsl:template>
+    
+    
  <!--TOKENIZE TEMPLATES -->
     
     <!--The basic thing: tokenizing the string at the text level-->
     <xsl:template match="text()[ancestor::body][not(matches(.,'^\s+$'))]" mode="tokenize">
         <xsl:variable name="currNode" select="."/>
-        <xsl:variable name="rootLangDeclared" select="boolean(ancestor::html[@lang])" as="xs:boolean"/>
-        <xsl:variable name="langAncestor" select="ancestor::*[not(self::html)][@lang][1]" as="element()?"/>
+        <xsl:variable name="rootLangDeclared" select="boolean(ancestor::html[@lang or @xml:lang])" as="xs:boolean"/>
+        <xsl:variable name="langAncestor" select="ancestor::*[not(self::html)][@*:lang][1]" as="element()?"/>
         
         <!--Now to check to see whether or not this thing is declared
             as a foreign language to the root of the document-->
@@ -214,7 +268,7 @@
                 i.e. if they are equal, then return false (since it is NOT foreign)
                 -->
                 <xsl:when test="$rootLangDeclared and $langAncestor">
-                    <xsl:value-of select="not(boolean(ancestor::html/@lang = $langAncestor/@lang))"/>
+                    <xsl:value-of select="not(boolean(ancestor::html/@*:lang = $langAncestor/@*:lang))"/>
                 </xsl:when>
                 
                 <!--If there is a lang ancestor but no root lang declared,

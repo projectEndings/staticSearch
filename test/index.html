@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en" id="home">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Test home page</title>
+
+        <meta name="Document type" class="staticSearch.desc" content="Site info files" />
+        <meta name="Date range" class="staticSearch.date" content="2019" />
+        <meta name="Worth reading" class="staticSearch.bool" content="true" />
+    </head>
+    <body>
+        <div>
+            <h1>Test data set</h1>
+            <p>Documents in the collection: <a href="badthings.html">badthings.html</a>, 
+                <a href="badthings.html">badthings.html</a>, 
+                <a href="clues.html">clues.html</a>, 
+                <a href="poems/ditty.html">ditty.html</a>, 
+                <a href="poems/shizukesaya.html">shizukesaya.html</a>, 
+                <a href="poems/twilight.html">twilight.html</a>, 
+                <a href="tables/booze.html">booze.html</a>, 
+                <a href="tables/decade_year.html">decade_year.html</a>, 
+                and of course <a href="search.html">search.html</a>.
+            </p>
+            <p>You might also want to look at the <a href="staticSearch/staticSearch_report.html">build report</a>
+                from the staticSearch build process.</p>
+            
+            <p>This is the index page for the Static Search test data set. This data set is designed
+                to cover a range of different input document types and configurations in order to
+                test a variety of scenarios the codebase needs to handle, including:</p>
+            <ul>
+                <li>Nested folders.</li>
+                <li>Documents with and without ids (this has one).</li>
+                <li>With and without titles (this has one).</li>
+                <li>Good range of HTML elements providing scope for testing context stuff.</li>
+                <li>Foreign languages and non-latin stuff such as Japanese.</li>
+                <li>Hyphenated terms, single and double, such as one-way street and hard-to-process sequences.</li>
+                <li>Names, both in sentence-initial and sentence medial positions. Fred Bloggs and Mary Wollstonecraft Shelley are examples.</li>
+                <li>Numbers such as 25, 2,302, and 3.14159, or currency amounts such as £4,500 or ¥9,000,000.</li>
+                <li>Items that should not be indexed (such as line numbers attached to poetic lines).</li>
+                <li>Constrained contexts which should delimit keyword-in-context ranges, such as table cells.</li>
+                <li>Inline elements whose boundaries should be ignored when indexing.</li>
+            </ul>
+            <p>There are three poems, two Victorian and one Japanese (about cicadas). There are also two documents
+            with tables, one of which dals with liquor consumption in British Columbia, while the other has numbers
+            such as 1783 and percentages such as 73.58%. One of the poems includes the phrase <q>summer day—our day</q>, 
+            and if we follow that to the next line we get <q>our day Was clouded</q>, which should be indexed/found 
+                in this document, but not in the source poem, where lines are boundary contexts.</p>
+            
+            <p>The word <em>artichoke</em> appears here and in one other document, but it is included in the 
+            test stopwords list so it should not be indexed or retrieved.</p>
+            
+        </div>
+    </body>
+</html>

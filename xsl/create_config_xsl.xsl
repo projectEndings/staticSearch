@@ -71,7 +71,7 @@
         <xd:desc><xd:ref name="schema" type="variable">$ssBasedir</xd:ref> is the base directory for the static
             search codebase. It is just the directory above the /xsl/ directory that contains this file.</xd:desc>
     </xd:doc>
-    <xsl:variable name="ssBaseDir" select="substring-before(document-uri(/),'/xsl/')"/>
+    <xsl:variable name="ssBaseDir" select="substring-before(document-uri(/),'/xsl/create_config_xsl.xsl')"/>
     
     
     <xd:doc>
@@ -79,12 +79,14 @@
             schema written in the TEI ODD language. We load it in here during the configuration creation
             process as it can provide useful information as to what the expected values are for various
             configuration options. If, for whatever reason, the schema is not available locally (it is packed
-            with the static search distribution), then we download it from Github.</xd:desc>
+            with the static search distribution), then we download it from Github. NOTE: This is a bit
+        broken; we're currently pointing at the dev repo because some projects don't seem to be able to
+        find the local copy.</xd:desc>
     </xd:doc>
     <xsl:variable name="schema" select="
         if (doc-available(concat($ssBaseDir, '/schema/staticSearch.odd'))) 
         then document(concat($ssBaseDir,'/schema/staticSearch.odd'))
-        else document('https://raw.githubusercontent.com/projectEndings/staticSearch/master/schema/staticSearch.odd')"
+        else document('https://raw.githubusercontent.com/projectEndings/staticSearch/dev/schema/staticSearch.odd')"
         as="document-node()"/>
   
 
@@ -104,6 +106,18 @@
     <xsl:variable name="searchDocUri" select="resolve-uri($configDoc//searchFile/text(),$configUri)" as="xs:anyURI"/>
     
     <xd:doc>
+        <xd:desc><xd:ref name="versionDocUri" type="variable">$versionDocUri</xd:ref> is the absolute URI
+            of an optional document that contains a version string for the build to use in creating filenames.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="versionDocUri" select="if ($configDoc//versionFile) then resolve-uri($configDoc//versionFile/text(),$configUri) else ''" as="xs:string"/>
+    
+    <xd:doc>
+        <xd:desc><xd:ref name="versionString" type="variable">$versionString</xd:ref> is the version information read from the
+            versionDoc if there is one; otherwise it is an empty string.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="versionString" select="if (($versionDocUri != '') and (unparsed-text-available($versionDocUri))) then replace(normalize-space(unparsed-text($versionDocUri)), '\s+', '_') else ''" as="xs:string"/>
+    
+    <xd:doc>
         <xd:desc><xd:ref name="collectionDir" type="variable">$searchDirName</xd:ref> is the path to the
         directory that contains the search document, which we assume is the project directory that contains
         all of the files that static search is meant to index.</xd:desc>
@@ -121,8 +135,7 @@
             process stores all of the temporary outputs; it is deleted at the end of the process (in the ANT build).</xd:desc>
     </xd:doc>
     <xsl:variable name="tempDir" select="$outDir || '/temp'"/>
-    
-    
+   
     <xd:doc>
         <xd:desc><xd:ref name="recurse" type="variable">$recurse</xd:ref> is a boolean that states whether or not the 
             static search should recurse into subdirectories of the collection directory.</xd:desc>
@@ -166,7 +179,8 @@
     
     <xd:doc>
         <xd:desc>
-            <xd:p>The <xd:ref name="contextRules" type="variable">contextRules</xd:ref> variable is
+            <xd:p>OBSOLETE: Now specified as context elements, not rule elements. 
+                The <xd:ref name="contextRules" type="variable">contextRules</xd:ref> variable is
                 a sequence of 0 or more rules that are specified as context blocks--blocks that are to
                 be used in the JSON creation stage to create the context for the kwic.</xd:p>
         </xd:desc>
@@ -174,9 +188,16 @@
     <xsl:variable name="contextRules" select="$configDoc//contexts/rule" as="element(rule)*"/>
     
     <xsl:variable name="weightedRules" select="$configDoc//rule[xs:integer(@weight) gt 1]" as="element(rule)*"/>
-      
-      
-  
+    
+    <xd:doc>
+        <xd:desc>
+            <xd:p>The <xd:ref name="contexts" type="variable">contexts</xd:ref> variable is
+                a sequence of 0 or more contexts that are specified as context blocks--blocks that are to
+                be used in the JSON creation stage to create the context for the kwic.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:variable name="contexts" select="$configDoc//contexts/context" as="element(context)*"/>
+    
     <!--**************************************************************
        *                                                            * 
        *                         TEMPLATES                          *
@@ -190,6 +211,9 @@
     </xd:doc>
     <xsl:template match="/">
         <xsl:message>Creating configuration file from <xsl:value-of select="$configFile"/></xsl:message>
+        <xsl:if test="$versionString != ''">
+            <xsl:message>Version string for this build: <xsl:value-of select="$versionString"/></xsl:message>
+        </xsl:if>
         
         <xsl:if test="$verbose">
             <xsl:for-each select="$configDoc//params/*">
@@ -197,7 +221,7 @@
             </xsl:for-each>
         </xsl:if>
         
-        <!--Create teh result document, which is also an XSLT document, but placed in the dummy XSO namespace-->
+        <!--Create the result document, which is also an XSLT document, but placed in the dummy XSO namespace-->
         <xsl:result-document href="{$ssBaseDir}/xsl/config.xsl" method="xml" encoding="UTF-8" normalization-form="NFC" indent="yes" exclude-result-prefixes="#all">
             
             <!--Root stylesheet-->
@@ -225,17 +249,17 @@
                 <!--Now, create all the parameters-->
                 
                 <!--First, create the global varialbes and parameters-->
-                <xsl:call-template name="createGlobals"/>
+                <xsl:call-template name="createGlobals" exclude-result-prefixes="#all"/>
                 
                 <!--Now create the DICTIONARY xml files-->
-                <xsl:call-template name="createDictionaryXML"/>
+                <xsl:call-template name="createDictionaryXML" exclude-result-prefixes="#all"/>
                 
                 
                 <!--And now create the sets of templates that will be used in the later tokenization stages-->
                 <!--If there are retain rules specified in the configuration file,
                     then call the createRetainRules template-->
                 <xsl:if test="not(empty($retainRules))">
-                    <xsl:call-template name="createRetainRules"/>
+                    <xsl:call-template name="createRetainRules" exclude-result-prefixes="#all"/>
                     <xsl:if test="$verbose">
                         <xsl:message>Create retain rules</xsl:message>
                         <xsl:message>  <xsl:call-template name="createRetainRules"/></xsl:message>
@@ -246,7 +270,7 @@
                 <!--If there are deletion rules specified in the configuration file,
                     then call the createDeleteRules template-->
                 <xsl:if test="not(empty($deleteRules))">
-                    <xsl:call-template name="createDeleteRules"/>
+                    <xsl:call-template name="createDeleteRules" exclude-result-prefixes="#all"/>
                     <xsl:if test="$verbose">
                         <xsl:message>Create delete rules</xsl:message>
                         <xsl:message>
@@ -255,14 +279,13 @@
                     </xsl:if>
                 </xsl:if>
                 
-                <xsl:if test="not(empty($contextRules))">
-                    <xsl:call-template name="createContextRules"/>
+                <xsl:if test="not(empty($contexts))">
+                    <xsl:call-template name="createContextRules" exclude-result-prefixes="#all"/>
                     <xsl:if test="$verbose">
                         <xsl:message>Create context rules</xsl:message>
                         <xsl:message>
-                            <xsl:call-template name="createContextRules"/>
+                            <xsl:call-template name="createContextRules" exclude-result-prefixes="#all"/>
                         </xsl:message>
-                        
                     </xsl:if>
                 </xsl:if>
                 
@@ -270,7 +293,7 @@
                     <xsl:call-template name="createWeightingRules"/>
                     <xsl:if test="$verbose">
                         <xsl:message>Create weighting rules</xsl:message>
-                        <xsl:message><xsl:call-template name="createWeightingRules"/></xsl:message>
+                        <xsl:message><xsl:call-template name="createWeightingRules" exclude-result-prefixes="#all"/></xsl:message>
                     </xsl:if>
                 </xsl:if>
             </xso:stylesheet>
@@ -291,7 +314,7 @@
         <xd:desc>This creates the global parameters and variables for the config file, which works as the global
             document for the transformations</xd:desc>
     </xd:doc>
-    <xsl:template name="createGlobals">
+    <xsl:template name="createGlobals" exclude-result-prefixes="#all">
         
         <xsl:variable name="params" as="element()+">
             <!--First, create the actual configuration file thing-->
@@ -299,7 +322,7 @@
             <xsl:for-each select="$configDoc//params/*" >
                 <xsl:variable name="thisParam" select="."/>
                 <xsl:variable name="paramName" select="local-name()"/>
-                <xsl:variable name="thisElementSpec" select="$schema//tei:elementSpec[@ident=$paramName]" as="element(tei:elementSpec)"/>
+                <xsl:variable name="thisElementSpec" select="$schema//tei:elementSpec[@ident=$paramName]" as="element(tei:elementSpec)?"/>
                 
                 <xso:param>
                     <xsl:attribute name="name" select="$paramName"/>
@@ -308,10 +331,10 @@
                         <!--TODO: Make this smarter! Look at the ODD file
                             and see if the parameter is a boolean or not. If it is, do this, otherwise, just assume its a string
                             (or an integer or whatever else)-->
-                        <xsl:when test="$thisElementSpec[descendant::tei:dataRef[@name='boolean']]">
+                        <xsl:when test="$thisElementSpec and $thisElementSpec[descendant::tei:dataRef[@name='boolean']]">
                             <xsl:attribute name="select" select="concat(hcmc:stringToBoolean(xs:string(.)),'()')"/>
                         </xsl:when>
-                        <xsl:when test="$thisElementSpec[descendant::tei:dataRef[@name='anyURI']]">
+                        <xsl:when test="$thisElementSpec and $thisElementSpec[descendant::tei:dataRef[@name='anyURI']]">
                             <xsl:value-of select="resolve-uri(.,$configUri)"/>
                         </xsl:when>
                         <xsl:otherwise>
@@ -320,10 +343,12 @@
                     </xsl:choose>
                 </xso:param>
             </xsl:for-each>
+            <!-- Finally, add the parsed-out version string from the versionFile. -->
+            <xso:param name="versionString"><xsl:value-of select="if (($versionDocUri != '') and (unparsed-text-available($versionDocUri))) then concat('_', replace(normalize-space(unparsed-text($versionDocUri)), '\s+', '_')) else ''"/></xso:param>
             
         </xsl:variable>
         
-        <xsl:sequence select="$params"/>
+        <xsl:sequence select="$params" exclude-result-prefixes="#all"/>
         
 
         
@@ -359,7 +384,7 @@
     </xsl:template>
     
     
-    <xsl:template name="createDictionaryXML">
+    <xsl:template name="createDictionaryXML" exclude-result-prefixes="xs xd tei">
         <xsl:for-each select="($configDoc//stopwordsFile, $configDoc//dictionaryFile)">
             <xsl:variable name="path" select="resolve-uri(text(),$configUri)"/>
             <xsl:variable name="uri" select="concat($outDir,'/dicts/',substring-before(tokenize($path,'/')[last()],'.txt'),'.xml')"/>
@@ -385,7 +410,7 @@
             either a weight greater than 0 OR want to be retained as a context item for the kwic.</xd:p>
         </xd:desc>
     </xd:doc>
-    <xsl:template name="createRetainRules">
+    <xsl:template name="createRetainRules" exclude-result-prefixes="#all">
         <xso:template match="{string-join($retainRules/@xpath,' | ')}" priority="1" mode="clean">
             <xso:if test="$verbose">
                 <xso:message>Template #clean: retaining <xso:value-of select="local-name(.)"/></xso:message>
@@ -406,7 +431,7 @@
                 text that appears in every document or navigation items).</xd:p>
         </xd:desc>
     </xd:doc>
-    <xsl:template name="createDeleteRules">
+    <xsl:template name="createDeleteRules" exclude-result-prefixes="#all">
         <xso:template match="{string-join($deleteRules/@xpath,' | ')}" priority="1" mode="clean">
             <xso:if test="$verbose">
                 <xso:message>Template #clean: Deleting <xso:value-of select="local-name(.)"/></xso:message>
@@ -421,14 +446,14 @@
                 specified as context nodes for the kwic.</xd:p>
         </xd:desc>
     </xd:doc>
-    <xsl:template name="createContextRules">
-        <xso:template match="{string-join($contextRules/@xpath,' | ')}" priority="1" mode="contextualize">
+    <xsl:template name="createContextRules" exclude-result-prefixes="#all">
+        <xso:template match="{string-join($contexts/@xpath,' | ')}" priority="1" mode="contextualize">
             <xso:if test="$verbose">
                 <xso:message>Template #contextualize: Adding @data-staticSearch-context flag to <xso:value-of select="local-name(.)"/></xso:message>
             </xso:if>
             <xso:copy>
                 <xso:apply-templates select="@*" mode="#current"/>
-                <xsl:for-each select="$contextRules">
+                <xsl:for-each select="$contexts">
                     <xso:if test="self::{@xpath}">
                         <xso:attribute name="data-staticSearch-context" select="{concat('''',hcmc:stringToBoolean(@context),'''')}"/>
                     </xso:if>
@@ -445,7 +470,7 @@
                 some non-0 weight specified.</xd:p>
         </xd:desc>
     </xd:doc>
-    <xsl:template name="createWeightingRules">
+    <xsl:template name="createWeightingRules" exclude-result-prefixes="#all">
         <xso:template match="{string-join($weightedRules/@xpath,' | ')}" priority="1" mode="weigh">
             <xso:if test="$verbose">
                 <xso:message>Template #weigh: Adding @data-weight to <xso:value-of select="local-name(.)"/></xso:message>

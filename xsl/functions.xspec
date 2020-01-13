@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<x:description 
+  xmlns:x="http://www.jenitennison.com/xslt/xspec" 
+  stylesheet="functions.xsl"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:xh="http://www.w3.org/1999/xhtml"
+  xmlns:hcmc="http://hcmc.uvic.ca/ns/staticSearch"> 
+  
+  <!-- This is an XSpec test suite for functions in the 
+       functions.xsl module. -->
+  <x:scenario label="Testing makeNCName function">
+    <x:scenario label="Test plain label (no prefix)">
+      <x:call function="hcmc:makeNCName">
+        <x:param name="label" select="'Search in:'"/>
+        <x:param name="prefix" select="''"/>
+      </x:call>
+      <x:expect label="Result from 'Search in:'" select="'nSearch_in_'"/>
+    </x:scenario>
+    <x:scenario label="Test plain label with prefix">
+      <x:call function="hcmc:makeNCName">
+        <x:param name="label" select="'Search in:'"/>
+        <x:param name="prefix" select="'desc'"/>
+      </x:call>
+      <x:expect label="Result from 'Search in:'" select="'descSearch_in_'"/>
+    </x:scenario>
+    <x:scenario label="Test plain label with bad prefix">
+      <x:call function="hcmc:makeNCName">
+        <x:param name="label" select="'Search in:'"/>
+        <x:param name="prefix" select="'55'"/>
+      </x:call>
+      <x:expect label="Result from 'Search in:'" select="'n55Search_in_'"/>
+    </x:scenario>
+    <x:scenario label="Test complex label with no prefix">
+      <x:call function="hcmc:makeNCName">
+        <x:param name="label" select="'55: Date range (supposed)'"/>
+        <x:param name="prefix" select="''"/>
+      </x:call>
+      <x:expect label="Result from 'Search in:'" select="'n55_Date_range_supposed_'"/>
+    </x:scenario>
+    <x:scenario label="Test wild and woolly inputs">
+      <x:call function="hcmc:makeNCName">
+        <x:param name="label">%99 "this nonsense" / other || stuff</x:param>
+        <x:param name="prefix">5% inappropriate</x:param>
+      </x:call>
+      <x:expect label="Result from 'Search in:'" select="'n5_inappropriate_99_this_nonsense_other_stuff'"/>
+    </x:scenario>
+  </x:scenario>
+  
+</x:description>

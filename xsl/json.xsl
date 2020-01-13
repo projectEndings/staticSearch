@@ -15,7 +15,9 @@
             <xd:p><xd:b>Authors:</xd:b> Joey Takeda and Martin Holmes</xd:p>
             <xd:p>This transformation takes a collection of tokenized and stemmed documents (tokenized
             via the process described in <xd:a href="tokenize.xsl">tokenize.xsl</xd:a>) and creates
-            a JSON file for each stemmed token.</xd:p>
+            a JSON file for each stemmed token. It also creates a separate JSON file for the project's
+            stopwords list, for all the document titles in the collection, and for each of the filter facets.
+            Finally, it creates a single JSON file listing all the tokens, which may be used for glob searches.</xd:p>
         </xd:desc>
         <xd:param name="ellipses">A string parameter to denote what sorts of ellipses one wants in the KWIC.</xd:param>
     </xd:doc>
@@ -44,6 +46,7 @@
         in the later stages of the process.</xd:desc>
     </xd:doc>
     <xsl:variable name="kwicLengthHalf" select="xs:integer(round(xs:integer($totalKwicLength) div 2))" as="xs:integer"/>
+        
 
     <!--**************************************************************
        *                                                            *
@@ -57,9 +60,9 @@
         <xd:desc>Root template, which calls the rest of the templates.</xd:desc>
     </xd:doc>
     <xsl:template match="/">
-        <xsl:call-template name="createJson"/>
+        <xsl:call-template name="createStemmedTokenJson"/>
         <xsl:call-template name="createTitleJson"/>
-        <xsl:call-template name="createDocFiltersJson"/>
+        <xsl:call-template name="createFiltersJson"/>
         <xsl:call-template name="createStopwordsJson"/>
         <xsl:call-template name="createWordListJson"/>
         <xsl:call-template name="createConfigJson"/>
@@ -75,11 +78,12 @@
 <!--    Start create JSON process ... -->
 
     <xd:doc>
-        <xd:desc>The <xd:ref name="createJson" type="template">createJson</xd:ref> is the meat of this process;
-        it kicks of the process by calling the createMap template with a selection of spans derived from the
-        tokenized docs.</xd:desc>
+        <xd:desc>The <xd:ref name="createStemmedTokenJson" type="template">createJson</xd:ref> 
+            is the meat of this process; it kicks off the creation of a separate JSON file for each stemmed 
+            token by calling the createMap template with a selection of spans derived from the tokenized 
+            docs.</xd:desc>
     </xd:doc>
-    <xsl:template name="createJson">
+    <xsl:template name="createStemmedTokenJson">
         <xsl:message>Found <xsl:value-of select="count($tokenizedDocs)"/> tokenized documents...</xsl:message>
         <xsl:variable name="stems" select="$tokenizedDocs//span[@data-staticSearch-stem]" as="element(span)*"/>
         <xsl:call-template name="createMap">
@@ -129,7 +133,7 @@
                     august.json
 
                 would silently (as of Saxon 9.8) overwrite the first.-->
-            <xsl:result-document href="{$outDir}/{if (matches($token,'^[A-Z]')) then 'upper' else 'lower'}/{$token}.json" method="text">
+            <xsl:result-document href="{$outDir}/{if (matches($token,'^[A-Z]')) then 'upper' else 'lower'}/{$token}{$versionString}.json" method="text">
                 <xsl:value-of select="xml-to-json($map, map{'indent': $indentJSON})"/>
             </xsl:result-document>
         </xsl:for-each-group>
@@ -152,8 +156,8 @@
                        declared html/@id. (Note that this may be a value derived from the document's URI, which
                        is placed into the html/@id in the absence of a pre-existing id during the
                            <xd:a href="tokenize.xsl">tokenization tranformation</xd:a>.</xd:li>
-                       <xd:li><xd:b>docTitle (string):</xd:b> The title of the document, which may come from
-                           the html/head/title or, if that is missing, is constructed from the document URI</xd:li>
+                       <!--<xd:li><xd:b>docTitle (string):</xd:b> The title of the document, which may come from
+                           the html/head/title or, if that is missing, is constructed from the document URI</xd:li>-->
                        <xd:li><xd:b>docUri (string):</xd:b> The URI of the source document.</xd:li>
                        <xd:li><xd:b>score (number):</xd:b> The sum of the weighted scores of each span that
                            is in that document. For instance, if some document had n instances of token x
@@ -235,8 +239,8 @@
                     then use that; otherwise, just use the document id as the title.
                     -->
 
-                    <xsl:variable name="docTitle" as="xs:string"
-                        select="hcmc:getDocTitle($thisDoc)"/>
+                    <!--<xsl:variable name="docTitle" as="xs:string"
+                        select="hcmc:getDocTitle($thisDoc)"/>-->
 
 <!--                    And the relative URI from the document, which is to be used
                         for linking from the KWIC to the document. We've created this
@@ -258,9 +262,9 @@
                         </string>
 
 <!--                        Document title -->
-                        <string key="docTitle">
+                        <!--<string key="docTitle">
                             <xsl:value-of select="$docTitle"/>
-                        </string>
+                        </string>-->
 
 <!--                        Document URI (relative) -->
                         <string key="docUri">
@@ -283,7 +287,7 @@
                                     select="
                                     if ($phrasalSearch)
                                     then $spans
-                                    else subsequence($spans, 1, $maxContexts)"
+                                    else subsequence($spans, 1, $maxKwicsToHarvest)"
                                  />
 
 <!--                                Count the contexts -->
@@ -482,112 +486,136 @@
         <xsl:param name="end" as="xs:integer"/>
         <xsl:value-of select="normalize-space(string-join(subsequence($seq, $start, $end),' '))"/>
     </xsl:function>
-
-
-
+    
     <xd:doc>
-        <xd:desc>createDocFiltersJson is a named template that creates a large JSON object for all documents
-        and their filters.</xd:desc>
+        <xd:desc>createFiltersJson is a named template that creates files for each filter JSON; it will eventually supercede createDocsJson.
+        There are (currently) three types of filters that this process creates:
+        
+        <xd:ol>
+            <xd:li>Desc filters: These are organized as a desc (i.e. Genre) with an array of values (i.e. Poem) that contains an array of document ids that apply to that value (i.e. MyPoem1.html, MyPoem2.html)</xd:li>
+            <xd:li>Boolean Filters: These are organized as a desc value (i.e. Discusses Foreign Affairs) with an array of two values: True and False.</xd:li>
+            <xd:li>Date filters: These are a bit different than the above. Since dates can contain a range, these JSONs must be organized not by date but by document.</xd:li>
+        </xd:ol>
+        </xd:desc>
     </xd:doc>
-    <xsl:template name="createDocFiltersJson">
-        <xsl:variable name="filterMap" as="element()">
-            <map xmlns="http://www.w3.org/2005/xpath-functions">
-                <xsl:for-each select="$tokenizedDocs">
-                    <xsl:variable name="thisDoc" select="."/>
-                    <xsl:variable name="relativeUri" select="$thisDoc//html/@data-staticSearch-relativeUri"/>
-                    <xsl:variable name="thisTitle" select="hcmc:getDocTitle($thisDoc//html)"/>
-                    <xsl:message>Processing <xsl:value-of select="$relativeUri"/></xsl:message>
-                    <map key="{$relativeUri}">
-                        <string key="docTitle"><xsl:value-of select="$thisTitle"/></string>
-                        <map key="descFilters">
-                            <xsl:for-each-group select="$thisDoc//meta[contains-token(@class,'staticSearch.desc')]" group-by="@name">
-                                <xsl:message expand-text="yes">Processing {current-grouping-key()}</xsl:message>
-                                <array key="{current-grouping-key()}">
-                                    <xsl:for-each select="current-group()">
-                                        <string><xsl:value-of select="@content"/></string>
-                                    </xsl:for-each>
-                                </array>
-                            </xsl:for-each-group>
-                        </map>
-
-<!--                  For date filters, we have to insist that there's only one date for each named filter, otherwise it
-                        becomes impossible to use them. So we take only the first one. -->
-                        <map key="dateFilters">
-                            <xsl:for-each-group select="$thisDoc//meta[contains-token(@class,'staticSearch.date')]" group-by="@name">
-                                <xsl:message expand-text="yes">Processing date filter {current-grouping-key()}</xsl:message>
-                                <array key="{current-grouping-key()}">
-                                    <xsl:for-each select="tokenize(current-group()[1]/@content, '/')">
-                                        <string><xsl:value-of select="."/></string>
-                                    </xsl:for-each>
-                                </array>
-                            </xsl:for-each-group>
-                        </map>
-<!--                  Boolean filters are just true or false, and default to false. -->
-                        <map key="boolFilters">
-                            <xsl:for-each-group select="$thisDoc//meta[contains-token(@class,'staticSearch.bool')]" group-by="@name">
-                                <xsl:message expand-text="yes">Processing boolean filter {current-grouping-key()}</xsl:message>
-                                <boolean key="{current-grouping-key()}">
-                                    <xsl:choose>
-                                        <xsl:when test="matches(current-group()[1]/@content, '^\s*(true)|(TRUE)|(1)')">true</xsl:when>
-                                        <xsl:otherwise>false</xsl:otherwise>
-                                    </xsl:choose>
-                                </boolean>
-                            </xsl:for-each-group>
-                        </map>
-                    </map>
-                </xsl:for-each>
-            </map>
-        </xsl:variable>
-        
-        
-        
-
-        <xsl:result-document href="{$outDir}/docs.json" method="text">
-            <xsl:value-of select="xml-to-json($filterMap, map{'indent': $indentJSON})"/>
-        </xsl:result-document>
-        
-        <!--Now create the individual files for the filter maps;
-            we do this using templates rather than grouping, since that's simpler
-            and the grouping has already been done for us-->
-        
-        <!--First iterate through the relevant keys-->
-        <xsl:for-each select="distinct-values($filterMap//map:map[ends-with(@key,'Filters')]/*/@key)">
-            <xsl:variable name="thisKey" select="."/>
+    <xsl:template name="createFiltersJson">
+        <xsl:for-each-group select="$tokenizedDocs//meta[matches(@class,'^|\s+staticSearch\.')]" group-by="tokenize(@class,'\s+')[matches(.,'^staticSearch\.')]">
             
-            <!--Create a variable to process into JSON-->
-            <xsl:variable name="result">
+            <xsl:variable name="thisClass" select="current-grouping-key()"/>
+            <xsl:variable name="metaNum" select="position()"/>
+            <xsl:for-each-group select="current-group()" group-by="@name">
+                <xsl:variable name="thisName" select="current-grouping-key()"/>
+                <xsl:variable name="thisId" select="current-group()[1]/@data-staticSearch-filter-id"/>
                 
-                <!--Process the filterMap XML through templates-->
-                <xsl:apply-templates select="$filterMap" mode="makeFilterDocs">
-                    <xsl:with-param name="key" select="$thisKey" tunnel="yes"/>
-                </xsl:apply-templates>
-            </xsl:variable>
-            
-            <!--And then create the output file, carefully escaping names etc-->
-            <xsl:variable name="outFile" select="$outDir || '/' || encode-for-uri(encode-for-uri($thisKey)) || '.json'" as="xs:string"/>
-            <xsl:result-document href="{$outFile}" method="text">
-                <xsl:value-of select="xml-to-json($result, map{'indent': $indentJSON})"/>
-            </xsl:result-document>
-        </xsl:for-each>
-        
-
-<!--      For debugging purposes: TODO: REMOVE WHEN NO LONGER NEEDED.  -->
-
-        <xsl:result-document href="{$outDir}/docs.xml" method="xml" indent="yes">
-            <xsl:sequence select="$filterMap"/>
-        </xsl:result-document>
-        
-        
-        
-        
+                <xsl:choose>
+                    <xsl:when test="$thisClass = 'staticSearch.desc'">
+                        <xsl:variable name="tmpMap" as="element(map:map)">
+                            <map xmlns="http://www.w3.org/2005/xpath-functions">
+                                <string key="filterId"><xsl:value-of select="$thisId"/></string>
+                                <string key="filterName"><xsl:value-of select="$thisName"/></string>
+                                
+                                <!--Now iterate through these values via their content-->
+                                <xsl:for-each-group select="current-group()" group-by="@content">
+                                    
+                                    <xsl:variable name="thisContent" select="current-grouping-key()"/>
+                                    <xsl:variable name="subGroupPos" select="position()"/>
+                                    
+                                    
+                                    <xsl:variable name="filterId" select="$thisId || '_' || $subGroupPos"/>
+                                    <map key="{$filterId}">
+                                        <string key="name"><xsl:value-of select="$thisContent"/></string>
+                                        <array key="docs">
+                                            <xsl:for-each-group select="current-group()" group-by="ancestor::html/@data-staticSearch-relativeUri">
+                                                
+                                                <string><xsl:value-of select="current-grouping-key()"/></string>
+                                            </xsl:for-each-group>
+                                        </array>
+                                    </map>
+                                </xsl:for-each-group>
+                            </map>
+                        </xsl:variable>
+                        <xsl:result-document href="{$outDir || '/filters/' || $thisId || $versionString || '.json'}" method="text">
+                            <xsl:value-of select="xml-to-json($tmpMap)"/>
+                        </xsl:result-document>
+                    </xsl:when>
+                    
+                    
+                    <xsl:when test="$thisClass='staticSearch.bool'">
+                        <xsl:variable name="tmpMap" as="element(map:map)">
+                            <map xmlns="http://www.w3.org/2005/xpath-functions">
+                                <string key="filterId"><xsl:value-of select="$thisId"/></string>
+                                <string key="filterName"><xsl:value-of select="@name"/></string>
+                                <xsl:for-each-group select="current-group()" group-by="hcmc:normalize-boolean(@content)">
+                                    <!-- We have to sort these descending so that we reliably get true followed by false. -->
+                                    <xsl:sort select="hcmc:normalize-boolean(@content)" order="descending"/>
+                                    <xsl:variable name="filterId" select="concat($thisId,'_',position())"/>
+                                    <map key="{$filterId}">
+                                        <string key="value"><xsl:value-of select="current-grouping-key()"/></string>
+                                        <array key="docs">
+                                            <xsl:for-each-group select="current-group()" group-by="ancestor::html/@data-staticSearch-relativeUri">
+                                                <string><xsl:value-of select="current-grouping-key()"/></string>
+                                            </xsl:for-each-group>
+                                        </array>
+                                    </map>
+                                </xsl:for-each-group>
+                            </map>
+                        </xsl:variable>
+                        <xsl:result-document href="{$outDir || '/filters/' || $thisId || $versionString || '.json'}" method="text">
+                            <xsl:value-of select="xml-to-json($tmpMap)"/>
+                        </xsl:result-document>
+                    </xsl:when>
+                    
+                    <xsl:when test="$thisClass='staticSearch.date'">
+                        <xsl:variable name="tmpMap" as="element(map:map)">
+                            <map xmlns="http://www.w3.org/2005/xpath-functions">
+                                <string key="filterId"><xsl:value-of select="$thisId"/></string>
+                                <string key="filterName"><xsl:value-of select="$thisName"/></string>
+                                <map key="docs">
+                                    <xsl:for-each-group select="current-group()" group-by="ancestor::html/@data-staticSearch-relativeUri">
+                                        <xsl:variable name="filterId" select="concat($thisId,'_',position())"/>
+                                        <array key="{current-grouping-key()}">
+                                            <xsl:for-each select="current-group()">
+                                                <xsl:for-each select="tokenize(@content,'/')">
+                                                    <string><xsl:value-of select="."/></string>
+                                                </xsl:for-each>
+                                            </xsl:for-each>
+                                        </array>
+                                    </xsl:for-each-group>
+                                </map>
+                                
+                            </map>
+                        </xsl:variable>
+                        <xsl:result-document href="{$outDir || '/filters/' || $thisId || $versionString || '.json'}" method="text">
+                            <xsl:value-of select="xml-to-json($tmpMap)"/>
+                        </xsl:result-document>
+                    </xsl:when>
+                </xsl:choose>
+            </xsl:for-each-group>
+        </xsl:for-each-group>
     </xsl:template>
     
+    <xd:doc>
+        <xd:desc><xd:ref name="hcmc:normalize-boolean">hcmc:normalize-boolean</xd:ref>
+            takes any of a variety of different boolean representations and converts them to
+            string "true" or string "false".
+        </xd:desc>
+        <xd:param name="string">The input string.</xd:param>
+    </xd:doc>
+    <xsl:function name="hcmc:normalize-boolean" as="xs:string">
+        <xsl:param name="string"/>
+        <xsl:value-of select="if (matches(normalize-space($string),'true|1','i')) then 'true' else 'false'"/>
+    </xsl:function>
     
-    <!--Simple set of templates for creating the filter docs:
-        
-        Match every map and if a map either is the thing we want,
-        or contains the thing we want, then keep it;
-        otherwise, delete it-->
+    <!--Simple set of templates for creating the filter docs:   -->
+    <xd:doc>
+        <xd:desc> Match every map and if a map either is the thing we want,
+            or contains the thing we want, then keep it;
+            otherwise, delete it</xd:desc>
+        <xd:param name="key">Tunnelled parameter which enables the 
+        function to decide whether this particular item should be used or discarded.
+        It should be used when it has a matching @key, or has a descendant with
+        a matching @key.</xd:param>
+    </xd:doc>
     <xsl:template match="*[@key]" mode="makeFilterDocs">
         <xsl:param name="key" tunnel="yes"/>
         <xsl:choose>
@@ -602,6 +630,9 @@
     
     
     <!--And identity-->
+    <xd:doc>
+        <xd:desc>Default identity transform.</xd:desc>
+    </xd:doc>
     <xsl:template match="@*|node()" mode="makeFilterDocs" priority="-1">
         <xsl:copy>
             <xsl:apply-templates select="@*|node()" mode="#current"/>
@@ -612,11 +643,13 @@
 
 
     <xd:doc>
-        <xd:desc></xd:desc>
+        <xd:desc><xd:ref name="createStopwordsJson">createStopwordsJson</xd:ref>
+        builds a JSON file containing the list of stopwords (either the default list or the 
+        one provided by the project and referenced in its config file).</xd:desc>
     </xd:doc>
     <xsl:template name="createStopwordsJson">
         <xsl:message>Creating stopwords array...</xsl:message>
-        <xsl:result-document href="{$outDir}/stopwords.json" method="text">
+        <xsl:result-document href="{$outDir}/ssStopwords{$versionString}.json" method="text">
             <xsl:variable name="map">
                 <xsl:apply-templates select="$stopwordsFileXml" mode="dictToArray"/>
             </xsl:variable>
@@ -624,9 +657,14 @@
         </xsl:result-document>
     </xsl:template>
     
-    
+    <xd:doc>
+        <xd:desc><xd:ref name="createTitleJson">createTitleJson</xd:ref>
+            builds a JSON file containing a list of all the titles of documents in the 
+        collection, indexed by their relative URI (which serves as their identifier),
+        to be used when displaying results in the search page.</xd:desc>
+    </xd:doc>
     <xsl:template name="createTitleJson">
-        <xsl:result-document href="{$outDir}/titles.json" method="text">
+        <xsl:result-document href="{$outDir}/ssTitles{$versionString}.json" method="text">
             <xsl:variable name="map">
                 <map:map>
                     <xsl:for-each select="$tokenizedDocs//html">
@@ -641,8 +679,10 @@
     </xsl:template>
     
     <xd:doc>
-        <xd:desc>This template creates a list of the all of the tokens that have been
-        created by the process; primarily, this JSON will be used for wildcard searches.</xd:desc>
+        <xd:desc><xd:ref name="createWordListJson">createWordListJson</xd:ref> 
+            creates a list of the all of the tokens that have been
+        created by the process; primarily, this JSON will be used 
+        for wildcard searches.</xd:desc>
     </xd:doc>
     <xsl:template name="createWordListJson">
         <xsl:message>Creating word list JSON...</xsl:message>
@@ -659,15 +699,22 @@
                </map:array>
             </map:map>
         </xsl:variable>
-        <xsl:result-document href="{$outDir}/tokens.json" method="text">
+        <xsl:result-document href="{$outDir}/ssTokens{$versionString}.json" method="text">
             <xsl:value-of select="xml-to-json($map, map{'ident': $indentJSON})"/>
         </xsl:result-document>
     </xsl:template>
 
 <!--    Create a config file for the JSON-->
+    <xd:doc>
+        <xd:desc><xd:ref name="createConfigJson">createConfigJson</xd:ref> 
+            creates a JSON representation of the project's configuration file.
+        This is not currently used for any specific purpose, but it may be 
+        helpful for the JS search engine to know what configuration was 
+        used to create the indexes at some point.</xd:desc>
+    </xd:doc>
     <xsl:template name="createConfigJson">
         <xsl:message>Creating Configuration JSON file....</xsl:message>
-        <xsl:result-document href="{$outDir}/config.json" method="text">
+        <xsl:result-document href="{$outDir}/config{$versionString}.json" method="text">
             <xsl:variable name="map">
                 <xsl:apply-templates select="doc($configFile)" mode="configToArray"/>
             </xsl:variable>
@@ -680,6 +727,10 @@
         these are in templates in case we need to do
         any more creation of a words file into a JSON-->
 
+    <xd:doc>
+        <xd:desc>Template to convert an XML structure consisting
+        of word elements inside a words element to a JSON/XML structure.</xd:desc>
+    </xd:doc>
     <xsl:template match="hcmc:words" mode="dictToArray">
         <map:map>
             <map:array key="words">
@@ -688,6 +739,10 @@
         </map:map>
     </xsl:template>
 
+    <xd:doc>
+        <xd:desc>Template to convert a single word element inside 
+            a words element to a JSON/XML string.</xd:desc>
+    </xd:doc>
     <xsl:template match="hcmc:word" mode="dictToArray">
         <map:string><xsl:value-of select="."/></map:string>
     </xsl:template>
@@ -696,13 +751,18 @@
 <!--    Templates for converting the HCMC config file
         into a simple JSON for use in the Javascript.-->
 
-
+    <xd:doc>
+        <xd:desc>Template to convert an hcmc:config element to a JSON map.</xd:desc>
+    </xd:doc>
     <xsl:template match="hcmc:config" mode="configToArray">
         <map:map key="config">
             <xsl:apply-templates mode="#current"/>
         </map:map>
     </xsl:template>
 
+    <xd:doc>
+        <xd:desc>Template to convert an hcmc:params element to a JSON array.</xd:desc>
+    </xd:doc>
     <xsl:template match="hcmc:params" mode="configToArray">
         <map:array key="params">
             <map:map>
@@ -711,6 +771,9 @@
         </map:array>
     </xsl:template>
 
+    <xd:doc>
+        <xd:desc>Template to convert any child of an hcmc:params element to a JSON value.</xd:desc>
+    </xd:doc>
     <xsl:template match="hcmc:params/hcmc:*" mode="configToArray">
         <xsl:element namespace="http://www.w3.org/2005/xpath-functions" name="{if (text() castable as xs:integer) then 'number' else 'string'}">
             <xsl:attribute name="key" select="local-name()"/>

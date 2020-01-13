@@ -1,7 +1,4 @@
-<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" id="search" lang="en">
-   
-   
-   
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
    
    
    <head>
@@ -9,42 +6,257 @@
       
       
       
+      <style>
+        #testResults{
+          margin: 2em;
+          border-top: solid 1pt black;
+          }
+        .success{
+          background-color: #ccffcc;
+          }
+        .failure{
+          background-color: #ffcccc;
+          }
+      </style>
       
       
+      <style id="ssCss"><!--
+        form#ssForm{
+            display: flex;
+            flex-direction: column;
+        }
+        span.ssQueryAndButton{
+            display: flex;
+            flex-direction: row;
+            margin: 0.25em auto;
+            width: 100%;
+        }
+        input#ssQuery{
+            flex: 1;
+        }
+        div.ssDescFilters, div.ssDateFilters, div.ssBoolFilters{
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+        div.ssDescFilters fieldset, div.ssDateFilters fieldset, div.ssBoolFilters fieldset{
+            margin: 0.25em auto;
+            flex-grow: 1;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        ul.ssDescCheckboxList{
+            list-style-type: none;
+            max-height: 8em;
+            overflow-y: auto;
+            min-width: 90%;
+        }
+        ul.ssDescCheckboxList li{
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-items: flex-start;
+        }
+        div.ssDateFilters fieldset.ssFieldset span, div.ssBoolFilters fieldset.ssFieldset span{
+            padding: 0.5em 1em;
+        }
+        fieldset.ssFieldset > span {
+            background-color: #ddd;
+            border: solid 1px #aaa;
+            margin: 0.2em;
+        }
+        div#ssSearching{
+            background-color: #000000;
+            color: #ffffff;
+            font-size: 1.5rem;
+            padding: 1rem;
+            border-radius: 0.25rem 0.25rem;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+        
+    --></style>
       
       
-      
-      
-      <title>Search Page</title>
+      <title>Test search page</title>
       </head>
-   
-   
-   
    
    
    <body>
       
       
+      <h1>Test search page</h1>
       
       
-      
-      <h1>Static Search</h1>
-      
-      
-      
-      
-      
-      <p>This is the static search engine demonstration.</p>
-      
-      
-      
+      <p>This is a simple search page for the test collection.</p>
       
       
       <div id="staticSearch"><script src="staticSearch/ssPorter2Stemmer.js"></script><script src="staticSearch/ssSearch.js"></script><script>
                 var Sch;
                 window.addEventListener('load', function(){Sch = new StaticSearch();});
-            </script><form accept-charset="UTF-8" id="ssForm" data-allowPhrasal="yes" onsubmit="return false;"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></form>
+            </script><form accept-charset="UTF-8" id="ssForm" data-allowphrasal="yes" data-maxkwicstoshow="3" onsubmit="return false;" data-versionstring="_3a01118"><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><div class="ssDescFilters">
+               <fieldset class="ssFieldset" title="Document type" id="ssDesc1">
+                  <legend>Document type</legend>
+                  <ul class="ssDescCheckboxList">
+                     <li><input type="checkbox" title="Document type" value="Article extracts" id="ssDesc1_4" class="staticSearch.desc"/><label for="ssDesc1_4">Article extracts</label></li>
+                     <li><input type="checkbox" title="Document type" value="Documents with tables" id="ssDesc1_3" class="staticSearch.desc"/><label for="ssDesc1_3">Documents with tables</label></li>
+                     <li><input type="checkbox" title="Document type" value="Poems" id="ssDesc1_2" class="staticSearch.desc"/><label for="ssDesc1_2">Poems</label></li>
+                     <li><input type="checkbox" title="Document type" value="Site info files" id="ssDesc1_1" class="staticSearch.desc"/><label for="ssDesc1_1">Site info files</label></li>
+                  </ul>
+               </fieldset>
+            </div>
+            <div class="ssDateFilters">
+               <fieldset class="ssFieldset" title="Date range" id="ssDate1">
+                  <legend>Date range</legend><span><label for="ssDate1_from">From: </label><input type="text" maxlength="10" pattern="^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$" title="Date range" id="ssDate1_from" class="staticSearch.date" placeholder="1689-01-01" onchange="this.reportValidity()"/></span><span><label for="ssDate1_to">To: </label><input type="text" maxlength="10" pattern="^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$" title="Date range" id="ssDate1_to" class="staticSearch.date" placeholder="2019-12-31" onchange="this.reportValidity()"/></span></fieldset>
+            </div>
+            <div class="ssBoolFilters">
+               <fieldset class="ssFieldset"><span><label for="ssBool1">Worth reading: </label><select id="ssBool1" title="Worth reading" class="staticSearch.bool">
+                        <option value="">?</option>
+                        <option value="true">true</option>
+                        <option value="false">false</option></select></span></fieldset>
+            </div>
+         </form>
+         <div id="ssSearching">Searching...</div>
          <div id="ssResults"></div>
       </div>
+      
+      <script>
+          <!--
+           //This is a set of automated tests which are intended to check whether
+           //we're getting the results we expect back from the search object.
+           var reportDiv = null;
+
+
+           var currTestNum = -1;
+           var tests = [];
+
+           //Simple one-word search.
+           tests.push({setup: function(){Sch.queryBox.value = 'elephant';},
+                       check: function(num){console.log('Search hook ' + num);
+                                            console.log('Testing results for the word "elephant".');
+                                            checkResults({docsFound: 2, contextsFound: 4, scoreTotal: 4});}});
+
+           //Another simple one-word search.
+           tests.push({setup: function(){Sch.queryBox.value = 'twilight';},
+                       check: function(num){console.log('Search hook ' + num);
+                                            console.log('Testing results for the word "twilight".');
+                                            checkResults({docsFound: 2, contextsFound: 3, scoreTotal: 3});}});
+
+           //Another simple one-word search but using a desc filter.
+           tests.push({setup: function(){Sch.queryBox.value = 'twilight'; document.querySelector('input[value="Site info files"]').checked = 'checked';},
+                       check: function(num){console.log('Search hook ' + num);
+                                            console.log('Testing results for the word "twilight with Site info files desc filter".');
+                                            checkResults({docsFound: 1, contextsFound: 1, scoreTotal: 1});}});
+
+           //Third simple one-word search.
+           tests.push({setup: function(){Sch.queryBox.value = 'across';},
+                       check: function(num){console.log('Search hook ' + num);
+                                            console.log('Testing results for the word "across".', true);
+                                            checkResults({docsFound: 2, contextsFound: 2, scoreTotal: 2});}});
+
+           //Same word with date.
+           tests.push({setup: function(){Sch.queryBox.value = 'across'; document.querySelector('input[title="Date range"][id$="_from"]').value = '2000';},
+                       check: function(num){console.log('Search hook ' + num);
+                                            console.log('Testing results for the word "across" in documents since 2000.');
+                                            checkResults({docsFound: 1, contextsFound: 1, scoreTotal: 1});}});
+
+           //Phrasal search. This one tests ignored inlines.
+           tests.push({setup: function(){Sch.queryBox.value = '"summer day—our day"';},
+                                         check: function(num){console.log('Search hook ' + num);
+                                         console.log('Testing results for the phrase "summer day—our day".');
+                                         checkResults({docsFound: 2, contextsFound: 2, scoreTotal: 2});}});
+
+           //Phrasal search with boundary contexts.
+           tests.push({setup: function(){Sch.queryBox.value = '"our day Was clouded"';},
+                                         check: function(num){console.log('Search hook ' + num);
+                                         console.log('Testing results for the phrase "our day Was clouded".');
+                                         checkResults({docsFound: 1, contextsFound: 1, scoreTotal: 1});}});
+
+           //Phrasal search with boundary contexts.
+           tests.push({setup: function(){Sch.queryBox.value = '"our day Was clouded"'; document.querySelector('input[title="Date range"][id$="_to"]').value = '2000';},
+                                         check: function(num){console.log('Search hook ' + num);
+                                         console.log('Testing results for the phrase "our day Was clouded" with max date 2000.');
+                                         checkResults({docsFound: 0, contextsFound: 0, scoreTotal: 0});}});
+
+           //Two MUST_CONTAINs with boolean flag.
+           tests.push({setup: function(){Sch.queryBox.value = '+green +golden'; document.querySelector('select[title="Worth reading"]').selectedIndex = 2;},
+                                         check: function(num){console.log('Search hook ' + num);
+                                         console.log('Testing results for the phrase "+green +golden" with boolean flag "Worth reading" false.');
+                                         checkResults({docsFound: 1, contextsFound: 2, scoreTotal: 2});}});
+                                                                                  
+            //Search based only on filters, no terms.
+             tests.push({setup: function(){Sch.queryBox.value = ''; document.querySelector('input[value="Poems"]').checked = 'checked'; document.querySelector('select[title="Worth reading"]').selectedIndex = 1;},
+                                         check: function(num){console.log('Search hook ' + num);
+                                         console.log('Testing results for pure filter search: poems worth reading.');
+                                         checkResults({docsFound: 2, contextsFound: 0, scoreTotal: 0});}});
+                                         
+           //Search for a word that's in the stopword list
+           tests.push({setup: function(){Sch.queryBox.value = 'artichoke';},
+                                         check: function(num){console.log('Search hook ' + num);
+                                         console.log('Testing results for the word "artichoke", which is in the stopwords list.');
+                                         checkResults({docsFound: 0, contextsFound: 0, scoreTotal: 0});}});
+                                         
+           //Search for a word that has no whitespace around it, just linebreaks.
+           tests.push({setup: function(){Sch.queryBox.value = 'dog';},
+                                         check: function(num){console.log('Search hook ' + num);
+                                         console.log('Testing results for the word "dog", which in one document has no spaces around it, just linebreaks.');
+                                         checkResults({docsFound: 2, contextsFound: 4, scoreTotal: 4});}});
+
+
+           function runTests(){
+             reportDiv = document.querySelector('div#testResults');
+
+            //Turn off browser history tracking otherwise life gets complicated
+            //when running a sequence of automated tests.
+             Sch.storeSearchesInBrowserHistory = false;
+             reportResults('Running automated tests.', true);
+
+           }
+
+           function reportResults(msg, succeed){
+             reportDiv.innerHTML += '<p class="' + (succeed ? 'success':'failure') + '">' + msg + '</p>';
+             if (succeed){
+               Sch.clearSearchForm();
+               currTestNum++;
+               if (currTestNum >= tests.length){
+                  reportDiv.innerHTML += '<p class="success">Done!</p>';
+                  Sch.searchFinishedHook = function(){};
+                  return;
+               }
+               tests[currTestNum].setup.call();
+               Sch.searchFinishedHook = tests[currTestNum].check;
+               Sch.doSearch();
+             }
+           }
+
+           //This calls the search object's resultSet instance to get a
+           //set of totals to compare with what we expect.
+           function checkResults(obj){
+             let results = Sch.resultSet.resultsAsObject();
+             let msg = 'Hit documents: expected ' + obj.docsFound;
+             msg += '; found ' + results.docsFound + '. ';
+             msg += 'Hit contexts: expected ' + obj.contextsFound;
+             msg += '; found ' + results.contextsFound + '. ';
+             msg += 'Total of all scores: expected ' + obj.scoreTotal;
+             msg += '; found ' + results.scoreTotal + '. ';
+             let succeed = ((obj.docsFound === results.docsFound)
+                          &&(obj.contextsFound === results.contextsFound)
+                          &&(obj.scoreTotal === results.scoreTotal));
+             reportResults(msg, succeed);
+           }
+
+           window.addEventListener('load', runTests);
+
+           -->
+       </script>
+      
+      
+      <div id="testResults">
+         
+         </div>
+      
       </body>
    </html>

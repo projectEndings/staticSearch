@@ -62,6 +62,13 @@
        **************************************************************-->
 
     <xd:doc>
+        <xd:desc><xd:ref name="hasFilters">$hasFilters</xd:ref> is used to specify whether
+        the site build process has discovered any filter metadata in the collection. If so, then
+        we need to create appropriate form controls.</xd:desc>
+    </xd:doc>
+    <xsl:param name="hasFilters" as="xs:string" select="'false'"/>
+    
+    <xd:doc>
         <xd:desc><xd:ref name="docsJSON" type="variable">$docsJSON</xd:ref> is the previously created
         JSON file from the filters specified in the document metadata; we load this and then parse it
         as XML, since we create the filter selector from it.</xd:desc>
@@ -69,7 +76,9 @@
     <xsl:variable name="docsJSON"
                 select="concat($outDir, '/docs.json') => unparsed-text() => json-to-xml()"
                 as="document-node()"/>
-
+    
+    <xsl:variable name="filterJSONURIs" select="if ($hasFilters = 'true') then
+        uri-collection(concat($outDir,'/filters/?select=*.json')) else ()"/>
 
     <xd:doc>
         <xd:desc><xd:ref name="css" type="parameter">$css</xd:ref> is a pre-populated
@@ -77,10 +86,15 @@
         It is provided as a parameter so that it can be overridden if required.</xd:desc>
     </xd:doc>
     <xsl:param name="css" as="xs:string">
+        form#ssForm{
+            display: flex;
+            flex-direction: column;
+        }
         span.ssQueryAndButton{
             display: flex;
             flex-direction: row;
             margin: 0.25em auto;
+            width: 100%;
         }
         input#ssQuery{
             flex: 1;
@@ -93,11 +107,14 @@
         div.ssDescFilters fieldset, div.ssDateFilters fieldset, div.ssBoolFilters fieldset{
             margin: 0.25em auto;
             flex-grow: 1;
+            display: flex;
+            flex-wrap: wrap;
         }
         ul.ssDescCheckboxList{
             list-style-type: none;
             max-height: 8em;
             overflow-y: auto;
+            min-width: 90%;
         }
         ul.ssDescCheckboxList li{
             display: flex;
@@ -106,9 +123,29 @@
             align-items: flex-start;
         }
         div.ssDateFilters fieldset.ssFieldset span, div.ssBoolFilters fieldset.ssFieldset span{
-            padding-left: 2em;
+            padding: 0.5em 1em;
         }
+        fieldset.ssFieldset > span {
+            background-color: #ddd;
+            border: solid 1px #aaa;
+            margin: 0.2em;
+        }
+        div#ssSearching{
+            background-color: #000000;
+            color: #ffffff;
+            font-size: 1.5rem;
+            padding: 1rem;
+            border-radius: 0.25rem 0.25rem;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+        
     </xsl:param>
+    
+    <xsl:variable name="dateRegex" select="'^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$'" as="xs:string"/>
 
     <!--**************************************************************
        *                                                            *
@@ -139,7 +176,9 @@
     </xd:doc>
     <xsl:template match="style[@id='ssCss']">
         <style id="ssCss">
-            <xsl:value-of select="$css"/>
+            <xsl:comment>
+                <xsl:value-of select="$css" disable-output-escaping="yes"/>
+            </xsl:comment>
         </style>
     </xsl:template>
 
@@ -153,7 +192,9 @@
         <xsl:copy>
             <xsl:apply-templates select="@*"/>
             <style id="ssCss">
-                <xsl:value-of select="$css"/>
+                <xsl:comment>
+                    <xsl:value-of select="$css" disable-output-escaping="yes"/>
+                </xsl:comment>
             </style>
             <xsl:apply-templates select="node()"/>
         </xsl:copy>
@@ -191,106 +232,125 @@
 
             <!--Now create the form-->
             <form accept-charset="UTF-8" id="ssForm"
-                data-allowPhrasal="{if ($phrasalSearch) then 'yes' else 'no'}"
-                onsubmit="return false;">
+                data-allowphrasal="{if ($phrasalSearch) then 'yes' else 'no'}"
+                data-maxkwicstoshow="{if ($maxKwicsToShow) then $maxKwicsToShow else 10}"
+                onsubmit="return false;"
+                data-versionstring="{$versionString}"
+                >
 
                 <!--Standard inputs-->
                 <span class="ssQueryAndButton">
                     <input type="text" id="ssQuery"/>
                     <button id="ssDoSearch">Search</button>
                 </span>
-
-                <!--And if the docsJson actually has useful content, create the filter selection-->
-                <xsl:if test="$docsJSON/descendant::map:array[@key]">
-                    <!--  We'll need a Clear button if there are other controls.  -->
-                    <span class="clearButton"><button id="ssClear">Clear</button></span>
+                
+                <xsl:if test="not(empty($filterJSONURIs))">
+                    <xsl:variable name="descFilters" select="$filterJSONURIs[matches(.,'ssDesc\d+.*\.json')]"/>
+                    <xsl:variable name="dateFilters" select="$filterJSONURIs[matches(.,'ssDate\d+.*\.json')]"/>
+                    <xsl:variable name="boolFilters" select="$filterJSONURIs[matches(.,'ssBool\d+.*\.json')]"/>
                     
-                    <!--  First we handle the regular filters. We contain them in a div for layout purposes. -->
-                    <xsl:if test="$docsJSON//map:map[@key = 'descFilters']/map:array[@key]">
+                    
+                    <!--First, handle the desc filters-->
+                    <xsl:if test="not(empty($descFilters))">
                         <div class="ssDescFilters">
-                            <!--Group these by keys (aka the name of the filter)-->
-                            <xsl:for-each-group select="$docsJSON//map:map[@key = 'descFilters']/map:array[@key]" group-by="@key">
-                                <xsl:variable name="filterName" select="current-grouping-key()"/>
-
-                                <!--For each of those groups, create a fieldset-->
-                                <fieldset class="ssFieldset">
-                                    <xsl:variable name="grpPos" select="position()"/>
-                                    <!--And add the filter name as the legend-->
+                            <xsl:for-each select="$descFilters">
+                                
+                                <!--Get the document-->
+                                <xsl:variable name="jsonDoc" select="unparsed-text(.) => json-to-xml()" as="document-node()"/>
+                               
+                               <!--And its name and id -->
+                                <xsl:variable name="filterName" select="$jsonDoc//map:string[@key='filterName']"/>
+                                <xsl:variable name="filterId" select="$jsonDoc//map:string[@key='filterId']"/>
+                                
+                                <!--And now create the fieldset and legend-->
+                                <fieldset class="ssFieldset" title="{$filterName}" id="{$filterId}">
                                     <legend><xsl:value-of select="$filterName"/></legend>
                                     
-                                    <!--And now make the checkbox list-->
+                                    <!--And create a ul from each of the embedded maps-->
                                     <ul class="ssDescCheckboxList">
-
-                                        <!--Now loop through the current set of arrays and determine all of the distinct
-                                    values for that array-->
-                                        <xsl:for-each-group select="current-group()" group-by="map:string/text()">
-                                            <xsl:sort select="replace(current-grouping-key(), '^The\s+', '')"/>
-                                            <xsl:variable name="thisPos" select="position()"/>
-                                            <xsl:variable name="filterVal" select="current-grouping-key()"/>
+                                        <xsl:for-each select="$jsonDoc//map:map[@key]">
+                                            <xsl:sort select="replace(map:string[@key='name'], '^((the)|(a)|(an))\s+', '', 'i')"/>
                                             <!--And create the input item: the input item contains:
-                                        * an @title that specifies the filter name (e.g. Genre)
-                                        * an @value that specifies the filter value (e.g. Poem)
-                                        * an @id to associate the label for A11Y; we just make the ids arbitrary
-                                          based off group numbers-->
+                                            * an @title that specifies the filter name (e.g. Genre)
+                                            * an @value that specifies the filter value (e.g. Poem)
+                                            * an @id to associate the label for A11Y-->
+                                            <xsl:variable name="thisOptId" select="@key"/>
+                                            <xsl:variable name="thisOptName" select="map:string[@key='name']"/>
                                             <li>
-                                                <input type="checkbox" title="{$filterName}" value="{$filterVal}" id="opt_{$grpPos}_{$thisPos}" class="staticSearch.desc"/>
-                                                <label for="opt_{$grpPos}_{$thisPos}"><xsl:value-of select="$filterVal"/></label>
+                                                <input type="checkbox" title="{$filterName}" value="{$thisOptName}" id="{$thisOptId}" class="staticSearch.desc"/>
+                                                <label for="{$thisOptId}"><xsl:value-of select="$thisOptName"/></label>
                                             </li>
-                                        </xsl:for-each-group>
+                                        </xsl:for-each>
                                     </ul>
                                 </fieldset>
-                            </xsl:for-each-group>
-                        </div>
-                    </xsl:if>
-
-                    <!--  Next we handle the date filters. We contain them in a div. -->
-                    <xsl:if test="$docsJSON//map:map[@key = 'dateFilters']/map:array[@key]">
-                        <div class="ssDateFilters">
-                        <!--Group these by keys (aka the name of the filter)-->
-                            <xsl:for-each-group select="$docsJSON//map:map[@key = 'dateFilters']/map:array[@key]" group-by="@key">
-                                <xsl:variable name="filterName" select="replace(current-grouping-key(), '^The\s+', '')"/>
-
-                                <!--For each of those groups, create a fieldset-->
-                                <fieldset class="ssFieldset">
-                                    <xsl:variable name="grpPos" select="position()"/>
-                                    <!--And add the filter name as the legend-->
-                                    <legend><xsl:value-of select="$filterName"/></legend>
-                                    <!--  Create two input elements, a from date and a to date.  -->
-                                    <!-- TODO: FIGURE OUT HOW TO HANDLE THE CAPTIONS REQUIRED HERE, instead of hard-coding them. -->
-                                    <!--<xsl:message>Dates found in the docs.json: <xsl:value-of select="string-join()"/></xsl:message>-->
-                                    <xsl:variable name="minDate" as="xs:date" select="min((for $d in $docsJSON//map:map[@key = 'dateFilters']/map:array[@key = current-grouping-key()]/map:string[1][matches(., '^\d\d\d\d(-[01]\d(-\d\d)?)?$')] return hcmc:normalizeDateString($d, true())))"/>
-                                    <xsl:variable name="maxDate" as="xs:date" select="max((for $d in $docsJSON//map:map[@key = 'dateFilters']/map:array[@key = current-grouping-key()]/map:string[1][matches(., '^\d\d\d\d(-[01]\d(-\d\d)?)?$')] return hcmc:normalizeDateString($d, false())))"/>
-                                    <span><label for="date_{$grpPos}_from">From: </label> <input type="text" maxlength="10" pattern="\d\d\d\d(-[01]\d(-\d\d)?)?" title="{$filterName}" id="date_{$grpPos}_from" class="staticSearch.date" placeholder="{format-date($minDate, '[Y0001]-[M01]-[D01]')}" onchange="this.reportValidity()"/></span>
-                                    <span><label for="date_{$grpPos}_to">To: </label> <input type="text" maxlength="10" pattern="\d\d\d\d(-[01]\d(-\d\d)?)?" title="{$filterName}" id="date_{$grpPos}_to" class="staticSearch.date" placeholder="{format-date($maxDate, '[Y0001]-[M01]-[D01]')}" onchange="this.reportValidity()"/></span>
-                                </fieldset>
-                            </xsl:for-each-group>
+                            </xsl:for-each>
                         </div>
                     </xsl:if>
                     
-                    <!--  Next we do the boolean filters. We contain them in a div. -->
-                    <xsl:if test="$docsJSON//map:map[@key = 'boolFilters']/map:boolean[@key]">
+                    <!--Now create date boxes, if necessary-->
+                    
+                    <xsl:if test="not(empty($dateFilters))">
+                        <div class="ssDateFilters">
+                            <xsl:for-each select="$dateFilters">
+                                <xsl:variable name="jsonDoc" select="unparsed-text(.) => json-to-xml()" as="document-node()"/>
+                                <xsl:variable name="filterName" select="$jsonDoc//map:string[@key='filterName']"/>
+                                <xsl:variable name="filterId" select="$jsonDoc//map:string[@key='filterId']"/>
+                                
+                                <!--Get the minimum from the date regex-->
+                                <xsl:variable name="minDate" as="xs:date" 
+                                    select="min((for $d in $jsonDoc//map:string[1][matches(., $dateRegex)] return hcmc:normalizeDateString($d, true())))"/>
+                                
+                                <!--And the maximum date-->
+                                <xsl:variable name="maxDate" as="xs:date" 
+                                    select="max((for $d in $jsonDoc//map:string[1][matches(., $dateRegex)] return hcmc:normalizeDateString($d, false())))"/>
+                                
+                                <fieldset class="ssFieldset" title="{$filterName}" id="{$filterId}">
+                                    <!--And add the filter name as the legend-->
+                                    <legend><xsl:value-of select="$filterName"/></legend>
+                                    <span>
+                                        <label for="{$filterId}_from">From: </label>
+                                        <input type="text" maxlength="10" pattern="{$dateRegex}" title="{$filterName}" id="{$filterId}_from" class="staticSearch.date" placeholder="{format-date($minDate, '[Y0001]-[M01]-[D01]')}" onchange="this.reportValidity()"/>
+                                    </span>
+                                    
+                                    <span>
+                                        <label for="{$filterId}_to">To: </label>
+                                        <input type="text" maxlength="10" pattern="{$dateRegex}" title="{$filterName}" id="{$filterId}_to" class="staticSearch.date" placeholder="{format-date($maxDate, '[Y0001]-[M01]-[D01]')}" onchange="this.reportValidity()"/>
+                                    </span>
+                                </fieldset>
+                            </xsl:for-each>
+                        </div>
+                    </xsl:if>
+                    
+                    <!--And now handle booleans-->
+                    <xsl:if test="not(empty($boolFilters))">
                         <div class="ssBoolFilters">
                             <!-- We create a single fieldset for all these filters, since they're individual. -->
                             <fieldset class="ssFieldset">
-                                <!--For each group, we create a single label and select element.-->
-                                <xsl:for-each-group select="$docsJSON//map:map[@key = 'boolFilters']/map:boolean[@key]" group-by="@key">
-                                    <xsl:variable name="filterName" select="replace(current-grouping-key(), '^The\s+', '')"/>
-                                    <xsl:variable name="grpPos" select="position()"/>
+                                
+                                <xsl:for-each select="$boolFilters">
+                                    <xsl:variable name="jsonDoc" select="unparsed-text(.) => json-to-xml()" as="document-node()"/>
+                                    <xsl:variable name="filterName" select="$jsonDoc//map:string[@key='filterName']"/>
+                                    <xsl:variable name="filterId" select="$jsonDoc//map:string[@key='filterId']"/>
                                     <span>
-                                        <label for="bool_{$grpPos}"><xsl:value-of select="$filterName"/>: </label>
-                                        <select id="bool_{$grpPos}" title="{$filterName}" class="staticSearch.bool">
+                                        <label for="{$filterId}"><xsl:value-of select="$filterName"/>: </label>
+                                        <select id="{$filterId}" title="{$filterName}" class="staticSearch.bool">
                                             <option value="">?</option>
                                             <option value="true">true</option>
                                             <option value="false">false</option>
                                         </select>
                                     </span>
-                                </xsl:for-each-group>
+                                </xsl:for-each>
                             </fieldset>
                             
                         </div>
                     </xsl:if>
+               
                 </xsl:if>
+
             </form>
+            
+            <!-- Popup message to show that search is being done. -->
+            <div id="ssSearching">Searching...</div>
 
             <!--And now create the results div in the document-->
             <div id="ssResults">
@@ -298,7 +358,17 @@
             </div>
         </xsl:copy>
     </xsl:template>
-
+    
+    <xd:doc>
+        <xd:desc>Repeated running of this process over the same document can 
+        result in excessive quantities of whitespace. Rather than try to figure out
+        where to preserve whitespace and where not, we just constrain it with this
+        template.</xd:desc>
+    </xd:doc>
+    <xsl:template match="text()[matches(., '^(\s*\n\s*\n\s*)+$')][not(ancestor::script or ancestor::style)]">
+        <xsl:text>&#x0a;&#x0a;</xsl:text>
+    </xsl:template>
+    
     <xd:doc>
         <xd:desc><xd:ref name="hcmc:normalizeDateString" type="function">hcmc:normalizeDateString</xd:ref>
         converts truncated dates (yyyy, or yyyy-mm) to fully-specified dates. It ignores leap years.

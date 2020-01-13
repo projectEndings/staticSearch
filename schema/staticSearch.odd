@@ -36,15 +36,17 @@
         <p>This documentation provides instructions on how to use the Project Endings
         Static Search Generator to provide a fully-functional search <soCalled>engine</soCalled>
         to your website without any dependency on server-side code such as a database.</p>
-        <div>
-          <head>How does it work?</head>
+        <div xml:id="whatDoesItDo">
+          <head>What does it do?</head>
           <p>The generator tool processes your site to create an index of all the words appearing
           in the site, stemmed using a Porter2 stemmer, and stores the index in the form of a
-          large number of small JSON files. It also creates a search page for your site, which 
+          large number of small JSON files. It also creates JSON files for other search facets that 
+          you specify in the headers of your documents, to allow searches for documents by 
+          type, by date range, and so on. Then it creates a search page for your site, which 
           processes user search terms and retrieves the required JSON files to provide search results.</p>
         </div>
-        <div>
-          <head>Search features</head>
+        <div xml:id="textSearchFeatures">
+          <head>Text search features</head>
           <p>The Generator supports the following features:</p>
           <list>
             <item>Porter 2 stemming of terms (so searching for <q>wait</q> will also
@@ -65,7 +67,20 @@
             document types.</item>
           </list>
         </div>
-        <div>
+      <div xml:id="searchFacetFeatures">
+        <head>Search facet features</head>
+        <p>The Generator supports the following search facets:</p>
+        <list>
+          <item><term>Descriptors</term>. You might for example classify your documents as poems, 
+          short stories and novels; the user can then choose to search in only poems, or poems and short stories.</item>
+          <item><term>Date ranges</term>. You might assign each document a date (or a date range) for its first 
+          publication and another for its last publication; then users could search for documents first published in a certain
+          date range and last published before another date.</item>
+          <item><term>Booleans</term> (true/false values). You might for instance specify that some poems are 
+          illustrated while others are not. The user could then limit their search only to illustrated poems.</item>
+        </list>
+      </div>
+        <div xml:id="howDoIUseIt">
           <head>How do I use it?</head>
           
           <p>First, you will have to make sure your site pages are correctly configured so that the Generator can
@@ -133,7 +148,7 @@
             </p>
           </div>
           
-          <div>
+          <div xml:id="configuringDocTitles">
             <head>Configuring your site: document titles</head>
             
             <p>When the indexing process runs over your document collection, by default it will use the document
@@ -150,7 +165,7 @@
             </p>
           </div>
           
-          <div>
+          <div xml:id="creatingConfigFile">
             <head>Creating a configuration file</head>
             
             <p>The configuration file is an XML document which tells the Generator where to find your site,
@@ -166,42 +181,123 @@
               and <gi>contexts</gi> for the best results.
             </p>
             <div>
-              <head>Specifying Parameters (Required)</head>
-              <p>The <gi>params</gi> element has two required elements for determining the resource collection that you wish to index:
-              <list>
-                <item><gi>searchFile</gi></item>
-                <item><gi>recurse</gi></item>
-              </list>
-              </p>
-              <p>The <gi>searchFile</gi> element is a relative URI (resolved, like all URIs specified in the config file, against the configuration file location) that points
-              directly to the search page that will be the primary access point for the search. Since the search file must be at the root of the directory that you wish to index
-              (i.e. the directory that contains all of the XHTML you want the search to index), the searchFile parameter provides the necessary information for knowing what documents
-              to index and where to put the output JSON.</p>
-              <p>Note that all output files will be in a directory that is a sibling to the search page. For instance, in a document collection that looks something like:
-              <list style="font-family: monospace">
-                <item>myProject
+              <head>Specifying Parameters</head>
+              <div xml:id="paramsRequired">
+                <head>Required parameters</head>
+                <p>The <gi>params</gi> element has two required elements for determining the resource collection that you wish to index:
+                  <list>
+                    <item><gi>searchFile</gi></item>
+                    <item><gi>recurse</gi></item>
+                  </list>
+                </p>
+                <p>The <gi>searchFile</gi> element is a relative URI (resolved, like all URIs specified in the config file, against the configuration file location) that points
+                  directly to the search page that will be the primary access point for the search. Since the search file must be at the root of the directory that you wish to index
+                  (i.e. the directory that contains all of the XHTML you want the search to index), the searchFile parameter provides the necessary information for knowing 
+                  what document collection to index and where to put the output JSON. In other words, in specifying the location of your search page, you are also 
+                  specifying the location of your document collection.</p>
+                <p>Note that all output files will be in a directory that is a sibling to the search page. For instance, in a document collection that looks something like:
+                  <list style="font-family: monospace">
+                    <item>myProject
+                      <list>
+                        <item>novel.html</item>
+                        <item>poem.html</item>
+                        <item>shortstory.html</item>
+                        <item>search.html</item>
+                      </list>
+                    </item>
+                  </list>
+                  The collection of Javascript and JSON files will be in a directory like so:
+                  <list style="font-family: monospace">
+                    <item>myProject
+                      <list>
+                        <item>novel.html</item>
+                        <item>poem.html</item>
+                        <item>shortstory.html</item>
+                        <item>search.html</item>
+                        <item><emph>staticSearch</emph></item>
+                      </list>
+                    </item>
+                  </list>
+                </p>
+                <p>We also require the <gi>recurse</gi> element in the case where the document collection may be nested (as is common with static sites generated from Jekyll or Wordpress). The <gi>recurse</gi> element is a boolean (true or false) that determines whether or not to recurse into the subdirectories of the collection and index those files.</p>
+              </div>
+              
+              <div xml:id="paramsOptional">
+                <head>Optional Parameters</head>
+                <p>The following parameters are optional, but most projects will want to specify 
+                some of them:</p>
                 <list>
-                  <item>novel.html</item>
-                  <item>poem.html</item>
-                  <item>shortstory.html</item>
-                  <item>search.html</item>
+                  <item><gi>versionFile</gi> enables you to specify the path to a plain-text file
+                  containing a simple version number for the project. This might take the form of 
+                  a software-release-style version number such as <val>1.5</val>, or it might be
+                  a Subversion revision number or a Git commit id. It should not contain any 
+                  spaces or punctuation. If you provide a version file, the version string will
+                  be used as part of the filenames for all the JSON resources created for the 
+                  search. This is useful because it allows the browser to cache such resources 
+                  when users repeatedly visit the search page, but if the project is rebuilt with 
+                  a new version, those cached files will not be used because the new version will
+                  have different filenames. The path specified is relative to the location of the
+                  configuration file (or absolute, if you wish).</item>
+                  
+                  <item><gi>phrasalSearch</gi> is a boolean parameter which specifies whether you 
+                  want your search engine to support phrasal searches (quoted strings). Obviously this
+                  is a useful feature, but it is also costly in terms of the size of JSON token files; 
+                  in order to support this kind of search, we store contexts for all hits for each token
+                  in each document, so if your site is very large, and your user base is unlikely to 
+                  use phrasal searching, it may not be worth the overhead. The default value is true.</item>
+                  
+                  <item><gi>createContexts</gi> is a boolean parameter that specifies whether you 
+                  want the indexer to store keyword-in-context extracts for each of the hits in a
+                  document. This increases the size of the index, but of course it makes for much 
+                  more user-friendly search results.</item>
+                  
+                  <item><gi>maxKwicsToHarvest</gi> controls the number of keyword-in-context extracts
+                  that will be harvested from the data for each term in a document. If you set this to
+                  a low number, the size of the JSON files will be constrained, but of course the 
+                  user will only be able to see the KWICs that have been harvested in their search results.</item>
+                  
+                  <item><gi>maxKwicsToShow</gi> controls the number of keyword-in-context extracts
+                    that will be shown in the search results for each hit document. </item>
+                  
+                  <item><gi>totalKwicLength</gi> is an integer specifying how long a keyword-in-context
+                  string should be. Obviously, the higher this number is, the larger the individual index
+                  files will be, but the more useful the KWICs will be for users looking at the search results.</item>
+                  
+                  <item><gi>kwicTruncateString</gi> is a string containing the character you would like
+                  to use at the beginning and/or the end of a kwic which is not a full sentence. An 
+                  ellipsis character is the default.</item>
+                  
+                  <item><gi>verbose</gi> is a boolean which turns on/off detailed output messages
+                  during the indexing process. You might set this to true if something is not working 
+                  as expected and you need to do some debugging.</item>
+                  
+                  <item><gi>stopwordsFile</gi> is a string parameter containing the relative path
+                  (from the config file) to a text file containing a list of stopwords that you want to
+                  use for your site. A stopword is a word that will not be indexed, because it is too
+                  common (<mentioned>the</mentioned>, <mentioned>a</mentioned>, <mentioned>you</mentioned>
+                    and so on). The project has a built-in set of common stopwords for English, which 
+                  we recommend you start from; you'll find it in <ident>xsl/english_stopwords.txt</ident>.
+                  If your site is all about a person, a place or some other entity, then you might add 
+                  their name to the stopwords list, because it will presumably appear on almost 
+                  every page and it makes no sense to search for it. One way to find such terms is
+                  to generate your index, then search for the largest JSON index files that are 
+                  generated, to see if they might be too common to be useful as search terms.</item>
+                  
+                  <item><gi>dictionaryFile</gi> is the relative path to a file containing an English dictionary
+                  (assuming your site is in English). This is used to check words during the indexing process,
+                  and a report generated at the end will list all the terms in the site which do not appear 
+                  in the dictionary. This is a useful way to find typos in your site. Again, there is a default 
+                  dictionary in <ident>xsl/english_words.txt</ident> which you might copy and adapt.</item>
+                  
+                  <item><gi>indentJSON</gi> is a boolean parameter which controls whether the JSON
+                  files generated for the index are indented or not. Indenting makes the files easier for a human
+                  to read, if you need to understand them or debug them, but obviously it adds to their file 
+                  size. </item>
+                  
                 </list>
-                </item>
-              </list>
-              The collection of Javascript and JSON files will be in a directory like so:
-                <list style="font-family: monospace">
-                  <item>myProject
-                    <list>
-                      <item>novel.html</item>
-                      <item>poem.html</item>
-                      <item>shortstory.html</item>
-                      <item>search.html</item>
-                      <item><emph>staticSearch</emph></item>
-                    </list>
-                  </item>
-                </list>
-              </p>
-              <p>We also require the <gi>recurse</gi> element in the case where the document collection may be nested (as is common with static sites generated from Jekyll or Wordpress). The <gi>recurse</gi> element is a boolean (true or false) that determines whether or not to recurse into the subdirectories of the collection and index those files.</p>
+                
+                
+              </div>
             </div>
           <div>
             <head>Specifying Rules (Optional)</head>
@@ -299,7 +395,102 @@
             </p>
           </div>
           </div>
+          
+          <div xml:id="searchBuildProcess">
+            <head>Running the search build process</head>
+            <p>Once you have configured your HTML and your configuration file, you're ready to 
+            create a search index and a search page for your site. This requires that you run ant
+            in the root folder of the staticSearch project that you have downloaded or cloned.</p>
+            
+            <p>Before running the search on your own site, you can test that your system is able
+            to do the build by doing the (very quick) build of the test materials. If you simply run 
+            the <ident>ant</ident> command, like this:</p>
+            
+            <eg>mholmes@linuxbox:~/Documents/staticSearch$ ant</eg>
+            
+            <p>you should see a build process proceed using the small test collection of
+            documents, and at the end, a results page should open up giving you a report
+            on what was done. If this fails, then you'll need to troubleshoot the problem 
+            based on any error messages you see. (Do you have Java and Ant installed and
+            working on your system?).</p>
+            
+            <p>If the test succeeds, you can view the results by uploading the <ident>test</ident>
+            folder and all its contents to a web server, or by running a local webserver on your 
+            machine in that folder, using the 
+              <ref target="https://docs.python.org/3.8/library/http.server.html">Python HTTP server</ref>
+              or <ref target="https://www.php.net/manual/en/features.commandline.webserver.php">PHP's built-in web server</ref>.</p>
+            
+            <p>If the tests all work, then you're ready to build a search for your own site. Now you need
+            to run the same command, but this time, tell the build process where to find your custom
+            configuration file:</p>
+            
+            <eg>ant -DconfigFile=/home/mholmes/mysite/config_staticSearch.xml</eg>
+            
+            <p>The same process should run, and if it's successful, you should have a modified <ident>search.html</ident> page
+            as well as a lot of index files in JSON format in your site HTML folder. Now you can test your own 
+            search in the same ways suggested above.</p>
+            
+          </div>
+          
         </div>
+      <div xml:id="howDoesItWork">
+        <head>How does it work?</head>
+        <div xml:id="buildingTheIndex">
+          <head>Building the index</head>
+          <p>The tokenizing process first processes your configuration file to create an XSLT file
+            with all your settings embedded in it. Next, it processes your document collection using
+            those settings. Each document is tokenized, and then a separate JSON file is created for
+            each distinct token found; this file contains links to each of the documents which contain
+            that token, as well as keyword-in-context strings for the actual tokens. There will most likely
+            be thousands of these files, but most of them are quite small. These constitute the textual
+            index.</p>
+          
+          <p>In addition, separate JSON files are created for the list of document titles, and for your 
+            stopword list if you have specified one.</p>
+          
+          <p>Next, if you have specified search facets in your document headers, the processor
+            will then create a separate JSON file for each of those search facets, consisting of a list 
+            of the document identifiers for all documents which match the filters; so if some of your
+            documents are specified as <soCalled>Illustrated</soCalled> and some not (true or false),
+            a JSON file will be created for the <soCalled>Illustrated</soCalled> facet, with a list of 
+            documents which are true for this facet, and a list of documents which are false.
+          </p>
+          
+          <p>Finally, the template file you have created for the search page on your site will be 
+          processed to add the required search controls and JavaScript to make the search work.</p>
+        </div>
+       
+       <div xml:id="theSearchPage">
+         <head>The search page</head>
+         
+         <p>In order to provide fast, responsive search results, the search page must download
+         only the information it needs for each specific search. Obviously, if it were to download
+         the entire collection of thousands of token files, the process would take forever. So when 
+         you search for the word <mentioned>waiting</mentioned>, what happens is that the
+         JavaScript stems that word, producing <mentioned>wait</mentioned>, then it downloads
+         only the single file containing indexing information for that specific word, which is very 
+         rapid.</p>
+         
+         <p>However, there is some information that is required for all or many searches. To display
+           any results, the list of document titles must be downloaded, for example. A user may
+         for instance use the search facets only, not searching for a particular word or phrase but just
+         wanting a list of all the documents classified as <soCalled>Poems</soCalled>. This requires that
+         the JSON file with information about that facet be downloaded. So there is some advantage 
+         in having the JavaScript start downloading some of the essential files (titles, stopwords and
+         so on) as soon as the page loads, and it also starts downloading the facet files in the background.</p>
+         
+         <p>At the same time, though, we don't want to clog up the connection downloading these files
+         when the user may do a simple text search which doesn't depend on them, so these files
+         are retrieved using a <soCalled>trickle</soCalled> approach, one at a time. Then if a search is
+         initiated, all the files required for that specific search can be downloaded as fast as possible
+         overriding the trickle sequence for files that are needed immediately.</p>
+         
+         <p>Once the user has been on the search page for any length of time, all ancillary files will 
+         have been retrieved (assuming they weren't already cached by the browser), so the only 
+         files required for any search are those for the actual text search terms; the response should
+         therefore be even faster for later searches than for early ones.</p>
+       </div>
+      </div>
       
     </body>
     <back>
@@ -326,10 +517,12 @@
             <content>
               <sequence preserveOrder="false">
                 <elementRef key="searchFile"/>
+                <elementRef key="versionFile" minOccurs="0"/>
                 <elementRef key="recurse"/>
                 <elementRef key="phrasalSearch" minOccurs="0"/>
                 <elementRef key="createContexts" minOccurs="0"/>
-                <elementRef key="maxContexts" minOccurs="0"/>
+                <elementRef key="maxKwicsToHarvest" minOccurs="0"/>
+                <elementRef key="maxKwicsToShow" minOccurs="0"/>
                 <elementRef key="totalKwicLength" minOccurs="0"/>
                 <elementRef key="kwicTruncateString" minOccurs="0"/>
                 <elementRef key="verbose" minOccurs="0"/>
@@ -337,7 +530,6 @@
                 <elementRef key="dictionaryFile" minOccurs="0"/>
                 <elementRef key="replacementsFile" minOccurs="0"/>
                 <elementRef key="searchPage" minOccurs="0"/>
-                <elementRef key="searchInputId" minOccurs="0"/>
                 <elementRef key="indentJSON" minOccurs="0"/>
               </sequence>
             </content>
@@ -350,34 +542,55 @@
               <elementRef key="rule" minOccurs="1" maxOccurs="unbounded"/>
             </content>
           </elementSpec>
-
-          <elementSpec ident="contexts" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
-            <content>
-              <elementRef key="rule" minOccurs="1" maxOccurs="unbounded"/>
-            </content>
-          </elementSpec>
-
+          
           <elementSpec ident="rule" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
             <gloss>A rule that specifies a document path in XPath, and provides weighting for search
               terms found in that context.</gloss>
             <classes>
-              <memberOf key="att.xpathRule"/>
+              <memberOf key="att.xpath"/>
             </classes>
             <content>
               <empty/>
             </content>
+            <attList>
+              <attDef ident="weight" usage="req">
+                <gloss>The weighting to give to a search token found in the context specified by the
+                  <att>xpath</att> attribute. Set to 0 to completely suppress indexing for a
+                  specific context, or greater than 1 to give stronger weighting.</gloss>
+                <datatype>
+                  <dataRef name="nonNegativeInteger"/>
+                </datatype>
+              </attDef>
+            </attList>
           </elementSpec>
 
-          <classSpec ident="att.xpathRule" module="ss" type="atts">
-            <gloss>A class providing attributes that enable specification of document locations and
-              weighting.</gloss>
-            <constraintSpec ident="rules.ruleMustHaveWeight" scheme="schematron">
-              <constraint>
-                <sch:rule context="*:rules/*:rule">
-                  <sch:assert test="@weight">ERROR: All weighting rules must have a weight.</sch:assert>
-                </sch:rule>
-              </constraint>
-            </constraintSpec>
+          <elementSpec ident="contexts" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
+            <content>
+              <elementRef key="context" minOccurs="1" maxOccurs="unbounded"/>
+            </content>
+          </elementSpec>
+
+          <elementSpec ident="context" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
+            <gloss>A context definition, providing an XPath attribute that identifies the context,
+              allowing keyword-in-context fragments to be bounded by a specific context.</gloss>
+            <classes>
+              <memberOf key="att.xpath"/>
+              <memberOf key="att.labelled"/>
+            </classes>
+            <content>
+              <empty/>
+            </content>
+            <attList>
+              <attDef ident="context" usage="opt">
+                <datatype>
+                  <dataRef name="boolean"/>
+                </datatype>
+               </attDef>
+            </attList>
+          </elementSpec>
+
+          <classSpec ident="att.xpath" module="ss" type="atts">
+            <gloss>A class providing attributes that enable specification of document locations.</gloss>
             <attList>
               <attDef ident="xpath">
                 <gloss>An XPath equivalent to the @match attribute of an xsl:template, which
@@ -386,26 +599,35 @@
                   <dataRef name="string"/>
                 </datatype>
               </attDef>
-              <attDef ident="weight" usage="opt">
-                <gloss>The weighting to give to a search token found in the context specified by the
-                    <att>xpath</att> attribute. Set to 0 to completely suppress indexing for a
-                  specific context, or greater than 1 to give stronger weighting.</gloss>
+            </attList>
+          </classSpec>
+          
+          <classSpec ident="att.labelled" module="ss" type="atts">
+            <gloss>A class providing a label attribute that can be used to identify/describe contexts and other
+              things which benefit from description.</gloss>
+            <attList>
+              <attDef ident="label" usage="opt">
+                <gloss>A string identifier which may be descriptive.</gloss>
                 <datatype>
-                  <dataRef name="nonNegativeInteger"/>
-                </datatype>
-              </attDef>
-              <attDef ident="context" usage="opt">
-                <datatype>
-                  <dataRef name="boolean"/>
+                  <dataRef name="string"/>
                 </datatype>
               </attDef>
             </attList>
-           
           </classSpec>
 
           <elementSpec ident="searchFile" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>The search file (aka page) that will be the primary access point for the static search. Note
             that this page <emph>must</emph> be at the root of the collection directory.</gloss>
+            <content>
+              <dataRef name="anyURI"/>
+            </content>
+          </elementSpec>
+          
+          <elementSpec ident="versionFile" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>The relative path to a text file containing a single version identifier (such as 
+              <val>1.5</val>, <val>123456</val>, or <val> 06ad419</val>). This will be used to create
+            unique filenames for JSON resources, so that when a site is updated, so that the browser
+            will not use cached versions of older index files.</gloss>
             <content>
               <dataRef name="anyURI"/>
             </content>
@@ -427,19 +649,28 @@
               <dataRef name="boolean"/>
             </content>
           </elementSpec>
+          
           <elementSpec ident="totalKwicLength" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>If <gi>createContexts</gi> is set to true, then this parameter controls how long
               the contexts will be.</gloss>
             <content>
               <dataRef name="nonNegativeInteger"/>
             </content>
-
           </elementSpec>
-          <elementSpec ident="maxContexts" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+          
+          <elementSpec ident="maxKwicsToHarvest" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>This controls the maximum number of keyword-in-context extracts that will be
               stored for each term. If <gi>phrasalSearch</gi> is set to true, this parameter is
               ignored, because phrasal searches will only work properly if all contexts are
               stored.</gloss>
+            <content>
+              <dataRef name="nonNegativeInteger"/>
+            </content>
+          </elementSpec>
+          
+          <elementSpec ident="maxKwicsToShow" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>This controls the maximum number of keyword-in-context extracts that will be shown
+              in the search page for each hit document returned.</gloss>
             <content>
               <dataRef name="nonNegativeInteger"/>
             </content>
