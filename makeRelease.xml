@@ -46,9 +46,17 @@
     <include name="test/**/*.*"/>
   </fileset>
   
+  <!-- Files we need to include from the base folder. -->
+  <fileset id="base" dir="${basedir}">
+    <include name="build.xml"/>
+    <include name="license*.*"/>
+    <include name="configTest.xml"/>
+    <include name="README.md"/>
+  </fileset>
+  
   <!-- Files we need to include from the xsl folder. -->
   <fileset id="xsl" dir="${basedir}">
-    <include name="xsl/create_config.xsl"/>
+    <include name="xsl/create_config_xsl.xsl"/>
     <include name="xsl/create_reports.xsl"/>
     <include name="xsl/english_stopwords.txt"/>
     <include name="xsl/english_words.txt"/>
@@ -99,9 +107,18 @@
       <fileset refid="schema"/>
       <fileset refid="test"/>
       <fileset refid="xsl"/>
+      <fileset refid="base"/>
     </copy>
   </target>
   
-  <target name="all" depends="clean, getVersion, copyFiles"/>
+  <target name="zip">
+    <description>
+      TARGET zip
+      Zips up all the files in the dist folder into a release package.
+    </description>
+    <zip destfile="${basedir}/staticSearch-${releaseVersion}.zip" basedir="${basedir}/dist"/>
+  </target>
+  
+  <target name="all" depends="clean, getVersion, copyFiles, zip"/>
   
 </project>
