@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." name="makeRelease" default="all"
+  xmlns:if="ant:if"
+  xmlns:unless="ant:unless">
+  
+  <!-- 
+        **********************************************************
+        *       Ant file for building a release package.         *
+        * This creates a folder called dist and puts in it all   *
+        * files required for a working system, omitting some     *
+        * irrelevant and unwanted bits and pieces.               *
+        * When this is run, it will ask for the version number   *
+        * for the release, and add it in a VERSION.txt file in   *
+        * the distribution it creates.                           *
+        **********************************************************
+    -->
+  
+  <!--  We need ant contrib. -->
+  <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+  
+  <!-- Files we need to include from the docs folder. -->
+  <fileset id="docs" dir="${basedir}">
+    <include name="docs/documentation.css"/>
+    <include name="docs/staticSearch.html"/>
+  </fileset>
+  
+  <!-- Files we need to include from the js folder. -->
+  <fileset id="js" dir="${basedir}">
+    <include name="js/ssPorter2Stemmer.js"/>
+    <include name="js/ssSearch.js"/>
+  </fileset>
+  
+  <!-- Files we need to include from the lib folder. -->
+  <fileset id="lib" dir="${basedir}">
+    <include name="lib/*notices/**.*"/>
+    <include name="lib/*.jar"/>
+  </fileset>
+  
+  <!-- Files we need to include from the schema folder. -->
+  <fileset id="schema" dir="${basedir}">
+    <include name="schema/**.*"/>
+  </fileset>
+  
+  <!-- Files we need to include from the test folder. -->
+  <fileset id="test" dir="${basedir}">
+    <include name="test/**/*.*"/>
+  </fileset>
+  
+  <!-- Files we need to include from the xsl folder. -->
+  <fileset id="xsl" dir="${basedir}">
+    <include name="xsl/create_config.xsl"/>
+    <include name="xsl/create_reports.xsl"/>
+    <include name="xsl/english_stopwords.txt"/>
+    <include name="xsl/english_words.txt"/>
+    <include name="xsl/json.xsl"/>
+    <include name="xsl/makeSearchPage.xsl"/>
+    <include name="xsl/porter2Stemmer.xsl"/>
+    <include name="xsl/tokenize.xsl"/>
+  </fileset>
+  
+  <target name="clean">
+    <description>
+      TARGET clean
+      Removes and re-creates the dist folder, and
+      cleans up the results of previous test builds.
+    </description>
+    <delete dir="${basedir}/dist"/>
+    <mkdir dir="${basedir}/dist"/>
+    <delete dir="${basedir}/test/staticSearch"/>
+  </target>
+  
+  <target name="getVersion">
+    <description>
+      TARGET getVersion
+      Asks the user to supply the version number for the release.
+      Saves the result to a VERSION.txt in the dist folder. It 
+      also writes the date and time to the file.
+    </description>
+    <tstamp>
+      <format property="date" pattern="yyyy-MM-dd" locale="en,CA"/>
+    </tstamp>
+    <input message="What is the version number for this release?"
+      addproperty="releaseVersion"
+      defaultValue="0.7"/>
+    <echo file="${basedir}/dist/VERSION.txt">${releaseVersion}</echo>
+    <echo file="${basedir}/dist/VERSION.txt" append="true">&#x0a;</echo>
+    <echo file="${basedir}/dist/VERSION.txt" append="true">${date}</echo>
+  </target>
+  
+  <target name="copyFiles">
+    <description>
+      TARGET copyFiles
+      Copies all required files to the dist folder.
+    </description>
+    <copy todir="${basedir}/dist">
+      <fileset refid="docs"/>
+      <fileset refid="js"/>
+      <fileset refid="lib"/>
+      <fileset refid="schema"/>
+      <fileset refid="test"/>
+      <fileset refid="xsl"/>
+    </copy>
+  </target>
+  
+  <target name="all" depends="clean, getVersion, copyFiles"/>
+  
+</project>

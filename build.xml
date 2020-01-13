@@ -3,6 +3,17 @@
     xmlns:if="ant:if"
     xmlns:unless="ant:unless">
     
+    <!-- 
+        **********************************************************
+        *  Ant file for building a static search engine for a    *
+        *  specific site. When supplied with a config file path  *
+        *  using the -DconfigFile=/home/user/proj/cfg.xml, it    *
+        *  will build the index based on that configuration.     *
+        *  If not supplied with a configuration file, it will    *
+        *  build the test site by default.                       *
+        **********************************************************
+    -->
+    
     <!--  We need ant contrib. -->
     <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
     
