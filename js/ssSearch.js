@@ -146,6 +146,9 @@ class StaticSearch{
       if (!this.queryBox){
         throw new Error('Failed to find text input box with id "ssQuery". Cannot provide search functionality.');
       }
+      else{
+        this.queryBox.focus();
+      }
       //Essential search button.
       this.searchButton =
            document.querySelector("button#ssDoSearch");
