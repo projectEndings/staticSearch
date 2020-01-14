@@ -5,7 +5,7 @@
          xmlns="http://relaxng.org/ns/structure/1.0"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2020-01-13T19:39:39Z. 2019.
+Schema generated from ODD source 2020-01-14T22:34:41Z. 2019.
 TEI Edition: Version 3.6.0. Last updated on
 	16th July 2019, revision daa3cc0b9
 TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
@@ -64,10 +64,10 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
                <ref name="dictionaryFile"/>
             </optional>
             <optional>
-               <ref name="searchPage"/>
+               <ref name="indentJSON"/>
             </optional>
             <optional>
-               <ref name="indentJSON"/>
+               <ref name="outputFolder"/>
             </optional>
          </group>
       </element>
@@ -243,12 +243,12 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
          <data type="anyURI"/>
       </element>
    </define>
-   <define name="searchPage">
-      <element name="searchPage" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The location of a search page in the site to be indexed. This page must contain
-            a div element with id="staticSearch". That div will be transformed to include the 
-            search form and all other required components.) </a:documentation>
-         <data type="anyURI"/>
+   <define name="outputFolder">
+      <element name="outputFolder" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The name of the output folder into which the index data and JavaScript will 
+              be placed in the site search. This should conform with the 
+              XML Name specification.) </a:documentation>
+         <data type="NCName"/>
       </element>
    </define>
    <start>

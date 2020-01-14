@@ -307,6 +307,13 @@
                   to read, if you need to understand them or debug them, but obviously it adds to their file 
                   size. </item>
                   
+                  <item><gi>outputFolder</gi> is the name of a folder into which you would like to place
+                  the JavaScript and JSON index files your site search. The default is <val>staticSearch</val>,
+                  but if you would prefer something else, you can specify it here. You may also use this element 
+                  if you are defining two different searches within the same site, so that their files are kept in 
+                  different locations. The value must conform with
+                  the <ref target="https://www.w3.org/TR/REC-xml/#dt-name">XML Name</ref> specification.</item>
+                  
                 </list>
                 
                 
@@ -542,8 +549,8 @@
                 <elementRef key="stopwordsFile" minOccurs="0"/>
                 <elementRef key="dictionaryFile" minOccurs="0"/>
                 <elementRef key="replacementsFile" minOccurs="0"/>
-                <elementRef key="searchPage" minOccurs="0"/>
                 <elementRef key="indentJSON" minOccurs="0"/>
+                <elementRef key="outputFolder" minOccurs="0"/>
               </sequence>
             </content>
           </elementSpec>
@@ -738,17 +745,14 @@
               <dataRef name="anyURI"/>
             </content>
           </elementSpec>
-          <elementSpec ident="searchPage" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
-            <gloss>The location of a search page in the site to be indexed. This page must contain
-            a div element with id="staticSearch". That div will be transformed to include the 
-            search form and all other required components.</gloss>
+          <elementSpec ident="outputFolder" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>The name of the output folder into which the index data and JavaScript will 
+              be placed in the site search. This should conform with the 
+              <ref target="https://www.w3.org/TR/REC-xml/#dt-name">XML Name</ref> specification.</gloss>
             <content>
-              <dataRef name="anyURI"/>
+              <dataRef name="NCName"/>
             </content>
           </elementSpec>
-
-
-
         </schemaSpec>
       </div>
     </back>

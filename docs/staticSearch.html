@@ -344,6 +344,10 @@ function showByMod() {
                         <li class="item"><a class="link_ref" href="#TEI.indentJSON" title="&lt;indentJSON&gt;">&lt;indentJSON&gt;</a> is a boolean parameter which controls whether the JSON files generated for the index
                            are indented or not. Indenting makes the files easier for a human to read, if you
                            need to understand them or debug them, but obviously it adds to their file size.</li>
+                        <li class="item"><a class="link_ref" href="#TEI.outputFolder" title="&lt;outputFolder&gt;">&lt;outputFolder&gt;</a> is the name of a folder into which you would like to place the JavaScript and JSON
+                           index files your site search. The default is <span class="val">staticSearch</span>, but if you would prefer something else, you can specify it here. You may also use
+                           this element if you are defining two different searches within the same site, so that
+                           their files are kept in different locations. The value must conform with the <a class="link_ref" href="https://www.w3.org/TR/REC-xml/#dt-name">XML Name</a> specification.</li>
                      </ul>
                   </div>
                </div>
@@ -352,8 +356,8 @@ function showByMod() {
                   <div class="p">The <a class="link_ref" href="#TEI.rules" title="&lt;rules&gt;">&lt;rules&gt;</a> elements specifies a list of conditions (using the <a class="link_ref" href="#TEI.rule" title="&lt;rule&gt;">&lt;rule&gt;</a> element) that tell the parser, using XPath statements in the <span class="att">xpath</span> attribute, specific weights to assign to particular parts of each document. For instance,
                      if you wanted all heading elements (<span class="gi">&lt;h1&gt;</span>, <span class="gi">&lt;h2&gt;</span>, etc) in documents to be given a greater weight and thus receive a higher score in
                      the results, you can do so using a rule like so: 
-                     <div id="index.xml-egXML-d38e301" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">2</span>"<br/>  <span class="attribute">xpath</span>="<span class="attributevalue">h1 | h2 | h3 | h4 | h5 | h6</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> Since we're using XPath 3.0 and XSLT 3.0, this can also be simplified to: 
-                     <div id="index.xml-egXML-d38e305" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">2</span>"<br/>  <span class="attribute">xpath</span>="<span class="attributevalue">*[matches(local-name(),'^h\d+$')]</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> (It is worth noting, however, the above example is unnecessary: all heading elements
+                     <div id="index.xml-egXML-d38e312" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">2</span>"<br/>  <span class="attribute">xpath</span>="<span class="attributevalue">h1 | h2 | h3 | h4 | h5 | h6</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> Since we're using XPath 3.0 and XSLT 3.0, this can also be simplified to: 
+                     <div id="index.xml-egXML-d38e316" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">2</span>"<br/>  <span class="attribute">xpath</span>="<span class="attributevalue">*[matches(local-name(),'^h\d+$')]</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> (It is worth noting, however, the above example is unnecessary: all heading elements
                      are given a weight of 2 by default, which is the only preconfigured weight in static
                      search.)</div>
                   <p>The value of the <span class="att">xpath</span> attribute is transformed in a XSLT template match attribute, and thus must follow
@@ -363,8 +367,8 @@ function showByMod() {
                      index its contents on every page. These elements can be ignored simply by using a
                      <a class="link_ref" href="#TEI.rule" title="&lt;rule&gt;">&lt;rule&gt;</a> and setting its weight to 0. For instance, if you want to remove the header and the
                      footer from the search indexing process, you could write something like: 
-                     <div id="index.xml-egXML-d38e324" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>" <span class="attribute">xpath</span>="<span class="attributevalue">footer | header</span>"/&gt;</span></div> Or if you want to remove XHTML anchor tags (<span class="gi">&lt;a&gt;</span>) whose text is identical to the URL specified in its <span class="att">href</span>, you could do something like: 
-                     <div id="index.xml-egXML-d38e332" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>" <span class="attribute">xpath</span>="<span class="attributevalue">a[@href=./text()]</span>"/&gt;</span></div>
+                     <div id="index.xml-egXML-d38e335" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>" <span class="attribute">xpath</span>="<span class="attributevalue">footer | header</span>"/&gt;</span></div> Or if you want to remove XHTML anchor tags (<span class="gi">&lt;a&gt;</span>) whose text is identical to the URL specified in its <span class="att">href</span>, you could do something like: 
+                     <div id="index.xml-egXML-d38e343" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>" <span class="attribute">xpath</span>="<span class="attributevalue">a[@href=./text()]</span>"/&gt;</span></div>
                   </div>
                   <p>Note that the indexer does not tokenize any content in the <span class="gi">&lt;head&gt;</span> of the document (but as noted above, metadata can be configured into filters) and
                      that all elements in the <span class="gi">&lt;body&gt;</span> of a document are considered tokenizable. However, common elements that you might
@@ -380,22 +384,22 @@ function showByMod() {
                   <div class="p">When the static search creates the keywords-in-contexts (the "kwic" or "snippets")
                      for each token, it does so by looking for the nearest block-level element that it
                      can use as its context. Take, for instance, this unordered list: 
-                     <div id="index.xml-egXML-d38e351" class="pre egXML_valid"><span class="element">&lt;ul&gt;</span><br/> <span class="element">&lt;li&gt;</span>Keyword-in-context search results. This is also configurable, since including contexts<br/>   increases the size of the index.<span class="element">&lt;/li&gt;</span><br/> <span class="element">&lt;li&gt;</span>Search filtering using any metadata you like, allowing users to limit their search
+                     <div id="index.xml-egXML-d38e362" class="pre egXML_valid"><span class="element">&lt;ul&gt;</span><br/> <span class="element">&lt;li&gt;</span>Keyword-in-context search results. This is also configurable, since including contexts<br/>   increases the size of the index.<span class="element">&lt;/li&gt;</span><br/> <span class="element">&lt;li&gt;</span>Search filtering using any metadata you like, allowing users to limit their search
                         to specific<br/>   document types.<span class="element">&lt;/li&gt;</span><br/><span class="element">&lt;/ul&gt;</span></div> Each <span class="gi">&lt;li&gt;</span> elements is, by default, a <span class="term">context</span> element, meaning that the snippet generated for each token will not extend beyond
                      the <span class="gi">&lt;li&gt;</span> element boundaries; in this case, if the <span class="gi">&lt;li&gt;</span> was not a context attribute, the term <span class="q">‘search’</span> would produce a context that looks something like: 
                      <pre class="pre_eg">"...the size of the index.<span style="font-weight:bold;">Search</span> filtering using any metadata you like,..."</pre>
                   </div>
                   <div class="p">Using the <a class="link_ref" href="#TEI.contexts" title="&lt;contexts&gt;">&lt;contexts&gt;</a> element, you can control what elements operate as contexts. For instance, say a page
                      contained a marginal note, encoded as a <span class="gi">&lt;span&gt;</span> in your document beside its point of attachment:<span id="Note1_return"><a class="notelink" title="This example taken from Thomas S. Kuhn, The Structure of Scientific Revolutions (50th anniversary edition), University of Chicago Press, 2012: p. 191." href="#Note1"><sup>1</sup></a></span> 
-                     <div id="index.xml-egXML-d38e385" class="pre egXML_valid"><span class="element">&lt;p&gt;</span>About that program I shall have nothing to say here,<span class="element">&lt;span <span class="attribute">class</span>="<span class="attributevalue">sidenote</span>"&gt;</span>Some information on this subject can be found in "Second Thoughts"<span class="element">&lt;/span&gt;</span> [...]<br/><span class="element">&lt;/p&gt;</span></div> Using CSS, the footnote might be alongside the text of the document in margin, or
+                     <div id="index.xml-egXML-d38e396" class="pre egXML_valid"><span class="element">&lt;p&gt;</span>About that program I shall have nothing to say here,<span class="element">&lt;span <span class="attribute">class</span>="<span class="attributevalue">sidenote</span>"&gt;</span>Some information on this subject can be found in "Second Thoughts"<span class="element">&lt;/span&gt;</span> [...]<br/><span class="element">&lt;/p&gt;</span></div> Using CSS, the footnote might be alongside the text of the document in margin, or
                      made into a clickable object using Javascript. However, since the tokenizer is unaware
                      of any server-side processing, it understands the <span class="gi">&lt;span&gt;</span> as an inline element and assumes the <span class="gi">&lt;p&gt;</span> constitutes the context of the element. A search for <span class="q">‘information’</span> might then return: 
                      <pre class="pre_eg">"...nothing to say here,Some <span style="font-weight:bold;">information</span> on this subject can be found...</pre> To tell the tokenizer that the <span class="gi">&lt;span&gt;</span> constitutes the context block for any of its token, use the <a class="link_ref" href="#TEI.context" title="&lt;context&gt;">&lt;context&gt;</a> element with an <span class="att">xpath</span> pattern: 
-                     <div id="index.xml-egXML-d38e414" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">xpath</span>="<span class="attributevalue">span[contains-token(@class,'sidenote')]</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
+                     <div id="index.xml-egXML-d38e425" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">xpath</span>="<span class="attributevalue">span[contains-token(@class,'sidenote')]</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
                   </div>
                   <div class="p">You can also configure it the other way: if a <span class="gi">&lt;div&gt;</span>, which is by default a context block, should not be understood as a context block,
                      then you can tell the parser to not consider it as such using <span class="att">context</span> set to false: 
-                     <div id="index.xml-egXML-d38e424" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">xpath</span>="<span class="attributevalue">div</span>" <span class="attribute">context</span>="<span class="attributevalue">false</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
+                     <div id="index.xml-egXML-d38e435" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">xpath</span>="<span class="attributevalue">div</span>" <span class="attribute">context</span>="<span class="attributevalue">false</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
                   </div>
                   <p>The default contexts elements are: </p>
                   <ul>
@@ -987,8 +991,58 @@ element maxKwicsToShow { xsd:nonNegativeInteger }</pre>
                      </table>
                   </div>
                </div>
+               <div class="refdoc" id="TEI.outputFolder">
+                  <h3><span class="headingNumber">Appendix A.1.10 </span><span class="head">&lt;outputFolder&gt;</span></h3>
+                  <div class="table">
+                     <table class="wovenodd">
+                        <tr>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;outputFolder&gt; </span>(<span>The name of the output folder into which the index data and JavaScript will be placed
+                                 in the site search. This should conform with the XML Name specification.</span>)</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
+                           <td class="wovenodd-col2">http://hcmc.uvic.ca/ns/staticSearch</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                           <td class="wovenodd-col2">ss</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Contained by</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="parent">
+                                 <div class="specChildren">
+                                    <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.params" title="&lt;params&gt;">params</a></span></div>
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
+                           <td class="wovenodd-col2"><span lang="en">Empty element</span></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+&lt;content&gt;
+ &lt;dataRef name="name"/&gt;
+&lt;/content&gt;
+    </pre>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+element outputFolder { xsd:name }</pre>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
                <div class="refdoc" id="TEI.params">
-                  <h3><span class="headingNumber">Appendix A.1.10 </span><span class="head">&lt;params&gt;</span></h3>
+                  <h3><span class="headingNumber">Appendix A.1.11 </span><span class="head">&lt;params&gt;</span></h3>
                   <div class="table">
                      <table class="wovenodd">
                         <tr>
@@ -1017,7 +1071,7 @@ element maxKwicsToShow { xsd:nonNegativeInteger }</pre>
                            <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
                            <td class="wovenodd-col2">
                               <div class="specChildren">
-                                 <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.createContexts" title="&lt;createContexts&gt;">createContexts</a> <a class="link_odd_elementSpec" href="#TEI.dictionaryFile" title="&lt;dictionaryFile&gt;">dictionaryFile</a> <a class="link_odd_elementSpec" href="#TEI.indentJSON" title="&lt;indentJSON&gt;">indentJSON</a> <a class="link_odd_elementSpec" href="#TEI.kwicTruncateString" title="&lt;kwicTruncateString&gt;">kwicTruncateString</a> <a class="link_odd_elementSpec" href="#TEI.maxKwicsToHarvest" title="&lt;maxKwicsToHarvest&gt;">maxKwicsToHarvest</a> <a class="link_odd_elementSpec" href="#TEI.maxKwicsToShow" title="&lt;maxKwicsToShow&gt;">maxKwicsToShow</a> <a class="link_odd_elementSpec" href="#TEI.phrasalSearch" title="&lt;phrasalSearch&gt;">phrasalSearch</a> <a class="link_odd_elementSpec" href="#TEI.recurse" title="&lt;recurse&gt;">recurse</a> <a class="link_odd_elementSpec" href="#TEI.searchFile" title="&lt;searchFile&gt;">searchFile</a> <a class="link_odd_elementSpec" href="#TEI.searchPage" title="&lt;searchPage&gt;">searchPage</a> <a class="link_odd_elementSpec" href="#TEI.stopwordsFile" title="&lt;stopwordsFile&gt;">stopwordsFile</a> <a class="link_odd_elementSpec" href="#TEI.totalKwicLength" title="&lt;totalKwicLength&gt;">totalKwicLength</a> <a class="link_odd_elementSpec" href="#TEI.verbose" title="&lt;verbose&gt;">verbose</a> <a class="link_odd_elementSpec" href="#TEI.versionFile" title="&lt;versionFile&gt;">versionFile</a></span></div>
+                                 <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.createContexts" title="&lt;createContexts&gt;">createContexts</a> <a class="link_odd_elementSpec" href="#TEI.dictionaryFile" title="&lt;dictionaryFile&gt;">dictionaryFile</a> <a class="link_odd_elementSpec" href="#TEI.indentJSON" title="&lt;indentJSON&gt;">indentJSON</a> <a class="link_odd_elementSpec" href="#TEI.kwicTruncateString" title="&lt;kwicTruncateString&gt;">kwicTruncateString</a> <a class="link_odd_elementSpec" href="#TEI.maxKwicsToHarvest" title="&lt;maxKwicsToHarvest&gt;">maxKwicsToHarvest</a> <a class="link_odd_elementSpec" href="#TEI.maxKwicsToShow" title="&lt;maxKwicsToShow&gt;">maxKwicsToShow</a> <a class="link_odd_elementSpec" href="#TEI.outputFolder" title="&lt;outputFolder&gt;">outputFolder</a> <a class="link_odd_elementSpec" href="#TEI.phrasalSearch" title="&lt;phrasalSearch&gt;">phrasalSearch</a> <a class="link_odd_elementSpec" href="#TEI.recurse" title="&lt;recurse&gt;">recurse</a> <a class="link_odd_elementSpec" href="#TEI.searchFile" title="&lt;searchFile&gt;">searchFile</a> <a class="link_odd_elementSpec" href="#TEI.stopwordsFile" title="&lt;stopwordsFile&gt;">stopwordsFile</a> <a class="link_odd_elementSpec" href="#TEI.totalKwicLength" title="&lt;totalKwicLength&gt;">totalKwicLength</a> <a class="link_odd_elementSpec" href="#TEI.verbose" title="&lt;verbose&gt;">verbose</a> <a class="link_odd_elementSpec" href="#TEI.versionFile" title="&lt;versionFile&gt;">versionFile</a></span></div>
                               </div>
                            </td>
                         </tr>
@@ -1050,9 +1104,9 @@ element maxKwicsToShow { xsd:nonNegativeInteger }</pre>
    minOccurs="0"/&gt;
   &lt;elementRef key="replacementsFile"
    minOccurs="0"/&gt;
-  &lt;elementRef key="searchPage"
-   minOccurs="0"/&gt;
   &lt;elementRef key="indentJSON"
+   minOccurs="0"/&gt;
+  &lt;elementRef key="outputFolder"
    minOccurs="0"/&gt;
  &lt;/sequence&gt;
 &lt;/content&gt;
@@ -1078,8 +1132,8 @@ element params
    <a class="link_ref" href="#TEI.stopwordsFile" title="&lt;stopwordsFile&gt;">stopwordsFile</a>?,
    <a class="link_ref" href="#TEI.dictionaryFile" title="&lt;dictionaryFile&gt;">dictionaryFile</a>?,
    replacementsFile?,
-   <a class="link_ref" href="#TEI.searchPage" title="&lt;searchPage&gt;">searchPage</a>?,
-   <a class="link_ref" href="#TEI.indentJSON" title="&lt;indentJSON&gt;">indentJSON</a>?
+   <a class="link_ref" href="#TEI.indentJSON" title="&lt;indentJSON&gt;">indentJSON</a>?,
+   <a class="link_ref" href="#TEI.outputFolder" title="&lt;outputFolder&gt;">outputFolder</a>?
 }</pre>
                            </td>
                         </tr>
@@ -1087,7 +1141,7 @@ element params
                   </div>
                </div>
                <div class="refdoc" id="TEI.phrasalSearch">
-                  <h3><span class="headingNumber">Appendix A.1.11 </span><span class="head">&lt;phrasalSearch&gt;</span></h3>
+                  <h3><span class="headingNumber">Appendix A.1.12 </span><span class="head">&lt;phrasalSearch&gt;</span></h3>
                   <div class="table">
                      <table class="wovenodd">
                         <tr>
@@ -1138,7 +1192,7 @@ element phrasalSearch { xsd:boolean }</pre>
                   </div>
                </div>
                <div class="refdoc" id="TEI.recurse">
-                  <h3><span class="headingNumber">Appendix A.1.12 </span><span class="head">&lt;recurse&gt;</span></h3>
+                  <h3><span class="headingNumber">Appendix A.1.13 </span><span class="head">&lt;recurse&gt;</span></h3>
                   <div class="table">
                      <table class="wovenodd">
                         <tr>
@@ -1187,7 +1241,7 @@ element recurse { xsd:boolean }</pre>
                   </div>
                </div>
                <div class="refdoc" id="TEI.rule">
-                  <h3><span class="headingNumber">Appendix A.1.13 </span><span class="head">&lt;rule&gt;</span></h3>
+                  <h3><span class="headingNumber">Appendix A.1.14 </span><span class="head">&lt;rule&gt;</span></h3>
                   <div class="table">
                      <table class="wovenodd">
                         <tr>
@@ -1265,7 +1319,7 @@ element rule { <a class="link_ref" href="#TEI.att.xpath" title="att.xpath">att.x
                   </div>
                </div>
                <div class="refdoc" id="TEI.rules">
-                  <h3><span class="headingNumber">Appendix A.1.14 </span><span class="head">&lt;rules&gt;</span></h3>
+                  <h3><span class="headingNumber">Appendix A.1.15 </span><span class="head">&lt;rules&gt;</span></h3>
                   <div class="table">
                      <table class="wovenodd">
                         <tr>
@@ -1320,7 +1374,7 @@ element rules { <a class="link_ref" href="#TEI.rule" title="&lt;rule&gt;">rule</
                   </div>
                </div>
                <div class="refdoc" id="TEI.searchFile">
-                  <h3><span class="headingNumber">Appendix A.1.15 </span><span class="head">&lt;searchFile&gt;</span></h3>
+                  <h3><span class="headingNumber">Appendix A.1.16 </span><span class="head">&lt;searchFile&gt;</span></h3>
                   <div class="table">
                      <table class="wovenodd">
                         <tr>
@@ -1364,57 +1418,6 @@ element rules { <a class="link_ref" href="#TEI.rule" title="&lt;rule&gt;">rule</
                            <td class="wovenodd-col2">
                               <pre class="pre_eg cdata">
 element searchFile { xsd:anyURI }</pre>
-                           </td>
-                        </tr>
-                     </table>
-                  </div>
-               </div>
-               <div class="refdoc" id="TEI.searchPage">
-                  <h3><span class="headingNumber">Appendix A.1.16 </span><span class="head">&lt;searchPage&gt;</span></h3>
-                  <div class="table">
-                     <table class="wovenodd">
-                        <tr>
-                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;searchPage&gt; </span>(<span>The location of a search page in the site to be indexed. This page must contain a
-                                 div element with id="staticSearch". That div will be transformed to include the search
-                                 form and all other required components.</span>)</td>
-                        </tr>
-                        <tr>
-                           <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
-                           <td class="wovenodd-col2">http://hcmc.uvic.ca/ns/staticSearch</td>
-                        </tr>
-                        <tr>
-                           <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
-                           <td class="wovenodd-col2">ss</td>
-                        </tr>
-                        <tr>
-                           <td class="wovenodd-col1"><span lang="en" class="label">Contained by</span></td>
-                           <td class="wovenodd-col2">
-                              <div class="parent">
-                                 <div class="specChildren">
-                                    <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.params" title="&lt;params&gt;">params</a></span></div>
-                                 </div>
-                              </div>
-                           </td>
-                        </tr>
-                        <tr>
-                           <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
-                           <td class="wovenodd-col2"><span lang="en">Empty element</span></td>
-                        </tr>
-                        <tr>
-                           <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
-                           <td class="wovenodd-col2">
-                              <pre class="pre_eg cdata">
-&lt;content&gt;
- &lt;dataRef name="anyURI"/&gt;
-&lt;/content&gt;
-    </pre>
-                           </td>
-                        </tr>
-                        <tr>
-                           <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
-                           <td class="wovenodd-col2">
-                              <pre class="pre_eg cdata">
-element searchPage { xsd:anyURI }</pre>
                            </td>
                         </tr>
                      </table>
@@ -1731,7 +1734,7 @@ element versionFile { xsd:anyURI }</pre>
             	    Date: 2019<br/><!--
 	  Generated from index.xml using XSLT stylesheets version 7.48.0
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2020-01-13T19:39:53Z.
+	       on 2020-01-14T22:34:57Z.
 	       SAXON HE 9.9.1.3.
 		 --></address>
       </div>

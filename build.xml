@@ -33,7 +33,10 @@
     
     <dirname property="collectionDirName" file="${searchFilePath}"/>
     
-    <property name="staticSearchDir" value="${collectionDirName}/staticSearch/"/>
+    <property name="outputFolder" if:set="config.params.outputFolder" value="${config.params.outputFolder}"/>
+    <property name="outputFolder" unless:set="config.params.outputFolder" value="staticSearch"/>
+    
+    <property name="staticSearchDir" value="${collectionDirName}/${outputFolder}/"/>
     
     <property name="headless" value="false"/>
     
@@ -141,14 +144,14 @@
             <arg value="--suppressXsltNamespaceCheck:on"/>
             <arg value="hasFilters=${hasFilters}"/>
         </java>
-        <move file="${basedir}/staticSearch_report.html" tofile="${collectionDirName}/staticSearch/staticSearch_report.html"/>
+        <move file="${basedir}/staticSearch_report.html" tofile="${staticSearchDir}/staticSearch_report.html"/>
 
-        <open unless:true="${headless}" file="${collectionDirName}/staticSearch/staticSearch_report.html"/>
+        <open unless:true="${headless}" file="${staticSearchDir}/staticSearch_report.html"/>
         
     </target>
     
     <target name="copyFiles">
-        <copy todir="${collectionDirName}/staticSearch/">
+        <copy todir="${staticSearchDir}/">
             <fileset dir="${basedir}/js">
                 <include name="ss**.js"/>
             </fileset>
@@ -156,7 +159,7 @@
     </target>
     
     <target name="clean">
-        <delete dir="${collectionDirName}/staticSearch/temp"/>
+        <delete dir="${staticSearchDir}/temp"/>
     </target>
     
     <target name="getWea">

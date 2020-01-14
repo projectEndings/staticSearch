@@ -125,10 +125,16 @@
     <xsl:variable name="collectionDir" select="string-join(tokenize($searchDocUri,'/')[not(position() = last())],'/')" as="xs:string?"/>
     
     <xd:doc>
-        <xd:desc><xd:ref name="outDir" type="variable">$outDir</xd:ref> is the output directory for all
+        <xd:desc><xd:ref name="outputFolder" type="variable">$outputFolder</xd:ref> is the optional name of a folder
+            in which to store the output JS and JSON.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="outputFolder" select="if ($configDoc//outputFolder) then $configDoc//outputFolder/text() else 'staticSearch'" as="xs:string"/>
+    
+    <xd:doc>
+        <xd:desc><xd:ref name="outDir" type="variable">$outDir</xd:ref> is path to the output directory for all
         of the static search products, which is simply a directory contained within the collection directory.</xd:desc>
     </xd:doc>
-    <xsl:variable name="outDir" select="$collectionDir || '/staticSearch'"/>
+    <xsl:variable name="outDir" select="$collectionDir || '/' || $outputFolder"/>
     
     <xd:doc>
         <xd:desc><xd:ref name="tempDir" type="variable">$tempDir</xd:ref> is the directory in which the static search
@@ -343,6 +349,10 @@
                     </xsl:choose>
                 </xso:param>
             </xsl:for-each>
+            <!-- We need an outputFolder element even if the user hasn't put one in. -->
+            <xsl:if test="not($configDoc//params/outputFolder)">
+                <xso:param name="outputFolder">staticSearch</xso:param>
+            </xsl:if>
             <!-- Finally, add the parsed-out version string from the versionFile. -->
             <xso:param name="versionString"><xsl:value-of select="if (($versionDocUri != '') and (unparsed-text-available($versionDocUri))) then concat('_', replace(normalize-space(unparsed-text($versionDocUri)), '\s+', '_')) else ''"/></xso:param>
             

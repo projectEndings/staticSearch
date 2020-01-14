@@ -127,10 +127,16 @@
 class StaticSearch{
   constructor(){
     try {
+      this.ssForm = document.querySelector('#ssForm');
+      if (!this.ssForm){
+        throw new Error('Failed to find search form. Search functionality will probably break.');
+      }
       //Directory for JSON files. Inside this directory will be a
       //'lower' dir and an 'upper' dir, where the two sets of case-
       //distinguished JSON files are stored.
-      this.jsonDirectory = 'staticSearch/'; //Default value. Override if necessary.
+      this.jsonDirectory = this.ssForm.getAttribute('data-ssfolder') || 'staticSearch'; //Where to find all the stuff.
+      this.jsonDirectory += '/';
+
       //Headers used for all AJAX fetch requests.
       this.fetchHeaders = {
               credentials: 'same-origin',
@@ -222,7 +228,7 @@ class StaticSearch{
       }
 
       //Configuration of a specific version string to avoid JSON caching.
-      this.versionString = document.querySelector('form#ssForm').getAttribute('data-versionString');
+      this.versionString = this.ssForm.getAttribute('data-versionString');
 
       //Associative array for storing retrieved JSON search string data.
       //Any retrieved data stored in here is retained between searches
@@ -254,7 +260,6 @@ class StaticSearch{
       this.allJsonRetrieved = false;
 
       //Default set of stopwords
-      //TODO: THIS SHOULD NOT BE RETRIEVED HERE, but as part of the regular array.
       this.stopwords = ss.stopwords; //temporary default.
 
       //Boolean: should this instance report the details of its search

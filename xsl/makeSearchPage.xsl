@@ -221,8 +221,8 @@
             </xsl:if>
 
             <!--Now add the scripts to the staticSearch library-->
-            <script src="staticSearch/ssPorter2Stemmer.js"><!-- Don't self-close script tags. --></script>
-            <script src="staticSearch/ssSearch.js"><!-- Don't self-close script tags. --></script>
+            <script src="{$outputFolder}/ssPorter2Stemmer.js"><!-- Don't self-close script tags. --></script>
+            <script src="{$outputFolder}/ssSearch.js"><!-- Don't self-close script tags. --></script>
 
             <!--Special on script onload to the start up the StaticSearch-->
             <script>
@@ -236,8 +236,9 @@
                 data-maxkwicstoshow="{if ($maxKwicsToShow) then $maxKwicsToShow else 10}"
                 onsubmit="return false;"
                 data-versionstring="{$versionString}"
+                data-ssfolder="{$outputFolder}"
                 >
-
+                
                 <!--Standard inputs-->
                 <span class="ssQueryAndButton">
                     <input type="text" id="ssQuery"/>
