@@ -139,7 +139,11 @@
                 <xsl:if test="$verbose">
                     <xsl:message>Creating <xsl:value-of select="$tokenizedOutDoc"/></xsl:message>
                 </xsl:if>
-                <xsl:apply-templates select="$weighted" mode="tokenize"/>
+                <xsl:variable name="tokenizedDoc">
+                    <xsl:apply-templates select="$weighted" mode="tokenize"/>
+                </xsl:variable>
+                <xsl:apply-templates select="$tokenizedDoc" mode="enumerate"/>
+              
             </xsl:result-document>
            
         </xsl:for-each>
@@ -230,6 +234,8 @@
         </xsl:copy>
     </xsl:template>
     
+    <!--TOKENIZE TEMPLATES -->
+    
     <xsl:template match="meta[contains-token(@class,'staticSearch.desc')]" mode="tokenize">
         <xsl:copy>
             <xsl:attribute name="data-staticSearch-filter-id" select="$descFilterMap(normalize-space(@name))"/>
@@ -250,8 +256,24 @@
         </xsl:copy>
     </xsl:template>
     
+    <!--Enumeration templates-->
     
- <!--TOKENIZE TEMPLATES -->
+    <!--An accumulator for the stem position-->
+    <xsl:accumulator name="stem-position" initial-value="0">
+        <xsl:accumulator-rule match="span[@data-staticSearch-stem]">
+            <xsl:value-of select="$value + 1"/>
+        </xsl:accumulator-rule>
+    </xsl:accumulator>
+    
+    <!--And add a @data-staticSearch-pos to each stem so we know their order-->
+    <xsl:template match="span[@data-staticSearch-stem]" mode="enumerate">
+        <xsl:copy>
+            <xsl:attribute name="data-staticSearch-pos" select="accumulator-before('stem-position')"/>
+            <xsl:apply-templates select="@*|node()" mode="#current"/>
+        </xsl:copy>
+    </xsl:template>
+    
+
     
     <!--The basic thing: tokenizing the string at the text level-->
     <xsl:template match="text()[ancestor::body][not(matches(.,'^\s+$'))]" mode="tokenize">
