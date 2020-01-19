@@ -301,9 +301,11 @@
 <!--                                Now iterate through the contexts, returning a simple map that gives its
                                     form, context, and weight.-->
                                 <xsl:for-each select="$contexts">
-
+                                    
 <!--                                    Sort by weight, since we want the highest weighted first -->
                                     <xsl:sort select="hcmc:returnWeight(.)" order="descending"/>
+                                    <!--And then sort by its position secondarily-->
+                                    <xsl:sort select="xs:integer(@data-staticSearch-pos)" order="ascending"/>
                                     <map>
 
 <!--                                        Get the form (which is just the text value of the span and any descendant spans) -->
@@ -314,6 +316,8 @@
 
 <!--                                        Get the weight, using hcmc:returnWeight function -->
                                         <number key="weight"><xsl:value-of select="hcmc:returnWeight(.)"/></number>
+                                        
+                                        <number key="pos"><xsl:value-of select="@data-staticSearch-pos"/></number>
                                     </map>
                                 </xsl:for-each>
                             </array>
