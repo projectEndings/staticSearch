@@ -1553,7 +1553,7 @@ class StaticSearch{
   * @description Merges an incoming dataset for a document id with an
   * existing entry for that docUri. This involves two steps: first,
   * increment the score for the document, and second, add any keyword-
-  * in-context strings from the new item up to the limit of kwics allowed.
+  * in-context strings from the new item.
   * @param {String} docUri The URI of the document to check, which will
   * be the key to the entry in the map.
   * @param {Object} data The structured data from the query index.
@@ -1567,7 +1567,7 @@ class StaticSearch{
         else{
           let currEntry = this.mapDocs.get(docUri);
           let i = 0;
-          while ((currEntry.contexts.length < this.maxKwicsToShow)&&(i < data.contexts.length)){
+          while (i < data.contexts.length){
             if (currEntry.contexts.indexOf(data.contexts[i]) < 0){
               currEntry.contexts.push(data.contexts[i]);
               currEntry.score += data.score;
@@ -1718,11 +1718,13 @@ class StaticSearch{
           li.append(t);
         }
         if (value.contexts.length > 0){
+          //Sort these in document order.
+          value.contexts.sort(function(a, b){return a.pos - b.pos;});
           let ul2 = document.createElement('ul');
           ul2.setAttribute('class', 'kwic');
-          for (let c of value.contexts){
+          for (let i=0; i<Math.min(value.contexts.length, this.maxKwicsToShow); i++){
             let li2 = document.createElement('li');
-            li2.innerHTML = c.context;
+            li2.innerHTML = value.contexts[i].context;
             ul2.appendChild(li2);
           }
           li.appendChild(ul2);
