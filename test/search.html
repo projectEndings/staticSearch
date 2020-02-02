@@ -19,6 +19,13 @@
           }
       </style>
       
+      <!-- 
+             This is the style element that is inserted by the static search 
+             build process. It will be replaced every time you build the search. 
+             To override it, you can add your own style element AFTER this
+             one.
+      -->
+      
       
       <style id="ssCss"><!--
         form#ssForm{
@@ -93,11 +100,17 @@
       
       <p>This is a simple search page for the test collection.</p>
       
+      <!-- 
+             This is the div into which the JavaScript and page components required for the
+             search are inserted during the build process. The contents of this div are replaced
+            every time you run a search build.
+      -->
+      
       
       <div id="staticSearch"><script src="ssTest/ssPorter2Stemmer.js"></script><script src="ssTest/ssSearch.js"></script><script>
                 var Sch;
                 window.addEventListener('load', function(){Sch = new StaticSearch();});
-            </script><form accept-charset="UTF-8" id="ssForm" data-allowphrasal="yes" data-maxkwicstoshow="3" onsubmit="return false;" data-versionstring="_17bd448" data-ssfolder="ssTest"><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><div class="ssDescFilters">
+            </script><form accept-charset="UTF-8" id="ssForm" data-allowphrasal="yes" data-maxkwicstoshow="3" onsubmit="return false;" data-versionstring="_5644f22" data-ssfolder="ssTest"><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><div class="ssDescFilters">
                <fieldset class="ssFieldset" title="Document type" id="ssDesc1">
                   <legend>Document type</legend>
                   <ul class="ssDescCheckboxList">
@@ -123,6 +136,11 @@
          <div id="ssResults"></div>
       </div>
       
+      <!-- 
+             This is a special search page component which is used only for testing 
+             the static search. You do not need or want any of the following stuff in
+             your own site's search page.
+      -->
       <script>
           <!--
            //This is a set of automated tests which are intended to check whether

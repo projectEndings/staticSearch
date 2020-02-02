@@ -207,7 +207,7 @@
                   directly to the search page that will be the primary access point for the search. Since the search file must be at the root of the directory that you wish to index
                   (i.e. the directory that contains all of the XHTML you want the search to index), the searchFile parameter provides the necessary information for knowing 
                   what document collection to index and where to put the output JSON. In other words, in specifying the location of your search page, you are also 
-                  specifying the location of your document collection.</p>
+                  specifying the location of your document collection. See <ref target="#searchPage">Creating a search page</ref> for more information on how to configure this file.</p>
                 <p>Note that all output files will be in a directory that is a sibling to the search page. For instance, in a document collection that looks something like:
                   <list style="font-family: monospace">
                     <item>myProject
@@ -414,6 +414,52 @@
               </list>
             </p>
           </div>
+          </div>
+          
+          <div xml:id="searchPage">
+            <head>Creating a search page</head>
+            <p>You'll obviously want the search page for your site to conform with the look and 
+            feel of the rest of your site. You can create a complete HTML document (which must 
+            of course also be well-formed XML, so it can be processed), containing all the site 
+            components you need, and then the search build process will insert all the necessary
+            components into that file. The only requirement is that the page contains one <gi>div</gi>
+            element with the correct <att>id</att> attribute:
+            
+            <egXML xmlns="http://www.tei-c.org/ns/Examples">
+              <div id="staticSearch"> 
+                [...content will be supplied by the build process...] 
+              </div>
+            </egXML>
+              
+              This <gi>div</gi> will be empty initially. The build process will find insert the search 
+              controls, scripts and results <gi>div</gi> into this container. Then whenever you 
+              rebuild the search for your site, the contents
+              will be replaced. There is no need to make sure it's empty every time.</p>
+              
+              <p>The search process will also add a CSS <gi>style</gi> element to the <gi>head</gi> of the
+              document:
+              
+              <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                <style id="ssCss">
+                  [...styles for search controls...]
+                </style>
+              </egXML>
+              
+              You can customize this CSS by providing your own CSS that overrides it, using <gi>style</gi>,
+                or <gi>link</gi>, placed after it in the <gi>head</gi> element, or by replacing
+              the inserted CSS after the build process.
+            </p>
+            
+            <p>Note that once your file has been processed and all this content has been added,
+            you can process it again at any time; there is no need to start every time with a clean,
+            empty version of the search page.</p>
+            
+            <p>You can take a look at the <ident>test/search.html</ident> page for an example
+            of how to configure the search page (although note that since this page has already 
+            been processed, it has the CSS and the search controls embedded in it; it also has some
+            additional JavaScript which we use for testing the search build results, which is not 
+            necessary for your site).</p>
+            
           </div>
           
           <div xml:id="searchBuildProcess">
