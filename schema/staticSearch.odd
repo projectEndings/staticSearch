@@ -468,6 +468,9 @@
             create a search index and a search page for your site. This requires that you run ant
             in the root folder of the staticSearch project that you have downloaded or cloned.</p>
             
+            <p>Note: you will need Java and <ref target="https://ant.apache.org/">Apache Ant</ref> installed, 
+              as well as <ref target="http://ant-contrib.sourceforge.net/">ant-contrib</ref>. </p>
+            
             <p>Before running the search on your own site, you can test that your system is able
             to do the build by doing the (very quick) build of the test materials. If you simply run 
             the <ident>ant</ident> command, like this:</p>
@@ -477,7 +480,7 @@
             <p>you should see a build process proceed using the small test collection of
             documents, and at the end, a results page should open up giving you a report
             on what was done. If this fails, then you'll need to troubleshoot the problem 
-            based on any error messages you see. (Do you have Java and Ant installed and
+            based on any error messages you see. (Do you have Java, Ant and ant-contrib installed and
             working on your system?).</p>
             
             <p>If the test succeeds, you can view the results by uploading the <ident>test</ident>
