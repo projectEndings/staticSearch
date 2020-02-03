@@ -26,7 +26,8 @@
        *                                                            *
        **************************************************************-->
     
-  <xsl:param name="configFile" select="'config.xml'"/>
+    <xsl:param name="configFile" select="'config.xml'"/>
+    <xsl:param name="buildReportFilename" select="'staticSearch_report.html'"/>
     
     
     <!--**************************************************************
@@ -325,6 +326,8 @@
         <xsl:variable name="params" as="element()+">
             <!--First, create the actual configuration file thing-->
             <xso:param name="configFile"><xsl:value-of select="$configUri"/></xso:param>
+            <!-- Pass through the build report filename param. -->
+            <xso:param name="buildReportFilename" select="'{$buildReportFilename}'"/>    
             <xsl:for-each select="$configDoc//params/*" >
                 <xsl:variable name="thisParam" select="."/>
                 <xsl:variable name="paramName" select="local-name()"/>
@@ -373,7 +376,7 @@
         
         
         <xso:variable name="docs" 
-            select="collection(concat($collectionDir, {$sq || '?select=*.*htm*;recurse=' || (if ($recurse) then 'yes' else 'no') || $sq}))[not(starts-with(document-uri(.),$tempDir))]"/>
+            select="collection(concat($collectionDir, {$sq || '?select=*.*htm*;recurse=' || (if ($recurse) then 'yes' else 'no') || $sq}))[not(starts-with(document-uri(.),$tempDir))][not(ends-with(document-uri(.), $buildReportFilename))]"/>
         
         <xso:variable name="tokenizedDocs" 
             select="collection(concat($tempDir, {$sq || '?select=*_tokenized.*htm*;recurse=' || (if ($recurse) then 'yes' else 'no') || $sq}))"/>
