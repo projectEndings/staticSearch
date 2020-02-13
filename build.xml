@@ -132,7 +132,7 @@
                 <available file="${searchFilePath}"/>
             </not>
             <then>
-                <echo>Cannot find search file at ${searchFilePath}. Created a template file from xsl/sample_search.html.</echo>
+                <echo>WARNING: Cannot find search file at ${searchFilePath}. Created a template file from xsl/sample_search.html.</echo>
                 <copy file="xsl/sample_search.html" tofile="${searchFilePath}"/>
             </then>
         </if>
