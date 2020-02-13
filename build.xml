@@ -38,9 +38,6 @@
     
     <property name="staticSearchDir" value="${collectionDirName}/${outputFolder}/"/>
     
-    <condition property="searchPageExists">
-        <available file="${searchFilePath}"/>
-    </condition>
     <property name="headless" value="false"/>
     
     <basename property="searchPageBasename" file="${searchFilePath}"/>
