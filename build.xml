@@ -38,11 +38,15 @@
     
     <property name="staticSearchDir" value="${collectionDirName}/${outputFolder}/"/>
     
+    <condition property="searchPageExists">
+        <available file="${searchFilePath}"/>
+    </condition>
     <property name="headless" value="false"/>
     
     <basename property="searchPageBasename" file="${searchFilePath}"/>
     
     <property name="tempSearchPageOutput" value="${collectionDirName}/ssTemp_${searchPageBasename}"/>
+    
     
     <target name="init">
         <delete dir="temp"/>
@@ -119,8 +123,20 @@
         </java>
     </target>
     
+    
+    
     <target name="makeSearchPage">
         <echo message="Creating search page..."/>
+        <if taskname="copy">
+            <not>
+                <available file="${searchFilePath}"/>
+            </not>
+            <then>
+                <echo>Cannot find search file at ${searchFilePath}. Created a template file from xsl/sample_search.html.</echo>
+                <copy file="xsl/sample_search.html" tofile="${searchFilePath}"/>
+            </then>
+        </if>
+        
         <echo message="Creating temporary search page: ${tempSearchPageOutput}"/>
         <available type="dir" property="hasFilters" file="${staticSearchDir}/filters" value="true"/>
         <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
