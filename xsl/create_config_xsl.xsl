@@ -76,19 +76,50 @@
     
     
     <xd:doc>
-        <xd:desc><xd:ref name="schema" type="variable">$schema</xd:ref> is the static search configuration
-            schema written in the TEI ODD language. We load it in here during the configuration creation
+        <xd:desc><xd:ref name="schemaURI" type="variable">$schemaURI</xd:ref> is the URI for the static search 
+            configuration schema written in the TEI ODD language. We get the URI here during the configuration creation
             process as it can provide useful information as to what the expected values are for various
             configuration options. If, for whatever reason, the schema is not available locally (it is packed
-            with the static search distribution), then we download it from Github. NOTE: This is a bit
-        broken; we're currently pointing at the dev repo because some projects don't seem to be able to
-        find the local copy.</xd:desc>
+            with the static search distribution), then we check to see if this has been downloaded as a package
+            from a formal release; if it hasn't, then we get the latest release. If, for whatever reason, the 
+            latest release isn't available, then we just get the latest one from the /dev/ branch.
+            </xd:desc>
     </xd:doc>
-    <xsl:variable name="schema" select="
-        if (doc-available(concat($ssBaseDir, '/schema/staticSearch.odd'))) 
-        then document(concat($ssBaseDir,'/schema/staticSearch.odd'))
-        else document('https://raw.githubusercontent.com/projectEndings/staticSearch/dev/schema/staticSearch.odd')"
-        as="document-node()"/>
+    
+    <xsl:variable name="schemaURI" as="xs:string">
+        <xsl:choose>
+            <xsl:when test="doc-available($ssBaseDir || '/schema/staticSearch.odd')">
+                <xsl:value-of select="$ssBaseDir || '/schema/staticSearch.odd'"/>
+            </xsl:when>
+            <xsl:when test="unparsed-text-available($ssBaseDir || '/VERSION.txt')">
+                <xsl:variable name="versionNum" 
+                    select="unparsed-text-lines($ssBaseDir || '/VERSION.txt')[1] =>
+                    normalize-space()"/>
+                <xsl:value-of select="'https://raw.githubusercontent.com/projectEndings/staticSearch/v' || $versionNum || '/schema/staticSearch.odd'"/>
+            </xsl:when>
+            <xsl:when test="doc-available('https://raw.githubusercontent.com/projectEndings/staticSearch/' || hcmc:getLatestReleaseNum() || '/schema/staticSearch.odd')">
+                <xsl:value-of select="'https://raw.githubusercontent.com/projectEndings/staticSearch/' || hcmc:getLatestReleaseNum() || '/schema/staticSearch.odd'"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="'https://raw.githubusercontent.com/projectEndings/staticSearch/dev/schema/staticSearch.odd'"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+    
+    <xd:doc>
+        <xd:desc><xd:ref name="schema" type="variable">$schema</xd:ref> is the loaded
+        TEI ODD file that contains the schema available at the URI determined by
+        <xd:ref name="schemaURI" type="variable">$schemaURI</xd:ref>.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="schema" as="document-node()">
+        <xsl:if test="$verbose">
+            <xsl:message>Getting schema from <xsl:value-of select="$schemaURI"/></xsl:message>
+        </xsl:if>
+        <xsl:sequence select="document($schemaURI)"/>
+    </xsl:variable>
+        
+        
+    
   
 
 
@@ -547,6 +578,15 @@
                 <xsl:value-of select="false()"/>
             </xsl:otherwise>
         </xsl:choose>
+    </xsl:function>
+    
+    <xd:doc>
+        <xd:desc>This function gets the latest release number from Github </xd:desc>
+    </xd:doc>
+    <xsl:function name="hcmc:getLatestReleaseNum" as="xs:string">
+        <xsl:variable name="json" select="unparsed-text('https://api.github.com/repos/projectEndings/staticSearch/releases/latest')"/>
+        <xsl:variable name="xml" select="json-to-xml($json)"/>
+        <xsl:value-of select="$xml//*:string[@key='tag_name']/text()"/>
     </xsl:function>
     
     
