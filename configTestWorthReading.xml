@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://hcmc.uvic.ca/ns/staticSearch">
+    <params>
+        <searchFile>test/searchWorthReading.html</searchFile>
+        <versionFile>test/VERSION</versionFile>
+        <recurse>true<!--Need to set recurse to true for the test--></recurse>
+        <phrasalSearch>true</phrasalSearch>
+        <createContexts>true</createContexts>
+        <!--NOTE: If phrasalSearch is set to TRUE, then
+        maxContexts prop will be ignored-->
+        <maxKwicsToHarvest>3</maxKwicsToHarvest>
+        <maxKwicsToShow>3</maxKwicsToShow>
+        <totalKwicLength>15</totalKwicLength>
+        <kwicTruncateString>...</kwicTruncateString>
+        <verbose>false</verbose>
+        <stopwordsFile>test/test_stopwords.txt</stopwordsFile>
+        <dictionaryFile>xsl/english_words.txt</dictionaryFile>
+        <indentJSON>true</indentJSON>
+        <outputFolder>ssWorthReading</outputFolder>
+    </params>
+    
+    <rules>
+        <rule weight="2"
+            xpath="h1 | h2"/>
+        <rule weight="0"
+            xpath="span[@class='lineNum']"/>
+        <rule weight="0"
+            xpath="script | style"/>
+    </rules>
+    
+    <contexts>
+        <context xpath="div[@class='l']" label="poetic lines"/>
+        <context xpath="span[@class='note']" label="notes"/>
+    </contexts>
+    <excludes>
+        <exclude type="index" xpath="html[not(descendant::meta[@name='Worth reading'][@content='true'])]"/>
+        <exclude type="filter" xpath="meta[@name='Worth reading']"/>
+    </excludes>
+</config>
