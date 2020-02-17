@@ -503,97 +503,100 @@
         </xd:desc>
     </xd:doc>
     <xsl:template name="createFiltersJson">
-        <xsl:for-each-group select="$tokenizedDocs//meta[matches(@class,'^|\s+staticSearch\.')][not(@data-staticSearch-exclude)]" group-by="tokenize(@class,'\s+')[matches(.,'^staticSearch\.')]">
+        
+        <!--We only want metas from documents which themselves aren't excluded
+            and from documents that aren't excluded-->
+        <xsl:for-each-group select="$tokenizedDocs//meta[matches(@class,'^|\s+staticSearch\.')][not(@data-staticSearch-exclude)][not(ancestor::html[@data-staticSearch-exclude])]" group-by="tokenize(@class,'\s+')[matches(.,'^staticSearch\.')]">
             
             <xsl:variable name="thisClass" select="current-grouping-key()"/>
             <xsl:variable name="metaNum" select="position()"/>
             <xsl:for-each-group select="current-group()" group-by="@name">
                 <xsl:variable name="thisName" select="current-grouping-key()"/>
                 <xsl:variable name="thisId" select="current-group()[1]/@data-staticSearch-filter-id"/>
-                
-                <xsl:choose>
-                    <xsl:when test="$thisClass = 'staticSearch.desc'">
-                        <xsl:variable name="tmpMap" as="element(map:map)">
-                            <map xmlns="http://www.w3.org/2005/xpath-functions">
-                                <string key="filterId"><xsl:value-of select="$thisId"/></string>
-                                <string key="filterName"><xsl:value-of select="$thisName"/></string>
-                                
-                                <!--Now iterate through these values via their content-->
-                                <xsl:for-each-group select="current-group()" group-by="@content">
+                    <xsl:choose>
+                        <xsl:when test="$thisClass = 'staticSearch.desc'">
+                            <xsl:variable name="tmpMap" as="element(map:map)">
+                                <map xmlns="http://www.w3.org/2005/xpath-functions">
+                                    <string key="filterId"><xsl:value-of select="$thisId"/></string>
+                                    <string key="filterName"><xsl:value-of select="$thisName"/></string>
                                     
-                                    <xsl:variable name="thisContent" select="current-grouping-key()"/>
-                                    <xsl:variable name="subGroupPos" select="position()"/>
-                                    
-                                    
-                                    <xsl:variable name="filterId" select="$thisId || '_' || $subGroupPos"/>
-                                    <map key="{$filterId}">
-                                        <string key="name"><xsl:value-of select="$thisContent"/></string>
-                                        <array key="docs">
-                                            <xsl:for-each-group select="current-group()" group-by="ancestor::html/@data-staticSearch-relativeUri">
-                                                
-                                                <string><xsl:value-of select="current-grouping-key()"/></string>
-                                            </xsl:for-each-group>
-                                        </array>
-                                    </map>
-                                </xsl:for-each-group>
-                            </map>
-                        </xsl:variable>
-                        <xsl:result-document href="{$outDir || '/filters/' || $thisId || $versionString || '.json'}" method="text">
-                            <xsl:value-of select="xml-to-json($tmpMap)"/>
-                        </xsl:result-document>
-                    </xsl:when>
-                    
-                    
-                    <xsl:when test="$thisClass='staticSearch.bool'">
-                        <xsl:variable name="tmpMap" as="element(map:map)">
-                            <map xmlns="http://www.w3.org/2005/xpath-functions">
-                                <string key="filterId"><xsl:value-of select="$thisId"/></string>
-                                <string key="filterName"><xsl:value-of select="@name"/></string>
-                                <xsl:for-each-group select="current-group()" group-by="hcmc:normalize-boolean(@content)">
-                                    <!-- We have to sort these descending so that we reliably get true followed by false. -->
-                                    <xsl:sort select="hcmc:normalize-boolean(@content)" order="descending"/>
-                                    <xsl:variable name="filterId" select="concat($thisId,'_',position())"/>
-                                    <map key="{$filterId}">
-                                        <string key="value"><xsl:value-of select="current-grouping-key()"/></string>
-                                        <array key="docs">
-                                            <xsl:for-each-group select="current-group()" group-by="ancestor::html/@data-staticSearch-relativeUri">
-                                                <string><xsl:value-of select="current-grouping-key()"/></string>
-                                            </xsl:for-each-group>
-                                        </array>
-                                    </map>
-                                </xsl:for-each-group>
-                            </map>
-                        </xsl:variable>
-                        <xsl:result-document href="{$outDir || '/filters/' || $thisId || $versionString || '.json'}" method="text">
-                            <xsl:value-of select="xml-to-json($tmpMap)"/>
-                        </xsl:result-document>
-                    </xsl:when>
-                    
-                    <xsl:when test="$thisClass='staticSearch.date'">
-                        <xsl:variable name="tmpMap" as="element(map:map)">
-                            <map xmlns="http://www.w3.org/2005/xpath-functions">
-                                <string key="filterId"><xsl:value-of select="$thisId"/></string>
-                                <string key="filterName"><xsl:value-of select="$thisName"/></string>
-                                <map key="docs">
-                                    <xsl:for-each-group select="current-group()" group-by="ancestor::html/@data-staticSearch-relativeUri">
-                                        <xsl:variable name="filterId" select="concat($thisId,'_',position())"/>
-                                        <array key="{current-grouping-key()}">
-                                            <xsl:for-each select="current-group()">
-                                                <xsl:for-each select="tokenize(@content,'/')">
-                                                    <string><xsl:value-of select="."/></string>
-                                                </xsl:for-each>
-                                            </xsl:for-each>
-                                        </array>
+                                    <!--Now iterate through these values via their content-->
+                                    <xsl:for-each-group select="current-group()" group-by="@content">
+                                        
+                                        <xsl:variable name="thisContent" select="current-grouping-key()"/>
+                                        <xsl:variable name="subGroupPos" select="position()"/>
+                                        
+                                        
+                                        <xsl:variable name="filterId" select="$thisId || '_' || $subGroupPos"/>
+                                        <map key="{$filterId}">
+                                            <string key="name"><xsl:value-of select="$thisContent"/></string>
+                                            <array key="docs">
+                                                <xsl:for-each-group select="current-group()" group-by="ancestor::html[not(@data-staticSearch-exclude)]/@data-staticSearch-relativeUri">
+                                                    
+                                                    <string><xsl:value-of select="current-grouping-key()"/></string>
+                                                </xsl:for-each-group>
+                                            </array>
+                                        </map>
                                     </xsl:for-each-group>
                                 </map>
-                                
-                            </map>
-                        </xsl:variable>
-                        <xsl:result-document href="{$outDir || '/filters/' || $thisId || $versionString || '.json'}" method="text">
-                            <xsl:value-of select="xml-to-json($tmpMap)"/>
-                        </xsl:result-document>
-                    </xsl:when>
-                </xsl:choose>
+                            </xsl:variable>
+                            <xsl:result-document href="{$outDir || '/filters/' || $thisId || $versionString || '.json'}" method="text">
+                                <xsl:value-of select="xml-to-json($tmpMap)"/>
+                            </xsl:result-document>
+                        </xsl:when>
+                        
+                        
+                        <xsl:when test="$thisClass='staticSearch.bool'">
+                            <xsl:variable name="tmpMap" as="element(map:map)">
+                                <map xmlns="http://www.w3.org/2005/xpath-functions">
+                                    <string key="filterId"><xsl:value-of select="$thisId"/></string>
+                                    <string key="filterName"><xsl:value-of select="@name"/></string>
+                                    <xsl:for-each-group select="current-group()" group-by="hcmc:normalize-boolean(@content)">
+                                        <!-- We have to sort these descending so that we reliably get true followed by false. -->
+                                        <xsl:sort select="hcmc:normalize-boolean(@content)" order="descending"/>
+                                        <xsl:variable name="filterId" select="concat($thisId,'_',position())"/>
+                                        <map key="{$filterId}">
+                                            <string key="value"><xsl:value-of select="current-grouping-key()"/></string>
+                                            <array key="docs">
+                                                <xsl:for-each-group select="current-group()" group-by="ancestor::html/@data-staticSearch-relativeUri">
+                                                    <string><xsl:value-of select="current-grouping-key()"/></string>
+                                                </xsl:for-each-group>
+                                            </array>
+                                        </map>
+                                    </xsl:for-each-group>
+                                </map>
+                            </xsl:variable>
+                            <xsl:result-document href="{$outDir || '/filters/' || $thisId || $versionString || '.json'}" method="text">
+                                <xsl:value-of select="xml-to-json($tmpMap)"/>
+                            </xsl:result-document>
+                        </xsl:when>
+                        
+                        <xsl:when test="$thisClass='staticSearch.date'">
+                            <xsl:variable name="tmpMap" as="element(map:map)">
+                                <map xmlns="http://www.w3.org/2005/xpath-functions">
+                                    <string key="filterId"><xsl:value-of select="$thisId"/></string>
+                                    <string key="filterName"><xsl:value-of select="$thisName"/></string>
+                                    <map key="docs">
+                                        <xsl:for-each-group select="current-group()" group-by="ancestor::html/@data-staticSearch-relativeUri">
+                                            <xsl:variable name="filterId" select="concat($thisId,'_',position())"/>
+                                            <array key="{current-grouping-key()}">
+                                                <xsl:for-each select="current-group()">
+                                                    <xsl:for-each select="tokenize(@content,'/')">
+                                                        <string><xsl:value-of select="."/></string>
+                                                    </xsl:for-each>
+                                                </xsl:for-each>
+                                            </array>
+                                        </xsl:for-each-group>
+                                    </map>
+                                    
+                                </map>
+                            </xsl:variable>
+                            <xsl:result-document href="{$outDir || '/filters/' || $thisId || $versionString || '.json'}" method="text">
+                                <xsl:value-of select="xml-to-json($tmpMap)"/>
+                            </xsl:result-document>
+                        </xsl:when>
+                    </xsl:choose>
+                
             </xsl:for-each-group>
         </xsl:for-each-group>
     </xsl:template>
