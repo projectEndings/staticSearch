@@ -104,6 +104,7 @@
             <xsl:variable name="contextualizedOutDoc" select="concat($tempDir,'/',$searchIdentifier,'_contextualized.html')"/>
             <xsl:variable name="weightedOutDoc" select="concat($tempDir,'/',$searchIdentifier,'_weighted.html')"/>
             <xsl:variable name="tokenizedOutDoc" select="concat($tempDir,'/',$searchIdentifier,'_tokenized.html')"/>
+            <xsl:variable name="excludedOutDoc" select="concat($tempDir,'/',$searchIdentifier,'_excluded.html')"/>
             <xsl:message>Tokenizing <xsl:value-of select="document-uri()"/></xsl:message>
             
             <xsl:variable name="cleaned">
@@ -121,6 +122,10 @@
                 <xsl:apply-templates select="$contextualized" mode="weigh"/>
             </xsl:variable>
             
+            <xsl:variable name="excluded">
+                <xsl:apply-templates select="$weighted" mode="exclude"/>
+            </xsl:variable>
+            
             <xsl:if test="$verbose">
                 <xsl:message>Creating <xsl:value-of select="$cleanedOutDoc"/></xsl:message>
                 <xsl:result-document href="{$cleanedOutDoc}">
@@ -134,13 +139,17 @@
                 <xsl:result-document href="{$weightedOutDoc}">
                     <xsl:copy-of select="$weighted"/>
                 </xsl:result-document>
+                <xsl:message>Creating <xsl:value-of select="$excludedOutDoc"/></xsl:message>
+                <xsl:result-document href="{$excludedOutDoc}">
+                    <xsl:copy-of select="$excluded"/>
+                </xsl:result-document>
             </xsl:if>
             <xsl:result-document href="{$tokenizedOutDoc}">
                 <xsl:if test="$verbose">
                     <xsl:message>Creating <xsl:value-of select="$tokenizedOutDoc"/></xsl:message>
                 </xsl:if>
                 <xsl:variable name="tokenizedDoc">
-                    <xsl:apply-templates select="$weighted" mode="tokenize"/>
+                    <xsl:apply-templates select="$excluded" mode="tokenize"/>
                 </xsl:variable>
                 <xsl:apply-templates select="$tokenizedDoc" mode="enumerate"/>
               
@@ -236,20 +245,20 @@
     
     <!--TOKENIZE TEMPLATES -->
     
-    <xsl:template match="meta[contains-token(@class,'staticSearch.desc')]" mode="tokenize">
+    <xsl:template match="meta[contains-token(@class,'staticSearch.desc')][not(@data-staticSearch-exclude)]" mode="tokenize">
         <xsl:copy>
             <xsl:attribute name="data-staticSearch-filter-id" select="$descFilterMap(normalize-space(@name))"/>
             <xsl:apply-templates select="@*|node()" mode="#current"/>
         </xsl:copy>
     </xsl:template>
     
-    <xsl:template match="meta[contains-token(@class,'staticSearch.date')]" mode="tokenize">
+    <xsl:template match="meta[contains-token(@class,'staticSearch.date')][not(@data-staticSearch-exclude)]" mode="tokenize">
         <xsl:copy>
             <xsl:attribute name="data-staticSearch-filter-id" select="$dateFilterMap(normalize-space(@name))"/>
             <xsl:apply-templates select="@*|node()" mode="#current"/>
         </xsl:copy>
     </xsl:template>
-    <xsl:template match="meta[contains-token(@class,'staticSearch.bool')]" mode="tokenize">
+    <xsl:template match="meta[contains-token(@class,'staticSearch.bool')][not(@data-staticSearch-exclude)]" mode="tokenize">
         <xsl:copy>
             <xsl:attribute name="data-staticSearch-filter-id" select="$boolFilterMap(normalize-space(@name))"/>
             <xsl:apply-templates select="@*|node()" mode="#current"/>
@@ -276,7 +285,7 @@
 
     
     <!--The basic thing: tokenizing the string at the text level-->
-    <xsl:template match="text()[ancestor::body][not(matches(.,'^\s+$'))]" mode="tokenize">
+    <xsl:template match="text()[ancestor::body][not(matches(.,'^\s+$'))][not(ancestor::*[@data-staticSearch-exclude])]" mode="tokenize">
         <xsl:variable name="currNode" select="."/>
         <xsl:variable name="rootLangDeclared" select="boolean(ancestor::html[@lang or @xml:lang])" as="xs:boolean"/>
         <xsl:variable name="langAncestor" select="ancestor::*[not(self::html)][@*:lang][1]" as="element()?"/>

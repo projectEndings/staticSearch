@@ -217,6 +217,16 @@
     
     <xd:doc>
         <xd:desc>
+            <xd:p>The <xd:ref name="excludeRules" type="variable">excludeRules</xd:ref> variable
+            is a sequence of 0 or more rules of elements that should be ignored by the tokenization process.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:variable name="excludeRules" select="$configDoc//excludes/exclude" as="element(exclude)*"/>
+    
+    
+    
+    <xd:doc>
+        <xd:desc>
             <xd:p>OBSOLETE: Now specified as context elements, not rule elements. 
                 The <xd:ref name="contextRules" type="variable">contextRules</xd:ref> variable is
                 a sequence of 0 or more rules that are specified as context blocks--blocks that are to
@@ -317,6 +327,16 @@
                     </xsl:if>
                 </xsl:if>
                 
+                <xsl:if test="not(empty($excludeRules))">
+                    <xsl:call-template name="createExcludeRules" exclude-result-prefixes="#all"/>
+                    <xsl:if test="$verbose">
+                        <xsl:message>Create exclude rules</xsl:message>
+                        <xsl:message>
+                            <xsl:call-template name="createExcludeRules"/>
+                        </xsl:message>
+                    </xsl:if>
+                </xsl:if>
+                
                 <xsl:if test="not(empty($contexts))">
                     <xsl:call-template name="createContextRules" exclude-result-prefixes="#all"/>
                     <xsl:if test="$verbose">
@@ -334,6 +354,8 @@
                         <xsl:message><xsl:call-template name="createWeightingRules" exclude-result-prefixes="#all"/></xsl:message>
                     </xsl:if>
                 </xsl:if>
+                
+                
             </xso:stylesheet>
             
         </xsl:result-document>
@@ -426,7 +448,7 @@
             </xso:if>
         </xso:template>
     </xsl:template>
-    
+
     
     <xsl:template name="createDictionaryXML" exclude-result-prefixes="xs xd tei">
         <xsl:for-each select="($configDoc//stopwordsFile, $configDoc//dictionaryFile)">
@@ -480,6 +502,26 @@
             <xso:if test="$verbose">
                 <xso:message>Template #clean: Deleting <xso:value-of select="local-name(.)"/></xso:message>
             </xso:if>
+        </xso:template>
+    </xsl:template>
+    
+    
+    <xd:doc>
+        <xd:desc>
+            <xd:p>The <xd:ref name="createExcludeRules" type="template">createDeleteRules</xd:ref> template
+                creates an XSL identity template for the xpaths specified in the configuration file that have been excluded from the tokenization
+                process.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:template name="createExcludeRules" exclude-result-prefixes="#all">
+        <xso:template match="{string-join($excludeRules/@xpath, ' | ')}" priority="1" mode="exclude">
+            <xso:if test="$verbose">
+                <xso:message>Template #exclude: Adding @data-staticSearch-exclude flag to <xso:value-of select="local-name(.)"/></xso:message>
+            </xso:if>
+            <xso:copy>
+                <xso:attribute name="data-staticSearch-exclude" select="'true'"/>
+                <xso:apply-templates select="@*|node()" mode="#current"/>
+            </xso:copy>
         </xso:template>
     </xsl:template>
 

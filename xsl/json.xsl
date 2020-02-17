@@ -503,7 +503,7 @@
         </xd:desc>
     </xd:doc>
     <xsl:template name="createFiltersJson">
-        <xsl:for-each-group select="$tokenizedDocs//meta[matches(@class,'^|\s+staticSearch\.')]" group-by="tokenize(@class,'\s+')[matches(.,'^staticSearch\.')]">
+        <xsl:for-each-group select="$tokenizedDocs//meta[matches(@class,'^|\s+staticSearch\.')][not(@data-staticSearch-exclude)]" group-by="tokenize(@class,'\s+')[matches(.,'^staticSearch\.')]">
             
             <xsl:variable name="thisClass" select="current-grouping-key()"/>
             <xsl:variable name="metaNum" select="position()"/>

@@ -88,11 +88,14 @@
                 <body>
                     <div>
                         <h1>Static Search Report: <xsl:value-of select="$collectionDir"/></h1>
+                        <h2>Using config file: <xsl:value-of select="$configFile"/></h2>
                         <xsl:call-template name="createStats"/>
                         <xsl:call-template name="createDiagnostics"/>
                         <xsl:call-template name="createFilters"/>
+                        <xsl:call-template name="createExcludes"/>
                         <xsl:call-template name="createWordTables"/>
                         <xsl:call-template name="createNonDictionaryList"/>
+
                         <xsl:call-template name="createForeignWordList"/>
                     </div>
                 </body>
@@ -167,6 +170,8 @@
         </section>
     </xsl:template>
     
+ 
+    
     <xsl:template name="createStats">
         <xsl:message>Generating statistics...</xsl:message>
         <section>
@@ -174,9 +179,16 @@
             <table>
                 <tbody>
                     <tr>
-                        <td>HTML Documents Analyzed</td>
+                        <td>Total HTML Documents Analyzed</td>
                         <td><xsl:value-of select="count($docs)"/></td>
                     </tr>
+                    <xsl:if test="doc($configFile)//*:exclude">
+                        <tr>
+                            <td>HTML Documents Excluded</td>
+                            <td><xsl:value-of select="count($tokenizedDocs//html[@data-staticSearch-exclude])"/></td>
+                        </tr>
+                    </xsl:if>
+ 
                     <tr>
                         <td>Total Tokens Stemmed</td>
                         <td><xsl:value-of select="count($spans)"/></td>
@@ -188,6 +200,56 @@
                 </tbody>
             </table>
         </section>
+        
+    </xsl:template>
+    
+    <xsl:template name="createExcludes">
+        <xsl:message>Generating exclusion stats...</xsl:message>
+        <xsl:if test="doc($configFile)//*:exclude">
+            <section>
+                <h2>Exclusions</h2>
+                <details>
+                    <summary>Documents and filters excluded from this search...</summary>
+                    <xsl:variable name="docExcludes" select="$tokenizedDocs//html[@data-staticSearch-exclude]" as="element(html)*"/>
+                    <xsl:variable name="filterExcludes" select="$tokenizedDocs//meta[@data-staticSearch-exclude]" as="element(meta)*"/>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    Documents excluded (<xsl:value-of select="count($docExcludes)"/>)
+                                </td>
+                                <td>
+                                    <xsl:if test="not(empty($docExcludes))">
+                                        <ul>
+                                            <xsl:for-each select="$docExcludes">
+                                                <li><xsl:value-of select="@id"/></li>
+                                            </xsl:for-each>
+                                        </ul>
+                                    </xsl:if>
+                                </td>
+                                
+                            </tr>
+                            <tr>
+                                <td>
+                                    Filters excluded (<xsl:value-of select="count($filterExcludes)"/>)
+                                </td>
+                                <td>
+                                    <xsl:if test="not(empty($filterExcludes))">
+                                        <ul>
+                                            <xsl:for-each-group select="$filterExcludes" group-by="@name">
+                                                <li><xsl:value-of select="current-grouping-key()"/> (<xsl:value-of select="count(current-group())"/> instances)</li>
+                                            </xsl:for-each-group>
+                                            
+                                        </ul>
+                                    </xsl:if>
+                                </td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </details>
+            </section>
+        </xsl:if>
         
     </xsl:template>
     
