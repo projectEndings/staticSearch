@@ -577,6 +577,7 @@
               <elementRef key="params"/>
               <elementRef key="rules" minOccurs="0"/>
               <elementRef key="contexts" minOccurs="0"/>
+              <elementRef key="excludes" minOccurs="0"/>
             </content>
           </elementSpec>
 
@@ -634,6 +635,8 @@
           </elementSpec>
 
           <elementSpec ident="contexts" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
+            <gloss>The set of contexts, expressed as XPath, that controls the identification of
+            contexts for keyword-in-context fragments.</gloss>
             <content>
               <elementRef key="context" minOccurs="1" maxOccurs="unbounded"/>
             </content>
@@ -657,11 +660,43 @@
                </attDef>
             </attList>
           </elementSpec>
+          
+          <elementSpec ident="excludes" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
+            <gloss>The set of exclusions, expressed as XPath, that control the subset of documents
+            for a particular search.</gloss>
+            <content>
+              <elementRef key="exclude" minOccurs="1" maxOccurs="unbounded"/>
+            </content>
+          </elementSpec>
+          
+          <elementSpec ident="exclude" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
+            <gloss>An exclusion definition, which excludes either documents or filters as defined by an XPath.</gloss>
+            <classes>
+              <memberOf key="att.xpath"/>
+            </classes>
+            <content>
+              <empty/>
+            </content>
+            <attList>
+              <attDef ident="type" usage="req">
+                <valList type="closed">
+                  <valItem ident="index">
+                    <gloss>Index exclusion</gloss>
+                    <desc>An exclusion that specifies HTML fragment (which itself can be the root HTML element) to exclude from the document index.</desc>
+                  </valItem>
+                  <valItem ident="filter">
+                    <gloss>Filter exclusion</gloss>
+                    <desc>An exclusion that matches an HTML meta tag to exclude from the filter controls on the search page.</desc>
+                  </valItem>
+                </valList>
+              </attDef>
+            </attList>
+          </elementSpec>
 
           <classSpec ident="att.xpath" module="ss" type="atts">
             <gloss>A class providing attributes that enable specification of document locations.</gloss>
             <attList>
-              <attDef ident="xpath">
+              <attDef usage="req" ident="xpath">
                 <gloss>An XPath equivalent to the @match attribute of an xsl:template, which
                   specifies a context in a document.</gloss>
                 <datatype>

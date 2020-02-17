@@ -549,7 +549,7 @@ function showByMod() {
                            <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
                            <td class="wovenodd-col2">
                               <div class="specChildren">
-                                 <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.contexts" title="&lt;contexts&gt;">contexts</a> <a class="link_odd_elementSpec" href="#TEI.params" title="&lt;params&gt;">params</a> <a class="link_odd_elementSpec" href="#TEI.rules" title="&lt;rules&gt;">rules</a></span></div>
+                                 <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.contexts" title="&lt;contexts&gt;">contexts</a> <a class="link_odd_elementSpec" href="#TEI.excludes" title="&lt;excludes&gt;">excludes</a> <a class="link_odd_elementSpec" href="#TEI.params" title="&lt;params&gt;">params</a> <a class="link_odd_elementSpec" href="#TEI.rules" title="&lt;rules&gt;">rules</a></span></div>
                               </div>
                            </td>
                         </tr>
@@ -561,6 +561,7 @@ function showByMod() {
  &lt;elementRef key="params"/&gt;
  &lt;elementRef key="rules" minOccurs="0"/&gt;
  &lt;elementRef key="contexts" minOccurs="0"/&gt;
+ &lt;elementRef key="excludes" minOccurs="0"/&gt;
 &lt;/content&gt;
     </pre>
                            </td>
@@ -569,7 +570,7 @@ function showByMod() {
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
                               <pre class="pre_eg">
-element config { <a class="link_ref" href="#TEI.params" title="&lt;params&gt;">params</a>, <a class="link_ref" href="#TEI.rules" title="&lt;rules&gt;">rules</a>?, <a class="link_ref" href="#TEI.contexts" title="&lt;contexts&gt;">contexts</a>? }</pre>
+element config { <a class="link_ref" href="#TEI.params" title="&lt;params&gt;">params</a>, <a class="link_ref" href="#TEI.rules" title="&lt;rules&gt;">rules</a>?, <a class="link_ref" href="#TEI.contexts" title="&lt;contexts&gt;">contexts</a>?, <a class="link_ref" href="#TEI.excludes" title="&lt;excludes&gt;">excludes</a>? }</pre>
                            </td>
                         </tr>
                      </table>
@@ -662,7 +663,8 @@ element context
                   <div class="table">
                      <table class="wovenodd">
                         <tr>
-                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;contexts&gt; </span></td>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;contexts&gt; </span>(<span>The set of contexts, expressed as XPath, that controls the identification of contexts
+                                 for keyword-in-context fragments.</span>)</td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
@@ -812,8 +814,153 @@ element dictionaryFile { xsd:anyURI }</pre>
                      </table>
                   </div>
                </div>
+               <div class="refdoc" id="TEI.exclude">
+                  <h3><span class="headingNumber">Appendix A.1.6 </span><span class="head">&lt;exclude&gt;</span></h3>
+                  <div class="table">
+                     <table class="wovenodd">
+                        <tr>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;exclude&gt; </span>(<span>An exclusion definition, which excludes either documents or filters as defined by
+                                 an XPath.</span>)</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
+                           <td class="wovenodd-col2">http://hcmc.uvic.ca/ns/staticSearch</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                           <td class="wovenodd-col2">ss</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Attributes</span></td>
+                           <td class="wovenodd-col2"><a class="link_ref" href="#TEI.att.xpath" title="att.xpath">att.xpath</a> (<span class="attribute">@xpath</span>) 
+                              <div class="table">
+                                 <table class="attList">
+                                    <tr>
+                                       <td class="odd_label">type</td>
+                                       <td class="odd_value">
+                                          <div class="table">
+                                             <table class="attDef">
+                                                <tr>
+                                                   <td class="odd_label"><span lang="en" class="label">Status</span></td>
+                                                   <td class="odd_value"><span lang="en"><span class="required">Required</span></span></td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="odd_label"><span lang="en" class="label">Legal values are:</span></td>
+                                                   <td class="odd_value">
+                                                      <dl class="valList">
+                                                         <dt><span class="odd_label">index</span></dt>
+                                                         <dd>(<span>Index exclusion</span>) <span>An exclusion that specifies HTML fragment (which itself can be the root HTML element)
+                                                               to exclude from the document index.</span></dd>
+                                                         <dt><span class="odd_label">filter</span></dt>
+                                                         <dd>(<span>Filter exclusion</span>) <span>An exclusion that matches an HTML meta tag to exclude from the filter controls on
+                                                               the search page.</span></dd>
+                                                      </dl>
+                                                   </td>
+                                                </tr>
+                                             </table>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                 </table>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Contained by</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="parent">
+                                 <div class="specChildren">
+                                    <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.excludes" title="&lt;excludes&gt;">excludes</a></span></div>
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
+                           <td class="wovenodd-col2"><span lang="en">Empty element</span></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+&lt;content&gt;
+ &lt;empty/&gt;
+&lt;/content&gt;
+    </pre>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg">
+element exclude
+{
+   <a class="link_ref" href="#TEI.att.xpath" title="att.xpath">att.xpath.attributes</a>,
+   attribute type { "index" | "filter" },
+   empty
+}</pre>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+               <div class="refdoc" id="TEI.excludes">
+                  <h3><span class="headingNumber">Appendix A.1.7 </span><span class="head">&lt;excludes&gt;</span></h3>
+                  <div class="table">
+                     <table class="wovenodd">
+                        <tr>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;excludes&gt; </span>(<span>The set of exclusions, expressed as XPath, that control the subset of documents for
+                                 a particular search.</span>)</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
+                           <td class="wovenodd-col2">http://hcmc.uvic.ca/ns/staticSearch</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                           <td class="wovenodd-col2">ss</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Contained by</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="parent">
+                                 <div class="specChildren">
+                                    <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.config" title="&lt;config&gt;">config</a></span></div>
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="specChildren">
+                                 <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.exclude" title="&lt;exclude&gt;">exclude</a></span></div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+&lt;content&gt;
+ &lt;elementRef key="exclude" minOccurs="1"
+  maxOccurs="unbounded"/&gt;
+&lt;/content&gt;
+    </pre>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg">
+element excludes { <a class="link_ref" href="#TEI.exclude" title="&lt;exclude&gt;">exclude</a>+ }</pre>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
                <div class="refdoc" id="TEI.indentJSON">
-                  <h3><span class="headingNumber">Appendix A.1.6 </span><span class="head">&lt;indentJSON&gt;</span></h3>
+                  <h3><span class="headingNumber">Appendix A.1.8 </span><span class="head">&lt;indentJSON&gt;</span></h3>
                   <div class="table">
                      <table class="wovenodd">
                         <tr>
@@ -863,7 +1010,7 @@ element indentJSON { xsd:boolean }</pre>
                   </div>
                </div>
                <div class="refdoc" id="TEI.kwicTruncateString">
-                  <h3><span class="headingNumber">Appendix A.1.7 </span><span class="head">&lt;kwicTruncateString&gt;</span></h3>
+                  <h3><span class="headingNumber">Appendix A.1.9 </span><span class="head">&lt;kwicTruncateString&gt;</span></h3>
                   <div class="table">
                      <table class="wovenodd">
                         <tr>
@@ -913,7 +1060,7 @@ element kwicTruncateString { text }</pre>
                   </div>
                </div>
                <div class="refdoc" id="TEI.maxKwicsToHarvest">
-                  <h3><span class="headingNumber">Appendix A.1.8 </span><span class="head">&lt;maxKwicsToHarvest&gt;</span></h3>
+                  <h3><span class="headingNumber">Appendix A.1.10 </span><span class="head">&lt;maxKwicsToHarvest&gt;</span></h3>
                   <div class="table">
                      <table class="wovenodd">
                         <tr>
@@ -964,7 +1111,7 @@ element maxKwicsToHarvest { xsd:nonNegativeInteger }</pre>
                   </div>
                </div>
                <div class="refdoc" id="TEI.maxKwicsToShow">
-                  <h3><span class="headingNumber">Appendix A.1.9 </span><span class="head">&lt;maxKwicsToShow&gt;</span></h3>
+                  <h3><span class="headingNumber">Appendix A.1.11 </span><span class="head">&lt;maxKwicsToShow&gt;</span></h3>
                   <div class="table">
                      <table class="wovenodd">
                         <tr>
@@ -1014,7 +1161,7 @@ element maxKwicsToShow { xsd:nonNegativeInteger }</pre>
                   </div>
                </div>
                <div class="refdoc" id="TEI.outputFolder">
-                  <h3><span class="headingNumber">Appendix A.1.10 </span><span class="head">&lt;outputFolder&gt;</span></h3>
+                  <h3><span class="headingNumber">Appendix A.1.12 </span><span class="head">&lt;outputFolder&gt;</span></h3>
                   <div class="table">
                      <table class="wovenodd">
                         <tr>
@@ -1064,7 +1211,7 @@ element outputFolder { xsd:NCName }</pre>
                   </div>
                </div>
                <div class="refdoc" id="TEI.params">
-                  <h3><span class="headingNumber">Appendix A.1.11 </span><span class="head">&lt;params&gt;</span></h3>
+                  <h3><span class="headingNumber">Appendix A.1.13 </span><span class="head">&lt;params&gt;</span></h3>
                   <div class="table">
                      <table class="wovenodd">
                         <tr>
@@ -1163,7 +1310,7 @@ element params
                   </div>
                </div>
                <div class="refdoc" id="TEI.phrasalSearch">
-                  <h3><span class="headingNumber">Appendix A.1.12 </span><span class="head">&lt;phrasalSearch&gt;</span></h3>
+                  <h3><span class="headingNumber">Appendix A.1.14 </span><span class="head">&lt;phrasalSearch&gt;</span></h3>
                   <div class="table">
                      <table class="wovenodd">
                         <tr>
@@ -1214,7 +1361,7 @@ element phrasalSearch { xsd:boolean }</pre>
                   </div>
                </div>
                <div class="refdoc" id="TEI.recurse">
-                  <h3><span class="headingNumber">Appendix A.1.13 </span><span class="head">&lt;recurse&gt;</span></h3>
+                  <h3><span class="headingNumber">Appendix A.1.15 </span><span class="head">&lt;recurse&gt;</span></h3>
                   <div class="table">
                      <table class="wovenodd">
                         <tr>
@@ -1263,7 +1410,7 @@ element recurse { xsd:boolean }</pre>
                   </div>
                </div>
                <div class="refdoc" id="TEI.rule">
-                  <h3><span class="headingNumber">Appendix A.1.14 </span><span class="head">&lt;rule&gt;</span></h3>
+                  <h3><span class="headingNumber">Appendix A.1.16 </span><span class="head">&lt;rule&gt;</span></h3>
                   <div class="table">
                      <table class="wovenodd">
                         <tr>
@@ -1341,7 +1488,7 @@ element rule { <a class="link_ref" href="#TEI.att.xpath" title="att.xpath">att.x
                   </div>
                </div>
                <div class="refdoc" id="TEI.rules">
-                  <h3><span class="headingNumber">Appendix A.1.15 </span><span class="head">&lt;rules&gt;</span></h3>
+                  <h3><span class="headingNumber">Appendix A.1.17 </span><span class="head">&lt;rules&gt;</span></h3>
                   <div class="table">
                      <table class="wovenodd">
                         <tr>
@@ -1396,7 +1543,7 @@ element rules { <a class="link_ref" href="#TEI.rule" title="&lt;rule&gt;">rule</
                   </div>
                </div>
                <div class="refdoc" id="TEI.searchFile">
-                  <h3><span class="headingNumber">Appendix A.1.16 </span><span class="head">&lt;searchFile&gt;</span></h3>
+                  <h3><span class="headingNumber">Appendix A.1.18 </span><span class="head">&lt;searchFile&gt;</span></h3>
                   <div class="table">
                      <table class="wovenodd">
                         <tr>
@@ -1446,7 +1593,7 @@ element searchFile { xsd:anyURI }</pre>
                   </div>
                </div>
                <div class="refdoc" id="TEI.stopwordsFile">
-                  <h3><span class="headingNumber">Appendix A.1.17 </span><span class="head">&lt;stopwordsFile&gt;</span></h3>
+                  <h3><span class="headingNumber">Appendix A.1.19 </span><span class="head">&lt;stopwordsFile&gt;</span></h3>
                   <div class="table">
                      <table class="wovenodd">
                         <tr>
@@ -1499,7 +1646,7 @@ element stopwordsFile { xsd:anyURI }</pre>
                   </div>
                </div>
                <div class="refdoc" id="TEI.totalKwicLength">
-                  <h3><span class="headingNumber">Appendix A.1.18 </span><span class="head">&lt;totalKwicLength&gt;</span></h3>
+                  <h3><span class="headingNumber">Appendix A.1.20 </span><span class="head">&lt;totalKwicLength&gt;</span></h3>
                   <div class="table">
                      <table class="wovenodd">
                         <tr>
@@ -1549,7 +1696,7 @@ element totalKwicLength { xsd:nonNegativeInteger }</pre>
                   </div>
                </div>
                <div class="refdoc" id="TEI.verbose">
-                  <h3><span class="headingNumber">Appendix A.1.19 </span><span class="head">&lt;verbose&gt;</span></h3>
+                  <h3><span class="headingNumber">Appendix A.1.21 </span><span class="head">&lt;verbose&gt;</span></h3>
                   <div class="table">
                      <table class="wovenodd">
                         <tr>
@@ -1598,7 +1745,7 @@ element verbose { xsd:boolean }</pre>
                   </div>
                </div>
                <div class="refdoc" id="TEI.versionFile">
-                  <h3><span class="headingNumber">Appendix A.1.20 </span><span class="head">&lt;versionFile&gt;</span></h3>
+                  <h3><span class="headingNumber">Appendix A.1.22 </span><span class="head">&lt;versionFile&gt;</span></h3>
                   <div class="table">
                      <table class="wovenodd">
                         <tr>
@@ -1710,7 +1857,7 @@ element versionFile { xsd:anyURI }</pre>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Members</span></td>
-                           <td class="wovenodd-col2"><span class="showmembers1"><a class="link_odd_elementSpec" href="#TEI.context" title="&lt;context&gt;">context</a> <a class="link_odd_elementSpec" href="#TEI.rule" title="&lt;rule&gt;">rule</a></span></td>
+                           <td class="wovenodd-col2"><span class="showmembers1"><a class="link_odd_elementSpec" href="#TEI.context" title="&lt;context&gt;">context</a> <a class="link_odd_elementSpec" href="#TEI.exclude" title="&lt;exclude&gt;">exclude</a> <a class="link_odd_elementSpec" href="#TEI.rule" title="&lt;rule&gt;">rule</a></span></td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Attributes</span></td>
@@ -1725,7 +1872,7 @@ element versionFile { xsd:anyURI }</pre>
                                              <table class="attDef">
                                                 <tr>
                                                    <td class="odd_label"><span lang="en" class="label">Status</span></td>
-                                                   <td class="odd_value"><span lang="en">Optional</span></td>
+                                                   <td class="odd_value"><span lang="en"><span class="required">Required</span></span></td>
                                                 </tr>
                                                 <tr>
                                                    <td class="odd_label"><span lang="en" class="label">Datatype</span></td>
@@ -1754,9 +1901,9 @@ element versionFile { xsd:anyURI }</pre>
          <div class="footer"><!--standard links to project, institution etc--><a class="plain" href="http://www.example.com/"></a> <a class="plain" href="index.html">Home</a> <a class="plain" href="#">Feedback</a> </div>
          <address>Martin Holmes and Joey Takeda.
             	    Date: 2019<br/><!--
-	  Generated from index.xml using XSLT stylesheets version 7.48.0
+	  Generated from index.xml using XSLT stylesheets version 7.49.0
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2020-02-03T00:18:08Z.
+	       on 2020-02-17T02:09:45Z.
 	       SAXON HE 9.9.1.3.
 		 --></address>
       </div>

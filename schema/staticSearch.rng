@@ -5,10 +5,10 @@
          xmlns="http://relaxng.org/ns/structure/1.0"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2020-02-03T00:17:54Z. 2019.
-TEI Edition: Version 3.6.0. Last updated on
-	16th July 2019, revision daa3cc0b9
-TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
+Schema generated from ODD source 2020-02-17T02:09:35Z. 2019.
+TEI Edition: Version 4.0.0. Last updated on
+	13th February 2020, revision ccd19b0ba
+TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 4.0.0/
   
 --><!--Free to anyone for any purpose-->
    <sch:ns xmlns:sch="http://purl.oclc.org/dsdl/schematron"
@@ -23,6 +23,9 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
          </optional>
          <optional>
             <ref name="contexts"/>
+         </optional>
+         <optional>
+            <ref name="excludes"/>
          </optional>
       </element>
    </define>
@@ -98,7 +101,8 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
    </define>
    <define name="contexts">
       <element name="contexts" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The set of contexts, expressed as XPath, that controls the identification of
+            contexts for keyword-in-context fragments.) </a:documentation>
          <oneOrMore>
             <ref name="context"/>
          </oneOrMore>
@@ -120,17 +124,41 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 3.6.0/
          <empty/>
       </element>
    </define>
+   <define name="excludes">
+      <element name="excludes" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The set of exclusions, expressed as XPath, that control the subset of documents
+            for a particular search.) </a:documentation>
+         <oneOrMore>
+            <ref name="exclude"/>
+         </oneOrMore>
+      </element>
+   </define>
+   <define name="exclude">
+      <element name="exclude" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(An exclusion definition, which excludes either documents or filters as defined by an XPath.) </a:documentation>
+         <empty/>
+         <ref name="att.xpath.attributes"/>
+         <attribute name="type">
+            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+            <choice>
+               <value>index</value>
+               <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Index exclusion) An exclusion that specifies HTML fragment (which itself can be the root HTML element) to exclude from the document index.</a:documentation>
+               <value>filter</value>
+               <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Filter exclusion) An exclusion that matches an HTML meta tag to exclude from the filter controls on the search page.</a:documentation>
+            </choice>
+         </attribute>
+         <empty/>
+      </element>
+   </define>
    <define name="att.xpath.attributes">
       <ref name="att.xpath.attribute.xpath"/>
    </define>
    <define name="att.xpath.attribute.xpath">
-      <optional>
-         <attribute name="xpath">
-            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(An XPath equivalent to the @match attribute of an xsl:template, which
+      <attribute name="xpath">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(An XPath equivalent to the @match attribute of an xsl:template, which
                   specifies a context in a document.) </a:documentation>
-            <data type="string"/>
-         </attribute>
-      </optional>
+         <data type="string"/>
+      </attribute>
    </define>
    <define name="att.labelled.attributes">
       <ref name="att.labelled.attribute.label"/>
