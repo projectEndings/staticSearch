@@ -1,4 +1,4 @@
-<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
    
    
    <head>
@@ -18,13 +18,6 @@
           background-color: #ffcccc;
           }
       </style>
-      
-      <!-- 
-             This is the style element that is inserted by the static search 
-             build process. It will be replaced every time you build the search. 
-             To override it, you can add your own style element AFTER this
-             one.
-      -->
       
       
       <style id="ssCss"><!--
@@ -88,36 +81,24 @@
     --></style>
       
       
-      <title>Test search page</title>
+      <title>Search only things Worth Reading</title>
       </head>
    
    
    <body>
       
       
-      <h1>Test search page</h1>
-      
-      
-      <p>This is a simple search page for the test collection.</p>
-      
-      <!-- 
-             This is the div into which the JavaScript and page components required for the
-             search are inserted during the build process. The contents of this div are replaced
-            every time you run a search build.
-      -->
-      
-      
-      <div id="staticSearch"><script src="ssTest/ssPorter2Stemmer.js"></script><script src="ssTest/ssSearch.js"></script><script>
+      <div id="staticSearch"><script src="ssWorthReading/ssPorter2Stemmer.js"></script><script src="ssWorthReading/ssSearch.js"></script><script>
                 var Sch;
                 window.addEventListener('load', function(){Sch = new StaticSearch();});
-            </script><form accept-charset="UTF-8" id="ssForm" data-allowphrasal="yes" data-maxkwicstoshow="3" onsubmit="return false;" data-versionstring="_941957f" data-ssfolder="ssTest"><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><div class="ssDescFilters">
+            </script><form accept-charset="UTF-8" id="ssForm" data-allowphrasal="yes" data-maxkwicstoshow="3" onsubmit="return false;" data-versionstring="_941957f" data-ssfolder="ssWorthReading"><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><div class="ssDescFilters">
                <fieldset class="ssFieldset" title="Document type" id="ssDesc1">
                   <legend>Document type</legend>
                   <ul class="ssDescCheckboxList">
-                     <li><input type="checkbox" title="Document type" value="Article extracts" id="ssDesc1_4" class="staticSearch.desc"/><label for="ssDesc1_4">Article extracts</label></li>
+                     <li><input type="checkbox" title="Document type" value="Article extracts" id="ssDesc1_3" class="staticSearch.desc"/><label for="ssDesc1_3">Article extracts</label></li>
                      <li><input type="checkbox" title="Document type" value="Documents with tables" id="ssDesc1_1" class="staticSearch.desc"/><label for="ssDesc1_1">Documents with tables</label></li>
-                     <li><input type="checkbox" title="Document type" value="Poems" id="ssDesc1_3" class="staticSearch.desc"/><label for="ssDesc1_3">Poems</label></li>
-                     <li><input type="checkbox" title="Document type" value="Site info files" id="ssDesc1_2" class="staticSearch.desc"/><label for="ssDesc1_2">Site info files</label></li>
+                     <li><input type="checkbox" title="Document type" value="Poems" id="ssDesc1_2" class="staticSearch.desc"/><label for="ssDesc1_2">Poems</label></li>
+                     <li><input type="checkbox" title="Document type" value="Site info files" id="ssDesc1_4" class="staticSearch.desc"/><label for="ssDesc1_4">Site info files</label></li>
                   </ul>
                </fieldset>
             </div>
@@ -125,24 +106,12 @@
                <fieldset class="ssFieldset" title="Date range" id="ssDate1">
                   <legend>Date range</legend><span><label for="ssDate1_from">From: </label><input type="text" maxlength="10" pattern="^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$" title="Date range" id="ssDate1_from" class="staticSearch.date" placeholder="1689-01-01" onchange="this.reportValidity()"/></span><span><label for="ssDate1_to">To: </label><input type="text" maxlength="10" pattern="^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$" title="Date range" id="ssDate1_to" class="staticSearch.date" placeholder="2019-12-31" onchange="this.reportValidity()"/></span></fieldset>
             </div>
-            <div class="ssBoolFilters">
-               <fieldset class="ssFieldset"><span><label for="ssBool1">Worth reading: </label><select id="ssBool1" title="Worth reading" class="staticSearch.bool">
-                        <option value="">?</option>
-                        <option value="true">true</option>
-                        <option value="false">false</option></select></span></fieldset>
-            </div>
          </form>
          <div id="ssSearching">Searching...</div>
          <div id="ssResults"></div>
       </div>
-      
-      <!-- 
-             This is a special search page component which is used only for testing 
-             the static search. You do not need or want any of the following stuff in
-             your own site's search page.
-      -->
       <script>
-          <!--
+    <!--
            //This is a set of automated tests which are intended to check whether
            //we're getting the results we expect back from the search object.
            var reportDiv = null;
@@ -155,7 +124,7 @@
            tests.push({setup: function(){Sch.queryBox.value = 'elephant';},
                        check: function(num){console.log('Search hook ' + num);
                                             console.log('Testing results for the word "elephant".');
-                                            checkResults({docsFound: 2, contextsFound: 4, scoreTotal: 4});}});
+                                            checkResults({docsFound: 1, contextsFound: 1, scoreTotal: 1});}});
 
            //Another simple one-word search.
            tests.push({setup: function(){Sch.queryBox.value = 'twilight';},
@@ -173,7 +142,7 @@
            tests.push({setup: function(){Sch.queryBox.value = 'across';},
                        check: function(num){console.log('Search hook ' + num);
                                             console.log('Testing results for the word "across".', true);
-                                            checkResults({docsFound: 2, contextsFound: 2, scoreTotal: 2});}});
+                                            checkResults({docsFound: 1, contextsFound: 1, scoreTotal: 1});}});
 
            //Same word with date.
            tests.push({setup: function(){Sch.queryBox.value = 'across'; document.querySelector('input[title="Date range"][id$="_from"]').value = '2000';},
@@ -181,12 +150,12 @@
                                             console.log('Testing results for the word "across" in documents since 2000.');
                                             checkResults({docsFound: 1, contextsFound: 1, scoreTotal: 1});}});
                                             
-           // Simple one word phrase that should only exist in badthings.html
+                                            
+                  // Simple one word phrase that should only exist in badthings.html, so should be 0 here
            tests.push({setup: function(){Sch.queryBox.value = 'ignominious';},
                       check: function(num){console.log('Search hook ' + num);
                       console.log('Testing results for the phrase "ignominious"');
-                      checkResults({docsFound: 1, contextsFound: 1, scoreTotal: 1});}});
-                      
+                      checkResults({docsFound: 0, contextsFound: 0, scoreTotal: 0});}});
 
            //Phrasal search. This one tests ignored inlines.
            tests.push({setup: function(){Sch.queryBox.value = '"summer day—our day"';},
@@ -207,15 +176,15 @@
                                          checkResults({docsFound: 0, contextsFound: 0, scoreTotal: 0});}});
 
            //Two MUST_CONTAINs with boolean flag.
-           tests.push({setup: function(){Sch.queryBox.value = '+green +golden'; document.querySelector('select[title="Worth reading"]').selectedIndex = 2;},
+           tests.push({setup: function(){Sch.queryBox.value = '+green +golden';},
                                          check: function(num){console.log('Search hook ' + num);
-                                         console.log('Testing results for the phrase "+green +golden" with boolean flag "Worth reading" false.');
+                                         console.log('Testing results for the phrase "+green +golden"');
                                          checkResults({docsFound: 1, contextsFound: 2, scoreTotal: 2});}});
                                                                                   
             //Search based only on filters, no terms.
-             tests.push({setup: function(){Sch.queryBox.value = ''; document.querySelector('input[value="Poems"]').checked = 'checked'; document.querySelector('select[title="Worth reading"]').selectedIndex = 1;},
+             tests.push({setup: function(){Sch.queryBox.value = ''; document.querySelector('input[value="Poems"]').checked = 'checked';},
                                          check: function(num){console.log('Search hook ' + num);
-                                         console.log('Testing results for pure filter search: poems worth reading.');
+                                         console.log('Testing results for poems.');
                                          checkResults({docsFound: 2, contextsFound: 0, scoreTotal: 0});}});
                                          
            //Search for a word that's in the stopword list
@@ -228,7 +197,7 @@
            tests.push({setup: function(){Sch.queryBox.value = 'dog';},
                                          check: function(num){console.log('Search hook ' + num);
                                          console.log('Testing results for the word "dog", which in one document has no spaces around it, just linebreaks.');
-                                         checkResults({docsFound: 2, contextsFound: 4, scoreTotal: 4});}});
+                                         checkResults({docsFound: 1, contextsFound: 3, scoreTotal: 3});}});
 
 
            function runTests(){
@@ -276,12 +245,11 @@
            window.addEventListener('load', runTests);
 
            -->
-       </script>
+</script>
       
       
       <div id="testResults">
          
          </div>
-      
       </body>
    </html>
