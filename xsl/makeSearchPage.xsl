@@ -269,8 +269,28 @@
                                     
                                     <!--And create a ul from each of the embedded maps-->
                                     <ul class="ssDescCheckboxList">
-                                        <xsl:for-each select="$jsonDoc//map:map[@key]">
-                                            <xsl:sort select="replace(map:string[@key='name'], '^((the)|(a)|(an))\s+', '', 'i')"/>
+                                        <!-- Before sorting checkbox items, we need to know
+                                              whether they're numeric or not. -->
+                                        <xsl:variable name="notNumeric" select="some $n in (for $s in $jsonDoc//map:map[@key]/map:string[@key='name'] return $s castable as xs:decimal) satisfies $n = false()"/>
+                                        <xsl:variable name="sortedMaps" as="element(map:map)+">
+                                            <xsl:choose>
+                                                <xsl:when test="$notNumeric">
+                                                    <xsl:for-each select="$jsonDoc//map:map[@key]">
+                                                        <xsl:sort select="replace(map:string[@key='name'], '^((the)|(a)|(an))\s+', '', 'i')"/>
+                                                        <xsl:sequence select="."/>
+                                                    </xsl:for-each>
+                                                </xsl:when>
+                                                <xsl:otherwise>
+                                                    <xsl:for-each select="$jsonDoc//map:map[@key]">
+                                                        <xsl:sort select="map:string[@key='name']" data-type="number"/>
+                                                        <xsl:sequence select="."/>
+                                                    </xsl:for-each>
+                                                </xsl:otherwise>
+                                            </xsl:choose>
+                                        </xsl:variable>
+                                        
+                                        <xsl:for-each select="$sortedMaps">
+                                            <!--<xsl:sort select="if ($notNumeric)  then replace(map:string[@key='name'], '^((the)|(a)|(an))\s+', '', 'i') else xs:decimal(map:string[@key='name'])"/>-->
                                             <!--And create the input item: the input item contains:
                                             * an @title that specifies the filter name (e.g. Genre)
                                             * an @value that specifies the filter value (e.g. Poem)
