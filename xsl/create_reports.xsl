@@ -182,10 +182,10 @@
                         <td>Total HTML Documents Analyzed</td>
                         <td><xsl:value-of select="count($docs)"/></td>
                     </tr>
-                    <xsl:if test="doc($configFile)//*:exclude">
+                    <xsl:if test="$hasExclusions">
                         <tr>
                             <td>HTML Documents Excluded</td>
-                            <td><xsl:value-of select="count($tokenizedDocs//html[@data-staticSearch-exclude])"/></td>
+                            <td><xsl:value-of select="count($docs) - count($tokenizedDocs)"/></td>
                         </tr>
                     </xsl:if>
  

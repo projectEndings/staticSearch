@@ -405,6 +405,8 @@
                     </xsl:choose>
                 </xso:param>
             </xsl:for-each>
+      
+            
             <!-- We need an outputFolder element even if the user hasn't put one in. -->
             <xsl:if test="not($configDoc//params/outputFolder)">
                 <xso:param name="outputFolder">staticSearch</xso:param>
@@ -434,6 +436,8 @@
         <xso:variable name="tokenizedDocs" 
             select="collection(concat($tempDir, {$sq || '?select=*_tokenized.*htm*;recurse=' || (if ($recurse) then 'yes' else 'no') || $sq}))"/>
         
+        <xso:variable name="hasExclusions" 
+            select="{if ($configDoc//exclude) then 'true' else 'false'}()"/>
         
         
         

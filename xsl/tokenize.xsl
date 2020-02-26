@@ -88,16 +88,16 @@
             this is the full URI minus the collection dir.
             
             Note that we TRIM off the leading slash since it does the root of the server.-->
-            
             <xsl:variable name="relativeUri" select="substring-after($uri,$collectionDir) => replace('^(/|\\)','')" as="xs:string"/>
             
             <!--This is the IDENTIFIER for the static search, which is just the relative URI with all of the punctuation/
              slashes et cetera that could conceivably be in filenames turned into underscores.
-
             --> 
-            
-           
-            <xsl:variable name="searchIdentifier" select="replace($relativeUri,'^(/|\\)','') => replace('\.x?html?$','') => replace('\s+|\\|/|\.','_')" as="xs:string"/>
+            <xsl:variable name="searchIdentifier"
+                select="replace($relativeUri,'^(/|\\)','') => 
+                        replace('\.x?html?$','') => 
+                        replace('\s+|\\|/|\.','_')" 
+                 as="xs:string"/>
 
             <!--Now create the various documents, and we put the leading slash BACK in-->
             <xsl:variable name="cleanedOutDoc" select="concat($tempDir,'/', $searchIdentifier,'_cleaned.html')"/>
@@ -105,56 +105,71 @@
             <xsl:variable name="weightedOutDoc" select="concat($tempDir,'/',$searchIdentifier,'_weighted.html')"/>
             <xsl:variable name="tokenizedOutDoc" select="concat($tempDir,'/',$searchIdentifier,'_tokenized.html')"/>
             <xsl:variable name="excludedOutDoc" select="concat($tempDir,'/',$searchIdentifier,'_excluded.html')"/>
-            <xsl:message>Tokenizing <xsl:value-of select="document-uri()"/></xsl:message>
+   
             
-            <xsl:variable name="cleaned">
-                <xsl:apply-templates mode="clean">
-                    <xsl:with-param name="relativeUri" select="$relativeUri" tunnel="yes"/>
-                    <xsl:with-param name="searchIdentifier" select="$searchIdentifier" tunnel="yes"/>
-                </xsl:apply-templates>
-            </xsl:variable>
+           <xsl:variable name="excluded">
+               <xsl:choose>
+                   <xsl:when test="$hasExclusions">
+                       <xsl:apply-templates mode="exclude"/>
+                   </xsl:when>
+                   <xsl:otherwise>
+                       <xsl:sequence select="."/>
+                   </xsl:otherwise>
+               </xsl:choose>
+           </xsl:variable>
             
-            <xsl:variable name="contextualized">
-                <xsl:apply-templates select="$cleaned" mode="contextualize"/>
-            </xsl:variable>
-            
-            <xsl:variable name="weighted">
-                <xsl:apply-templates select="$contextualized" mode="weigh"/>
-            </xsl:variable>
-            
-            <xsl:variable name="excluded">
-                <xsl:apply-templates select="$weighted" mode="exclude"/>
-            </xsl:variable>
-            
-            <xsl:if test="$verbose">
-                <xsl:message>Creating <xsl:value-of select="$cleanedOutDoc"/></xsl:message>
-                <xsl:result-document href="{$cleanedOutDoc}">
-                    <xsl:copy-of select="$cleaned"/>
-                </xsl:result-document>
-                <xsl:message>Creating <xsl:value-of select="$contextualizedOutDoc"/></xsl:message>
-                <xsl:result-document href="{$contextualizedOutDoc}">
-                    <xsl:copy-of select="$contextualized"/>
-                </xsl:result-document>
-                <xsl:message>Creating <xsl:value-of select="$weightedOutDoc"/></xsl:message>
-                <xsl:result-document href="{$weightedOutDoc}">
-                    <xsl:copy-of select="$weighted"/>
-                </xsl:result-document>
-                <xsl:message>Creating <xsl:value-of select="$excludedOutDoc"/></xsl:message>
-                <xsl:result-document href="{$excludedOutDoc}">
-                    <xsl:copy-of select="$excluded"/>
-                </xsl:result-document>
-            </xsl:if>
-            <xsl:result-document href="{$tokenizedOutDoc}">
-                <xsl:if test="$verbose">
-                    <xsl:message>Creating <xsl:value-of select="$tokenizedOutDoc"/></xsl:message>
-                </xsl:if>
-                <xsl:variable name="tokenizedDoc">
-                    <xsl:apply-templates select="$excluded" mode="tokenize"/>
+            <xsl:if test="if ($hasExclusions) then not($excluded//html[@data-staticSearch-exclude='true']) else true()">
+                
+                
+                <xsl:message>Tokenizing <xsl:value-of select="$uri"/></xsl:message>
+                <xsl:variable name="cleaned">
+                    <xsl:apply-templates select="$excluded" mode="clean">
+                        <xsl:with-param name="relativeUri" select="$relativeUri" tunnel="yes"/>
+                        <xsl:with-param name="searchIdentifier" select="$searchIdentifier" tunnel="yes"/>
+                    </xsl:apply-templates>
                 </xsl:variable>
-                <xsl:apply-templates select="$tokenizedDoc" mode="enumerate"/>
-              
-            </xsl:result-document>
-           
+                
+                <xsl:variable name="weighted">
+                    <xsl:apply-templates select="$cleaned" mode="weigh"/>
+                </xsl:variable>
+                
+                
+                <xsl:variable name="contextualized">
+                    <xsl:apply-templates select="$weighted" mode="contextualize"/>
+                </xsl:variable>
+                
+                <xsl:result-document href="{$tokenizedOutDoc}">
+                    <xsl:if test="$verbose">
+                        <xsl:message>Creating <xsl:value-of select="$tokenizedOutDoc"/></xsl:message>
+                    </xsl:if>
+                    <xsl:variable name="tokenizedDoc">
+                        <xsl:apply-templates select="$contextualized" mode="tokenize"/>
+                    </xsl:variable>
+                    <xsl:apply-templates select="$tokenizedDoc" mode="enumerate"/>
+                </xsl:result-document>
+         
+            
+                
+                <xsl:if test="$verbose">
+                    <xsl:message>Creating <xsl:value-of select="$cleanedOutDoc"/></xsl:message>
+                    <xsl:result-document href="{$cleanedOutDoc}">
+                        <xsl:copy-of select="$cleaned"/>
+                    </xsl:result-document>
+                    <xsl:message>Creating <xsl:value-of select="$contextualizedOutDoc"/></xsl:message>
+                    <xsl:result-document href="{$contextualizedOutDoc}">
+                        <xsl:copy-of select="$contextualized"/>
+                    </xsl:result-document>
+                    <xsl:message>Creating <xsl:value-of select="$weightedOutDoc"/></xsl:message>
+                    <xsl:result-document href="{$weightedOutDoc}">
+                        <xsl:copy-of select="$weighted"/>
+                    </xsl:result-document>
+                    <xsl:message>Creating <xsl:value-of select="$excludedOutDoc"/></xsl:message>
+                    <xsl:result-document href="{$excludedOutDoc}">
+                        <xsl:copy-of select="$excluded"/>
+                    </xsl:result-document>
+                </xsl:if>
+                
+            </xsl:if>
         </xsl:for-each>
     </xsl:template>
     
@@ -211,7 +226,7 @@
     
   
     <!--Here is where we normalize the string values-->
-    <xsl:template match="text()" mode="clean">
+    <xsl:template match="text()[matches(.,string-join(($curlyAposOpen,$curlyAposClose,$curlyDoubleAposClose, $curlyDoubleAposOpen),'|'))]" mode="clean">
         <xsl:value-of select="replace(.,string-join(($curlyAposOpen,$curlyAposClose),'|'), $straightSingleApos) => replace(string-join(($curlyDoubleAposOpen,$curlyDoubleAposClose),'|'),$straightDoubleApos)"/>
     </xsl:template>
     
