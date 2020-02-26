@@ -420,7 +420,63 @@
               <p>A complex site may have two or more search pages targetting
               specific types of document or content, each of which may need 
               its own particular search controls and indexes. This can easily 
-              be achieved by specifying a different </p>
+              be achieved by specifying a different <gi>searchFile</gi> and 
+              <gi>outputFolder</gi> in the configuration file for each search.</p>
+              
+              <p>For these searches to be different from each other, 
+              they will also probably have different contexts and rules. For
+              example, imagine that you are creating a special search page 
+              that focuses only on the text describing images or figures 
+              in your documents. You might do it like this:
+              
+                <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                  <rules> 
+                    <rule xpath="text()[not(ancestor::div[@class='figure']or ancestor::title)]" weight="0"/>
+                  </rules>
+                </egXML>
+              
+              This specifies that all text nodes which are not part of the document title
+              or descendants of <tag>div class="figure"</tag> should be ignored 
+                (<att>weight</att>=<val>0</val>), so only your target nodes will be
+                indexed.
+              </p>
+              
+              
+              <p>However, it's
+              also likely that you will want to exclude certain features or 
+              documents from a specialized search page, and this is done using
+              the <gi>excludes</gi> section and its child <gi>exclude</gi> elements.</p>
+              
+              <p>Here is an example:
+              
+                <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                  <excludes>
+                    <!-- We only index files which have illustrations in them. -->
+                    <exclude type="index" 
+                      xpath="html[not(descendant::meta[@name='Has illustration(s)'][@content='true'])]"/>
+                    
+                    <!-- We ignore the document type filter, 
+                         because we are only indexing one type 
+                         of document anyway. -->
+                    <exclude type="filter" xpath="meta[@name='Document type']"/>
+                    
+                    <!-- We exclude the filter that specifies 
+                         these documents because it's pointless. -->
+                    <exclude type="filter" xpath="meta[@name='Has illustration(s)']"/>
+                  </excludes>
+                </egXML>
+              
+              Here we use <tag>exclude type="index"/</tag> to specify that all documents which do not contain 
+                <tag>meta name="Has illustration(s)" content="true"/></tag>
+                should be ignored. Then we use two <tag>exclude type="filter"/</tag> tags to 
+                specify first that the <ident>Document type</ident> filter should be
+                ignored (i.e. it should not appear on the search page), and second, that the 
+                boolean filter <ident>Has illustrations(s)</ident> should also be excluded.
+              </p>
+              
+              <p>Using exclusions, you can create multiple specialized search pages which have customized
+              form controls within the same document collection. This is at the expense of additional
+              disk space and build time, of course; each of these searches needs to be built separately.</p>
               
             </div>
           </div>
