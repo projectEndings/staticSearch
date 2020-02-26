@@ -193,7 +193,7 @@
               Only the <gi>params</gi> element is necessary, but, as we discuss shortly, we highly suggest taking advantage of the <gi>rules</gi>
               and <gi>contexts</gi> for the best results.
             </p>
-            <div>
+            <div xml:id="specifyingParameters">
               <head>Specifying Parameters</head>
               <div xml:id="paramsRequired">
                 <head>Required parameters</head>
@@ -319,7 +319,7 @@
                 
               </div>
             </div>
-          <div>
+          <div xml:id="specifyingRules">
             <head>Specifying Rules (Optional)</head>
             <p>The <gi>rules</gi> elements specifies a list of conditions (using the <gi>rule</gi> element) that tell the parser, using XPath statements in the <att>xpath</att> attribute, specific weights to assign to particular parts of each document. For instance, if you wanted all heading elements (<gi>h1</gi>, <gi>h2</gi>, etc) in documents to be given a greater weight and thus receive a higher score in the results, you can do so using a rule like so:
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
@@ -355,7 +355,7 @@
               </list>
             </p>
           </div>
-          <div>
+          <div xml:id="specifyingContexts">
             <head>Specifying Contexts (Optional)</head>
             <p>When the static search creates the keywords-in-contexts (the "kwic" or "snippets") for each token, it does so by looking for the nearest block-level element that it can use as its context. Take, for instance, this unordered list:
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
@@ -414,6 +414,15 @@
               </list>
             </p>
           </div>
+            <div xml:id="specifyingExclusions">
+              <head>Specifying Exclusions (Optional)</head>
+              
+              <p>A complex site may have two or more search pages targetting
+              specific types of document or content, each of which may need 
+              its own particular search controls and indexes. This can easily 
+              be achieved by specifying a different </p>
+              
+            </div>
           </div>
           
           <div xml:id="searchPage">
