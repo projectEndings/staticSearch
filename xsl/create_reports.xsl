@@ -106,6 +106,7 @@
     <xsl:template name="createDiagnostics">
         <xsl:variable name="docsWithoutIds" select="$docs//html[not(@id)]"/>
         <xsl:variable name="docsWithoutLang" select="$docs//html[not(@lang)]"/>
+        <xsl:variable name="badNumericFilters" select="$tokenizedDocs//meta[contains-token(@class,'staticSearch.num')][not(@content castable as xs:decimal)]"/>
         <section>
             <h2>Diagnostics</h2>
             <details>
@@ -141,6 +142,32 @@
                     </xsl:choose>
                 
             </details>
+            <details>
+                <summary>Bad Numeric Filters (<xsl:value-of select="count($badNumericFilters)"/>)</summary>
+                <xsl:choose>
+                    <xsl:when test="count($badNumericFilters) gt 0">
+                        <ul>
+                            <xsl:for-each-group select="$badNumericFilters" group-by="document-uri(root(.))">
+                                <li><xsl:value-of select="current-grouping-key()"/>
+                                    <ul>
+                                        <xsl:for-each select="current-group()">
+                                            <li>Name: <xsl:value-of select="@name"/>; Value: <xsl:value-of select="@content"/></li>
+                                        </xsl:for-each>
+                                    </ul>
+                                </li>
+                                
+                            </xsl:for-each-group>
+                        </ul>
+                  
+                        
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <p>None found!</p>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </details>
+
+            
         </section>
     </xsl:template>
  

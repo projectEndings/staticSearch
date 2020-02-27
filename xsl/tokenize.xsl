@@ -75,6 +75,15 @@
         </xsl:map>
     </xsl:variable>
     
+  
+  <xsl:variable name="numFilterMap" as="map(xs:string, xs:string)">
+      <xsl:map>
+          <xsl:for-each-group select="$docs//meta[contains-token(@class,'staticSearch.num')]" group-by="@name">
+              <xsl:map-entry key="xs:string(current-grouping-key())" select="'ssNum' || position()"/>
+          </xsl:for-each-group>
+      </xsl:map>
+  </xsl:variable>
+    
     <!--Basic template-->
     <xsl:template match="/">
         <xsl:message>Found <xsl:value-of select="count($docs)"/> documents to process...</xsl:message>
@@ -273,9 +282,18 @@
             <xsl:apply-templates select="@*|node()" mode="#current"/>
         </xsl:copy>
     </xsl:template>
+    
+    
     <xsl:template match="meta[contains-token(@class,'staticSearch.bool')][not(@data-staticSearch-exclude)]" mode="tokenize">
         <xsl:copy>
             <xsl:attribute name="data-staticSearch-filter-id" select="$boolFilterMap(normalize-space(@name))"/>
+            <xsl:apply-templates select="@*|node()" mode="#current"/>
+        </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="meta[contains-token(@class,'staticSearch.num')][not(@data-staticSearch-exclude)]" mode="tokenize">
+        <xsl:copy>
+            <xsl:attribute name="data-staticSearch-filter-id" select="$numFilterMap(normalize-space(@name))"/>
             <xsl:apply-templates select="@*|node()" mode="#current"/>
         </xsl:copy>
     </xsl:template>

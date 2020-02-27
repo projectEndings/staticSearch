@@ -595,6 +595,29 @@
                                 <xsl:value-of select="xml-to-json($tmpMap)"/>
                             </xsl:result-document>
                         </xsl:when>
+                        <xsl:when test="$thisClass ='staticSearch.num'">
+                            <xsl:variable name="tmpMap" as="element(map:map)">
+                                <map xmlns="http://www.w3.org/2005/xpath-functions">
+                                    <string key="filterId"><xsl:value-of select="$thisId"/></string>
+                                    <string key="filterName"><xsl:value-of select="$thisName"/></string>
+                                    <map key="docs">
+                                        <xsl:for-each-group select="current-group()" group-by="ancestor::html/@data-staticSearch-relativeUri">
+                                            <xsl:variable name="filterId" select="concat($thisId,'_',position())"/>
+                                            <array key="{current-grouping-key()}">
+                                                <xsl:for-each-group select="current-group()[@content castable as xs:decimal]" group-by="xs:decimal(@content)">
+                                                    <number><xsl:value-of select="current-grouping-key()"/></number>
+                                                </xsl:for-each-group>
+                                            </array>
+                                        </xsl:for-each-group>
+                                    </map>
+                                    
+                                </map>
+                            </xsl:variable>
+                            <xsl:result-document
+                                href="{$outDir || '/filters/' || $thisId || $versionString || '.json'}" method="text">
+                                <xsl:value-of select="xml-to-json($tmpMap)"/>
+                            </xsl:result-document>
+                        </xsl:when>
                     </xsl:choose>
                 
             </xsl:for-each-group>
