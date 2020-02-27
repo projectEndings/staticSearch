@@ -249,6 +249,7 @@
                     <xsl:variable name="descFilters" select="$filterJSONURIs[matches(.,'ssDesc\d+.*\.json')]"/>
                     <xsl:variable name="dateFilters" select="$filterJSONURIs[matches(.,'ssDate\d+.*\.json')]"/>
                     <xsl:variable name="boolFilters" select="$filterJSONURIs[matches(.,'ssBool\d+.*\.json')]"/>
+                    <xsl:variable name="numFilters" select="$filterJSONURIs[matches(.,'ssNum\d+.*\.json')]"/>
                     
                     
                     <!--First, handle the desc filters-->
@@ -339,6 +340,39 @@
                                     </span>
                                 </fieldset>
                             </xsl:for-each>
+                        </div>
+                    </xsl:if>
+                    
+                    <xsl:if test="not(empty($numFilters))">
+                        <div class="ssNumFilters">
+                                <xsl:for-each select="$numFilters">
+                                    <xsl:variable name="jsonDoc" select="unparsed-text(.) => json-to-xml()"
+                                        as="document-node()"/>
+                                    <xsl:variable name="filterName" select="$jsonDoc//map:string[@key='filterName']"/>
+                                    <xsl:variable name="filterId" select="$jsonDoc//map:string[@key='filterId']"/>
+                                    <xsl:variable name="vals" select="$jsonDoc//map:number/xs:decimal(.)"/>
+                                    <xsl:variable name="minVal" select="min($vals)"/>
+                                    <xsl:variable name="maxVal" select="max($vals)"/>
+                                    
+                                    <fieldset class="ssFieldset" title="{$filterName}" id="{$filterId}">
+                                        <!--And add the filter name as the legend-->
+                                        <legend><xsl:value-of select="$filterName"/></legend>
+                                        <span>
+                                            <label for="{$filterId}_from">From: </label>
+                                            <input type="number" min="{$minVal}" max="{$maxVal}" placeholder="{$minVal}"
+                                                title="{$filterName}" id="{$filterId}_from" 
+                                                class="staticSearch.num"/>
+                                        </span>
+                                        
+                                        <span>
+                                            <label for="{$filterId}_to">To: </label>
+                                            <input type="number" min="{$minVal}" max="{$maxVal}" placeholder="{$maxVal}"
+                                                title="{$filterName}" id="{$filterId}_to" 
+                                                class="staticSearch.num"/>
+                                        </span>
+                                    </fieldset>
+                                </xsl:for-each>
+                            
                         </div>
                     </xsl:if>
                     
