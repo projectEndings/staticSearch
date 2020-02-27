@@ -111,6 +111,7 @@
   * div#ssResults                (div in which to output the results)
   * input[type='checkbox'].staticSearch.desc  (optional; checkbox lists for filtering based on text labels)
   * input[type='text'].staticSearch.date      (optional; textboxes for date filters)
+  * input[type='number'].staticSearch.num      (optional; inputs for numerical filters)
   * input[type='checkbox'].staticSearch.bool  (optional: checkboxes for boolean filters)
   * input[type='text'].staticSearch.text  (NOT YET IMPLEMENTED: type-in search filter boxes)
   *
@@ -191,6 +192,9 @@ class StaticSearch{
       //Date filters
       this.dateFilterTextboxes =
            Array.from(document.querySelectorAll("input[type='text'][class='staticSearch.date']"));
+      //Number filters
+      this.numFilterInputs =
+           Array.from(document.querySelectorAll("input[type='number'][class='staticSearch.num']"));
       //Boolean filters
       this.boolFilterSelects =
            Array.from(document.querySelectorAll("select[class='staticSearch.bool']"));
@@ -419,6 +423,16 @@ class StaticSearch{
         txt.value = '';
       }
     }
+    for (let num of this.numFilterInputs){
+      let key = num.getAttribute('title') + num.id.replace(/^.+((_from)|(_to))$/, '$1');
+      if ((searchParams.has(key)) && (searchParams.get(key).length > 3)){
+        num.value = searchParams.get(key);
+        searchToDo = true;
+      }
+      else{
+        num.value = '';
+      }
+    }
     for (let sel of this.boolFilterSelects){
       let key = sel.getAttribute('title');
       let val = (searchParams.has(key))? searchParams.get(key) : '';
@@ -510,6 +524,12 @@ class StaticSearch{
           if (txt.value.match(/\d\d\d\d(-\d\d(-\d\d)?)?/)){
             let key = txt.getAttribute('title') + txt.id.replace(/^.+((_from)|(_to))$/, '$1');
             search.push(key + '=' + txt.value);
+          }
+        }
+        for (let num of this.numFilterInputs){
+          if (num.value.match(/[\d\-\.]+/)){
+            let key = num.getAttribute('title') + num.id.replace(/^.+((_from)|(_to))$/, '$1');
+            search.push(key + '=' + num.value);
           }
         }
         for (let sel of this.boolFilterSelects){
@@ -702,6 +722,9 @@ class StaticSearch{
       for (let txt of this.dateFilterTextboxes){
         txt.value = '';
       }
+      for (let num of this.numFilterInputs){
+        num.value = '';
+      }
       for (let sel of this.boolFilterSelects){
         sel.selectedIndex = 0;
       }
@@ -806,6 +829,39 @@ class StaticSearch{
             }
             for (const docUri in docs){
               if ((docs[docUri].length > 0) && (new Date(docs[docUri][0]) <= toDate)){
+                currXSet.add(docUri);
+              }
+            }
+            xSets.push(currXSet);
+          }
+        }
+      }
+
+      //Find each date pair and get its descriptor.
+      let nums = document.querySelectorAll('fieldset[id ^= "ssNum"]');
+      for (let num of nums){
+        let numName = num.title;
+        if (this.mapFilterData.has(numName)){
+          let docs = this.mapFilterData.get(numName).docs;
+          let fromNum = null;
+          let toNum = null;
+          let fromVal = num.querySelector('input[type="number"][id $= "_from"]').value;
+          if (fromVal.length > 0){
+            currXSet = new XSet();
+            fromNum = parseFloat(fromVal);
+            for (const docUri in docs){
+              if ((docs[docUri].length > 0) && (parseFloat(docs[docUri][docs[docUri].length-1]) >= fromNum)){
+                currXSet.add(docUri);
+              }
+            }
+            xSets.push(currXSet);
+          }
+          let toVal = num.querySelector('input[type="number"][id $= "_to"]').value;
+          if (toVal.length > 0){
+            currXSet = new XSet();
+            toNum = parseFloat(toVal);
+            for (const docUri in docs){
+              if ((docs[docUri].length > 0) && (parseFloat(docs[docUri][0]) <= toNum)){
                 currXSet.add(docUri);
               }
             }
@@ -944,6 +1000,14 @@ class StaticSearch{
           }
         }
         for (let ctrl of document.querySelectorAll('input[type="text"][class="staticSearch.date"]')){
+          if (ctrl.value.length > 3){
+            let filterId = ctrl.id.split('_')[0];
+            if (this.mapJsonRetrieved.get(filterId) != GOT){
+              filterIds.add(filterId);
+            }
+          }
+        }
+        for (let ctrl of document.querySelectorAll('input[type="number"][class="staticSearch.num"]')){
           if (ctrl.value.length > 3){
             let filterId = ctrl.id.split('_')[0];
             if (this.mapJsonRetrieved.get(filterId) != GOT){

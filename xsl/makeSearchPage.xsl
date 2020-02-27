@@ -99,12 +99,12 @@
         input#ssQuery{
             flex: 1;
         }
-        div.ssDescFilters, div.ssDateFilters, div.ssBoolFilters{
+        div.ssDescFilters, div.ssDateFilters, div.ssNumFilters, div.ssBoolFilters{
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
         }
-        div.ssDescFilters fieldset, div.ssDateFilters fieldset, div.ssBoolFilters fieldset{
+        div.ssDescFilters fieldset, div.ssDateFilters fieldset, div.ssNumFilters fieldset, div.ssBoolFilters fieldset{
             margin: 0.25em auto;
             flex-grow: 1;
             display: flex;
@@ -122,13 +122,16 @@
             flex-wrap: nowrap;
             align-items: flex-start;
         }
-        div.ssDateFilters fieldset.ssFieldset span, div.ssBoolFilters fieldset.ssFieldset span{
+        div.ssDateFilters fieldset.ssFieldset span, div.ssNumFilters fieldset.ssFieldset span, div.ssBoolFilters fieldset.ssFieldset span{
             padding: 0.5em 1em;
         }
         fieldset.ssFieldset > span {
             background-color: #ddd;
             border: solid 1px #aaa;
             margin: 0.2em;
+        }
+        div.ssNumFilters input[type="number"], div.ssDateFilters input[type="text"]{
+            padding: 0.5em;
         }
         div#ssSearching{
             background-color: #000000;
