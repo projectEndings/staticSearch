@@ -48,6 +48,8 @@
         }
         div.ssDescFilters fieldset, div.ssDateFilters fieldset, div.ssNumFilters fieldset, div.ssBoolFilters fieldset{
             margin: 0.25em auto;
+            padding: 0.25em;
+            /* Chromium bug means flex doesn't work in fieldsets. Curses. :-( */
             flex-grow: 1;
             display: flex;
             flex-wrap: wrap;
@@ -113,7 +115,7 @@
       <div id="staticSearch"><script src="ssTest/ssPorter2Stemmer.js"></script><script src="ssTest/ssSearch.js"></script><script>
                 var Sch;
                 window.addEventListener('load', function(){Sch = new StaticSearch();});
-            </script><form accept-charset="UTF-8" id="ssForm" data-allowphrasal="yes" data-maxkwicstoshow="3" onsubmit="return false;" data-versionstring="_d6d1a20" data-ssfolder="ssTest"><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><div class="ssDescFilters">
+            </script><form accept-charset="UTF-8" id="ssForm" data-allowphrasal="yes" data-maxkwicstoshow="3" onsubmit="return false;" data-versionstring="_2e16b89" data-ssfolder="ssTest"><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><div class="ssDescFilters">
                <fieldset class="ssFieldset" title="Document type" id="ssDesc1">
                   <legend>Document type</legend>
                   <ul class="ssDescCheckboxList">
@@ -248,6 +250,12 @@
            tests.push({setup: function(){Sch.queryBox.value = 'dog';},
                                          check: function(num){console.log('Search hook ' + num);
                                          console.log('Testing results for the word "dog", which in one document has no spaces around it, just linebreaks.');
+                                         
+                                         checkResults({docsFound: 2, contextsFound: 4, scoreTotal: 4});}});
+           //Search using the number filter.
+           tests.push({setup: function(){Sch.queryBox.value = 'dog'; document.querySelector('input[title="Number of animal names"][id$="_from"]').value = '3';},
+                                         check: function(num){console.log('Search hook ' + num);
+                                         console.log('Testing results for the word "dog", in a document mentioning at least three animals.');
                                          checkResults({docsFound: 2, contextsFound: 4, scoreTotal: 4});}});
 
 

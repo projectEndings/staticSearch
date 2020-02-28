@@ -100,19 +100,28 @@
           parse them. Then, you will have to create a configuration file specifying what options you want to use. 
           Then you run the generator, and the search functionality should be added to your site.</p>
           
-          <div>
-            <head>Configuring your site: search filters</head>
             <p>The generator is expecting to parse <emph>well-formed XHTML5 web pages</emph>. That means
             web pages which are well-formed XML, using the XHTML namespace. If your site is just raggedy tag-soup,
-            then you can't use this tool.</p>
+            then you can't use this tool. You can tidy up your HTML using 
+              <ref target="http://www.html-tidy.org/">HTML Tidy</ref>.</p>
+          
+          <div>
+            <head>Configuring your site: search filters</head>
             <p>Next, you will need to decide whether you want search filters or not. If you want to allow
             your users to search (for example) only in poems, or only in articles, or only in blog posts, or 
             any combination of these document types, you will need to add <gi>meta</gi> tags to the heads of
-            your documents to specify what these filters are. Here is a simple example:
+            your documents to specify what these filters are. <title level="m">staticSearch</title> supports 
+            four filter types.</p>
             
-            <egXML xmlns="http://www.tei-c.org/ns/Examples">
-              <meta name="Document type" class="staticSearch.desc" content="Poems" />
-            </egXML>
+            <div xml:id="descFilters">
+              <head>Description filters</head>
+              <p>
+              The description (desc) filter is a word or phrase describing or associated with the document.
+              Here is a simple example:
+              
+              <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                <meta name="Document type" class="staticSearch.desc" content="Poems" />
+              </egXML>
               
               This specifies that there is to be a descriptive search filter called <q>Document type</q>, and one of the
               types is <q>Poems</q>; the document containing this <gi>meta</gi> tag is one of the Poems. Another
@@ -125,7 +134,11 @@
               If the Generator finds such meta tags when it is indexing, it will create a set of filter controls
               on the search page, enabling the user to constrain the search to a specific set of filter settings.
             </p>
+            </div>
             
+            
+            <div xml:id="dateFilters">
+              <head>Date filters</head>
             <p>Another slightly different kind of search control is a document date. If your collection of 
             documents has items from different dates, you can add a <gi>meta</gi> tag like this:
             
@@ -150,8 +163,29 @@
                <item>1903-01-02/1905-05-31</item>
               </list>
             </p>
+            </div>
             
-            <p>A third filter type is the boolean (true/false) filter. To use boolean filters, add meta tags like this
+            <div xml:id="numFilters">
+              <head>Number filters</head>
+            
+            <p>You can also configure a range filter based on
+            a numeric value (integer or decimal). For example, you might want to allow
+            people to filter documents in the search results based on their word-count:
+            
+              <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                <meta name="Word-count" class="staticSearch.num" content="2193" />
+              </egXML>
+              
+              Users would then be able to set a minimum and/or maximum word-count when
+              searching for documents.
+            </p>
+            
+            </div>
+            
+            <div xml:id="boolFilters">
+              <head>Boolean filters</head>
+            
+            <p>A fourth filter type is the boolean (true/false) filter. To use boolean filters, add meta tags like this
             to your documents:
             
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
@@ -159,6 +193,7 @@
               </egXML>
             
             </p>
+            </div>
           </div>
           
           <div xml:id="configuringDocTitles">

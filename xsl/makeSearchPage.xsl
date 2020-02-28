@@ -106,6 +106,8 @@
         }
         div.ssDescFilters fieldset, div.ssDateFilters fieldset, div.ssNumFilters fieldset, div.ssBoolFilters fieldset{
             margin: 0.25em auto;
+            padding: 0.25em;
+            /* Chromium bug means flex doesn't work in fieldsets. Curses. :-( */
             flex-grow: 1;
             display: flex;
             flex-wrap: wrap;
