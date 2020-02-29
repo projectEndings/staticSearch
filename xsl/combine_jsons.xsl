@@ -42,10 +42,9 @@
     
     
     <xsl:template match="/">
-        <xsl:message><xsl:copy-of select="$jsonURIs"/></xsl:message>
         <xsl:for-each-group select="$jsonURIs" group-by="replace(substring-after(.,$jsonDirPath),'/[^/]+\.xml$','')">
             <xsl:variable name="term" select="tokenize(current-grouping-key(),'/')[last()]"/>
-            <!--Now glom:-->
+            <xsl:message>Processing <xsl:value-of select="$term"/></xsl:message>
             <xsl:variable name="result" as="element(map:map)">
                 <map xmlns="http://www.w3.org/2005/xpath-functions">
                     
