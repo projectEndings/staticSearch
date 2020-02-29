@@ -239,7 +239,7 @@
         <xsl:value-of select="replace(.,string-join(($curlyAposOpen,$curlyAposClose),'|'), $straightSingleApos) => replace(string-join(($curlyDoubleAposOpen,$curlyDoubleAposClose),'|'),$straightDoubleApos)"/>
     </xsl:template>
     
-    <xsl:template match="*[@lang or @xml:lang][ancestor::body]" mode="clean" priority="1">
+    <xsl:template match="*[@lang or @xml:lang][ancestor::body]" mode="clean">
         <xsl:copy>
             <xsl:apply-templates select="@*|node()" mode="#current"/>
         </xsl:copy>
@@ -249,7 +249,7 @@
     
     <!--RATIONALIZED TEMPLATES-->
     
-    <xsl:template match="body | div | blockquote | p | li | section | article | nav | h1 | h2 | h3 | h4 | h5 | h6 | td" mode="contextualize">
+    <xsl:template match="body | div | blockquote | p | li | section | article | nav | h1 | h2 | h3 | h4 | h5 | h6 | td | details | summary" mode="contextualize">
         <xsl:copy>
             <xsl:apply-templates select="@*" mode="#current"/>
             <xsl:attribute name="data-staticSearch-context" select="'true'"/>
