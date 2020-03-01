@@ -239,4 +239,6 @@
     <target name="basic" depends="init, validate, config, tokenize, json, copyFiles, makeSearchPage, clean"/>
     
     <target name="new" depends="init, validate, config, tokenize, jsonDocByDoc, combineJsons, copyFiles, makeSearchPage, report"/>
+    
+    <target name="basicNew" depends="init, config, tokenize, jsonDocByDoc, combineJsons, copyFiles, makeSearchPage, report, clean"/>
 </project>
