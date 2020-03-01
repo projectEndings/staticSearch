@@ -120,6 +120,35 @@
         </java>
     </target>
     
+    <target name="jsonDocByDoc">
+        
+        <!--First, create all of the directories that will end up being necessary
+            for the JSON combining later; all of the tokens will get slotted into one
+            of these directories-->
+        <foreach list="a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,0" param="char"  inheritall="true" target="makedir"/>
+        
+        
+        <!--And now process the JSONs doc by doc-->
+        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
+            <arg value="-xsl:${basedir}/xsl/json_docbydoc.xsl"/>
+            <arg value="-s:${basedir}/xsl/json_docbydoc.xsl"/>
+            <arg value="--suppressXsltNamespaceCheck:on"/>
+        </java>
+    </target>
+    
+    <target name="combineJsons">
+        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
+            <arg value="-xsl:${basedir}/xsl/combine_jsons.xsl"/>
+            <arg value="-s:${basedir}/xsl/combine_jsons.xsl"/>
+            <arg value="--suppressXsltNamespaceCheck:on"/>
+        </java>
+    </target>
+    
+    <target name="makedir">
+        <mkdir dir="${staticSearchDir}/temp/new/lower/${char}"/>
+        <mkdir dir="${staticSearchDir}/temp/new/upper/${char}"/>
+    </target>
+    
     
     
     <target name="makeSearchPage">
@@ -208,4 +237,6 @@
     <target name="test" depends="init, validate, config, tokenize, json, copyFiles, makeSearchPage, report"/>
     
     <target name="basic" depends="init, validate, config, tokenize, json, copyFiles, makeSearchPage, clean"/>
+    
+    <target name="new" depends="init, validate, config, tokenize, jsonDocByDoc, combineJsons, copyFiles, makeSearchPage, report"/>
 </project>
