@@ -106,6 +106,7 @@
             <arg value="-xsl:${basedir}/xsl/tokenize.xsl"/>
             <arg value="-s:${basedir}/xsl/tokenize.xsl"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
+            <jvmarg value="-Xmx2048m"/>
         </java>
     </target>
     
@@ -133,6 +134,7 @@
             <arg value="-xsl:${basedir}/xsl/json_docbydoc.xsl"/>
             <arg value="-s:${basedir}/xsl/json_docbydoc.xsl"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
+            <jvmarg value="-Xmx2048m"/>
         </java>
     </target>
     
@@ -141,6 +143,7 @@
             <arg value="-xsl:${basedir}/xsl/combine_jsons.xsl"/>
             <arg value="-s:${basedir}/xsl/combine_jsons.xsl"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
+            <jvmarg value="-Xmx2048m"/>
         </java>
     </target>
     
@@ -171,6 +174,7 @@
             <arg value="-o:${tempSearchPageOutput}"/>
             <arg value="hasFilters=${hasFilters}"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
+            <jvmarg value="-Xmx2048m"/>
         </java>
         
         <echo message="Moving ${tempSearchPageOutput} to overwrite ${searchFilePath}"/>
@@ -185,6 +189,7 @@
             <arg value="-s:${basedir}/xsl/create_reports.xsl"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
             <arg value="hasFilters=${hasFilters}"/>
+            <jvmarg value="-Xmx2048m"/>
         </java>
         <move file="${basedir}/staticSearch_report.html" tofile="${staticSearchDir}/staticSearch_report.html"/>
 
