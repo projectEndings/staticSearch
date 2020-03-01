@@ -355,7 +355,7 @@
                                         as="document-node()"/>
                                     <xsl:variable name="filterName" select="$jsonDoc//map:string[@key='filterName']"/>
                                     <xsl:variable name="filterId" select="$jsonDoc//map:string[@key='filterId']"/>
-                                    <xsl:variable name="vals" select="$jsonDoc//map:number/xs:decimal(.)"/>
+                                    <xsl:variable name="vals" select="$jsonDoc//map:string[not(@key)][. castable as xs:decimal]/xs:decimal(.)"/>
                                     <xsl:variable name="minVal" select="min($vals)"/>
                                     <xsl:variable name="maxVal" select="max($vals)"/>
                                     

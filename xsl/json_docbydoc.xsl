@@ -253,7 +253,7 @@
                                         <xsl:variable name="filterId" select="concat($thisId,'_',position())"/>
                                         <array key="{current-grouping-key()}">
                                             <xsl:for-each-group select="current-group()[@content castable as xs:decimal]" group-by="xs:decimal(@content)">
-                                                <number><xsl:value-of select="current-grouping-key()"/></number>
+                                                <string><xsl:value-of select="current-grouping-key()"/></string>
                                             </xsl:for-each-group>
                                         </array>
                                     </xsl:for-each-group>
