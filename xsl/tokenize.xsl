@@ -86,10 +86,12 @@
     
     <!--Basic template-->
     <xsl:template match="/">
-        <xsl:message>Found <xsl:value-of select="count($docs)"/> documents to process...</xsl:message>
+        <xsl:variable name="count" select="count($docs)"/>
+        <xsl:message>Found <xsl:value-of select="$count"/> documents to process...</xsl:message>
         <xsl:call-template name="echoParams"/>
         <xsl:for-each select="$docs">
             
+            <xsl:variable name="pos" select="position()"/>
             <!--First, get the URI-->
             <xsl:variable name="uri" select="xs:string(document-uri(.))" as="xs:string"/>
             
@@ -130,7 +132,7 @@
             <xsl:if test="if ($hasExclusions) then not($excluded//html[@data-staticSearch-exclude='true']) else true()">
                 
                 
-                <xsl:message>Tokenizing <xsl:value-of select="$uri"/></xsl:message>
+                <xsl:message>Tokenizing <xsl:value-of select="$uri"/> (<xsl:value-of select="$pos"/>/<xsl:value-of select="$count"/>)</xsl:message>
                 <xsl:variable name="cleaned">
                     <xsl:apply-templates select="$excluded" mode="clean">
                         <xsl:with-param name="relativeUri" select="$relativeUri" tunnel="yes"/>
