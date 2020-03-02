@@ -102,11 +102,11 @@
     
     <!--Then tokenize-->
     <target name="tokenize">
-        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
+        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true">
             <arg value="-xsl:${basedir}/xsl/tokenize.xsl"/>
             <arg value="-s:${basedir}/xsl/tokenize.xsl"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
-            <jvmarg value="-Xmx2048m"/>
+            <!--<jvmarg value="-Xmx2048m"/>-->
         </java>
     </target>
     
@@ -130,20 +130,20 @@
         
         
         <!--And now process the JSONs doc by doc-->
-        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
+        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true">
             <arg value="-xsl:${basedir}/xsl/json_docbydoc.xsl"/>
             <arg value="-s:${basedir}/xsl/json_docbydoc.xsl"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
-            <jvmarg value="-Xmx2048m"/>
+            <!--<jvmarg value="-Xmx2048m"/>-->
         </java>
     </target>
     
     <target name="combineJsons">
-        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
+        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true">
             <arg value="-xsl:${basedir}/xsl/combine_jsons.xsl"/>
             <arg value="-s:${basedir}/xsl/combine_jsons.xsl"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
-            <jvmarg value="-Xmx2048m"/>
+            <!--<jvmarg value="-Xmx2048m"/>-->
         </java>
     </target>
     
@@ -168,13 +168,13 @@
         
         <echo message="Creating temporary search page: ${tempSearchPageOutput}"/>
         <available type="dir" property="hasFilters" file="${staticSearchDir}/filters" value="true"/>
-        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true" >
+        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true">
             <arg value="-xsl:${basedir}/xsl/makeSearchPage.xsl"/>
             <arg value="-s:${searchFilePath}"/>
             <arg value="-o:${tempSearchPageOutput}"/>
             <arg value="hasFilters=${hasFilters}"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
-            <jvmarg value="-Xmx2048m"/>
+            <!--<jvmarg value="-Xmx2048m"/>-->
         </java>
         
         <echo message="Moving ${tempSearchPageOutput} to overwrite ${searchFilePath}"/>
@@ -184,12 +184,12 @@
     
     <target name="report">
         <available type="dir" property="hasFilters" file="${staticSearchDir}/filters" value="true"/>
-        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
+        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true">
             <arg value="-xsl:${basedir}/xsl/create_reports.xsl"/>
             <arg value="-s:${basedir}/xsl/create_reports.xsl"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
             <arg value="hasFilters=${hasFilters}"/>
-            <jvmarg value="-Xmx2048m"/>
+            <!--<jvmarg value="-Xmx2048m"/>-->
         </java>
         <move file="${basedir}/staticSearch_report.html" tofile="${staticSearchDir}/staticSearch_report.html"/>
 
