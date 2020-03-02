@@ -168,7 +168,7 @@
         
         <echo message="Creating temporary search page: ${tempSearchPageOutput}"/>
         <available type="dir" property="hasFilters" file="${staticSearchDir}/filters" value="true"/>
-        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
+        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true" >
             <arg value="-xsl:${basedir}/xsl/makeSearchPage.xsl"/>
             <arg value="-s:${searchFilePath}"/>
             <arg value="-o:${tempSearchPageOutput}"/>
@@ -184,7 +184,7 @@
     
     <target name="report">
         <available type="dir" property="hasFilters" file="${staticSearchDir}/filters" value="true"/>
-        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
+        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
             <arg value="-xsl:${basedir}/xsl/create_reports.xsl"/>
             <arg value="-s:${basedir}/xsl/create_reports.xsl"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
