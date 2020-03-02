@@ -101,8 +101,8 @@
     </target>
     
     <!--Then tokenize-->
-    <target name="tokenize" fork="true">
-        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
+    <target name="tokenize">
+        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
             <arg value="-xsl:${basedir}/xsl/tokenize.xsl"/>
             <arg value="-s:${basedir}/xsl/tokenize.xsl"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
