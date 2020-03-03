@@ -33,7 +33,7 @@
         <xsl:variable name="docId" select="@id"/>
         <xsl:variable name="relativeUri" select="@data-staticSearch-relativeUri"/>
         <xsl:for-each-group 
-            select="descendant::meta[not(@data-staticSearch-exclude)][matches(@class,'^|\s+staticSearch\.(bool|num|date|desc)(\s|$)')]" 
+            select="descendant::meta[not(@data-staticSearch-exclude)][matches(@class,'(^|\s)(staticSearch\.(bool|num|date|desc))(\s|$)')]" 
             group-by="tokenize(@class,'\s+')[matches(.,'^staticSearch\.')][1] => substring-after('.')">
             <xsl:variable name="folder" select="current-grouping-key()"/>
 
@@ -63,11 +63,12 @@
                                                     <xsl:value-of select="hcmc:normalize-boolean(@content)"/>
                                                 </string>
                                             </xsl:when>
-                                            <xsl:otherwise>
+                                            <xsl:when test="$folder = ('num','date','desc')">
                                                 <string>
                                                     <xsl:value-of select="@content"/>
                                                 </string>
-                                            </xsl:otherwise>
+                                            </xsl:when>
+                                            <xsl:otherwise/>
                                         </xsl:choose>
                                     </xsl:for-each>                                    
                                 </array>
