@@ -72,12 +72,15 @@
                 (<xsl:value-of select="$pos"/>/<xsl:value-of select="$count"/>)</xsl:message>
             
             <xsl:variable name="finalDoc" select="
-                if ($hasExclusions) then hcmc:exclude(document(.)) else document(.)
+                (if ($hasExclusions) then hcmc:exclude(document(.)) else document(.))
                 => hcmc:clean(.)
                 => hcmc:weight()
                 => hcmc:contextualize()
                 => hcmc:tokenize()
                 => hcmc:enumerate()"/>
+            
+     
+            
             <xsl:if test="not($finalDoc//html[@data-staticSearch-exclude='true'])">
                 <xsl:apply-templates 
                     select="$finalDoc" 
@@ -86,6 +89,7 @@
         </xsl:for-each>
     </xsl:template>
     
+
 
     
     <!--DRIVER FUNCTIONS-->
