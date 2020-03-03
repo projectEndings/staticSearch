@@ -14,11 +14,13 @@
     
     <!--Import the configuration file, which is generated via another XSLT-->
     <xsl:include href="config.xsl"/>
-    
     <!--ANd include the PORTER2STEMMER; we should also include PORTER1, I think
         and let users choose which one they want (tho, I don't see why anyone would
         use PORTER1 and not PORTER2-->
     <xsl:include href="porter2Stemmer.xsl"/>
+    <xsl:include href="json_module.xsl"/>
+    
+
     
     <!--Simple regular expression for match document names-->
     <xsl:variable name="docRegex">(.+)(\..?htm.?$)</xsl:variable>
@@ -48,141 +50,80 @@
     <!--IMPORTANT: Do this to avoid indentation-->
     <xsl:output indent="no" method="xml"/>
     
-    
-    <xsl:variable name="descFilterMap" as="map(xs:string,xs:string)">
-        <xsl:map>
-            <xsl:for-each-group select="$docs//meta[contains-token(@class,'staticSearch.desc')]" group-by="@name">
-                <xsl:map-entry key="xs:string(current-grouping-key())" select="'ssDesc' || position()"/>
-            </xsl:for-each-group>
-        </xsl:map>
-      
-    </xsl:variable>
-    
-    <xsl:variable name="dateFilterMap" as="map(xs:string,xs:string)">
-        <xsl:map>
-            <xsl:for-each-group select="$docs//meta[contains-token(@class,'staticSearch.date')]" group-by="@name">
-                <xsl:map-entry key="xs:string(current-grouping-key())" select="'ssDate' || position()"/>
-            </xsl:for-each-group>
-        </xsl:map>
-    </xsl:variable>
-    
-    
-    <xsl:variable name="boolFilterMap" as="map(xs:string,xs:string)">
-        <xsl:map>
-            <xsl:for-each-group select="$docs//meta[contains-token(@class,'staticSearch.bool')]" group-by="@name">
-                <xsl:map-entry key="xs:string(current-grouping-key())" select="'ssBool' || position()"/>
-            </xsl:for-each-group>
-        </xsl:map>
-    </xsl:variable>
-    
-  
-  <xsl:variable name="numFilterMap" as="map(xs:string, xs:string)">
-      <xsl:map>
-          <xsl:for-each-group select="$docs//meta[contains-token(@class,'staticSearch.num')]" group-by="@name">
-              <xsl:map-entry key="xs:string(current-grouping-key())" select="'ssNum' || position()"/>
-          </xsl:for-each-group>
-      </xsl:map>
-  </xsl:variable>
+    <xsl:variable name="count" select="count($docUris)"/>
     
     <!--Basic template-->
     <xsl:template match="/">
-        <xsl:variable name="count" select="count($docs)"/>
+ 
         <xsl:message>Found <xsl:value-of select="$count"/> documents to process...</xsl:message>
         <xsl:call-template name="echoParams"/>
-        <xsl:for-each select="$docs">
+        <xsl:call-template name="tokenizeDocs"/>
+<!--        <xsl:call-template name="createStopwordsJson"/>
+        <xsl:call-template name="createConfigJson"/>-->
+    </xsl:template>
+    
+    <xsl:template name="tokenizeDocs">
+        <xsl:for-each select="$docUris">
             
+            <!--Get the position-->
             <xsl:variable name="pos" select="position()"/>
-            <!--First, get the URI-->
-            <xsl:variable name="uri" select="xs:string(document-uri(.))" as="xs:string"/>
             
-            <!--Now find the relative uri from the root:
-            this is the full URI minus the collection dir.
+            <xsl:message>Processing <xsl:value-of select="."/> 
+                (<xsl:value-of select="$pos"/>/<xsl:value-of select="$count"/>)</xsl:message>
             
-            Note that we TRIM off the leading slash since it does the root of the server.-->
-            <xsl:variable name="relativeUri" select="substring-after($uri,$collectionDir) => replace('^(/|\\)','')" as="xs:string"/>
-            
-            <!--This is the IDENTIFIER for the static search, which is just the relative URI with all of the punctuation/
-             slashes et cetera that could conceivably be in filenames turned into underscores.
-            --> 
-            <xsl:variable name="searchIdentifier"
-                select="replace($relativeUri,'^(/|\\)','') => 
-                replace('\.x?html?$','') => 
-                replace('\s+|\\|/|\.','_')" 
-                as="xs:string"/>
-
-            <!--Now create the various documents, and we put the leading slash BACK in-->
-            <xsl:variable name="cleanedOutDoc" select="concat($tempDir,'/', $searchIdentifier,'_cleaned.html')"/>
-            <xsl:variable name="contextualizedOutDoc" select="concat($tempDir,'/',$searchIdentifier,'_contextualized.html')"/>
-            <xsl:variable name="weightedOutDoc" select="concat($tempDir,'/',$searchIdentifier,'_weighted.html')"/>
-            <xsl:variable name="tokenizedOutDoc" select="concat($tempDir,'/',$searchIdentifier,'_tokenized.html')"/>
-            <xsl:variable name="excludedOutDoc" select="concat($tempDir,'/',$searchIdentifier,'_excluded.html')"/>
-   
-            
-           <xsl:variable name="excluded">
-               <xsl:choose>
-                   <xsl:when test="$hasExclusions">
-                       <xsl:apply-templates mode="exclude"/>
-                   </xsl:when>
-                   <xsl:otherwise>
-                       <xsl:sequence select="."/>
-                   </xsl:otherwise>
-               </xsl:choose>
-           </xsl:variable>
-            
-            <xsl:if test="if ($hasExclusions) then not($excluded//html[@data-staticSearch-exclude='true']) else true()">
-                
-                
-                <xsl:message>Tokenizing <xsl:value-of select="$uri"/> (<xsl:value-of select="$pos"/>/<xsl:value-of select="$count"/>)</xsl:message>
-                <xsl:variable name="cleaned">
-                    <xsl:apply-templates select="$excluded" mode="clean">
-                        <xsl:with-param name="relativeUri" select="$relativeUri" tunnel="yes"/>
-                        <xsl:with-param name="searchIdentifier" select="$searchIdentifier" tunnel="yes"/>
-                    </xsl:apply-templates>
-                </xsl:variable>
-                
-                <xsl:variable name="weighted">
-                    <xsl:apply-templates select="$cleaned" mode="weigh"/>
-                </xsl:variable>
-                
-                
-                <xsl:variable name="contextualized">
-                    <xsl:apply-templates select="$weighted" mode="contextualize"/>
-                </xsl:variable>
-                
-                <xsl:result-document href="{$tokenizedOutDoc}">
-                    <xsl:if test="$verbose">
-                        <xsl:message>Creating <xsl:value-of select="$tokenizedOutDoc"/></xsl:message>
-                    </xsl:if>
-                    <xsl:variable name="tokenizedDoc">
-                        <xsl:apply-templates select="$contextualized" mode="tokenize"/>
-                    </xsl:variable>
-                    <xsl:apply-templates select="$tokenizedDoc" mode="enumerate"/>
-                </xsl:result-document>
-         
-            
-                
-                <xsl:if test="$verbose">
-                    <xsl:message>Creating <xsl:value-of select="$cleanedOutDoc"/></xsl:message>
-                    <xsl:result-document href="{$cleanedOutDoc}">
-                        <xsl:copy-of select="$cleaned"/>
-                    </xsl:result-document>
-                    <xsl:message>Creating <xsl:value-of select="$contextualizedOutDoc"/></xsl:message>
-                    <xsl:result-document href="{$contextualizedOutDoc}">
-                        <xsl:copy-of select="$contextualized"/>
-                    </xsl:result-document>
-                    <xsl:message>Creating <xsl:value-of select="$weightedOutDoc"/></xsl:message>
-                    <xsl:result-document href="{$weightedOutDoc}">
-                        <xsl:copy-of select="$weighted"/>
-                    </xsl:result-document>
-                    <xsl:message>Creating <xsl:value-of select="$excludedOutDoc"/></xsl:message>
-                    <xsl:result-document href="{$excludedOutDoc}">
-                        <xsl:copy-of select="$excluded"/>
-                    </xsl:result-document>
-                </xsl:if>
-                
+            <xsl:variable name="finalDoc" select="
+                if ($hasExclusions) then hcmc:exclude(document(.)) else document(.)
+                => hcmc:clean(.)
+                => hcmc:weight()
+                => hcmc:contextualize()
+                => hcmc:tokenize()
+                => hcmc:enumerate()"/>
+            <xsl:if test="not($finalDoc//html[@data-staticSearch-exclude='true'])">
+                <xsl:apply-templates 
+                    select="$finalDoc" 
+                    mode="json"/>
             </xsl:if>
         </xsl:for-each>
     </xsl:template>
+    
+
+    
+    <!--DRIVER FUNCTIONS-->
+    
+    <xsl:function name="hcmc:exclude">
+        <xsl:param name="doc"/>
+        <xsl:apply-templates select="$doc" mode="exclude"/>
+    </xsl:function>
+    
+    <xsl:function name="hcmc:clean">
+        <xsl:param name="doc"/>
+        <xsl:param name="uri"/>
+        <xsl:apply-templates select="$doc" mode="clean">
+            <xsl:with-param name="uri" select="$uri" tunnel="yes"/>
+        </xsl:apply-templates>
+    </xsl:function>
+    
+    <xsl:function name="hcmc:weight">
+        <xsl:param name="doc"/>
+        <xsl:apply-templates select="$doc" mode="weigh"/>
+    </xsl:function>
+    
+    <xsl:function name="hcmc:contextualize">
+        <xsl:param name="doc"/>
+        <xsl:apply-templates select="$doc" mode="contextualize"/>
+    </xsl:function>
+    
+    <xsl:function name="hcmc:tokenize">
+        <xsl:param name="doc"/>
+        <xsl:apply-templates select="$doc" mode="tokenize"/>
+    </xsl:function>
+    
+    <xsl:function name="hcmc:enumerate">
+        <xsl:param name="doc"/>
+        <xsl:apply-templates select="$doc" mode="enumerate"/>
+    </xsl:function>
+    
+    
     
  <!--*****************************************************
      CLEANED TEMPLATES
@@ -191,8 +132,27 @@
     <!--This template matches the root HTML element with some parameters
         calculated from before for adding some identifying attributes-->
     <xsl:template match="html" mode="clean">
-        <xsl:param name="relativeUri" tunnel="yes" as="xs:string"/>
-        <xsl:param name="searchIdentifier" tunnel="yes" as="xs:string"/>
+        
+        <xsl:param name="uri" tunnel="yes"/>
+        
+        <xsl:message>URI: <xsl:value-of select="$uri"/></xsl:message>
+        <!--Now find the relative uri from the root:
+            this is the full URI minus the collection dir.
+            -->
+        
+        <xsl:variable name="relativeUri"
+            select="substring-after($uri,$collectionDir) 
+            => replace('^(/|\\)','')" 
+            as="xs:string"/>
+        
+        <!--This is the IDENTIFIER for the static search, which is just the relative URI with all of the punctuation/
+             slashes et cetera that could conceivably be in filenames turned into underscores.
+            --> 
+        <xsl:variable name="searchIdentifier"
+            select="replace($relativeUri,'^(/|\\)','') => 
+            replace('\.x?html?$','') => 
+            replace('\s+|\\|/|\.','_')" 
+            as="xs:string"/>
         <xsl:copy>
             <!--Apply templates to all of the attributes on the HTML element
                 EXCEPT the id, which we might just duplicate or we might fill in-->
@@ -210,6 +170,8 @@
             <xsl:apply-templates select="node()" mode="#current"/>
         </xsl:copy>
     </xsl:template>
+    
+
     
     
     
@@ -249,7 +211,9 @@
     
 
     
-    <!--RATIONALIZED TEMPLATES-->
+    <!--*****************************************************
+            CONTEXTUALIZE TEMPLATES
+      ****************************************************-->
     
     <xsl:template match="body | div | blockquote | p | li | section | article | nav | h1 | h2 | h3 | h4 | h5 | h6 | td | details | summary" mode="contextualize">
         <xsl:copy>
@@ -259,7 +223,9 @@
         </xsl:copy>
     </xsl:template>
     
-    <!--WEIgHTIng TEMPLATE-->
+    <!--*****************************************************
+            WEIGH TEMPLATES
+      ****************************************************-->
     
     <xsl:template match="*[matches(local-name(),'^h\d$')]" mode="weigh">
         <xsl:copy>
@@ -269,38 +235,11 @@
         </xsl:copy>
     </xsl:template>
     
-    <!--TOKENIZE TEMPLATES -->
+
     
-    <xsl:template match="meta[contains-token(@class,'staticSearch.desc')][not(@data-staticSearch-exclude)]" mode="tokenize">
-        <xsl:copy>
-            <xsl:attribute name="data-staticSearch-filter-id" select="$descFilterMap(normalize-space(@name))"/>
-            <xsl:apply-templates select="@*|node()" mode="#current"/>
-        </xsl:copy>
-    </xsl:template>
-    
-    <xsl:template match="meta[contains-token(@class,'staticSearch.date')][not(@data-staticSearch-exclude)]" mode="tokenize">
-        <xsl:copy>
-            <xsl:attribute name="data-staticSearch-filter-id" select="$dateFilterMap(normalize-space(@name))"/>
-            <xsl:apply-templates select="@*|node()" mode="#current"/>
-        </xsl:copy>
-    </xsl:template>
-    
-    
-    <xsl:template match="meta[contains-token(@class,'staticSearch.bool')][not(@data-staticSearch-exclude)]" mode="tokenize">
-        <xsl:copy>
-            <xsl:attribute name="data-staticSearch-filter-id" select="$boolFilterMap(normalize-space(@name))"/>
-            <xsl:apply-templates select="@*|node()" mode="#current"/>
-        </xsl:copy>
-    </xsl:template>
-    
-    <xsl:template match="meta[contains-token(@class,'staticSearch.num')][not(@data-staticSearch-exclude)]" mode="tokenize">
-        <xsl:copy>
-            <xsl:attribute name="data-staticSearch-filter-id" select="$numFilterMap(normalize-space(@name))"/>
-            <xsl:apply-templates select="@*|node()" mode="#current"/>
-        </xsl:copy>
-    </xsl:template>
-    
-    <!--Enumeration templates-->
+    <!--*****************************************************
+            ENUMERATION TEMPLATES
+      ****************************************************-->
     
     <!--An accumulator for the stem position-->
     <xsl:accumulator name="stem-position" initial-value="0">
@@ -318,6 +257,9 @@
     </xsl:template>
     
 
+    <!--*****************************************************
+            TOKENIZATION TEMPLATES
+      ****************************************************-->
     
     <!--The basic thing: tokenizing the string at the text level-->
     <xsl:template match="text()[ancestor::body][not(matches(.,'^\s+$'))][not(ancestor::*[@data-staticSearch-exclude])]" mode="tokenize">
@@ -366,6 +308,41 @@
         </xsl:analyze-string>
     </xsl:template>
     
+  
+    <!--*****************************************************
+            JSON TEMPLATES
+      ****************************************************-->
+  
+    <xsl:template match="html" mode="json">
+        <xsl:call-template name="createTokens"/>
+        <xsl:call-template name="createTitles"/>
+        <xsl:call-template name="createFilters"/>
+    </xsl:template>
+    
+    
+    
+    
+    <!--*****************************************************
+            GLOBAL TEMPLATES
+      ****************************************************-->
+    
+    <xsl:template match="html[@data-staticSearch-exclude='true']" mode="#all">
+        <xsl:copy>
+            <xsl:copy-of select="@*"/>
+        </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="@*|node()" mode="#all" priority="-1">
+        <xsl:copy>
+            <xsl:apply-templates select="@*|node()" mode="#current"/>
+        </xsl:copy>
+    </xsl:template>
+    
+    
+    <!--*****************************************************
+            STEMMING FUNCTIONS
+      ****************************************************-->
+    
     <xsl:function name="hcmc:startStemmingProcess" as="item()+">
         <xsl:param name="word"/>
         <xsl:param name="isForeign" as="xs:boolean"/>
@@ -413,7 +390,7 @@
             <xsl:message>hcmc:getStem: $cleanedWord: <xsl:value-of select="$cleanedWord"/></xsl:message>
         </xsl:if>
         
-        <xsl:variable name="wordToStem" select="hcmc:checkWordSubstitution($cleanedWord)" as="xs:string"/>
+        <xsl:variable name="wordToStem" select="$cleanedWord" as="xs:string"/>
         <xsl:if test="$verbose">
             <xsl:message>hcmc:getStem: $wordToStem: <xsl:value-of select="$wordToStem"/></xsl:message>
         </xsl:if>
@@ -553,21 +530,7 @@
             to be any; then trim off any following periods -->
         <xsl:value-of select="replace($word, $straightDoubleApos, '') => replace('\.$','') => translate('ſ','s')"/>
     </xsl:function>
-    
-    <xsl:function name="hcmc:checkWordSubstitution" as="xs:string">
-        <xsl:param name="word"/>
-        <xsl:if test="$verbose">
-            <xsl:message>hcmc:checkWordSubstitution: DOING NOTHING SO FAR</xsl:message>
-        </xsl:if>
-        <xsl:value-of select="$word"/>
-    </xsl:function>
+  
 
-    
-    <!--IDenTITY-->
-   <xsl:template match="@*|node()" mode="#all" priority="-1">
-       <xsl:copy>
-           <xsl:apply-templates select="@*|node()" mode="#current"/>
-       </xsl:copy>
-   </xsl:template>
     
 </xsl:stylesheet>

@@ -111,6 +111,8 @@
     </target>
     
     
+    
+    
     <!--Then create JSON-->
     
     <target name="json">
@@ -152,7 +154,30 @@
         <mkdir dir="${staticSearchDir}/temp/new/upper/${char}"/>
     </target>
     
+    <!--NEW STUFF-->
+    <target name="tokenizeNEW">
+        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true">
+            <arg value="-xsl:${basedir}/xsl/tokenize_new.xsl"/>
+            <arg value="-s:${basedir}/xsl/tokenize_new.xsl"/>
+            <arg value="--suppressXsltNamespaceCheck:on"/>
+            <arg value="-t"/>
+            <!--<jvmarg value="-Xmx2048m"/>-->
+        </java>
+    </target>
     
+    <target name="combineNEW">
+        <foreach list="a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,0" 
+            param="char" 
+            inheritall="true" 
+            target="makedir"/>
+        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true">
+            <arg value="-xsl:${basedir}/xsl/combineNEW.xsl"/>
+            <arg value="-s:${basedir}/xsl/combineNEW.xsl"/>
+            <arg value="--suppressXsltNamespaceCheck:on"/>
+            <arg value="-t"/>
+            <!--<jvmarg value="-Xmx2048m"/>-->
+        </java>
+    </target>
     
     <target name="makeSearchPage">
         <echo message="Creating search page..."/>
@@ -244,6 +269,8 @@
     <target name="basic" depends="init, validate, config, tokenize, json, copyFiles, makeSearchPage, clean"/>
     
     <target name="new" depends="init, validate, config, tokenize, jsonDocByDoc, combineJsons, copyFiles, makeSearchPage, report"/>
+    
+    <target name="experiment" depends="init, validate, config, tokenizeNEW, combineNEW"/>
     
     <target name="basicNew" depends="init, config, tokenize, jsonDocByDoc, combineJsons, copyFiles, makeSearchPage, report, clean"/>
 </project>

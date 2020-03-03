@@ -19,21 +19,7 @@
             stopwords list, for all the document titles in the collection, and for each of the filter facets.
             Finally, it creates a single JSON file listing all the tokens, which may be used for glob searches.</xd:p>
         </xd:desc>
-        <xd:param name="ellipses">A string parameter to denote what sorts of ellipses one wants in the KWIC.</xd:param>
     </xd:doc>
-
-    <!--**************************************************************
-       *                                                            *
-       *                         Includes                           *
-       *                                                            *
-       **************************************************************-->
-
-    <xd:doc>
-        <xd:desc>Include the generated configuration file. See
-        <xd:a href="create_config_xsl.xsl">create_config_xsl.xsl</xd:a> for
-        full documentation of how the configuration file is created.</xd:desc>
-    </xd:doc>
-    <xsl:include href="config.xsl"/>
 
         
 
@@ -42,224 +28,153 @@
        *                        Templates                           *
        *                                                            *
        **************************************************************-->
-
-<!--    ROOT TEMPLATE -->
-
-    <xd:doc>
-        <xd:desc>Root template, which calls the rest of the templates.</xd:desc>
-    </xd:doc>
-    <xsl:template match="/">
-        <xsl:call-template name="createStemmedTokenJsonNEW"/>
-        <xsl:call-template name="createTitleJson"/>
-        <xsl:call-template name="createFiltersJson"/>
-        <xsl:call-template name="createStopwordsJson"/>
-        <xsl:call-template name="createConfigJson"/>
-    </xsl:template>
     
-    <xsl:template name="createStemmedTokenJsonNEW">
-        <xsl:for-each select="$tokenizedDocs">
-            <xsl:variable name="docId" select="//html/@id"/>
-            <xsl:variable name="relativeUri" select="//html/@data-staticSearch-relativeUri"/>
-            <xsl:message>Processing <xsl:value-of select="$docId"/></xsl:message>
-            <xsl:for-each-group select="descendant::span[@data-staticSearch-stem]" group-by="tokenize(@data-staticSearch-stem,'\s+')">
-                <xsl:variable name="spans" select="current-group()"/>
-                <xsl:variable name="upperOrLower" select="if (matches(current-grouping-key(),'^[A-Z]')) then 'upper' else 'lower'"/>
-                <xsl:variable name="firstChar" select="substring(current-grouping-key(),1,1)"/>
-                <xsl:variable name="folder" select="if (matches($firstChar,'[a-zA-Z]')) then lower-case($firstChar) else '0'"/>
-                    <xsl:result-document method="text" href="{$tempDir}/new/{$upperOrLower}/{$folder}/{current-grouping-key()}/{$docId}.json">
+    <xsl:template name="createFilters">
+        <xsl:variable name="docId" select="@id"/>
+        <xsl:variable name="relativeUri" select="@data-staticSearch-relativeUri"/>
+        <xsl:for-each-group 
+            select="descendant::meta[not(@data-staticSearch-exclude)][matches(@class,'^|\s+staticSearch\.(bool|num|date|desc)(\s|$)')]" 
+            group-by="tokenize(@class,'\s+')[matches(.,'^staticSearch\.')][1] => substring-after('.')">
+            <xsl:variable name="folder" select="current-grouping-key()"/>
+
+                <xsl:for-each-group select="current-group()" group-by="@name">
+                    <xsl:variable name="filterName" select="encode-for-uri(encode-for-uri(current-grouping-key()))"/>
+                    <xsl:variable name="filterOutDir" select="concat($tempDir,'/new/filters/',$folder,'/', $filterName)"/>
+                    <xsl:if test="not(unparsed-text-available($filterOutDir|| '/NAME'))">
+                        <xsl:result-document href="{$filterOutDir}/NAME" method="text">
+                            <xsl:value-of select="@name"/>
+                        </xsl:result-document>
+                    </xsl:if>
+                    <xsl:result-document method="text" href="{$filterOutDir}/{$docId}.json">
                         <xsl:variable name="tempDoc">
                             <map xmlns="http://www.w3.org/2005/xpath-functions">
                                 <!--                        Document id -->
                                 <string key="docId">
                                     <xsl:value-of select="$docId"/>
                                 </string>
-                                
-                                <!--                        Document title -->
-                                <!--<string key="docTitle">
-                            <xsl:value-of select="$docTitle"/>
-                        </string>-->
-                                
-                                <!--                        Document URI (relative) -->
                                 <string key="docUri">
                                     <xsl:value-of select="$relativeUri"/>
                                 </string>
-                                
-                                <!--                       Document score -->
-                                <number key="score">
-                                    <xsl:value-of select="sum(for $s in current-group() return hcmc:returnWeight($s))"/>
-                                </number>
-                                
-                                <!--                        Now add the contexts array, if specified to do so -->
-                                <xsl:if test="$phrasalSearch or $createContexts">
-                                    <array key="contexts">
-                                        
-                                        <!--                                Return only the number of contexts we want;
-                                    if a limit has been specified, only return
-                                    up to the limit; otherwise, return them all. -->
-                                        <xsl:variable name="contexts" as="element(span)+"
-                                            select="
-                                            if ($phrasalSearch)
-                                            then $spans
-                                            else subsequence($spans, 1, $maxKwicsToHarvest)"
-                                        />
-                                        
-                                        <!--                                Count the contexts -->
-                                        <xsl:variable name="contextsCount" select="count($contexts)" as="xs:integer"/>
-                                        
-                                        <!--                                Now iterate through the contexts, returning a simple map that gives its
-                                    form, context, and weight.-->
-                                        <xsl:for-each select="$contexts">
-                                            
-                                            <!--                                    Sort by weight, since we want the highest weighted first -->
-                                            <xsl:sort select="hcmc:returnWeight(.)" order="descending"/>
-                                            <!--And then sort by its position secondarily-->
-                                            <xsl:sort select="xs:integer(@data-staticSearch-pos)" order="ascending"/>
-                                            <map>
-                                                
-                                                <!--                                        Get the form (which is just the text value of the span and any descendant spans) -->
-                                                <string key="form"><xsl:value-of select="string-join(descendant::text(),'')"/></string>
-                                                
-                                                <!--                                        Get the context using the hcmc:returnContext function -->
-                                                <string key="context"><xsl:value-of select="hcmc:returnContext(.)"/></string>
-                                                
-                                                <!--                                        Get the weight, using hcmc:returnWeight function -->
-                                                <number key="weight"><xsl:value-of select="hcmc:returnWeight(.)"/></number>
-                                                
-                                                <number key="pos"><xsl:value-of select="@data-staticSearch-pos"/></number>
-                                            </map>
-                                        </xsl:for-each>
-                                    </array>
-                                </xsl:if>
+                                <array key="values">
+                                    <xsl:for-each select="current-group()">
+                                        <xsl:choose>
+                                            <xsl:when test="$folder = 'bool'">
+                                                <string>
+                                                    <xsl:value-of select="hcmc:normalize-boolean(@content)"/>
+                                                </string>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <string>
+                                                    <xsl:value-of select="@content"/>
+                                                </string>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                    </xsl:for-each>                                    
+                                </array>
                             </map>
                         </xsl:variable>
                         <xsl:value-of select="xml-to-json($tempDoc)"/>
                     </xsl:result-document>
-            </xsl:for-each-group>
-        </xsl:for-each>
-    </xsl:template>
-    
-    
-    <xsl:template name="createFiltersJson">
-        
-        <!--We only want metas from documents which themselves aren't excluded
-            and from documents that aren't excluded-->
-        <xsl:for-each-group select="$tokenizedDocs//meta[matches(@class,'^|\s+staticSearch\.')][not(@data-staticSearch-exclude)][not(ancestor::html[@data-staticSearch-exclude])]" group-by="tokenize(@class,'\s+')[matches(.,'^staticSearch\.')]">
+                </xsl:for-each-group>
             
-            <xsl:variable name="thisClass" select="current-grouping-key()"/>
-            <xsl:variable name="metaNum" select="position()"/>
-            <xsl:for-each-group select="current-group()" group-by="@name">
-                <xsl:variable name="thisName" select="current-grouping-key()"/>
-                <xsl:variable name="thisId" select="current-group()[1]/@data-staticSearch-filter-id"/>
-                <xsl:choose>
-                    <xsl:when test="$thisClass = 'staticSearch.desc'">
-                        <xsl:variable name="tmpMap" as="element(map:map)">
-                            <map xmlns="http://www.w3.org/2005/xpath-functions">
-                                <string key="filterId"><xsl:value-of select="$thisId"/></string>
-                                <string key="filterName"><xsl:value-of select="$thisName"/></string>
-                                
-                                <!--Now iterate through these values via their content-->
-                                <xsl:for-each-group select="current-group()" group-by="@content">
-                                    
-                                    <xsl:variable name="thisContent" select="current-grouping-key()"/>
-                                    <xsl:variable name="subGroupPos" select="position()"/>
-                                    
-                                    
-                                    <xsl:variable name="filterId" select="$thisId || '_' || $subGroupPos"/>
-                                    <map key="{$filterId}">
-                                        <string key="name"><xsl:value-of select="$thisContent"/></string>
-                                        <array key="docs">
-                                            <xsl:for-each-group select="current-group()" group-by="ancestor::html[not(@data-staticSearch-exclude)]/@data-staticSearch-relativeUri">
-                                                
-                                                <string><xsl:value-of select="current-grouping-key()"/></string>
-                                            </xsl:for-each-group>
-                                        </array>
-                                    </map>
-                                </xsl:for-each-group>
-                            </map>
-                        </xsl:variable>
-                        <xsl:result-document href="{$outDir || '/filters/' || $thisId || $versionString || '.json'}" method="text">
-                            <xsl:value-of select="xml-to-json($tmpMap)"/>
-                        </xsl:result-document>
-                    </xsl:when>
-                    
-                    
-                    <xsl:when test="$thisClass='staticSearch.bool'">
-                        <xsl:variable name="tmpMap" as="element(map:map)">
-                            <map xmlns="http://www.w3.org/2005/xpath-functions">
-                                <string key="filterId"><xsl:value-of select="$thisId"/></string>
-                                <string key="filterName"><xsl:value-of select="@name"/></string>
-                                <xsl:for-each-group select="current-group()" group-by="hcmc:normalize-boolean(@content)">
-                                    <!-- We have to sort these descending so that we reliably get true followed by false. -->
-                                    <xsl:sort select="hcmc:normalize-boolean(@content)" order="descending"/>
-                                    <xsl:variable name="filterId" select="concat($thisId,'_',position())"/>
-                                    <map key="{$filterId}">
-                                        <string key="value"><xsl:value-of select="current-grouping-key()"/></string>
-                                        <array key="docs">
-                                            <xsl:for-each-group select="current-group()" group-by="ancestor::html/@data-staticSearch-relativeUri">
-                                                <string><xsl:value-of select="current-grouping-key()"/></string>
-                                            </xsl:for-each-group>
-                                        </array>
-                                    </map>
-                                </xsl:for-each-group>
-                            </map>
-                        </xsl:variable>
-                        <xsl:result-document href="{$outDir || '/filters/' || $thisId || $versionString || '.json'}" method="text">
-                            <xsl:value-of select="xml-to-json($tmpMap)"/>
-                        </xsl:result-document>
-                    </xsl:when>
-                    
-                    <xsl:when test="$thisClass='staticSearch.date'">
-                        <xsl:variable name="tmpMap" as="element(map:map)">
-                            <map xmlns="http://www.w3.org/2005/xpath-functions">
-                                <string key="filterId"><xsl:value-of select="$thisId"/></string>
-                                <string key="filterName"><xsl:value-of select="$thisName"/></string>
-                                <map key="docs">
-                                    <xsl:for-each-group select="current-group()" group-by="ancestor::html/@data-staticSearch-relativeUri">
-                                        <xsl:variable name="filterId" select="concat($thisId,'_',position())"/>
-                                        <array key="{current-grouping-key()}">
-                                            <xsl:for-each select="current-group()">
-                                                <xsl:for-each select="tokenize(@content,'/')">
-                                                    <string><xsl:value-of select="."/></string>
-                                                </xsl:for-each>
-                                            </xsl:for-each>
-                                        </array>
-                                    </xsl:for-each-group>
-                                </map>
-                                
-                            </map>
-                        </xsl:variable>
-                        <xsl:result-document href="{$outDir || '/filters/' || $thisId || $versionString || '.json'}" method="text">
-                            <xsl:value-of select="xml-to-json($tmpMap)"/>
-                        </xsl:result-document>
-                    </xsl:when>
-                    <xsl:when test="$thisClass ='staticSearch.num'">
-                        <xsl:variable name="tmpMap" as="element(map:map)">
-                            <map xmlns="http://www.w3.org/2005/xpath-functions">
-                                <string key="filterId"><xsl:value-of select="$thisId"/></string>
-                                <string key="filterName"><xsl:value-of select="$thisName"/></string>
-                                <map key="docs">
-                                    <xsl:for-each-group select="current-group()" group-by="ancestor::html/@data-staticSearch-relativeUri">
-                                        <xsl:variable name="filterId" select="concat($thisId,'_',position())"/>
-                                        <array key="{current-grouping-key()}">
-                                            <xsl:for-each-group select="current-group()[@content castable as xs:decimal]" group-by="xs:decimal(@content)">
-                                                <string><xsl:value-of select="current-grouping-key()"/></string>
-                                            </xsl:for-each-group>
-                                        </array>
-                                    </xsl:for-each-group>
-                                </map>
-                                
-                            </map>
-                        </xsl:variable>
-                        <xsl:result-document
-                            href="{$outDir || '/filters/' || $thisId || $versionString || '.json'}" method="text">
-                            <xsl:value-of select="xml-to-json($tmpMap)"/>
-                        </xsl:result-document>
-                    </xsl:when>
-                </xsl:choose>
-                
-            </xsl:for-each-group>
         </xsl:for-each-group>
     </xsl:template>
+    
+    <xsl:template name="createTitles">
+        <xsl:result-document
+            href="{$tempDir}/new/titles/{encode-for-uri(encode-for-uri(replace(@data-staticSearch-relativeUri,'\.(x?html?)','$1')))}.json"
+            method="text">
+            <xsl:variable name="map">
+                <map:map>
+                    <map:array key="{@data-staticSearch-relativeUri}">
+                        <map:string><xsl:value-of select="hcmc:getDocTitle(.)"/></map:string>
+                    </map:array>
+                </map:map>
+              
+            </xsl:variable>
+            <xsl:value-of select="xml-to-json($map, map{'indent': $indentJSON})"/>
+        </xsl:result-document>
+    </xsl:template>
+    
+    <xsl:template name="createTokens">
+        <xsl:variable name="docId" select="@id"/>
+        <xsl:variable name="relativeUri" select="@data-staticSearch-relativeUri"/>
+        <xsl:for-each-group select="descendant::span[@data-staticSearch-stem]" group-by="tokenize(@data-staticSearch-stem,'\s+')">
+            <xsl:variable name="spans" select="current-group()"/>
+            <xsl:variable name="upperOrLower" select="if (matches(current-grouping-key(),'^[A-Z]')) then 'upper' else 'lower'"/>
+            <xsl:variable name="firstChar" select="substring(current-grouping-key(),1,1)"/>
+            <xsl:variable name="folder" select="if (matches($firstChar,'[a-zA-Z]')) then lower-case($firstChar) else '0'"/>
+            <xsl:result-document method="text" href="{$tempDir}/new/{$upperOrLower}/{$folder}/{current-grouping-key()}/{$docId}.json">
+                <xsl:variable name="tempDoc">
+                    <map xmlns="http://www.w3.org/2005/xpath-functions">
+                        <!--                        Document id -->
+                        <string key="docId">
+                            <xsl:value-of select="$docId"/>
+                        </string>
+                        
+                        <!--                        Document title -->
+                        <!--<string key="docTitle">
+                            <xsl:value-of select="$docTitle"/>
+                        </string>-->
+                        
+                        <!--                        Document URI (relative) -->
+                        <string key="docUri">
+                            <xsl:value-of select="$relativeUri"/>
+                        </string>
+                        
+                        <!--                       Document score -->
+                        <number key="score">
+                            <xsl:value-of select="sum(for $s in current-group() return hcmc:returnWeight($s))"/>
+                        </number>
+                        
+                        <!--                        Now add the contexts array, if specified to do so -->
+                        <xsl:if test="$phrasalSearch or $createContexts">
+                            <array key="contexts">
+                                
+                                <!--                                Return only the number of contexts we want;
+                                    if a limit has been specified, only return
+                                    up to the limit; otherwise, return them all. -->
+                                <xsl:variable name="contexts" as="element(span)+"
+                                    select="
+                                    if ($phrasalSearch)
+                                    then $spans
+                                    else subsequence($spans, 1, $maxKwicsToHarvest)"
+                                />
+                                
+                                <!--                                Count the contexts -->
+                                <xsl:variable name="contextsCount" select="count($contexts)" as="xs:integer"/>
+                                
+                                <!--                                Now iterate through the contexts, returning a simple map that gives its
+                                    form, context, and weight.-->
+                                <xsl:for-each select="$contexts">
+                                    
+                                    <!--                                    Sort by weight, since we want the highest weighted first -->
+                                    <xsl:sort select="hcmc:returnWeight(.)" order="descending"/>
+                                    <!--And then sort by its position secondarily-->
+                                    <xsl:sort select="xs:integer(@data-staticSearch-pos)" order="ascending"/>
+                                    <map>
+                                        
+                                        <!--                                        Get the form (which is just the text value of the span and any descendant spans) -->
+                                        <string key="form"><xsl:value-of select="string-join(descendant::text(),'')"/></string>
+                                        
+                                        <!--                                        Get the context using the hcmc:returnContext function -->
+                                        <string key="context"><xsl:value-of select="hcmc:returnContext(.)"/></string>
+                                        
+                                        <!--                                        Get the weight, using hcmc:returnWeight function -->
+                                        <number key="weight"><xsl:value-of select="hcmc:returnWeight(.)"/></number>
+                                        
+                                        <number key="pos"><xsl:value-of select="@data-staticSearch-pos"/></number>
+                                    </map>
+                                </xsl:for-each>
+                            </array>
+                        </xsl:if>
+                    </map>
+                </xsl:variable>
+                <xsl:value-of select="xml-to-json($tempDoc)"/>
+            </xsl:result-document>
+        </xsl:for-each-group>
+    </xsl:template>
+    
     
     <xd:doc>
         <xd:desc><xd:ref name="hcmc:normalize-boolean">hcmc:normalize-boolean</xd:ref>
@@ -481,20 +396,7 @@
             collection, indexed by their relative URI (which serves as their identifier),
             to be used when displaying results in the search page.</xd:desc>
     </xd:doc>
-    <xsl:template name="createTitleJson">
-        <xsl:result-document href="{$outDir}/ssTitles{$versionString}.json" method="text">
-            <xsl:variable name="map">
-                <map:map>
-                    <xsl:for-each select="$tokenizedDocs//html">
-                        <map:array key="{@data-staticSearch-relativeUri}">
-                            <map:string><xsl:value-of select="hcmc:getDocTitle(.)"/></map:string>
-                        </map:array>
-                    </xsl:for-each>
-                </map:map>
-            </xsl:variable>
-            <xsl:value-of select="xml-to-json($map, map{'indent': $indentJSON})"/>
-        </xsl:result-document>
-    </xsl:template>
+
     
     
     <!--    Create a config file for the JSON-->
@@ -575,6 +477,7 @@
         </xsl:element>
     </xsl:template>
     
+
     
 
 </xsl:stylesheet>

@@ -429,12 +429,19 @@
         <xso:variable name="tempDir"><xsl:value-of select="$tempDir"/></xso:variable>
         <xso:variable name="ssBaseDir"><xsl:value-of select="$ssBaseDir"/></xso:variable>
         
-        
+        <xso:variable name="kwicLengthHalf"
+            select="{xs:integer(round(xs:integer($configDoc//totalKwicLength) div 2))}"/>
         <xso:variable name="docs" 
             select="collection(concat($collectionDir, {$sq || '?select=*.*htm*;recurse=' || (if ($recurse) then 'yes' else 'no') || $sq}))[not(starts-with(document-uri(.),$tempDir))][not(ends-with(document-uri(.), $buildReportFilename))]"/>
         
+        <xso:variable name="docUris" 
+            select="uri-collection(concat($collectionDir, {$sq || '?select=*.*htm*;recurse=' || (if ($recurse) then 'yes' else 'no') || $sq}))[not(starts-with(.,$tempDir))][not(ends-with(., $buildReportFilename))]"/>
+        
         <xso:variable name="tokenizedDocs" 
             select="collection(concat($tempDir, {$sq || '?select=*_tokenized.*htm*;recurse=' || (if ($recurse) then 'yes' else 'no') || $sq}))"/>
+        
+        <xso:variable name="tokenizedUris" 
+            select="uri-collection(concat($tempDir, {$sq || '?select=*_tokenized.*htm*;recurse=' || (if ($recurse) then 'yes' else 'no') || $sq}))"/>
         
         <xso:variable name="hasExclusions" 
             select="{if ($configDoc//exclude) then 'true' else 'false'}()"/>

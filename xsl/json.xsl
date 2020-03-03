@@ -35,17 +35,6 @@
     </xd:doc>
     <xsl:include href="config.xsl"/>
 
-    <!--**************************************************************
-       *                                                            *
-       *                      Global Variables                      *
-       *                                                            *
-       **************************************************************-->
-    <xd:doc>
-        <xd:desc><xd:ref name="kwicLengthHalf" type="variable">$kwicLengthHalf</xd:ref> is simply
-        rounded half of the length of the KWIC word limit. This helps when creating the KWIC
-        in the later stages of the process.</xd:desc>
-    </xd:doc>
-    <xsl:variable name="kwicLengthHalf" select="xs:integer(round(xs:integer($totalKwicLength) div 2))" as="xs:integer"/>
         
 
     <!--**************************************************************
