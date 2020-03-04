@@ -259,6 +259,18 @@
         </xsl:copy>
     </xsl:template>
     
+    <xsl:template match="*[not(self::meta)]/@*" mode="contextualize">
+        <xsl:choose>
+            <xsl:when test="local-name()=('id','lang')">
+                <xsl:copy-of select="."/>
+            </xsl:when>
+            <xsl:when test="starts-with(local-name(),'data-staticSearch')">
+                <xsl:copy-of select="."/>
+            </xsl:when>
+            <xsl:otherwise/>
+        </xsl:choose>
+    </xsl:template>
+    
     <!--WEIgHTIng TEMPLATE-->
     
     <xsl:template match="*[matches(local-name(),'^h\d$')]" mode="weigh">
