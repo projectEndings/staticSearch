@@ -18,7 +18,7 @@
     <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
     
     <property name="saxon" value="${basedir}/lib/saxon9he.jar"/>
-    
+
     <property name="config" value="configTest.xml"/>
     
     <property name="configFile" value="${basedir}/${config}"/>
@@ -156,12 +156,15 @@
     
     <!--NEW STUFF-->
     <target name="tokenizeNEW">
-        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true">
+        <java classpath="${saxon}" classname="net.sf.saxon.Transform" fork="true" failonerror="true" output="tokenizeNew.txt">
+            <jvmarg value="-Xmx6000m"/>
             <arg value="-xsl:${basedir}/xsl/tokenize_new.xsl"/>
             <arg value="-s:${basedir}/xsl/tokenize_new.xsl"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
             <arg value="-t"/>
-            <!--<jvmarg value="-Xmx2048m"/>-->
+            <arg value="-strip:all"/>
+            <arg value="-tree:tinyc"/>
+
         </java>
     </target>
     
@@ -170,7 +173,7 @@
             param="char" 
             inheritall="true" 
             target="makedir"/>
-        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true">
+        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" output="combineNew.txt">
             <arg value="-xsl:${basedir}/xsl/combineNEW.xsl"/>
             <arg value="-s:${basedir}/xsl/combineNEW.xsl"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
@@ -263,6 +266,10 @@
     
     <target name="all" depends="init, validate, config, tokenize, json, copyFiles, makeSearchPage, report, clean"/>
     
+    <!--Target to override validation, which is helpful in cases where the HTML output
+        has been validated by a stricter set of validation rules (like the VNU validator)-->
+    <target name="allButValidate" depends="init, config, tokenize, json, copyFiles, makeSearchPage, report, clean"/>
+    
     <!-- Don't clean up so we can see what's happening. -->
     <target name="test" depends="init, validate, config, tokenize, json, copyFiles, makeSearchPage, report"/>
     
@@ -270,7 +277,7 @@
     
     <target name="new" depends="init, validate, config, tokenize, jsonDocByDoc, combineJsons, copyFiles, makeSearchPage, report"/>
     
-    <target name="experiment" depends="init, validate, config, tokenizeNEW, combineNEW"/>
+    <target name="experiment" depends="init, config, tokenizeNEW, combineNEW"/>
     
     <target name="basicNew" depends="init, config, tokenize, jsonDocByDoc, combineJsons, copyFiles, makeSearchPage, report, clean"/>
 </project>
