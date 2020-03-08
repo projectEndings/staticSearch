@@ -19,6 +19,7 @@
     </xd:doc>
     
     <xsl:include href="config.xsl"/>
+ 
     
     <xd:doc>
         <xd:desc><xd:ref name="hasFilters">$hasFilters</xd:ref> is used to specify whether
@@ -104,8 +105,8 @@
     </xsl:template>
     
     <xsl:template name="createDiagnostics">
-        <xsl:variable name="docsWithoutIds" select="$docs//html[not(@id)]"/>
-        <xsl:variable name="docsWithoutLang" select="$docs//html[not(@lang)]"/>
+        <xsl:variable name="docsWithoutIds" select="$tokenizedDocs//html[not(@id)]"/>
+        <xsl:variable name="docsWithoutLang" select="$tokenizedDocs//html[not(@lang)]"/>
         <xsl:variable name="badNumericFilters" select="$tokenizedDocs//meta[contains-token(@class,'staticSearch.num')][not(@content castable as xs:decimal)]"/>
         <section>
             <h2>Diagnostics</h2>
@@ -207,12 +208,12 @@
                 <tbody>
                     <tr>
                         <td>Total HTML Documents Analyzed</td>
-                        <td><xsl:value-of select="count($docs)"/></td>
+                        <td><xsl:value-of select="count($docUris)"/></td>
                     </tr>
                     <xsl:if test="$hasExclusions">
                         <tr>
                             <td>HTML Documents Excluded</td>
-                            <td><xsl:value-of select="count($docs) - count($tokenizedDocs)"/></td>
+                            <td><xsl:value-of select="count($docUris) - count($tokenizedDocs)"/></td>
                         </tr>
                     </xsl:if>
  
