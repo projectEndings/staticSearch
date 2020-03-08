@@ -201,6 +201,9 @@
             <!--Now (potentially re-)make the id, either using the declared value
                 or an inserted value-->
             <xsl:attribute name="id" select="if (@id) then @id else $searchIdentifier"/>
+            <xsl:if test="not(@id)">
+                <xsl:attribute name="data-staticSearch-noId" select="'true'"/>
+            </xsl:if>
             
             <!--And create a relativeUri in the attribute, so we know where to point
                 things if ids and filenames don't match or if nesting-->
