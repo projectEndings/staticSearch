@@ -237,13 +237,6 @@
         <delete dir="${staticSearchDir}/temp"/>
     </target>
     
-    <target name="getWea">
-        <description>TARGET getWEA
-            This target pulls the latest build of the Winnifred Eaton Archive site
-            from the HCMC Jenkins build server, so that it can be uesd as a test for the static search.
-            
-        </description>
-    </target>
     
     <!--Javascript OPEN task-->
     
