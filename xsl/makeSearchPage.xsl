@@ -256,7 +256,8 @@
                     <xsl:variable name="boolFilters" select="$filterJSONURIs[matches(.,'ssBool\d+.*\.json')]"/>
                     <xsl:variable name="numFilters" select="$filterJSONURIs[matches(.,'ssNum\d+.*\.json')]"/>
                     
-                    
+                    <!--If there are filters, then add a clear button-->
+                    <span class="clearButton"><button id="ssClear">Clear</button></span>
                     <!--First, handle the desc filters-->
                     <xsl:if test="not(empty($descFilters))">
                         <div class="ssDescFilters">
