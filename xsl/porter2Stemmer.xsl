@@ -239,12 +239,13 @@
   
   <xd:doc scope="component">
     <xd:desc><xd:ref name="pt:stem" type="function">pt:stem</xd:ref> is the core function that
-      takes a single token and returns its stemmed version.
+      takes a single token and returns its stemmed version. This function should be deterministic
+      (same results every time from same input), so we mark it as new-each-time="no".
     </xd:desc>
     <xd:param name="token">Input token string</xd:param>
     <xd:result>The stemmed version of the token.</xd:result>
   </xd:doc>
-  <xsl:function name="pt:stem" as="xs:string">
+  <xsl:function name="pt:stem" as="xs:string" new-each-time="no">
     <xsl:param name="token" as="xs:string"/>
     <xsl:choose>
       <xsl:when test="string-length($token) lt 3"><xsl:value-of select="$token"/></xsl:when>

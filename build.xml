@@ -17,7 +17,9 @@
     <!--  We need ant contrib. -->
     <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
     
-    <property name="saxon" value="${basedir}/lib/saxon9he.jar"/>
+    <!-- Saxon moved from 9 to 10 2020-03-20. -->
+    <!--<property name="saxon" value="${basedir}/lib/saxon9he.jar"/>-->
+    <property name="saxon" value="${basedir}/lib/saxon-he-10.jar"/>
 
     <property name="config" value="configTest.xml"/>
     

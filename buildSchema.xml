@@ -76,7 +76,8 @@
     
     
     <!--Saxon-->
-    <property name="saxon" value="${lib.dir}/saxon9he.jar"/>
+    <!--<property name="saxon" value="${lib.dir}/saxon9he.jar"/>-->
+    <property name="saxon" value="${lib.dir}/saxon-he-10.0.jar"/>
     
     <!--Condition set for the TEI server, since the TEI site can go down periodically:
   If we can reach the TEI guidelines-->
