@@ -689,6 +689,9 @@
                     <xsl:for-each select="$tokenizedDocs//html">
                         <map:array key="{@data-staticSearch-relativeUri}">
                             <map:string><xsl:value-of select="hcmc:getDocTitle(.)"/></map:string>
+                            <!-- Add a thumbnail graphic if one is specified. This generates
+                            nothing if there isn't. -->
+                            <xsl:sequence select="hcmc:getDocThumbnail(.)"/>
                         </map:array>
                     </xsl:for-each>
                 </map:map>
@@ -822,5 +825,23 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
-
+    
+    <xd:doc>
+        <xd:desc>
+            <xd:p><xd:ref name="hcmc:getDocThumbnail" type="function">hcmc:getDocThumbnail</xd:ref> 
+                generates a map:string element containing a pointer to the first of any configured graphics, 
+                relative to the search page location. NOTE: this function assumes that the graphic path has
+            been massaged as necessary during the tokenizing process, so that it is now relative to the 
+            search page location, not to the containing document.</xd:p>
+        </xd:desc>
+        <xd:param name="doc">The input document, which must be an HTML element.</xd:param>
+        <xd:result>A map:string element, if there is a configured graphic, or the empty sequence.</xd:result>
+    </xd:doc>
+    <xsl:function name="hcmc:getDocThumbnail" as="element(map:string)?">
+        <xsl:param name="doc" as="element(html)"/>
+        <xsl:if test="$doc/head/meta[@name='docImage'][@class='staticSearch.docImage']">
+            <map:string><xsl:value-of select="$doc/head/meta[@name='docImage'][@class='staticSearch.docImage'][1]/content"/></map:string>
+        </xsl:if>
+    </xsl:function>
+    
 </xsl:stylesheet>
