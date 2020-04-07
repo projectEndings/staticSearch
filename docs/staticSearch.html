@@ -101,19 +101,20 @@ function showByMod() {
                      </ul>
                   </li>
                   <li class="toc"><span class="headingNumber"> 5.2 </span><a class="toc toc_1" href="#configuringDocTitles" title="Configuring your site document titles">Configuring your site: document titles</a></li>
-                  <li class="toc"><span class="headingNumber"> 5.3 </span><a class="toc toc_1" href="#creatingConfigFile" title="Creating a configuration file">Creating a configuration file</a><ul class="toc">
-                        <li class="toc"><span class="headingNumber">5.3.1 </span><a class="toc toc_2" href="#specifyingParameters" title="Specifying Parameters">Specifying Parameters</a><ul class="toc">
-                              <li class="toc"><span class="headingNumber">5.3.1.1 </span><a class="toc toc_3" href="#paramsRequired" title="Required parameters">Required parameters</a></li>
-                              <li class="toc"><span class="headingNumber">5.3.1.2 </span><a class="toc toc_3" href="#paramsOptional" title="Optional Parameters">Optional Parameters</a></li>
+                  <li class="toc"><span class="headingNumber"> 5.3 </span><a class="toc toc_1" href="#configuringDocThumbnails" title="Configuring your site document thumbnails">Configuring your site: document thumbnails</a></li>
+                  <li class="toc"><span class="headingNumber"> 5.4 </span><a class="toc toc_1" href="#creatingConfigFile" title="Creating a configuration file">Creating a configuration file</a><ul class="toc">
+                        <li class="toc"><span class="headingNumber">5.4.1 </span><a class="toc toc_2" href="#specifyingParameters" title="Specifying Parameters">Specifying Parameters</a><ul class="toc">
+                              <li class="toc"><span class="headingNumber">5.4.1.1 </span><a class="toc toc_3" href="#paramsRequired" title="Required parameters">Required parameters</a></li>
+                              <li class="toc"><span class="headingNumber">5.4.1.2 </span><a class="toc toc_3" href="#paramsOptional" title="Optional Parameters">Optional Parameters</a></li>
                            </ul>
                         </li>
-                        <li class="toc"><span class="headingNumber">5.3.2 </span><a class="toc toc_2" href="#specifyingRules" title="Specifying Rules (Optional)">Specifying Rules (Optional)</a></li>
-                        <li class="toc"><span class="headingNumber">5.3.3 </span><a class="toc toc_2" href="#specifyingContexts" title="Specifying Contexts (Optional)">Specifying Contexts (Optional)</a></li>
-                        <li class="toc"><span class="headingNumber">5.3.4 </span><a class="toc toc_2" href="#specifyingExclusions" title="Specifying Exclusions (Optional)">Specifying Exclusions (Optional)</a></li>
+                        <li class="toc"><span class="headingNumber">5.4.2 </span><a class="toc toc_2" href="#specifyingRules" title="Specifying Rules (Optional)">Specifying Rules (Optional)</a></li>
+                        <li class="toc"><span class="headingNumber">5.4.3 </span><a class="toc toc_2" href="#specifyingContexts" title="Specifying Contexts (Optional)">Specifying Contexts (Optional)</a></li>
+                        <li class="toc"><span class="headingNumber">5.4.4 </span><a class="toc toc_2" href="#specifyingExclusions" title="Specifying Exclusions (Optional)">Specifying Exclusions (Optional)</a></li>
                      </ul>
                   </li>
-                  <li class="toc"><span class="headingNumber"> 5.4 </span><a class="toc toc_1" href="#searchPage" title="Creating a search page">Creating a search page</a></li>
-                  <li class="toc"><span class="headingNumber"> 5.5 </span><a class="toc toc_1" href="#searchBuildProcess" title="Running the search build process">Running the search build process</a></li>
+                  <li class="toc"><span class="headingNumber"> 5.5 </span><a class="toc toc_1" href="#searchPage" title="Creating a search page">Creating a search page</a></li>
+                  <li class="toc"><span class="headingNumber"> 5.6 </span><a class="toc toc_1" href="#searchBuildProcess" title="Running the search build process">Running the search build process</a></li>
                </ul>
             </li>
             <li class="toc"><span class="headingNumber"> 6 </span><a class="toc toc_0" href="#howDoesItWork" title="How does it work">How does it work?</a><ul class="toc">
@@ -258,8 +259,19 @@ function showByMod() {
                   <div id="index.xml-egXML-d38e165" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">docTitle</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.docTitle</span>" <span class="attribute">content</span>="<span class="attributevalue">What I did in my holidays</span>"/&gt;</span></div>
                </div>
             </div>
+            <div class="teidiv1" id="configuringDocThumbnails">
+               <h3><span class="headingNumber">5.3 </span><span class="head">Configuring your site: document thumbnails</span></h3>
+               <div class="p">When a document is returned as a result of a search hit, you may want to include with
+                  it a thumbnail image. This may be for aesthetic reasons, or because the focus of the
+                  document itself is actually an image (perhaps your site is a set of pages dealing
+                  with works of art, for instance). Whatever the reason, you can supply a link to a
+                  thumbnail image like this: 
+                  <div id="index.xml-egXML-d38e171" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">docImage</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.docImage</span>" <span class="attribute">content</span>="<span class="attributevalue">images/thisPage.jpg</span>"/&gt;</span></div> The <span class="att">content</span> attribute value should be the path to an image relative to the document itself; so
+                  in the example above, there would be a folder called <span class="ident">images</span> which is a sibling of the HTML file containing the tag, and that folder would contain
+                  a file called <span class="ident">thisPage.jpg</span>.</div>
+            </div>
             <div class="teidiv1" id="creatingConfigFile">
-               <h3><span class="headingNumber">5.3 </span><span class="head">Creating a configuration file</span></h3>
+               <h3><span class="headingNumber">5.4 </span><span class="head">Creating a configuration file</span></h3>
                <p>The configuration file is an XML document which tells the Generator where to find
                   your site, and what search features you would like to include. The configuration file
                   conforms to a schema which is documented here.</p>
@@ -272,9 +284,9 @@ function showByMod() {
                <p> Only the <a class="link_ref" href="#TEI.params" title="&lt;params&gt;">&lt;params&gt;</a> element is necessary, but, as we discuss shortly, we highly suggest taking advantage
                   of the <a class="link_ref" href="#TEI.rules" title="&lt;rules&gt;">&lt;rules&gt;</a> and <a class="link_ref" href="#TEI.contexts" title="&lt;contexts&gt;">&lt;contexts&gt;</a> for the best results.</p>
                <div class="teidiv2" id="specifyingParameters">
-                  <h3><span class="headingNumber">5.3.1 </span><span class="head">Specifying Parameters</span></h3>
+                  <h3><span class="headingNumber">5.4.1 </span><span class="head">Specifying Parameters</span></h3>
                   <div class="teidiv3" id="paramsRequired">
-                     <h4><span class="headingNumber">5.3.1.1 </span><span class="head">Required parameters</span></h4>
+                     <h4><span class="headingNumber">5.4.1.1 </span><span class="head">Required parameters</span></h4>
                      <p>The <a class="link_ref" href="#TEI.params" title="&lt;params&gt;">&lt;params&gt;</a> element has two required elements for determining the resource collection that you
                         wish to index: </p>
                      <ul>
@@ -318,7 +330,7 @@ function showByMod() {
                         the subdirectories of the collection and index those files.</p>
                   </div>
                   <div class="teidiv3" id="paramsOptional">
-                     <h4><span class="headingNumber">5.3.1.2 </span><span class="head">Optional Parameters</span></h4>
+                     <h4><span class="headingNumber">5.4.1.2 </span><span class="head">Optional Parameters</span></h4>
                      <p>The following parameters are optional, but most projects will want to specify some
                         of them:</p>
                      <ul>
@@ -379,12 +391,12 @@ function showByMod() {
                   </div>
                </div>
                <div class="teidiv2" id="specifyingRules">
-                  <h3><span class="headingNumber">5.3.2 </span><span class="head">Specifying Rules (Optional)</span></h3>
+                  <h3><span class="headingNumber">5.4.2 </span><span class="head">Specifying Rules (Optional)</span></h3>
                   <div class="p">The <a class="link_ref" href="#TEI.rules" title="&lt;rules&gt;">&lt;rules&gt;</a> elements specifies a list of conditions (using the <a class="link_ref" href="#TEI.rule" title="&lt;rule&gt;">&lt;rule&gt;</a> element) that tell the parser, using XPath statements in the <span class="att">xpath</span> attribute, specific weights to assign to particular parts of each document. For instance,
                      if you wanted all heading elements (<span class="gi">&lt;h1&gt;</span>, <span class="gi">&lt;h2&gt;</span>, etc) in documents to be given a greater weight and thus receive a higher score in
                      the results, you can do so using a rule like so: 
-                     <div id="index.xml-egXML-d38e335" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">2</span>"<br/>  <span class="attribute">xpath</span>="<span class="attributevalue">h1 | h2 | h3 | h4 | h5 | h6</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> Since we're using XPath 3.0 and XSLT 3.0, this can also be simplified to: 
-                     <div id="index.xml-egXML-d38e339" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">2</span>"<br/>  <span class="attribute">xpath</span>="<span class="attributevalue">*[matches(local-name(),'^h\d+$')]</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> (It is worth noting, however, the above example is unnecessary: all heading elements
+                     <div id="index.xml-egXML-d38e349" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">2</span>"<br/>  <span class="attribute">xpath</span>="<span class="attributevalue">h1 | h2 | h3 | h4 | h5 | h6</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> Since we're using XPath 3.0 and XSLT 3.0, this can also be simplified to: 
+                     <div id="index.xml-egXML-d38e353" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">2</span>"<br/>  <span class="attribute">xpath</span>="<span class="attributevalue">*[matches(local-name(),'^h\d+$')]</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> (It is worth noting, however, the above example is unnecessary: all heading elements
                      are given a weight of 2 by default, which is the only preconfigured weight in static
                      search.)</div>
                   <p>The value of the <span class="att">xpath</span> attribute is transformed in a XSLT template match attribute, and thus must follow
@@ -394,8 +406,8 @@ function showByMod() {
                      index its contents on every page. These elements can be ignored simply by using a
                      <a class="link_ref" href="#TEI.rule" title="&lt;rule&gt;">&lt;rule&gt;</a> and setting its weight to 0. For instance, if you want to remove the header and the
                      footer from the search indexing process, you could write something like: 
-                     <div id="index.xml-egXML-d38e358" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>" <span class="attribute">xpath</span>="<span class="attributevalue">footer | header</span>"/&gt;</span></div> Or if you want to remove XHTML anchor tags (<span class="gi">&lt;a&gt;</span>) whose text is identical to the URL specified in its <span class="att">href</span>, you could do something like: 
-                     <div id="index.xml-egXML-d38e366" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>" <span class="attribute">xpath</span>="<span class="attributevalue">a[@href=./text()]</span>"/&gt;</span></div>
+                     <div id="index.xml-egXML-d38e372" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>" <span class="attribute">xpath</span>="<span class="attributevalue">footer | header</span>"/&gt;</span></div> Or if you want to remove XHTML anchor tags (<span class="gi">&lt;a&gt;</span>) whose text is identical to the URL specified in its <span class="att">href</span>, you could do something like: 
+                     <div id="index.xml-egXML-d38e380" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>" <span class="attribute">xpath</span>="<span class="attributevalue">a[@href=./text()]</span>"/&gt;</span></div>
                   </div>
                   <p>Note that the indexer does not tokenize any content in the <span class="gi">&lt;head&gt;</span> of the document (but as noted above, metadata can be configured into filters) and
                      that all elements in the <span class="gi">&lt;body&gt;</span> of a document are considered tokenizable. However, common elements that you might
@@ -407,26 +419,26 @@ function showByMod() {
                   </ul>
                </div>
                <div class="teidiv2" id="specifyingContexts">
-                  <h3><span class="headingNumber">5.3.3 </span><span class="head">Specifying Contexts (Optional)</span></h3>
+                  <h3><span class="headingNumber">5.4.3 </span><span class="head">Specifying Contexts (Optional)</span></h3>
                   <div class="p">When the static search creates the keywords-in-contexts (the "kwic" or "snippets")
                      for each token, it does so by looking for the nearest block-level element that it
                      can use as its context. Take, for instance, this unordered list: 
-                     <div id="index.xml-egXML-d38e385" class="pre egXML_valid"><span class="element">&lt;ul&gt;</span><br/> <span class="element">&lt;li&gt;</span>Keyword-in-context search results. This is also configurable, since including contexts<br/>   increases the size of the index.<span class="element">&lt;/li&gt;</span><br/> <span class="element">&lt;li&gt;</span>Search filtering using any metadata you like, allowing users to limit their search
+                     <div id="index.xml-egXML-d38e399" class="pre egXML_valid"><span class="element">&lt;ul&gt;</span><br/> <span class="element">&lt;li&gt;</span>Keyword-in-context search results. This is also configurable, since including contexts<br/>   increases the size of the index.<span class="element">&lt;/li&gt;</span><br/> <span class="element">&lt;li&gt;</span>Search filtering using any metadata you like, allowing users to limit their search
                         to specific<br/>   document types.<span class="element">&lt;/li&gt;</span><br/><span class="element">&lt;/ul&gt;</span></div> Each <span class="gi">&lt;li&gt;</span> elements is, by default, a <span class="term">context</span> element, meaning that the snippet generated for each token will not extend beyond
                      the <span class="gi">&lt;li&gt;</span> element boundaries; in this case, if the <span class="gi">&lt;li&gt;</span> was not a context attribute, the term <span class="q">‘search’</span> would produce a context that looks something like: 
                      <pre class="pre_eg">"...the size of the index.<span style="font-weight:bold;">Search</span> filtering using any metadata you like,..."</pre>
                   </div>
                   <div class="p">Using the <a class="link_ref" href="#TEI.contexts" title="&lt;contexts&gt;">&lt;contexts&gt;</a> element, you can control what elements operate as contexts. For instance, say a page
                      contained a marginal note, encoded as a <span class="gi">&lt;span&gt;</span> in your document beside its point of attachment:<span id="Note1_return"><a class="notelink" title="This example taken from Thomas S. Kuhn, The Structure of Scientific Revolutions (50th anniversary edition), University of Chicago Press, 2012: p. 191." href="#Note1"><sup>1</sup></a></span> 
-                     <div id="index.xml-egXML-d38e421" class="pre egXML_valid"><span class="element">&lt;p&gt;</span>About that program I shall have nothing to say here,<span class="element">&lt;span <span class="attribute">class</span>="<span class="attributevalue">sidenote</span>"&gt;</span>Some information on this subject can be found in "Second Thoughts"<span class="element">&lt;/span&gt;</span> [...]<br/><span class="element">&lt;/p&gt;</span></div> Using CSS, the footnote might be alongside the text of the document in margin, or
+                     <div id="index.xml-egXML-d38e435" class="pre egXML_valid"><span class="element">&lt;p&gt;</span>About that program I shall have nothing to say here,<span class="element">&lt;span <span class="attribute">class</span>="<span class="attributevalue">sidenote</span>"&gt;</span>Some information on this subject can be found in "Second Thoughts"<span class="element">&lt;/span&gt;</span> [...]<br/><span class="element">&lt;/p&gt;</span></div> Using CSS, the footnote might be alongside the text of the document in margin, or
                      made into a clickable object using Javascript. However, since the tokenizer is unaware
                      of any server-side processing, it understands the <span class="gi">&lt;span&gt;</span> as an inline element and assumes the <span class="gi">&lt;p&gt;</span> constitutes the context of the element. A search for <span class="q">‘information’</span> might then return: 
                      <pre class="pre_eg">"...nothing to say here,Some <span style="font-weight:bold;">information</span> on this subject can be found...</pre> To tell the tokenizer that the <span class="gi">&lt;span&gt;</span> constitutes the context block for any of its token, use the <a class="link_ref" href="#TEI.context" title="&lt;context&gt;">&lt;context&gt;</a> element with an <span class="att">xpath</span> pattern: 
-                     <div id="index.xml-egXML-d38e450" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">xpath</span>="<span class="attributevalue">span[contains-token(@class,'sidenote')]</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
+                     <div id="index.xml-egXML-d38e464" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">xpath</span>="<span class="attributevalue">span[contains-token(@class,'sidenote')]</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
                   </div>
                   <div class="p">You can also configure it the other way: if a <span class="gi">&lt;div&gt;</span>, which is by default a context block, should not be understood as a context block,
                      then you can tell the parser to not consider it as such using <span class="att">context</span> set to false: 
-                     <div id="index.xml-egXML-d38e460" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">xpath</span>="<span class="attributevalue">div</span>" <span class="attribute">context</span>="<span class="attributevalue">false</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
+                     <div id="index.xml-egXML-d38e474" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">xpath</span>="<span class="attributevalue">div</span>" <span class="attribute">context</span>="<span class="attributevalue">false</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
                   </div>
                   <p>The default contexts elements are: </p>
                   <ul>
@@ -448,7 +460,7 @@ function showByMod() {
                   </ul>
                </div>
                <div class="teidiv2" id="specifyingExclusions">
-                  <h3><span class="headingNumber">5.3.4 </span><span class="head">Specifying Exclusions (Optional)</span></h3>
+                  <h3><span class="headingNumber">5.4.4 </span><span class="head">Specifying Exclusions (Optional)</span></h3>
                   <p>A complex site may have two or more search pages targetting specific types of document
                      or content, each of which may need its own particular search controls and indexes.
                      This can easily be achieved by specifying a different <a class="link_ref" href="#TEI.searchFile" title="&lt;searchFile&gt;">&lt;searchFile&gt;</a> and <a class="link_ref" href="#TEI.outputFolder" title="&lt;outputFolder&gt;">&lt;outputFolder&gt;</a> in the configuration file for each search.</p>
@@ -456,12 +468,12 @@ function showByMod() {
                      contexts and rules. For example, imagine that you are creating a special search page
                      that focuses only on the text describing images or figures in your documents. You
                      might do it like this: 
-                     <div id="index.xml-egXML-d38e509" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">xpath</span>="<span class="attributevalue">text()[not(ancestor::div[@class='figure']or ancestor::title)]</span>"<br/>  <span class="attribute">weight</span>="<span class="attributevalue">0</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> This specifies that all text nodes which are not part of the document title or descendants
+                     <div id="index.xml-egXML-d38e523" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">xpath</span>="<span class="attributevalue">text()[not(ancestor::div[@class='figure']or ancestor::title)]</span>"<br/>  <span class="attribute">weight</span>="<span class="attributevalue">0</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> This specifies that all text nodes which are not part of the document title or descendants
                      of <span class="tag">&lt;div class="figure"&gt;</span> should be ignored (<span class="att">weight</span>=<span class="val">0</span>), so only your target nodes will be indexed.</div>
                   <p>However, it's also likely that you will want to exclude certain features or documents
                      from a specialized search page, and this is done using the <a class="link_ref" href="#TEI.excludes" title="&lt;excludes&gt;">&lt;excludes&gt;</a> section and its child <a class="link_ref" href="#TEI.exclude" title="&lt;exclude&gt;">&lt;exclude&gt;</a> elements.</p>
                   <div class="p">Here is an example: 
-                     <div id="index.xml-egXML-d38e532" class="pre egXML_valid"><span class="element">&lt;excludes&gt;</span><br/><span class="comment">&lt;!-- We only index files which have illustrations in them. --&gt;</span><br/> <span class="element">&lt;exclude <span class="attribute">type</span>="<span class="attributevalue">index</span>"<br/>  <span class="attribute">xpath</span>="<span class="attributevalue">html[not(descendant::meta[@name='Has illustration(s)'][@content='true'])]</span>"/&gt;</span><br/><span class="comment">&lt;!-- We ignore the document type filter, 
+                     <div id="index.xml-egXML-d38e546" class="pre egXML_valid"><span class="element">&lt;excludes&gt;</span><br/><span class="comment">&lt;!-- We only index files which have illustrations in them. --&gt;</span><br/> <span class="element">&lt;exclude <span class="attribute">type</span>="<span class="attributevalue">index</span>"<br/>  <span class="attribute">xpath</span>="<span class="attributevalue">html[not(descendant::meta[@name='Has illustration(s)'][@content='true'])]</span>"/&gt;</span><br/><span class="comment">&lt;!-- We ignore the document type filter, 
                            because we are only indexing one type 
                            of document anyway. --&gt;</span><br/> <span class="element">&lt;exclude <span class="attribute">type</span>="<span class="attributevalue">filter</span>"<br/>  <span class="attribute">xpath</span>="<span class="attributevalue">meta[@name='Document type']</span>"/&gt;</span><br/><span class="comment">&lt;!-- We exclude the filter that specifies 
                            these documents because it's pointless. --&gt;</span><br/> <span class="element">&lt;exclude <span class="attribute">type</span>="<span class="attributevalue">filter</span>"<br/>  <span class="attribute">xpath</span>="<span class="attributevalue">meta[@name='Has illustration(s)']</span>"/&gt;</span><br/><span class="element">&lt;/excludes&gt;</span></div> Here we use <span class="tag">&lt;exclude type="index"/&gt;</span> to specify that all documents which do not contain <span class="tag">&lt;meta name="Has illustration(s)" content="true"/&gt;&gt;</span> should be ignored. Then we use two <span class="tag">&lt;exclude type="filter"/&gt;</span> tags to specify first that the <span class="ident">Document type</span> filter should be ignored (i.e. it should not appear on the search page), and second,
@@ -472,17 +484,17 @@ function showByMod() {
                </div>
             </div>
             <div class="teidiv1" id="searchPage">
-               <h3><span class="headingNumber">5.4 </span><span class="head">Creating a search page</span></h3>
+               <h3><span class="headingNumber">5.5 </span><span class="head">Creating a search page</span></h3>
                <div class="p">You'll obviously want the search page for your site to conform with the look and feel
                   of the rest of your site. You can create a complete HTML document (which must of course
                   also be well-formed XML, so it can be processed), containing all the site components
                   you need, and then the search build process will insert all the necessary components
                   into that file. The only requirement is that the page contains one <span class="gi">&lt;div&gt;</span> element with the correct <span class="att">id</span> attribute: 
-                  <div id="index.xml-egXML-d38e565" class="pre egXML_valid"><span class="element">&lt;div <span class="attribute">id</span>="<span class="attributevalue">staticSearch</span>"&gt;</span> <br/> [...content will be supplied by the build process...]<br/><span class="element">&lt;/div&gt;</span></div> This <span class="gi">&lt;div&gt;</span> will be empty initially. The build process will find insert the search controls,
+                  <div id="index.xml-egXML-d38e579" class="pre egXML_valid"><span class="element">&lt;div <span class="attribute">id</span>="<span class="attributevalue">staticSearch</span>"&gt;</span> <br/> [...content will be supplied by the build process...]<br/><span class="element">&lt;/div&gt;</span></div> This <span class="gi">&lt;div&gt;</span> will be empty initially. The build process will find insert the search controls,
                   scripts and results <span class="gi">&lt;div&gt;</span> into this container. Then whenever you rebuild the search for your site, the contents
                   will be replaced. There is no need to make sure it's empty every time.</div>
                <div class="p">The search process will also add a CSS <span class="gi">&lt;style&gt;</span> element to the <span class="gi">&lt;head&gt;</span> of the document: 
-                  <div id="index.xml-egXML-d38e579" class="pre egXML_valid"><span class="element">&lt;style <span class="attribute">id</span>="<span class="attributevalue">ssCss</span>"&gt;</span> [...styles for search controls...]<br/><span class="element">&lt;/style&gt;</span></div> You can customize this CSS by providing your own CSS that overrides it, using <span class="gi">&lt;style&gt;</span>, or <span class="gi">&lt;link&gt;</span>, placed after it in the <span class="gi">&lt;head&gt;</span> element, or by replacing the inserted CSS after the build process.</div>
+                  <div id="index.xml-egXML-d38e593" class="pre egXML_valid"><span class="element">&lt;style <span class="attribute">id</span>="<span class="attributevalue">ssCss</span>"&gt;</span> [...styles for search controls...]<br/><span class="element">&lt;/style&gt;</span></div> You can customize this CSS by providing your own CSS that overrides it, using <span class="gi">&lt;style&gt;</span>, or <span class="gi">&lt;link&gt;</span>, placed after it in the <span class="gi">&lt;head&gt;</span> element, or by replacing the inserted CSS after the build process.</div>
                <p>Note that once your file has been processed and all this content has been added, you
                   can process it again at any time; there is no need to start every time with a clean,
                   empty version of the search page.</p>
@@ -492,7 +504,7 @@ function showByMod() {
                   build results, which is not necessary for your site).</p>
             </div>
             <div class="teidiv1" id="searchBuildProcess">
-               <h3><span class="headingNumber">5.5 </span><span class="head">Running the search build process</span></h3>
+               <h3><span class="headingNumber">5.6 </span><span class="head">Running the search build process</span></h3>
                <p>Once you have configured your HTML and your configuration file, you're ready to create
                   a search index and a search page for your site. This requires that you run ant in
                   the root folder of the staticSearch project that you have downloaded or cloned.</p>
@@ -2005,7 +2017,7 @@ element versionFile { xsd:anyURI }</pre>
             <!--
 	  Generated from index.xml using XSLT stylesheets version 7.49.0
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2020-03-20T18:08:00Z.
+	       on 2020-04-07T21:28:46Z.
 	       SAXON HE 10.0.
 		 --></address>
       </div>
