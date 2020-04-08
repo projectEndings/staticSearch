@@ -840,7 +840,7 @@
     <xsl:function name="hcmc:getDocThumbnail" as="element(map:string)?">
         <xsl:param name="doc" as="element(html)"/>
         <xsl:if test="$doc/head/meta[@name='docImage'][@class='staticSearch.docImage']">
-            <map:string><xsl:value-of select="$doc/head/meta[@name='docImage'][@class='staticSearch.docImage'][1]/content"/></map:string>
+            <map:string><xsl:value-of select="$doc/head/meta[@name='docImage'][@class='staticSearch.docImage'][1]/@content"/></map:string>
         </xsl:if>
     </xsl:function>
     
