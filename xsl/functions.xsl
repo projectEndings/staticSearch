@@ -46,4 +46,20 @@
       </xsl:try>
   </xsl:function>
   
+  <xd:doc>
+    <xd:desc><xd:ref name="hcmc:makeRelativeUri">hcmc:makeRelativeUri</xd:ref> receives
+    two fully-qualified filesystem URIs, and creates a relative path from the first one to the 
+    second. The first might be a document in the root of a collection, and the second an
+    image in a subfolder below it, for example.</xd:desc>
+    <xd:param name="rootFileUri">The base file from which the relative path needs to be calculated.</xd:param>
+    <xd:param name="targetFileUri">The file whose path relative to the base file needs to be calculated.</xd:param>
+  </xd:doc>
+  <xsl:function name="hcmc:makeRelativeUri" as="xs:string*">
+    <xsl:param name="rootFileUri" as="xs:string"/>
+    <xsl:param name="targetFileUri" as="xs:string"/>
+    <xsl:variable name="rootPathBits" as="xs:string*" select="tokenize($rootFileUri, '/')"/>
+    <xsl:variable name="targetPathBits" as="xs:string*" select="tokenize($targetFileUri, '/')"/>
+    <xsl:value-of select="string-join(($targetPathBits ! (if (position() lt count($rootPathBits) and $rootPathBits[position()] = .) then () else .)), '/')"/>
+  </xsl:function>
+  
 </xsl:stylesheet>

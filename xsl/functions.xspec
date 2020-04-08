@@ -47,4 +47,28 @@
     </x:scenario>
   </x:scenario>
   
+  <x:scenario label="Testing makeRelativeUri function">
+    <x:scenario label="Test simple case: files in same folder.">
+      <x:call function="hcmc:makeRelativeUri">
+        <x:param name="rootFileUri" select="'file:///home/mholmes/docs/collection/search.html'"/>
+        <x:param name="targetFileUri" select="'file:///home/mholmes/docs/collection/image.png'"/>
+      </x:call>
+      <x:expect label="Result from two files in the same folder" select="'image.png'"/>
+    </x:scenario>
+    <x:scenario label="Target file in subfolder.">
+      <x:call function="hcmc:makeRelativeUri">
+        <x:param name="rootFileUri" select="'file:///home/mholmes/docs/collection/search.html'"/>
+        <x:param name="targetFileUri" select="'file:///home/mholmes/docs/collection/images/image.png'"/>
+      </x:call>
+      <x:expect label="Result from two files in the same folder" select="'images/image.png'"/>
+    </x:scenario>
+    <x:scenario label="Target file in sub-subfolder.">
+      <x:call function="hcmc:makeRelativeUri">
+        <x:param name="rootFileUri" select="'file:///home/mholmes/docs/collection/search.html'"/>
+        <x:param name="targetFileUri" select="'file:///home/mholmes/docs/collection/resources/images/image.png'"/>
+      </x:call>
+      <x:expect label="Result from two files in the same folder" select="'resources/images/image.png'"/>
+    </x:scenario>
+  </x:scenario>
+  
 </x:description>
