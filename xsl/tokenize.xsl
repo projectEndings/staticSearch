@@ -12,10 +12,13 @@
     <!--JT TO ADD DOCUMENTATION HERE-->
     
     
-    <!--Import the configuration file, which is generated via another XSLT-->
+    <!--Include the configuration file, which is generated via another XSLT-->
     <xsl:include href="config.xsl"/>
     
-    <!--ANd include the PORTER2STEMMER; we should also include PORTER1, I think
+   <!-- Include the functions file.   -->
+    <xsl:include href="functions.xsl"/>
+    
+    <!--And include the PORTER2STEMMER; we should also include PORTER1, I think
         and let users choose which one they want (tho, I don't see why anyone would
         use PORTER1 and not PORTER2-->
     <xsl:include href="porter2Stemmer.xsl"/>
@@ -154,7 +157,9 @@
                         <xsl:message>Creating <xsl:value-of select="$tokenizedOutDoc"/></xsl:message>
                     </xsl:if>
                     <xsl:variable name="tokenizedDoc">
-                        <xsl:apply-templates select="$contextualized" mode="tokenize"/>
+                        <xsl:apply-templates select="$contextualized" mode="tokenize">
+                            <xsl:with-param name="currDocUri" select="$uri" tunnel="yes"/>
+                        </xsl:apply-templates>
                     </xsl:variable>
                     <xsl:apply-templates select="$tokenizedDoc" mode="enumerate"/>
                 </xsl:result-document>
@@ -313,6 +318,14 @@
             <xsl:attribute name="data-staticSearch-filter-id" select="$numFilterMap(normalize-space(@name))"/>
             <xsl:apply-templates select="@*|node()" mode="#current"/>
         </xsl:copy>
+    </xsl:template>
+    
+    <!--  This massages the path to a docImage such that it's relative to the search file, not to the containing document.  -->
+    <xsl:template match="meta[contains-token(@class,'staticSearch.docImage')]/@content" mode="tokenize">
+        <xsl:param name="currDocUri" as="xs:string" tunnel="yes"/>
+       <xsl:variable name="absPath" as="xs:string" select="resolve-uri(., $currDocUri)"/>
+        <xsl:variable name="newRelPath" as="xs:string" select="hcmc:makeRelativeUri($searchFile, $absPath)"/>
+        <xsl:attribute name="content" select="$newRelPath"/>
     </xsl:template>
     
     <!--Enumeration templates-->
