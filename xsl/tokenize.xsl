@@ -321,7 +321,7 @@
     </xsl:template>
     
     <!--  This massages the path to a docImage such that it's relative to the search file, not to the containing document.  -->
-    <xsl:template match="meta[contains-token(@class,'staticSearch.docImage')]/@content" mode="tokenize">
+    <xsl:template match="meta[contains-token(@class,'staticSearch.docImage')]/@content[not(matches(.,'^https?'))]" mode="tokenize">
         <xsl:param name="currDocUri" as="xs:string" tunnel="yes"/>
        <xsl:variable name="absPath" as="xs:string" select="resolve-uri(., $currDocUri)"/>
         <xsl:variable name="newRelPath" as="xs:string" select="hcmc:makeRelativeUri($searchFile, $absPath)"/>
