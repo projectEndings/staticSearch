@@ -1763,7 +1763,9 @@ class StaticSearch{
 /**
   * @function SSResultSet~resultsAsHtml
   * @description Outputs a ul element containing an li element for each
-  *              result in the search; context strings are also included.
+  *              result in the search; context strings are also included,
+  *              and where a document has a defined docImage, that is also
+  *              included.
   * @param {String} strScore caption for the score assigned to a hit document.
   * @return {Element(ul)} an unordered list ready for insertion into the
   *                       host document.
@@ -1772,14 +1774,29 @@ class StaticSearch{
       let ul = document.createElement('ul');
       for (let [key, value] of this.mapDocs){
         let li = document.createElement('li');
+        let d = document.createElement('div');
+        let docTitle = this.getTitleByDocId(value.docUri);
+        let imgPath = this.getThumbnailByDocId(value.docUri);
+        //If there is a docImage, include it.
+        if (imgPath.length > 0){
+          let imgA = document.createElement('a');
+          imgA.setAttribute('href', value.docUri);
+          let img = document.createElement('img');
+          img.setAttribute('alt', docTitle);
+          img.setAttribute('title', docTitle);
+          img.setAttribute('src', imgPath);
+          imgA.appendChild(img);
+          li.appendChild(imgA);
+        }
         let a = document.createElement('a');
         a.setAttribute('href', value.docUri);
-        let t = document.createTextNode(this.getTitleByDocId(value.docUri));
+        let t = document.createTextNode(docTitle);
         a.appendChild(t);
-        li.appendChild(a);
+        d.appendChild(a);
+
         if (value.score > 0){
           t = document.createTextNode(' ' + strScore + value.score);
-          li.append(t);
+          d.append(t);
         }
         if (value.contexts.length > 0){
           //Sort these in document order.
@@ -1791,7 +1808,8 @@ class StaticSearch{
             li2.innerHTML = value.contexts[i].context;
             ul2.appendChild(li2);
           }
-          li.appendChild(ul2);
+          d.appendChild(ul2);
+          li.appendChild(d);
         }
         ul.appendChild(li);
       }
@@ -1810,6 +1828,27 @@ class StaticSearch{
       }
       catch(e){
         return '[No title]';
+      }
+    }
+
+/** @function SSResultSet~getThumbnailByDocId
+  * @description this function returns a thumbnail image for a document
+  *              based on its id. If no thumbnail is defined in the ssTitles
+  *              JSON, it returns an empty string.
+  * @param {String} docId the id of the document.
+  * @return {String} the relative path to an image, or an empty string.
+  */
+    getThumbnailByDocId(docId){
+      try{
+        if (this.titles.get(docId).length > 1){
+          return this.titles.get(docId)[1];
+        }
+        else{
+          return '';
+        }
+      }
+      catch(e){
+        return '';
       }
     }
 
