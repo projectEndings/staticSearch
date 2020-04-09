@@ -266,8 +266,9 @@ function showByMod() {
                   document itself is actually an image (perhaps your site is a set of pages dealing
                   with works of art, for instance). Whatever the reason, you can supply a link to a
                   thumbnail image like this: 
-                  <div id="index.xml-egXML-d38e171" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">docImage</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.docImage</span>" <span class="attribute">content</span>="<span class="attributevalue">images/thisPage.jpg</span>"/&gt;</span></div> The <span class="att">content</span> attribute value should be the path to an image relative to the document itself; so
-                  in the example above, there would be a folder called <span class="ident">images</span> which is a sibling of the HTML file containing the tag, and that folder would contain
+                  <div id="index.xml-egXML-d38e171" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">docImage</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.docImage</span>" <span class="attribute">content</span>="<span class="attributevalue">images/thisPage.jpg</span>"/&gt;</span></div> The <span class="att">content</span> attribute value should either be the path to an image relative to the document itself
+                  or the URL to an external image; so in the example above, there would be a folder
+                  called <span class="ident">images</span> which is a sibling of the HTML file containing the tag, and that folder would contain
                   a file called <span class="ident">thisPage.jpg</span>.</div>
             </div>
             <div class="teidiv1" id="creatingConfigFile">
@@ -2017,7 +2018,7 @@ element versionFile { xsd:anyURI }</pre>
             <!--
 	  Generated from index.xml using XSLT stylesheets version 7.49.0
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2020-04-07T21:28:46Z.
+	       on 2020-04-09T20:38:45Z.
 	       SAXON HE 10.0.
 		 --></address>
       </div>

@@ -225,8 +225,8 @@
                 <meta name="docImage" class="staticSearch.docImage" content="images/thisPage.jpg" />
               </egXML>
             
-            The <att>content</att> attribute value should be the path to an image relative to the 
-              document itself; so in the example above, there would be a folder called <ident>images</ident>
+            The <att>content</att> attribute value should either be the path to an image relative to the 
+              document itself or the URL to an external image; so in the example above, there would be a folder called <ident>images</ident>
               which is a sibling of the HTML file containing the tag, and that folder would contain a file
               called <ident>thisPage.jpg</ident>.
             
