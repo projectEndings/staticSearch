@@ -1809,8 +1809,8 @@ class StaticSearch{
             ul2.appendChild(li2);
           }
           d.appendChild(ul2);
-          li.appendChild(d);
         }
+        li.appendChild(d);
         ul.appendChild(li);
       }
       return ul;
