@@ -11,48 +11,102 @@
         *  will build the index based on that configuration.     *
         *  If not supplied with a configuration file, it will    *
         *  build the test site by default.                       *
+        *                                                        *
+        *  Note that you can also specify a relative path using  *
+        *  -Dconfig=../rel/cfg.xml *                             *
+        *                                                        *
         **********************************************************
     -->
+    
+    
+ <!--****************************************************************
+     *                                                              *
+     *                       Task Definitions                       *
+     *                                                              *
+     ****************************************************************-->
     
     <!--  We need ant contrib. -->
     <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
     
+    
+ <!--****************************************************************
+     *                                                              *
+     *                           Properties                         *
+     *                                                              *
+     ****************************************************************-->
+    
+
+    
     <!-- Saxon moved from 9 to 10 2020-03-20. -->
     <!--<property name="saxon" value="${basedir}/lib/saxon9he.jar"/>-->
     <property name="saxon" value="${basedir}/lib/saxon-he-10.jar"/>
-
+    
+    <!--The relative configuration path-->
     <property name="config" value="configTest.xml"/>
     
+    <!--The full path to the configuration file. You can use either-->
     <property name="configFile" value="${basedir}/${config}"/>
     
+    <!--The derived name of the configuration directory based off of the configuration
+        file path-->
     <dirname property="configDir" file="${configFile}"/>
     
+    <!--Load the configuration file as a property file-->
     <xmlproperty file="${configFile}" keeproot="true"/>
     
+    <!--Set the verbose flag to true by default; set to false to suppress messages-->
     <property name="verbose" value="true"/>
     
+    <!--The path to the search page, relative to the configuration directory-->
     <property name="searchFilePath" location="${configDir}/${config.params.searchFile}"/>
     
+    <!--The name of the collection dir, derived from the search file-->
     <dirname property="collectionDirName" file="${searchFilePath}"/>
     
+    <!--Output folder, which is forked, depending on whether or not an output folder
+        is specified in the configuration file-->
     <property name="outputFolder" if:set="config.params.outputFolder" value="${config.params.outputFolder}"/>
     <property name="outputFolder" unless:set="config.params.outputFolder" value="staticSearch"/>
     
+    <!--The directory for all of the static search assets (JSON files, Javascripts, et cetera).
+        Note that the static search directory is placed directly within the collection directory-->
     <property name="staticSearchDir" value="${collectionDirName}/${outputFolder}/"/>
     
+    <!--Flag for whether or not this build is being run in a headless state or not. Default
+        is that it's not-->
     <property name="headless" value="false"/>
     
+    <!--The basename of the search file with suffix still attached-->
     <basename property="searchPageBasename" file="${searchFilePath}"/>
     
+    <!--The temporary search page, which is constructed by appending ssTemp_ to the search base name
+        and placing that file in the collectionDir-->
     <property name="tempSearchPageOutput" value="${collectionDirName}/ssTemp_${searchPageBasename}"/>
     
     
+ <!--****************************************************************
+     *                                                              *
+     *                           Targets                            *
+     *                                                              *
+     ****************************************************************-->
+    
     <target name="init">
+        <description>
+            target: init
         
+        This target initializes the static search indexing process. It first deletes
+        any previous results from an earlier build and then recreates the staticSearchDir,
+        which is simply the parent directory of the search file specified in the config file.
+        
+        In the special case of the test, this target also generates the VERSION file.
+        </description>
+        <echo message="Initializing..."/>
+        <echo message="Deleting old products..."/>
         <delete dir="temp"/>
         <delete file="${basedir}/xsl/config.xsl"/>
         <delete file="${tempSearchPageOutput}"/>
         <delete dir="${staticSearchDir}"/>
+        <echo message="Creating new static search directory: ${staticSearchDir}"/>
         <mkdir dir="${staticSearchDir}"/>
         <!-- If we're building the test data, we need to generate the VERSION file. -->
         <if>
@@ -93,8 +147,18 @@
     </target>
     
     
-    <!--First thing, create the config file-->
+ 
     <target name="config">
+        <description>
+            target: config
+            
+            This target creates an XSLT module from the XML configuration file, and converts 
+            the various configuration options into XSLT variables, et cetera, necessary
+            throughout in the pipeline.
+            
+            The XSLT is run on itself, but loads the configuration file as a parameter.
+        </description>
+        <echo message="Creating configuration file..."/>
         <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
             <arg value="-xsl:${basedir}/xsl/create_config_xsl.xsl"/>
             <arg value="-s:${basedir}/xsl/create_config_xsl.xsl"/>
@@ -103,8 +167,18 @@
         </java>
     </target>
     
-    <!--Then tokenize-->
+    
     <target name="tokenize">
+        <description>
+            target: tokenize
+            
+            This target runs the multi-stage tokenization process on the XHTML collection and creates a stash
+            of tokenized and cleaned up files from which we generate the individual token JSONs.
+            
+            The XSLT is run on itself and uses the information in the config XSLT module (generated in
+            the config task) to determine the input files, et cetera.
+        </description>
+        <echo message="Creating tokenized XHTML files..."/>
         <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true">
             <arg value="-xsl:${basedir}/xsl/tokenize.xsl"/>
             <arg value="-s:${basedir}/xsl/tokenize.xsl"/>
@@ -113,12 +187,18 @@
         </java>
     </target>
     
-    
-    
-    
-    <!--Then create JSON-->
-    
     <target name="json">
+        <description>
+            target: json
+            
+            This target creates the individual token JSON files from the tokenized XHTML files created
+            by the above tokenize task. 
+            
+            It is run on itself and uses the information in the configuration XSLT module (generated in the config task)
+            to determine input files, et cetera. Note that this task will likely create *a lot* of files and may take some time,
+            depending on the size of the resource collection.
+        </description>
+        <echo message="Creating individual JSON files..."/>
         <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
             <arg value="-xsl:${basedir}/xsl/json.xsl"/>
             <arg value="-s:${basedir}/xsl/json.xsl"/>
@@ -130,6 +210,16 @@
  
     
     <target name="makeSearchPage">
+        <description>
+            target: makeSearchPage
+            
+            This target creates the search page at the location specified in the configuration file. If a file already exists,
+            then this process modifies the existing search page by replacing the content of div/@id='staticSearch'. If the file
+            does not exist, then a generic search page is generated.
+            
+            This runs an XSLT on itself with an output specified as a temp page. That temporary page is then copied over
+            and overwrites the original page.
+        </description>
         <echo message="Creating search page..."/>
         <if taskname="copy">
             <not>
@@ -142,6 +232,10 @@
         </if>
         
         <echo message="Creating temporary search page: ${tempSearchPageOutput}"/>
+        
+        <!--We create a hasFilters property here since the search page needs to know whether or not there are filters to 
+            inject into the page. It is more efficient to derive the existence of the filters directory here rather than
+            in the XSLT.-->
         <available type="dir" property="hasFilters" file="${staticSearchDir}/filters" value="true"/>
         <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true">
             <arg value="-xsl:${basedir}/xsl/makeSearchPage.xsl"/>
@@ -158,6 +252,22 @@
     </target>
     
     <target name="report">
+        <description>
+            target: report
+            
+            This target creates a report page from the various products generated by the static search. It is not necessary for static search
+            to work, but it is *highly* recommended, since the result page contains various warnings as well as useful statistics that track
+            word use, et cetera.
+            
+            The XSLT is run on itself and creates a result document passed off of a path specified in the config file; the resulting HTML
+            file for the report will be in the staticSEarchDir.
+            
+            This target also calls the special open task on the condition that the build is not being run in a headless state (i.e. via a CI/CD system
+            that does not have access to a desktop).
+        </description>
+        <!--We create a hasFilters property here since the search page needs to know whether or not there are filters to 
+            inject into the page. It is more efficient to derive the existence of the filters directory here rather than
+            in the XSLT.-->
         <available type="dir" property="hasFilters" file="${staticSearchDir}/filters" value="true"/>
         <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true">
             <arg value="-xsl:${basedir}/xsl/create_reports.xsl"/>
@@ -167,12 +277,19 @@
             <!--<jvmarg value="-Xmx2048m"/>-->
         </java>
         <move file="${basedir}/staticSearch_report.html" tofile="${staticSearchDir}/staticSearch_report.html"/>
-
+        <echo message="Opening in browser..." unless:true="${headless}"/>
         <open unless:true="${headless}" file="${staticSearchDir}/staticSearch_report.html"/>
         
     </target>
     
     <target name="copyFiles">
+        
+        <description>
+            target: copyFiles
+            
+            This target copies the necessary Javascript files from the staticSearch directory (i.e. this directory)
+            and places them in the project's static search directory.
+        </description>
         <copy todir="${staticSearchDir}/">
             <fileset dir="${basedir}/js">
                 <include name="ss**.js"/>
@@ -181,14 +298,65 @@
     </target>
     
     <target name="clean">
+        <description>
+            target: clean
+            
+            This target deletes the temporary directory, since it's no longer useful.
+        </description>
+        <echo message="Cleaning temporary directory..."/>
         <delete dir="${staticSearchDir}/temp"/>
     </target>
     
     
-    <!--Javascript OPEN task-->
+
     
-    <!--  This is taken with thanks from:
-      http://stackoverflow.com/questions/4696176/using-ant-how-do-i-open-a-file-in-a-browser -->
+    <target name="all" depends="init, validate, config, tokenize, json, copyFiles, makeSearchPage, report, clean">
+        <description>
+            target: all
+            
+            Default target for running the entire static search creation process. 
+        </description>
+    </target>
+
+    <target name="allButValidate" depends="init, config, tokenize, json, copyFiles, makeSearchPage, report, clean">
+        <description>
+            target: allButValidate
+            
+            Target to override validation, which is helpful in cases where the HTML output
+            has been validated by a stricter set of validation rules (like the VNU validator)
+        </description>
+    </target>
+
+    <target name="test" depends="init, validate, config, tokenize, json, copyFiles, makeSearchPage, report">
+        <description>
+            target: test
+            
+            Target that runs the whole process, but does not clean up the temporary files. Useful for debugging.
+        </description>
+    </target>
+    
+    <target name="basic" depends="init, validate, config, tokenize, json, copyFiles, makeSearchPage, clean">
+        <description>
+            target: basic
+            
+            Target that runs the whole process other than the report creation.
+        </description>
+    </target>
+    
+    
+    
+    <!--****************************************************************
+     *                                                              *
+     *                       Script Definitions                     *
+     *                                                              *
+     ****************************************************************-->
+    
+    <!--This scriptDef is a javascript implementation for cross-browser
+        opening of a file. This is taken with thanks from:
+      http://stackoverflow.com/questions/4696176/using-ant-how-do-i-open-a-file-in-a-browser-->
+    
+    <!--NOTE: For some reason, this task returns a warning about the Nashorn Engine, but we're not 
+        sure how to resolve that-->
     <scriptdef name="open" language="javascript">
         <attribute name="file" />
         <![CDATA[
@@ -203,17 +371,6 @@
         desktop.browse(uriLocation);
     ]]>
     </scriptdef>
-    
-    <target name="all" depends="init, validate, config, tokenize, json, copyFiles, makeSearchPage, report, clean"/>
-    
-    <!--Target to override validation, which is helpful in cases where the HTML output
-        has been validated by a stricter set of validation rules (like the VNU validator)-->
-    <target name="allButValidate" depends="init, config, tokenize, json, copyFiles, makeSearchPage, report, clean"/>
-    
-    <!-- Don't clean up so we can see what's happening. -->
-    <target name="test" depends="init, validate, config, tokenize, json, copyFiles, makeSearchPage, report"/>
-    
-    <target name="basic" depends="init, validate, config, tokenize, json, copyFiles, makeSearchPage, clean"/>
     
     
 </project>
