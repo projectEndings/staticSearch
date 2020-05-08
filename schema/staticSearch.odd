@@ -29,13 +29,13 @@
         <docAuthor>Joey Takeda</docAuthor>
         <docDate>2019-2020</docDate>
       </titlePage>
+      <p>This documentation provides instructions on how to use the Project Endings
+        Static Search Generator to provide a fully-functional search <soCalled>engine</soCalled>
+        to your website without any dependency on server-side code such as a database.</p>
       <divGen type="toc"/>
     </front>
     <body>
         <head>Project Endings Static Search Generator</head>
-        <p>This documentation provides instructions on how to use the Project Endings
-        Static Search Generator to provide a fully-functional search <soCalled>engine</soCalled>
-        to your website without any dependency on server-side code such as a database.</p>
         <div xml:id="whatDoesItDo">
           <head>What does it do?</head>
           <list>
@@ -49,6 +49,22 @@
           type, by date range, and so on. Then it creates a search page for your site, which 
           processes user search terms and retrieves the required JSON files to provide search results.</p>
         </div>
+      <div xml:id="whyWouldIUseIt">
+        <head>Why would I use it?</head>
+        <list>
+          <item>Level: Basic</item>
+          <item>Last Updated: <date when="2020-05-08">8 May 2020</date></item>
+        </list>
+        <p>Digital Humanities projects such as digital editions of historical and literary texts are typically the work of teams of people collaborating over many years, and the fruit of their labours deserves to have a significant shelf-life, if possible comparable with that of a traditional print publication. However, digital longevity of DH projects is sadly short, and many disappear or cease to function within a few years of their creation, because of their dependency on transient tools and technologies.</p> 
+        
+        <p>However, static websites (websites which consist entirely of HTML, CSS and JavaScript, without any dependency on back-end server systems such as databases or PHP processing) are far more resilient in the long term than sites which use more server-side technology, and are also much easier to archive and replicate (see Holmes and Takeda (2019), <ref target="https://zenodo.org/record/3449197">The Prefabricated Website: Who needs a server anyway?</ref>). For this reason, the <ref target="https://projectendings.github.io/">Project Endings</ref> team have been developing and publicizing strategies for moving digital projects to an all-static publication model. The most problematic component in the all-static approach is search.</p>
+        
+        <p>Most digital publications take one of two approaches to search: either they have their own back-end database search engine (perhaps Solr or an XML database), or they rely on commercial services such as Google (which may be free, but are still beyond the control of the project team). DH projects need sophisticated options for searching, but typically this requires the use of technologies that may become obsolete or unsupported, or services which may change their terms of use or become unavailable.</p>
+        
+        <p>staticSearch solves this problem. It provides the capability to build a sophisticated faceted search engine into your website without the need for any back-end services at all (except of course for a web server, which you need anyway).</p>
+        
+      </div>
+      
         <div xml:id="textSearchFeatures">
           <head>Text search features</head>
           <list>
