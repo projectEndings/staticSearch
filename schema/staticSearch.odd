@@ -38,6 +38,10 @@
         to your website without any dependency on server-side code such as a database.</p>
         <div xml:id="whatDoesItDo">
           <head>What does it do?</head>
+          <list>
+            <item>Level: Basic</item>
+            <item>Last Updated: <date when="2019-12-16">16 December 2019</date></item>
+          </list>
           <p>The generator tool processes your site to create an index of all the words appearing
           in the site, stemmed using a Porter2 stemmer, and stores the index in the form of a
           large number of small JSON files. It also creates JSON files for other search facets that 
@@ -47,6 +51,10 @@
         </div>
         <div xml:id="textSearchFeatures">
           <head>Text search features</head>
+          <list>
+            <item>Level: Intermediate</item>
+            <item>Last Updated: <date when="2019-12-16">16 December 2019</date></item>
+          </list>
           <p>The Generator supports the following features:</p>
           <list>
             <item>Porter 2 stemming of terms (so searching for <q>wait</q> will also
@@ -69,6 +77,10 @@
         </div>
       <div xml:id="searchFacetFeatures">
         <head>Search facet features</head>
+        <list>
+          <item>Level: Basic</item>
+          <item>Last Updated: <date when="2020-02-20">20 February 2020</date></item>
+        </list>
         <p>The Generator supports the following search facets:</p>
         <list>
           <item><term>Descriptors</term>. You might for example classify your documents as poems, 
@@ -83,7 +95,10 @@
       
       <div xml:id="howDoIGetIt">
         <head>How do I get it?</head>
-        
+        <list>
+          <item>Level: Basic</item>
+          <item>Last Updated: <date when="2020-01-13">13 January 2020</date></item>
+        </list>
         <p>There are two ways to get the staticSearch code. The first is to download a release package from 
           the <ref target="https://github.com/projectEndings/staticSearch/releases/">project release page</ref>;
         we recommend that you get the latest version. You can download a zip file and unzip it to create a 
@@ -95,7 +110,10 @@
       </div>
         <div xml:id="howDoIUseIt">
           <head>How do I use it?</head>
-          
+          <list>
+            <item>Level: Intermediate</item>
+            <item>Last Updated: <date when="2020-03-20">20 March 2020</date></item>
+          </list>
           <p>First, you will have to make sure your site pages are correctly configured so that the Generator can
           parse them. Then, you will have to create a configuration file specifying what options you want to use. 
           Then you run the generator, and the search functionality should be added to your site.</p>
@@ -625,6 +643,10 @@
         </div>
       <div xml:id="howDoesItWork">
         <head>How does it work?</head>
+        <list>
+          <item>Level: Advanced</item>
+          <item>Last Updated: <date when="2020-03-20">20 March 2020</date></item>
+        </list>
         <div xml:id="buildingTheIndex">
           <head>Building the index</head>
           <p>The tokenizing process first processes your configuration file to create an XSLT file
