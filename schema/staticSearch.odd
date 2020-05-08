@@ -722,7 +722,9 @@
       
     </body>
     <back>
-      <div>
+      <div xml:id="schemaSpec">
+        <head>Schema specification and tag documentation</head>
+        
         <schemaSpec ident="staticSearch" start="config" ns="http://hcmc.uvic.ca/ns/staticSearch"
           defaultExceptions="http://hcmc.uvic.ca/ns/staticSearch">
 
