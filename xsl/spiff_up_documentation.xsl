@@ -58,6 +58,14 @@
      be present. -->
   <xsl:template match="meta[@charset]"/>
   
-  
+  <!-- Regenerate the title element, cos it gets borked. -->
+  <xsl:template match="title">
+    <xsl:copy>
+      <xsl:value-of select="//div[@class='titlePart'][1]"/>
+      <xsl:text> (</xsl:text>
+      <xsl:value-of select="string-join((//div[@class='docAuthor']), ', ')"/>
+      <xsl:text>)</xsl:text>
+    </xsl:copy>
+  </xsl:template>
   
 </xsl:stylesheet>
