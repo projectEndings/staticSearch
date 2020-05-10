@@ -190,8 +190,32 @@
     </target>
     
     
+    <target name="split">
+        <description>
+            target: split
+            
+            Split the documentation into component HTML pages so that 
+            a) We can demonstrate features in the search
+            b) Make the search documentation a bit nicer to use/deploy
+        </description>
+        <java jar="${saxon}" fork="true" failonerror="true">
+            <arg line="-s:${odd.doc}"/>
+            <arg line="-xsl:${xsl.dir}/split_documentation.xsl"/>
+        </java>
+        
+    </target>
     
-    <target name="all" depends="odd2processedOdd, odd2rng, rng2Sch, odd2Doc, clean">
+    <target name="makeSearch">
+        <!--Now we call the staticSearch build-->
+        <ant antfile="build.xml" inheritall="false">
+            <property name="config" value="config_documentation.xml"/>
+            <property name="headless" value="true"/>
+        </ant>
+    </target>
+    
+    
+    
+    <target name="all" depends="odd2processedOdd, odd2rng, rng2Sch, odd2Doc, clean, split, makeSearch">
         <description>
             TARGET: all
             

@@ -65,6 +65,8 @@
     </xsl:template>
     
     
+ 
+    
     
     
     <xd:doc>
@@ -133,6 +135,20 @@
     
     
     
+    <xsl:template match="html/head" mode="section">
+        <xsl:param name="section" tunnel="yes"/>
+        <xsl:variable name="info" select="$section/ul[preceding-sibling::*[1]/self::header][1]" as="element(ul)?"/>
+        <xsl:copy>
+            <xsl:apply-templates select="@*|node()" mode="#current"/>
+            <!--Now create the meta tags for static search-->
+            <xsl:if test="$info">
+                <meta name="Date Updated" class="staticSearch.date" content="{hcmc:getDate($info/li/span[@class='date']/text())}"/>
+                <meta name="Level" class="staticSearch.desc" content="{$info/li[not(span)]/normalize-space(replace(text(),'Level\s*:\s*',''))}"/>
+            </xsl:if>
+     
+        </xsl:copy>
+    </xsl:template>
+    
     
     
     <xd:doc>
@@ -152,7 +168,10 @@
         <xsl:attribute name="id" select="$section/@id"/>
     </xsl:template>
     
-    
+    <xd:doc>
+        <xd:desc>Template to add the data-section attribute to the tei body to help with targetting
+        specific styling.</xd:desc>
+    </xd:doc>
     <xsl:template match="div[contains-token(@class,'tei_body')]" mode="section">
         <xsl:param name="section" tunnel="yes"/>
         <xsl:copy>
@@ -161,6 +180,8 @@
         </xsl:copy>
     </xsl:template>
     
+    
+    
     <xd:doc>
         <xd:desc>If this section is the one that we're currently processing, then process its contents;
         otherwise, just ignore it.</xd:desc>
@@ -168,6 +189,7 @@
     <xsl:template match="section" mode="section">
         <xsl:param name="section" tunnel="yes"/>
         <xsl:choose>
+            <!--If we're processing the schemaSpec, then just inject it as a section in the body-->
             <xsl:when test="$section/@id = 'schemaSpec' and $docSections[1] is .">
                 <xsl:apply-templates select="$section" mode="#current"/>
             </xsl:when>
@@ -186,6 +208,8 @@
     </xd:doc>
     <xsl:template match="h1" mode="section">
         <xsl:param name="section" tunnel="yes"/>
+        
+        <!--And create a navigation bar-->
         <xsl:variable name="precedingSection" select="$section/preceding-sibling::section[1]"/>
         <xsl:variable name="followingSection" select="$section/following-sibling::section[1]"/>
         <nav>
@@ -227,6 +251,12 @@
             select="if (exists($section)) then ($docSections except $section) else $docSections"/>
         <xsl:choose>
             
+            <!--Convert feedback link, which doesn't actually work anywhere,
+                to point back to the src repo-->
+            <xsl:when test="text()='Feedback'">
+                <a href="https://github.com/projectEndings/staticSearch">Github</a>
+            </xsl:when>
+            
             <!--When this points to this div-->
             <xsl:when test="$section/@id = $ptr">
                 <span class="current">
@@ -260,11 +290,7 @@
                     <xsl:apply-templates select="@*[not(local-name()='href')]|node()" mode="#current"/>
                 </xsl:copy>
             </xsl:when>
-            
-            <xsl:otherwise>
-                
-                <xsl:message>IDK WHAT THIS IS <xsl:sequence select="."/></xsl:message>
-            </xsl:otherwise>
+
         </xsl:choose>
     </xsl:template>
     
@@ -278,6 +304,43 @@
         </xsl:copy>
     </xsl:template>
 
+
+<xd:doc>
+    <xd:desc>This function takes a date formatted like 8 May 2019, and turns it into a proper W3C 2019-05-08 date.</xd:desc>
+    <xd:param>The input string, hopefully formated something like 08 May 2019.</xd:param>
+    <xd:return>A proper YYYY-MM-DD string.</xd:return>
+</xd:doc>
+<xsl:function name="hcmc:getDate">
+    <xsl:param name="str"/>
+    <!--Clean up and then tokenize the input string-->
+    <xsl:variable name="bits" select="tokenize(translate($str,',.',''),'\s+')"/>
+    <xsl:variable name="day" select="$bits[1] => xs:integer() => format-number('00')"/>
+    <xsl:message>Processing <xsl:value-of select="$str"/></xsl:message>
+    <xsl:variable name="year" select="$bits[3]"/>
+    <xsl:variable name="month" select="lower-case($bits[2])"/>
+    <xsl:variable name="monthNum" as="xs:string">
+        <xsl:choose>
+            <!--We have to iterate through the month numbers and determine the number;
+                these are the minimal strings necessary to determine what month it is.
+                We assume no one is using odd abbreviations or anything like that. It would be
+                nice if we could use actual date that is processed, but the TEI stylesheets
+                simply removes them.-->
+            <xsl:when test="starts-with($month, 'ja')">01</xsl:when>
+            <xsl:when test="starts-with($month,'f')">02</xsl:when>
+            <xsl:when test="starts-with($month, 'mar')">03</xsl:when>
+            <xsl:when test="starts-with($month,'ap')">04</xsl:when>
+            <xsl:when test="starts-with($month,'may')">05</xsl:when>
+            <xsl:when test="starts-with($month, 'jun')">06</xsl:when>
+            <xsl:when test="starts-with($month, 'jul')">07</xsl:when>
+            <xsl:when test="starts-with($month, 'au')">08</xsl:when>
+            <xsl:when test="starts-with($month,'s')">09</xsl:when>
+            <xsl:when test="starts-with($month,'o')">10</xsl:when>
+            <xsl:when test="starts-with($month,'n')">11</xsl:when>
+            <xsl:when test="starts-with($month,'d')">12</xsl:when>
+        </xsl:choose>
+    </xsl:variable>
+    <xsl:value-of select="string-join(($year,$monthNum,$day),'-')"/>
+</xsl:function>
     
     
     
