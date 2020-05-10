@@ -1,0 +1,83 @@
+#TOP{
+    display:flex;
+    flex-wrap:wrap;
+    max-width:100%;
+}
+
+body.simple{
+    margin:0 auto;
+}
+
+.tei_front{
+    flex: 0 1 30vw;
+    
+    font-size:0.95em;
+    
+}
+
+.tei_front > div {
+    height:100vh;
+    position:sticky;
+    top:.25rem;
+    overflow-y:auto;
+    margin:0 2rem;
+    padding-right:1rem;
+}
+
+
+
+div.tei_body{
+    max-width:45vw;
+    margin:0 2rem;
+}
+
+div.tei_front > div > ul.toc{
+        padding-left:0;
+}
+
+div.tei_body[data-section='schemaSpec']{
+    
+    max-width:60vw;
+}
+
+div[data-section] > h1 + ul {
+    list-style-type:none;
+    display:flex;
+    font-style:italic;
+    margin-left:0;
+    padding-left:0;
+    font-size:0.95rem;
+          margin-top:-0.8rem;
+       margin-bottom:2rem;
+}
+
+div[data-section] > nav > ul {
+    display: flex;
+    justify-content: space-between;
+    list-style-type: none;
+    margin-left:-1rem;
+    margin-right:-1rem;
+}
+
+div[data-section] > h1 + ul > li{
+       padding: 0 1rem;
+ 
+}
+
+div[data-section] > h1 + ul > li:first-child{
+    border-right:1px solid #ccc;
+
+}
+
+
+h3{
+    margin-left:0;
+}
+
+
+
+
+div.notes,
+div.stdfooter{
+    width:100%;
+}
