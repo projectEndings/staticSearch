@@ -1,0 +1,13 @@
+
+  { "token" : "ancillari",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "ancillary",
+            "context" : "...search page for any length of time, all <mark>ancillary<\/mark> files will have been retrieved (assuming they...",
+            "weight" : 1,
+            "pos" : 262 } ] } ] }

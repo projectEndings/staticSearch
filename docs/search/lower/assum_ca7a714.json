@@ -1,0 +1,28 @@
+
+  { "token" : "assum",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "assuming",
+            "context" : "...path to a file containing an English dictionary (<mark>assuming<\/mark> your site is in English). This is...",
+            "weight" : 1,
+            "pos" : 962 },
+          
+          { "form" : "assumes",
+            "context" : "...understands the <span> as an inline element and <mark>assumes<\/mark> the <p> constitutes the context of the...",
+            "weight" : 1,
+            "pos" : 1376 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "assuming",
+            "context" : "...time, all ancillary files will have been retrieved (<mark>assuming<\/mark> they weren't already cached by the browser),...",
+            "weight" : 1,
+            "pos" : 265 } ] } ] }

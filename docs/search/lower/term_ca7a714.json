@@ -1,0 +1,108 @@
+
+  { "token" : "term",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 6,
+        "contexts" : 
+        [ 
+          { "form" : "terms",
+            "context" : "...useful feature, but it is also costly in <mark>terms<\/mark> of the size of JSON token files;...",
+            "weight" : 1,
+            "pos" : 743 },
+          
+          { "form" : "term",
+            "context" : "...will be harvested from the data for each <mark>term<\/mark> in a document. If you set this...",
+            "weight" : 1,
+            "pos" : 805 },
+          
+          { "form" : "terms",
+            "context" : "...search for it. One way to find such <mark>terms<\/mark> is to generate your index, then search...",
+            "weight" : 1,
+            "pos" : 940 },
+          
+          { "form" : "terms",
+            "context" : "...be too common to be useful as search <mark>terms<\/mark>.",
+            "weight" : 1,
+            "pos" : 954 },
+          
+          { "form" : "terms",
+            "context" : "...generated at the end will list all the <mark>terms<\/mark> in the site which do not appear...",
+            "weight" : 1,
+            "pos" : 974 },
+          
+          { "form" : "term",
+            "context" : "...the <li> was not a context attribute, the <mark>term<\/mark> 'search' would produce a context that looks...",
+            "weight" : 1,
+            "pos" : 1304 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "term",
+            "context" : "...keyword-in-context extracts that will be stored for each <mark>term<\/mark>. If phrasalSearch is set to true, this...",
+            "weight" : 1,
+            "pos" : 393 },
+          
+          { "form" : "terms",
+            "context" : "...path in XPath, and provides weighting for search <mark>terms<\/mark> found in that context.)",
+            "weight" : 1,
+            "pos" : 625 },
+          
+          { "form" : "terms",
+            "context" : "...expressed as XPath, that control weighting of search <mark>terms<\/mark> found in specific contexts.)",
+            "weight" : 1,
+            "pos" : 687 },
+          
+          { "form" : "terms",
+            "context" : "...but every site will also have some specific <mark>terms<\/mark> which are used so widely across the...",
+            "weight" : 1,
+            "pos" : 771 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "term",
+            "context" : "...processing) are far more resilient in the long <mark>term<\/mark> than sites which use more server-side technology,...",
+            "weight" : 1,
+            "pos" : 78 },
+          
+          { "form" : "terms",
+            "context" : "...or unsupported, or services which may change their <mark>terms<\/mark> of use or become unavailable.",
+            "weight" : 1,
+            "pos" : 164 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "terms",
+            "context" : "...search are those for the actual text search <mark>terms<\/mark>; the response should therefore be even faster...",
+            "weight" : 1,
+            "pos" : 276 } ] },
+      
+      { "docId" : "whatDoesItDo",
+        "docUri" : "whatDoesItDo.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "terms",
+            "context" : "...page for your site, which processes user search <mark>terms<\/mark> and retrieves the required JSON files to...",
+            "weight" : 1,
+            "pos" : 52 } ] },
+      
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "terms",
+            "context" : "Porter 2 stemming of <mark>terms<\/mark> (so searching for 'wait' will also retrieve...",
+            "weight" : 1,
+            "pos" : 21 } ] } ] }

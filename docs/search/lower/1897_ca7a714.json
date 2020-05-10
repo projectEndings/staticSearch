@@ -1,0 +1,13 @@
+
+  { "token" : "1897",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "1897",
+            "context" : "1895\/<mark>1897<\/mark>",
+            "weight" : 1,
+            "pos" : 234 } ] } ] }

@@ -1,0 +1,28 @@
+
+  { "token" : "without",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "without",
+            "context" : "...which consist entirely of HTML, CSS and JavaScript, <mark>without<\/mark> any dependency on back-end server systems such...",
+            "weight" : 1,
+            "pos" : 65 },
+          
+          { "form" : "without",
+            "context" : "...a sophisticated faceted search engine into your website <mark>without<\/mark> the need for any back-end services at...",
+            "weight" : 1,
+            "pos" : 179 } ] },
+      
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "without",
+            "context" : "...that results must not contain that word. Words <mark>without<\/mark> plus or minus are treated as may...",
+            "weight" : 1,
+            "pos" : 58 } ] } ] }

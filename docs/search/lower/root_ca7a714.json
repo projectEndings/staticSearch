@@ -1,0 +1,38 @@
+
+  { "token" : "root",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "root",
+            "context" : "<config> (The <mark>root<\/mark> element for the Search Generator configuration file.)...",
+            "weight" : 1,
+            "pos" : 12 },
+          
+          { "form" : "root",
+            "context" : "...specifies HTML fragment (which itself can be the <mark>root<\/mark> HTML element) to exclude from the document...",
+            "weight" : 1,
+            "pos" : 241 },
+          
+          { "form" : "root",
+            "context" : "...Note that this page must be at the <mark>root<\/mark> of the collection directory.)",
+            "weight" : 1,
+            "pos" : 726 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "root",
+            "context" : "...Since the search file must be at the <mark>root<\/mark> of the directory that you wish to...",
+            "weight" : 1,
+            "pos" : 538 },
+          
+          { "form" : "root",
+            "context" : "...This requires that you run ant in the <mark>root<\/mark> folder of the staticSearch project that you...",
+            "weight" : 1,
+            "pos" : 1817 } ] } ] }

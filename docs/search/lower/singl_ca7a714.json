@@ -1,0 +1,33 @@
+
+  { "token" : "singl",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "single",
+            "context" : "...word, producing wait, then it downloads only the <mark>single<\/mark> file containing indexing information for that specific...",
+            "weight" : 1,
+            "pos" : 162 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "single",
+            "context" : "...relative path to a text file containing a <mark>single<\/mark> version identifier (such as 1.5, 123456, or...",
+            "weight" : 1,
+            "pos" : 876 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "single",
+            "context" : "...it may not be possible to specify a <mark>single<\/mark> date in this form, so you can...",
+            "weight" : 1,
+            "pos" : 217 } ] } ] }

@@ -1,0 +1,28 @@
+
+  { "token" : "actual",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "actual",
+            "context" : "...token, as well as keyword-in-context strings for the <mark>actual<\/mark> tokens. There will most likely be thousands...",
+            "weight" : 1,
+            "pos" : 49 },
+          
+          { "form" : "actual",
+            "context" : "...required for any search are those for the <mark>actual<\/mark> text search terms; the response should therefore...",
+            "weight" : 1,
+            "pos" : 273 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "actually",
+            "context" : "...because the focus of the document itself is <mark>actually<\/mark> an image (perhaps your site is a...",
+            "weight" : 1,
+            "pos" : 396 } ] } ] }

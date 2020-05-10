@@ -1,0 +1,28 @@
+
+  { "token" : "complet",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "completely",
+            "context" : "...elements that you want the tokenizer to ignore <mark>completely<\/mark>; for instance, if you have the same...",
+            "weight" : 1,
+            "pos" : 1161 },
+          
+          { "form" : "complete",
+            "context" : "...rest of your site. You can create a <mark>complete<\/mark> HTML document (which must of course also...",
+            "weight" : 1,
+            "pos" : 1659 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "completely",
+            "context" : "...by the xpath attribute. Set to 0 to <mark>completely<\/mark> suppress indexing for a specific context, or...",
+            "weight" : 1,
+            "pos" : 653 } ] } ] }

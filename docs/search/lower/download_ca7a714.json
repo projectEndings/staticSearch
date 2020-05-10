@@ -1,0 +1,78 @@
+
+  { "token" : "download",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 9,
+        "contexts" : 
+        [ 
+          { "form" : "download",
+            "context" : "...fast, responsive search results, the search page must <mark>download<\/mark> only the information it needs for each...",
+            "weight" : 1,
+            "pos" : 136 },
+          
+          { "form" : "download",
+            "context" : "...each specific search. Obviously, if it were to <mark>download<\/mark> the entire collection of thousands of token...",
+            "weight" : 1,
+            "pos" : 142 },
+          
+          { "form" : "downloads",
+            "context" : "...JavaScript stems that word, producing wait, then it <mark>downloads<\/mark> only the single file containing indexing information...",
+            "weight" : 1,
+            "pos" : 161 },
+          
+          { "form" : "downloaded",
+            "context" : "...results, the list of document titles must be <mark>downloaded<\/mark>, for example. A user may for instance...",
+            "weight" : 1,
+            "pos" : 181 },
+          
+          { "form" : "downloaded",
+            "context" : "...JSON file with information about that facet be <mark>downloaded<\/mark>. So there is some advantage in having...",
+            "weight" : 1,
+            "pos" : 203 },
+          
+          { "form" : "downloading",
+            "context" : "...is some advantage in having the JavaScript start <mark>downloading<\/mark> some of the essential files (titles, stopwords...",
+            "weight" : 1,
+            "pos" : 207 },
+          
+          { "form" : "downloading",
+            "context" : "...as the page loads, and it also starts <mark>downloading<\/mark> the facet files in the background.",
+            "weight" : 1,
+            "pos" : 217 },
+          
+          { "form" : "downloading",
+            "context" : "...we don't want to clog up the connection <mark>downloading<\/mark> these files when the user may do...",
+            "weight" : 1,
+            "pos" : 226 },
+          
+          { "form" : "downloaded",
+            "context" : "...files required for that specific search can be <mark>downloaded<\/mark> as fast as possible overriding the trickle...",
+            "weight" : 1,
+            "pos" : 248 } ] },
+      
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "download",
+            "context" : "...get the staticSearch code. The first is to <mark>download<\/mark> a release package from the project release...",
+            "weight" : 1,
+            "pos" : 18 },
+          
+          { "form" : "download",
+            "context" : "...that you get the latest version. You can <mark>download<\/mark> a zip file and unzip it to...",
+            "weight" : 1,
+            "pos" : 28 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "downloaded",
+            "context" : "...folder of the staticSearch project that you have <mark>downloaded<\/mark> or cloned.",
+            "weight" : 1,
+            "pos" : 1821 } ] } ] }

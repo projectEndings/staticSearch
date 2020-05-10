@@ -1,0 +1,33 @@
+
+  { "token" : "versionfile",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "versionFile",
+            "context" : "Appendix A.1.22 <<mark>versionFile<\/mark>>",
+            "weight" : 2,
+            "pos" : 869 },
+          
+          { "form" : "versionFile",
+            "context" : "...maxKwicsToShow outputFolder phrasalSearch recurse searchFile stopwordsFile totalKwicLength verbose <mark>versionFile<\/mark>",
+            "weight" : 1,
+            "pos" : 541 },
+          
+          { "form" : "versionFile",
+            "context" : "<<mark>versionFile<\/mark>> (The relative path to a text file...",
+            "weight" : 1,
+            "pos" : 870 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "versionFile",
+            "context" : "<<mark>versionFile<\/mark>> enables you to specify the path to...",
+            "weight" : 1,
+            "pos" : 652 } ] } ] }

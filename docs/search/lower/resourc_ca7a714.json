@@ -1,0 +1,33 @@
+
+  { "token" : "resourc",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "resource",
+            "context" : "...element has two required elements for determining the <mark>resource<\/mark> collection that you wish to index:...",
+            "weight" : 1,
+            "pos" : 507 },
+          
+          { "form" : "resources",
+            "context" : "...part of the filenames for all the JSON <mark>resources<\/mark> created for the search. This is useful...",
+            "weight" : 1,
+            "pos" : 693 },
+          
+          { "form" : "resources",
+            "context" : "...because it allows the browser to cache such <mark>resources<\/mark> when users repeatedly visit the search page,...",
+            "weight" : 1,
+            "pos" : 700 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "resources",
+            "context" : "...be used to create unique filenames for JSON <mark>resources<\/mark>, so that when a site is updated,...",
+            "weight" : 1,
+            "pos" : 887 } ] } ] }

@@ -1,0 +1,43 @@
+
+  { "token" : "everi",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 5,
+        "contexts" : 
+        [ 
+          { "form" : "every",
+            "context" : "...list, because it will presumably appear on almost <mark>every<\/mark> page and it makes no sense to...",
+            "weight" : 1,
+            "pos" : 932 },
+          
+          { "form" : "every",
+            "context" : "...instance, if you have the same header in <mark>every<\/mark> document, then there's no reason to index...",
+            "weight" : 1,
+            "pos" : 1164 },
+          
+          { "form" : "every",
+            "context" : "...there's no reason to index its contents on <mark>every<\/mark> page. These elements can be ignored simply...",
+            "weight" : 1,
+            "pos" : 1169 },
+          
+          { "form" : "every",
+            "context" : "...is no need to make sure it's empty <mark>every<\/mark> time.",
+            "weight" : 1,
+            "pos" : 1719 },
+          
+          { "form" : "every",
+            "context" : "...any time; there is no need to start <mark>every<\/mark> time with a clean, empty version of...",
+            "weight" : 1,
+            "pos" : 1761 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "every",
+            "context" : "...too common to be worth searching for, but <mark>every<\/mark> site will also have some specific terms...",
+            "weight" : 1,
+            "pos" : 767 } ] } ] }

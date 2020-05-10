@@ -1,0 +1,48 @@
+
+  { "token" : "att",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 10,
+        "contexts" : 
+        [ 
+          { "form" : "att",
+            "context" : "Appendix A.2.1 <mark>att<\/mark>.labelled",
+            "weight" : 2,
+            "pos" : 922 },
+          
+          { "form" : "att",
+            "context" : "Appendix A.2.2 <mark>att<\/mark>.xpath",
+            "weight" : 2,
+            "pos" : 956 },
+          
+          { "form" : "att",
+            "context" : "<mark>att<\/mark>.xpath (@xpath) att.labelled (@label)",
+            "weight" : 1,
+            "pos" : 69 },
+          
+          { "form" : "att",
+            "context" : "att.xpath (@xpath) <mark>att<\/mark>.labelled (@label)",
+            "weight" : 1,
+            "pos" : 72 },
+          
+          { "form" : "att",
+            "context" : "<mark>att<\/mark>.xpath (@xpath)",
+            "weight" : 1,
+            "pos" : 226 },
+          
+          { "form" : "att",
+            "context" : "<mark>att<\/mark>.xpath (@xpath)",
+            "weight" : 1,
+            "pos" : 639 },
+          
+          { "form" : "att",
+            "context" : "<mark>att<\/mark>.labelled (A class providing a label attribute that can...",
+            "weight" : 1,
+            "pos" : 924 },
+          
+          { "form" : "att",
+            "context" : "<mark>att<\/mark>.xpath (A class providing attributes that enable specification of...",
+            "weight" : 1,
+            "pos" : 958 } ] } ] }

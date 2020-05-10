@@ -1,0 +1,173 @@
+
+  { "token" : "xpath",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 18,
+        "contexts" : 
+        [ 
+          { "form" : "xpath",
+            "context" : "Appendix A.2.2 att.<mark>xpath<\/mark>",
+            "weight" : 2,
+            "pos" : 957 },
+          
+          { "form" : "XPath",
+            "context" : "<context> (A context definition, providing an <mark>XPath<\/mark> attribute that identifies the context, allowing keyword-in-context...",
+            "weight" : 1,
+            "pos" : 46 },
+          
+          { "form" : "xpath",
+            "context" : "att.<mark>xpath<\/mark> (@xpath) att.labelled (@label)",
+            "weight" : 1,
+            "pos" : 70 },
+          
+          { "form" : "xpath",
+            "context" : "att.xpath (@<mark>xpath<\/mark>) att.labelled (@label)",
+            "weight" : 1,
+            "pos" : 71 },
+          
+          { "form" : "XPath",
+            "context" : "...<contexts> (The set of contexts, expressed as <mark>XPath<\/mark>, that controls the identification of contexts for...",
+            "weight" : 1,
+            "pos" : 97 },
+          
+          { "form" : "XPath",
+            "context" : "...either documents or filters as defined by an <mark>XPath<\/mark>.)",
+            "weight" : 1,
+            "pos" : 214 },
+          
+          { "form" : "xpath",
+            "context" : "att.<mark>xpath<\/mark> (@xpath)",
+            "weight" : 1,
+            "pos" : 227 },
+          
+          { "form" : "xpath",
+            "context" : "att.xpath (@<mark>xpath<\/mark>)",
+            "weight" : 1,
+            "pos" : 228 },
+          
+          { "form" : "XPath",
+            "context" : "...<excludes> (The set of exclusions, expressed as <mark>XPath<\/mark>, that control the subset of documents for...",
+            "weight" : 1,
+            "pos" : 277 },
+          
+          { "form" : "XPath",
+            "context" : "...(A rule that specifies a document path in <mark>XPath<\/mark>, and provides weighting for search terms found...",
+            "weight" : 1,
+            "pos" : 621 },
+          
+          { "form" : "xpath",
+            "context" : "att.<mark>xpath<\/mark> (@xpath)",
+            "weight" : 1,
+            "pos" : 640 },
+          
+          { "form" : "xpath",
+            "context" : "att.xpath (@<mark>xpath<\/mark>)",
+            "weight" : 1,
+            "pos" : 641 },
+          
+          { "form" : "xpath",
+            "context" : "...token found in the context specified by the <mark>xpath<\/mark> attribute. Set to 0 to completely suppress...",
+            "weight" : 1,
+            "pos" : 650 },
+          
+          { "form" : "XPath",
+            "context" : "...<rules> (The set of rules, expressed as <mark>XPath<\/mark>, that control weighting of search terms found...",
+            "weight" : 1,
+            "pos" : 683 },
+          
+          { "form" : "xpath",
+            "context" : "att.<mark>xpath<\/mark> (A class providing attributes that enable specification of...",
+            "weight" : 1,
+            "pos" : 959 },
+          
+          { "form" : "xpath",
+            "context" : "<mark>xpath<\/mark>",
+            "weight" : 1,
+            "pos" : 977 },
+          
+          { "form" : "XPath",
+            "context" : "(An <mark>XPath<\/mark> equivalent to the @match attribute of an...",
+            "weight" : 1,
+            "pos" : 978 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 15,
+        "contexts" : 
+        [ 
+          { "form" : "XPath",
+            "context" : "...the <rule> element) that tell the parser, using <mark>XPath<\/mark> statements in the xpath attribute, specific weights...",
+            "weight" : 1,
+            "pos" : 1069 },
+          
+          { "form" : "xpath",
+            "context" : "...tell the parser, using XPath statements in the <mark>xpath<\/mark> attribute, specific weights to assign to particular...",
+            "weight" : 1,
+            "pos" : 1071 },
+          
+          { "form" : "xpath",
+            "context" : "<rules>  <rule weight=\"2\"   <mark>xpath<\/mark>=\"h1 | h2 | h3 | h4 |...",
+            "weight" : 1,
+            "pos" : 1099 },
+          
+          { "form" : "XPath",
+            "context" : "...using a rule like so: Since we're using <mark>XPath<\/mark> 3.0 and XSLT 3.0, this can also...",
+            "weight" : 1,
+            "pos" : 1103 },
+          
+          { "form" : "xpath",
+            "context" : "<rules>  <rule weight=\"2\"   <mark>xpath<\/mark>=\"*[matches(local-name(),'^h\\d+$')]\"\/> <\/rules>",
+            "weight" : 1,
+            "pos" : 1112 },
+          
+          { "form" : "xpath",
+            "context" : "The value of the <mark>xpath<\/mark> attribute is transformed in a XSLT template...",
+            "weight" : 1,
+            "pos" : 1133 },
+          
+          { "form" : "xpath",
+            "context" : "<rule weight=\"0\" <mark>xpath<\/mark>=\"footer | header\"\/>",
+            "weight" : 1,
+            "pos" : 1192 },
+          
+          { "form" : "xpath",
+            "context" : "<rule weight=\"0\" <mark>xpath<\/mark>=\"a[@href=.\/text()]\"\/>",
+            "weight" : 1,
+            "pos" : 1211 },
+          
+          { "form" : "xpath",
+            "context" : "...its token, use the <context> element with an <mark>xpath<\/mark> pattern:",
+            "weight" : 1,
+            "pos" : 1399 },
+          
+          { "form" : "xpath",
+            "context" : "<contexts>  <context <mark>xpath<\/mark>=\"span[contains-token(@class,'sidenote')]\"\/> <\/contexts>",
+            "weight" : 1,
+            "pos" : 1403 },
+          
+          { "form" : "xpath",
+            "context" : "<contexts>  <context <mark>xpath<\/mark>=\"div\" context=\"false\"\/> <\/contexts>",
+            "weight" : 1,
+            "pos" : 1430 },
+          
+          { "form" : "xpath",
+            "context" : "<rules>  <rule <mark>xpath<\/mark>=\"text()[not(ancestor::div[@class='figure']or ancestor::title)]\"   weight=\"0\"\/> <\/rules>",
+            "weight" : 1,
+            "pos" : 1497 },
+          
+          { "form" : "xpath",
+            "context" : "...files which have illustrations in them. -->  <exclude type=\"index\"   <mark>xpath<\/mark>=\"html[not(descendant::meta[@name='Has illustration(s)'][@content='true'])]\"\/> <!-- We ignore the document type...",
+            "weight" : 1,
+            "pos" : 1548 },
+          
+          { "form" : "xpath",
+            "context" : "...indexing one type of document anyway. -->  <exclude type=\"filter\"   <mark>xpath<\/mark>=\"meta[@name='Document type']\"\/> <!-- We exclude the filter that...",
+            "weight" : 1,
+            "pos" : 1568 },
+          
+          { "form" : "xpath",
+            "context" : "...specifies these documents because it's pointless. -->  <exclude type=\"filter\"   <mark>xpath<\/mark>=\"meta[@name='Has illustration(s)']\"\/> <\/excludes>",
+            "weight" : 1,
+            "pos" : 1581 } ] } ] }

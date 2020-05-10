@@ -1,0 +1,13 @@
+
+  { "token" : "1.6",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "1.6",
+            "context" : "Appendix A.<mark>1.6<\/mark> <exclude>",
+            "weight" : 2,
+            "pos" : 204 } ] } ] }

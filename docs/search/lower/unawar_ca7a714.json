@@ -1,0 +1,13 @@
+
+  { "token" : "unawar",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "unaware",
+            "context" : "...object using Javascript. However, since the tokenizer is <mark>unaware<\/mark> of any server-side processing, it understands the...",
+            "weight" : 1,
+            "pos" : 1367 } ] } ] }

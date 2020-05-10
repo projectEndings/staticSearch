@@ -1,0 +1,38 @@
+
+  { "token" : "websit",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "websites",
+            "context" : "However, static <mark>websites<\/mark> (websites which consist entirely of HTML, CSS...",
+            "weight" : 1,
+            "pos" : 58 },
+          
+          { "form" : "websites",
+            "context" : "However, static websites (<mark>websites<\/mark> which consist entirely of HTML, CSS and...",
+            "weight" : 1,
+            "pos" : 59 },
+          
+          { "form" : "Website",
+            "context" : "...replicate (see Holmes and Takeda (2019), The Prefabricated <mark>Website<\/mark>: Who needs a server anyway?). For this...",
+            "weight" : 1,
+            "pos" : 95 },
+          
+          { "form" : "website",
+            "context" : "...build a sophisticated faceted search engine into your <mark>website<\/mark> without the need for any back-end services...",
+            "weight" : 1,
+            "pos" : 178 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "website",
+            "context" : "...which enable the Generator to find the target <mark>website<\/mark> content and process it appropriately.)",
+            "weight" : 1,
+            "pos" : 510 } ] } ] }

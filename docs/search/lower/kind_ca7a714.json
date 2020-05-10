@@ -1,0 +1,18 @@
+
+  { "token" : "kind",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "kind",
+            "context" : "Another slightly different <mark>kind<\/mark> of search control is a document date....",
+            "weight" : 1,
+            "pos" : 176 },
+          
+          { "form" : "kind",
+            "context" : "...JSON token files; in order to support this <mark>kind<\/mark> of search, we store contexts for all...",
+            "weight" : 1,
+            "pos" : 750 } ] } ] }

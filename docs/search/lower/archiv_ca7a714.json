@@ -1,0 +1,13 @@
+
+  { "token" : "archiv",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "archive",
+            "context" : "...server-side technology, and are also much easier to <mark>archive<\/mark> and replicate (see Holmes and Takeda (2019),...",
+            "weight" : 1,
+            "pos" : 88 } ] } ] }

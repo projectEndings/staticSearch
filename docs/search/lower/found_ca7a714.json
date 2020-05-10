@@ -1,0 +1,48 @@
+
+  { "token" : "found",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "found",
+            "context" : "...in XPath, and provides weighting for search terms <mark>found<\/mark> in that context.)",
+            "weight" : 1,
+            "pos" : 626 },
+          
+          { "form" : "found",
+            "context" : "...(The weighting to give to a search token <mark>found<\/mark> in the context specified by the xpath...",
+            "weight" : 1,
+            "pos" : 647 },
+          
+          { "form" : "found",
+            "context" : "...as XPath, that control weighting of search terms <mark>found<\/mark> in specific contexts.)",
+            "weight" : 1,
+            "pos" : 688 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "found",
+            "context" : "...say here,<span class=\"sidenote\">Some information on this subject can be <mark>found<\/mark> in \"Second Thoughts\"<\/span> [...] <\/p>",
+            "weight" : 1,
+            "pos" : 1347 },
+          
+          { "form" : "found",
+            "context" : "...say here,Some information on this subject can be <mark>found<\/mark>... To tell the tokenizer that the <span>...",
+            "weight" : 1,
+            "pos" : 1388 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "found",
+            "context" : "...JSON file is created for each distinct token <mark>found<\/mark>; this file contains links to each of...",
+            "weight" : 1,
+            "pos" : 37 } ] } ] }

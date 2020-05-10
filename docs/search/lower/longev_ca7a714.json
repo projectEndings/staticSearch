@@ -1,0 +1,13 @@
+
+  { "token" : "longev",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "longevity",
+            "context" : "...that of a traditional print publication. However, digital <mark>longevity<\/mark> of DH projects is sadly short, and...",
+            "weight" : 1,
+            "pos" : 41 } ] } ] }

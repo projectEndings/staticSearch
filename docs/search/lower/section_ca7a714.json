@@ -1,0 +1,23 @@
+
+  { "token" : "section",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "sections",
+            "context" : "There are three main <mark>sections<\/mark> of the configuration file:",
+            "weight" : 1,
+            "pos" : 475 },
+          
+          { "form" : "section",
+            "context" : "<<mark>section<\/mark>>",
+            "weight" : 1,
+            "pos" : 1441 },
+          
+          { "form" : "section",
+            "context" : "...page, and this is done using the <excludes> <mark>section<\/mark> and its child <exclude> elements.",
+            "weight" : 1,
+            "pos" : 1536 } ] } ] }

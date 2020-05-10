@@ -1,0 +1,13 @@
+
+  { "token" : "clog",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "clog",
+            "context" : "...the same time, though, we don't want to <mark>clog<\/mark> up the connection downloading these files when...",
+            "weight" : 1,
+            "pos" : 224 } ] } ] }

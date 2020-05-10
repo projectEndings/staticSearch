@@ -1,0 +1,13 @@
+
+  { "token" : "ident",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "identical",
+            "context" : "...remove XHTML anchor tags (<a>) whose text is <mark>identical<\/mark> to the URL specified in its href,...",
+            "weight" : 1,
+            "pos" : 1202 } ] } ] }

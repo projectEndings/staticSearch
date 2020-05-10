@@ -1,0 +1,33 @@
+
+  { "token" : "conform",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "conforms",
+            "context" : "...you would like to include. The configuration file <mark>conforms<\/mark> to a schema which is documented here....",
+            "weight" : 1,
+            "pos" : 470 },
+          
+          { "form" : "conform",
+            "context" : "...are kept in different locations. The value must <mark>conform<\/mark> with the XML Name specification.",
+            "weight" : 1,
+            "pos" : 1050 },
+          
+          { "form" : "conform",
+            "context" : "...want the search page for your site to <mark>conform<\/mark> with the look and feel of the...",
+            "weight" : 1,
+            "pos" : 1653 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "conform",
+            "context" : "...be placed in the site search. This should <mark>conform<\/mark> with the XML Name specification.)",
+            "weight" : 1,
+            "pos" : 475 } ] } ] }

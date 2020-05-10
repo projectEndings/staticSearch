@@ -1,0 +1,28 @@
+
+  { "token" : "compon",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "components",
+            "context" : "...it can be processed), containing all the site <mark>components<\/mark> you need, and then the search build...",
+            "weight" : 1,
+            "pos" : 1672 },
+          
+          { "form" : "components",
+            "context" : "...search build process will insert all the necessary <mark>components<\/mark> into that file. The only requirement is...",
+            "weight" : 1,
+            "pos" : 1679 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "component",
+            "context" : "...to an all-static publication model. The most problematic <mark>component<\/mark> in the all-static approach is search.",
+            "weight" : 1,
+            "pos" : 114 } ] } ] }

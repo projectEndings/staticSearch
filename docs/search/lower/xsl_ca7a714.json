@@ -1,0 +1,28 @@
+
+  { "token" : "xsl",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "xsl",
+            "context" : "...recommend you start from; you'll find it in <mark>xsl<\/mark>\/english_stopwords.txt. If your site is all about a...",
+            "weight" : 1,
+            "pos" : 916 },
+          
+          { "form" : "xsl",
+            "context" : "...site. Again, there is a default dictionary in <mark>xsl<\/mark>\/english_words.txt which you might copy and adapt.",
+            "weight" : 1,
+            "pos" : 985 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "xsl",
+            "context" : "...XPath equivalent to the @match attribute of an <mark>xsl<\/mark>:template, which specifies a context in a document.)...",
+            "weight" : 1,
+            "pos" : 982 } ] } ] }

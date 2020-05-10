@@ -1,0 +1,63 @@
+
+  { "token" : "illustr",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 5,
+        "contexts" : 
+        [ 
+          { "form" : "illustrations",
+            "context" : "...<excludes> <!-- We only index files which have <mark>illustrations<\/mark> in them. -->  <exclude type=\"index\"   xpath=\"html[not(descendant::meta[@name='Has illustration(s)'][@content='true'])]\"\/> <!--...",
+            "weight" : 1,
+            "pos" : 1544 },
+          
+          { "form" : "illustration",
+            "context" : "...which have illustrations in them. -->  <exclude type=\"index\"   xpath=\"html[not(descendant::meta[@name='Has <mark>illustration<\/mark>(s)'][@content='true'])]\"\/> <!-- We ignore the document type filter,...",
+            "weight" : 1,
+            "pos" : 1553 },
+          
+          { "form" : "illustration",
+            "context" : "...these documents because it's pointless. -->  <exclude type=\"filter\"   xpath=\"meta[@name='Has <mark>illustration<\/mark>(s)']\"\/> <\/excludes>",
+            "weight" : 1,
+            "pos" : 1584 },
+          
+          { "form" : "illustration",
+            "context" : "...all documents which do not contain <meta name=\"Has <mark>illustration<\/mark>(s)\" content=\"true\"\/>> should be ignored. Then we use...",
+            "weight" : 1,
+            "pos" : 1595 },
+          
+          { "form" : "illustrations",
+            "context" : "...page), and second, that the boolean filter Has <mark>illustrations<\/mark>(s) should also be excluded.",
+            "weight" : 1,
+            "pos" : 1617 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "Illustrated",
+            "context" : "...if some of your documents are specified as '<mark>Illustrated<\/mark>' and some not (true or false), a...",
+            "weight" : 1,
+            "pos" : 93 },
+          
+          { "form" : "Illustrated",
+            "context" : "...a JSON file will be created for the '<mark>Illustrated<\/mark>' facet, with a list of documents which...",
+            "weight" : 1,
+            "pos" : 99 } ] },
+      
+      { "docId" : "searchFacetFeatures",
+        "docUri" : "searchFacetFeatures.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "illustrated",
+            "context" : "...might for instance specify that some poems are <mark>illustrated<\/mark> while others are not. The user could...",
+            "weight" : 1,
+            "pos" : 69 },
+          
+          { "form" : "illustrated",
+            "context" : "...user could then limit their search only to <mark>illustrated<\/mark> poems.",
+            "weight" : 1,
+            "pos" : 75 } ] } ] }

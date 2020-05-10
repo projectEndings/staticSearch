@@ -1,0 +1,148 @@
+
+  { "token" : "configur",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 25,
+        "contexts" : 
+        [ 
+          { "form" : "Configuring",
+            "context" : "6.1 <mark>Configuring<\/mark> your site: search filters",
+            "weight" : 2,
+            "pos" : 64 },
+          
+          { "form" : "Configuring",
+            "context" : "6.2 <mark>Configuring<\/mark> your site: document titles",
+            "weight" : 2,
+            "pos" : 312 },
+          
+          { "form" : "Configuring",
+            "context" : "6.3 <mark>Configuring<\/mark> your site: document thumbnails",
+            "weight" : 2,
+            "pos" : 377 },
+          
+          { "form" : "configuration",
+            "context" : "6.4 Creating a <mark>configuration<\/mark> file",
+            "weight" : 2,
+            "pos" : 453 },
+          
+          { "form" : "configured",
+            "context" : "...to make sure your site pages are correctly <mark>configured<\/mark> so that the Generator can parse them....",
+            "weight" : 1,
+            "pos" : 16 },
+          
+          { "form" : "configuration",
+            "context" : "...them. Then, you will have to create a <mark>configuration<\/mark> file specifying what options you want to...",
+            "weight" : 1,
+            "pos" : 20 },
+          
+          { "form" : "configure",
+            "context" : "You can also <mark>configure<\/mark> a range filter based on a numeric...",
+            "weight" : 1,
+            "pos" : 241 },
+          
+          { "form" : "configuration",
+            "context" : "The <mark>configuration<\/mark> file is an XML document which tells...",
+            "weight" : 1,
+            "pos" : 455 },
+          
+          { "form" : "configuration",
+            "context" : "...search features you would like to include. The <mark>configuration<\/mark> file conforms to a schema which is...",
+            "weight" : 1,
+            "pos" : 468 },
+          
+          { "form" : "configuration",
+            "context" : "...There are three main sections of the <mark>configuration<\/mark> file:",
+            "weight" : 1,
+            "pos" : 476 },
+          
+          { "form" : "configuration",
+            "context" : "...URIs specified in the config file, against the <mark>configuration<\/mark> file location) that points directly to the...",
+            "weight" : 1,
+            "pos" : 523 },
+          
+          { "form" : "configure",
+            "context" : "...search page for more information on how to <mark>configure<\/mark> this file.",
+            "weight" : 1,
+            "pos" : 575 },
+          
+          { "form" : "configuration",
+            "context" : "...specified is relative to the location of the <mark>configuration<\/mark> file (or absolute, if you wish).",
+            "weight" : 1,
+            "pos" : 721 },
+          
+          { "form" : "configured",
+            "context" : "...document (but as noted above, metadata can be <mark>configured<\/mark> into filters) and that all elements in...",
+            "weight" : 1,
+            "pos" : 1222 },
+          
+          { "form" : "configurable",
+            "context" : "...<ul>  <li>Keyword-in-context search results. This is also <mark>configurable<\/mark>, since including contexts    increases the size...",
+            "weight" : 1,
+            "pos" : 1270 },
+          
+          { "form" : "configure",
+            "context" : "You can also <mark>configure<\/mark> it the other way: if a <div>,...",
+            "weight" : 1,
+            "pos" : 1412 },
+          
+          { "form" : "configuration",
+            "context" : "...specifying a different <searchFile> and <outputFolder> in the <mark>configuration<\/mark> file for each search.",
+            "weight" : 1,
+            "pos" : 1471 },
+          
+          { "form" : "configure",
+            "context" : "...test\/search.html page for an example of how to <mark>configure<\/mark> the search page (although note that since...",
+            "weight" : 1,
+            "pos" : 1775 },
+          
+          { "form" : "configured",
+            "context" : "Once you have <mark>configured<\/mark> your HTML and your configuration file, you're...",
+            "weight" : 1,
+            "pos" : 1803 },
+          
+          { "form" : "configuration",
+            "context" : "...Once you have configured your HTML and your <mark>configuration<\/mark> file, you're ready to create a search...",
+            "weight" : 1,
+            "pos" : 1805 },
+          
+          { "form" : "configuration",
+            "context" : "...the build process where to find your custom <mark>configuration<\/mark> file:",
+            "weight" : 1,
+            "pos" : 1925 } ] },
+      
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "configuration",
+            "context" : "...search support requires a specific setting in your <mark>configuration<\/mark> file, because it increases the size of...",
+            "weight" : 1,
+            "pos" : 91 },
+          
+          { "form" : "configurable",
+            "context" : "Keyword-in-context search results. This is also <mark>configurable<\/mark>, since including contexts increases the size of...",
+            "weight" : 1,
+            "pos" : 102 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "configuration",
+            "context" : "The tokenizing process first processes your <mark>configuration<\/mark> file to create an XSLT file with...",
+            "weight" : 1,
+            "pos" : 16 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "configuration",
+            "context" : "...<config> (The root element for the Search Generator <mark>configuration<\/mark> file.)",
+            "weight" : 1,
+            "pos" : 16 } ] } ] }

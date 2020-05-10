@@ -1,0 +1,28 @@
+
+  { "token" : "datatyp",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "Datatype",
+            "context" : "<mark>Datatype<\/mark>",
+            "weight" : 1,
+            "pos" : 78 },
+          
+          { "form" : "Datatype",
+            "context" : "<mark>Datatype<\/mark>",
+            "weight" : 1,
+            "pos" : 664 },
+          
+          { "form" : "Datatype",
+            "context" : "<mark>Datatype<\/mark>",
+            "weight" : 1,
+            "pos" : 952 },
+          
+          { "form" : "Datatype",
+            "context" : "<mark>Datatype<\/mark>",
+            "weight" : 1,
+            "pos" : 989 } ] } ] }

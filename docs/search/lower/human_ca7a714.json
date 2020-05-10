@@ -1,0 +1,23 @@
+
+  { "token" : "human",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Humanities",
+            "context" : "Digital <mark>Humanities<\/mark> projects such as digital editions of historical...",
+            "weight" : 1,
+            "pos" : 13 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "human",
+            "context" : "...not. Indenting makes the files easier for a <mark>human<\/mark> to read, if you need to understand...",
+            "weight" : 1,
+            "pos" : 1006 } ] } ] }

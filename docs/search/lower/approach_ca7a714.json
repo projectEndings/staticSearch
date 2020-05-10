@@ -1,0 +1,28 @@
+
+  { "token" : "approach",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "approach",
+            "context" : "...model. The most problematic component in the all-static <mark>approach<\/mark> is search.",
+            "weight" : 1,
+            "pos" : 117 },
+          
+          { "form" : "approaches",
+            "context" : "...Most digital publications take one of two <mark>approaches<\/mark> to search: either they have their own...",
+            "weight" : 1,
+            "pos" : 124 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "approach",
+            "context" : "...so these files are retrieved using a 'trickle' <mark>approach<\/mark>, one at a time. Then if a...",
+            "weight" : 1,
+            "pos" : 239 } ] } ] }

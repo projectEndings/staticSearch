@@ -1,0 +1,93 @@
+
+  { "token" : "taken",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "taken",
+            "context" : "This example <mark>taken<\/mark> from Thomas S. Kuhn, The Structure of...",
+            "weight" : 1,
+            "pos" : 66 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "taken",
+            "context" : "This example <mark>taken<\/mark> from Thomas S. Kuhn, The Structure of...",
+            "weight" : 1,
+            "pos" : 193 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "taken",
+            "context" : "This example <mark>taken<\/mark> from Thomas S. Kuhn, The Structure of...",
+            "weight" : 1,
+            "pos" : 287 } ] },
+      
+      { "docId" : "whatDoesItDo",
+        "docUri" : "whatDoesItDo.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "taken",
+            "context" : "This example <mark>taken<\/mark> from Thomas S. Kuhn, The Structure of...",
+            "weight" : 1,
+            "pos" : 62 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "taken",
+            "context" : "This example <mark>taken<\/mark> from Thomas S. Kuhn, The Structure of...",
+            "weight" : 1,
+            "pos" : 993 } ] },
+      
+      { "docId" : "searchFacetFeatures",
+        "docUri" : "searchFacetFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "taken",
+            "context" : "This example <mark>taken<\/mark> from Thomas S. Kuhn, The Structure of...",
+            "weight" : 1,
+            "pos" : 79 } ] },
+      
+      { "docId" : "index",
+        "docUri" : "index.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "taken",
+            "context" : "This example <mark>taken<\/mark> from Thomas S. Kuhn, The Structure of...",
+            "weight" : 1,
+            "pos" : 16 } ] },
+      
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "taken",
+            "context" : "This example <mark>taken<\/mark> from Thomas S. Kuhn, The Structure of...",
+            "weight" : 1,
+            "pos" : 123 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "taken",
+            "context" : "This example <mark>taken<\/mark> from Thomas S. Kuhn, The Structure of...",
+            "weight" : 1,
+            "pos" : 1957 } ] } ] }

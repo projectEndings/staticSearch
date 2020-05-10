@@ -1,0 +1,33 @@
+
+  { "token" : "indent",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "indent",
+            "context" : "<indentJSON> (Whether or not to <mark>indent<\/mark> code in the JSON index files. Indenting...",
+            "weight" : 1,
+            "pos" : 307 },
+          
+          { "form" : "Indenting",
+            "context" : "...to indent code in the JSON index files. <mark>Indenting<\/mark> increases the file size, but it can...",
+            "weight" : 1,
+            "pos" : 312 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "indented",
+            "context" : "...the JSON files generated for the index are <mark>indented<\/mark> or not. Indenting makes the files easier...",
+            "weight" : 1,
+            "pos" : 1001 },
+          
+          { "form" : "Indenting",
+            "context" : "...generated for the index are indented or not. <mark>Indenting<\/mark> makes the files easier for a human...",
+            "weight" : 1,
+            "pos" : 1002 } ] } ] }

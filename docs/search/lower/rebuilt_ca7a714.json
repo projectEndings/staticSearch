@@ -1,0 +1,13 @@
+
+  { "token" : "rebuilt",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "rebuilt",
+            "context" : "...the search page, but if the project is <mark>rebuilt<\/mark> with a new version, those cached files...",
+            "weight" : 1,
+            "pos" : 707 } ] } ] }

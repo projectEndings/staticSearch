@@ -1,0 +1,18 @@
+
+  { "token" : "ant-contrib",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "ant-contrib",
+            "context" : "...Java and Apache Ant installed, as well as <mark>ant-contrib<\/mark>.",
+            "weight" : 1,
+            "pos" : 1830 },
+          
+          { "form" : "ant-contrib",
+            "context" : "...you see. (Do you have Java, Ant and <mark>ant-contrib<\/mark> installed and working on your system?).",
+            "weight" : 1,
+            "pos" : 1880 } ] } ] }

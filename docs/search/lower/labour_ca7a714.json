@@ -1,0 +1,13 @@
+
+  { "token" : "labour",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "labours",
+            "context" : "...over many years, and the fruit of their <mark>labours<\/mark> deserves to have a significant shelf-life, if...",
+            "weight" : 1,
+            "pos" : 28 } ] } ] }

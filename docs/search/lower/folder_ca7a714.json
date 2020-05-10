@@ -1,0 +1,63 @@
+
+  { "token" : "folder",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 7,
+        "contexts" : 
+        [ 
+          { "form" : "folder",
+            "context" : "...in the example above, there would be a <mark>folder<\/mark> called images which is a sibling of...",
+            "weight" : 1,
+            "pos" : 436 },
+          
+          { "form" : "folder",
+            "context" : "...the HTML file containing the tag, and that <mark>folder<\/mark> would contain a file called thisPage.jpg.",
+            "weight" : 1,
+            "pos" : 444 },
+          
+          { "form" : "folder",
+            "context" : "<outputFolder> is the name of a <mark>folder<\/mark> into which you would like to place...",
+            "weight" : 1,
+            "pos" : 1017 },
+          
+          { "form" : "folder",
+            "context" : "...requires that you run ant in the root <mark>folder<\/mark> of the staticSearch project that you have...",
+            "weight" : 1,
+            "pos" : 1818 },
+          
+          { "form" : "folder",
+            "context" : "...can view the results by uploading the test <mark>folder<\/mark> and all its contents to a web...",
+            "weight" : 1,
+            "pos" : 1892 },
+          
+          { "form" : "folder",
+            "context" : "...a local webserver on your machine in that <mark>folder<\/mark>, using the Python HTTP server or PHP's...",
+            "weight" : 1,
+            "pos" : 1900 },
+          
+          { "form" : "folder",
+            "context" : "...files in JSON format in your site HTML <mark>folder<\/mark>. Now you can test your own search...",
+            "weight" : 1,
+            "pos" : 1950 } ] },
+      
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "folder",
+            "context" : "...zip file and unzip it to create a <mark>folder<\/mark> containing the code.",
+            "weight" : 1,
+            "pos" : 33 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "folder",
+            "context" : "<outputFolder> (The name of the output <mark>folder<\/mark> into which the index data and JavaScript...",
+            "weight" : 1,
+            "pos" : 468 } ] } ] }

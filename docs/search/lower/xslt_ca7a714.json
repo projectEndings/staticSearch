@@ -1,0 +1,33 @@
+
+  { "token" : "xslt",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "XSLT",
+            "context" : "...like so: Since we're using XPath 3.0 and <mark>XSLT<\/mark> 3.0, this can also be simplified to:...",
+            "weight" : 1,
+            "pos" : 1105 },
+          
+          { "form" : "XSLT",
+            "context" : "...of the xpath attribute is transformed in a <mark>XSLT<\/mark> template match attribute, and thus must follow...",
+            "weight" : 1,
+            "pos" : 1136 },
+          
+          { "form" : "XSLT",
+            "context" : "...no complex rules like p\/ancestor::div). See the W3C <mark>XSLT<\/mark> Specification for further details on allowable pattern...",
+            "weight" : 1,
+            "pos" : 1150 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "XSLT",
+            "context" : "...first processes your configuration file to create an <mark>XSLT<\/mark> file with all your settings embedded in...",
+            "weight" : 1,
+            "pos" : 19 } ] } ] }

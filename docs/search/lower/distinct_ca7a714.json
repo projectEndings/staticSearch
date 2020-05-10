@@ -1,0 +1,13 @@
+
+  { "token" : "distinct",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "distinct",
+            "context" : "...a separate JSON file is created for each <mark>distinct<\/mark> token found; this file contains links to...",
+            "weight" : 1,
+            "pos" : 35 } ] } ] }

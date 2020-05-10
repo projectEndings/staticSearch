@@ -1,0 +1,133 @@
+
+  { "token" : "word",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 8,
+        "contexts" : 
+        [ 
+          { "form" : "word",
+            "context" : "The description (desc) filter is a <mark>word<\/mark> or phrase describing or associated with the...",
+            "weight" : 1,
+            "pos" : 106 },
+          
+          { "form" : "word",
+            "context" : "...documents in the search results based on their <mark>word<\/mark>-count: Users would then be able to set...",
+            "weight" : 1,
+            "pos" : 260 },
+          
+          { "form" : "\"Word",
+            "context" : "<meta name=<mark>\"Word<\/mark>-count\"  class=\"staticSearch.num\" content=\"2193\"\/>",
+            "weight" : 1,
+            "pos" : 265 },
+          
+          { "form" : "word",
+            "context" : "...be able to set a minimum and\/or maximum <mark>word<\/mark>-count when searching for documents.",
+            "weight" : 1,
+            "pos" : 279 },
+          
+          { "form" : "words",
+            "context" : "...where to put the output JSON. In other <mark>words<\/mark>, in specifying the location of your search...",
+            "weight" : 1,
+            "pos" : 560 },
+          
+          { "form" : "word",
+            "context" : "...use for your site. A stopword is a <mark>word<\/mark> that will not be indexed, because it...",
+            "weight" : 1,
+            "pos" : 903 },
+          
+          { "form" : "words",
+            "context" : "...is in English). This is used to check <mark>words<\/mark> during the indexing process, and a report...",
+            "weight" : 1,
+            "pos" : 967 },
+          
+          { "form" : "words",
+            "context" : "...site. Again, there is a default dictionary in xsl\/english_<mark>words<\/mark>.txt which you might copy and adapt.",
+            "weight" : 1,
+            "pos" : 987 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "word",
+            "context" : "...take forever. So when you search for the <mark>word<\/mark> waiting, what happens is that the JavaScript...",
+            "weight" : 1,
+            "pos" : 153 },
+          
+          { "form" : "word",
+            "context" : "...what happens is that the JavaScript stems that <mark>word<\/mark>, producing wait, then it downloads only the...",
+            "weight" : 1,
+            "pos" : 158 },
+          
+          { "form" : "word",
+            "context" : "...single file containing indexing information for that specific <mark>word<\/mark>, which is very rapid.",
+            "weight" : 1,
+            "pos" : 168 },
+          
+          { "form" : "word",
+            "context" : "...search facets only, not searching for a particular <mark>word<\/mark> or phrase but just wanting a list...",
+            "weight" : 1,
+            "pos" : 191 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "word",
+            "context" : "...<dictionaryFile> (The location of a dictionary file (one <mark>word<\/mark> per line) which will be used to...",
+            "weight" : 1,
+            "pos" : 176 },
+          
+          { "form" : "words",
+            "context" : "...a text file containing a list of stopwords (<mark>words<\/mark> to be ignored when indexing). These are...",
+            "weight" : 1,
+            "pos" : 759 },
+          
+          { "form" : "words",
+            "context" : "...to be ignored when indexing). These are typically <mark>words<\/mark> too common to be worth searching for,...",
+            "weight" : 1,
+            "pos" : 763 },
+          
+          { "form" : "word",
+            "context" : "...list should be in plain text with one <mark>word<\/mark> per line.)",
+            "weight" : 1,
+            "pos" : 784 } ] },
+      
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "word",
+            "context" : "...Boolean search operators. Adding + (plus) before a <mark>word<\/mark> means that search results must contain that...",
+            "weight" : 1,
+            "pos" : 43 },
+          
+          { "form" : "word",
+            "context" : "...word means that search results must contain that <mark>word<\/mark>, and adding a - (minus) means that...",
+            "weight" : 1,
+            "pos" : 49 },
+          
+          { "form" : "word",
+            "context" : "...(minus) means that results must not contain that <mark>word<\/mark>. Words without plus or minus are treated...",
+            "weight" : 1,
+            "pos" : 56 },
+          
+          { "form" : "Words",
+            "context" : "...means that results must not contain that word. <mark>Words<\/mark> without plus or minus are treated as...",
+            "weight" : 1,
+            "pos" : 57 } ] },
+      
+      { "docId" : "whatDoesItDo",
+        "docUri" : "whatDoesItDo.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "words",
+            "context" : "...site to create an index of all the <mark>words<\/mark> appearing in the site, stemmed using a...",
+            "weight" : 1,
+            "pos" : 15 } ] } ] }

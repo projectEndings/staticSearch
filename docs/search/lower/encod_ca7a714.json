@@ -1,0 +1,13 @@
+
+  { "token" : "encod",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "encoded",
+            "context" : "...instance, say a page contained a marginal note, <mark>encoded<\/mark> as a <span> in your document beside...",
+            "weight" : 1,
+            "pos" : 1332 } ] } ] }

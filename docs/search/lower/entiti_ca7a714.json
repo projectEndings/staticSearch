@@ -1,0 +1,13 @@
+
+  { "token" : "entiti",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "entity",
+            "context" : "...about a person, a place or some other <mark>entity<\/mark>, then you might add their name to...",
+            "weight" : 1,
+            "pos" : 923 } ] } ] }

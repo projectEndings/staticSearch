@@ -1,0 +1,43 @@
+
+  { "token" : "make",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 5,
+        "contexts" : 
+        [ 
+          { "form" : "make",
+            "context" : "First, you will have to <mark>make<\/mark> sure your site pages are correctly configured...",
+            "weight" : 1,
+            "pos" : 11 },
+          
+          { "form" : "makes",
+            "context" : "...size of the index, but of course it <mark>makes<\/mark> for much more user-friendly search results.",
+            "weight" : 1,
+            "pos" : 789 },
+          
+          { "form" : "makes",
+            "context" : "...presumably appear on almost every page and it <mark>makes<\/mark> no sense to search for it. One...",
+            "weight" : 1,
+            "pos" : 934 },
+          
+          { "form" : "makes",
+            "context" : "...for the index are indented or not. Indenting <mark>makes<\/mark> the files easier for a human to...",
+            "weight" : 1,
+            "pos" : 1003 },
+          
+          { "form" : "make",
+            "context" : "...will be replaced. There is no need to <mark>make<\/mark> sure it's empty every time.",
+            "weight" : 1,
+            "pos" : 1716 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "make",
+            "context" : "...add the required search controls and JavaScript to <mark>make<\/mark> the search work.",
+            "weight" : 1,
+            "pos" : 121 } ] } ] }

@@ -1,0 +1,18 @@
+
+  { "token" : "sure",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "sure",
+            "context" : "First, you will have to make <mark>sure<\/mark> your site pages are correctly configured so...",
+            "weight" : 1,
+            "pos" : 12 },
+          
+          { "form" : "sure",
+            "context" : "...be replaced. There is no need to make <mark>sure<\/mark> it's empty every time.",
+            "weight" : 1,
+            "pos" : 1717 } ] } ] }

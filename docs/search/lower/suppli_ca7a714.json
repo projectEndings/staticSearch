@@ -1,0 +1,18 @@
+
+  { "token" : "suppli",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "supply",
+            "context" : "...art, for instance). Whatever the reason, you can <mark>supply<\/mark> a link to a thumbnail image like...",
+            "weight" : 1,
+            "pos" : 408 },
+          
+          { "form" : "supplied",
+            "context" : "<div id=\"staticSearch\"> [...content will be <mark>supplied<\/mark> by the build process...] <\/div>",
+            "weight" : 1,
+            "pos" : 1692 } ] } ] }

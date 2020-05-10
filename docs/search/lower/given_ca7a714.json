@@ -1,0 +1,18 @@
+
+  { "token" : "given",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "given",
+            "context" : "...elements (<h1>, <h2>, etc) in documents to be <mark>given<\/mark> a greater weight and thus receive a...",
+            "weight" : 1,
+            "pos" : 1085 },
+          
+          { "form" : "given",
+            "context" : "...above example is unnecessary: all heading elements are <mark>given<\/mark> a weight of 2 by default, which...",
+            "weight" : 1,
+            "pos" : 1125 } ] } ] }

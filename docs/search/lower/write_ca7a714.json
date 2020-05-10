@@ -1,0 +1,13 @@
+
+  { "token" : "write",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "write",
+            "context" : "...footer from the search indexing process, you could <mark>write<\/mark> something like: Or if you want to...",
+            "weight" : 1,
+            "pos" : 1187 } ] } ] }

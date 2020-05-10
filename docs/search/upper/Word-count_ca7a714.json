@@ -1,0 +1,13 @@
+
+  { "token" : "Word-count",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "\"Word-count\"",
+            "context" : "<meta name=<mark>\"Word-count\"<\/mark>  class=\"staticSearch.num\" content=\"2193\"\/>",
+            "weight" : 1,
+            "pos" : 264 } ] } ] }

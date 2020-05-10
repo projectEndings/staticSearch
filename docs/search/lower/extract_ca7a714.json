@@ -1,0 +1,48 @@
+
+  { "token" : "extract",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "extracts",
+            "context" : "<createContexts> (Whether to include keyword-in-context <mark>extracts<\/mark> in the index. This increases the size...",
+            "weight" : 1,
+            "pos" : 133 },
+          
+          { "form" : "extract",
+            "context" : "...at the beginning and end of a keyword-in-context <mark>extract<\/mark>. Conventionally three periods, or an ellipsis character.)...",
+            "weight" : 1,
+            "pos" : 355 },
+          
+          { "form" : "extracts",
+            "context" : "...<maxKwicsToHarvest> (This controls the maximum number of keyword-in-context <mark>extracts<\/mark> that will be stored for each term....",
+            "weight" : 1,
+            "pos" : 391 },
+          
+          { "form" : "extracts",
+            "context" : "...<maxKwicsToShow> (This controls the maximum number of keyword-in-context <mark>extracts<\/mark> that will be shown in the search...",
+            "weight" : 1,
+            "pos" : 435 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "extracts",
+            "context" : "...whether you want the indexer to store keyword-in-context <mark>extracts<\/mark> for each of the hits in a...",
+            "weight" : 1,
+            "pos" : 782 },
+          
+          { "form" : "extracts",
+            "context" : "<maxKwicsToHarvest> controls the number of keyword-in-context <mark>extracts<\/mark> that will be harvested from the data...",
+            "weight" : 1,
+            "pos" : 802 },
+          
+          { "form" : "extracts",
+            "context" : "<maxKwicsToShow> controls the number of keyword-in-context <mark>extracts<\/mark> that will be shown in the search...",
+            "weight" : 1,
+            "pos" : 828 } ] } ] }

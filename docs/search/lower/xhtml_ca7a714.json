@@ -1,0 +1,28 @@
+
+  { "token" : "xhtml",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "XHTML",
+            "context" : "...The generator is expecting to parse well-formed <mark>XHTML<\/mark>5 web pages. That means web pages which...",
+            "weight" : 1,
+            "pos" : 38 },
+          
+          { "form" : "XHTML",
+            "context" : "...web pages which are well-formed XML, using the <mark>XHTML<\/mark> namespace. If your site is just raggedy...",
+            "weight" : 1,
+            "pos" : 49 },
+          
+          { "form" : "XHTML",
+            "context" : "...(i.e. the directory that contains all of the <mark>XHTML<\/mark> you want the search to index), the...",
+            "weight" : 1,
+            "pos" : 544 },
+          
+          { "form" : "XHTML",
+            "context" : "...something like: Or if you want to remove <mark>XHTML<\/mark> anchor tags (<a>) whose text is identical...",
+            "weight" : 1,
+            "pos" : 1197 } ] } ] }

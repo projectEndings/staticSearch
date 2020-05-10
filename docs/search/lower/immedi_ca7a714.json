@@ -1,0 +1,13 @@
+
+  { "token" : "immedi",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "immediately",
+            "context" : "...the trickle sequence for files that are needed <mark>immediately<\/mark>.",
+            "weight" : 1,
+            "pos" : 256 } ] } ] }

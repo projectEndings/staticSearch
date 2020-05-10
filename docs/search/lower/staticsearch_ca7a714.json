@@ -1,0 +1,213 @@
+
+  { "token" : "staticsearch",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 22,
+        "contexts" : 
+        [ 
+          { "form" : "staticSearch",
+            "context" : "http:\/\/hcmc.uvic.ca\/ns\/<mark>staticSearch<\/mark>",
+            "weight" : 1,
+            "pos" : 22 },
+          
+          { "form" : "staticSearch",
+            "context" : "http:\/\/hcmc.uvic.ca\/ns\/<mark>staticSearch<\/mark>",
+            "weight" : 1,
+            "pos" : 62 },
+          
+          { "form" : "staticSearch",
+            "context" : "http:\/\/hcmc.uvic.ca\/ns\/<mark>staticSearch<\/mark>",
+            "weight" : 1,
+            "pos" : 109 },
+          
+          { "form" : "staticSearch",
+            "context" : "http:\/\/hcmc.uvic.ca\/ns\/<mark>staticSearch<\/mark>",
+            "weight" : 1,
+            "pos" : 152 },
+          
+          { "form" : "staticSearch",
+            "context" : "http:\/\/hcmc.uvic.ca\/ns\/<mark>staticSearch<\/mark>",
+            "weight" : 1,
+            "pos" : 187 },
+          
+          { "form" : "staticSearch",
+            "context" : "http:\/\/hcmc.uvic.ca\/ns\/<mark>staticSearch<\/mark>",
+            "weight" : 1,
+            "pos" : 219 },
+          
+          { "form" : "staticSearch",
+            "context" : "http:\/\/hcmc.uvic.ca\/ns\/<mark>staticSearch<\/mark>",
+            "weight" : 1,
+            "pos" : 287 },
+          
+          { "form" : "staticSearch",
+            "context" : "http:\/\/hcmc.uvic.ca\/ns\/<mark>staticSearch<\/mark>",
+            "weight" : 1,
+            "pos" : 326 },
+          
+          { "form" : "staticSearch",
+            "context" : "http:\/\/hcmc.uvic.ca\/ns\/<mark>staticSearch<\/mark>",
+            "weight" : 1,
+            "pos" : 365 },
+          
+          { "form" : "staticSearch",
+            "context" : "http:\/\/hcmc.uvic.ca\/ns\/<mark>staticSearch<\/mark>",
+            "weight" : 1,
+            "pos" : 409 },
+          
+          { "form" : "staticSearch",
+            "context" : "http:\/\/hcmc.uvic.ca\/ns\/<mark>staticSearch<\/mark>",
+            "weight" : 1,
+            "pos" : 446 },
+          
+          { "form" : "staticSearch",
+            "context" : "http:\/\/hcmc.uvic.ca\/ns\/<mark>staticSearch<\/mark>",
+            "weight" : 1,
+            "pos" : 483 },
+          
+          { "form" : "staticSearch",
+            "context" : "http:\/\/hcmc.uvic.ca\/ns\/<mark>staticSearch<\/mark>",
+            "weight" : 1,
+            "pos" : 518 },
+          
+          { "form" : "staticSearch",
+            "context" : "http:\/\/hcmc.uvic.ca\/ns\/<mark>staticSearch<\/mark>",
+            "weight" : 1,
+            "pos" : 568 },
+          
+          { "form" : "staticSearch",
+            "context" : "http:\/\/hcmc.uvic.ca\/ns\/<mark>staticSearch<\/mark>",
+            "weight" : 1,
+            "pos" : 597 },
+          
+          { "form" : "staticSearch",
+            "context" : "http:\/\/hcmc.uvic.ca\/ns\/<mark>staticSearch<\/mark>",
+            "weight" : 1,
+            "pos" : 632 },
+          
+          { "form" : "staticSearch",
+            "context" : "http:\/\/hcmc.uvic.ca\/ns\/<mark>staticSearch<\/mark>",
+            "weight" : 1,
+            "pos" : 695 },
+          
+          { "form" : "staticSearch",
+            "context" : "http:\/\/hcmc.uvic.ca\/ns\/<mark>staticSearch<\/mark>",
+            "weight" : 1,
+            "pos" : 733 },
+          
+          { "form" : "staticSearch",
+            "context" : "http:\/\/hcmc.uvic.ca\/ns\/<mark>staticSearch<\/mark>",
+            "weight" : 1,
+            "pos" : 791 },
+          
+          { "form" : "staticSearch",
+            "context" : "http:\/\/hcmc.uvic.ca\/ns\/<mark>staticSearch<\/mark>",
+            "weight" : 1,
+            "pos" : 822 },
+          
+          { "form" : "staticSearch",
+            "context" : "http:\/\/hcmc.uvic.ca\/ns\/<mark>staticSearch<\/mark>",
+            "weight" : 1,
+            "pos" : 851 },
+          
+          { "form" : "staticSearch",
+            "context" : "http:\/\/hcmc.uvic.ca\/ns\/<mark>staticSearch<\/mark>",
+            "weight" : 1,
+            "pos" : 901 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 14,
+        "contexts" : 
+        [ 
+          { "form" : "staticSearch",
+            "context" : "...your documents to specify what these filters are. <mark>staticSearch<\/mark> supports four filter types.",
+            "weight" : 1,
+            "pos" : 95 },
+          
+          { "form" : "\"staticSearch",
+            "context" : "<meta name=\"Document type\"  class=<mark>\"staticSearch<\/mark>.desc\" content=\"Poems\"\/>",
+            "weight" : 1,
+            "pos" : 118 },
+          
+          { "form" : "\"staticSearch",
+            "context" : "<meta name=\"Document type\"  class=<mark>\"staticSearch<\/mark>.desc\" content=\"Short stories\"\/>",
+            "weight" : 1,
+            "pos" : 146 },
+          
+          { "form" : "\"staticSearch",
+            "context" : "<meta name=\"Date of publication\"  class=<mark>\"staticSearch<\/mark>.date\" content=\"1895-01-05\"\/>",
+            "weight" : 1,
+            "pos" : 195 },
+          
+          { "form" : "\"staticSearch",
+            "context" : "<meta name=\"Word-count\"  class=<mark>\"staticSearch<\/mark>.num\" content=\"2193\"\/>",
+            "weight" : 1,
+            "pos" : 268 },
+          
+          { "form" : "\"staticSearch",
+            "context" : "<meta name=\"Peer-reviewed\"  class=<mark>\"staticSearch<\/mark>.bool\" content=\"true\"\/>",
+            "weight" : 1,
+            "pos" : 307 },
+          
+          { "form" : "\"staticSearch",
+            "context" : "<meta name=\"docTitle\"  class=<mark>\"staticSearch<\/mark>.docTitle\" content=\"What I did in my holidays\"\/>",
+            "weight" : 1,
+            "pos" : 372 },
+          
+          { "form" : "\"staticSearch",
+            "context" : "<meta name=\"docImage\"  class=<mark>\"staticSearch<\/mark>.docImage\" content=\"images\/thisPage.jpg\"\/>",
+            "weight" : 1,
+            "pos" : 417 },
+          
+          { "form" : "staticSearch",
+            "context" : "<mark>staticSearch<\/mark>",
+            "weight" : 1,
+            "pos" : 614 },
+          
+          { "form" : "staticSearch",
+            "context" : "...index files your site search. The default is <mark>staticSearch<\/mark>, but if you would prefer something else,...",
+            "weight" : 1,
+            "pos" : 1028 },
+          
+          { "form" : "\"staticSearch\"",
+            "context" : "<div id=<mark>\"staticSearch\"<\/mark>> [...content will be supplied by the build...",
+            "weight" : 1,
+            "pos" : 1690 },
+          
+          { "form" : "staticSearch",
+            "context" : "...run ant in the root folder of the <mark>staticSearch<\/mark> project that you have downloaded or cloned....",
+            "weight" : 1,
+            "pos" : 1819 },
+          
+          { "form" : "staticSearch",
+            "context" : "mholmes@linuxbox:~\/Documents\/<mark>staticSearch<\/mark>$ ant ant -DconfigFile=\/home\/mholmes\/mysite\/config_staticSearch.xml",
+            "weight" : 1,
+            "pos" : 1852 },
+          
+          { "form" : "staticSearch",
+            "context" : "mholmes@linuxbox:~\/Documents\/staticSearch$ ant ant -DconfigFile=\/home\/mholmes\/mysite\/config_<mark>staticSearch<\/mark>.xml",
+            "weight" : 1,
+            "pos" : 1933 } ] },
+      
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "staticSearch",
+            "context" : "...There are two ways to get the <mark>staticSearch<\/mark> code. The first is to download a...",
+            "weight" : 1,
+            "pos" : 15 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "staticSearch",
+            "context" : "<mark>staticSearch<\/mark> solves this problem. It provides the capability...",
+            "weight" : 1,
+            "pos" : 168 } ] } ] }

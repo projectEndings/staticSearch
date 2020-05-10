@@ -1,0 +1,13 @@
+
+  { "token" : "typo",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "typos",
+            "context" : "...dictionary. This is a useful way to find <mark>typos<\/mark> in your site. Again, there is a...",
+            "weight" : 1,
+            "pos" : 981 } ] } ] }

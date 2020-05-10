@@ -1,0 +1,128 @@
+
+  { "token" : "http",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 22,
+        "contexts" : 
+        [ 
+          { "form" : "http",
+            "context" : "<mark>http<\/mark>:\/\/hcmc.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 19 },
+          
+          { "form" : "http",
+            "context" : "<mark>http<\/mark>:\/\/hcmc.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 59 },
+          
+          { "form" : "http",
+            "context" : "<mark>http<\/mark>:\/\/hcmc.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 106 },
+          
+          { "form" : "http",
+            "context" : "<mark>http<\/mark>:\/\/hcmc.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 149 },
+          
+          { "form" : "http",
+            "context" : "<mark>http<\/mark>:\/\/hcmc.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 184 },
+          
+          { "form" : "http",
+            "context" : "<mark>http<\/mark>:\/\/hcmc.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 216 },
+          
+          { "form" : "http",
+            "context" : "<mark>http<\/mark>:\/\/hcmc.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 284 },
+          
+          { "form" : "http",
+            "context" : "<mark>http<\/mark>:\/\/hcmc.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 323 },
+          
+          { "form" : "http",
+            "context" : "<mark>http<\/mark>:\/\/hcmc.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 362 },
+          
+          { "form" : "http",
+            "context" : "<mark>http<\/mark>:\/\/hcmc.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 406 },
+          
+          { "form" : "http",
+            "context" : "<mark>http<\/mark>:\/\/hcmc.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 443 },
+          
+          { "form" : "http",
+            "context" : "<mark>http<\/mark>:\/\/hcmc.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 480 },
+          
+          { "form" : "http",
+            "context" : "<mark>http<\/mark>:\/\/hcmc.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 515 },
+          
+          { "form" : "http",
+            "context" : "<mark>http<\/mark>:\/\/hcmc.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 565 },
+          
+          { "form" : "http",
+            "context" : "<mark>http<\/mark>:\/\/hcmc.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 594 },
+          
+          { "form" : "http",
+            "context" : "<mark>http<\/mark>:\/\/hcmc.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 629 },
+          
+          { "form" : "http",
+            "context" : "<mark>http<\/mark>:\/\/hcmc.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 692 },
+          
+          { "form" : "http",
+            "context" : "<mark>http<\/mark>:\/\/hcmc.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 730 },
+          
+          { "form" : "http",
+            "context" : "<mark>http<\/mark>:\/\/hcmc.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 788 },
+          
+          { "form" : "http",
+            "context" : "<mark>http<\/mark>:\/\/hcmc.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 819 },
+          
+          { "form" : "http",
+            "context" : "<mark>http<\/mark>:\/\/hcmc.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 848 },
+          
+          { "form" : "http",
+            "context" : "<mark>http<\/mark>:\/\/hcmc.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 898 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "HTTP",
+            "context" : "...your machine in that folder, using the Python <mark>HTTP<\/mark> server or PHP's built-in web server.",
+            "weight" : 1,
+            "pos" : 1903 } ] } ] }

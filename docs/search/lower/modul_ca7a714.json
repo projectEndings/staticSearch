@@ -1,0 +1,128 @@
+
+  { "token" : "modul",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 24,
+        "contexts" : 
+        [ 
+          { "form" : "Module",
+            "context" : "<mark>Module<\/mark>",
+            "weight" : 1,
+            "pos" : 23 },
+          
+          { "form" : "Module",
+            "context" : "<mark>Module<\/mark>",
+            "weight" : 1,
+            "pos" : 63 },
+          
+          { "form" : "Module",
+            "context" : "<mark>Module<\/mark>",
+            "weight" : 1,
+            "pos" : 110 },
+          
+          { "form" : "Module",
+            "context" : "<mark>Module<\/mark>",
+            "weight" : 1,
+            "pos" : 153 },
+          
+          { "form" : "Module",
+            "context" : "<mark>Module<\/mark>",
+            "weight" : 1,
+            "pos" : 188 },
+          
+          { "form" : "Module",
+            "context" : "<mark>Module<\/mark>",
+            "weight" : 1,
+            "pos" : 220 },
+          
+          { "form" : "Module",
+            "context" : "<mark>Module<\/mark>",
+            "weight" : 1,
+            "pos" : 288 },
+          
+          { "form" : "Module",
+            "context" : "<mark>Module<\/mark>",
+            "weight" : 1,
+            "pos" : 327 },
+          
+          { "form" : "Module",
+            "context" : "<mark>Module<\/mark>",
+            "weight" : 1,
+            "pos" : 366 },
+          
+          { "form" : "Module",
+            "context" : "<mark>Module<\/mark>",
+            "weight" : 1,
+            "pos" : 410 },
+          
+          { "form" : "Module",
+            "context" : "<mark>Module<\/mark>",
+            "weight" : 1,
+            "pos" : 447 },
+          
+          { "form" : "Module",
+            "context" : "<mark>Module<\/mark>",
+            "weight" : 1,
+            "pos" : 484 },
+          
+          { "form" : "Module",
+            "context" : "<mark>Module<\/mark>",
+            "weight" : 1,
+            "pos" : 519 },
+          
+          { "form" : "Module",
+            "context" : "<mark>Module<\/mark>",
+            "weight" : 1,
+            "pos" : 569 },
+          
+          { "form" : "Module",
+            "context" : "<mark>Module<\/mark>",
+            "weight" : 1,
+            "pos" : 598 },
+          
+          { "form" : "Module",
+            "context" : "<mark>Module<\/mark>",
+            "weight" : 1,
+            "pos" : 633 },
+          
+          { "form" : "Module",
+            "context" : "<mark>Module<\/mark>",
+            "weight" : 1,
+            "pos" : 696 },
+          
+          { "form" : "Module",
+            "context" : "<mark>Module<\/mark>",
+            "weight" : 1,
+            "pos" : 734 },
+          
+          { "form" : "Module",
+            "context" : "<mark>Module<\/mark>",
+            "weight" : 1,
+            "pos" : 792 },
+          
+          { "form" : "Module",
+            "context" : "<mark>Module<\/mark>",
+            "weight" : 1,
+            "pos" : 823 },
+          
+          { "form" : "Module",
+            "context" : "<mark>Module<\/mark>",
+            "weight" : 1,
+            "pos" : 852 },
+          
+          { "form" : "Module",
+            "context" : "<mark>Module<\/mark>",
+            "weight" : 1,
+            "pos" : 902 },
+          
+          { "form" : "Module",
+            "context" : "<mark>Module<\/mark>",
+            "weight" : 1,
+            "pos" : 937 },
+          
+          { "form" : "Module",
+            "context" : "<mark>Module<\/mark>",
+            "weight" : 1,
+            "pos" : 967 } ] } ] }

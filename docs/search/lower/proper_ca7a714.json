@@ -1,0 +1,18 @@
+
+  { "token" : "proper",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "properly",
+            "context" : "...is ignored, because phrasal searches will only work <mark>properly<\/mark> if all contexts are stored.)",
+            "weight" : 1,
+            "pos" : 402 },
+          
+          { "form" : "properly",
+            "context" : "...be ignored, because all contexts are required to <mark>properly<\/mark> support phrasal search.)",
+            "weight" : 1,
+            "pos" : 560 } ] } ] }

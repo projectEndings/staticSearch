@@ -1,0 +1,18 @@
+
+  { "token" : "publish",
+    "instances" : 
+    [ 
+      { "docId" : "searchFacetFeatures",
+        "docUri" : "searchFacetFeatures.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "published",
+            "context" : "...publication; then users could search for documents first <mark>published<\/mark> in a certain date range and last...",
+            "weight" : 1,
+            "pos" : 53 },
+          
+          { "form" : "published",
+            "context" : "...published in a certain date range and last <mark>published<\/mark> before another date.",
+            "weight" : 1,
+            "pos" : 58 } ] } ] }

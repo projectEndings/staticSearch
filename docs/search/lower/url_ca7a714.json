@@ -1,0 +1,18 @@
+
+  { "token" : "url",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "URL",
+            "context" : "...image relative to the document itself or the <mark>URL<\/mark> to an external image; so in the...",
+            "weight" : 1,
+            "pos" : 431 },
+          
+          { "form" : "URL",
+            "context" : "...tags (<a>) whose text is identical to the <mark>URL<\/mark> specified in its href, you could do...",
+            "weight" : 1,
+            "pos" : 1203 } ] } ] }

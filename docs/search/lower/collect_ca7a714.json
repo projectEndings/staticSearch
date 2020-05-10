@@ -1,0 +1,93 @@
+
+  { "token" : "collect",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 11,
+        "contexts" : 
+        [ 
+          { "form" : "collection",
+            "context" : "...search control is a document date. If your <mark>collection<\/mark> of documents has items from different dates,...",
+            "weight" : 1,
+            "pos" : 181 },
+          
+          { "form" : "collection",
+            "context" : "...When the indexing process runs over your document <mark>collection<\/mark>, by default it will use the document...",
+            "weight" : 1,
+            "pos" : 320 },
+          
+          { "form" : "collection",
+            "context" : "...has two required elements for determining the resource <mark>collection<\/mark> that you wish to index:",
+            "weight" : 1,
+            "pos" : 508 },
+          
+          { "form" : "collection",
+            "context" : "...provides the necessary information for knowing what document <mark>collection<\/mark> to index and where to put the...",
+            "weight" : 1,
+            "pos" : 555 },
+          
+          { "form" : "collection",
+            "context" : "...are also specifying the location of your document <mark>collection<\/mark>. See Creating a search page for more...",
+            "weight" : 1,
+            "pos" : 569 },
+          
+          { "form" : "collection",
+            "context" : "...the search page. For instance, in a document <mark>collection<\/mark> that looks something like:",
+            "weight" : 1,
+            "pos" : 586 },
+          
+          { "form" : "collection",
+            "context" : "The <mark>collection<\/mark> of Javascript and JSON files will be...",
+            "weight" : 1,
+            "pos" : 599 },
+          
+          { "form" : "collection",
+            "context" : "...<recurse> element in the case where the document <mark>collection<\/mark> may be nested (as is common with...",
+            "weight" : 1,
+            "pos" : 621 },
+          
+          { "form" : "collection",
+            "context" : "...not to recurse into the subdirectories of the <mark>collection<\/mark> and index those files.",
+            "weight" : 1,
+            "pos" : 639 },
+          
+          { "form" : "collection",
+            "context" : "...have customized form controls within the same document <mark>collection<\/mark>. This is at the expense of additional...",
+            "weight" : 1,
+            "pos" : 1632 },
+          
+          { "form" : "collection",
+            "context" : "...a build process proceed using the small test <mark>collection<\/mark> of documents, and at the end, a...",
+            "weight" : 1,
+            "pos" : 1861 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "collection",
+            "context" : "...embedded in it. Next, it processes your document <mark>collection<\/mark> using those settings. Each document is tokenized,...",
+            "weight" : 1,
+            "pos" : 26 },
+          
+          { "form" : "collection",
+            "context" : "...Obviously, if it were to download the entire <mark>collection<\/mark> of thousands of token files, the process...",
+            "weight" : 1,
+            "pos" : 144 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "collection",
+            "context" : "...<recurse> (Whether to recurse into subdirectories of the <mark>collection<\/mark> directory or not.)",
+            "weight" : 1,
+            "pos" : 591 },
+          
+          { "form" : "collection",
+            "context" : "...page must be at the root of the <mark>collection<\/mark> directory.)",
+            "weight" : 1,
+            "pos" : 727 } ] } ] }

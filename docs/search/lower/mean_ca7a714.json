@@ -1,0 +1,33 @@
+
+  { "token" : "mean",
+    "instances" : 
+    [ 
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "means",
+            "context" : "...search operators. Adding + (plus) before a word <mark>means<\/mark> that search results must contain that word,...",
+            "weight" : 1,
+            "pos" : 44 },
+          
+          { "form" : "means",
+            "context" : "...contain that word, and adding a - (minus) <mark>means<\/mark> that results must not contain that word....",
+            "weight" : 1,
+            "pos" : 52 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "means",
+            "context" : "...expecting to parse well-formed XHTML5 web pages. That <mark>means<\/mark> web pages which are well-formed XML, using...",
+            "weight" : 1,
+            "pos" : 41 },
+          
+          { "form" : "meaning",
+            "context" : "...<li> elements is, by default, a context element, <mark>meaning<\/mark> that the snippet generated for each token...",
+            "weight" : 1,
+            "pos" : 1293 } ] } ] }

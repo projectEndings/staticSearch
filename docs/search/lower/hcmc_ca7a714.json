@@ -1,0 +1,118 @@
+
+  { "token" : "hcmc",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 22,
+        "contexts" : 
+        [ 
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 20 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 60 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 107 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 150 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 185 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 217 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 285 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 324 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 363 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 407 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 444 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 481 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 516 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 566 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 595 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 630 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 693 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 731 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 789 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 820 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 849 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 899 } ] } ] }

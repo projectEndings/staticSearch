@@ -1,0 +1,223 @@
+
+  { "token" : "page",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 29,
+        "contexts" : 
+        [ 
+          { "form" : "page",
+            "context" : "6.5 Creating a search <mark>page<\/mark>",
+            "weight" : 2,
+            "pos" : 1647 },
+          
+          { "form" : "pages",
+            "context" : "...you will have to make sure your site <mark>pages<\/mark> are correctly configured so that the Generator...",
+            "weight" : 1,
+            "pos" : 14 },
+          
+          { "form" : "pages",
+            "context" : "...generator is expecting to parse well-formed XHTML5 web <mark>pages<\/mark>. That means web pages which are well-formed...",
+            "weight" : 1,
+            "pos" : 40 },
+          
+          { "form" : "pages",
+            "context" : "...parse well-formed XHTML5 web pages. That means web <mark>pages<\/mark> which are well-formed XML, using the XHTML...",
+            "weight" : 1,
+            "pos" : 43 },
+          
+          { "form" : "page",
+            "context" : "...a set of filter controls on the search <mark>page<\/mark>, enabling the user to constrain the search...",
+            "weight" : 1,
+            "pos" : 161 },
+          
+          { "form" : "pages",
+            "context" : "...image (perhaps your site is a set of <mark>pages<\/mark> dealing with works of art, for instance)....",
+            "weight" : 1,
+            "pos" : 401 },
+          
+          { "form" : "page",
+            "context" : "...file location) that points directly to the search <mark>page<\/mark> that will be the primary access point...",
+            "weight" : 1,
+            "pos" : 529 },
+          
+          { "form" : "page",
+            "context" : "...words, in specifying the location of your search <mark>page<\/mark>, you are also specifying the location of...",
+            "weight" : 1,
+            "pos" : 564 },
+          
+          { "form" : "page",
+            "context" : "...of your document collection. See Creating a search <mark>page<\/mark> for more information on how to configure...",
+            "weight" : 1,
+            "pos" : 573 },
+          
+          { "form" : "page",
+            "context" : "...directory that is a sibling to the search <mark>page<\/mark>. For instance, in a document collection that...",
+            "weight" : 1,
+            "pos" : 583 },
+          
+          { "form" : "page",
+            "context" : "...such resources when users repeatedly visit the search <mark>page<\/mark>, but if the project is rebuilt with...",
+            "weight" : 1,
+            "pos" : 705 },
+          
+          { "form" : "page",
+            "context" : "...because it will presumably appear on almost every <mark>page<\/mark> and it makes no sense to search...",
+            "weight" : 1,
+            "pos" : 933 },
+          
+          { "form" : "page",
+            "context" : "...no reason to index its contents on every <mark>page<\/mark>. These elements can be ignored simply by...",
+            "weight" : 1,
+            "pos" : 1170 },
+          
+          { "form" : "page",
+            "context" : "...elements operate as contexts. For instance, say a <mark>page<\/mark> contained a marginal note, encoded as a...",
+            "weight" : 1,
+            "pos" : 1328 },
+          
+          { "form" : "pages",
+            "context" : "...complex site may have two or more search <mark>pages<\/mark> targetting specific types of document or content,...",
+            "weight" : 1,
+            "pos" : 1453 },
+          
+          { "form" : "page",
+            "context" : "...imagine that you are creating a special search <mark>page<\/mark> that focuses only on the text describing...",
+            "weight" : 1,
+            "pos" : 1486 },
+          
+          { "form" : "page",
+            "context" : "...certain features or documents from a specialized search <mark>page<\/mark>, and this is done using the <excludes>...",
+            "weight" : 1,
+            "pos" : 1532 },
+          
+          { "form" : "page",
+            "context" : "...(i.e. it should not appear on the search <mark>page<\/mark>), and second, that the boolean filter Has...",
+            "weight" : 1,
+            "pos" : 1613 },
+          
+          { "form" : "pages",
+            "context" : "...Using exclusions, you can create multiple specialized search <mark>pages<\/mark> which have customized form controls within the...",
+            "weight" : 1,
+            "pos" : 1626 },
+          
+          { "form" : "page",
+            "context" : "You'll obviously want the search <mark>page<\/mark> for your site to conform with the...",
+            "weight" : 1,
+            "pos" : 1651 },
+          
+          { "form" : "page",
+            "context" : "...that file. The only requirement is that the <mark>page<\/mark> contains one <div> element with the correct...",
+            "weight" : 1,
+            "pos" : 1682 },
+          
+          { "form" : "page",
+            "context" : "...with a clean, empty version of the search <mark>page<\/mark>.",
+            "weight" : 1,
+            "pos" : 1767 },
+          
+          { "form" : "page",
+            "context" : "...You can take a look at the test\/search.html <mark>page<\/mark> for an example of how to configure...",
+            "weight" : 1,
+            "pos" : 1773 },
+          
+          { "form" : "page",
+            "context" : "...an example of how to configure the search <mark>page<\/mark> (although note that since this page has...",
+            "weight" : 1,
+            "pos" : 1777 },
+          
+          { "form" : "page",
+            "context" : "...the search page (although note that since this <mark>page<\/mark> has already been processed, it has the...",
+            "weight" : 1,
+            "pos" : 1781 },
+          
+          { "form" : "page",
+            "context" : "...to create a search index and a search <mark>page<\/mark> for your site. This requires that you...",
+            "weight" : 1,
+            "pos" : 1812 },
+          
+          { "form" : "page",
+            "context" : "...of documents, and at the end, a results <mark>page<\/mark> should open up giving you a report...",
+            "weight" : 1,
+            "pos" : 1865 },
+          
+          { "form" : "page",
+            "context" : "...it's successful, you should have a modified search.html <mark>page<\/mark> as well as a lot of index...",
+            "weight" : 1,
+            "pos" : 1941 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 6,
+        "contexts" : 
+        [ 
+          { "form" : "page",
+            "context" : "7.2 The search <mark>page<\/mark>",
+            "weight" : 2,
+            "pos" : 126 },
+          
+          { "form" : "page",
+            "context" : "...template file you have created for the search <mark>page<\/mark> on your site will be processed to...",
+            "weight" : 1,
+            "pos" : 113 },
+          
+          { "form" : "page",
+            "context" : "...to provide fast, responsive search results, the search <mark>page<\/mark> must download only the information it needs...",
+            "weight" : 1,
+            "pos" : 134 },
+          
+          { "form" : "page",
+            "context" : "...stopwords and so on) as soon as the <mark>page<\/mark> loads, and it also starts downloading the...",
+            "weight" : 1,
+            "pos" : 213 },
+          
+          { "form" : "page",
+            "context" : "...Once the user has been on the search <mark>page<\/mark> for any length of time, all ancillary...",
+            "weight" : 1,
+            "pos" : 259 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "page",
+            "context" : "...exclude from the filter controls on the search <mark>page<\/mark>.",
+            "weight" : 1,
+            "pos" : 259 },
+          
+          { "form" : "page",
+            "context" : "...extracts that will be shown in the search <mark>page<\/mark> for each hit document returned.)",
+            "weight" : 1,
+            "pos" : 438 },
+          
+          { "form" : "page",
+            "context" : "<searchFile> (The search file (aka <mark>page<\/mark>) that will be the primary access point...",
+            "weight" : 1,
+            "pos" : 717 },
+          
+          { "form" : "page",
+            "context" : "...point for the static search. Note that this <mark>page<\/mark> must be at the root of the...",
+            "weight" : 1,
+            "pos" : 724 } ] },
+      
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "page",
+            "context" : "...download a release package from the project release <mark>page<\/mark>; we recommend that you get the latest...",
+            "weight" : 1,
+            "pos" : 23 } ] },
+      
+      { "docId" : "whatDoesItDo",
+        "docUri" : "whatDoesItDo.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "page",
+            "context" : "...and so on. Then it creates a search <mark>page<\/mark> for your site, which processes user search...",
+            "weight" : 1,
+            "pos" : 47 } ] } ] }

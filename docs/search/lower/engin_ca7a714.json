@@ -1,0 +1,38 @@
+
+  { "token" : "engin",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "engine",
+            "context" : "...either they have their own back-end database search <mark>engine<\/mark> (perhaps Solr or an XML database), or...",
+            "weight" : 1,
+            "pos" : 132 },
+          
+          { "form" : "engine",
+            "context" : "...the capability to build a sophisticated faceted search <mark>engine<\/mark> into your website without the need for...",
+            "weight" : 1,
+            "pos" : 177 } ] },
+      
+      { "docId" : "index",
+        "docUri" : "index.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "engine",
+            "context" : "...Schema and guidelines for creating a static search <mark>engine<\/mark> for your HTML5 site",
+            "weight" : 1,
+            "pos" : 11 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "engine",
+            "context" : "...parameter which specifies whether you want your search <mark>engine<\/mark> to support phrasal searches (quoted strings). Obviously...",
+            "weight" : 1,
+            "pos" : 732 } ] } ] }

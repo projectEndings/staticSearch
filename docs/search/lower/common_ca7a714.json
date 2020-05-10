@@ -1,0 +1,43 @@
+
+  { "token" : "common",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 5,
+        "contexts" : 
+        [ 
+          { "form" : "common",
+            "context" : "...the document collection may be nested (as is <mark>common<\/mark> with static sites generated from Jekyll or...",
+            "weight" : 1,
+            "pos" : 624 },
+          
+          { "form" : "common",
+            "context" : "...will not be indexed, because it is too <mark>common<\/mark> (the, a, you and so on). The...",
+            "weight" : 1,
+            "pos" : 905 },
+          
+          { "form" : "common",
+            "context" : "...on). The project has a built-in set of <mark>common<\/mark> stopwords for English, which we recommend you...",
+            "weight" : 1,
+            "pos" : 910 },
+          
+          { "form" : "common",
+            "context" : "...generated, to see if they might be too <mark>common<\/mark> to be useful as search terms.",
+            "weight" : 1,
+            "pos" : 951 },
+          
+          { "form" : "common",
+            "context" : "...<body> of a document are considered tokenizable. However, <mark>common<\/mark> elements that you might want to exclude...",
+            "weight" : 1,
+            "pos" : 1230 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "common",
+            "context" : "...ignored when indexing). These are typically words too <mark>common<\/mark> to be worth searching for, but every...",
+            "weight" : 1,
+            "pos" : 764 } ] } ] }

@@ -1,0 +1,243 @@
+
+  { "token" : "may",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 23,
+        "contexts" : 
+        [ 
+          { "form" : "May",
+            "context" : "<mark>May<\/mark> contain",
+            "weight" : 1,
+            "pos" : 29 },
+          
+          { "form" : "May",
+            "context" : "<mark>May<\/mark> contain",
+            "weight" : 1,
+            "pos" : 82 },
+          
+          { "form" : "May",
+            "context" : "<mark>May<\/mark> contain",
+            "weight" : 1,
+            "pos" : 117 },
+          
+          { "form" : "May",
+            "context" : "<mark>May<\/mark> contain",
+            "weight" : 1,
+            "pos" : 160 },
+          
+          { "form" : "May",
+            "context" : "<mark>May<\/mark> contain",
+            "weight" : 1,
+            "pos" : 195 },
+          
+          { "form" : "May",
+            "context" : "<mark>May<\/mark> contain",
+            "weight" : 1,
+            "pos" : 262 },
+          
+          { "form" : "May",
+            "context" : "<mark>May<\/mark> contain",
+            "weight" : 1,
+            "pos" : 295 },
+          
+          { "form" : "May",
+            "context" : "<mark>May<\/mark> contain",
+            "weight" : 1,
+            "pos" : 334 },
+          
+          { "form" : "May",
+            "context" : "<mark>May<\/mark> contain",
+            "weight" : 1,
+            "pos" : 373 },
+          
+          { "form" : "May",
+            "context" : "<mark>May<\/mark> contain",
+            "weight" : 1,
+            "pos" : 417 },
+          
+          { "form" : "May",
+            "context" : "<mark>May<\/mark> contain",
+            "weight" : 1,
+            "pos" : 454 },
+          
+          { "form" : "May",
+            "context" : "<mark>May<\/mark> contain",
+            "weight" : 1,
+            "pos" : 491 },
+          
+          { "form" : "May",
+            "context" : "<mark>May<\/mark> contain",
+            "weight" : 1,
+            "pos" : 526 },
+          
+          { "form" : "May",
+            "context" : "<mark>May<\/mark> contain",
+            "weight" : 1,
+            "pos" : 576 },
+          
+          { "form" : "May",
+            "context" : "<mark>May<\/mark> contain",
+            "weight" : 1,
+            "pos" : 605 },
+          
+          { "form" : "May",
+            "context" : "<mark>May<\/mark> contain",
+            "weight" : 1,
+            "pos" : 668 },
+          
+          { "form" : "May",
+            "context" : "<mark>May<\/mark> contain",
+            "weight" : 1,
+            "pos" : 703 },
+          
+          { "form" : "May",
+            "context" : "<mark>May<\/mark> contain",
+            "weight" : 1,
+            "pos" : 741 },
+          
+          { "form" : "May",
+            "context" : "<mark>May<\/mark> contain",
+            "weight" : 1,
+            "pos" : 799 },
+          
+          { "form" : "May",
+            "context" : "<mark>May<\/mark> contain",
+            "weight" : 1,
+            "pos" : 830 },
+          
+          { "form" : "May",
+            "context" : "<mark>May<\/mark> contain",
+            "weight" : 1,
+            "pos" : 859 },
+          
+          { "form" : "May",
+            "context" : "<mark>May<\/mark> contain",
+            "weight" : 1,
+            "pos" : 909 },
+          
+          { "form" : "may",
+            "context" : "(A string identifier which <mark>may<\/mark> be descriptive.)",
+            "weight" : 1,
+            "pos" : 948 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 11,
+        "contexts" : 
+        [ 
+          { "form" : "may",
+            "context" : "...add a <meta> tag like this: The date <mark>may<\/mark> take any of the following forms: For...",
+            "weight" : 1,
+            "pos" : 200 },
+          
+          { "form" : "may",
+            "context" : "...of the following forms: For some documents, it <mark>may<\/mark> not be possible to specify a single...",
+            "weight" : 1,
+            "pos" : 214 },
+          
+          { "form" : "may",
+            "context" : "...it comes up in search results. However, that <mark>may<\/mark> not be the ideal title for this...",
+            "weight" : 1,
+            "pos" : 338 },
+          
+          { "form" : "may",
+            "context" : "...this purpose; for example, all of your documents <mark>may<\/mark> include the site title as the first...",
+            "weight" : 1,
+            "pos" : 344 },
+          
+          { "form" : "may",
+            "context" : "...as a result of a search hit, you <mark>may<\/mark> want to include with it a thumbnail...",
+            "weight" : 1,
+            "pos" : 386 },
+          
+          { "form" : "may",
+            "context" : "...to include with it a thumbnail image. This <mark>may<\/mark> be for aesthetic reasons, or because the...",
+            "weight" : 1,
+            "pos" : 391 },
+          
+          { "form" : "may",
+            "context" : "...element in the case where the document collection <mark>may<\/mark> be nested (as is common with static...",
+            "weight" : 1,
+            "pos" : 622 },
+          
+          { "form" : "may",
+            "context" : "...base is unlikely to use phrasal searching, it <mark>may<\/mark> not be worth the overhead. The default...",
+            "weight" : 1,
+            "pos" : 765 },
+          
+          { "form" : "may",
+            "context" : "...something else, you can specify it here. You <mark>may<\/mark> also use this element if you are...",
+            "weight" : 1,
+            "pos" : 1034 },
+          
+          { "form" : "may",
+            "context" : "A complex site <mark>may<\/mark> have two or more search pages targetting...",
+            "weight" : 1,
+            "pos" : 1450 },
+          
+          { "form" : "may",
+            "context" : "...types of document or content, each of which <mark>may<\/mark> need its own particular search controls and...",
+            "weight" : 1,
+            "pos" : 1459 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "May",
+            "context" : "Last Updated: 8 <mark>May<\/mark> 2020",
+            "weight" : 1,
+            "pos" : 10 },
+          
+          { "form" : "may",
+            "context" : "...rely on commercial services such as Google (which <mark>may<\/mark> be free, but are still beyond the...",
+            "weight" : 1,
+            "pos" : 141 },
+          
+          { "form" : "may",
+            "context" : "...typically this requires the use of technologies that <mark>may<\/mark> become obsolete or unsupported, or services which...",
+            "weight" : 1,
+            "pos" : 157 },
+          
+          { "form" : "may",
+            "context" : "...may become obsolete or unsupported, or services which <mark>may<\/mark> change their terms of use or become...",
+            "weight" : 1,
+            "pos" : 162 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "may",
+            "context" : "...titles must be downloaded, for example. A user <mark>may<\/mark> for instance use the search facets only,...",
+            "weight" : 1,
+            "pos" : 184 },
+          
+          { "form" : "may",
+            "context" : "...the connection downloading these files when the user <mark>may<\/mark> do a simple text search which doesn't...",
+            "weight" : 1,
+            "pos" : 229 } ] },
+      
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "may",
+            "context" : "...that you're working with development code and things <mark>may<\/mark> break.",
+            "weight" : 1,
+            "pos" : 62 } ] },
+      
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "may",
+            "context" : "...Words without plus or minus are treated as <mark>may<\/mark> contain, contributing to the score of any...",
+            "weight" : 1,
+            "pos" : 62 } ] } ] }

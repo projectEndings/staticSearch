@@ -1,0 +1,203 @@
+
+  { "token" : "tag",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 27,
+        "contexts" : 
+        [ 
+          { "form" : "tag",
+            "context" : "Appendix A Schema specification and <mark>tag<\/mark> documentation",
+            "weight" : 2,
+            "pos" : 4 },
+          
+          { "form" : "tag",
+            "context" : "ss — Schema specification and <mark>tag<\/mark> documentation",
+            "weight" : 1,
+            "pos" : 26 },
+          
+          { "form" : "tag",
+            "context" : "ss — Schema specification and <mark>tag<\/mark> documentation",
+            "weight" : 1,
+            "pos" : 66 },
+          
+          { "form" : "tag",
+            "context" : "ss — Schema specification and <mark>tag<\/mark> documentation",
+            "weight" : 1,
+            "pos" : 113 },
+          
+          { "form" : "tag",
+            "context" : "ss — Schema specification and <mark>tag<\/mark> documentation",
+            "weight" : 1,
+            "pos" : 156 },
+          
+          { "form" : "tag",
+            "context" : "ss — Schema specification and <mark>tag<\/mark> documentation",
+            "weight" : 1,
+            "pos" : 191 },
+          
+          { "form" : "tag",
+            "context" : "ss — Schema specification and <mark>tag<\/mark> documentation",
+            "weight" : 1,
+            "pos" : 223 },
+          
+          { "form" : "tag",
+            "context" : "...exclusion) An exclusion that matches an HTML meta <mark>tag<\/mark> to exclude from the filter controls on...",
+            "weight" : 1,
+            "pos" : 254 },
+          
+          { "form" : "tag",
+            "context" : "ss — Schema specification and <mark>tag<\/mark> documentation",
+            "weight" : 1,
+            "pos" : 291 },
+          
+          { "form" : "tag",
+            "context" : "ss — Schema specification and <mark>tag<\/mark> documentation",
+            "weight" : 1,
+            "pos" : 330 },
+          
+          { "form" : "tag",
+            "context" : "ss — Schema specification and <mark>tag<\/mark> documentation",
+            "weight" : 1,
+            "pos" : 369 },
+          
+          { "form" : "tag",
+            "context" : "ss — Schema specification and <mark>tag<\/mark> documentation",
+            "weight" : 1,
+            "pos" : 413 },
+          
+          { "form" : "tag",
+            "context" : "ss — Schema specification and <mark>tag<\/mark> documentation",
+            "weight" : 1,
+            "pos" : 450 },
+          
+          { "form" : "tag",
+            "context" : "ss — Schema specification and <mark>tag<\/mark> documentation",
+            "weight" : 1,
+            "pos" : 487 },
+          
+          { "form" : "tag",
+            "context" : "ss — Schema specification and <mark>tag<\/mark> documentation",
+            "weight" : 1,
+            "pos" : 522 },
+          
+          { "form" : "tag",
+            "context" : "ss — Schema specification and <mark>tag<\/mark> documentation",
+            "weight" : 1,
+            "pos" : 572 },
+          
+          { "form" : "tag",
+            "context" : "ss — Schema specification and <mark>tag<\/mark> documentation",
+            "weight" : 1,
+            "pos" : 601 },
+          
+          { "form" : "tag",
+            "context" : "ss — Schema specification and <mark>tag<\/mark> documentation",
+            "weight" : 1,
+            "pos" : 636 },
+          
+          { "form" : "tag",
+            "context" : "ss — Schema specification and <mark>tag<\/mark> documentation",
+            "weight" : 1,
+            "pos" : 699 },
+          
+          { "form" : "tag",
+            "context" : "ss — Schema specification and <mark>tag<\/mark> documentation",
+            "weight" : 1,
+            "pos" : 737 },
+          
+          { "form" : "tag",
+            "context" : "ss — Schema specification and <mark>tag<\/mark> documentation",
+            "weight" : 1,
+            "pos" : 795 },
+          
+          { "form" : "tag",
+            "context" : "ss — Schema specification and <mark>tag<\/mark> documentation",
+            "weight" : 1,
+            "pos" : 826 },
+          
+          { "form" : "tag",
+            "context" : "ss — Schema specification and <mark>tag<\/mark> documentation",
+            "weight" : 1,
+            "pos" : 855 },
+          
+          { "form" : "tag",
+            "context" : "ss — Schema specification and <mark>tag<\/mark> documentation",
+            "weight" : 1,
+            "pos" : 905 },
+          
+          { "form" : "tag",
+            "context" : "ss — Schema specification and <mark>tag<\/mark> documentation",
+            "weight" : 1,
+            "pos" : 940 },
+          
+          { "form" : "tag",
+            "context" : "ss — Schema specification and <mark>tag<\/mark> documentation",
+            "weight" : 1,
+            "pos" : 970 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 10,
+        "contexts" : 
+        [ 
+          { "form" : "tag",
+            "context" : "...XHTML namespace. If your site is just raggedy <mark>tag<\/mark>-soup, then you can't use this tool. You...",
+            "weight" : 1,
+            "pos" : 54 },
+          
+          { "form" : "tags",
+            "context" : "...document types, you will need to add <meta> <mark>tags<\/mark> to the heads of your documents to...",
+            "weight" : 1,
+            "pos" : 90 },
+          
+          { "form" : "tag",
+            "context" : "...types is 'Poems'; the document containing this <meta> <mark>tag<\/mark> is one of the Poems. Another type...",
+            "weight" : 1,
+            "pos" : 135 },
+          
+          { "form" : "tags",
+            "context" : "...might be: If the Generator finds such meta <mark>tags<\/mark> when it is indexing, it will create...",
+            "weight" : 1,
+            "pos" : 154 },
+          
+          { "form" : "tag",
+            "context" : "...from different dates, you can add a <meta> <mark>tag<\/mark> like this: The date may take any...",
+            "weight" : 1,
+            "pos" : 188 },
+          
+          { "form" : "tags",
+            "context" : "...(true\/false) filter. To use boolean filters, add meta <mark>tags<\/mark> like this to your documents:",
+            "weight" : 1,
+            "pos" : 298 },
+          
+          { "form" : "tag",
+            "context" : "...the document title value by providing another meta <mark>tag<\/mark>, like this:",
+            "weight" : 1,
+            "pos" : 366 },
+          
+          { "form" : "tag",
+            "context" : "...a sibling of the HTML file containing the <mark>tag<\/mark>, and that folder would contain a file...",
+            "weight" : 1,
+            "pos" : 443 },
+          
+          { "form" : "tags",
+            "context" : "...Or if you want to remove XHTML anchor <mark>tags<\/mark> (<a>) whose text is identical to the...",
+            "weight" : 1,
+            "pos" : 1199 },
+          
+          { "form" : "tags",
+            "context" : "...be ignored. Then we use two <exclude type=\"filter\"\/> <mark>tags<\/mark> to specify first that the Document type...",
+            "weight" : 1,
+            "pos" : 1604 } ] },
+      
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "tag",
+            "context" : "...either the current master branch, the last release <mark>tag<\/mark>, or the dev branch. If you clone...",
+            "weight" : 1,
+            "pos" : 50 } ] } ] }

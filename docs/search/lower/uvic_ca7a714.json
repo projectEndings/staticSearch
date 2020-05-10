@@ -1,0 +1,118 @@
+
+  { "token" : "uvic",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 22,
+        "contexts" : 
+        [ 
+          { "form" : "uvic",
+            "context" : "http:\/\/hcmc.<mark>uvic<\/mark>.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 21 },
+          
+          { "form" : "uvic",
+            "context" : "http:\/\/hcmc.<mark>uvic<\/mark>.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 61 },
+          
+          { "form" : "uvic",
+            "context" : "http:\/\/hcmc.<mark>uvic<\/mark>.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 108 },
+          
+          { "form" : "uvic",
+            "context" : "http:\/\/hcmc.<mark>uvic<\/mark>.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 151 },
+          
+          { "form" : "uvic",
+            "context" : "http:\/\/hcmc.<mark>uvic<\/mark>.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 186 },
+          
+          { "form" : "uvic",
+            "context" : "http:\/\/hcmc.<mark>uvic<\/mark>.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 218 },
+          
+          { "form" : "uvic",
+            "context" : "http:\/\/hcmc.<mark>uvic<\/mark>.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 286 },
+          
+          { "form" : "uvic",
+            "context" : "http:\/\/hcmc.<mark>uvic<\/mark>.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 325 },
+          
+          { "form" : "uvic",
+            "context" : "http:\/\/hcmc.<mark>uvic<\/mark>.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 364 },
+          
+          { "form" : "uvic",
+            "context" : "http:\/\/hcmc.<mark>uvic<\/mark>.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 408 },
+          
+          { "form" : "uvic",
+            "context" : "http:\/\/hcmc.<mark>uvic<\/mark>.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 445 },
+          
+          { "form" : "uvic",
+            "context" : "http:\/\/hcmc.<mark>uvic<\/mark>.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 482 },
+          
+          { "form" : "uvic",
+            "context" : "http:\/\/hcmc.<mark>uvic<\/mark>.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 517 },
+          
+          { "form" : "uvic",
+            "context" : "http:\/\/hcmc.<mark>uvic<\/mark>.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 567 },
+          
+          { "form" : "uvic",
+            "context" : "http:\/\/hcmc.<mark>uvic<\/mark>.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 596 },
+          
+          { "form" : "uvic",
+            "context" : "http:\/\/hcmc.<mark>uvic<\/mark>.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 631 },
+          
+          { "form" : "uvic",
+            "context" : "http:\/\/hcmc.<mark>uvic<\/mark>.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 694 },
+          
+          { "form" : "uvic",
+            "context" : "http:\/\/hcmc.<mark>uvic<\/mark>.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 732 },
+          
+          { "form" : "uvic",
+            "context" : "http:\/\/hcmc.<mark>uvic<\/mark>.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 790 },
+          
+          { "form" : "uvic",
+            "context" : "http:\/\/hcmc.<mark>uvic<\/mark>.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 821 },
+          
+          { "form" : "uvic",
+            "context" : "http:\/\/hcmc.<mark>uvic<\/mark>.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 850 },
+          
+          { "form" : "uvic",
+            "context" : "http:\/\/hcmc.<mark>uvic<\/mark>.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 900 } ] } ] }

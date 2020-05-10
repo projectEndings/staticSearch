@@ -1,0 +1,43 @@
+
+  { "token" : "short",
+    "instances" : 
+    [ 
+      { "docId" : "searchFacetFeatures",
+        "docUri" : "searchFacetFeatures.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "short",
+            "context" : "...might for example classify your documents as poems, <mark>short<\/mark> stories and novels; the user can then...",
+            "weight" : 1,
+            "pos" : 25 },
+          
+          { "form" : "short",
+            "context" : "...to search in only poems, or poems and <mark>short<\/mark> stories.",
+            "weight" : 1,
+            "pos" : 33 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "\"Short",
+            "context" : "<meta name=\"Document type\"  class=\"staticSearch.desc\" content=<mark>\"Short<\/mark> stories\"\/>",
+            "weight" : 1,
+            "pos" : 149 },
+          
+          { "form" : "shortly",
+            "context" : "...<params> element is necessary, but, as we discuss <mark>shortly<\/mark>, we highly suggest taking advantage of the...",
+            "weight" : 1,
+            "pos" : 485 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "short",
+            "context" : "...However, digital longevity of DH projects is sadly <mark>short<\/mark>, and many disappear or cease to function...",
+            "weight" : 1,
+            "pos" : 44 } ] } ] }

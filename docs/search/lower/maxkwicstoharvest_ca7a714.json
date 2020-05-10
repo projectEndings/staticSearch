@@ -1,0 +1,33 @@
+
+  { "token" : "maxkwicstoharvest",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "maxKwicsToHarvest",
+            "context" : "Appendix A.1.10 <<mark>maxKwicsToHarvest<\/mark>>",
+            "weight" : 2,
+            "pos" : 383 },
+          
+          { "form" : "maxKwicsToHarvest",
+            "context" : "<<mark>maxKwicsToHarvest<\/mark>> (This controls the maximum number of keyword-in-context...",
+            "weight" : 1,
+            "pos" : 384 },
+          
+          { "form" : "maxKwicsToHarvest",
+            "context" : "ss: createContexts dictionaryFile indentJSON kwicTruncateString <mark>maxKwicsToHarvest<\/mark> maxKwicsToShow outputFolder phrasalSearch recurse searchFile stopwordsFile totalKwicLength...",
+            "weight" : 1,
+            "pos" : 532 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "maxKwicsToHarvest",
+            "context" : "<<mark>maxKwicsToHarvest<\/mark>> controls the number of keyword-in-context extracts that...",
+            "weight" : 1,
+            "pos" : 796 } ] } ] }

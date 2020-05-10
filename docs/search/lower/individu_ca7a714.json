@@ -1,0 +1,13 @@
+
+  { "token" : "individu",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "individual",
+            "context" : "...the higher this number is, the larger the <mark>individual<\/mark> index files will be, but the more...",
+            "weight" : 1,
+            "pos" : 846 } ] } ] }

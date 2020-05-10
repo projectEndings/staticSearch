@@ -1,0 +1,168 @@
+
+  { "token" : "process",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 19,
+        "contexts" : 
+        [ 
+          { "form" : "process",
+            "context" : "6.6 Running the search build <mark>process<\/mark>",
+            "weight" : 2,
+            "pos" : 1802 },
+          
+          { "form" : "process",
+            "context" : "When the indexing <mark>process<\/mark> runs over your document collection, by default...",
+            "weight" : 1,
+            "pos" : 317 },
+          
+          { "form" : "process",
+            "context" : "...turns on\/off detailed output messages during the indexing <mark>process<\/mark>. You might set this to true if...",
+            "weight" : 1,
+            "pos" : 877 },
+          
+          { "form" : "process",
+            "context" : "...is used to check words during the indexing <mark>process<\/mark>, and a report generated at the end...",
+            "weight" : 1,
+            "pos" : 969 },
+          
+          { "form" : "process",
+            "context" : "...header and the footer from the search indexing <mark>process<\/mark>, you could write something like: Or if...",
+            "weight" : 1,
+            "pos" : 1185 },
+          
+          { "form" : "processing",
+            "context" : "...since the tokenizer is unaware of any server-side <mark>processing<\/mark>, it understands the <span> as an inline...",
+            "weight" : 1,
+            "pos" : 1371 },
+          
+          { "form" : "processed",
+            "context" : "...also be well-formed XML, so it can be <mark>processed<\/mark>), containing all the site components you need,...",
+            "weight" : 1,
+            "pos" : 1669 },
+          
+          { "form" : "process",
+            "context" : "...components you need, and then the search build <mark>process<\/mark> will insert all the necessary components into...",
+            "weight" : 1,
+            "pos" : 1676 },
+          
+          { "form" : "process",
+            "context" : "...<div id=\"staticSearch\"> [...content will be supplied by the build <mark>process<\/mark>...] <\/div>",
+            "weight" : 1,
+            "pos" : 1694 },
+          
+          { "form" : "process",
+            "context" : "...This <div> will be empty initially. The build <mark>process<\/mark> will find insert the search controls, scripts...",
+            "weight" : 1,
+            "pos" : 1700 },
+          
+          { "form" : "process",
+            "context" : "The search <mark>process<\/mark> will also add a CSS <style> element...",
+            "weight" : 1,
+            "pos" : 1722 },
+          
+          { "form" : "process",
+            "context" : "...by replacing the inserted CSS after the build <mark>process<\/mark>.",
+            "weight" : 1,
+            "pos" : 1751 },
+          
+          { "form" : "processed",
+            "context" : "...Note that once your file has been <mark>processed<\/mark> and all this content has been added,...",
+            "weight" : 1,
+            "pos" : 1754 },
+          
+          { "form" : "process",
+            "context" : "...all this content has been added, you can <mark>process<\/mark> it again at any time; there is...",
+            "weight" : 1,
+            "pos" : 1757 },
+          
+          { "form" : "processed",
+            "context" : "...note that since this page has already been <mark>processed<\/mark>, it has the CSS and the search...",
+            "weight" : 1,
+            "pos" : 1783 },
+          
+          { "form" : "process",
+            "context" : "you should see a build <mark>process<\/mark> proceed using the small test collection of...",
+            "weight" : 1,
+            "pos" : 1856 },
+          
+          { "form" : "process",
+            "context" : "...same command, but this time, tell the build <mark>process<\/mark> where to find your custom configuration file:...",
+            "weight" : 1,
+            "pos" : 1922 },
+          
+          { "form" : "process",
+            "context" : "The same <mark>process<\/mark> should run, and if it's successful, you...",
+            "weight" : 1,
+            "pos" : 1935 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 5,
+        "contexts" : 
+        [ 
+          { "form" : "process",
+            "context" : "The tokenizing <mark>process<\/mark> first processes your configuration file to create...",
+            "weight" : 1,
+            "pos" : 13 },
+          
+          { "form" : "processes",
+            "context" : "The tokenizing process first <mark>processes<\/mark> your configuration file to create an XSLT...",
+            "weight" : 1,
+            "pos" : 15 },
+          
+          { "form" : "processes",
+            "context" : "...all your settings embedded in it. Next, it <mark>processes<\/mark> your document collection using those settings. Each...",
+            "weight" : 1,
+            "pos" : 24 },
+          
+          { "form" : "processed",
+            "context" : "...the search page on your site will be <mark>processed<\/mark> to add the required search controls and...",
+            "weight" : 1,
+            "pos" : 115 },
+          
+          { "form" : "process",
+            "context" : "...entire collection of thousands of token files, the <mark>process<\/mark> would take forever. So when you search...",
+            "weight" : 1,
+            "pos" : 148 } ] },
+      
+      { "docId" : "whatDoesItDo",
+        "docUri" : "whatDoesItDo.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "processes",
+            "context" : "The generator tool <mark>processes<\/mark> your site to create an index of...",
+            "weight" : 1,
+            "pos" : 11 },
+          
+          { "form" : "processes",
+            "context" : "...creates a search page for your site, which <mark>processes<\/mark> user search terms and retrieves the required...",
+            "weight" : 1,
+            "pos" : 49 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "process",
+            "context" : "...Generator to find the target website content and <mark>process<\/mark> it appropriately.)",
+            "weight" : 1,
+            "pos" : 512 },
+          
+          { "form" : "process",
+            "context" : "...(Turns on more detailed reporting during the indexing <mark>process<\/mark>.)",
+            "weight" : 1,
+            "pos" : 846 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "processing",
+            "context" : "...back-end server systems such as databases or PHP <mark>processing<\/mark>) are far more resilient in the long...",
+            "weight" : 1,
+            "pos" : 74 } ] } ] }

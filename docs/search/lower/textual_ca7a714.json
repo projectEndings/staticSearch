@@ -1,0 +1,13 @@
+
+  { "token" : "textual",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "textual",
+            "context" : "...of them are quite small. These constitute the <mark>textual<\/mark> index.",
+            "weight" : 1,
+            "pos" : 57 } ] } ] }

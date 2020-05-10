@@ -1,0 +1,98 @@
+
+  { "token" : "edit",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "editions",
+            "context" : "Digital Humanities projects such as digital <mark>editions<\/mark> of historical and literary texts are typically...",
+            "weight" : 1,
+            "pos" : 16 },
+          
+          { "form" : "edition",
+            "context" : "...Kuhn, The Structure of Scientific Revolutions (50th anniversary <mark>edition<\/mark>), University of Chicago Press, 2012: p. 191....",
+            "weight" : 1,
+            "pos" : 200 } ] },
+      
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "edition",
+            "context" : "...Kuhn, The Structure of Scientific Revolutions (50th anniversary <mark>edition<\/mark>), University of Chicago Press, 2012: p. 191....",
+            "weight" : 1,
+            "pos" : 73 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "edition",
+            "context" : "...Kuhn, The Structure of Scientific Revolutions (50th anniversary <mark>edition<\/mark>), University of Chicago Press, 2012: p. 191....",
+            "weight" : 1,
+            "pos" : 294 } ] },
+      
+      { "docId" : "whatDoesItDo",
+        "docUri" : "whatDoesItDo.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "edition",
+            "context" : "...Kuhn, The Structure of Scientific Revolutions (50th anniversary <mark>edition<\/mark>), University of Chicago Press, 2012: p. 191....",
+            "weight" : 1,
+            "pos" : 69 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "edition",
+            "context" : "...Kuhn, The Structure of Scientific Revolutions (50th anniversary <mark>edition<\/mark>), University of Chicago Press, 2012: p. 191....",
+            "weight" : 1,
+            "pos" : 1000 } ] },
+      
+      { "docId" : "searchFacetFeatures",
+        "docUri" : "searchFacetFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "edition",
+            "context" : "...Kuhn, The Structure of Scientific Revolutions (50th anniversary <mark>edition<\/mark>), University of Chicago Press, 2012: p. 191....",
+            "weight" : 1,
+            "pos" : 86 } ] },
+      
+      { "docId" : "index",
+        "docUri" : "index.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "edition",
+            "context" : "...Kuhn, The Structure of Scientific Revolutions (50th anniversary <mark>edition<\/mark>), University of Chicago Press, 2012: p. 191....",
+            "weight" : 1,
+            "pos" : 23 } ] },
+      
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "edition",
+            "context" : "...Kuhn, The Structure of Scientific Revolutions (50th anniversary <mark>edition<\/mark>), University of Chicago Press, 2012: p. 191....",
+            "weight" : 1,
+            "pos" : 130 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "edition",
+            "context" : "...Kuhn, The Structure of Scientific Revolutions (50th anniversary <mark>edition<\/mark>), University of Chicago Press, 2012: p. 191....",
+            "weight" : 1,
+            "pos" : 1964 } ] } ] }

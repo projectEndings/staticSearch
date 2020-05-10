@@ -1,0 +1,13 @@
+
+  { "token" : "keywords-in-context",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "keywords-in-contexts",
+            "context" : "When the static search creates the <mark>keywords-in-contexts<\/mark> (the \"kwic\" or \"snippets\") for each token,...",
+            "weight" : 1,
+            "pos" : 1246 } ] } ] }

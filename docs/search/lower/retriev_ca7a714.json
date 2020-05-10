@@ -1,0 +1,43 @@
+
+  { "token" : "retriev",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "retrieved",
+            "context" : "...doesn't depend on them, so these files are <mark>retrieved<\/mark> using a 'trickle' approach, one at a...",
+            "weight" : 1,
+            "pos" : 236 },
+          
+          { "form" : "retrieved",
+            "context" : "...of time, all ancillary files will have been <mark>retrieved<\/mark> (assuming they weren't already cached by the...",
+            "weight" : 1,
+            "pos" : 264 } ] },
+      
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "retrieve",
+            "context" : "...of terms (so searching for 'wait' will also <mark>retrieve<\/mark> 'waiting', 'waits', 'waited' etc.). Our stemmer is...",
+            "weight" : 1,
+            "pos" : 25 },
+          
+          { "form" : "retrieved",
+            "context" : "...may contain, contributing to the score of any <mark>retrieved<\/mark> document.",
+            "weight" : 1,
+            "pos" : 66 } ] },
+      
+      { "docId" : "whatDoesItDo",
+        "docUri" : "whatDoesItDo.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "retrieves",
+            "context" : "...your site, which processes user search terms and <mark>retrieves<\/mark> the required JSON files to provide search...",
+            "weight" : 1,
+            "pos" : 53 } ] } ] }

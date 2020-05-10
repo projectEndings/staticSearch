@@ -1,0 +1,88 @@
+
+  { "token" : "one",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 5,
+        "contexts" : 
+        [ 
+          { "form" : "one",
+            "context" : "...a descriptive search filter called 'Document type', and <mark>one<\/mark> of the types is 'Poems'; the document...",
+            "weight" : 1,
+            "pos" : 129 },
+          
+          { "form" : "one",
+            "context" : "...'Poems'; the document containing this <meta> tag is <mark>one<\/mark> of the Poems. Another type might be:...",
+            "weight" : 1,
+            "pos" : 136 },
+          
+          { "form" : "One",
+            "context" : "...it makes no sense to search for it. <mark>One<\/mark> way to find such terms is to...",
+            "weight" : 1,
+            "pos" : 937 },
+          
+          { "form" : "one",
+            "context" : "...document type filter, because we are only indexing <mark>one<\/mark> type of document anyway. -->  <exclude type=\"filter\"   xpath=\"meta[@name='Document...",
+            "weight" : 1,
+            "pos" : 1561 },
+          
+          { "form" : "one",
+            "context" : "...The only requirement is that the page contains <mark>one<\/mark> <div> element with the correct id attribute:...",
+            "weight" : 1,
+            "pos" : 1684 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "one",
+            "context" : "...for your stopword list if you have specified <mark>one<\/mark>.",
+            "weight" : 1,
+            "pos" : 70 },
+          
+          { "form" : "one",
+            "context" : "...these files are retrieved using a 'trickle' approach, <mark>one<\/mark> at a time. Then if a search...",
+            "weight" : 1,
+            "pos" : 240 },
+          
+          { "form" : "ones",
+            "context" : "...even faster for later searches than for early <mark>ones<\/mark>.",
+            "weight" : 1,
+            "pos" : 284 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "one",
+            "context" : "...<dictionaryFile> (The location of a dictionary file<mark>one<\/mark> word per line) which will be used...",
+            "weight" : 1,
+            "pos" : 175 },
+          
+          { "form" : "one",
+            "context" : "...The list should be in plain text with <mark>one<\/mark> word per line.)",
+            "weight" : 1,
+            "pos" : 783 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "one",
+            "context" : "Most digital publications take <mark>one<\/mark> of two approaches to search: either they...",
+            "weight" : 1,
+            "pos" : 122 } ] },
+      
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "one",
+            "context" : "...search, any hit document must contain at least <mark>one<\/mark> of them. Note that phrasal search support...",
+            "weight" : 1,
+            "pos" : 83 } ] } ] }

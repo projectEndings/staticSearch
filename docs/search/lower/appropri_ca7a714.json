@@ -1,0 +1,13 @@
+
+  { "token" : "appropri",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "appropriately",
+            "context" : "...find the target website content and process it <mark>appropriately<\/mark>.)",
+            "weight" : 1,
+            "pos" : 513 } ] } ] }

@@ -1,0 +1,310 @@
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+   
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+      
+      <!--THIS FILE IS GENERATED FROM AN XML MASTER. DO NOT EDIT (5)-->
+      
+      <title>Static Search: Search facet features</title>
+      
+      <meta name="author" content="Martin Holmes and Joey Takeda"/>
+      
+      <meta name="generator" content="Text Encoding Initiative Consortium XSLT stylesheets"/>
+      
+      <link rel="stylesheet" href="documentation.css" type="text/css"/>
+      <link rel="stylesheet" type="text/css" href="doc_chapters.css"/>
+      
+      <link rel="stylesheet" media="print" type="text/css" href="http://www.tei-c.org/release/xml/tei/stylesheet/tei-print.css"/><script type="text/javascript"><!--
+var displayXML=0;
+states=new Array()
+states[0]="element-a"
+states[1]="element-b"
+states[2]="element-c"
+states[3]="element-d"
+states[4]="element-e"
+states[5]="element-f"
+states[6]="element-g"
+states[7]="element-h"
+states[8]="element-i"
+states[9]="element-j"
+states[10]="element-k"
+states[11]="element-l"
+states[12]="element-m"
+states[13]="element-n"
+states[14]="element-o"
+states[15]="element-p"
+states[16]="element-q"
+states[17]="element-r"
+states[18]="element-s"
+states[19]="element-t"
+states[20]="element-u"
+states[21]="element-v"
+states[22]="element-w"
+states[23]="element-x"
+states[24]="element-y"
+states[25]="element-z"
+
+function startUp() {
+
+}
+
+function hideallExcept(elm) {
+for (var i = 0; i < states.length; i++) {
+ var layer;
+ if (layer = document.getElementById(states[i]) ) {
+  if (states[i] != elm) {
+    layer.style.display = "none";
+  }
+  else {
+   layer.style.display = "block";
+      }
+  }
+ }
+ var mod;
+ if ( mod = document.getElementById('byMod') ) {
+     mod.style.display = "none";
+ }
+}
+
+function showall() {
+ for (var i = 0; i < states.length; i++) {
+   var layer;
+   if (layer = document.getElementById(states[i]) ) {
+      layer.style.display = "block";
+      }
+  }
+}
+
+function showByMod() {
+  hideallExcept('');
+  var mod;
+  if (mod = document.getElementById('byMod') ) {
+     mod.style.display = "block";
+     }
+}
+
+	--></script><meta name="Date Updated" class="staticSearch.date" content="2020-02-20"/>
+      <meta name="Level" class="staticSearch.desc" content="Basic"/>
+   </head>
+   
+   <body class="simple" id="TOP"><!--TEI front-->
+      
+      <div class="tei_front">
+         <div>
+            
+            <div class="titlePage">
+               
+               <div class="docTitle">
+                  
+                  <div class="titlePart"><a href="index.html">Project Endings Static Search Generator</a></div>
+                  
+                  <div class="titlePart">Schema and guidelines for creating a static search engine for your HTML5 site</div>
+                  </div>
+               
+               <div class="docAuthor">Martin Holmes</div>
+               
+               <div class="docAuthor">Joey Takeda</div>
+               
+               <div class="docDate">2019-2020</div>
+               </div>
+            
+            <p>This documentation provides instructions on how to use the Project Endings Static
+               Search Generator to provide a fully-functional search ‘engine’ to your website without
+               any dependency on server-side code such as a database.</p>
+            
+            <ul class="toc toc_body">
+               
+               <li class="toc"><span class="headingNumber"> 1 </span><a href="whatDoesItDo.html" class="toc toc_0" title="What does it do">What does it do?</a></li>
+               
+               <li class="toc"><span class="headingNumber"> 2 </span><a href="whyWouldIUseIt.html" class="toc toc_0" title="Why would I use it">Why would I use it?</a></li>
+               
+               <li class="toc"><span class="headingNumber"> 3 </span><a href="textSearchFeatures.html" class="toc toc_0" title="Text search features">Text search features</a></li>
+               
+               <li class="toc"><span class="headingNumber"> 4 </span><span class="current">Search facet features</span></li>
+               
+               <li class="toc"><span class="headingNumber"> 5 </span><a href="howDoIGetIt.html" class="toc toc_0" title="How do I get it">How do I get it?</a></li>
+               
+               <li class="toc"><span class="headingNumber"> 6 </span><a href="howDoIUseIt.html" class="toc toc_0" title="How do I use it">How do I use it?</a><ul class="toc">
+                     
+                     <li class="toc"><span class="headingNumber"> 6.1 </span><a href="howDoIUseIt.html#index.xml-body.1_div.6_div.1" class="toc toc_1">Configuring your site: search filters</a><ul class="toc">
+                           
+                           <li class="toc"><span class="headingNumber">6.1.1 </span><a href="howDoIUseIt.html#descFilters" class="toc toc_2" title="Description filters">Description filters</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">6.1.2 </span><a href="howDoIUseIt.html#dateFilters" class="toc toc_2" title="Date filters">Date filters</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">6.1.3 </span><a href="howDoIUseIt.html#numFilters" class="toc toc_2" title="Number filters">Number filters</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">6.1.4 </span><a href="howDoIUseIt.html#boolFilters" class="toc toc_2" title="Boolean filters">Boolean filters</a></li>
+                           </ul>
+                        </li>
+                     
+                     <li class="toc"><span class="headingNumber"> 6.2 </span><a href="howDoIUseIt.html#configuringDocTitles" class="toc toc_1" title="Configuring your site document titles">Configuring your site: document titles</a></li>
+                     
+                     <li class="toc"><span class="headingNumber"> 6.3 </span><a href="howDoIUseIt.html#configuringDocThumbnails" class="toc toc_1" title="Configuring your site document thumbnails">Configuring your site: document thumbnails</a></li>
+                     
+                     <li class="toc"><span class="headingNumber"> 6.4 </span><a href="howDoIUseIt.html#creatingConfigFile" class="toc toc_1" title="Creating a configuration file">Creating a configuration file</a><ul class="toc">
+                           
+                           <li class="toc"><span class="headingNumber">6.4.1 </span><a href="howDoIUseIt.html#specifyingParameters" class="toc toc_2" title="Specifying Parameters">Specifying Parameters</a><ul class="toc">
+                                 
+                                 <li class="toc"><span class="headingNumber">6.4.1.1 </span><a href="howDoIUseIt.html#paramsRequired" class="toc toc_3" title="Required parameters">Required parameters</a></li>
+                                 
+                                 <li class="toc"><span class="headingNumber">6.4.1.2 </span><a href="howDoIUseIt.html#paramsOptional" class="toc toc_3" title="Optional Parameters">Optional Parameters</a></li>
+                                 </ul>
+                              </li>
+                           
+                           <li class="toc"><span class="headingNumber">6.4.2 </span><a href="howDoIUseIt.html#specifyingRules" class="toc toc_2" title="Specifying Rules (Optional)">Specifying Rules (Optional)</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">6.4.3 </span><a href="howDoIUseIt.html#specifyingContexts" class="toc toc_2" title="Specifying Contexts (Optional)">Specifying Contexts (Optional)</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">6.4.4 </span><a href="howDoIUseIt.html#specifyingExclusions" class="toc toc_2" title="Specifying Exclusions (Optional)">Specifying Exclusions (Optional)</a></li>
+                           </ul>
+                        </li>
+                     
+                     <li class="toc"><span class="headingNumber"> 6.5 </span><a href="howDoIUseIt.html#searchPage" class="toc toc_1" title="Creating a search page">Creating a search page</a></li>
+                     
+                     <li class="toc"><span class="headingNumber"> 6.6 </span><a href="howDoIUseIt.html#searchBuildProcess" class="toc toc_1" title="Running the search build process">Running the search build process</a></li>
+                     </ul>
+                  </li>
+               
+               <li class="toc"><span class="headingNumber"> 7 </span><a href="howDoesItWork.html" class="toc toc_0" title="How does it work">How does it work?</a><ul class="toc">
+                     
+                     <li class="toc"><span class="headingNumber"> 7.1 </span><a href="howDoesItWork.html#buildingTheIndex" class="toc toc_1" title="Building the index">Building the index</a></li>
+                     
+                     <li class="toc"><span class="headingNumber"> 7.2 </span><a href="howDoesItWork.html#theSearchPage" class="toc toc_1" title="The search page">The search page</a></li>
+                     </ul>
+                  </li>
+               </ul>
+            
+            <ul class="toc toc_back">
+               
+               <li class="toc"><span class="headingNumber">Appendix A </span><a href="schemaSpec.html" class="toc toc_0" title="Schema specification and tag documentation">Schema specification and tag documentation</a><ul class="toc">
+                     
+                     <li class="toc"><span class="headingNumber">Appendix A.1 </span><a href="schemaSpec.html#index.xml-back.1_div.1_div.1" class="toc toc_1">Elements</a><ul class="toc">
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.1 </span><a href="schemaSpec.html#TEI.config" class="toc toc_2" title="&lt;config&gt;">&lt;config&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.2 </span><a href="schemaSpec.html#TEI.context" class="toc toc_2" title="&lt;context&gt;">&lt;context&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.3 </span><a href="schemaSpec.html#TEI.contexts" class="toc toc_2" title="&lt;contexts&gt;">&lt;contexts&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.4 </span><a href="schemaSpec.html#TEI.createContexts" class="toc toc_2" title="&lt;createContexts&gt;">&lt;createContexts&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.5 </span><a href="schemaSpec.html#TEI.dictionaryFile" class="toc toc_2" title="&lt;dictionaryFile&gt;">&lt;dictionaryFile&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.6 </span><a href="schemaSpec.html#TEI.exclude" class="toc toc_2" title="&lt;exclude&gt;">&lt;exclude&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.7 </span><a href="schemaSpec.html#TEI.excludes" class="toc toc_2" title="&lt;excludes&gt;">&lt;excludes&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.8 </span><a href="schemaSpec.html#TEI.indentJSON" class="toc toc_2" title="&lt;indentJSON&gt;">&lt;indentJSON&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.9 </span><a href="schemaSpec.html#TEI.kwicTruncateString" class="toc toc_2" title="&lt;kwicTruncateString&gt;">&lt;kwicTruncateString&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.10 </span><a href="schemaSpec.html#TEI.maxKwicsToHarvest" class="toc toc_2" title="&lt;maxKwicsToHarvest&gt;">&lt;maxKwicsToHarvest&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.11 </span><a href="schemaSpec.html#TEI.maxKwicsToShow" class="toc toc_2" title="&lt;maxKwicsToShow&gt;">&lt;maxKwicsToShow&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.12 </span><a href="schemaSpec.html#TEI.outputFolder" class="toc toc_2" title="&lt;outputFolder&gt;">&lt;outputFolder&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.13 </span><a href="schemaSpec.html#TEI.params" class="toc toc_2" title="&lt;params&gt;">&lt;params&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.14 </span><a href="schemaSpec.html#TEI.phrasalSearch" class="toc toc_2" title="&lt;phrasalSearch&gt;">&lt;phrasalSearch&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.15 </span><a href="schemaSpec.html#TEI.recurse" class="toc toc_2" title="&lt;recurse&gt;">&lt;recurse&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.16 </span><a href="schemaSpec.html#TEI.rule" class="toc toc_2" title="&lt;rule&gt;">&lt;rule&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.17 </span><a href="schemaSpec.html#TEI.rules" class="toc toc_2" title="&lt;rules&gt;">&lt;rules&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.18 </span><a href="schemaSpec.html#TEI.searchFile" class="toc toc_2" title="&lt;searchFile&gt;">&lt;searchFile&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.19 </span><a href="schemaSpec.html#TEI.stopwordsFile" class="toc toc_2" title="&lt;stopwordsFile&gt;">&lt;stopwordsFile&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.20 </span><a href="schemaSpec.html#TEI.totalKwicLength" class="toc toc_2" title="&lt;totalKwicLength&gt;">&lt;totalKwicLength&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.21 </span><a href="schemaSpec.html#TEI.verbose" class="toc toc_2" title="&lt;verbose&gt;">&lt;verbose&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.22 </span><a href="schemaSpec.html#TEI.versionFile" class="toc toc_2" title="&lt;versionFile&gt;">&lt;versionFile&gt;</a></li>
+                           </ul>
+                        </li>
+                     
+                     <li class="toc"><span class="headingNumber">Appendix A.2 </span><a href="schemaSpec.html#index.xml-back.1_div.1_div.2" class="toc toc_1">Attribute classes</a><ul class="toc">
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.2.1 </span><a href="schemaSpec.html#TEI.att.labelled" class="toc toc_2" title="att.labelled">att.labelled</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.2.2 </span><a href="schemaSpec.html#TEI.att.xpath" class="toc toc_2" title="att.xpath">att.xpath</a></li>
+                           </ul>
+                        </li>
+                     </ul>
+                  </li>
+               </ul>
+            </div>
+      </div>
+      <!--TEI body-->
+      
+      <div data-section="searchFacetFeatures" class="tei_body">
+         
+         <nav>
+            <ul>
+               <li class="prev"><a href="textSearchFeatures.html"><span class="headingNumber">3 </span><span class="head">Text search features</span></a></li>
+               <li class="next"><a href="howDoIGetIt.html"><span class="headingNumber">5 </span><span class="head">How do I get it?</span></a></li>
+            </ul>
+         </nav>
+         <h1><span class="headingNumber">4 </span><span class="head">Search facet features</span></h1>
+         
+         
+         
+         
+         
+         
+         <ul>
+            
+            <li class="item">Level: Basic</li>
+            
+            <li class="item">Last Updated: <span class="date">20 February 2020</span></li>
+            </ul>
+         
+         <p>The Generator supports the following search facets:</p>
+         
+         <ul>
+            
+            <li class="item"><span class="term">Descriptors</span>. You might for example classify your documents as poems, short stories and novels;
+               the user can then choose to search in only poems, or poems and short stories.</li>
+            
+            <li class="item"><span class="term">Date ranges</span>. You might assign each document a date (or a date range) for its first publication
+               and another for its last publication; then users could search for documents first
+               published in a certain date range and last published before another date.</li>
+            
+            <li class="item"><span class="term">Booleans</span> (true/false values). You might for instance specify that some poems are illustrated
+               while others are not. The user could then limit their search only to illustrated poems.</li>
+            </ul>
+         
+         
+         
+         
+         </div>
+      <!--TEI back-->
+      
+      <!--Notes in [TEI]-->
+      
+      <div class="notes">
+         
+         <div class="noteHeading">Notes</div>
+         
+         <div class="note" id="Note1"><span class="noteLabel">1 </span><div class="noteBody">This example taken from Thomas S. Kuhn, <span class="titlem">The Structure of Scientific Revolutions</span> (50th anniversary edition), University of Chicago Press, 2012: p. 191.</div> <a href="howDoIUseIt.html#Note1_return" class="link_return" title="Go back to text">↵</a></div>
+         </div>
+      
+      <div class="stdfooter autogenerated">
+         
+         <div class="footer"><!--standard links to project, institution etc--><a class="plain" href="http://www.example.com/"></a> <a class="plain" href="index.html">Home</a> <a href="https://github.com/projectEndings/staticSearch">Github</a> </div>
+         
+         <address>Martin Holmes and Joey Takeda.
+            	    Date: 2019-2020<br/>
+            <!--
+	  Generated from index.xml using XSLT stylesheets version 7.49.0
+	       based on http://www.tei-c.org/Stylesheets/
+	       on 2020-05-10T21:41:35Z.
+	       SAXON HE 10.0.
+		 --></address>
+         </div>
+      </body>
+   </html>

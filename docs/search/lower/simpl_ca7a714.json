@@ -1,0 +1,28 @@
+
+  { "token" : "simpl",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "simple",
+            "context" : "...or associated with the document. Here is a <mark>simple<\/mark> example: This specifies that there is to...",
+            "weight" : 1,
+            "pos" : 111 },
+          
+          { "form" : "simple",
+            "context" : "...the path to a plain-text file containing a <mark>simple<\/mark> version number for the project. This might...",
+            "weight" : 1,
+            "pos" : 661 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "simple",
+            "context" : "...these files when the user may do a <mark>simple<\/mark> text search which doesn't depend on them,...",
+            "weight" : 1,
+            "pos" : 230 } ] } ] }

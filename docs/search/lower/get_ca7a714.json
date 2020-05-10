@@ -1,0 +1,48 @@
+
+  { "token" : "get",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 5,
+        "contexts" : 
+        [ 
+          { "form" : "get",
+            "context" : "5 How do I <mark>get<\/mark> it?",
+            "weight" : 2,
+            "pos" : 5 },
+          
+          { "form" : "get",
+            "context" : "There are two ways to <mark>get<\/mark> the staticSearch code. The first is to...",
+            "weight" : 1,
+            "pos" : 14 },
+          
+          { "form" : "get",
+            "context" : "...the project release page; we recommend that you <mark>get<\/mark> the latest version. You can download a...",
+            "weight" : 1,
+            "pos" : 25 },
+          
+          { "form" : "get",
+            "context" : "The second way to <mark>get<\/mark> the codebase is to clone it from...",
+            "weight" : 1,
+            "pos" : 38 } ] },
+      
+      { "docId" : "searchFacetFeatures",
+        "docUri" : "searchFacetFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "get",
+            "context" : "5 How do I <mark>get<\/mark> it?",
+            "weight" : 1,
+            "pos" : 4 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "get",
+            "context" : "5 How do I <mark>get<\/mark> it?",
+            "weight" : 1,
+            "pos" : 1 } ] } ] }

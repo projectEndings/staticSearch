@@ -1,0 +1,58 @@
+
+  { "token" : "stopword",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 5,
+        "contexts" : 
+        [ 
+          { "form" : "stopwords",
+            "context" : "...to a text file containing a list of <mark>stopwords<\/mark> that you want to use for your...",
+            "weight" : 1,
+            "pos" : 898 },
+          
+          { "form" : "stopword",
+            "context" : "...you want to use for your site. A <mark>stopword<\/mark> is a word that will not be...",
+            "weight" : 1,
+            "pos" : 902 },
+          
+          { "form" : "stopwords",
+            "context" : "...The project has a built-in set of common <mark>stopwords<\/mark> for English, which we recommend you start...",
+            "weight" : 1,
+            "pos" : 911 },
+          
+          { "form" : "stopwords",
+            "context" : "...recommend you start from; you'll find it in xsl\/english_<mark>stopwords<\/mark>.txt. If your site is all about a...",
+            "weight" : 1,
+            "pos" : 918 },
+          
+          { "form" : "stopwords",
+            "context" : "...then you might add their name to the <mark>stopwords<\/mark> list, because it will presumably appear on...",
+            "weight" : 1,
+            "pos" : 927 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "stopword",
+            "context" : "...the list of document titles, and for your <mark>stopword<\/mark> list if you have specified one.",
+            "weight" : 1,
+            "pos" : 67 },
+          
+          { "form" : "stopwords",
+            "context" : "...start downloading some of the essential files (titles, <mark>stopwords<\/mark> and so on) as soon as the...",
+            "weight" : 1,
+            "pos" : 211 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "stopwords",
+            "context" : "...of a text file containing a list of <mark>stopwords<\/mark> (words to be ignored when indexing). These...",
+            "weight" : 1,
+            "pos" : 758 } ] } ] }

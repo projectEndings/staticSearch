@@ -1,0 +1,118 @@
+
+  { "token" : "need",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 12,
+        "contexts" : 
+        [ 
+          { "form" : "need",
+            "context" : "Next, you will <mark>need<\/mark> to decide whether you want search filters...",
+            "weight" : 1,
+            "pos" : 69 },
+          
+          { "form" : "need",
+            "context" : "...any combination of these document types, you will <mark>need<\/mark> to add <meta> tags to the heads...",
+            "weight" : 1,
+            "pos" : 87 },
+          
+          { "form" : "need",
+            "context" : "...something is not working as expected and you <mark>need<\/mark> to do some debugging.",
+            "weight" : 1,
+            "pos" : 884 },
+          
+          { "form" : "need",
+            "context" : "...easier for a human to read, if you <mark>need<\/mark> to understand them or debug them, but...",
+            "weight" : 1,
+            "pos" : 1008 },
+          
+          { "form" : "need",
+            "context" : "...of document or content, each of which may <mark>need<\/mark> its own particular search controls and indexes....",
+            "weight" : 1,
+            "pos" : 1460 },
+          
+          { "form" : "needs",
+            "context" : "...build time, of course; each of these searches <mark>needs<\/mark> to be built separately.",
+            "weight" : 1,
+            "pos" : 1641 },
+          
+          { "form" : "need",
+            "context" : "...be processed), containing all the site components you <mark>need<\/mark>, and then the search build process will...",
+            "weight" : 1,
+            "pos" : 1673 },
+          
+          { "form" : "need",
+            "context" : "...the contents will be replaced. There is no <mark>need<\/mark> to make sure it's empty every time....",
+            "weight" : 1,
+            "pos" : 1715 },
+          
+          { "form" : "need",
+            "context" : "...it again at any time; there is no <mark>need<\/mark> to start every time with a clean,...",
+            "weight" : 1,
+            "pos" : 1759 },
+          
+          { "form" : "need",
+            "context" : "Note: you will <mark>need<\/mark> Java and Apache Ant installed, as well...",
+            "weight" : 1,
+            "pos" : 1824 },
+          
+          { "form" : "need",
+            "context" : "...what was done. If this fails, then you'll <mark>need<\/mark> to troubleshoot the problem based on any...",
+            "weight" : 1,
+            "pos" : 1871 },
+          
+          { "form" : "need",
+            "context" : "...a search for your own site. Now you <mark>need<\/mark> to run the same command, but this...",
+            "weight" : 1,
+            "pos" : 1916 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "needs",
+            "context" : "...Holmes and Takeda (2019), The Prefabricated Website: Who <mark>needs<\/mark> a server anyway?). For this reason, the...",
+            "weight" : 1,
+            "pos" : 96 },
+          
+          { "form" : "need",
+            "context" : "...the control of the project team). DH projects <mark>need<\/mark> sophisticated options for searching, but typically this...",
+            "weight" : 1,
+            "pos" : 149 },
+          
+          { "form" : "need",
+            "context" : "...faceted search engine into your website without the <mark>need<\/mark> for any back-end services at all (except...",
+            "weight" : 1,
+            "pos" : 180 },
+          
+          { "form" : "need",
+            "context" : "...of course for a web server, which you <mark>need<\/mark> anyway).",
+            "weight" : 1,
+            "pos" : 189 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "needs",
+            "context" : "...search page must download only the information it <mark>needs<\/mark> for each specific search. Obviously, if it...",
+            "weight" : 1,
+            "pos" : 138 },
+          
+          { "form" : "needed",
+            "context" : "...overriding the trickle sequence for files that are <mark>needed<\/mark> immediately.",
+            "weight" : 1,
+            "pos" : 255 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "need",
+            "context" : "...size, but it can be useful if you <mark>need<\/mark> to read the files for debugging purposes.)...",
+            "weight" : 1,
+            "pos" : 317 } ] } ] }

@@ -1,0 +1,28 @@
+
+  { "token" : "shown",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "shown",
+            "context" : "...the document header; that title will then be <mark>shown<\/mark> as a link to the document when...",
+            "weight" : 1,
+            "pos" : 331 },
+          
+          { "form" : "shown",
+            "context" : "...the number of keyword-in-context extracts that will be <mark>shown<\/mark> in the search results for each hit...",
+            "weight" : 1,
+            "pos" : 829 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "shown",
+            "context" : "...maximum number of keyword-in-context extracts that will be <mark>shown<\/mark> in the search page for each hit...",
+            "weight" : 1,
+            "pos" : 436 } ] } ] }

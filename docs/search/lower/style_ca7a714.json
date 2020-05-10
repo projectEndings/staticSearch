@@ -1,0 +1,43 @@
+
+  { "token" : "style",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 7,
+        "contexts" : 
+        [ 
+          { "form" : "style",
+            "context" : "...project. This might take the form of a software-release-<mark>style<\/mark> version number such as 1.5, or it...",
+            "weight" : 1,
+            "pos" : 671 },
+          
+          { "form" : "style",
+            "context" : "<<mark>style<\/mark>>",
+            "weight" : 1,
+            "pos" : 1237 },
+          
+          { "form" : "style",
+            "context" : "...The search process will also add a CSS <<mark>style<\/mark>> element to the <head> of the document:...",
+            "weight" : 1,
+            "pos" : 1726 },
+          
+          { "form" : "style",
+            "context" : "<<mark>style<\/mark> id=\"ssCss\"> [...styles for search controls...] <\/style>",
+            "weight" : 1,
+            "pos" : 1730 },
+          
+          { "form" : "styles",
+            "context" : "<style id=\"ssCss\"> [...<mark>styles<\/mark> for search controls...] <\/style>",
+            "weight" : 1,
+            "pos" : 1732 },
+          
+          { "form" : "style",
+            "context" : "<style id=\"ssCss\"> [...styles for search controls...] <\/<mark>style<\/mark>>",
+            "weight" : 1,
+            "pos" : 1735 },
+          
+          { "form" : "style",
+            "context" : "...providing your own CSS that overrides it, using <<mark>style<\/mark>>, or <link>, placed after it in the...",
+            "weight" : 1,
+            "pos" : 1742 } ] } ] }

@@ -1,0 +1,13 @@
+
+  { "token" : "happen",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "happens",
+            "context" : "...when you search for the word waiting, what <mark>happens<\/mark> is that the JavaScript stems that word,...",
+            "weight" : 1,
+            "pos" : 155 } ] } ] }

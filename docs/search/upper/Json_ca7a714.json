@@ -1,0 +1,118 @@
+
+  { "token" : "Json",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 9,
+        "contexts" : 
+        [ 
+          { "form" : "JSON",
+            "context" : "...to index and where to put the output <mark>JSON<\/mark>. In other words, in specifying the location...",
+            "weight" : 1,
+            "pos" : 559 },
+          
+          { "form" : "JSON",
+            "context" : "The collection of Javascript and <mark>JSON<\/mark> files will be in a directory like...",
+            "weight" : 1,
+            "pos" : 601 },
+          
+          { "form" : "JSON",
+            "context" : "...as part of the filenames for all the <mark>JSON<\/mark> resources created for the search. This is...",
+            "weight" : 1,
+            "pos" : 692 },
+          
+          { "form" : "JSON",
+            "context" : "...also costly in terms of the size of <mark>JSON<\/mark> token files; in order to support this...",
+            "weight" : 1,
+            "pos" : 745 },
+          
+          { "form" : "JSON",
+            "context" : "...to a low number, the size of the <mark>JSON<\/mark> files will be constrained, but of course...",
+            "weight" : 1,
+            "pos" : 811 },
+          
+          { "form" : "JSON",
+            "context" : "...generate your index, then search for the largest <mark>JSON<\/mark> index files that are generated, to see...",
+            "weight" : 1,
+            "pos" : 945 },
+          
+          { "form" : "JSON",
+            "context" : "...is a boolean parameter which controls whether the <mark>JSON<\/mark> files generated for the index are indented...",
+            "weight" : 1,
+            "pos" : 997 },
+          
+          { "form" : "JSON",
+            "context" : "...you would like to place the JavaScript and <mark>JSON<\/mark> index files your site search. The default...",
+            "weight" : 1,
+            "pos" : 1022 },
+          
+          { "form" : "JSON",
+            "context" : "...well as a lot of index files in <mark>JSON<\/mark> format in your site HTML folder. Now...",
+            "weight" : 1,
+            "pos" : 1946 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 5,
+        "contexts" : 
+        [ 
+          { "form" : "JSON",
+            "context" : "...Each document is tokenized, and then a separate <mark>JSON<\/mark> file is created for each distinct token...",
+            "weight" : 1,
+            "pos" : 32 },
+          
+          { "form" : "JSON",
+            "context" : "In addition, separate <mark>JSON<\/mark> files are created for the list of...",
+            "weight" : 1,
+            "pos" : 61 },
+          
+          { "form" : "JSON",
+            "context" : "...headers, the processor will then create a separate <mark>JSON<\/mark> file for each of those search facets,...",
+            "weight" : 1,
+            "pos" : 80 },
+          
+          { "form" : "JSON",
+            "context" : "...'Illustrated' and some not (true or false), a <mark>JSON<\/mark> file will be created for the 'Illustrated'...",
+            "weight" : 1,
+            "pos" : 96 },
+          
+          { "form" : "JSON",
+            "context" : "...documents classified as 'Poems'. This requires that the <mark>JSON<\/mark> file with information about that facet be...",
+            "weight" : 1,
+            "pos" : 199 } ] },
+      
+      { "docId" : "whatDoesItDo",
+        "docUri" : "whatDoesItDo.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "JSON",
+            "context" : "...the form of a large number of small <mark>JSON<\/mark> files. It also creates JSON files for...",
+            "weight" : 1,
+            "pos" : 28 },
+          
+          { "form" : "JSON",
+            "context" : "...number of small JSON files. It also creates <mark>JSON<\/mark> files for other search facets that you...",
+            "weight" : 1,
+            "pos" : 32 },
+          
+          { "form" : "JSON",
+            "context" : "...processes user search terms and retrieves the required <mark>JSON<\/mark> files to provide search results.",
+            "weight" : 1,
+            "pos" : 55 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "JSON",
+            "context" : "...(Whether or not to indent code in the <mark>JSON<\/mark> index files. Indenting increases the file size,...",
+            "weight" : 1,
+            "pos" : 309 },
+          
+          { "form" : "JSON",
+            "context" : "...will be used to create unique filenames for <mark>JSON<\/mark> resources, so that when a site is...",
+            "weight" : 1,
+            "pos" : 886 } ] } ] }

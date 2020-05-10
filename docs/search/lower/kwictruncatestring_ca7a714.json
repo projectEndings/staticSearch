@@ -1,0 +1,33 @@
+
+  { "token" : "kwictruncatestring",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "kwicTruncateString",
+            "context" : "Appendix A.1.9 <<mark>kwicTruncateString<\/mark>>",
+            "weight" : 2,
+            "pos" : 344 },
+          
+          { "form" : "kwicTruncateString",
+            "context" : "<<mark>kwicTruncateString<\/mark>> (The string that will be used to...",
+            "weight" : 1,
+            "pos" : 345 },
+          
+          { "form" : "kwicTruncateString",
+            "context" : "ss: createContexts dictionaryFile indentJSON <mark>kwicTruncateString<\/mark> maxKwicsToHarvest maxKwicsToShow outputFolder phrasalSearch recurse searchFile stopwordsFile...",
+            "weight" : 1,
+            "pos" : 531 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "kwicTruncateString",
+            "context" : "<<mark>kwicTruncateString<\/mark>> is a string containing the character you...",
+            "weight" : 1,
+            "pos" : 855 } ] } ] }

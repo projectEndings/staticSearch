@@ -1,0 +1,23 @@
+
+  { "token" : "databas",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "databases",
+            "context" : "...any dependency on back-end server systems such as <mark>databases<\/mark> or PHP processing) are far more resilient...",
+            "weight" : 1,
+            "pos" : 72 },
+          
+          { "form" : "database",
+            "context" : "...to search: either they have their own back-end <mark>database<\/mark> search engine (perhaps Solr or an XML...",
+            "weight" : 1,
+            "pos" : 130 },
+          
+          { "form" : "database",
+            "context" : "...database search engine (perhaps Solr or an XML <mark>database<\/mark>), or they rely on commercial services such...",
+            "weight" : 1,
+            "pos" : 136 } ] } ] }

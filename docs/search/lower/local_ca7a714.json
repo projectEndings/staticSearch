@@ -1,0 +1,18 @@
+
+  { "token" : "local",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "local",
+            "context" : "<rules>  <rule weight=\"2\"   xpath=\"*[matches(<mark>local<\/mark>-name(),'^h\\d+$')]\"\/> <\/rules>",
+            "weight" : 1,
+            "pos" : 1115 },
+          
+          { "form" : "local",
+            "context" : "...to a web server, or by running a <mark>local<\/mark> webserver on your machine in that folder,...",
+            "weight" : 1,
+            "pos" : 1897 } ] } ] }

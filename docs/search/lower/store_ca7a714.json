@@ -1,0 +1,43 @@
+
+  { "token" : "store",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "stored",
+            "context" : "...maximum number of keyword-in-context extracts that will be <mark>stored<\/mark> for each term. If phrasalSearch is set...",
+            "weight" : 1,
+            "pos" : 392 },
+          
+          { "form" : "stored",
+            "context" : "...will only work properly if all contexts are <mark>stored<\/mark>.)",
+            "weight" : 1,
+            "pos" : 404 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "store",
+            "context" : "...order to support this kind of search, we <mark>store<\/mark> contexts for all hits for each token...",
+            "weight" : 1,
+            "pos" : 752 },
+          
+          { "form" : "store",
+            "context" : "...that specifies whether you want the indexer to <mark>store<\/mark> keyword-in-context extracts for each of the hits...",
+            "weight" : 1,
+            "pos" : 778 } ] },
+      
+      { "docId" : "whatDoesItDo",
+        "docUri" : "whatDoesItDo.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "stores",
+            "context" : "...the site, stemmed using a Porter2 stemmer, and <mark>stores<\/mark> the index in the form of a...",
+            "weight" : 1,
+            "pos" : 22 } ] } ] }

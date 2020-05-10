@@ -1,0 +1,23 @@
+
+  { "token" : "special",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "special",
+            "context" : "...For example, imagine that you are creating a <mark>special<\/mark> search page that focuses only on the...",
+            "weight" : 1,
+            "pos" : 1484 },
+          
+          { "form" : "specialized",
+            "context" : "...to exclude certain features or documents from a <mark>specialized<\/mark> search page, and this is done using...",
+            "weight" : 1,
+            "pos" : 1530 },
+          
+          { "form" : "specialized",
+            "context" : "Using exclusions, you can create multiple <mark>specialized<\/mark> search pages which have customized form controls...",
+            "weight" : 1,
+            "pos" : 1624 } ] } ] }

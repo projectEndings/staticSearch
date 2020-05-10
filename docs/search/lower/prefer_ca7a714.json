@@ -1,0 +1,13 @@
+
+  { "token" : "prefer",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "prefer",
+            "context" : "...The default is staticSearch, but if you would <mark>prefer<\/mark> something else, you can specify it here....",
+            "weight" : 1,
+            "pos" : 1030 } ] } ] }

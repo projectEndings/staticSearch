@@ -1,0 +1,13 @@
+
+  { "token" : "nest",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "nested",
+            "context" : "...the case where the document collection may be <mark>nested<\/mark> (as is common with static sites generated...",
+            "weight" : 1,
+            "pos" : 623 } ] } ] }

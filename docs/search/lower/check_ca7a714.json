@@ -1,0 +1,23 @@
+
+  { "token" : "check",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "check",
+            "context" : "...word per line) which will be used to <mark>check<\/mark> tokens when indexing.)",
+            "weight" : 1,
+            "pos" : 180 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "check",
+            "context" : "...site is in English). This is used to <mark>check<\/mark> words during the indexing process, and a...",
+            "weight" : 1,
+            "pos" : 966 } ] } ] }

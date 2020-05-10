@@ -1,0 +1,18 @@
+
+  { "token" : "fast",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "fast",
+            "context" : "In order to provide <mark>fast<\/mark>, responsive search results, the search page must...",
+            "weight" : 1,
+            "pos" : 129 },
+          
+          { "form" : "fast",
+            "context" : "...for that specific search can be downloaded as <mark>fast<\/mark> as possible overriding the trickle sequence for...",
+            "weight" : 1,
+            "pos" : 249 } ] } ] }
