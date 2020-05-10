@@ -186,7 +186,9 @@
     
     
     <target name="clean">
+        <echo message="Cleaning up unnecessary temporary documents..."/>
         <delete file="${odd.processed}"/>
+        <delete file="${odd.lite}"/>
     </target>
     
     
@@ -198,6 +200,7 @@
             a) We can demonstrate features in the search
             b) Make the search documentation a bit nicer to use/deploy
         </description>
+        <echo message="Splitting the documentation into chapters..."/>
         <java jar="${saxon}" fork="true" failonerror="true">
             <arg line="-s:${odd.doc}"/>
             <arg line="-xsl:${xsl.dir}/split_documentation.xsl"/>
@@ -206,6 +209,7 @@
     </target>
     
     <target name="makeSearch">
+        <echo message="Creating the search..."/>
         <!--Now we call the staticSearch build-->
         <ant antfile="build.xml" inheritall="false">
             <property name="config" value="config_documentation.xml"/>
