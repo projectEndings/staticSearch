@@ -81,3 +81,29 @@ div.notes,
 div.stdfooter{
     width:100%;
 }
+
+/* Hack for the ssDescCheckboxList for Level
+ * to sort them properly
+ *  */
+ 
+ /* Make the level ul a flex parent with columns */
+ fieldset.ssFieldset[title='Level'] > ul{
+     display:flex;
+     flex-direction:column;
+ }
+ 
+ /* Advanced is alphabetically first, but should be displayed last */
+ fieldset.ssFieldset[title='Level'] > ul > li:nth-of-type(1){
+     order:2;
+ }
+ 
+ /* Basic is alphabetically second, but should be displayed first*/
+  fieldset.ssFieldset[title='Level'] > ul > li:nth-of-type(2){
+     order:0;
+ }
+ 
+ /* Intermediate is alphabetically third, but should be displayed second */
+  fieldset.ssFieldset[title='Level'] > ul > li:nth-of-type(1){
+     order:1;
+ }
+
