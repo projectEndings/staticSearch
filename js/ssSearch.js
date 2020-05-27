@@ -1512,7 +1512,38 @@ class StaticSearch{
       return false;
     }
   }
+
+/** @function StaticSearch~wildcardToRegex
+  * @description This method is provided with a single token as 
+  * input. The token should contain wildcard characters (asterisk,
+  * question mark and square brackets). The function converts this
+  * to a JS regular expression. For example: th*n[gk]? would 
+  * become /^th.*[gk].?$/.
+  * @param {String}   strToken a string of text with no spaces.
+  * @return {RegExp | null} a regular expression; or null if one 
+  *                         cannot be constructed.
+  */
+
+  wildcardToRegex(strToken){
+    //First check that we have a proper token.
+    if (strToken.match(/[\s"]]/)){
+      return null;
+    }
+    //Generate the regex.
+    let esc = strToken.replace(/[.+^${}()|\\]/g, '\\$&');
+    let strRe  = esc.replace(/[\*\?]/g, '\.$&');
+    //Test the regex, and return it if OK, otherwise return null.
+    try{
+      let re = new RegExp('^' + strRe + '$');
+      return re;
+    }
+    catch(e){
+      console.log('Invalid regex created: ' + strRe);
+      return null;
+    }
+  }
 }
+
 
 /** @class SSResultSet
   * @description This is the class that handles the building of the
@@ -1522,21 +1553,21 @@ class StaticSearch{
   * forming the keys, and values being objects based on the JSON
   * objects returned from the search index queries.
   */
-  class SSResultSet{
-    constructor(maxKwicsToShow){
-      try{
-        this.mapDocs = new Map([]);
-        //The maximum allowed number of keyword-in-context results to be
-        //included in output.
-        this.maxKwicsToShow = maxKwicsToShow;
-        //A list of titles indexed by docUri is retrieved by AJAX
-        //and set later.
-        this.titles = null;
-      }
-      catch(e){
-        console.log('ERROR: ' + e.message);
-      }
+class SSResultSet{
+  constructor(maxKwicsToShow){
+    try{
+      this.mapDocs = new Map([]);
+      //The maximum allowed number of keyword-in-context results to be
+      //included in output.
+      this.maxKwicsToShow = maxKwicsToShow;
+      //A list of titles indexed by docUri is retrieved by AJAX
+      //and set later.
+      this.titles = null;
     }
+    catch(e){
+      console.log('ERROR: ' + e.message);
+    }
+  }
 
 /**
   * @function SSResultSet~clear
