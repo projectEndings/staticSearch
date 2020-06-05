@@ -1,0 +1,13 @@
+
+  { "token" : "current",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "current",
+            "context" : "...you're doing this, you can clone either the <mark>current<\/mark> master branch, the last release tag, or...",
+            "weight" : 1,
+            "pos" : 45 } ] } ] }

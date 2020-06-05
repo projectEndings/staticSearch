@@ -1,0 +1,33 @@
+
+  { "token" : "possibl",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "possible",
+            "context" : "...forms: For some documents, it may not be <mark>possible<\/mark> to specify a single date in this...",
+            "weight" : 1,
+            "pos" : 215 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "possible",
+            "context" : "...specific search can be downloaded as fast as <mark>possible<\/mark> overriding the trickle sequence for files that...",
+            "weight" : 1,
+            "pos" : 250 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "possible",
+            "context" : "...labours deserves to have a significant shelf-life, if <mark>possible<\/mark> comparable with that of a traditional print...",
+            "weight" : 1,
+            "pos" : 34 } ] } ] }

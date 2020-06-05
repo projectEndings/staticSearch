@@ -1,0 +1,13 @@
+
+  { "token" : "footnot",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "footnote",
+            "context" : "...beside its point of attachment: Using CSS, the <mark>footnote<\/mark> might be alongside the text of the...",
+            "weight" : 1,
+            "pos" : 1353 } ] } ] }

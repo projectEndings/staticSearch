@@ -1,0 +1,13 @@
+
+  { "token" : "least",
+    "instances" : 
+    [ 
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "least",
+            "context" : "...a search, any hit document must contain at <mark>least<\/mark> one of them. Note that phrasal search...",
+            "weight" : 1,
+            "pos" : 82 } ] } ] }

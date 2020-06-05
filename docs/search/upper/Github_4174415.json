@@ -1,0 +1,98 @@
+
+  { "token" : "Github",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "GitHub",
+            "context" : "...the codebase is to clone it from the <mark>GitHub<\/mark> repository. If you're doing this, you can...",
+            "weight" : 1,
+            "pos" : 41 },
+          
+          { "form" : "Github",
+            "context" : " Home <mark>Github<\/mark> ",
+            "weight" : 1,
+            "pos" : 80 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Github",
+            "context" : " Home <mark>Github<\/mark> ",
+            "weight" : 1,
+            "pos" : 1971 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Github",
+            "context" : " Home <mark>Github<\/mark> ",
+            "weight" : 1,
+            "pos" : 301 } ] },
+      
+      { "docId" : "index",
+        "docUri" : "index.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Github",
+            "context" : " Home <mark>Github<\/mark> ",
+            "weight" : 1,
+            "pos" : 30 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Github",
+            "context" : " Home <mark>Github<\/mark> ",
+            "weight" : 1,
+            "pos" : 1012 } ] },
+      
+      { "docId" : "searchFacetFeatures",
+        "docUri" : "searchFacetFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Github",
+            "context" : " Home <mark>Github<\/mark> ",
+            "weight" : 1,
+            "pos" : 93 } ] },
+      
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Github",
+            "context" : " Home <mark>Github<\/mark> ",
+            "weight" : 1,
+            "pos" : 137 } ] },
+      
+      { "docId" : "whatDoesItDo",
+        "docUri" : "whatDoesItDo.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Github",
+            "context" : " Home <mark>Github<\/mark> ",
+            "weight" : 1,
+            "pos" : 76 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Github",
+            "context" : " Home <mark>Github<\/mark> ",
+            "weight" : 1,
+            "pos" : 207 } ] } ] }

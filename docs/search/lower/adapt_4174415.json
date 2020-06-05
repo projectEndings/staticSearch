@@ -1,0 +1,13 @@
+
+  { "token" : "adapt",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "adapt",
+            "context" : "...dictionary in xsl\/english_words.txt which you might copy and <mark>adapt<\/mark>.",
+            "weight" : 1,
+            "pos" : 991 } ] } ] }

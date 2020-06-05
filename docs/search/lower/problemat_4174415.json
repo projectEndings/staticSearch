@@ -1,0 +1,13 @@
+
+  { "token" : "problemat",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "problematic",
+            "context" : "...projects to an all-static publication model. The most <mark>problematic<\/mark> component in the all-static approach is search....",
+            "weight" : 1,
+            "pos" : 113 } ] } ] }

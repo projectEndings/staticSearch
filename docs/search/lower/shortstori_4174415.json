@@ -1,0 +1,18 @@
+
+  { "token" : "shortstori",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "shortstory",
+            "context" : "<mark>shortstory<\/mark>.html",
+            "weight" : 1,
+            "pos" : 595 },
+          
+          { "form" : "shortstory",
+            "context" : "<mark>shortstory<\/mark>.html",
+            "weight" : 1,
+            "pos" : 610 } ] } ] }

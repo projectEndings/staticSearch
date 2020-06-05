@@ -1,0 +1,28 @@
+
+  { "token" : "anyuri",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "anyURI",
+            "context" : "XSD <mark>anyURI<\/mark>",
+            "weight" : 1,
+            "pos" : 199 },
+          
+          { "form" : "anyURI",
+            "context" : "XSD <mark>anyURI<\/mark>",
+            "weight" : 1,
+            "pos" : 749 },
+          
+          { "form" : "anyURI",
+            "context" : "XSD <mark>anyURI<\/mark>",
+            "weight" : 1,
+            "pos" : 807 },
+          
+          { "form" : "anyURI",
+            "context" : "XSD <mark>anyURI<\/mark>",
+            "weight" : 1,
+            "pos" : 917 } ] } ] }

@@ -1,0 +1,58 @@
+
+  { "token" : "whether",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 5,
+        "contexts" : 
+        [ 
+          { "form" : "whether",
+            "context" : "Next, you will need to decide <mark>whether<\/mark> you want search filters or not. If...",
+            "weight" : 1,
+            "pos" : 71 },
+          
+          { "form" : "whether",
+            "context" : "...is a boolean (true or false) that determines <mark>whether<\/mark> or not to recurse into the subdirectories...",
+            "weight" : 1,
+            "pos" : 636 },
+          
+          { "form" : "whether",
+            "context" : "...<phrasalSearch> is a boolean parameter which specifies <mark>whether<\/mark> you want your search engine to support...",
+            "weight" : 1,
+            "pos" : 729 },
+          
+          { "form" : "whether",
+            "context" : "...<createContexts> is a boolean parameter that specifies <mark>whether<\/mark> you want the indexer to store keyword-in-context...",
+            "weight" : 1,
+            "pos" : 775 },
+          
+          { "form" : "whether",
+            "context" : "...<indentJSON> is a boolean parameter which controls <mark>whether<\/mark> the JSON files generated for the index...",
+            "weight" : 1,
+            "pos" : 996 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "Whether",
+            "context" : "<createContexts> (<mark>Whether<\/mark> to include keyword-in-context extracts in the index....",
+            "weight" : 1,
+            "pos" : 129 },
+          
+          { "form" : "Whether",
+            "context" : "<indentJSON> (<mark>Whether<\/mark> or not to indent code in the...",
+            "weight" : 1,
+            "pos" : 309 },
+          
+          { "form" : "Whether",
+            "context" : "<phrasalSearch> (<mark>Whether<\/mark> or not to support phrasal searches. If...",
+            "weight" : 1,
+            "pos" : 553 },
+          
+          { "form" : "Whether",
+            "context" : "<recurse> (<mark>Whether<\/mark> to recurse into subdirectories of the collection...",
+            "weight" : 1,
+            "pos" : 591 } ] } ] }

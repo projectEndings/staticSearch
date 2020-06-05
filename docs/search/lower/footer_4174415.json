@@ -1,0 +1,18 @@
+
+  { "token" : "footer",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "footer",
+            "context" : "...you want to remove the header and the <mark>footer<\/mark> from the search indexing process, you could...",
+            "weight" : 1,
+            "pos" : 1182 },
+          
+          { "form" : "\"footer",
+            "context" : "<rule weight=\"0\" match=<mark>\"footer<\/mark> | header\"\/>",
+            "weight" : 1,
+            "pos" : 1193 } ] } ] }

@@ -1,0 +1,28 @@
+
+  { "token" : "addit",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "additional",
+            "context" : "...document collection. This is at the expense of <mark>additional<\/mark> disk space and build time, of course;...",
+            "weight" : 1,
+            "pos" : 1634 },
+          
+          { "form" : "additional",
+            "context" : "...controls embedded in it; it also has some <mark>additional<\/mark> JavaScript which we use for testing the...",
+            "weight" : 1,
+            "pos" : 1789 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "addition",
+            "context" : "In <mark>addition<\/mark>, separate JSON files are created for the...",
+            "weight" : 1,
+            "pos" : 59 } ] } ] }

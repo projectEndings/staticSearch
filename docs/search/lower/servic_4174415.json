@@ -1,0 +1,23 @@
+
+  { "token" : "servic",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "services",
+            "context" : "...an XML database), or they rely on commercial <mark>services<\/mark> such as Google (which may be free,...",
+            "weight" : 1,
+            "pos" : 139 },
+          
+          { "form" : "services",
+            "context" : "...technologies that may become obsolete or unsupported, or <mark>services<\/mark> which may change their terms of use...",
+            "weight" : 1,
+            "pos" : 161 },
+          
+          { "form" : "services",
+            "context" : "...your website without the need for any back-end <mark>services<\/mark> at all (except of course for a...",
+            "weight" : 1,
+            "pos" : 184 } ] } ] }

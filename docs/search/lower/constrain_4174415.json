@@ -1,0 +1,18 @@
+
+  { "token" : "constrain",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "constrain",
+            "context" : "...on the search page, enabling the user to <mark>constrain<\/mark> the search to a specific set of...",
+            "weight" : 1,
+            "pos" : 164 },
+          
+          { "form" : "constrained",
+            "context" : "...the size of the JSON files will be <mark>constrained<\/mark>, but of course the user will only...",
+            "weight" : 1,
+            "pos" : 813 } ] } ] }

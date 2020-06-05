@@ -1,0 +1,13 @@
+
+  { "token" : "lot",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "lot",
+            "context" : "...a modified search.html page as well as a <mark>lot<\/mark> of index files in JSON format in...",
+            "weight" : 1,
+            "pos" : 1943 } ] } ] }

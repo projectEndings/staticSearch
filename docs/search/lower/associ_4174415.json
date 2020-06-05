@@ -1,0 +1,13 @@
+
+  { "token" : "associ",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "associated",
+            "context" : "...filter is a word or phrase describing or <mark>associated<\/mark> with the document. Here is a simple...",
+            "weight" : 1,
+            "pos" : 109 } ] } ] }

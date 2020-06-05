@@ -1,0 +1,38 @@
+
+  { "token" : "someth",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 6,
+        "contexts" : 
+        [ 
+          { "form" : "something",
+            "context" : "...For instance, in a document collection that looks <mark>something<\/mark> like:",
+            "weight" : 1,
+            "pos" : 588 },
+          
+          { "form" : "something",
+            "context" : "...process. You might set this to true if <mark>something<\/mark> is not working as expected and you...",
+            "weight" : 1,
+            "pos" : 881 },
+          
+          { "form" : "something",
+            "context" : "...default is staticSearch, but if you would prefer <mark>something<\/mark> else, you can specify it here. You...",
+            "weight" : 1,
+            "pos" : 1031 },
+          
+          { "form" : "something",
+            "context" : "...from the search indexing process, you could write <mark>something<\/mark> like: Or if you want to remove...",
+            "weight" : 1,
+            "pos" : 1188 },
+          
+          { "form" : "something",
+            "context" : "...URL specified in its href, you could do <mark>something<\/mark> like:",
+            "weight" : 1,
+            "pos" : 1207 },
+          
+          { "form" : "something",
+            "context" : "...term 'search' would produce a context that looks <mark>something<\/mark> like: \"...the size of the index.Search filtering...",
+            "weight" : 1,
+            "pos" : 1310 } ] } ] }

@@ -1,0 +1,98 @@
+
+  { "token" : "facet",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 7,
+        "contexts" : 
+        [ 
+          { "form" : "facets",
+            "context" : "Next, if you have specified search <mark>facets<\/mark> in your document headers, the processor will...",
+            "weight" : 1,
+            "pos" : 74 },
+          
+          { "form" : "facets",
+            "context" : "...separate JSON file for each of those search <mark>facets<\/mark>, consisting of a list of the document...",
+            "weight" : 1,
+            "pos" : 83 },
+          
+          { "form" : "facet",
+            "context" : "...JSON file will be created for the 'Illustrated' <mark>facet<\/mark>, with a list of documents which are...",
+            "weight" : 1,
+            "pos" : 100 },
+          
+          { "form" : "facet",
+            "context" : "...list of documents which are true for this <mark>facet<\/mark>, and a list of documents which are...",
+            "weight" : 1,
+            "pos" : 104 },
+          
+          { "form" : "facets",
+            "context" : "...A user may for instance use the search <mark>facets<\/mark> only, not searching for a particular word...",
+            "weight" : 1,
+            "pos" : 188 },
+          
+          { "form" : "facet",
+            "context" : "...that the JSON file with information about that <mark>facet<\/mark> be downloaded. So there is some advantage...",
+            "weight" : 1,
+            "pos" : 202 },
+          
+          { "form" : "facet",
+            "context" : "...page loads, and it also starts downloading the <mark>facet<\/mark> files in the background.",
+            "weight" : 1,
+            "pos" : 218 } ] },
+      
+      { "docId" : "searchFacetFeatures",
+        "docUri" : "searchFacetFeatures.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "facet",
+            "context" : "4 Search <mark>facet<\/mark> features",
+            "weight" : 2,
+            "pos" : 6 },
+          
+          { "form" : "facets",
+            "context" : "The Generator supports the following search <mark>facets<\/mark>:",
+            "weight" : 1,
+            "pos" : 18 } ] },
+      
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "facet",
+            "context" : "4 Search <mark>facet<\/mark> features",
+            "weight" : 1,
+            "pos" : 2 } ] },
+      
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "facet",
+            "context" : "4 Search <mark>facet<\/mark> features",
+            "weight" : 1,
+            "pos" : 4 } ] },
+      
+      { "docId" : "whatDoesItDo",
+        "docUri" : "whatDoesItDo.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "facets",
+            "context" : "...It also creates JSON files for other search <mark>facets<\/mark> that you specify in the headers of...",
+            "weight" : 1,
+            "pos" : 35 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "faceted",
+            "context" : "...It provides the capability to build a sophisticated <mark>faceted<\/mark> search engine into your website without the...",
+            "weight" : 1,
+            "pos" : 175 } ] } ] }

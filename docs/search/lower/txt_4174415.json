@@ -1,0 +1,18 @@
+
+  { "token" : "txt",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "txt",
+            "context" : "...recommend you start from; you'll find it in xsl\/english_stopwords.<mark>txt<\/mark>. If your site is all about a...",
+            "weight" : 1,
+            "pos" : 919 },
+          
+          { "form" : "txt",
+            "context" : "...site. Again, there is a default dictionary in xsl\/english_words.<mark>txt<\/mark> which you might copy and adapt.",
+            "weight" : 1,
+            "pos" : 988 } ] } ] }

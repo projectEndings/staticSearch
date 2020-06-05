@@ -1,0 +1,13 @@
+
+  { "token" : "plug",
+    "instances" : 
+    [ 
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "plug",
+            "context" : "...documents in another language, you can create and <mark>plug<\/mark> in your own stemmer.",
+            "weight" : 1,
+            "pos" : 36 } ] } ] }

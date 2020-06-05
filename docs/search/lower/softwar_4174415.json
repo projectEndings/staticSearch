@@ -1,0 +1,13 @@
+
+  { "token" : "softwar",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "software",
+            "context" : "...project. This might take the form of a <mark>software<\/mark>-release-style version number such as 1.5, or it...",
+            "weight" : 1,
+            "pos" : 669 } ] } ] }

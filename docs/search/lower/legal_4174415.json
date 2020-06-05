@@ -1,0 +1,13 @@
+
+  { "token" : "legal",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Legal",
+            "context" : "<mark>Legal<\/mark> values are:",
+            "weight" : 1,
+            "pos" : 234 } ] } ] }

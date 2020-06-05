@@ -1,0 +1,28 @@
+
+  { "token" : "base",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "based",
+            "context" : "...You can also configure a range filter <mark>based<\/mark> on a numeric value (integer or decimal)....",
+            "weight" : 1,
+            "pos" : 244 },
+          
+          { "form" : "based",
+            "context" : "...people to filter documents in the search results <mark>based<\/mark> on their word-count: Users would then be...",
+            "weight" : 1,
+            "pos" : 258 },
+          
+          { "form" : "base",
+            "context" : "...your site is very large, and your user <mark>base<\/mark> is unlikely to use phrasal searching, it...",
+            "weight" : 1,
+            "pos" : 760 },
+          
+          { "form" : "based",
+            "context" : "...fails, then you'll need to troubleshoot the problem <mark>based<\/mark> on any error messages you see. (Do...",
+            "weight" : 1,
+            "pos" : 1874 } ] } ] }

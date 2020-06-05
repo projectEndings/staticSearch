@@ -1,0 +1,18 @@
+
+  { "token" : "pattern",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "pattern",
+            "context" : "...W3C XSLT Specification for further details on allowable <mark>pattern<\/mark> rules.",
+            "weight" : 1,
+            "pos" : 1154 },
+          
+          { "form" : "pattern",
+            "context" : "...token, use the <context> element with an match <mark>pattern<\/mark>:",
+            "weight" : 1,
+            "pos" : 1400 } ] } ] }

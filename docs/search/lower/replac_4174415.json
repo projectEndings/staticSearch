@@ -1,0 +1,18 @@
+
+  { "token" : "replac",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "replaced",
+            "context" : "...search for your site, the contents will be <mark>replaced<\/mark>. There is no need to make sure...",
+            "weight" : 1,
+            "pos" : 1714 },
+          
+          { "form" : "replacing",
+            "context" : "...after it in the <head> element, or by <mark>replacing<\/mark> the inserted CSS after the build process....",
+            "weight" : 1,
+            "pos" : 1747 } ] } ] }

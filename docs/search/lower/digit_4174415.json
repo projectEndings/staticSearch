@@ -1,0 +1,33 @@
+
+  { "token" : "digit",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 5,
+        "contexts" : 
+        [ 
+          { "form" : "Digital",
+            "context" : "<mark>Digital<\/mark> Humanities projects such as digital editions of...",
+            "weight" : 1,
+            "pos" : 12 },
+          
+          { "form" : "digital",
+            "context" : "Digital Humanities projects such as <mark>digital<\/mark> editions of historical and literary texts are...",
+            "weight" : 1,
+            "pos" : 15 },
+          
+          { "form" : "digital",
+            "context" : "...with that of a traditional print publication. However, <mark>digital<\/mark> longevity of DH projects is sadly short,...",
+            "weight" : 1,
+            "pos" : 40 },
+          
+          { "form" : "digital",
+            "context" : "...have been developing and publicizing strategies for moving <mark>digital<\/mark> projects to an all-static publication model. The...",
+            "weight" : 1,
+            "pos" : 107 },
+          
+          { "form" : "digital",
+            "context" : "Most <mark>digital<\/mark> publications take one of two approaches to...",
+            "weight" : 1,
+            "pos" : 119 } ] } ] }

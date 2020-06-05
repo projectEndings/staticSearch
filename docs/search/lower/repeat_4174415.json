@@ -1,0 +1,13 @@
+
+  { "token" : "repeat",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "repeatedly",
+            "context" : "...the browser to cache such resources when users <mark>repeatedly<\/mark> visit the search page, but if the...",
+            "weight" : 1,
+            "pos" : 702 } ] } ] }

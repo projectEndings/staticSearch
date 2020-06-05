@@ -1,0 +1,23 @@
+
+  { "token" : "consist",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "consisting",
+            "context" : "...JSON file for each of those search facets, <mark>consisting<\/mark> of a list of the document identifiers...",
+            "weight" : 1,
+            "pos" : 84 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "consist",
+            "context" : "However, static websites (websites which <mark>consist<\/mark> entirely of HTML, CSS and JavaScript, without...",
+            "weight" : 1,
+            "pos" : 60 } ] } ] }

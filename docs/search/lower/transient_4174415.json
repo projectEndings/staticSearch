@@ -1,0 +1,13 @@
+
+  { "token" : "transient",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "transient",
+            "context" : "...of their creation, because of their dependency on <mark>transient<\/mark> tools and technologies.",
+            "weight" : 1,
+            "pos" : 53 } ] } ] }

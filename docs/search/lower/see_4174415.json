@@ -1,0 +1,48 @@
+
+  { "token" : "see",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 6,
+        "contexts" : 
+        [ 
+          { "form" : "See",
+            "context" : "...also specifying the location of your document collection. <mark>See<\/mark> Creating a search page for more information...",
+            "weight" : 1,
+            "pos" : 570 },
+          
+          { "form" : "see",
+            "context" : "...course the user will only be able to <mark>see<\/mark> the KWICs that have been harvested in...",
+            "weight" : 1,
+            "pos" : 817 },
+          
+          { "form" : "see",
+            "context" : "...largest JSON index files that are generated, to <mark>see<\/mark> if they might be too common to...",
+            "weight" : 1,
+            "pos" : 949 },
+          
+          { "form" : "See",
+            "context" : "...same rules (i.e. no complex rules like p\/ancestor::div). <mark>See<\/mark> the W3C XSLT Specification for further details...",
+            "weight" : 1,
+            "pos" : 1149 },
+          
+          { "form" : "see",
+            "context" : "you should <mark>see<\/mark> a build process proceed using the small...",
+            "weight" : 1,
+            "pos" : 1854 },
+          
+          { "form" : "see",
+            "context" : "...the problem based on any error messages you <mark>see<\/mark>. (Do you have Java, Ant and ant-contrib...",
+            "weight" : 1,
+            "pos" : 1877 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "see",
+            "context" : "...are also much easier to archive and replicate (<mark>see<\/mark> Holmes and Takeda (2019), The Prefabricated Website:...",
+            "weight" : 1,
+            "pos" : 90 } ] } ] }

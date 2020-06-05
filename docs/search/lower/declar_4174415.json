@@ -1,0 +1,118 @@
+
+  { "token" : "declar",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 22,
+        "contexts" : 
+        [ 
+          { "form" : "Declaration",
+            "context" : "Schema <mark>Declaration<\/mark>",
+            "weight" : 1,
+            "pos" : 38 },
+          
+          { "form" : "Declaration",
+            "context" : "Schema <mark>Declaration<\/mark>",
+            "weight" : 1,
+            "pos" : 89 },
+          
+          { "form" : "Declaration",
+            "context" : "Schema <mark>Declaration<\/mark>",
+            "weight" : 1,
+            "pos" : 124 },
+          
+          { "form" : "Declaration",
+            "context" : "Schema <mark>Declaration<\/mark>",
+            "weight" : 1,
+            "pos" : 168 },
+          
+          { "form" : "Declaration",
+            "context" : "Schema <mark>Declaration<\/mark>",
+            "weight" : 1,
+            "pos" : 203 },
+          
+          { "form" : "Declaration",
+            "context" : "Schema <mark>Declaration<\/mark>",
+            "weight" : 1,
+            "pos" : 271 },
+          
+          { "form" : "Declaration",
+            "context" : "Schema <mark>Declaration<\/mark>",
+            "weight" : 1,
+            "pos" : 304 },
+          
+          { "form" : "Declaration",
+            "context" : "Schema <mark>Declaration<\/mark>",
+            "weight" : 1,
+            "pos" : 344 },
+          
+          { "form" : "Declaration",
+            "context" : "Schema <mark>Declaration<\/mark>",
+            "weight" : 1,
+            "pos" : 383 },
+          
+          { "form" : "Declaration",
+            "context" : "Schema <mark>Declaration<\/mark>",
+            "weight" : 1,
+            "pos" : 427 },
+          
+          { "form" : "Declaration",
+            "context" : "Schema <mark>Declaration<\/mark>",
+            "weight" : 1,
+            "pos" : 464 },
+          
+          { "form" : "Declaration",
+            "context" : "Schema <mark>Declaration<\/mark>",
+            "weight" : 1,
+            "pos" : 501 },
+          
+          { "form" : "Declaration",
+            "context" : "Schema <mark>Declaration<\/mark>",
+            "weight" : 1,
+            "pos" : 548 },
+          
+          { "form" : "Declaration",
+            "context" : "Schema <mark>Declaration<\/mark>",
+            "weight" : 1,
+            "pos" : 586 },
+          
+          { "form" : "Declaration",
+            "context" : "Schema <mark>Declaration<\/mark>",
+            "weight" : 1,
+            "pos" : 615 },
+          
+          { "form" : "Declaration",
+            "context" : "Schema <mark>Declaration<\/mark>",
+            "weight" : 1,
+            "pos" : 679 },
+          
+          { "form" : "Declaration",
+            "context" : "Schema <mark>Declaration<\/mark>",
+            "weight" : 1,
+            "pos" : 714 },
+          
+          { "form" : "Declaration",
+            "context" : "Schema <mark>Declaration<\/mark>",
+            "weight" : 1,
+            "pos" : 753 },
+          
+          { "form" : "Declaration",
+            "context" : "Schema <mark>Declaration<\/mark>",
+            "weight" : 1,
+            "pos" : 811 },
+          
+          { "form" : "Declaration",
+            "context" : "Schema <mark>Declaration<\/mark>",
+            "weight" : 1,
+            "pos" : 842 },
+          
+          { "form" : "Declaration",
+            "context" : "Schema <mark>Declaration<\/mark>",
+            "weight" : 1,
+            "pos" : 871 },
+          
+          { "form" : "Declaration",
+            "context" : "Schema <mark>Declaration<\/mark>",
+            "weight" : 1,
+            "pos" : 921 } ] } ] }

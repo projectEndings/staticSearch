@@ -1,0 +1,13 @@
+
+  { "token" : "collabor",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "collaborating",
+            "context" : "...are typically the work of teams of people <mark>collaborating<\/mark> over many years, and the fruit of...",
+            "weight" : 1,
+            "pos" : 24 } ] } ] }

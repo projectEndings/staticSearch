@@ -1,0 +1,13 @@
+
+  { "token" : "essenti",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "essential",
+            "context" : "...having the JavaScript start downloading some of the <mark>essential<\/mark> files (titles, stopwords and so on) as...",
+            "weight" : 1,
+            "pos" : 208 } ] } ] }

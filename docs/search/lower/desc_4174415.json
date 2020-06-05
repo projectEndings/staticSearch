@@ -1,0 +1,23 @@
+
+  { "token" : "desc",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "desc",
+            "context" : "The description (<mark>desc<\/mark>) filter is a word or phrase describing...",
+            "weight" : 1,
+            "pos" : 104 },
+          
+          { "form" : "desc\"",
+            "context" : "<meta name=\"Document type\"  class=\"staticSearch.<mark>desc\"<\/mark> content=\"Poems\"\/>",
+            "weight" : 1,
+            "pos" : 119 },
+          
+          { "form" : "desc\"",
+            "context" : "<meta name=\"Document type\"  class=\"staticSearch.<mark>desc\"<\/mark> content=\"Short stories\"\/>",
+            "weight" : 1,
+            "pos" : 147 } ] } ] }

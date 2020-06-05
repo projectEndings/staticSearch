@@ -1,0 +1,53 @@
+
+  { "token" : "server",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "server",
+            "context" : "...However, since the tokenizer is unaware of any <mark>server<\/mark>-side processing, it understands the <span> as an...",
+            "weight" : 1,
+            "pos" : 1369 },
+          
+          { "form" : "server",
+            "context" : "...folder and all its contents to a web <mark>server<\/mark>, or by running a local webserver on...",
+            "weight" : 1,
+            "pos" : 1895 },
+          
+          { "form" : "server",
+            "context" : "...machine in that folder, using the Python HTTP <mark>server<\/mark> or PHP's built-in web server.",
+            "weight" : 1,
+            "pos" : 1904 },
+          
+          { "form" : "server",
+            "context" : "...the Python HTTP server or PHP's built-in web <mark>server<\/mark>.",
+            "weight" : 1,
+            "pos" : 1909 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "server",
+            "context" : "...CSS and JavaScript, without any dependency on back-end <mark>server<\/mark> systems such as databases or PHP processing)...",
+            "weight" : 1,
+            "pos" : 70 },
+          
+          { "form" : "server",
+            "context" : "...the long term than sites which use more <mark>server<\/mark>-side technology, and are also much easier to...",
+            "weight" : 1,
+            "pos" : 82 },
+          
+          { "form" : "server",
+            "context" : "...Takeda (2019), The Prefabricated Website: Who needs a <mark>server<\/mark> anyway?). For this reason, the Project Endings...",
+            "weight" : 1,
+            "pos" : 97 },
+          
+          { "form" : "server",
+            "context" : "...at all (except of course for a web <mark>server<\/mark>, which you need anyway).",
+            "weight" : 1,
+            "pos" : 188 } ] } ] }

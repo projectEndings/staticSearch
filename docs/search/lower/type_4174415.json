@@ -1,0 +1,133 @@
+
+  { "token" : "type",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 19,
+        "contexts" : 
+        [ 
+          { "form" : "types",
+            "context" : "...blog posts, or any combination of these document <mark>types<\/mark>, you will need to add <meta> tags...",
+            "weight" : 1,
+            "pos" : 86 },
+          
+          { "form" : "types",
+            "context" : "...what these filters are. staticSearch supports four filter <mark>types<\/mark>.",
+            "weight" : 1,
+            "pos" : 99 },
+          
+          { "form" : "type\"",
+            "context" : "<meta name=\"Document <mark>type\"<\/mark>  class=\"staticSearch.desc\" content=\"Poems\"\/>",
+            "weight" : 1,
+            "pos" : 116 },
+          
+          { "form" : "type",
+            "context" : "...to be a descriptive search filter called 'Document <mark>type<\/mark>', and one of the types is 'Poems';...",
+            "weight" : 1,
+            "pos" : 128 },
+          
+          { "form" : "types",
+            "context" : "...filter called 'Document type', and one of the <mark>types<\/mark> is 'Poems'; the document containing this <meta>...",
+            "weight" : 1,
+            "pos" : 130 },
+          
+          { "form" : "type",
+            "context" : "...<meta> tag is one of the Poems. Another <mark>type<\/mark> might be: If the Generator finds such...",
+            "weight" : 1,
+            "pos" : 139 },
+          
+          { "form" : "type\"",
+            "context" : "<meta name=\"Document <mark>type\"<\/mark>  class=\"staticSearch.desc\" content=\"Short stories\"\/>",
+            "weight" : 1,
+            "pos" : 144 },
+          
+          { "form" : "type",
+            "context" : "A fourth filter <mark>type<\/mark> is the boolean (true\/false) filter. To use...",
+            "weight" : 1,
+            "pos" : 288 },
+          
+          { "form" : "types",
+            "context" : "...to limit their search to specific    document <mark>types<\/mark>.<\/li> <\/ul>",
+            "weight" : 1,
+            "pos" : 1288 },
+          
+          { "form" : "types",
+            "context" : "...have two or more search pages targetting specific <mark>types<\/mark> of document or content, each of which...",
+            "weight" : 1,
+            "pos" : 1456 },
+          
+          { "form" : "type",
+            "context" : "...index files which have illustrations in them. -->  <exclude <mark>type<\/mark>=\"index\"   match=\"html[not(descendant::meta[@name='Has illustration(s)'][@content='true'])]\"\/> <!-- We ignore the document...",
+            "weight" : 1,
+            "pos" : 1546 },
+          
+          { "form" : "type",
+            "context" : "... <exclude type=\"index\"   match=\"html[not(descendant::meta[@name='Has illustration(s)'][@content='true'])]\"\/> <!-- We ignore the document <mark>type<\/mark> filter, because we are only indexing one...",
+            "weight" : 1,
+            "pos" : 1558 },
+          
+          { "form" : "type",
+            "context" : "...type filter, because we are only indexing one <mark>type<\/mark> of document anyway. -->  <exclude type=\"filter\"   match=\"meta[@name='Document type']\"\/>...",
+            "weight" : 1,
+            "pos" : 1562 },
+          
+          { "form" : "type",
+            "context" : "...only indexing one type of document anyway. -->  <exclude <mark>type<\/mark>=\"filter\"   match=\"meta[@name='Document type']\"\/> <!-- We exclude the filter...",
+            "weight" : 1,
+            "pos" : 1566 },
+          
+          { "form" : "type",
+            "context" : "...one type of document anyway. -->  <exclude type=\"filter\"   match=\"meta[@name='Document <mark>type<\/mark>']\"\/> <!-- We exclude the filter that specifies...",
+            "weight" : 1,
+            "pos" : 1572 },
+          
+          { "form" : "type",
+            "context" : "...that specifies these documents because it's pointless. -->  <exclude <mark>type<\/mark>=\"filter\"   match=\"meta[@name='Has illustration(s)']\"\/> <\/excludes>",
+            "weight" : 1,
+            "pos" : 1579 },
+          
+          { "form" : "type",
+            "context" : "...Here is an example: Here we use <exclude <mark>type<\/mark>=\"index\"\/> to specify that all documents which do...",
+            "weight" : 1,
+            "pos" : 1588 },
+          
+          { "form" : "type",
+            "context" : "...should be ignored. Then we use two <exclude <mark>type<\/mark>=\"filter\"\/> tags to specify first that the Document...",
+            "weight" : 1,
+            "pos" : 1602 },
+          
+          { "form" : "type",
+            "context" : "...type=\"filter\"\/> tags to specify first that the Document <mark>type<\/mark> filter should be ignored (i.e. it should...",
+            "weight" : 1,
+            "pos" : 1608 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "type",
+            "context" : "<mark>type<\/mark>",
+            "weight" : 1,
+            "pos" : 231 } ] },
+      
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "types",
+            "context" : "...users to limit their search to specific document <mark>types<\/mark>.",
+            "weight" : 1,
+            "pos" : 120 } ] },
+      
+      { "docId" : "whatDoesItDo",
+        "docUri" : "whatDoesItDo.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "type",
+            "context" : "...your documents, to allow searches for documents by <mark>type<\/mark>, by date range, and so on. Then...",
+            "weight" : 1,
+            "pos" : 42 } ] } ] }

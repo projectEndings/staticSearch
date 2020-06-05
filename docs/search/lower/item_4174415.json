@@ -1,0 +1,13 @@
+
+  { "token" : "item",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "items",
+            "context" : "...document date. If your collection of documents has <mark>items<\/mark> from different dates, you can add a...",
+            "weight" : 1,
+            "pos" : 183 } ] } ] }

@@ -1,0 +1,18 @@
+
+  { "token" : "per",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "per",
+            "context" : "...(The location of a dictionary file (one word <mark>per<\/mark> line) which will be used to check...",
+            "weight" : 1,
+            "pos" : 178 },
+          
+          { "form" : "per",
+            "context" : "...should be in plain text with one word <mark>per<\/mark> line.)",
+            "weight" : 1,
+            "pos" : 790 } ] } ] }

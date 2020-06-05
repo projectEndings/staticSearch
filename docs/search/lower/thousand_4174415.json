@@ -1,0 +1,18 @@
+
+  { "token" : "thousand",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "thousands",
+            "context" : "...the actual tokens. There will most likely be <mark>thousands<\/mark> of these files, but most of them...",
+            "weight" : 1,
+            "pos" : 52 },
+          
+          { "form" : "thousands",
+            "context" : "...it were to download the entire collection of <mark>thousands<\/mark> of token files, the process would take...",
+            "weight" : 1,
+            "pos" : 145 } ] } ] }

@@ -1,0 +1,13 @@
+
+  { "token" : "later",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "later",
+            "context" : "...the response should therefore be even faster for <mark>later<\/mark> searches than for early ones.",
+            "weight" : 1,
+            "pos" : 281 } ] } ] }

@@ -1,0 +1,13 @@
+
+  { "token" : "1903",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "1903",
+            "context" : "<mark>1903<\/mark>-01-02\/1905-05-31",
+            "weight" : 1,
+            "pos" : 235 } ] } ] }

@@ -1,0 +1,13 @@
+
+  { "token" : "bear",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "bear",
+            "context" : "...dev branch. If you clone the dev branch, <mark>bear<\/mark> in mind that you're working with development...",
+            "weight" : 1,
+            "pos" : 56 } ] } ] }

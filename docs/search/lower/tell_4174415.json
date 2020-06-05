@@ -1,0 +1,33 @@
+
+  { "token" : "tell",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 5,
+        "contexts" : 
+        [ 
+          { "form" : "tells",
+            "context" : "...The configuration file is an XML document which <mark>tells<\/mark> the Generator where to find your site,...",
+            "weight" : 1,
+            "pos" : 459 },
+          
+          { "form" : "tell",
+            "context" : "...list of conditions (using the <rule> element) that <mark>tell<\/mark> the parser, using XPath statements in the...",
+            "weight" : 1,
+            "pos" : 1066 },
+          
+          { "form" : "tell",
+            "context" : "...information on this subject can be found... To <mark>tell<\/mark> the tokenizer that the <span> constitutes the...",
+            "weight" : 1,
+            "pos" : 1389 },
+          
+          { "form" : "tell",
+            "context" : "...understood as a context block, then you can <mark>tell<\/mark> the parser to not consider it as...",
+            "weight" : 1,
+            "pos" : 1421 },
+          
+          { "form" : "tell",
+            "context" : "...to run the same command, but this time, <mark>tell<\/mark> the build process where to find your...",
+            "weight" : 1,
+            "pos" : 1920 } ] } ] }

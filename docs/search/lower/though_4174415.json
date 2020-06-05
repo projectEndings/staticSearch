@@ -1,0 +1,13 @@
+
+  { "token" : "though",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "though",
+            "context" : "At the same time, <mark>though<\/mark>, we don't want to clog up the...",
+            "weight" : 1,
+            "pos" : 222 } ] } ] }

@@ -1,0 +1,18 @@
+
+  { "token" : "month",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "month",
+            "context" : "1895-01 (year and <mark>month<\/mark>)",
+            "weight" : 1,
+            "pos" : 208 },
+          
+          { "form" : "month",
+            "context" : "1895-01-05 (year, <mark>month<\/mark> and day)",
+            "weight" : 1,
+            "pos" : 211 } ] } ] }

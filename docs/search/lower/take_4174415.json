@@ -1,0 +1,53 @@
+
+  { "token" : "take",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 5,
+        "contexts" : 
+        [ 
+          { "form" : "take",
+            "context" : "...a <meta> tag like this: The date may <mark>take<\/mark> any of the following forms: For some...",
+            "weight" : 1,
+            "pos" : 201 },
+          
+          { "form" : "taking",
+            "context" : "...but, as we discuss shortly, we highly suggest <mark>taking<\/mark> advantage of the <rules> and <contexts> for...",
+            "weight" : 1,
+            "pos" : 488 },
+          
+          { "form" : "take",
+            "context" : "...simple version number for the project. This might <mark>take<\/mark> the form of a software-release-style version number...",
+            "weight" : 1,
+            "pos" : 666 },
+          
+          { "form" : "Take",
+            "context" : "...element that it can use as its context. <mark>Take<\/mark>, for instance, this unordered list: Each <li>...",
+            "weight" : 1,
+            "pos" : 1260 },
+          
+          { "form" : "take",
+            "context" : "You can <mark>take<\/mark> a look at the test\/search.html page for...",
+            "weight" : 1,
+            "pos" : 1768 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "take",
+            "context" : "...of thousands of token files, the process would <mark>take<\/mark> forever. So when you search for the...",
+            "weight" : 1,
+            "pos" : 150 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "take",
+            "context" : "Most digital publications <mark>take<\/mark> one of two approaches to search: either...",
+            "weight" : 1,
+            "pos" : 121 } ] } ] }

@@ -1,0 +1,13 @@
+
+  { "token" : "tradit",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "traditional",
+            "context" : "...shelf-life, if possible comparable with that of a <mark>traditional<\/mark> print publication. However, digital longevity of DH...",
+            "weight" : 1,
+            "pos" : 36 } ] } ] }

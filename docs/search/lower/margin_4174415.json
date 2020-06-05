@@ -1,0 +1,18 @@
+
+  { "token" : "margin",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "marginal",
+            "context" : "...contexts. For instance, say a page contained a <mark>marginal<\/mark> note, encoded as a <span> in your...",
+            "weight" : 1,
+            "pos" : 1330 },
+          
+          { "form" : "margin",
+            "context" : "...be alongside the text of the document in <mark>margin<\/mark>, or made into a clickable object using...",
+            "weight" : 1,
+            "pos" : 1358 } ] } ] }

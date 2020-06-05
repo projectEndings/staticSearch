@@ -1,0 +1,13 @@
+
+  { "token" : "shelf",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "shelf",
+            "context" : "...of their labours deserves to have a significant <mark>shelf<\/mark>-life, if possible comparable with that of a...",
+            "weight" : 1,
+            "pos" : 32 } ] } ] }

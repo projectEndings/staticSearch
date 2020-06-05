@@ -1,0 +1,38 @@
+
+  { "token" : "obvious",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "Obviously",
+            "context" : "...search engine to support phrasal searches (quoted strings). <mark>Obviously<\/mark> this is a useful feature, but it...",
+            "weight" : 1,
+            "pos" : 738 },
+          
+          { "form" : "Obviously",
+            "context" : "...specifying how long a keyword-in-context string should be. <mark>Obviously<\/mark>, the higher this number is, the larger...",
+            "weight" : 1,
+            "pos" : 842 },
+          
+          { "form" : "obviously",
+            "context" : "...need to understand them or debug them, but <mark>obviously<\/mark> it adds to their file size.",
+            "weight" : 1,
+            "pos" : 1011 },
+          
+          { "form" : "obviously",
+            "context" : "You'll <mark>obviously<\/mark> want the search page for your site...",
+            "weight" : 1,
+            "pos" : 1648 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Obviously",
+            "context" : "...the information it needs for each specific search. <mark>Obviously<\/mark>, if it were to download the entire...",
+            "weight" : 1,
+            "pos" : 141 } ] } ] }

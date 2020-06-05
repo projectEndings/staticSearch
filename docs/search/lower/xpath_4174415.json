@@ -1,0 +1,53 @@
+
+  { "token" : "xpath",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 6,
+        "contexts" : 
+        [ 
+          { "form" : "XPath",
+            "context" : "...<contexts> (The set of contexts, expressed as <mark>XPath<\/mark> in match, that controls the identification of...",
+            "weight" : 1,
+            "pos" : 97 },
+          
+          { "form" : "XPath",
+            "context" : "...either documents or filters as defined by an <mark>XPath<\/mark> in match.)",
+            "weight" : 1,
+            "pos" : 215 },
+          
+          { "form" : "XPath",
+            "context" : "...<excludes> (The set of exclusions, expressed as <mark>XPath<\/mark> in match, that control the subset of...",
+            "weight" : 1,
+            "pos" : 279 },
+          
+          { "form" : "XPath",
+            "context" : "...(A rule that specifies a document path as <mark>XPath<\/mark> in match, and provides weighting for search...",
+            "weight" : 1,
+            "pos" : 624 },
+          
+          { "form" : "XPath",
+            "context" : "...<rules> (The set of rules, expressed as <mark>XPath<\/mark> in match, that control weighting of search...",
+            "weight" : 1,
+            "pos" : 687 },
+          
+          { "form" : "XPath",
+            "context" : "(An <mark>XPath<\/mark> equivalent to the @match attribute of an...",
+            "weight" : 1,
+            "pos" : 983 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "XPath",
+            "context" : "...the <rule> element) that tell the parser, using <mark>XPath<\/mark> statements in the match attribute, specific weights...",
+            "weight" : 1,
+            "pos" : 1069 },
+          
+          { "form" : "XPath",
+            "context" : "...using a rule like so: Since we're using <mark>XPath<\/mark> 3.0 and XSLT 3.0, this can also...",
+            "weight" : 1,
+            "pos" : 1103 } ] } ] }

@@ -1,0 +1,18 @@
+
+  { "token" : "thispag",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "thisPage",
+            "context" : "<meta name=\"docImage\"  class=\"staticSearch.docImage\" content=\"images\/<mark>thisPage<\/mark>.jpg\"\/>",
+            "weight" : 1,
+            "pos" : 421 },
+          
+          { "form" : "thisPage",
+            "context" : "...and that folder would contain a file called <mark>thisPage<\/mark>.jpg.",
+            "weight" : 1,
+            "pos" : 449 } ] } ] }

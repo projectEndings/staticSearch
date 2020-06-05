@@ -1,0 +1,13 @@
+
+  { "token" : "clickabl",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "clickable",
+            "context" : "...the document in margin, or made into a <mark>clickable<\/mark> object using Javascript. However, since the tokenizer...",
+            "weight" : 1,
+            "pos" : 1360 } ] } ] }

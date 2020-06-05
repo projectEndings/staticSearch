@@ -1,0 +1,53 @@
+
+  { "token" : "run",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 10,
+        "contexts" : 
+        [ 
+          { "form" : "Running",
+            "context" : "6.6 <mark>Running<\/mark> the search build process",
+            "weight" : 2,
+            "pos" : 1799 },
+          
+          { "form" : "run",
+            "context" : "...what options you want to use. Then you <mark>run<\/mark> the generator, and the search functionality should...",
+            "weight" : 1,
+            "pos" : 26 },
+          
+          { "form" : "runs",
+            "context" : "When the indexing process <mark>runs<\/mark> over your document collection, by default it...",
+            "weight" : 1,
+            "pos" : 318 },
+          
+          { "form" : "run",
+            "context" : "...page for your site. This requires that you <mark>run<\/mark> ant in the root folder of the...",
+            "weight" : 1,
+            "pos" : 1815 },
+          
+          { "form" : "running",
+            "context" : "Before <mark>running<\/mark> the search on your own site, you...",
+            "weight" : 1,
+            "pos" : 1833 },
+          
+          { "form" : "run",
+            "context" : "...build of the test materials. If you simply <mark>run<\/mark> the ant command, like this:",
+            "weight" : 1,
+            "pos" : 1845 },
+          
+          { "form" : "running",
+            "context" : "...its contents to a web server, or by <mark>running<\/mark> a local webserver on your machine in...",
+            "weight" : 1,
+            "pos" : 1896 },
+          
+          { "form" : "run",
+            "context" : "...for your own site. Now you need to <mark>run<\/mark> the same command, but this time, tell...",
+            "weight" : 1,
+            "pos" : 1917 },
+          
+          { "form" : "run",
+            "context" : "The same process should <mark>run<\/mark>, and if it's successful, you should have...",
+            "weight" : 1,
+            "pos" : 1936 } ] } ] }

@@ -1,0 +1,18 @@
+
+  { "token" : "remov",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "remove",
+            "context" : "...to 0. For instance, if you want to <mark>remove<\/mark> the header and the footer from the...",
+            "weight" : 1,
+            "pos" : 1180 },
+          
+          { "form" : "remove",
+            "context" : "...write something like: Or if you want to <mark>remove<\/mark> XHTML anchor tags (<a>) whose text is...",
+            "weight" : 1,
+            "pos" : 1196 } ] } ] }

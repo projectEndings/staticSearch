@@ -1,0 +1,33 @@
+
+  { "token" : "6.1",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 10,
+        "contexts" : 
+        [ 
+          { "form" : "6.1",
+            "context" : "<mark>6.1<\/mark> Configuring your site: search filters",
+            "weight" : 2,
+            "pos" : 63 },
+          
+          { "form" : "6.1",
+            "context" : "<mark>6.1<\/mark>.1 Description filters",
+            "weight" : 2,
+            "pos" : 100 },
+          
+          { "form" : "6.1",
+            "context" : "<mark>6.1<\/mark>.2 Date filters",
+            "weight" : 2,
+            "pos" : 170 },
+          
+          { "form" : "6.1",
+            "context" : "<mark>6.1<\/mark>.3 Number filters",
+            "weight" : 2,
+            "pos" : 237 },
+          
+          { "form" : "6.1",
+            "context" : "<mark>6.1<\/mark>.4 Boolean filters",
+            "weight" : 2,
+            "pos" : 283 } ] } ] }

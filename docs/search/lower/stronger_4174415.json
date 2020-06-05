@@ -1,0 +1,13 @@
+
+  { "token" : "stronger",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "stronger",
+            "context" : "...specific context, or greater than 1 to give <mark>stronger<\/mark> weighting.)",
+            "weight" : 1,
+            "pos" : 664 } ] } ] }

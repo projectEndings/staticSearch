@@ -1,0 +1,28 @@
+
+  { "token" : "quot",
+    "instances" : 
+    [ 
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "quoted",
+            "context" : "Phrasal searches. Any <mark>quoted<\/mark> phrase will be searched as-is, and when...",
+            "weight" : 1,
+            "pos" : 70 },
+          
+          { "form" : "quoted",
+            "context" : "...quoted phrase will be searched as-is, and when <mark>quoted<\/mark> phrases are included in a search, any...",
+            "weight" : 1,
+            "pos" : 74 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "quoted",
+            "context" : "...want your search engine to support phrasal searches (<mark>quoted<\/mark> strings). Obviously this is a useful feature,...",
+            "weight" : 1,
+            "pos" : 736 } ] } ] }

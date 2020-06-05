@@ -1,0 +1,23 @@
+
+  { "token" : "classifi",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "classified",
+            "context" : "...just wanting a list of all the documents <mark>classified<\/mark> as 'Poems'. This requires that the JSON...",
+            "weight" : 1,
+            "pos" : 196 } ] },
+      
+      { "docId" : "searchFacetFeatures",
+        "docUri" : "searchFacetFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "classify",
+            "context" : "Descriptors. You might for example <mark>classify<\/mark> your documents as poems, short stories and...",
+            "weight" : 1,
+            "pos" : 22 } ] } ] }

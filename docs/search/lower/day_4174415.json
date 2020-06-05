@@ -1,0 +1,13 @@
+
+  { "token" : "day",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "day",
+            "context" : "1895-01-05 (year, month and <mark>day<\/mark>)",
+            "weight" : 1,
+            "pos" : 212 } ] } ] }

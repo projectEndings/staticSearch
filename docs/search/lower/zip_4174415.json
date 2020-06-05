@@ -1,0 +1,13 @@
+
+  { "token" : "zip",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "zip",
+            "context" : "...get the latest version. You can download a <mark>zip<\/mark> file and unzip it to create a...",
+            "weight" : 1,
+            "pos" : 29 } ] } ] }

@@ -1,0 +1,18 @@
+
+  { "token" : "thus",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "thus",
+            "context" : "...documents to be given a greater weight and <mark>thus<\/mark> receive a higher score in the results,...",
+            "weight" : 1,
+            "pos" : 1088 },
+          
+          { "form" : "thus",
+            "context" : "...transformed in a XSLT template match attribute, and <mark>thus<\/mark> must follow the same rules (i.e. no...",
+            "weight" : 1,
+            "pos" : 1140 } ] } ] }

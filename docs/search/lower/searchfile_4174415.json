@@ -1,0 +1,48 @@
+
+  { "token" : "searchfile",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "searchFile",
+            "context" : "<<mark>searchFile<\/mark>>",
+            "weight" : 1,
+            "pos" : 511 },
+          
+          { "form" : "searchFile",
+            "context" : "The <<mark>searchFile<\/mark>> element is a relative URI (resolved, like...",
+            "weight" : 1,
+            "pos" : 513 },
+          
+          { "form" : "searchFile",
+            "context" : "...XHTML you want the search to index), the <mark>searchFile<\/mark> parameter provides the necessary information for knowing...",
+            "weight" : 1,
+            "pos" : 548 },
+          
+          { "form" : "searchFile",
+            "context" : "...can easily be achieved by specifying a different <<mark>searchFile<\/mark>> and <outputFolder> in the configuration file for...",
+            "weight" : 1,
+            "pos" : 1469 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "searchFile",
+            "context" : "Appendix A.1.18 <<mark>searchFile<\/mark>>",
+            "weight" : 2,
+            "pos" : 717 },
+          
+          { "form" : "searchFile",
+            "context" : "...dictionaryFile indentJSON kwicTruncateString maxKwicsToHarvest maxKwicsToShow outputFolder phrasalSearch recurse <mark>searchFile<\/mark> stopwordsFile totalKwicLength verbose versionFile",
+            "weight" : 1,
+            "pos" : 540 },
+          
+          { "form" : "searchFile",
+            "context" : "<<mark>searchFile<\/mark>> (The search file (aka page) that will...",
+            "weight" : 1,
+            "pos" : 718 } ] } ] }

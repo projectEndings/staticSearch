@@ -1,0 +1,13 @@
+
+  { "token" : "numer",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "numeric",
+            "context" : "...also configure a range filter based on a <mark>numeric<\/mark> value (integer or decimal). For example, you...",
+            "weight" : 1,
+            "pos" : 245 } ] } ] }

@@ -1,0 +1,23 @@
+
+  { "token" : "defin",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "defining",
+            "context" : "...may also use this element if you are <mark>defining<\/mark> two different searches within the same site,...",
+            "weight" : 1,
+            "pos" : 1038 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "defined",
+            "context" : "...definition, which excludes either documents or filters as <mark>defined<\/mark> by an XPath in match.)",
+            "weight" : 1,
+            "pos" : 214 } ] } ] }

@@ -1,0 +1,13 @@
+
+  { "token" : "codebas",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "codebase",
+            "context" : "The second way to get the <mark>codebase<\/mark> is to clone it from the GitHub...",
+            "weight" : 1,
+            "pos" : 39 } ] } ] }

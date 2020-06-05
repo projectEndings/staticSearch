@@ -1,0 +1,18 @@
+
+  { "token" : "uri",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "URI",
+            "context" : "The <searchFile> element is a relative <mark>URI<\/mark> (resolved, like all URIs specified in the...",
+            "weight" : 1,
+            "pos" : 516 },
+          
+          { "form" : "URIs",
+            "context" : "...element is a relative URI (resolved, like all <mark>URIs<\/mark> specified in the config file, against the...",
+            "weight" : 1,
+            "pos" : 519 } ] } ] }

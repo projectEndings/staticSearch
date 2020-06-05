@@ -1,0 +1,13 @@
+
+  { "token" : "januari",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "January",
+            "context" : "Last Updated: 13 <mark>January<\/mark> 2020",
+            "weight" : 1,
+            "pos" : 10 } ] } ] }

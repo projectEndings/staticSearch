@@ -1,0 +1,128 @@
+
+  { "token" : "namespac",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 22,
+        "contexts" : 
+        [ 
+          { "form" : "Namespace",
+            "context" : "<mark>Namespace<\/mark>",
+            "weight" : 1,
+            "pos" : 18 },
+          
+          { "form" : "Namespace",
+            "context" : "<mark>Namespace<\/mark>",
+            "weight" : 1,
+            "pos" : 58 },
+          
+          { "form" : "Namespace",
+            "context" : "<mark>Namespace<\/mark>",
+            "weight" : 1,
+            "pos" : 106 },
+          
+          { "form" : "Namespace",
+            "context" : "<mark>Namespace<\/mark>",
+            "weight" : 1,
+            "pos" : 149 },
+          
+          { "form" : "Namespace",
+            "context" : "<mark>Namespace<\/mark>",
+            "weight" : 1,
+            "pos" : 184 },
+          
+          { "form" : "Namespace",
+            "context" : "<mark>Namespace<\/mark>",
+            "weight" : 1,
+            "pos" : 217 },
+          
+          { "form" : "Namespace",
+            "context" : "<mark>Namespace<\/mark>",
+            "weight" : 1,
+            "pos" : 286 },
+          
+          { "form" : "Namespace",
+            "context" : "<mark>Namespace<\/mark>",
+            "weight" : 1,
+            "pos" : 325 },
+          
+          { "form" : "Namespace",
+            "context" : "<mark>Namespace<\/mark>",
+            "weight" : 1,
+            "pos" : 364 },
+          
+          { "form" : "Namespace",
+            "context" : "<mark>Namespace<\/mark>",
+            "weight" : 1,
+            "pos" : 408 },
+          
+          { "form" : "Namespace",
+            "context" : "<mark>Namespace<\/mark>",
+            "weight" : 1,
+            "pos" : 445 },
+          
+          { "form" : "Namespace",
+            "context" : "<mark>Namespace<\/mark>",
+            "weight" : 1,
+            "pos" : 482 },
+          
+          { "form" : "Namespace",
+            "context" : "<mark>Namespace<\/mark>",
+            "weight" : 1,
+            "pos" : 517 },
+          
+          { "form" : "Namespace",
+            "context" : "<mark>Namespace<\/mark>",
+            "weight" : 1,
+            "pos" : 567 },
+          
+          { "form" : "Namespace",
+            "context" : "<mark>Namespace<\/mark>",
+            "weight" : 1,
+            "pos" : 596 },
+          
+          { "form" : "Namespace",
+            "context" : "<mark>Namespace<\/mark>",
+            "weight" : 1,
+            "pos" : 632 },
+          
+          { "form" : "Namespace",
+            "context" : "<mark>Namespace<\/mark>",
+            "weight" : 1,
+            "pos" : 696 },
+          
+          { "form" : "Namespace",
+            "context" : "<mark>Namespace<\/mark>",
+            "weight" : 1,
+            "pos" : 734 },
+          
+          { "form" : "Namespace",
+            "context" : "<mark>Namespace<\/mark>",
+            "weight" : 1,
+            "pos" : 792 },
+          
+          { "form" : "Namespace",
+            "context" : "<mark>Namespace<\/mark>",
+            "weight" : 1,
+            "pos" : 823 },
+          
+          { "form" : "Namespace",
+            "context" : "<mark>Namespace<\/mark>",
+            "weight" : 1,
+            "pos" : 852 },
+          
+          { "form" : "Namespace",
+            "context" : "<mark>Namespace<\/mark>",
+            "weight" : 1,
+            "pos" : 902 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "namespace",
+            "context" : "...pages which are well-formed XML, using the XHTML <mark>namespace<\/mark>. If your site is just raggedy tag-soup,...",
+            "weight" : 1,
+            "pos" : 50 } ] } ] }

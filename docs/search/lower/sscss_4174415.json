@@ -1,0 +1,13 @@
+
+  { "token" : "sscss",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "\"ssCss\"",
+            "context" : "<style id=<mark>\"ssCss\"<\/mark>> [...styles for search controls...] <\/style>",
+            "weight" : 1,
+            "pos" : 1731 } ] } ] }

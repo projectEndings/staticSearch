@@ -1,0 +1,38 @@
+
+  { "token" : "cours",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "course",
+            "context" : "...increases the size of the index, but of <mark>course<\/mark> it makes for much more user-friendly search...",
+            "weight" : 1,
+            "pos" : 788 },
+          
+          { "form" : "course",
+            "context" : "...the JSON files will be constrained, but of <mark>course<\/mark> the user will only be able to...",
+            "weight" : 1,
+            "pos" : 814 },
+          
+          { "form" : "course",
+            "context" : "...of additional disk space and build time, of <mark>course<\/mark>; each of these searches needs to be...",
+            "weight" : 1,
+            "pos" : 1639 },
+          
+          { "form" : "course",
+            "context" : "...create a complete HTML document (which must of <mark>course<\/mark> also be well-formed XML, so it can...",
+            "weight" : 1,
+            "pos" : 1663 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "course",
+            "context" : "...for any back-end services at all (except of <mark>course<\/mark> for a web server, which you need...",
+            "weight" : 1,
+            "pos" : 186 } ] } ] }
