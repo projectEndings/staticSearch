@@ -1,0 +1,63 @@
+
+  { "token" : "includ",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 6,
+        "contexts" : 
+        [ 
+          { "form" : "include",
+            "context" : "...purpose; for example, all of your documents may <mark>include<\/mark> the site title as the first part...",
+            "weight" : 1,
+            "pos" : 345 },
+          
+          { "form" : "include",
+            "context" : "...document title, but it would be pointless to <mark>include<\/mark> this in the search result links. Therefore...",
+            "weight" : 1,
+            "pos" : 354 },
+          
+          { "form" : "include",
+            "context" : "...of a search hit, you may want to <mark>include<\/mark> with it a thumbnail image. This may...",
+            "weight" : 1,
+            "pos" : 388 },
+          
+          { "form" : "include",
+            "context" : "...and what search features you would like to <mark>include<\/mark>. The configuration file conforms to a schema...",
+            "weight" : 1,
+            "pos" : 467 },
+          
+          { "form" : "include",
+            "context" : "...common elements that you might want to exclude <mark>include<\/mark>:",
+            "weight" : 1,
+            "pos" : 1235 },
+          
+          { "form" : "including",
+            "context" : "... <li>Keyword-in-context search results. This is also configurable, since <mark>including<\/mark> contexts    increases the size of the...",
+            "weight" : 1,
+            "pos" : 1272 } ] },
+      
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "included",
+            "context" : "...be searched as-is, and when quoted phrases are <mark>included<\/mark> in a search, any hit document must...",
+            "weight" : 1,
+            "pos" : 76 },
+          
+          { "form" : "including",
+            "context" : "...Keyword-in-context search results. This is also configurable, since <mark>including<\/mark> contexts increases the size of the index....",
+            "weight" : 1,
+            "pos" : 104 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "include",
+            "context" : "<createContexts> (Whether to <mark>include<\/mark> keyword-in-context extracts in the index. This increases...",
+            "weight" : 1,
+            "pos" : 130 } ] } ] }

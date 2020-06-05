@@ -1,0 +1,13 @@
+
+  { "token" : "earli",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "early",
+            "context" : "...be even faster for later searches than for <mark>early<\/mark> ones.",
+            "weight" : 1,
+            "pos" : 283 } ] } ] }

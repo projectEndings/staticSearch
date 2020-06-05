@@ -1,0 +1,13 @@
+
+  { "token" : "sad",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "sadly",
+            "context" : "...publication. However, digital longevity of DH projects is <mark>sadly<\/mark> short, and many disappear or cease to...",
+            "weight" : 1,
+            "pos" : 43 } ] } ] }

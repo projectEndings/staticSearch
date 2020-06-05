@@ -1,0 +1,33 @@
+
+  { "token" : "ad",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "added",
+            "context" : "...the generator, and the search functionality should be <mark>added<\/mark> to your site.",
+            "weight" : 1,
+            "pos" : 30 },
+          
+          { "form" : "added",
+            "context" : "...been processed and all this content has been <mark>added<\/mark>, you can process it again at any...",
+            "weight" : 1,
+            "pos" : 1756 } ] },
+      
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "Adding",
+            "context" : "Boolean search operators. <mark>Adding<\/mark> + (plus) before a word means that...",
+            "weight" : 1,
+            "pos" : 41 },
+          
+          { "form" : "adding",
+            "context" : "...that search results must contain that word, and <mark>adding<\/mark> a - (minus) means that results must...",
+            "weight" : 1,
+            "pos" : 50 } ] } ] }

@@ -1,0 +1,13 @@
+
+  { "token" : "replic",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "replicate",
+            "context" : "...and are also much easier to archive and <mark>replicate<\/mark> (see Holmes and Takeda (2019), The Prefabricated...",
+            "weight" : 1,
+            "pos" : 89 } ] } ] }

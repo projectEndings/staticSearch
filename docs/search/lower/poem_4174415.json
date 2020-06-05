@@ -1,0 +1,78 @@
+
+  { "token" : "poem",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 6,
+        "contexts" : 
+        [ 
+          { "form" : "poems",
+            "context" : "...your users to search (for example) only in <mark>poems<\/mark>, or only in articles, or only in...",
+            "weight" : 1,
+            "pos" : 80 },
+          
+          { "form" : "\"Poems\"",
+            "context" : "<meta name=\"Document type\"  class=\"staticSearch.desc\" content=<mark>\"Poems\"<\/mark>\/>",
+            "weight" : 1,
+            "pos" : 121 },
+          
+          { "form" : "Poems",
+            "context" : "...'Document type', and one of the types is '<mark>Poems<\/mark>'; the document containing this <meta> tag is...",
+            "weight" : 1,
+            "pos" : 131 },
+          
+          { "form" : "Poems",
+            "context" : "...containing this <meta> tag is one of the <mark>Poems<\/mark>. Another type might be: If the Generator...",
+            "weight" : 1,
+            "pos" : 137 },
+          
+          { "form" : "poem",
+            "context" : "<mark>poem<\/mark>.html",
+            "weight" : 1,
+            "pos" : 593 },
+          
+          { "form" : "poem",
+            "context" : "<mark>poem<\/mark>.html",
+            "weight" : 1,
+            "pos" : 608 } ] },
+      
+      { "docId" : "searchFacetFeatures",
+        "docUri" : "searchFacetFeatures.html",
+        "score" : 5,
+        "contexts" : 
+        [ 
+          { "form" : "poems",
+            "context" : "...You might for example classify your documents as <mark>poems<\/mark>, short stories and novels; the user can...",
+            "weight" : 1,
+            "pos" : 24 },
+          
+          { "form" : "poems",
+            "context" : "...user can then choose to search in only <mark>poems<\/mark>, or poems and short stories.",
+            "weight" : 1,
+            "pos" : 31 },
+          
+          { "form" : "poems",
+            "context" : "...then choose to search in only poems, or <mark>poems<\/mark> and short stories.",
+            "weight" : 1,
+            "pos" : 32 },
+          
+          { "form" : "poems",
+            "context" : "...values). You might for instance specify that some <mark>poems<\/mark> are illustrated while others are not. The...",
+            "weight" : 1,
+            "pos" : 68 },
+          
+          { "form" : "poems",
+            "context" : "...could then limit their search only to illustrated <mark>poems<\/mark>.",
+            "weight" : 1,
+            "pos" : 76 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Poems",
+            "context" : "...a list of all the documents classified as '<mark>Poems<\/mark>'. This requires that the JSON file with...",
+            "weight" : 1,
+            "pos" : 197 } ] } ] }

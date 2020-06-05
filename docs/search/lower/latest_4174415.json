@@ -1,0 +1,13 @@
+
+  { "token" : "latest",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "latest",
+            "context" : "...release page; we recommend that you get the <mark>latest<\/mark> version. You can download a zip file...",
+            "weight" : 1,
+            "pos" : 26 } ] } ] }

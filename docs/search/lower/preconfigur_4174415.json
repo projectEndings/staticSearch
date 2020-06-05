@@ -1,0 +1,13 @@
+
+  { "token" : "preconfigur",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "preconfigured",
+            "context" : "...of 2 by default, which is the only <mark>preconfigured<\/mark> weight in static search.)",
+            "weight" : 1,
+            "pos" : 1128 } ] } ] }

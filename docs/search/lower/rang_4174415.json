@@ -1,0 +1,53 @@
+
+  { "token" : "rang",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "range",
+            "context" : "...in this form, so you can specify a <mark>range<\/mark> instead, using a slash to separate the...",
+            "weight" : 1,
+            "pos" : 221 },
+          
+          { "form" : "range",
+            "context" : "...separate the start and end dates of the <mark>range<\/mark> (following ISO 8601):",
+            "weight" : 1,
+            "pos" : 229 },
+          
+          { "form" : "range",
+            "context" : "You can also configure a <mark>range<\/mark> filter based on a numeric value (integer...",
+            "weight" : 1,
+            "pos" : 242 } ] },
+      
+      { "docId" : "searchFacetFeatures",
+        "docUri" : "searchFacetFeatures.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "ranges",
+            "context" : "Date <mark>ranges<\/mark>. You might assign each document a date...",
+            "weight" : 1,
+            "pos" : 36 },
+          
+          { "form" : "range",
+            "context" : "...assign each document a date (or a date <mark>range<\/mark>) for its first publication and another for...",
+            "weight" : 1,
+            "pos" : 42 },
+          
+          { "form" : "range",
+            "context" : "...for documents first published in a certain date <mark>range<\/mark> and last published before another date.",
+            "weight" : 1,
+            "pos" : 56 } ] },
+      
+      { "docId" : "whatDoesItDo",
+        "docUri" : "whatDoesItDo.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "range",
+            "context" : "...allow searches for documents by type, by date <mark>range<\/mark>, and so on. Then it creates a...",
+            "weight" : 1,
+            "pos" : 44 } ] } ] }

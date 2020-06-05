@@ -1,0 +1,73 @@
+
+  { "token" : "number",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 9,
+        "contexts" : 
+        [ 
+          { "form" : "Number",
+            "context" : "6.1.3 <mark>Number<\/mark> filters",
+            "weight" : 2,
+            "pos" : 238 },
+          
+          { "form" : "number",
+            "context" : "...to a plain-text file containing a simple version <mark>number<\/mark> for the project. This might take the...",
+            "weight" : 1,
+            "pos" : 663 },
+          
+          { "form" : "number",
+            "context" : "...might take the form of a software-release-style version <mark>number<\/mark> such as 1.5, or it might be...",
+            "weight" : 1,
+            "pos" : 673 },
+          
+          { "form" : "number",
+            "context" : "...1.5, or it might be a Subversion revision <mark>number<\/mark> or a Git commit id. It should...",
+            "weight" : 1,
+            "pos" : 678 },
+          
+          { "form" : "number",
+            "context" : "<maxKwicsToHarvest> controls the <mark>number<\/mark> of keyword-in-context extracts that will be harvested...",
+            "weight" : 1,
+            "pos" : 798 },
+          
+          { "form" : "number",
+            "context" : "...document. If you set this to a low <mark>number<\/mark>, the size of the JSON files will...",
+            "weight" : 1,
+            "pos" : 809 },
+          
+          { "form" : "number",
+            "context" : "<maxKwicsToShow> controls the <mark>number<\/mark> of keyword-in-context extracts that will be shown...",
+            "weight" : 1,
+            "pos" : 824 },
+          
+          { "form" : "number",
+            "context" : "...keyword-in-context string should be. Obviously, the higher this <mark>number<\/mark> is, the larger the individual index files...",
+            "weight" : 1,
+            "pos" : 844 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "number",
+            "context" : "<maxKwicsToHarvest> (This controls the maximum <mark>number<\/mark> of keyword-in-context extracts that will be stored...",
+            "weight" : 1,
+            "pos" : 390 },
+          
+          { "form" : "number",
+            "context" : "<maxKwicsToShow> (This controls the maximum <mark>number<\/mark> of keyword-in-context extracts that will be shown...",
+            "weight" : 1,
+            "pos" : 434 } ] },
+      
+      { "docId" : "whatDoesItDo",
+        "docUri" : "whatDoesItDo.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "number",
+            "context" : "...the index in the form of a large <mark>number<\/mark> of small JSON files. It also creates...",
+            "weight" : 1,
+            "pos" : 26 } ] } ] }

@@ -1,0 +1,38 @@
+
+  { "token" : "identifi",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "identifies",
+            "context" : "...(A context definition, providing a match attribute that <mark>identifies<\/mark> the context, allowing keyword-in-context fragments to be...",
+            "weight" : 1,
+            "pos" : 48 },
+          
+          { "form" : "identifier",
+            "context" : "...to a text file containing a single version <mark>identifier<\/mark> (such as 1.5, 123456, or 06ad419). This...",
+            "weight" : 1,
+            "pos" : 883 },
+          
+          { "form" : "identify",
+            "context" : "...a label attribute that can be used to <mark>identify<\/mark>\/describe contexts and other things which benefit from...",
+            "weight" : 1,
+            "pos" : 936 },
+          
+          { "form" : "identifier",
+            "context" : "(A string <mark>identifier<\/mark> which may be descriptive.)",
+            "weight" : 1,
+            "pos" : 952 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "identifiers",
+            "context" : "...facets, consisting of a list of the document <mark>identifiers<\/mark> for all documents which match the filters;...",
+            "weight" : 1,
+            "pos" : 87 } ] } ] }

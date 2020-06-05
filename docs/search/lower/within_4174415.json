@@ -1,0 +1,28 @@
+
+  { "token" : "within",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "within",
+            "context" : "...element if you are defining two different searches <mark>within<\/mark> the same site, so that their files...",
+            "weight" : 1,
+            "pos" : 1042 },
+          
+          { "form" : "within",
+            "context" : "...specialized search pages which have customized form controls <mark>within<\/mark> the same document collection. This is at...",
+            "weight" : 1,
+            "pos" : 1630 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "within",
+            "context" : "...short, and many disappear or cease to function <mark>within<\/mark> a few years of their creation, because...",
+            "weight" : 1,
+            "pos" : 49 } ] } ] }

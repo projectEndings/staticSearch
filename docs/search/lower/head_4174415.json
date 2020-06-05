@@ -1,0 +1,38 @@
+
+  { "token" : "head",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 6,
+        "contexts" : 
+        [ 
+          { "form" : "heads",
+            "context" : "...will need to add <meta> tags to the <mark>heads<\/mark> of your documents to specify what these...",
+            "weight" : 1,
+            "pos" : 91 },
+          
+          { "form" : "heading",
+            "context" : "...each document. For instance, if you wanted all <mark>heading<\/mark> elements (<h1>, <h2>, etc) in documents to...",
+            "weight" : 1,
+            "pos" : 1081 },
+          
+          { "form" : "heading",
+            "context" : "...noting, however, the above example is unnecessary: all <mark>heading<\/mark> elements are given a weight of 2...",
+            "weight" : 1,
+            "pos" : 1123 },
+          
+          { "form" : "head",
+            "context" : "...indexer does not tokenize any content in the <<mark>head<\/mark>> of the document (but as noted above,...",
+            "weight" : 1,
+            "pos" : 1218 },
+          
+          { "form" : "head",
+            "context" : "...also add a CSS <style> element to the <<mark>head<\/mark>> of the document: You can customize this...",
+            "weight" : 1,
+            "pos" : 1728 },
+          
+          { "form" : "head",
+            "context" : "...<style>, or <link>, placed after it in the <<mark>head<\/mark>> element, or by replacing the inserted CSS...",
+            "weight" : 1,
+            "pos" : 1745 } ] } ] }

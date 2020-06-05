@@ -1,0 +1,53 @@
+
+  { "token" : "test",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 9,
+        "contexts" : 
+        [ 
+          { "form" : "test",
+            "context" : "...You can take a look at the <mark>test<\/mark>\/search.html page for an example of how to...",
+            "weight" : 1,
+            "pos" : 1770 },
+          
+          { "form" : "testing",
+            "context" : "...has some additional JavaScript which we use for <mark>testing<\/mark> the search build results, which is not...",
+            "weight" : 1,
+            "pos" : 1792 },
+          
+          { "form" : "test",
+            "context" : "...the search on your own site, you can <mark>test<\/mark> that your system is able to do...",
+            "weight" : 1,
+            "pos" : 1836 },
+          
+          { "form" : "test",
+            "context" : "...by doing the (very quick) build of the <mark>test<\/mark> materials. If you simply run the ant...",
+            "weight" : 1,
+            "pos" : 1842 },
+          
+          { "form" : "test",
+            "context" : "...see a build process proceed using the small <mark>test<\/mark> collection of documents, and at the end,...",
+            "weight" : 1,
+            "pos" : 1860 },
+          
+          { "form" : "test",
+            "context" : "If the <mark>test<\/mark> succeeds, you can view the results by...",
+            "weight" : 1,
+            "pos" : 1886 },
+          
+          { "form" : "test",
+            "context" : "...you can view the results by uploading the <mark>test<\/mark> folder and all its contents to a...",
+            "weight" : 1,
+            "pos" : 1891 },
+          
+          { "form" : "tests",
+            "context" : "If the <mark>tests<\/mark> all work, then you're ready to build...",
+            "weight" : 1,
+            "pos" : 1910 },
+          
+          { "form" : "test",
+            "context" : "...in your site HTML folder. Now you can <mark>test<\/mark> your own search in the same ways...",
+            "weight" : 1,
+            "pos" : 1951 } ] } ] }

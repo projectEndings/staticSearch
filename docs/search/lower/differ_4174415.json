@@ -1,0 +1,48 @@
+
+  { "token" : "differ",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 8,
+        "contexts" : 
+        [ 
+          { "form" : "different",
+            "context" : "Another slightly <mark>different<\/mark> kind of search control is a document...",
+            "weight" : 1,
+            "pos" : 175 },
+          
+          { "form" : "different",
+            "context" : "...If your collection of documents has items from <mark>different<\/mark> dates, you can add a <meta> tag...",
+            "weight" : 1,
+            "pos" : 184 },
+          
+          { "form" : "different",
+            "context" : "...be used because the new version will have <mark>different<\/mark> filenames. The path specified is relative to...",
+            "weight" : 1,
+            "pos" : 715 },
+          
+          { "form" : "different",
+            "context" : "...use this element if you are defining two <mark>different<\/mark> searches within the same site, so that...",
+            "weight" : 1,
+            "pos" : 1040 },
+          
+          { "form" : "different",
+            "context" : "...site, so that their files are kept in <mark>different<\/mark> locations. The value must conform with the...",
+            "weight" : 1,
+            "pos" : 1046 },
+          
+          { "form" : "different",
+            "context" : "...This can easily be achieved by specifying a <mark>different<\/mark> <searchFile> and <outputFolder> in the configuration file...",
+            "weight" : 1,
+            "pos" : 1468 },
+          
+          { "form" : "different",
+            "context" : "For these searches to be <mark>different<\/mark> from each other, they will also probably...",
+            "weight" : 1,
+            "pos" : 1475 },
+          
+          { "form" : "different",
+            "context" : "...from each other, they will also probably have <mark>different<\/mark> contexts and rules. For example, imagine that...",
+            "weight" : 1,
+            "pos" : 1478 } ] } ] }

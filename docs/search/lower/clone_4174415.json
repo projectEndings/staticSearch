@@ -1,0 +1,33 @@
+
+  { "token" : "clone",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "clone",
+            "context" : "...second way to get the codebase is to <mark>clone<\/mark> it from the GitHub repository. If you're...",
+            "weight" : 1,
+            "pos" : 40 },
+          
+          { "form" : "clone",
+            "context" : "...GitHub repository. If you're doing this, you can <mark>clone<\/mark> either the current master branch, the last...",
+            "weight" : 1,
+            "pos" : 43 },
+          
+          { "form" : "clone",
+            "context" : "...release tag, or the dev branch. If you <mark>clone<\/mark> the dev branch, bear in mind that...",
+            "weight" : 1,
+            "pos" : 53 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "cloned",
+            "context" : "...the staticSearch project that you have downloaded or <mark>cloned<\/mark>.",
+            "weight" : 1,
+            "pos" : 1822 } ] } ] }

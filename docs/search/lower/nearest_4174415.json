@@ -1,0 +1,13 @@
+
+  { "token" : "nearest",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "nearest",
+            "context" : "...token, it does so by looking for the <mark>nearest<\/mark> block-level element that it can use as...",
+            "weight" : 1,
+            "pos" : 1253 } ] } ] }

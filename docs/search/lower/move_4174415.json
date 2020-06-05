@@ -1,0 +1,13 @@
+
+  { "token" : "move",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "moving",
+            "context" : "...team have been developing and publicizing strategies for <mark>moving<\/mark> digital projects to an all-static publication model....",
+            "weight" : 1,
+            "pos" : 106 } ] } ] }

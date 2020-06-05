@@ -1,0 +1,23 @@
+
+  { "token" : "intermedi",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Intermediate",
+            "context" : "Level: <mark>Intermediate<\/mark>",
+            "weight" : 1,
+            "pos" : 5 } ] },
+      
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Intermediate",
+            "context" : "Level: <mark>Intermediate<\/mark>",
+            "weight" : 1,
+            "pos" : 10 } ] } ] }

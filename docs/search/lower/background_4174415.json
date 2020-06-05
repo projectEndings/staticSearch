@@ -1,0 +1,13 @@
+
+  { "token" : "background",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "background",
+            "context" : "...also starts downloading the facet files in the <mark>background<\/mark>.",
+            "weight" : 1,
+            "pos" : 220 } ] } ] }

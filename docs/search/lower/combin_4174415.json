@@ -1,0 +1,13 @@
+
+  { "token" : "combin",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "combination",
+            "context" : "...articles, or only in blog posts, or any <mark>combination<\/mark> of these document types, you will need...",
+            "weight" : 1,
+            "pos" : 84 } ] } ] }

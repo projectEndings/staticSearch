@@ -1,0 +1,88 @@
+
+  { "token" : "last",
+    "instances" : 
+    [ 
+      { "docId" : "searchFacetFeatures",
+        "docUri" : "searchFacetFeatures.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "Last",
+            "context" : "<mark>Last<\/mark> Updated: 20 February 2020",
+            "weight" : 1,
+            "pos" : 10 },
+          
+          { "form" : "last",
+            "context" : "...for its first publication and another for its <mark>last<\/mark> publication; then users could search for documents...",
+            "weight" : 1,
+            "pos" : 46 },
+          
+          { "form" : "last",
+            "context" : "...first published in a certain date range and <mark>last<\/mark> published before another date.",
+            "weight" : 1,
+            "pos" : 57 } ] },
+      
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "Last",
+            "context" : "<mark>Last<\/mark> Updated: 13 January 2020",
+            "weight" : 1,
+            "pos" : 8 },
+          
+          { "form" : "last",
+            "context" : "...can clone either the current master branch, the <mark>last<\/mark> release tag, or the dev branch. If...",
+            "weight" : 1,
+            "pos" : 48 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Last",
+            "context" : "<mark>Last<\/mark> Updated: 20 March 2020",
+            "weight" : 1,
+            "pos" : 6 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Last",
+            "context" : "<mark>Last<\/mark> Updated: 20 March 2020",
+            "weight" : 1,
+            "pos" : 5 } ] },
+      
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Last",
+            "context" : "<mark>Last<\/mark> Updated: 16 December 2019",
+            "weight" : 1,
+            "pos" : 11 } ] },
+      
+      { "docId" : "whatDoesItDo",
+        "docUri" : "whatDoesItDo.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Last",
+            "context" : "<mark>Last<\/mark> Updated: 16 December 2019",
+            "weight" : 1,
+            "pos" : 5 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Last",
+            "context" : "<mark>Last<\/mark> Updated: 8 May 2020",
+            "weight" : 1,
+            "pos" : 8 } ] } ] }

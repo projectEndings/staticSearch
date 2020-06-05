@@ -1,0 +1,33 @@
+
+  { "token" : "stem",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "stems",
+            "context" : "...word waiting, what happens is that the JavaScript <mark>stems<\/mark> that word, producing wait, then it downloads...",
+            "weight" : 1,
+            "pos" : 157 } ] },
+      
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "stemming",
+            "context" : "Porter 2 <mark>stemming<\/mark> of terms (so searching for 'wait' will...",
+            "weight" : 1,
+            "pos" : 20 } ] },
+      
+      { "docId" : "whatDoesItDo",
+        "docUri" : "whatDoesItDo.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "stemmed",
+            "context" : "...of all the words appearing in the site, <mark>stemmed<\/mark> using a Porter2 stemmer, and stores the...",
+            "weight" : 1,
+            "pos" : 18 } ] } ] }

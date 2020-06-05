@@ -1,0 +1,13 @@
+
+  { "token" : "multipl",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "multiple",
+            "context" : "Using exclusions, you can create <mark>multiple<\/mark> specialized search pages which have customized form...",
+            "weight" : 1,
+            "pos" : 1623 } ] } ] }

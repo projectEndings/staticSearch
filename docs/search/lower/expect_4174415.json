@@ -1,0 +1,18 @@
+
+  { "token" : "expect",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "expecting",
+            "context" : "The generator is <mark>expecting<\/mark> to parse well-formed XHTML5 web pages. That...",
+            "weight" : 1,
+            "pos" : 33 },
+          
+          { "form" : "expected",
+            "context" : "...to true if something is not working as <mark>expected<\/mark> and you need to do some debugging....",
+            "weight" : 1,
+            "pos" : 883 } ] } ] }

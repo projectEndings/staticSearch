@@ -1,0 +1,23 @@
+
+  { "token" : "insert",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "insert",
+            "context" : "...need, and then the search build process will <mark>insert<\/mark> all the necessary components into that file....",
+            "weight" : 1,
+            "pos" : 1677 },
+          
+          { "form" : "insert",
+            "context" : "...be empty initially. The build process will find <mark>insert<\/mark> the search controls, scripts and results <div>...",
+            "weight" : 1,
+            "pos" : 1702 },
+          
+          { "form" : "inserted",
+            "context" : "...in the <head> element, or by replacing the <mark>inserted<\/mark> CSS after the build process.",
+            "weight" : 1,
+            "pos" : 1748 } ] } ] }

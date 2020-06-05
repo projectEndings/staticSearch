@@ -1,0 +1,23 @@
+
+  { "token" : "certain",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "certain",
+            "context" : "...also likely that you will want to exclude <mark>certain<\/mark> features or documents from a specialized search...",
+            "weight" : 1,
+            "pos" : 1527 } ] },
+      
+      { "docId" : "searchFacetFeatures",
+        "docUri" : "searchFacetFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "certain",
+            "context" : "...could search for documents first published in a <mark>certain<\/mark> date range and last published before another...",
+            "weight" : 1,
+            "pos" : 54 } ] } ] }

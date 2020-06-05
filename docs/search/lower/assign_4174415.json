@@ -1,0 +1,23 @@
+
+  { "token" : "assign",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "assign",
+            "context" : "...statements in the match attribute, specific weights to <mark>assign<\/mark> to particular parts of each document. For...",
+            "weight" : 1,
+            "pos" : 1075 } ] },
+      
+      { "docId" : "searchFacetFeatures",
+        "docUri" : "searchFacetFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "assign",
+            "context" : "Date ranges. You might <mark>assign<\/mark> each document a date (or a date...",
+            "weight" : 1,
+            "pos" : 38 } ] } ] }

@@ -1,0 +1,18 @@
+
+  { "token" : "done",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "done",
+            "context" : "...from a specialized search page, and this is <mark>done<\/mark> using the <excludes> section and its child...",
+            "weight" : 1,
+            "pos" : 1533 },
+          
+          { "form" : "done",
+            "context" : "...up giving you a report on what was <mark>done<\/mark>. If this fails, then you'll need to...",
+            "weight" : 1,
+            "pos" : 1869 } ] } ] }

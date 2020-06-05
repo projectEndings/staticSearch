@@ -1,0 +1,28 @@
+
+  { "token" : "filenam",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "filenames",
+            "context" : "...string will be used as part of the <mark>filenames<\/mark> for all the JSON resources created for...",
+            "weight" : 1,
+            "pos" : 691 },
+          
+          { "form" : "filenames",
+            "context" : "...used because the new version will have different <mark>filenames<\/mark>. The path specified is relative to the...",
+            "weight" : 1,
+            "pos" : 716 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "filenames",
+            "context" : "...06ad419). This will be used to create unique <mark>filenames<\/mark> for JSON resources, so that when a...",
+            "weight" : 1,
+            "pos" : 890 } ] } ] }

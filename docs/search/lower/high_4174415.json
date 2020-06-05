@@ -1,0 +1,13 @@
+
+  { "token" : "high",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "highly",
+            "context" : "...is necessary, but, as we discuss shortly, we <mark>highly<\/mark> suggest taking advantage of the <rules> and...",
+            "weight" : 1,
+            "pos" : 486 } ] } ] }

@@ -1,0 +1,263 @@
+
+  { "token" : "schema",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 48,
+        "contexts" : 
+        [ 
+          { "form" : "Schema",
+            "context" : "Appendix A <mark>Schema<\/mark> specification and tag documentation",
+            "weight" : 2,
+            "pos" : 2 },
+          
+          { "form" : "Schema",
+            "context" : "ss — <mark>Schema<\/mark> specification and tag documentation",
+            "weight" : 1,
+            "pos" : 24 },
+          
+          { "form" : "Schema",
+            "context" : "<mark>Schema<\/mark> Declaration",
+            "weight" : 1,
+            "pos" : 37 },
+          
+          { "form" : "Schema",
+            "context" : "ss — <mark>Schema<\/mark> specification and tag documentation",
+            "weight" : 1,
+            "pos" : 64 },
+          
+          { "form" : "Schema",
+            "context" : "<mark>Schema<\/mark> Declaration",
+            "weight" : 1,
+            "pos" : 88 },
+          
+          { "form" : "Schema",
+            "context" : "ss — <mark>Schema<\/mark> specification and tag documentation",
+            "weight" : 1,
+            "pos" : 112 },
+          
+          { "form" : "Schema",
+            "context" : "<mark>Schema<\/mark> Declaration",
+            "weight" : 1,
+            "pos" : 123 },
+          
+          { "form" : "Schema",
+            "context" : "ss — <mark>Schema<\/mark> specification and tag documentation",
+            "weight" : 1,
+            "pos" : 155 },
+          
+          { "form" : "Schema",
+            "context" : "<mark>Schema<\/mark> Declaration",
+            "weight" : 1,
+            "pos" : 167 },
+          
+          { "form" : "Schema",
+            "context" : "ss — <mark>Schema<\/mark> specification and tag documentation",
+            "weight" : 1,
+            "pos" : 190 },
+          
+          { "form" : "Schema",
+            "context" : "<mark>Schema<\/mark> Declaration",
+            "weight" : 1,
+            "pos" : 202 },
+          
+          { "form" : "Schema",
+            "context" : "ss — <mark>Schema<\/mark> specification and tag documentation",
+            "weight" : 1,
+            "pos" : 223 },
+          
+          { "form" : "Schema",
+            "context" : "<mark>Schema<\/mark> Declaration",
+            "weight" : 1,
+            "pos" : 270 },
+          
+          { "form" : "Schema",
+            "context" : "ss — <mark>Schema<\/mark> specification and tag documentation",
+            "weight" : 1,
+            "pos" : 292 },
+          
+          { "form" : "Schema",
+            "context" : "<mark>Schema<\/mark> Declaration",
+            "weight" : 1,
+            "pos" : 303 },
+          
+          { "form" : "Schema",
+            "context" : "ss — <mark>Schema<\/mark> specification and tag documentation",
+            "weight" : 1,
+            "pos" : 331 },
+          
+          { "form" : "Schema",
+            "context" : "<mark>Schema<\/mark> Declaration",
+            "weight" : 1,
+            "pos" : 343 },
+          
+          { "form" : "Schema",
+            "context" : "ss — <mark>Schema<\/mark> specification and tag documentation",
+            "weight" : 1,
+            "pos" : 370 },
+          
+          { "form" : "Schema",
+            "context" : "<mark>Schema<\/mark> Declaration",
+            "weight" : 1,
+            "pos" : 382 },
+          
+          { "form" : "Schema",
+            "context" : "ss — <mark>Schema<\/mark> specification and tag documentation",
+            "weight" : 1,
+            "pos" : 414 },
+          
+          { "form" : "Schema",
+            "context" : "<mark>Schema<\/mark> Declaration",
+            "weight" : 1,
+            "pos" : 426 },
+          
+          { "form" : "Schema",
+            "context" : "ss — <mark>Schema<\/mark> specification and tag documentation",
+            "weight" : 1,
+            "pos" : 451 },
+          
+          { "form" : "Schema",
+            "context" : "<mark>Schema<\/mark> Declaration",
+            "weight" : 1,
+            "pos" : 463 },
+          
+          { "form" : "Schema",
+            "context" : "ss — <mark>Schema<\/mark> specification and tag documentation",
+            "weight" : 1,
+            "pos" : 488 },
+          
+          { "form" : "Schema",
+            "context" : "<mark>Schema<\/mark> Declaration",
+            "weight" : 1,
+            "pos" : 500 },
+          
+          { "form" : "Schema",
+            "context" : "ss — <mark>Schema<\/mark> specification and tag documentation",
+            "weight" : 1,
+            "pos" : 523 },
+          
+          { "form" : "Schema",
+            "context" : "<mark>Schema<\/mark> Declaration",
+            "weight" : 1,
+            "pos" : 547 },
+          
+          { "form" : "Schema",
+            "context" : "ss — <mark>Schema<\/mark> specification and tag documentation",
+            "weight" : 1,
+            "pos" : 573 },
+          
+          { "form" : "Schema",
+            "context" : "<mark>Schema<\/mark> Declaration",
+            "weight" : 1,
+            "pos" : 585 },
+          
+          { "form" : "Schema",
+            "context" : "ss — <mark>Schema<\/mark> specification and tag documentation",
+            "weight" : 1,
+            "pos" : 602 },
+          
+          { "form" : "Schema",
+            "context" : "<mark>Schema<\/mark> Declaration",
+            "weight" : 1,
+            "pos" : 614 },
+          
+          { "form" : "Schema",
+            "context" : "ss — <mark>Schema<\/mark> specification and tag documentation",
+            "weight" : 1,
+            "pos" : 638 },
+          
+          { "form" : "Schema",
+            "context" : "<mark>Schema<\/mark> Declaration",
+            "weight" : 1,
+            "pos" : 678 },
+          
+          { "form" : "Schema",
+            "context" : "ss — <mark>Schema<\/mark> specification and tag documentation",
+            "weight" : 1,
+            "pos" : 702 },
+          
+          { "form" : "Schema",
+            "context" : "<mark>Schema<\/mark> Declaration",
+            "weight" : 1,
+            "pos" : 713 },
+          
+          { "form" : "Schema",
+            "context" : "ss — <mark>Schema<\/mark> specification and tag documentation",
+            "weight" : 1,
+            "pos" : 740 },
+          
+          { "form" : "Schema",
+            "context" : "<mark>Schema<\/mark> Declaration",
+            "weight" : 1,
+            "pos" : 752 },
+          
+          { "form" : "Schema",
+            "context" : "ss — <mark>Schema<\/mark> specification and tag documentation",
+            "weight" : 1,
+            "pos" : 798 },
+          
+          { "form" : "Schema",
+            "context" : "<mark>Schema<\/mark> Declaration",
+            "weight" : 1,
+            "pos" : 810 },
+          
+          { "form" : "Schema",
+            "context" : "ss — <mark>Schema<\/mark> specification and tag documentation",
+            "weight" : 1,
+            "pos" : 829 },
+          
+          { "form" : "Schema",
+            "context" : "<mark>Schema<\/mark> Declaration",
+            "weight" : 1,
+            "pos" : 841 },
+          
+          { "form" : "Schema",
+            "context" : "ss — <mark>Schema<\/mark> specification and tag documentation",
+            "weight" : 1,
+            "pos" : 858 },
+          
+          { "form" : "Schema",
+            "context" : "<mark>Schema<\/mark> Declaration",
+            "weight" : 1,
+            "pos" : 870 },
+          
+          { "form" : "Schema",
+            "context" : "ss — <mark>Schema<\/mark> specification and tag documentation",
+            "weight" : 1,
+            "pos" : 908 },
+          
+          { "form" : "Schema",
+            "context" : "<mark>Schema<\/mark> Declaration",
+            "weight" : 1,
+            "pos" : 920 },
+          
+          { "form" : "Schema",
+            "context" : "ss — <mark>Schema<\/mark> specification and tag documentation",
+            "weight" : 1,
+            "pos" : 943 },
+          
+          { "form" : "Schema",
+            "context" : "ss — <mark>Schema<\/mark> specification and tag documentation",
+            "weight" : 1,
+            "pos" : 973 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "schema",
+            "context" : "...to include. The configuration file conforms to a <mark>schema<\/mark> which is documented here.",
+            "weight" : 1,
+            "pos" : 471 } ] },
+      
+      { "docId" : "index",
+        "docUri" : "index.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Schema",
+            "context" : "<mark>Schema<\/mark> and guidelines for creating a static search...",
+            "weight" : 1,
+            "pos" : 6 } ] } ] }

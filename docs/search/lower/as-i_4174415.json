@@ -1,0 +1,13 @@
+
+  { "token" : "as-i",
+    "instances" : 
+    [ 
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "as-is",
+            "context" : "...Phrasal searches. Any quoted phrase will be searched <mark>as-is<\/mark>, and when quoted phrases are included in...",
+            "weight" : 1,
+            "pos" : 73 } ] } ] }

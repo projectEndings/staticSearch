@@ -1,0 +1,88 @@
+
+  { "token" : "list",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 7,
+        "contexts" : 
+        [ 
+          { "form" : "list",
+            "context" : "...addition, separate JSON files are created for the <mark>list<\/mark> of document titles, and for your stopword...",
+            "weight" : 1,
+            "pos" : 64 },
+          
+          { "form" : "list",
+            "context" : "...list of document titles, and for your stopword <mark>list<\/mark> if you have specified one.",
+            "weight" : 1,
+            "pos" : 68 },
+          
+          { "form" : "list",
+            "context" : "...each of those search facets, consisting of a <mark>list<\/mark> of the document identifiers for all documents...",
+            "weight" : 1,
+            "pos" : 85 },
+          
+          { "form" : "list",
+            "context" : "...be created for the 'Illustrated' facet, with a <mark>list<\/mark> of documents which are true for this...",
+            "weight" : 1,
+            "pos" : 101 },
+          
+          { "form" : "list",
+            "context" : "...which are true for this facet, and a <mark>list<\/mark> of documents which are false.",
+            "weight" : 1,
+            "pos" : 105 },
+          
+          { "form" : "list",
+            "context" : "...or many searches. To display any results, the <mark>list<\/mark> of document titles must be downloaded, for...",
+            "weight" : 1,
+            "pos" : 177 },
+          
+          { "form" : "list",
+            "context" : "...particular word or phrase but just wanting a <mark>list<\/mark> of all the documents classified as 'Poems'....",
+            "weight" : 1,
+            "pos" : 194 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 5,
+        "contexts" : 
+        [ 
+          { "form" : "list",
+            "context" : "...config file) to a text file containing a <mark>list<\/mark> of stopwords that you want to use...",
+            "weight" : 1,
+            "pos" : 897 },
+          
+          { "form" : "list",
+            "context" : "...you might add their name to the stopwords <mark>list<\/mark>, because it will presumably appear on almost...",
+            "weight" : 1,
+            "pos" : 928 },
+          
+          { "form" : "list",
+            "context" : "...and a report generated at the end will <mark>list<\/mark> all the terms in the site which...",
+            "weight" : 1,
+            "pos" : 973 },
+          
+          { "form" : "list",
+            "context" : "The <rules> elements specifies a <mark>list<\/mark> of conditions (using the <rule> element) that...",
+            "weight" : 1,
+            "pos" : 1061 },
+          
+          { "form" : "list",
+            "context" : "...as its context. Take, for instance, this unordered <mark>list<\/mark>: Each <li> elements is, by default, a...",
+            "weight" : 1,
+            "pos" : 1263 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "list",
+            "context" : "...(The location of a text file containing a <mark>list<\/mark> of stopwords (words to be ignored when...",
+            "weight" : 1,
+            "pos" : 762 },
+          
+          { "form" : "list",
+            "context" : "...be suppressed to control the index size. The <mark>list<\/mark> should be in plain text with one...",
+            "weight" : 1,
+            "pos" : 785 } ] } ] }

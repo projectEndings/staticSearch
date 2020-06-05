@@ -1,0 +1,18 @@
+
+  { "token" : "determin",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "determining",
+            "context" : "...The <params> element has two required elements for <mark>determining<\/mark> the resource collection that you wish to...",
+            "weight" : 1,
+            "pos" : 506 },
+          
+          { "form" : "determines",
+            "context" : "...element is a boolean (true or false) that <mark>determines<\/mark> whether or not to recurse into the...",
+            "weight" : 1,
+            "pos" : 635 } ] } ] }

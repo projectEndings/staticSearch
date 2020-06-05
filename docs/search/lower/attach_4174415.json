@@ -1,0 +1,13 @@
+
+  { "token" : "attach",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "attachment",
+            "context" : "...<span> in your document beside its point of <mark>attachment<\/mark>: Using CSS, the footnote might be alongside...",
+            "weight" : 1,
+            "pos" : 1337 } ] } ] }

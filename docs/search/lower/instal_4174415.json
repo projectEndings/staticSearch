@@ -1,0 +1,18 @@
+
+  { "token" : "instal",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "installed",
+            "context" : "...Note: you will need Java and Apache Ant <mark>installed<\/mark>, as well as ant-contrib.",
+            "weight" : 1,
+            "pos" : 1828 },
+          
+          { "form" : "installed",
+            "context" : "...see. (Do you have Java, Ant and ant-contrib <mark>installed<\/mark> and working on your system?).",
+            "weight" : 1,
+            "pos" : 1883 } ] } ] }

@@ -1,0 +1,13 @@
+
+  { "token" : "connect",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "connection",
+            "context" : "...though, we don't want to clog up the <mark>connection<\/mark> downloading these files when the user may...",
+            "weight" : 1,
+            "pos" : 225 } ] } ] }

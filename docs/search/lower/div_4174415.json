@@ -1,0 +1,63 @@
+
+  { "token" : "div",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 11,
+        "contexts" : 
+        [ 
+          { "form" : "div",
+            "context" : "...the same rules (i.e. no complex rules like p\/ancestor::<mark>div<\/mark>). See the W3C XSLT Specification for further...",
+            "weight" : 1,
+            "pos" : 1148 },
+          
+          { "form" : "div",
+            "context" : "...also configure it the other way: if a <<mark>div<\/mark>>, which is by default a context block,...",
+            "weight" : 1,
+            "pos" : 1414 },
+          
+          { "form" : "\"div\"",
+            "context" : "<contexts>  <context match=<mark>\"div\"<\/mark> context=\"false\"\/> <\/contexts>",
+            "weight" : 1,
+            "pos" : 1431 },
+          
+          { "form" : "div",
+            "context" : "<<mark>div<\/mark>>",
+            "weight" : 1,
+            "pos" : 1439 },
+          
+          { "form" : "div",
+            "context" : "<rules>  <rule match=\"text()[not(ancestor::<mark>div<\/mark>[@class='figure']or ancestor::title)]\"   weight=\"0\"\/> <\/rules>",
+            "weight" : 1,
+            "pos" : 1500 },
+          
+          { "form" : "div",
+            "context" : "...part of the document title or descendants of <<mark>div<\/mark> class=\"figure\"> should be ignored (weight=0), so only...",
+            "weight" : 1,
+            "pos" : 1514 },
+          
+          { "form" : "div",
+            "context" : "...only requirement is that the page contains one <<mark>div<\/mark>> element with the correct id attribute: This...",
+            "weight" : 1,
+            "pos" : 1685 },
+          
+          { "form" : "div",
+            "context" : "<<mark>div<\/mark> id=\"staticSearch\"> [...content will be supplied by the build...",
+            "weight" : 1,
+            "pos" : 1689 },
+          
+          { "form" : "div",
+            "context" : "...[...content will be supplied by the build process...] <\/<mark>div<\/mark>>",
+            "weight" : 1,
+            "pos" : 1695 },
+          
+          { "form" : "div",
+            "context" : "...<div> element with the correct id attribute: This <<mark>div<\/mark>> will be empty initially. The build process...",
+            "weight" : 1,
+            "pos" : 1696 },
+          
+          { "form" : "div",
+            "context" : "...find insert the search controls, scripts and results <<mark>div<\/mark>> into this container. Then whenever you rebuild...",
+            "weight" : 1,
+            "pos" : 1707 } ] } ] }

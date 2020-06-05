@@ -1,0 +1,13 @@
+
+  { "token" : "know",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "knowing",
+            "context" : "...the searchFile parameter provides the necessary information for <mark>knowing<\/mark> what document collection to index and where...",
+            "weight" : 1,
+            "pos" : 553 } ] } ] }

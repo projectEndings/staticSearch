@@ -1,0 +1,13 @@
+
+  { "token" : "whatev",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Whatever",
+            "context" : "...pages dealing with works of art, for instance). <mark>Whatever<\/mark> the reason, you can supply a link...",
+            "weight" : 1,
+            "pos" : 406 } ] } ] }

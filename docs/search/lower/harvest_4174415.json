@@ -1,0 +1,18 @@
+
+  { "token" : "harvest",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "harvested",
+            "context" : "...the number of keyword-in-context extracts that will be <mark>harvested<\/mark> from the data for each term in...",
+            "weight" : 1,
+            "pos" : 803 },
+          
+          { "form" : "harvested",
+            "context" : "...able to see the KWICs that have been <mark>harvested<\/mark> in their search results.",
+            "weight" : 1,
+            "pos" : 819 } ] } ] }

@@ -1,0 +1,13 @@
+
+  { "token" : "disk",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "disk",
+            "context" : "...collection. This is at the expense of additional <mark>disk<\/mark> space and build time, of course; each...",
+            "weight" : 1,
+            "pos" : 1635 } ] } ] }

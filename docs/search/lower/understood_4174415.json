@@ -1,0 +1,13 @@
+
+  { "token" : "understood",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "understood",
+            "context" : "...by default a context block, should not be <mark>understood<\/mark> as a context block, then you can...",
+            "weight" : 1,
+            "pos" : 1418 } ] } ] }

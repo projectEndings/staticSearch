@@ -1,0 +1,13 @@
+
+  { "token" : "googl",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Google",
+            "context" : "...or they rely on commercial services such as <mark>Google<\/mark> (which may be free, but are still...",
+            "weight" : 1,
+            "pos" : 140 } ] } ] }

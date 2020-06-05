@@ -1,0 +1,13 @@
+
+  { "token" : "come",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "comes",
+            "context" : "...as a link to the document when it <mark>comes<\/mark> up in search results. However, that may...",
+            "weight" : 1,
+            "pos" : 334 } ] } ] }

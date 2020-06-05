@@ -1,0 +1,28 @@
+
+  { "token" : "typic",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "typically",
+            "context" : "...digital editions of historical and literary texts are <mark>typically<\/mark> the work of teams of people collaborating...",
+            "weight" : 1,
+            "pos" : 20 },
+          
+          { "form" : "typically",
+            "context" : "...DH projects need sophisticated options for searching, but <mark>typically<\/mark> this requires the use of technologies that...",
+            "weight" : 1,
+            "pos" : 153 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "typically",
+            "context" : "...(words to be ignored when indexing). These are <mark>typically<\/mark> words too common to be worth searching...",
+            "weight" : 1,
+            "pos" : 767 } ] } ] }

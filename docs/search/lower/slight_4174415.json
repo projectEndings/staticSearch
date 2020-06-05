@@ -1,0 +1,13 @@
+
+  { "token" : "slight",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "slightly",
+            "context" : "Another <mark>slightly<\/mark> different kind of search control is a...",
+            "weight" : 1,
+            "pos" : 174 } ] } ] }

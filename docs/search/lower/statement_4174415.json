@@ -1,0 +1,13 @@
+
+  { "token" : "statement",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "statements",
+            "context" : "...<rule> element) that tell the parser, using XPath <mark>statements<\/mark> in the match attribute, specific weights to...",
+            "weight" : 1,
+            "pos" : 1070 } ] } ] }

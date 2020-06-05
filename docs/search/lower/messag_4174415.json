@@ -1,0 +1,18 @@
+
+  { "token" : "messag",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "messages",
+            "context" : "...is a boolean which turns on\/off detailed output <mark>messages<\/mark> during the indexing process. You might set...",
+            "weight" : 1,
+            "pos" : 875 },
+          
+          { "form" : "messages",
+            "context" : "...to troubleshoot the problem based on any error <mark>messages<\/mark> you see. (Do you have Java, Ant...",
+            "weight" : 1,
+            "pos" : 1876 } ] } ] }

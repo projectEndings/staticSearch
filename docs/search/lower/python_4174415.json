@@ -1,0 +1,13 @@
+
+  { "token" : "python",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Python",
+            "context" : "...on your machine in that folder, using the <mark>Python<\/mark> HTTP server or PHP's built-in web server....",
+            "weight" : 1,
+            "pos" : 1902 } ] } ] }

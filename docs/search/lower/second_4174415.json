@@ -1,0 +1,28 @@
+
+  { "token" : "second",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "\"Second",
+            "context" : "...information on this subject can be found in <mark>\"Second<\/mark> Thoughts\"<\/span> [...] <\/p>",
+            "weight" : 1,
+            "pos" : 1348 },
+          
+          { "form" : "second",
+            "context" : "...should not appear on the search page), and <mark>second<\/mark>, that the boolean filter Has illustrations(s) should...",
+            "weight" : 1,
+            "pos" : 1614 } ] },
+      
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "second",
+            "context" : "The <mark>second<\/mark> way to get the codebase is to...",
+            "weight" : 1,
+            "pos" : 36 } ] } ] }

@@ -1,0 +1,18 @@
+
+  { "token" : "doctitle",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "\"docTitle\"",
+            "context" : "<meta name=<mark>\"docTitle\"<\/mark>  class=\"staticSearch.docTitle\" content=\"What I did in my holidays\"\/>",
+            "weight" : 1,
+            "pos" : 370 },
+          
+          { "form" : "docTitle\"",
+            "context" : "<meta name=\"docTitle\"  class=\"staticSearch.<mark>docTitle\"<\/mark> content=\"What I did in my holidays\"\/>",
+            "weight" : 1,
+            "pos" : 373 } ] } ] }

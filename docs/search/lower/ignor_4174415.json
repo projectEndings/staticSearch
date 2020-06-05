@@ -1,0 +1,58 @@
+
+  { "token" : "ignor",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 6,
+        "contexts" : 
+        [ 
+          { "form" : "ignore",
+            "context" : "...be elements that you want the tokenizer to <mark>ignore<\/mark> completely; for instance, if you have the...",
+            "weight" : 1,
+            "pos" : 1160 },
+          
+          { "form" : "ignored",
+            "context" : "...contents on every page. These elements can be <mark>ignored<\/mark> simply by using a <rule> and setting...",
+            "weight" : 1,
+            "pos" : 1172 },
+          
+          { "form" : "ignored",
+            "context" : "...title or descendants of <div class=\"figure\"> should be <mark>ignored<\/mark> (weight=0), so only your target nodes will...",
+            "weight" : 1,
+            "pos" : 1517 },
+          
+          { "form" : "ignore",
+            "context" : "...in them. -->  <exclude type=\"index\"   match=\"html[not(descendant::meta[@name='Has illustration(s)'][@content='true'])]\"\/> <!-- We <mark>ignore<\/mark> the document type filter, because we are...",
+            "weight" : 1,
+            "pos" : 1556 },
+          
+          { "form" : "ignored",
+            "context" : "...not contain <meta name=\"Has illustration(s)\" content=\"true\"\/>> should be <mark>ignored<\/mark>. Then we use two <exclude type=\"filter\"\/> tags...",
+            "weight" : 1,
+            "pos" : 1598 },
+          
+          { "form" : "ignored",
+            "context" : "...first that the Document type filter should be <mark>ignored<\/mark> (i.e. it should not appear on the...",
+            "weight" : 1,
+            "pos" : 1610 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "ignored",
+            "context" : "...phrasalSearch is set to true, this parameter is <mark>ignored<\/mark>, because phrasal searches will only work properly...",
+            "weight" : 1,
+            "pos" : 401 },
+          
+          { "form" : "ignored",
+            "context" : "...is true, then the maxContexts setting will be <mark>ignored<\/mark>, because all contexts are required to properly...",
+            "weight" : 1,
+            "pos" : 560 },
+          
+          { "form" : "ignored",
+            "context" : "...containing a list of stopwords (words to be <mark>ignored<\/mark> when indexing). These are typically words too...",
+            "weight" : 1,
+            "pos" : 765 } ] } ] }

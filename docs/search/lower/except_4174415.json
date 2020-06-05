@@ -1,0 +1,13 @@
+
+  { "token" : "except",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "except",
+            "context" : "...the need for any back-end services at all (<mark>except<\/mark> of course for a web server, which...",
+            "weight" : 1,
+            "pos" : 185 } ] } ] }
