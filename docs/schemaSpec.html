@@ -229,7 +229,7 @@ function showByMod() {
                            
                            <li class="toc"><span class="headingNumber">Appendix A.2.1 </span><a class="toc toc_2" href="#TEI.att.labelled" title="att.labelled">att.labelled</a></li>
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.2.2 </span><a class="toc toc_2" href="#TEI.att.xpath" title="att.xpath">att.xpath</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.2.2 </span><a class="toc toc_2" href="#TEI.att.match" title="att.match">att.match</a></li>
                            </ul>
                         </li>
                      </ul>
@@ -346,7 +346,7 @@ element config { <a class="link_ref" href="#TEI.params" title="&lt;params&gt;">p
                      
                      <tr>
                         
-                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;context&gt; </span>(<span>A context definition, providing an XPath attribute that identifies the context, allowing
+                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;context&gt; </span>(<span>A context definition, providing a match attribute that identifies the context, allowing
                               keyword-in-context fragments to be bounded by a specific context.</span>)</td>
                         </tr>
                      
@@ -368,7 +368,7 @@ element config { <a class="link_ref" href="#TEI.params" title="&lt;params&gt;">p
                         
                         <td class="wovenodd-col1"><span lang="en" class="label">Attributes</span></td>
                         
-                        <td class="wovenodd-col2"><a class="link_ref" href="#TEI.att.xpath" title="att.xpath">att.xpath</a> (<span class="attribute">@xpath</span>) <a class="link_ref" href="#TEI.att.labelled" title="att.labelled">att.labelled</a> (<span class="attribute">@label</span>) 
+                        <td class="wovenodd-col2"><a class="link_ref" href="#TEI.att.match" title="att.match">att.match</a> (<span class="attribute">@match</span>) <a class="link_ref" href="#TEI.att.labelled" title="att.labelled">att.labelled</a> (<span class="attribute">@label</span>) 
                            
                            <div class="table">
                               
@@ -452,7 +452,7 @@ element config { <a class="link_ref" href="#TEI.params" title="&lt;params&gt;">p
                            <pre class="pre_eg">
 element context
 {
-   <a class="link_ref" href="#TEI.att.xpath" title="att.xpath">att.xpath.attributes</a>,
+   <a class="link_ref" href="#TEI.att.match" title="att.match">att.match.attributes</a>,
    <a class="link_ref" href="#TEI.att.labelled" title="att.labelled">att.labelled.attributes</a>,
    attribute context { text }?,
    empty
@@ -473,8 +473,8 @@ element context
                      
                      <tr>
                         
-                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;contexts&gt; </span>(<span>The set of contexts, expressed as XPath, that controls the identification of contexts
-                              for keyword-in-context fragments.</span>)</td>
+                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;contexts&gt; </span>(<span>The set of contexts, expressed as XPath in match, that controls the identification
+                              of contexts for keyword-in-context fragments.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -731,7 +731,7 @@ element dictionaryFile { xsd:anyURI }</pre>
                      <tr>
                         
                         <td colspan="2" class="wovenodd-col2"><span class="label">&lt;exclude&gt; </span>(<span>An exclusion definition, which excludes either documents or filters as defined by
-                              an XPath.</span>)</td>
+                              an XPath in match.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -752,7 +752,7 @@ element dictionaryFile { xsd:anyURI }</pre>
                         
                         <td class="wovenodd-col1"><span lang="en" class="label">Attributes</span></td>
                         
-                        <td class="wovenodd-col2"><a class="link_ref" href="#TEI.att.xpath" title="att.xpath">att.xpath</a> (<span class="attribute">@xpath</span>) 
+                        <td class="wovenodd-col2"><a class="link_ref" href="#TEI.att.match" title="att.match">att.match</a> (<span class="attribute">@match</span>) 
                            
                            <div class="table">
                               
@@ -850,7 +850,7 @@ element dictionaryFile { xsd:anyURI }</pre>
                            <pre class="pre_eg">
 element exclude
 {
-   <a class="link_ref" href="#TEI.att.xpath" title="att.xpath">att.xpath.attributes</a>,
+   <a class="link_ref" href="#TEI.att.match" title="att.match">att.match.attributes</a>,
    attribute type { "index" | "filter" },
    empty
 }</pre>
@@ -870,8 +870,8 @@ element exclude
                      
                      <tr>
                         
-                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;excludes&gt; </span>(<span>The set of exclusions, expressed as XPath, that control the subset of documents for
-                              a particular search.</span>)</td>
+                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;excludes&gt; </span>(<span>The set of exclusions, expressed as XPath in match, that control the subset of documents
+                              for a particular search.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -1676,8 +1676,8 @@ element recurse { xsd:boolean }</pre>
                      
                      <tr>
                         
-                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;rule&gt; </span>(<span>A rule that specifies a document path in XPath, and provides weighting for search
-                              terms found in that context.</span>)</td>
+                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;rule&gt; </span>(<span>A rule that specifies a document path as XPath in match, and provides weighting for
+                              search terms found in that context.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -1698,7 +1698,7 @@ element recurse { xsd:boolean }</pre>
                         
                         <td class="wovenodd-col1"><span lang="en" class="label">Attributes</span></td>
                         
-                        <td class="wovenodd-col2"><a class="link_ref" href="#TEI.att.xpath" title="att.xpath">att.xpath</a> (<span class="attribute">@xpath</span>) 
+                        <td class="wovenodd-col2"><a class="link_ref" href="#TEI.att.match" title="att.match">att.match</a> (<span class="attribute">@match</span>) 
                            
                            <div class="table">
                               
@@ -1708,7 +1708,7 @@ element recurse { xsd:boolean }</pre>
                                     
                                     <td class="odd_label">weight</td>
                                     
-                                    <td class="odd_value">(<span>The weighting to give to a search token found in the context specified by the xpath
+                                    <td class="odd_value">(<span>The weighting to give to a search token found in the context specified by the match
                                           attribute. Set to 0 to completely suppress indexing for a specific context, or greater
                                           than 1 to give stronger weighting.</span>) 
                                        
@@ -1782,7 +1782,7 @@ element recurse { xsd:boolean }</pre>
                         <td class="wovenodd-col2">
                            
                            <pre class="pre_eg">
-element rule { <a class="link_ref" href="#TEI.att.xpath" title="att.xpath">att.xpath.attributes</a>, attribute weight { text }, empty }</pre>
+element rule { <a class="link_ref" href="#TEI.att.match" title="att.match">att.match.attributes</a>, attribute weight { text }, empty }</pre>
                            </td>
                         </tr>
                      </table>
@@ -1799,8 +1799,8 @@ element rule { <a class="link_ref" href="#TEI.att.xpath" title="att.xpath">att.x
                      
                      <tr>
                         
-                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;rules&gt; </span>(<span>The set of rules, expressed as XPath, that control weighting of search terms found
-                              in specific contexts.</span>)</td>
+                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;rules&gt; </span>(<span>The set of rules, expressed as XPath in match, that control weighting of search terms
+                              found in specific contexts.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -2382,9 +2382,9 @@ element versionFile { xsd:anyURI }</pre>
                   </div>
                </div>
             
-            <div class="refdoc" id="TEI.att.xpath">
+            <div class="refdoc" id="TEI.att.match">
                
-               <h3><span class="headingNumber">Appendix A.2.2 </span><span class="head">att.xpath</span></h3>
+               <h3><span class="headingNumber">Appendix A.2.2 </span><span class="head">att.match</span></h3>
                
                <div class="table">
                   
@@ -2392,7 +2392,7 @@ element versionFile { xsd:anyURI }</pre>
                      
                      <tr>
                         
-                        <td colspan="2" class="wovenodd-col2"><span class="label">att.xpath</span> (<span>A class providing attributes that enable specification of document locations.</span>)</td>
+                        <td colspan="2" class="wovenodd-col2"><span class="label">att.match</span> (<span>A class providing attributes that enable specification of document locations.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -2421,7 +2421,7 @@ element versionFile { xsd:anyURI }</pre>
                                  
                                  <tr>
                                     
-                                    <td class="odd_label">xpath</td>
+                                    <td class="odd_label">match</td>
                                     
                                     <td class="odd_value">(<span>An XPath equivalent to the @match attribute of an xsl:template, which specifies a
                                           context in a document.</span>) 
@@ -2483,7 +2483,7 @@ element versionFile { xsd:anyURI }</pre>
             <!--
 	  Generated from index.xml using XSLT stylesheets version 7.49.0
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2020-05-10T21:41:35Z.
+	       on 2020-06-05T21:35:16Z.
 	       SAXON HE 10.0.
 		 --></address>
          </div>

@@ -411,10 +411,10 @@
             </div>
           <div xml:id="specifyingRules">
             <head>Specifying Rules (Optional)</head>
-            <p>The <gi>rules</gi> elements specifies a list of conditions (using the <gi>rule</gi> element) that tell the parser, using XPath statements in the <att>xpath</att> attribute, specific weights to assign to particular parts of each document. For instance, if you wanted all heading elements (<gi>h1</gi>, <gi>h2</gi>, etc) in documents to be given a greater weight and thus receive a higher score in the results, you can do so using a rule like so:
+            <p>The <gi>rules</gi> elements specifies a list of conditions (using the <gi>rule</gi> element) that tell the parser, using XPath statements in the <att>match</att> attribute, specific weights to assign to particular parts of each document. For instance, if you wanted all heading elements (<gi>h1</gi>, <gi>h2</gi>, etc) in documents to be given a greater weight and thus receive a higher score in the results, you can do so using a rule like so:
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
                 <rules>
-                  <rule weight="2" xpath="h1 | h2 | h3 | h4 | h5 | h6"/>
+                  <rule weight="2" match="h1 | h2 | h3 | h4 | h5 | h6"/>
                 </rules>
               </egXML>
               
@@ -422,19 +422,19 @@
               
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
                 <rules>
-                  <rule weight="2" xpath="*[matches(local-name(),'^h\d+$')]"/>
+                  <rule weight="2" match="*[matches(local-name(),'^h\d+$')]"/>
                 </rules>
               </egXML>
               (It is worth noting, however, the above example is unnecessary: all heading elements are given a weight of 2 by default, which is the only preconfigured weight in static search.)
             </p>
-            <p>The value of the <att>xpath</att> attribute is transformed in a XSLT template match attribute, and thus must follow the same rules (i.e. no complex rules like <code>p/ancestor::div</code>). See the <ref target="https://www.w3.org/TR/xslt-30/#dt-pattern">W3C XSLT Specification</ref> for further details on allowable pattern rules.</p>
+            <p>The value of the <att>match</att> attribute is transformed in a XSLT template match attribute, and thus must follow the same rules (i.e. no complex rules like <code>p/ancestor::div</code>). See the <ref target="https://www.w3.org/TR/xslt-30/#dt-pattern">W3C XSLT Specification</ref> for further details on allowable pattern rules.</p>
             <p>Often, there will be elements that you want the tokenizer to ignore completely; for instance, if you have the same header in every document, then there's no reason to index its contents on every page. These elements can be ignored simply by using a <gi>rule</gi> and setting its weight to 0. For instance, if you want to remove the header and the footer from the search indexing process, you could write something like:
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
-                <rule weight="0" xpath="footer | header"/>
+                <rule weight="0" match="footer | header"/>
               </egXML>
               Or if you want to remove XHTML anchor tags (<gi>a</gi>) whose text is identical to the URL specified in its <att>href</att>, you could do something like:
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
-                <rule weight="0" xpath="a[@href=./text()]"/>
+                <rule weight="0" match="a[@href=./text()]"/>
               </egXML>
             </p>
             <p>Note that the indexer does not tokenize any content in the <gi>head</gi> of the document (but as noted above, metadata can be configured into filters) and that all elements in the <gi>body</gi> of a document are considered tokenizable. However, common elements that you might want to exclude include:
@@ -470,17 +470,17 @@
               
               <eg>"...nothing to say here,Some <hi style="font-weight:bold;">information</hi> on this subject can be found...</eg>
               
-              To tell the tokenizer that the <gi>span</gi> constitutes the context block for any of its token, use the <gi>context</gi> element with an <att>xpath</att> pattern:
+              To tell the tokenizer that the <gi>span</gi> constitutes the context block for any of its token, use the <gi>context</gi> element with an <att>match</att> pattern:
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
                 <contexts>
-                  <context xpath="span[contains-token(@class,'sidenote')]"/>
+                  <context match="span[contains-token(@class,'sidenote')]"/>
                 </contexts>
               </egXML>
             </p>
             <p>You can also configure it the other way: if a <gi>div</gi>, which is by default a context block, should not be understood as a context block, then you can tell the parser to not consider it as such using <att>context</att> set to false:
               <egXML xmlns="http://www.tei-c.org/ns/Examples"> 
                 <contexts>
-                  <context xpath="div" context="false"/>
+                  <context match="div" context="false"/>
                 </contexts>
               </egXML>
             </p>
@@ -521,7 +521,7 @@
               
                 <egXML xmlns="http://www.tei-c.org/ns/Examples">
                   <rules> 
-                    <rule xpath="text()[not(ancestor::div[@class='figure']or ancestor::title)]" weight="0"/>
+                    <rule match="text()[not(ancestor::div[@class='figure']or ancestor::title)]" weight="0"/>
                   </rules>
                 </egXML>
               
@@ -543,16 +543,16 @@
                   <excludes>
                     <!-- We only index files which have illustrations in them. -->
                     <exclude type="index" 
-                      xpath="html[not(descendant::meta[@name='Has illustration(s)'][@content='true'])]"/>
+                      match="html[not(descendant::meta[@name='Has illustration(s)'][@content='true'])]"/>
                     
                     <!-- We ignore the document type filter, 
                          because we are only indexing one type 
                          of document anyway. -->
-                    <exclude type="filter" xpath="meta[@name='Document type']"/>
+                    <exclude type="filter" match="meta[@name='Document type']"/>
                     
                     <!-- We exclude the filter that specifies 
                          these documents because it's pointless. -->
-                    <exclude type="filter" xpath="meta[@name='Has illustration(s)']"/>
+                    <exclude type="filter" match="meta[@name='Has illustration(s)']"/>
                   </excludes>
                 </egXML>
               
@@ -767,7 +767,7 @@
           </elementSpec>
 
           <elementSpec ident="rules" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
-            <gloss>The set of rules, expressed as XPath, that control weighting of search terms
+            <gloss>The set of rules, expressed as XPath in <att>match</att>, that control weighting of search terms
               found in specific contexts.</gloss>
             <content>
               <elementRef key="rule" minOccurs="1" maxOccurs="unbounded"/>
@@ -775,10 +775,10 @@
           </elementSpec>
           
           <elementSpec ident="rule" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
-            <gloss>A rule that specifies a document path in XPath, and provides weighting for search
+            <gloss>A rule that specifies a document path as XPath in <att>match</att>, and provides weighting for search
               terms found in that context.</gloss>
             <classes>
-              <memberOf key="att.xpath"/>
+              <memberOf key="att.match"/>
             </classes>
             <content>
               <empty/>
@@ -786,7 +786,7 @@
             <attList>
               <attDef ident="weight" usage="req">
                 <gloss>The weighting to give to a search token found in the context specified by the
-                  <att>xpath</att> attribute. Set to 0 to completely suppress indexing for a
+                  <att>match</att> attribute. Set to 0 to completely suppress indexing for a
                   specific context, or greater than 1 to give stronger weighting.</gloss>
                 <datatype>
                   <dataRef name="nonNegativeInteger"/>
@@ -796,7 +796,7 @@
           </elementSpec>
 
           <elementSpec ident="contexts" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
-            <gloss>The set of contexts, expressed as XPath, that controls the identification of
+            <gloss>The set of contexts, expressed as XPath in <att>match</att>, that controls the identification of
             contexts for keyword-in-context fragments.</gloss>
             <content>
               <elementRef key="context" minOccurs="1" maxOccurs="unbounded"/>
@@ -804,10 +804,10 @@
           </elementSpec>
 
           <elementSpec ident="context" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
-            <gloss>A context definition, providing an XPath attribute that identifies the context,
+            <gloss>A context definition, providing a <att>match</att> attribute that identifies the context,
               allowing keyword-in-context fragments to be bounded by a specific context.</gloss>
             <classes>
-              <memberOf key="att.xpath"/>
+              <memberOf key="att.match"/>
               <memberOf key="att.labelled"/>
             </classes>
             <content>
@@ -823,7 +823,7 @@
           </elementSpec>
           
           <elementSpec ident="excludes" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
-            <gloss>The set of exclusions, expressed as XPath, that control the subset of documents
+            <gloss>The set of exclusions, expressed as XPath in <att>match</att>, that control the subset of documents
             for a particular search.</gloss>
             <content>
               <elementRef key="exclude" minOccurs="1" maxOccurs="unbounded"/>
@@ -831,9 +831,9 @@
           </elementSpec>
           
           <elementSpec ident="exclude" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
-            <gloss>An exclusion definition, which excludes either documents or filters as defined by an XPath.</gloss>
+            <gloss>An exclusion definition, which excludes either documents or filters as defined by an XPath in <att>match</att>.</gloss>
             <classes>
-              <memberOf key="att.xpath"/>
+              <memberOf key="att.match"/>
             </classes>
             <content>
               <empty/>
@@ -854,10 +854,10 @@
             </attList>
           </elementSpec>
 
-          <classSpec ident="att.xpath" module="ss" type="atts">
+          <classSpec ident="att.match" module="ss" type="atts">
             <gloss>A class providing attributes that enable specification of document locations.</gloss>
             <attList>
-              <attDef usage="req" ident="xpath">
+              <attDef usage="req" ident="match">
                 <gloss>An XPath equivalent to the @match attribute of an xsl:template, which
                   specifies a context in a document.</gloss>
                 <datatype>
