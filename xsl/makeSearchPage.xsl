@@ -162,6 +162,8 @@
         div#ssResults>ul>li>a>img{
             max-width: 10em;
             margin-right: 1em;
+            min-width: 3em;
+            min-height: 3em;
         }
     </xsl:param>
     
