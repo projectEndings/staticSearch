@@ -1,0 +1,2118 @@
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+      <!--THIS FILE IS GENERATED FROM AN XML MASTER. DO NOT EDIT (5)-->
+      <title>Project Endings Static Search Generator (Martin Holmes, Joey Takeda)</title>
+      <meta name="author" content="Martin Holmes and Joey Takeda"/>
+      <meta name="generator" content="Text Encoding Initiative Consortium XSLT stylesheets"/>
+      <link rel="stylesheet" href="documentation.css" type="text/css"/>
+      <link rel="stylesheet" media="print" type="text/css" href="http://www.tei-c.org/release/xml/tei/stylesheet/tei-print.css"/><script type="text/javascript"><!--
+var displayXML=0;
+states=new Array()
+states[0]="element-a"
+states[1]="element-b"
+states[2]="element-c"
+states[3]="element-d"
+states[4]="element-e"
+states[5]="element-f"
+states[6]="element-g"
+states[7]="element-h"
+states[8]="element-i"
+states[9]="element-j"
+states[10]="element-k"
+states[11]="element-l"
+states[12]="element-m"
+states[13]="element-n"
+states[14]="element-o"
+states[15]="element-p"
+states[16]="element-q"
+states[17]="element-r"
+states[18]="element-s"
+states[19]="element-t"
+states[20]="element-u"
+states[21]="element-v"
+states[22]="element-w"
+states[23]="element-x"
+states[24]="element-y"
+states[25]="element-z"
+
+function startUp() {
+
+}
+
+function hideallExcept(elm) {
+for (var i = 0; i < states.length; i++) {
+ var layer;
+ if (layer = document.getElementById(states[i]) ) {
+  if (states[i] != elm) {
+    layer.style.display = "none";
+  }
+  else {
+   layer.style.display = "block";
+      }
+  }
+ }
+ var mod;
+ if ( mod = document.getElementById('byMod') ) {
+     mod.style.display = "none";
+ }
+}
+
+function showall() {
+ for (var i = 0; i < states.length; i++) {
+   var layer;
+   if (layer = document.getElementById(states[i]) ) {
+      layer.style.display = "block";
+      }
+  }
+}
+
+function showByMod() {
+  hideallExcept('');
+  var mod;
+  if (mod = document.getElementById('byMod') ) {
+     mod.style.display = "block";
+     }
+}
+
+	--></script></head>
+   <body class="simple" id="TOP"><!--TEI front-->
+      <div class="tei_front">
+         <div class="titlePage">
+            <div class="docTitle">
+               <div class="titlePart">Project Endings Static Search Generator</div>
+               <div class="titlePart">Schema and guidelines for creating a static search engine for your HTML5 site</div>
+            </div>
+            <div class="docAuthor">Martin Holmes</div>
+            <div class="docAuthor">Joey Takeda</div>
+            <div class="docDate">2019-2020</div>
+         </div>
+         <p>This documentation provides instructions on how to use the Project Endings Static
+            Search Generator to provide a fully-functional search ‘engine’ to your website without
+            any dependency on server-side code such as a database.</p>
+         <ul class="toc toc_body">
+            <li class="toc"><span class="headingNumber"> 1 </span><a class="toc toc_0" href="#whatDoesItDo" title="What does it do">What does it do?</a></li>
+            <li class="toc"><span class="headingNumber"> 2 </span><a class="toc toc_0" href="#whyWouldIUseIt" title="Why would I use it">Why would I use it?</a></li>
+            <li class="toc"><span class="headingNumber"> 3 </span><a class="toc toc_0" href="#textSearchFeatures" title="Text search features">Text search features</a></li>
+            <li class="toc"><span class="headingNumber"> 4 </span><a class="toc toc_0" href="#searchFacetFeatures" title="Search facet features">Search facet features</a></li>
+            <li class="toc"><span class="headingNumber"> 5 </span><a class="toc toc_0" href="#howDoIGetIt" title="How do I get it">How do I get it?</a></li>
+            <li class="toc"><span class="headingNumber"> 6 </span><a class="toc toc_0" href="#howDoIUseIt" title="How do I use it">How do I use it?</a><ul class="toc">
+                  <li class="toc"><span class="headingNumber"> 6.1 </span><a class="toc toc_1" href="#index.xml-body.1_div.6_div.1">Configuring your site: search filters</a><ul class="toc">
+                        <li class="toc"><span class="headingNumber">6.1.1 </span><a class="toc toc_2" href="#descFilters" title="Description filters">Description filters</a></li>
+                        <li class="toc"><span class="headingNumber">6.1.2 </span><a class="toc toc_2" href="#dateFilters" title="Date filters">Date filters</a></li>
+                        <li class="toc"><span class="headingNumber">6.1.3 </span><a class="toc toc_2" href="#numFilters" title="Number filters">Number filters</a></li>
+                        <li class="toc"><span class="headingNumber">6.1.4 </span><a class="toc toc_2" href="#boolFilters" title="Boolean filters">Boolean filters</a></li>
+                     </ul>
+                  </li>
+                  <li class="toc"><span class="headingNumber"> 6.2 </span><a class="toc toc_1" href="#configuringDocTitles" title="Configuring your site document titles">Configuring your site: document titles</a></li>
+                  <li class="toc"><span class="headingNumber"> 6.3 </span><a class="toc toc_1" href="#configuringDocThumbnails" title="Configuring your site document thumbnails">Configuring your site: document thumbnails</a></li>
+                  <li class="toc"><span class="headingNumber"> 6.4 </span><a class="toc toc_1" href="#creatingConfigFile" title="Creating a configuration file">Creating a configuration file</a><ul class="toc">
+                        <li class="toc"><span class="headingNumber">6.4.1 </span><a class="toc toc_2" href="#specifyingParameters" title="Specifying Parameters">Specifying Parameters</a><ul class="toc">
+                              <li class="toc"><span class="headingNumber">6.4.1.1 </span><a class="toc toc_3" href="#paramsRequired" title="Required parameters">Required parameters</a></li>
+                              <li class="toc"><span class="headingNumber">6.4.1.2 </span><a class="toc toc_3" href="#paramsOptional" title="Optional Parameters">Optional Parameters</a></li>
+                           </ul>
+                        </li>
+                        <li class="toc"><span class="headingNumber">6.4.2 </span><a class="toc toc_2" href="#specifyingRules" title="Specifying Rules (Optional)">Specifying Rules (Optional)</a></li>
+                        <li class="toc"><span class="headingNumber">6.4.3 </span><a class="toc toc_2" href="#specifyingContexts" title="Specifying Contexts (Optional)">Specifying Contexts (Optional)</a></li>
+                        <li class="toc"><span class="headingNumber">6.4.4 </span><a class="toc toc_2" href="#specifyingExclusions" title="Specifying Exclusions (Optional)">Specifying Exclusions (Optional)</a></li>
+                     </ul>
+                  </li>
+                  <li class="toc"><span class="headingNumber"> 6.5 </span><a class="toc toc_1" href="#searchPage" title="Creating a search page">Creating a search page</a></li>
+                  <li class="toc"><span class="headingNumber"> 6.6 </span><a class="toc toc_1" href="#searchBuildProcess" title="Running the search build process">Running the search build process</a></li>
+               </ul>
+            </li>
+            <li class="toc"><span class="headingNumber"> 7 </span><a class="toc toc_0" href="#howDoesItWork" title="How does it work">How does it work?</a><ul class="toc">
+                  <li class="toc"><span class="headingNumber"> 7.1 </span><a class="toc toc_1" href="#buildingTheIndex" title="Building the index">Building the index</a></li>
+                  <li class="toc"><span class="headingNumber"> 7.2 </span><a class="toc toc_1" href="#theSearchPage" title="The search page">The search page</a></li>
+               </ul>
+            </li>
+         </ul>
+         <ul class="toc toc_back">
+            <li class="toc"><span class="headingNumber">Appendix A </span><a class="toc toc_0" href="#schemaSpec" title="Schema specification and tag documentation">Schema specification and tag documentation</a><ul class="toc">
+                  <li class="toc"><span class="headingNumber">Appendix A.1 </span><a class="toc toc_1" href="#index.xml-back.1_div.1_div.1">Elements</a><ul class="toc">
+                        <li class="toc"><span class="headingNumber">Appendix A.1.1 </span><a class="toc toc_2" href="#TEI.config" title="&lt;config&gt;">&lt;config&gt;</a></li>
+                        <li class="toc"><span class="headingNumber">Appendix A.1.2 </span><a class="toc toc_2" href="#TEI.context" title="&lt;context&gt;">&lt;context&gt;</a></li>
+                        <li class="toc"><span class="headingNumber">Appendix A.1.3 </span><a class="toc toc_2" href="#TEI.contexts" title="&lt;contexts&gt;">&lt;contexts&gt;</a></li>
+                        <li class="toc"><span class="headingNumber">Appendix A.1.4 </span><a class="toc toc_2" href="#TEI.createContexts" title="&lt;createContexts&gt;">&lt;createContexts&gt;</a></li>
+                        <li class="toc"><span class="headingNumber">Appendix A.1.5 </span><a class="toc toc_2" href="#TEI.dictionaryFile" title="&lt;dictionaryFile&gt;">&lt;dictionaryFile&gt;</a></li>
+                        <li class="toc"><span class="headingNumber">Appendix A.1.6 </span><a class="toc toc_2" href="#TEI.exclude" title="&lt;exclude&gt;">&lt;exclude&gt;</a></li>
+                        <li class="toc"><span class="headingNumber">Appendix A.1.7 </span><a class="toc toc_2" href="#TEI.excludes" title="&lt;excludes&gt;">&lt;excludes&gt;</a></li>
+                        <li class="toc"><span class="headingNumber">Appendix A.1.8 </span><a class="toc toc_2" href="#TEI.indentJSON" title="&lt;indentJSON&gt;">&lt;indentJSON&gt;</a></li>
+                        <li class="toc"><span class="headingNumber">Appendix A.1.9 </span><a class="toc toc_2" href="#TEI.kwicTruncateString" title="&lt;kwicTruncateString&gt;">&lt;kwicTruncateString&gt;</a></li>
+                        <li class="toc"><span class="headingNumber">Appendix A.1.10 </span><a class="toc toc_2" href="#TEI.maxKwicsToHarvest" title="&lt;maxKwicsToHarvest&gt;">&lt;maxKwicsToHarvest&gt;</a></li>
+                        <li class="toc"><span class="headingNumber">Appendix A.1.11 </span><a class="toc toc_2" href="#TEI.maxKwicsToShow" title="&lt;maxKwicsToShow&gt;">&lt;maxKwicsToShow&gt;</a></li>
+                        <li class="toc"><span class="headingNumber">Appendix A.1.12 </span><a class="toc toc_2" href="#TEI.outputFolder" title="&lt;outputFolder&gt;">&lt;outputFolder&gt;</a></li>
+                        <li class="toc"><span class="headingNumber">Appendix A.1.13 </span><a class="toc toc_2" href="#TEI.params" title="&lt;params&gt;">&lt;params&gt;</a></li>
+                        <li class="toc"><span class="headingNumber">Appendix A.1.14 </span><a class="toc toc_2" href="#TEI.phrasalSearch" title="&lt;phrasalSearch&gt;">&lt;phrasalSearch&gt;</a></li>
+                        <li class="toc"><span class="headingNumber">Appendix A.1.15 </span><a class="toc toc_2" href="#TEI.recurse" title="&lt;recurse&gt;">&lt;recurse&gt;</a></li>
+                        <li class="toc"><span class="headingNumber">Appendix A.1.16 </span><a class="toc toc_2" href="#TEI.rule" title="&lt;rule&gt;">&lt;rule&gt;</a></li>
+                        <li class="toc"><span class="headingNumber">Appendix A.1.17 </span><a class="toc toc_2" href="#TEI.rules" title="&lt;rules&gt;">&lt;rules&gt;</a></li>
+                        <li class="toc"><span class="headingNumber">Appendix A.1.18 </span><a class="toc toc_2" href="#TEI.searchFile" title="&lt;searchFile&gt;">&lt;searchFile&gt;</a></li>
+                        <li class="toc"><span class="headingNumber">Appendix A.1.19 </span><a class="toc toc_2" href="#TEI.stopwordsFile" title="&lt;stopwordsFile&gt;">&lt;stopwordsFile&gt;</a></li>
+                        <li class="toc"><span class="headingNumber">Appendix A.1.20 </span><a class="toc toc_2" href="#TEI.totalKwicLength" title="&lt;totalKwicLength&gt;">&lt;totalKwicLength&gt;</a></li>
+                        <li class="toc"><span class="headingNumber">Appendix A.1.21 </span><a class="toc toc_2" href="#TEI.verbose" title="&lt;verbose&gt;">&lt;verbose&gt;</a></li>
+                        <li class="toc"><span class="headingNumber">Appendix A.1.22 </span><a class="toc toc_2" href="#TEI.versionFile" title="&lt;versionFile&gt;">&lt;versionFile&gt;</a></li>
+                     </ul>
+                  </li>
+                  <li class="toc"><span class="headingNumber">Appendix A.2 </span><a class="toc toc_1" href="#index.xml-back.1_div.1_div.2">Attribute classes</a><ul class="toc">
+                        <li class="toc"><span class="headingNumber">Appendix A.2.1 </span><a class="toc toc_2" href="#TEI.att.labelled" title="att.labelled">att.labelled</a></li>
+                        <li class="toc"><span class="headingNumber">Appendix A.2.2 </span><a class="toc toc_2" href="#TEI.att.xpath" title="att.xpath">att.xpath</a></li>
+                     </ul>
+                  </li>
+               </ul>
+            </li>
+         </ul>
+      </div>
+      <!--TEI body-->
+      <div class="tei_body">
+         <h1>Project Endings Static Search Generator</h1>
+         <section class="teidiv0" id="whatDoesItDo">
+            <header>
+               <h2><span class="headingNumber">1 </span><span class="head">What does it do?</span></h2>
+            </header>
+            <ul>
+               <li class="item">Level: Basic</li>
+               <li class="item">Last Updated: <span class="date">16 December 2019</span></li>
+            </ul>
+            <p>The generator tool processes your site to create an index of all the words appearing
+               in the site, stemmed using a Porter2 stemmer, and stores the index in the form of
+               a large number of small JSON files. It also creates JSON files for other search facets
+               that you specify in the headers of your documents, to allow searches for documents
+               by type, by date range, and so on. Then it creates a search page for your site, which
+               processes user search terms and retrieves the required JSON files to provide search
+               results.</p>
+         </section>
+         <section class="teidiv0" id="whyWouldIUseIt">
+            <header>
+               <h2><span class="headingNumber">2 </span><span class="head">Why would I use it?</span></h2>
+            </header>
+            <ul>
+               <li class="item">Level: Basic</li>
+               <li class="item">Last Updated: <span class="date">8 May 2020</span></li>
+            </ul>
+            <p>Digital Humanities projects such as digital editions of historical and literary texts
+               are typically the work of teams of people collaborating over many years, and the fruit
+               of their labours deserves to have a significant shelf-life, if possible comparable
+               with that of a traditional print publication. However, digital longevity of DH projects
+               is sadly short, and many disappear or cease to function within a few years of their
+               creation, because of their dependency on transient tools and technologies.</p>
+            <p>However, static websites (websites which consist entirely of HTML, CSS and JavaScript,
+               without any dependency on back-end server systems such as databases or PHP processing)
+               are far more resilient in the long term than sites which use more server-side technology,
+               and are also much easier to archive and replicate (see Holmes and Takeda (2019), <a class="link_ref" href="https://zenodo.org/record/3449197">The Prefabricated Website: Who needs a server anyway?</a>). For this reason, the <a class="link_ref" href="https://projectendings.github.io/">Project Endings</a> team have been developing and publicizing strategies for moving digital projects
+               to an all-static publication model. The most problematic component in the all-static
+               approach is search.</p>
+            <p>Most digital publications take one of two approaches to search: either they have their
+               own back-end database search engine (perhaps Solr or an XML database), or they rely
+               on commercial services such as Google (which may be free, but are still beyond the
+               control of the project team). DH projects need sophisticated options for searching,
+               but typically this requires the use of technologies that may become obsolete or unsupported,
+               or services which may change their terms of use or become unavailable.</p>
+            <p>staticSearch solves this problem. It provides the capability to build a sophisticated
+               faceted search engine into your website without the need for any back-end services
+               at all (except of course for a web server, which you need anyway).</p>
+         </section>
+         <section class="teidiv0" id="textSearchFeatures">
+            <header>
+               <h2><span class="headingNumber">3 </span><span class="head">Text search features</span></h2>
+            </header>
+            <ul>
+               <li class="item">Level: Intermediate</li>
+               <li class="item">Last Updated: <span class="date">16 December 2019</span></li>
+            </ul>
+            <p>The Generator supports the following features:</p>
+            <ul>
+               <li class="item">Porter 2 stemming of terms (so searching for <span class="q">‘wait’</span> will also retrieve <span class="q">‘waiting’</span>, <span class="q">‘waits’</span>, <span class="q">‘waited’</span> etc.). Our stemmer is for English, but if you have documents in another language,
+                  you can create and plug in your own stemmer.</li>
+               <li class="item">Boolean search operators. Adding <code>+</code> (plus) before a word means that search results <em>must contain</em> that word, and adding a <code>-</code> (minus) means that results <em>must not contain</em> that word. Words without plus or minus are treated as <em>may contain</em>, contributing to the score of any retrieved document.</li>
+               <li class="item">Phrasal searches. Any quoted phrase will be searched as-is, and when quoted phrases
+                  are included in a search, any hit document must contain at least one of them. Note
+                  that phrasal search support requires a specific setting in your configuration file,
+                  because it increases the size of the index.</li>
+               <li class="item">Keyword-in-context search results. This is also configurable, since including contexts
+                  increases the size of the index.</li>
+               <li class="item">Search filtering using any metadata you like, allowing users to limit their search
+                  to specific document types.</li>
+            </ul>
+         </section>
+         <section class="teidiv0" id="searchFacetFeatures">
+            <header>
+               <h2><span class="headingNumber">4 </span><span class="head">Search facet features</span></h2>
+            </header>
+            <ul>
+               <li class="item">Level: Basic</li>
+               <li class="item">Last Updated: <span class="date">20 February 2020</span></li>
+            </ul>
+            <p>The Generator supports the following search facets:</p>
+            <ul>
+               <li class="item"><span class="term">Descriptors</span>. You might for example classify your documents as poems, short stories and novels;
+                  the user can then choose to search in only poems, or poems and short stories.</li>
+               <li class="item"><span class="term">Date ranges</span>. You might assign each document a date (or a date range) for its first publication
+                  and another for its last publication; then users could search for documents first
+                  published in a certain date range and last published before another date.</li>
+               <li class="item"><span class="term">Booleans</span> (true/false values). You might for instance specify that some poems are illustrated
+                  while others are not. The user could then limit their search only to illustrated poems.</li>
+            </ul>
+         </section>
+         <section class="teidiv0" id="howDoIGetIt">
+            <header>
+               <h2><span class="headingNumber">5 </span><span class="head">How do I get it?</span></h2>
+            </header>
+            <ul>
+               <li class="item">Level: Basic</li>
+               <li class="item">Last Updated: <span class="date">13 January 2020</span></li>
+            </ul>
+            <p>There are two ways to get the staticSearch code. The first is to download a release
+               package from the <a class="link_ref" href="https://github.com/projectEndings/staticSearch/releases/">project release page</a>; we recommend that you get the latest version. You can download a zip file and unzip
+               it to create a folder containing the code.</p>
+            <p>The second way to get the codebase is to clone it from the <a class="link_ref" href="https://github.com/projectEndings/staticSearch">GitHub repository</a>. If you're doing this, you can clone either the current master branch, the last release
+               tag, or the dev branch. If you clone the dev branch, bear in mind that you're working
+               with development code and things may break.</p>
+         </section>
+         <section class="teidiv0" id="howDoIUseIt">
+            <header>
+               <h2><span class="headingNumber">6 </span><span class="head">How do I use it?</span></h2>
+            </header>
+            <ul>
+               <li class="item">Level: Intermediate</li>
+               <li class="item">Last Updated: <span class="date">20 March 2020</span></li>
+            </ul>
+            <p>First, you will have to make sure your site pages are correctly configured so that
+               the Generator can parse them. Then, you will have to create a configuration file specifying
+               what options you want to use. Then you run the generator, and the search functionality
+               should be added to your site.</p>
+            <p>The generator is expecting to parse <em>well-formed XHTML5 web pages</em>. That means web pages which are well-formed XML, using the XHTML namespace. If your
+               site is just raggedy tag-soup, then you can't use this tool. You can tidy up your
+               HTML using <a class="link_ref" href="http://www.html-tidy.org/">HTML Tidy</a>.</p>
+            <div class="teidiv1" id="index.xml-body.1_div.6_div.1">
+               <h3><span class="headingNumber">6.1 </span><span class="head">Configuring your site: search filters</span></h3>
+               <p>Next, you will need to decide whether you want search filters or not. If you want
+                  to allow your users to search (for example) only in poems, or only in articles, or
+                  only in blog posts, or any combination of these document types, you will need to add
+                  <span class="gi">&lt;meta&gt;</span> tags to the heads of your documents to specify what these filters are. <span class="titlem">staticSearch</span> supports four filter types.</p>
+               <div class="teidiv2" id="descFilters">
+                  <h3><span class="headingNumber">6.1.1 </span><span class="head">Description filters</span></h3>
+                  <div class="p">The description (desc) filter is a word or phrase describing or associated with the
+                     document. Here is a simple example: 
+                     <div id="index.xml-egXML-d38e166" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Document type</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.desc</span>" <span class="attribute">content</span>="<span class="attributevalue">Poems</span>"/&gt;</span></div> This specifies that there is to be a descriptive search filter called <span class="q">‘Document type’</span>, and one of the types is <span class="q">‘Poems’</span>; the document containing this <span class="gi">&lt;meta&gt;</span> tag is one of the Poems. Another type might be: 
+                     <div id="index.xml-egXML-d38e175" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Document type</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.desc</span>" <span class="attribute">content</span>="<span class="attributevalue">Short stories</span>"/&gt;</span></div> If the Generator finds such meta tags when it is indexing, it will create a set of
+                     filter controls on the search page, enabling the user to constrain the search to a
+                     specific set of filter settings.</div>
+               </div>
+               <div class="teidiv2" id="dateFilters">
+                  <h3><span class="headingNumber">6.1.2 </span><span class="head">Date filters</span></h3>
+                  <div class="p">Another slightly different kind of search control is a document date. If your collection
+                     of documents has items from different dates, you can add a <span class="gi">&lt;meta&gt;</span> tag like this: 
+                     <div id="index.xml-egXML-d38e184" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Date of publication</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.date</span>" <span class="attribute">content</span>="<span class="attributevalue">1895-01-05</span>"/&gt;</span></div> The date may take any of the following forms: 
+                     <ul>
+                        <li class="item">1895 (year only)</li>
+                        <li class="item">1895-01 (year and month)</li>
+                        <li class="item">1895-01-05 (year, month and day)</li>
+                     </ul> For some documents, it may not be possible to specify a single date in this form,
+                     so you can specify a range instead, using a slash to separate the start and end dates
+                     of the range (following ISO 8601): 
+                     <ul>
+                        <li class="item">1895/1897</li>
+                        <li class="item">1903-01-02/1905-05-31</li>
+                     </ul>
+                  </div>
+               </div>
+               <div class="teidiv2" id="numFilters">
+                  <h3><span class="headingNumber">6.1.3 </span><span class="head">Number filters</span></h3>
+                  <div class="p">You can also configure a range filter based on a numeric value (integer or decimal).
+                     For example, you might want to allow people to filter documents in the search results
+                     based on their word-count: 
+                     <div id="index.xml-egXML-d38e199" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Word-count</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.num</span>" <span class="attribute">content</span>="<span class="attributevalue">2193</span>"/&gt;</span></div> Users would then be able to set a minimum and/or maximum word-count when searching
+                     for documents.</div>
+               </div>
+               <div class="teidiv2" id="boolFilters">
+                  <h3><span class="headingNumber">6.1.4 </span><span class="head">Boolean filters</span></h3>
+                  <div class="p">A fourth filter type is the boolean (true/false) filter. To use boolean filters, add
+                     meta tags like this to your documents: 
+                     <div id="index.xml-egXML-d38e206" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Peer-reviewed</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.bool</span>" <span class="attribute">content</span>="<span class="attributevalue">true</span>"/&gt;</span></div>
+                  </div>
+               </div>
+            </div>
+            <div class="teidiv1" id="configuringDocTitles">
+               <h3><span class="headingNumber">6.2 </span><span class="head">Configuring your site: document titles</span></h3>
+               <div class="p">When the indexing process runs over your document collection, by default it will use
+                  the document title that it finds in the <span class="gi">&lt;title&gt;</span> element in the document header; that title will then be shown as a link to the document
+                  when it comes up in search results. However, that may not be the ideal title for this
+                  purpose; for example, all of your documents may include the site title as the first
+                  part of their document title, but it would be pointless to include this in the search
+                  result links. Therefore you can override the document title value by providing another
+                  meta tag, like this: 
+                  <div id="index.xml-egXML-d38e214" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">docTitle</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.docTitle</span>" <span class="attribute">content</span>="<span class="attributevalue">What I did in my holidays</span>"/&gt;</span></div>
+               </div>
+            </div>
+            <div class="teidiv1" id="configuringDocThumbnails">
+               <h3><span class="headingNumber">6.3 </span><span class="head">Configuring your site: document thumbnails</span></h3>
+               <div class="p">When a document is returned as a result of a search hit, you may want to include with
+                  it a thumbnail image. This may be for aesthetic reasons, or because the focus of the
+                  document itself is actually an image (perhaps your site is a set of pages dealing
+                  with works of art, for instance). Whatever the reason, you can supply a link to a
+                  thumbnail image like this: 
+                  <div id="index.xml-egXML-d38e220" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">docImage</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.docImage</span>" <span class="attribute">content</span>="<span class="attributevalue">images/thisPage.jpg</span>"/&gt;</span></div> The <span class="att">content</span> attribute value should either be the path to an image relative to the document itself
+                  or the URL to an external image; so in the example above, there would be a folder
+                  called <span class="ident">images</span> which is a sibling of the HTML file containing the tag, and that folder would contain
+                  a file called <span class="ident">thisPage.jpg</span>.</div>
+            </div>
+            <div class="teidiv1" id="creatingConfigFile">
+               <h3><span class="headingNumber">6.4 </span><span class="head">Creating a configuration file</span></h3>
+               <p>The configuration file is an XML document which tells the Generator where to find
+                  your site, and what search features you would like to include. The configuration file
+                  conforms to a schema which is documented here.</p>
+               <p>There are three main sections of the configuration file: </p>
+               <ul>
+                  <li class="item"><a class="link_ref" href="#TEI.params" title="&lt;params&gt;">&lt;params&gt;</a></li>
+                  <li class="item"><a class="link_ref" href="#TEI.rules" title="&lt;rules&gt;">&lt;rules&gt;</a></li>
+                  <li class="item"><a class="link_ref" href="#TEI.contexts" title="&lt;contexts&gt;">&lt;contexts&gt;</a></li>
+               </ul>
+               <p> Only the <a class="link_ref" href="#TEI.params" title="&lt;params&gt;">&lt;params&gt;</a> element is necessary, but, as we discuss shortly, we highly suggest taking advantage
+                  of the <a class="link_ref" href="#TEI.rules" title="&lt;rules&gt;">&lt;rules&gt;</a> and <a class="link_ref" href="#TEI.contexts" title="&lt;contexts&gt;">&lt;contexts&gt;</a> for the best results.</p>
+               <div class="teidiv2" id="specifyingParameters">
+                  <h3><span class="headingNumber">6.4.1 </span><span class="head">Specifying Parameters</span></h3>
+                  <div class="teidiv3" id="paramsRequired">
+                     <h4><span class="headingNumber">6.4.1.1 </span><span class="head">Required parameters</span></h4>
+                     <p>The <a class="link_ref" href="#TEI.params" title="&lt;params&gt;">&lt;params&gt;</a> element has two required elements for determining the resource collection that you
+                        wish to index: </p>
+                     <ul>
+                        <li class="item"><a class="link_ref" href="#TEI.searchFile" title="&lt;searchFile&gt;">&lt;searchFile&gt;</a></li>
+                        <li class="item"><a class="link_ref" href="#TEI.recurse" title="&lt;recurse&gt;">&lt;recurse&gt;</a></li>
+                     </ul>
+                     <p>The <a class="link_ref" href="#TEI.searchFile" title="&lt;searchFile&gt;">&lt;searchFile&gt;</a> element is a relative URI (resolved, like all URIs specified in the config file,
+                        against the configuration file location) that points directly to the search page that
+                        will be the primary access point for the search. Since the search file must be at
+                        the root of the directory that you wish to index (i.e. the directory that contains
+                        all of the XHTML you want the search to index), the searchFile parameter provides
+                        the necessary information for knowing what document collection to index and where
+                        to put the output JSON. In other words, in specifying the location of your search
+                        page, you are also specifying the location of your document collection. See <a class="link_ref" href="#searchPage" title="Creating a search page">Creating a search page</a> for more information on how to configure this file.</p>
+                     <p>Note that all output files will be in a directory that is a sibling to the search
+                        page. For instance, in a document collection that looks something like: </p>
+                     <ul style="font-family: monospace">
+                        <li class="item">myProject 
+                           <ul>
+                              <li class="item">novel.html</li>
+                              <li class="item">poem.html</li>
+                              <li class="item">shortstory.html</li>
+                              <li class="item">search.html</li>
+                           </ul>
+                        </li>
+                     </ul>
+                     <p> The collection of Javascript and JSON files will be in a directory like so: </p>
+                     <ul style="font-family: monospace">
+                        <li class="item">myProject 
+                           <ul>
+                              <li class="item">novel.html</li>
+                              <li class="item">poem.html</li>
+                              <li class="item">shortstory.html</li>
+                              <li class="item">search.html</li>
+                              <li class="item"><em>staticSearch</em></li>
+                           </ul>
+                        </li>
+                     </ul>
+                     <p>We also require the <a class="link_ref" href="#TEI.recurse" title="&lt;recurse&gt;">&lt;recurse&gt;</a> element in the case where the document collection may be nested (as is common with
+                        static sites generated from Jekyll or Wordpress). The <a class="link_ref" href="#TEI.recurse" title="&lt;recurse&gt;">&lt;recurse&gt;</a> element is a boolean (true or false) that determines whether or not to recurse into
+                        the subdirectories of the collection and index those files.</p>
+                  </div>
+                  <div class="teidiv3" id="paramsOptional">
+                     <h4><span class="headingNumber">6.4.1.2 </span><span class="head">Optional Parameters</span></h4>
+                     <p>The following parameters are optional, but most projects will want to specify some
+                        of them:</p>
+                     <ul>
+                        <li class="item"><a class="link_ref" href="#TEI.versionFile" title="&lt;versionFile&gt;">&lt;versionFile&gt;</a> enables you to specify the path to a plain-text file containing a simple version
+                           number for the project. This might take the form of a software-release-style version
+                           number such as <span class="val">1.5</span>, or it might be a Subversion revision number or a Git commit id. It should not contain
+                           any spaces or punctuation. If you provide a version file, the version string will
+                           be used as part of the filenames for all the JSON resources created for the search.
+                           This is useful because it allows the browser to cache such resources when users repeatedly
+                           visit the search page, but if the project is rebuilt with a new version, those cached
+                           files will not be used because the new version will have different filenames. The
+                           path specified is relative to the location of the configuration file (or absolute,
+                           if you wish).</li>
+                        <li class="item"><a class="link_ref" href="#TEI.phrasalSearch" title="&lt;phrasalSearch&gt;">&lt;phrasalSearch&gt;</a> is a boolean parameter which specifies whether you want your search engine to support
+                           phrasal searches (quoted strings). Obviously this is a useful feature, but it is also
+                           costly in terms of the size of JSON token files; in order to support this kind of
+                           search, we store contexts for all hits for each token in each document, so if your
+                           site is very large, and your user base is unlikely to use phrasal searching, it may
+                           not be worth the overhead. The default value is true.</li>
+                        <li class="item"><a class="link_ref" href="#TEI.createContexts" title="&lt;createContexts&gt;">&lt;createContexts&gt;</a> is a boolean parameter that specifies whether you want the indexer to store keyword-in-context
+                           extracts for each of the hits in a document. This increases the size of the index,
+                           but of course it makes for much more user-friendly search results.</li>
+                        <li class="item"><a class="link_ref" href="#TEI.maxKwicsToHarvest" title="&lt;maxKwicsToHarvest&gt;">&lt;maxKwicsToHarvest&gt;</a> controls the number of keyword-in-context extracts that will be harvested from the
+                           data for each term in a document. If you set this to a low number, the size of the
+                           JSON files will be constrained, but of course the user will only be able to see the
+                           KWICs that have been harvested in their search results.</li>
+                        <li class="item"><a class="link_ref" href="#TEI.maxKwicsToShow" title="&lt;maxKwicsToShow&gt;">&lt;maxKwicsToShow&gt;</a> controls the number of keyword-in-context extracts that will be shown in the search
+                           results for each hit document.</li>
+                        <li class="item"><a class="link_ref" href="#TEI.totalKwicLength" title="&lt;totalKwicLength&gt;">&lt;totalKwicLength&gt;</a> is an integer specifying how long a keyword-in-context string should be. Obviously,
+                           the higher this number is, the larger the individual index files will be, but the
+                           more useful the KWICs will be for users looking at the search results.</li>
+                        <li class="item"><a class="link_ref" href="#TEI.kwicTruncateString" title="&lt;kwicTruncateString&gt;">&lt;kwicTruncateString&gt;</a> is a string containing the character you would like to use at the beginning and/or
+                           the end of a kwic which is not a full sentence. An ellipsis character is the default.</li>
+                        <li class="item"><a class="link_ref" href="#TEI.verbose" title="&lt;verbose&gt;">&lt;verbose&gt;</a> is a boolean which turns on/off detailed output messages during the indexing process.
+                           You might set this to true if something is not working as expected and you need to
+                           do some debugging.</li>
+                        <li class="item"><a class="link_ref" href="#TEI.stopwordsFile" title="&lt;stopwordsFile&gt;">&lt;stopwordsFile&gt;</a> is a string parameter containing the relative path (from the config file) to a text
+                           file containing a list of stopwords that you want to use for your site. A stopword
+                           is a word that will not be indexed, because it is too common (<span class="mentioned">the</span>, <span class="mentioned">a</span>, <span class="mentioned">you</span> and so on). The project has a built-in set of common stopwords for English, which
+                           we recommend you start from; you'll find it in <span class="ident">xsl/english_stopwords.txt</span>. If your site is all about a person, a place or some other entity, then you might
+                           add their name to the stopwords list, because it will presumably appear on almost
+                           every page and it makes no sense to search for it. One way to find such terms is to
+                           generate your index, then search for the largest JSON index files that are generated,
+                           to see if they might be too common to be useful as search terms.</li>
+                        <li class="item"><a class="link_ref" href="#TEI.dictionaryFile" title="&lt;dictionaryFile&gt;">&lt;dictionaryFile&gt;</a> is the relative path to a file containing an English dictionary (assuming your site
+                           is in English). This is used to check words during the indexing process, and a report
+                           generated at the end will list all the terms in the site which do not appear in the
+                           dictionary. This is a useful way to find typos in your site. Again, there is a default
+                           dictionary in <span class="ident">xsl/english_words.txt</span> which you might copy and adapt.</li>
+                        <li class="item"><a class="link_ref" href="#TEI.indentJSON" title="&lt;indentJSON&gt;">&lt;indentJSON&gt;</a> is a boolean parameter which controls whether the JSON files generated for the index
+                           are indented or not. Indenting makes the files easier for a human to read, if you
+                           need to understand them or debug them, but obviously it adds to their file size.</li>
+                        <li class="item"><a class="link_ref" href="#TEI.outputFolder" title="&lt;outputFolder&gt;">&lt;outputFolder&gt;</a> is the name of a folder into which you would like to place the JavaScript and JSON
+                           index files your site search. The default is <span class="val">staticSearch</span>, but if you would prefer something else, you can specify it here. You may also use
+                           this element if you are defining two different searches within the same site, so that
+                           their files are kept in different locations. The value must conform with the <a class="link_ref" href="https://www.w3.org/TR/REC-xml/#dt-name">XML Name</a> specification.</li>
+                     </ul>
+                  </div>
+               </div>
+               <div class="teidiv2" id="specifyingRules">
+                  <h3><span class="headingNumber">6.4.2 </span><span class="head">Specifying Rules (Optional)</span></h3>
+                  <div class="p">The <a class="link_ref" href="#TEI.rules" title="&lt;rules&gt;">&lt;rules&gt;</a> elements specifies a list of conditions (using the <a class="link_ref" href="#TEI.rule" title="&lt;rule&gt;">&lt;rule&gt;</a> element) that tell the parser, using XPath statements in the <span class="att">xpath</span> attribute, specific weights to assign to particular parts of each document. For instance,
+                     if you wanted all heading elements (<span class="gi">&lt;h1&gt;</span>, <span class="gi">&lt;h2&gt;</span>, etc) in documents to be given a greater weight and thus receive a higher score in
+                     the results, you can do so using a rule like so: 
+                     <div id="index.xml-egXML-d38e398" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">2</span>"<br/>  <span class="attribute">xpath</span>="<span class="attributevalue">h1 | h2 | h3 | h4 | h5 | h6</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> Since we're using XPath 3.0 and XSLT 3.0, this can also be simplified to: 
+                     <div id="index.xml-egXML-d38e402" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">2</span>"<br/>  <span class="attribute">xpath</span>="<span class="attributevalue">*[matches(local-name(),'^h\d+$')]</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> (It is worth noting, however, the above example is unnecessary: all heading elements
+                     are given a weight of 2 by default, which is the only preconfigured weight in static
+                     search.)</div>
+                  <p>The value of the <span class="att">xpath</span> attribute is transformed in a XSLT template match attribute, and thus must follow
+                     the same rules (i.e. no complex rules like <code>p/ancestor::div</code>). See the <a class="link_ref" href="https://www.w3.org/TR/xslt-30/#dt-pattern">W3C XSLT Specification</a> for further details on allowable pattern rules.</p>
+                  <div class="p">Often, there will be elements that you want the tokenizer to ignore completely; for
+                     instance, if you have the same header in every document, then there's no reason to
+                     index its contents on every page. These elements can be ignored simply by using a
+                     <a class="link_ref" href="#TEI.rule" title="&lt;rule&gt;">&lt;rule&gt;</a> and setting its weight to 0. For instance, if you want to remove the header and the
+                     footer from the search indexing process, you could write something like: 
+                     <div id="index.xml-egXML-d38e421" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>" <span class="attribute">xpath</span>="<span class="attributevalue">footer | header</span>"/&gt;</span></div> Or if you want to remove XHTML anchor tags (<span class="gi">&lt;a&gt;</span>) whose text is identical to the URL specified in its <span class="att">href</span>, you could do something like: 
+                     <div id="index.xml-egXML-d38e429" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>" <span class="attribute">xpath</span>="<span class="attributevalue">a[@href=./text()]</span>"/&gt;</span></div>
+                  </div>
+                  <p>Note that the indexer does not tokenize any content in the <span class="gi">&lt;head&gt;</span> of the document (but as noted above, metadata can be configured into filters) and
+                     that all elements in the <span class="gi">&lt;body&gt;</span> of a document are considered tokenizable. However, common elements that you might
+                     want to exclude include: </p>
+                  <ul>
+                     <li class="item"><span class="gi">&lt;script&gt;</span></li>
+                     <li class="item"><span class="gi">&lt;style&gt;</span></li>
+                     <li class="item"><span class="gi">&lt;code&gt;</span></li>
+                  </ul>
+               </div>
+               <div class="teidiv2" id="specifyingContexts">
+                  <h3><span class="headingNumber">6.4.3 </span><span class="head">Specifying Contexts (Optional)</span></h3>
+                  <div class="p">When the static search creates the keywords-in-contexts (the "kwic" or "snippets")
+                     for each token, it does so by looking for the nearest block-level element that it
+                     can use as its context. Take, for instance, this unordered list: 
+                     <div id="index.xml-egXML-d38e448" class="pre egXML_valid"><span class="element">&lt;ul&gt;</span><br/> <span class="element">&lt;li&gt;</span>Keyword-in-context search results. This is also configurable, since including contexts<br/>   increases the size of the index.<span class="element">&lt;/li&gt;</span><br/> <span class="element">&lt;li&gt;</span>Search filtering using any metadata you like, allowing users to limit their search
+                        to specific<br/>   document types.<span class="element">&lt;/li&gt;</span><br/><span class="element">&lt;/ul&gt;</span></div> Each <span class="gi">&lt;li&gt;</span> elements is, by default, a <span class="term">context</span> element, meaning that the snippet generated for each token will not extend beyond
+                     the <span class="gi">&lt;li&gt;</span> element boundaries; in this case, if the <span class="gi">&lt;li&gt;</span> was not a context attribute, the term <span class="q">‘search’</span> would produce a context that looks something like: 
+                     <pre class="pre_eg">"...the size of the index.<span style="font-weight:bold;">Search</span> filtering using any metadata you like,..."</pre>
+                  </div>
+                  <div class="p">Using the <a class="link_ref" href="#TEI.contexts" title="&lt;contexts&gt;">&lt;contexts&gt;</a> element, you can control what elements operate as contexts. For instance, say a page
+                     contained a marginal note, encoded as a <span class="gi">&lt;span&gt;</span> in your document beside its point of attachment:<span id="Note1_return"><a class="notelink" title="This example taken from Thomas S. Kuhn, The Structure of Scientific Revolutions (50th anniversary edition), University of Chicago Press, 2012: p. 191." href="#Note1"><sup>1</sup></a></span> 
+                     <div id="index.xml-egXML-d38e484" class="pre egXML_valid"><span class="element">&lt;p&gt;</span>About that program I shall have nothing to say here,<span class="element">&lt;span <span class="attribute">class</span>="<span class="attributevalue">sidenote</span>"&gt;</span>Some information on this subject can be found in "Second Thoughts"<span class="element">&lt;/span&gt;</span> [...]<br/><span class="element">&lt;/p&gt;</span></div> Using CSS, the footnote might be alongside the text of the document in margin, or
+                     made into a clickable object using Javascript. However, since the tokenizer is unaware
+                     of any server-side processing, it understands the <span class="gi">&lt;span&gt;</span> as an inline element and assumes the <span class="gi">&lt;p&gt;</span> constitutes the context of the element. A search for <span class="q">‘information’</span> might then return: 
+                     <pre class="pre_eg">"...nothing to say here,Some <span style="font-weight:bold;">information</span> on this subject can be found...</pre> To tell the tokenizer that the <span class="gi">&lt;span&gt;</span> constitutes the context block for any of its token, use the <a class="link_ref" href="#TEI.context" title="&lt;context&gt;">&lt;context&gt;</a> element with an <span class="att">xpath</span> pattern: 
+                     <div id="index.xml-egXML-d38e513" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">xpath</span>="<span class="attributevalue">span[contains-token(@class,'sidenote')]</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
+                  </div>
+                  <div class="p">You can also configure it the other way: if a <span class="gi">&lt;div&gt;</span>, which is by default a context block, should not be understood as a context block,
+                     then you can tell the parser to not consider it as such using <span class="att">context</span> set to false: 
+                     <div id="index.xml-egXML-d38e523" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">xpath</span>="<span class="attributevalue">div</span>" <span class="attribute">context</span>="<span class="attributevalue">false</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
+                  </div>
+                  <p>The default contexts elements are: </p>
+                  <ul>
+                     <li class="item"><span class="gi">&lt;body&gt;</span></li>
+                     <li class="item"><span class="gi">&lt;div&gt;</span></li>
+                     <li class="item"><span class="gi">&lt;blockquote&gt;</span></li>
+                     <li class="item"><span class="gi">&lt;p&gt;</span></li>
+                     <li class="item"><span class="gi">&lt;li&gt;</span></li>
+                     <li class="item"><span class="gi">&lt;section&gt;</span></li>
+                     <li class="item"><span class="gi">&lt;article&gt;</span></li>
+                     <li class="item"><span class="gi">&lt;nav&gt;</span></li>
+                     <li class="item"><span class="gi">&lt;h1&gt;</span></li>
+                     <li class="item"><span class="gi">&lt;h2&gt;</span></li>
+                     <li class="item"><span class="gi">&lt;h3&gt;</span></li>
+                     <li class="item"><span class="gi">&lt;h4&gt;</span></li>
+                     <li class="item"><span class="gi">&lt;h5&gt;</span></li>
+                     <li class="item"><span class="gi">&lt;h6&gt;</span></li>
+                     <li class="item"><span class="gi">&lt;td&gt;</span></li>
+                  </ul>
+               </div>
+               <div class="teidiv2" id="specifyingExclusions">
+                  <h3><span class="headingNumber">6.4.4 </span><span class="head">Specifying Exclusions (Optional)</span></h3>
+                  <p>A complex site may have two or more search pages targetting specific types of document
+                     or content, each of which may need its own particular search controls and indexes.
+                     This can easily be achieved by specifying a different <a class="link_ref" href="#TEI.searchFile" title="&lt;searchFile&gt;">&lt;searchFile&gt;</a> and <a class="link_ref" href="#TEI.outputFolder" title="&lt;outputFolder&gt;">&lt;outputFolder&gt;</a> in the configuration file for each search.</p>
+                  <div class="p">For these searches to be different from each other, they will also probably have different
+                     contexts and rules. For example, imagine that you are creating a special search page
+                     that focuses only on the text describing images or figures in your documents. You
+                     might do it like this: 
+                     <div id="index.xml-egXML-d38e572" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">xpath</span>="<span class="attributevalue">text()[not(ancestor::div[@class='figure']or ancestor::title)]</span>"<br/>  <span class="attribute">weight</span>="<span class="attributevalue">0</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> This specifies that all text nodes which are not part of the document title or descendants
+                     of <span class="tag">&lt;div class="figure"&gt;</span> should be ignored (<span class="att">weight</span>=<span class="val">0</span>), so only your target nodes will be indexed.</div>
+                  <p>However, it's also likely that you will want to exclude certain features or documents
+                     from a specialized search page, and this is done using the <a class="link_ref" href="#TEI.excludes" title="&lt;excludes&gt;">&lt;excludes&gt;</a> section and its child <a class="link_ref" href="#TEI.exclude" title="&lt;exclude&gt;">&lt;exclude&gt;</a> elements.</p>
+                  <div class="p">Here is an example: 
+                     <div id="index.xml-egXML-d38e595" class="pre egXML_valid"><span class="element">&lt;excludes&gt;</span><br/><span class="comment">&lt;!-- We only index files which have illustrations in them. --&gt;</span><br/> <span class="element">&lt;exclude <span class="attribute">type</span>="<span class="attributevalue">index</span>"<br/>  <span class="attribute">xpath</span>="<span class="attributevalue">html[not(descendant::meta[@name='Has illustration(s)'][@content='true'])]</span>"/&gt;</span><br/><span class="comment">&lt;!-- We ignore the document type filter, 
+                           because we are only indexing one type 
+                           of document anyway. --&gt;</span><br/> <span class="element">&lt;exclude <span class="attribute">type</span>="<span class="attributevalue">filter</span>"<br/>  <span class="attribute">xpath</span>="<span class="attributevalue">meta[@name='Document type']</span>"/&gt;</span><br/><span class="comment">&lt;!-- We exclude the filter that specifies 
+                           these documents because it's pointless. --&gt;</span><br/> <span class="element">&lt;exclude <span class="attribute">type</span>="<span class="attributevalue">filter</span>"<br/>  <span class="attribute">xpath</span>="<span class="attributevalue">meta[@name='Has illustration(s)']</span>"/&gt;</span><br/><span class="element">&lt;/excludes&gt;</span></div> Here we use <span class="tag">&lt;exclude type="index"/&gt;</span> to specify that all documents which do not contain <span class="tag">&lt;meta name="Has illustration(s)" content="true"/&gt;&gt;</span> should be ignored. Then we use two <span class="tag">&lt;exclude type="filter"/&gt;</span> tags to specify first that the <span class="ident">Document type</span> filter should be ignored (i.e. it should not appear on the search page), and second,
+                     that the boolean filter <span class="ident">Has illustrations(s)</span> should also be excluded.</div>
+                  <p>Using exclusions, you can create multiple specialized search pages which have customized
+                     form controls within the same document collection. This is at the expense of additional
+                     disk space and build time, of course; each of these searches needs to be built separately.</p>
+               </div>
+            </div>
+            <div class="teidiv1" id="searchPage">
+               <h3><span class="headingNumber">6.5 </span><span class="head">Creating a search page</span></h3>
+               <div class="p">You'll obviously want the search page for your site to conform with the look and feel
+                  of the rest of your site. You can create a complete HTML document (which must of course
+                  also be well-formed XML, so it can be processed), containing all the site components
+                  you need, and then the search build process will insert all the necessary components
+                  into that file. The only requirement is that the page contains one <span class="gi">&lt;div&gt;</span> element with the correct <span class="att">id</span> attribute: 
+                  <div id="index.xml-egXML-d38e628" class="pre egXML_valid"><span class="element">&lt;div <span class="attribute">id</span>="<span class="attributevalue">staticSearch</span>"&gt;</span> <br/> [...content will be supplied by the build process...]<br/><span class="element">&lt;/div&gt;</span></div> This <span class="gi">&lt;div&gt;</span> will be empty initially. The build process will find insert the search controls,
+                  scripts and results <span class="gi">&lt;div&gt;</span> into this container. Then whenever you rebuild the search for your site, the contents
+                  will be replaced. There is no need to make sure it's empty every time.</div>
+               <div class="p">The search process will also add a CSS <span class="gi">&lt;style&gt;</span> element to the <span class="gi">&lt;head&gt;</span> of the document: 
+                  <div id="index.xml-egXML-d38e642" class="pre egXML_valid"><span class="element">&lt;style <span class="attribute">id</span>="<span class="attributevalue">ssCss</span>"&gt;</span> [...styles for search controls...]<br/><span class="element">&lt;/style&gt;</span></div> You can customize this CSS by providing your own CSS that overrides it, using <span class="gi">&lt;style&gt;</span>, or <span class="gi">&lt;link&gt;</span>, placed after it in the <span class="gi">&lt;head&gt;</span> element, or by replacing the inserted CSS after the build process.</div>
+               <p>Note that once your file has been processed and all this content has been added, you
+                  can process it again at any time; there is no need to start every time with a clean,
+                  empty version of the search page.</p>
+               <p>You can take a look at the <span class="ident">test/search.html</span> page for an example of how to configure the search page (although note that since
+                  this page has already been processed, it has the CSS and the search controls embedded
+                  in it; it also has some additional JavaScript which we use for testing the search
+                  build results, which is not necessary for your site).</p>
+            </div>
+            <div class="teidiv1" id="searchBuildProcess">
+               <h3><span class="headingNumber">6.6 </span><span class="head">Running the search build process</span></h3>
+               <p>Once you have configured your HTML and your configuration file, you're ready to create
+                  a search index and a search page for your site. This requires that you run ant in
+                  the root folder of the staticSearch project that you have downloaded or cloned.</p>
+               <p>Note: you will need Java and <a class="link_ref" href="https://ant.apache.org/">Apache Ant</a> installed, as well as <a class="link_ref" href="http://ant-contrib.sourceforge.net/">ant-contrib</a>.</p>
+               <p>Before running the search on your own site, you can test that your system is able
+                  to do the build by doing the (very quick) build of the test materials. If you simply
+                  run the <span class="ident">ant</span> command, like this:</p>
+               <pre class="pre_eg cdata">mholmes@linuxbox:~/Documents/staticSearch$ ant</pre>
+               <p>you should see a build process proceed using the small test collection of documents,
+                  and at the end, a results page should open up giving you a report on what was done.
+                  If this fails, then you'll need to troubleshoot the problem based on any error messages
+                  you see. (Do you have Java, Ant and ant-contrib installed and working on your system?).</p>
+               <p>If the test succeeds, you can view the results by uploading the <span class="ident">test</span> folder and all its contents to a web server, or by running a local webserver on your
+                  machine in that folder, using the <a class="link_ref" href="https://docs.python.org/3.8/library/http.server.html">Python HTTP server</a> or <a class="link_ref" href="https://www.php.net/manual/en/features.commandline.webserver.php">PHP's built-in web server</a>.</p>
+               <p>If the tests all work, then you're ready to build a search for your own site. Now
+                  you need to run the same command, but this time, tell the build process where to find
+                  your custom configuration file:</p>
+               <pre class="pre_eg cdata">ant -DconfigFile=/home/mholmes/mysite/config_staticSearch.xml</pre>
+               <p>The same process should run, and if it's successful, you should have a modified <span class="ident">search.html</span> page as well as a lot of index files in JSON format in your site HTML folder. Now
+                  you can test your own search in the same ways suggested above.</p>
+            </div>
+         </section>
+         <section class="teidiv0" id="howDoesItWork">
+            <header>
+               <h2><span class="headingNumber">7 </span><span class="head">How does it work?</span></h2>
+            </header>
+            <ul>
+               <li class="item">Level: Advanced</li>
+               <li class="item">Last Updated: <span class="date">20 March 2020</span></li>
+            </ul>
+            <div class="teidiv1" id="buildingTheIndex">
+               <h3><span class="headingNumber">7.1 </span><span class="head">Building the index</span></h3>
+               <p>The tokenizing process first processes your configuration file to create an XSLT file
+                  with all your settings embedded in it. Next, it processes your document collection
+                  using those settings. Each document is tokenized, and then a separate JSON file is
+                  created for each distinct token found; this file contains links to each of the documents
+                  which contain that token, as well as keyword-in-context strings for the actual tokens.
+                  There will most likely be thousands of these files, but most of them are quite small.
+                  These constitute the textual index.</p>
+               <p>In addition, separate JSON files are created for the list of document titles, and
+                  for your stopword list if you have specified one.</p>
+               <p>Next, if you have specified search facets in your document headers, the processor
+                  will then create a separate JSON file for each of those search facets, consisting
+                  of a list of the document identifiers for all documents which match the filters; so
+                  if some of your documents are specified as ‘Illustrated’ and some not (true or false),
+                  a JSON file will be created for the ‘Illustrated’ facet, with a list of documents
+                  which are true for this facet, and a list of documents which are false.</p>
+               <p>Finally, the template file you have created for the search page on your site will
+                  be processed to add the required search controls and JavaScript to make the search
+                  work.</p>
+            </div>
+            <div class="teidiv1" id="theSearchPage">
+               <h3><span class="headingNumber">7.2 </span><span class="head">The search page</span></h3>
+               <p>In order to provide fast, responsive search results, the search page must download
+                  only the information it needs for each specific search. Obviously, if it were to download
+                  the entire collection of thousands of token files, the process would take forever.
+                  So when you search for the word <span class="mentioned">waiting</span>, what happens is that the JavaScript stems that word, producing <span class="mentioned">wait</span>, then it downloads only the single file containing indexing information for that
+                  specific word, which is very rapid.</p>
+               <p>However, there is some information that is required for all or many searches. To display
+                  any results, the list of document titles must be downloaded, for example. A user may
+                  for instance use the search facets only, not searching for a particular word or phrase
+                  but just wanting a list of all the documents classified as ‘Poems’. This requires
+                  that the JSON file with information about that facet be downloaded. So there is some
+                  advantage in having the JavaScript start downloading some of the essential files (titles,
+                  stopwords and so on) as soon as the page loads, and it also starts downloading the
+                  facet files in the background.</p>
+               <p>At the same time, though, we don't want to clog up the connection downloading these
+                  files when the user may do a simple text search which doesn't depend on them, so these
+                  files are retrieved using a ‘trickle’ approach, one at a time. Then if a search is
+                  initiated, all the files required for that specific search can be downloaded as fast
+                  as possible overriding the trickle sequence for files that are needed immediately.</p>
+               <p>Once the user has been on the search page for any length of time, all ancillary files
+                  will have been retrieved (assuming they weren't already cached by the browser), so
+                  the only files required for any search are those for the actual text search terms;
+                  the response should therefore be even faster for later searches than for early ones.</p>
+            </div>
+         </section>
+      </div>
+      <!--TEI back-->
+      <div class="tei_back">
+         <section class="teidiv0" id="schemaSpec">
+            <header>
+               <h2><span class="headingNumber">Appendix A </span><span class="head">Schema specification and tag documentation</span></h2>
+            </header>
+            <div class="teidiv1" id="index.xml-back.1_div.1_div.1">
+               <h3><span class="headingNumber">Appendix A.1 </span><span class="head">Elements</span></h3>
+               <div class="refdoc" id="TEI.config">
+                  <h3><span class="headingNumber">Appendix A.1.1 </span><span class="head">&lt;config&gt;</span></h3>
+                  <div class="table">
+                     <table class="wovenodd">
+                        <tr>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;config&gt; </span>(<span>The root element for the Search Generator configuration file.</span>)</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
+                           <td class="wovenodd-col2">http://hcmc.uvic.ca/ns/staticSearch</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                           <td class="wovenodd-col2">ss — <a class="link_ref" href="#schemaSpec" title="Schema specification and tag documentation">Schema specification and tag documentation</a></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Contained by</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="parent">—</div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="specChildren">
+                                 <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.contexts" title="&lt;contexts&gt;">contexts</a> <a class="link_odd_elementSpec" href="#TEI.excludes" title="&lt;excludes&gt;">excludes</a> <a class="link_odd_elementSpec" href="#TEI.params" title="&lt;params&gt;">params</a> <a class="link_odd_elementSpec" href="#TEI.rules" title="&lt;rules&gt;">rules</a></span></div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+&lt;content&gt;
+ &lt;elementRef key="params"/&gt;
+ &lt;elementRef key="rules" minOccurs="0"/&gt;
+ &lt;elementRef key="contexts" minOccurs="0"/&gt;
+ &lt;elementRef key="excludes" minOccurs="0"/&gt;
+&lt;/content&gt;
+    </pre>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg">
+element config { <a class="link_ref" href="#TEI.params" title="&lt;params&gt;">params</a>, <a class="link_ref" href="#TEI.rules" title="&lt;rules&gt;">rules</a>?, <a class="link_ref" href="#TEI.contexts" title="&lt;contexts&gt;">contexts</a>?, <a class="link_ref" href="#TEI.excludes" title="&lt;excludes&gt;">excludes</a>? }</pre>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+               <div class="refdoc" id="TEI.context">
+                  <h3><span class="headingNumber">Appendix A.1.2 </span><span class="head">&lt;context&gt;</span></h3>
+                  <div class="table">
+                     <table class="wovenodd">
+                        <tr>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;context&gt; </span>(<span>A context definition, providing an XPath attribute that identifies the context, allowing
+                                 keyword-in-context fragments to be bounded by a specific context.</span>)</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
+                           <td class="wovenodd-col2">http://hcmc.uvic.ca/ns/staticSearch</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                           <td class="wovenodd-col2">ss — <a class="link_ref" href="#schemaSpec" title="Schema specification and tag documentation">Schema specification and tag documentation</a></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Attributes</span></td>
+                           <td class="wovenodd-col2"><a class="link_ref" href="#TEI.att.xpath" title="att.xpath">att.xpath</a> (<span class="attribute">@xpath</span>) <a class="link_ref" href="#TEI.att.labelled" title="att.labelled">att.labelled</a> (<span class="attribute">@label</span>) 
+                              <div class="table">
+                                 <table class="attList">
+                                    <tr>
+                                       <td class="odd_label">context</td>
+                                       <td class="odd_value">
+                                          <div class="table">
+                                             <table class="attDef">
+                                                <tr>
+                                                   <td class="odd_label"><span lang="en" class="label">Status</span></td>
+                                                   <td class="odd_value"><span lang="en">Optional</span></td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="odd_label"><span lang="en" class="label">Datatype</span></td>
+                                                   <td class="odd_value"><a class="link_ref" href="https://www.w3.org/TR/xmlschema-2/#boolean">boolean</a></td>
+                                                </tr>
+                                             </table>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                 </table>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Contained by</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="parent">
+                                 <div class="specChildren">
+                                    <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.contexts" title="&lt;contexts&gt;">contexts</a></span></div>
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
+                           <td class="wovenodd-col2"><span lang="en">Empty element</span></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+&lt;content&gt;
+ &lt;empty/&gt;
+&lt;/content&gt;
+    </pre>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg">
+element context
+{
+   <a class="link_ref" href="#TEI.att.xpath" title="att.xpath">att.xpath.attributes</a>,
+   <a class="link_ref" href="#TEI.att.labelled" title="att.labelled">att.labelled.attributes</a>,
+   attribute context { text }?,
+   empty
+}</pre>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+               <div class="refdoc" id="TEI.contexts">
+                  <h3><span class="headingNumber">Appendix A.1.3 </span><span class="head">&lt;contexts&gt;</span></h3>
+                  <div class="table">
+                     <table class="wovenodd">
+                        <tr>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;contexts&gt; </span>(<span>The set of contexts, expressed as XPath, that controls the identification of contexts
+                                 for keyword-in-context fragments.</span>)</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
+                           <td class="wovenodd-col2">http://hcmc.uvic.ca/ns/staticSearch</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                           <td class="wovenodd-col2">ss — <a class="link_ref" href="#schemaSpec" title="Schema specification and tag documentation">Schema specification and tag documentation</a></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Contained by</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="parent">
+                                 <div class="specChildren">
+                                    <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.config" title="&lt;config&gt;">config</a></span></div>
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="specChildren">
+                                 <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.context" title="&lt;context&gt;">context</a></span></div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+&lt;content&gt;
+ &lt;elementRef key="context" minOccurs="1"
+  maxOccurs="unbounded"/&gt;
+&lt;/content&gt;
+    </pre>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg">
+element contexts { <a class="link_ref" href="#TEI.context" title="&lt;context&gt;">context</a>+ }</pre>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+               <div class="refdoc" id="TEI.createContexts">
+                  <h3><span class="headingNumber">Appendix A.1.4 </span><span class="head">&lt;createContexts&gt;</span></h3>
+                  <div class="table">
+                     <table class="wovenodd">
+                        <tr>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;createContexts&gt; </span>(<span>Whether to include keyword-in-context extracts in the index. This increases the size
+                                 of the index considerably, but it allows for more user-friendly search results, as
+                                 well as phrasal searches.</span>)</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
+                           <td class="wovenodd-col2">http://hcmc.uvic.ca/ns/staticSearch</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                           <td class="wovenodd-col2">ss — <a class="link_ref" href="#schemaSpec" title="Schema specification and tag documentation">Schema specification and tag documentation</a></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Contained by</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="parent">
+                                 <div class="specChildren">
+                                    <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.params" title="&lt;params&gt;">params</a></span></div>
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="specChildren">
+                                 <div class="specChild">XSD boolean</div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+&lt;content&gt;
+ &lt;dataRef name="boolean"/&gt;
+&lt;/content&gt;
+    </pre>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+element createContexts { xsd:boolean }</pre>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+               <div class="refdoc" id="TEI.dictionaryFile">
+                  <h3><span class="headingNumber">Appendix A.1.5 </span><span class="head">&lt;dictionaryFile&gt;</span></h3>
+                  <div class="table">
+                     <table class="wovenodd">
+                        <tr>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;dictionaryFile&gt; </span>(<span>The location of a dictionary file (one word per line) which will be used to check
+                                 tokens when indexing.</span>)</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
+                           <td class="wovenodd-col2">http://hcmc.uvic.ca/ns/staticSearch</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                           <td class="wovenodd-col2">ss — <a class="link_ref" href="#schemaSpec" title="Schema specification and tag documentation">Schema specification and tag documentation</a></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Contained by</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="parent">
+                                 <div class="specChildren">
+                                    <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.params" title="&lt;params&gt;">params</a></span></div>
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="specChildren">
+                                 <div class="specChild">XSD anyURI</div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+&lt;content&gt;
+ &lt;dataRef name="anyURI"/&gt;
+&lt;/content&gt;
+    </pre>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+element dictionaryFile { xsd:anyURI }</pre>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+               <div class="refdoc" id="TEI.exclude">
+                  <h3><span class="headingNumber">Appendix A.1.6 </span><span class="head">&lt;exclude&gt;</span></h3>
+                  <div class="table">
+                     <table class="wovenodd">
+                        <tr>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;exclude&gt; </span>(<span>An exclusion definition, which excludes either documents or filters as defined by
+                                 an XPath.</span>)</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
+                           <td class="wovenodd-col2">http://hcmc.uvic.ca/ns/staticSearch</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                           <td class="wovenodd-col2">ss — <a class="link_ref" href="#schemaSpec" title="Schema specification and tag documentation">Schema specification and tag documentation</a></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Attributes</span></td>
+                           <td class="wovenodd-col2"><a class="link_ref" href="#TEI.att.xpath" title="att.xpath">att.xpath</a> (<span class="attribute">@xpath</span>) 
+                              <div class="table">
+                                 <table class="attList">
+                                    <tr>
+                                       <td class="odd_label">type</td>
+                                       <td class="odd_value">
+                                          <div class="table">
+                                             <table class="attDef">
+                                                <tr>
+                                                   <td class="odd_label"><span lang="en" class="label">Status</span></td>
+                                                   <td class="odd_value"><span lang="en"><span class="required">Required</span></span></td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="odd_label"><span lang="en" class="label">Legal values are:</span></td>
+                                                   <td class="odd_value">
+                                                      <dl class="valList">
+                                                         <dt><span class="odd_label">index</span></dt>
+                                                         <dd>(<span>Index exclusion</span>) <span>An exclusion that specifies HTML fragment (which itself can be the root HTML element)
+                                                               to exclude from the document index.</span></dd>
+                                                         <dt><span class="odd_label">filter</span></dt>
+                                                         <dd>(<span>Filter exclusion</span>) <span>An exclusion that matches an HTML meta tag to exclude from the filter controls on
+                                                               the search page.</span></dd>
+                                                      </dl>
+                                                   </td>
+                                                </tr>
+                                             </table>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                 </table>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Contained by</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="parent">
+                                 <div class="specChildren">
+                                    <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.excludes" title="&lt;excludes&gt;">excludes</a></span></div>
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
+                           <td class="wovenodd-col2"><span lang="en">Empty element</span></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+&lt;content&gt;
+ &lt;empty/&gt;
+&lt;/content&gt;
+    </pre>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg">
+element exclude
+{
+   <a class="link_ref" href="#TEI.att.xpath" title="att.xpath">att.xpath.attributes</a>,
+   attribute type { "index" | "filter" },
+   empty
+}</pre>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+               <div class="refdoc" id="TEI.excludes">
+                  <h3><span class="headingNumber">Appendix A.1.7 </span><span class="head">&lt;excludes&gt;</span></h3>
+                  <div class="table">
+                     <table class="wovenodd">
+                        <tr>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;excludes&gt; </span>(<span>The set of exclusions, expressed as XPath, that control the subset of documents for
+                                 a particular search.</span>)</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
+                           <td class="wovenodd-col2">http://hcmc.uvic.ca/ns/staticSearch</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                           <td class="wovenodd-col2">ss — <a class="link_ref" href="#schemaSpec" title="Schema specification and tag documentation">Schema specification and tag documentation</a></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Contained by</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="parent">
+                                 <div class="specChildren">
+                                    <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.config" title="&lt;config&gt;">config</a></span></div>
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="specChildren">
+                                 <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.exclude" title="&lt;exclude&gt;">exclude</a></span></div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+&lt;content&gt;
+ &lt;elementRef key="exclude" minOccurs="1"
+  maxOccurs="unbounded"/&gt;
+&lt;/content&gt;
+    </pre>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg">
+element excludes { <a class="link_ref" href="#TEI.exclude" title="&lt;exclude&gt;">exclude</a>+ }</pre>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+               <div class="refdoc" id="TEI.indentJSON">
+                  <h3><span class="headingNumber">Appendix A.1.8 </span><span class="head">&lt;indentJSON&gt;</span></h3>
+                  <div class="table">
+                     <table class="wovenodd">
+                        <tr>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;indentJSON&gt; </span>(<span>Whether or not to indent code in the JSON index files. Indenting increases the file
+                                 size, but it can be useful if you need to read the files for debugging purposes.</span>)</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
+                           <td class="wovenodd-col2">http://hcmc.uvic.ca/ns/staticSearch</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                           <td class="wovenodd-col2">ss — <a class="link_ref" href="#schemaSpec" title="Schema specification and tag documentation">Schema specification and tag documentation</a></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Contained by</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="parent">
+                                 <div class="specChildren">
+                                    <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.params" title="&lt;params&gt;">params</a></span></div>
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="specChildren">
+                                 <div class="specChild">XSD boolean</div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+&lt;content&gt;
+ &lt;dataRef name="boolean"/&gt;
+&lt;/content&gt;
+    </pre>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+element indentJSON { xsd:boolean }</pre>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+               <div class="refdoc" id="TEI.kwicTruncateString">
+                  <h3><span class="headingNumber">Appendix A.1.9 </span><span class="head">&lt;kwicTruncateString&gt;</span></h3>
+                  <div class="table">
+                     <table class="wovenodd">
+                        <tr>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;kwicTruncateString&gt; </span>(<span>The string that will be used to signal ellipsis at the beginning and end of a keyword-in-context
+                                 extract. Conventionally three periods, or an ellipsis character.</span>)</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
+                           <td class="wovenodd-col2">http://hcmc.uvic.ca/ns/staticSearch</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                           <td class="wovenodd-col2">ss — <a class="link_ref" href="#schemaSpec" title="Schema specification and tag documentation">Schema specification and tag documentation</a></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Contained by</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="parent">
+                                 <div class="specChildren">
+                                    <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.params" title="&lt;params&gt;">params</a></span></div>
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
+                           <td class="wovenodd-col2"><span lang="en">Character data only</span></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+&lt;content&gt;
+ &lt;textNode/&gt;
+&lt;/content&gt;
+    </pre>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+element kwicTruncateString { text }</pre>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+               <div class="refdoc" id="TEI.maxKwicsToHarvest">
+                  <h3><span class="headingNumber">Appendix A.1.10 </span><span class="head">&lt;maxKwicsToHarvest&gt;</span></h3>
+                  <div class="table">
+                     <table class="wovenodd">
+                        <tr>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;maxKwicsToHarvest&gt; </span>(<span>This controls the maximum number of keyword-in-context extracts that will be stored
+                                 for each term. If phrasalSearch is set to true, this parameter is ignored, because
+                                 phrasal searches will only work properly if all contexts are stored.</span>)</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
+                           <td class="wovenodd-col2">http://hcmc.uvic.ca/ns/staticSearch</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                           <td class="wovenodd-col2">ss — <a class="link_ref" href="#schemaSpec" title="Schema specification and tag documentation">Schema specification and tag documentation</a></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Contained by</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="parent">
+                                 <div class="specChildren">
+                                    <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.params" title="&lt;params&gt;">params</a></span></div>
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="specChildren">
+                                 <div class="specChild">XSD nonNegativeInteger</div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+&lt;content&gt;
+ &lt;dataRef name="nonNegativeInteger"/&gt;
+&lt;/content&gt;
+    </pre>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+element maxKwicsToHarvest { xsd:nonNegativeInteger }</pre>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+               <div class="refdoc" id="TEI.maxKwicsToShow">
+                  <h3><span class="headingNumber">Appendix A.1.11 </span><span class="head">&lt;maxKwicsToShow&gt;</span></h3>
+                  <div class="table">
+                     <table class="wovenodd">
+                        <tr>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;maxKwicsToShow&gt; </span>(<span>This controls the maximum number of keyword-in-context extracts that will be shown
+                                 in the search page for each hit document returned.</span>)</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
+                           <td class="wovenodd-col2">http://hcmc.uvic.ca/ns/staticSearch</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                           <td class="wovenodd-col2">ss — <a class="link_ref" href="#schemaSpec" title="Schema specification and tag documentation">Schema specification and tag documentation</a></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Contained by</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="parent">
+                                 <div class="specChildren">
+                                    <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.params" title="&lt;params&gt;">params</a></span></div>
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="specChildren">
+                                 <div class="specChild">XSD nonNegativeInteger</div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+&lt;content&gt;
+ &lt;dataRef name="nonNegativeInteger"/&gt;
+&lt;/content&gt;
+    </pre>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+element maxKwicsToShow { xsd:nonNegativeInteger }</pre>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+               <div class="refdoc" id="TEI.outputFolder">
+                  <h3><span class="headingNumber">Appendix A.1.12 </span><span class="head">&lt;outputFolder&gt;</span></h3>
+                  <div class="table">
+                     <table class="wovenodd">
+                        <tr>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;outputFolder&gt; </span>(<span>The name of the output folder into which the index data and JavaScript will be placed
+                                 in the site search. This should conform with the XML Name specification.</span>)</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
+                           <td class="wovenodd-col2">http://hcmc.uvic.ca/ns/staticSearch</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                           <td class="wovenodd-col2">ss — <a class="link_ref" href="#schemaSpec" title="Schema specification and tag documentation">Schema specification and tag documentation</a></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Contained by</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="parent">
+                                 <div class="specChildren">
+                                    <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.params" title="&lt;params&gt;">params</a></span></div>
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="specChildren">
+                                 <div class="specChild">XSD NCName</div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+&lt;content&gt;
+ &lt;dataRef name="NCName"/&gt;
+&lt;/content&gt;
+    </pre>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+element outputFolder { xsd:NCName }</pre>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+               <div class="refdoc" id="TEI.params">
+                  <h3><span class="headingNumber">Appendix A.1.13 </span><span class="head">&lt;params&gt;</span></h3>
+                  <div class="table">
+                     <table class="wovenodd">
+                        <tr>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;params&gt; </span>(<span>Element containing most of the settings which enable the Generator to find the target
+                                 website content and process it appropriately.</span>)</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
+                           <td class="wovenodd-col2">http://hcmc.uvic.ca/ns/staticSearch</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                           <td class="wovenodd-col2">ss — <a class="link_ref" href="#schemaSpec" title="Schema specification and tag documentation">Schema specification and tag documentation</a></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Contained by</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="parent">
+                                 <div class="specChildren">
+                                    <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.config" title="&lt;config&gt;">config</a></span></div>
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="specChildren">
+                                 <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.createContexts" title="&lt;createContexts&gt;">createContexts</a> <a class="link_odd_elementSpec" href="#TEI.dictionaryFile" title="&lt;dictionaryFile&gt;">dictionaryFile</a> <a class="link_odd_elementSpec" href="#TEI.indentJSON" title="&lt;indentJSON&gt;">indentJSON</a> <a class="link_odd_elementSpec" href="#TEI.kwicTruncateString" title="&lt;kwicTruncateString&gt;">kwicTruncateString</a> <a class="link_odd_elementSpec" href="#TEI.maxKwicsToHarvest" title="&lt;maxKwicsToHarvest&gt;">maxKwicsToHarvest</a> <a class="link_odd_elementSpec" href="#TEI.maxKwicsToShow" title="&lt;maxKwicsToShow&gt;">maxKwicsToShow</a> <a class="link_odd_elementSpec" href="#TEI.outputFolder" title="&lt;outputFolder&gt;">outputFolder</a> <a class="link_odd_elementSpec" href="#TEI.phrasalSearch" title="&lt;phrasalSearch&gt;">phrasalSearch</a> <a class="link_odd_elementSpec" href="#TEI.recurse" title="&lt;recurse&gt;">recurse</a> <a class="link_odd_elementSpec" href="#TEI.searchFile" title="&lt;searchFile&gt;">searchFile</a> <a class="link_odd_elementSpec" href="#TEI.stopwordsFile" title="&lt;stopwordsFile&gt;">stopwordsFile</a> <a class="link_odd_elementSpec" href="#TEI.totalKwicLength" title="&lt;totalKwicLength&gt;">totalKwicLength</a> <a class="link_odd_elementSpec" href="#TEI.verbose" title="&lt;verbose&gt;">verbose</a> <a class="link_odd_elementSpec" href="#TEI.versionFile" title="&lt;versionFile&gt;">versionFile</a></span></div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+&lt;content&gt;
+ &lt;sequence minOccurs="1" maxOccurs="1"&gt;
+  &lt;elementRef key="searchFile"/&gt;
+  &lt;elementRef key="versionFile"
+   minOccurs="0"/&gt;
+  &lt;elementRef key="recurse"/&gt;
+  &lt;elementRef key="phrasalSearch"
+   minOccurs="0"/&gt;
+  &lt;elementRef key="createContexts"
+   minOccurs="0"/&gt;
+  &lt;elementRef key="maxKwicsToHarvest"
+   minOccurs="0"/&gt;
+  &lt;elementRef key="maxKwicsToShow"
+   minOccurs="0"/&gt;
+  &lt;elementRef key="totalKwicLength"
+   minOccurs="0"/&gt;
+  &lt;elementRef key="kwicTruncateString"
+   minOccurs="0"/&gt;
+  &lt;elementRef key="verbose" minOccurs="0"/&gt;
+  &lt;elementRef key="stopwordsFile"
+   minOccurs="0"/&gt;
+  &lt;elementRef key="dictionaryFile"
+   minOccurs="0"/&gt;
+  &lt;elementRef key="replacementsFile"
+   minOccurs="0"/&gt;
+  &lt;elementRef key="indentJSON"
+   minOccurs="0"/&gt;
+  &lt;elementRef key="outputFolder"
+   minOccurs="0"/&gt;
+ &lt;/sequence&gt;
+&lt;/content&gt;
+    </pre>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg">
+element params
+{
+   <a class="link_ref" href="#TEI.searchFile" title="&lt;searchFile&gt;">searchFile</a>,
+   <a class="link_ref" href="#TEI.versionFile" title="&lt;versionFile&gt;">versionFile</a>?,
+   <a class="link_ref" href="#TEI.recurse" title="&lt;recurse&gt;">recurse</a>,
+   <a class="link_ref" href="#TEI.phrasalSearch" title="&lt;phrasalSearch&gt;">phrasalSearch</a>?,
+   <a class="link_ref" href="#TEI.createContexts" title="&lt;createContexts&gt;">createContexts</a>?,
+   <a class="link_ref" href="#TEI.maxKwicsToHarvest" title="&lt;maxKwicsToHarvest&gt;">maxKwicsToHarvest</a>?,
+   <a class="link_ref" href="#TEI.maxKwicsToShow" title="&lt;maxKwicsToShow&gt;">maxKwicsToShow</a>?,
+   <a class="link_ref" href="#TEI.totalKwicLength" title="&lt;totalKwicLength&gt;">totalKwicLength</a>?,
+   <a class="link_ref" href="#TEI.kwicTruncateString" title="&lt;kwicTruncateString&gt;">kwicTruncateString</a>?,
+   <a class="link_ref" href="#TEI.verbose" title="&lt;verbose&gt;">verbose</a>?,
+   <a class="link_ref" href="#TEI.stopwordsFile" title="&lt;stopwordsFile&gt;">stopwordsFile</a>?,
+   <a class="link_ref" href="#TEI.dictionaryFile" title="&lt;dictionaryFile&gt;">dictionaryFile</a>?,
+   replacementsFile?,
+   <a class="link_ref" href="#TEI.indentJSON" title="&lt;indentJSON&gt;">indentJSON</a>?,
+   <a class="link_ref" href="#TEI.outputFolder" title="&lt;outputFolder&gt;">outputFolder</a>?
+}</pre>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+               <div class="refdoc" id="TEI.phrasalSearch">
+                  <h3><span class="headingNumber">Appendix A.1.14 </span><span class="head">&lt;phrasalSearch&gt;</span></h3>
+                  <div class="table">
+                     <table class="wovenodd">
+                        <tr>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;phrasalSearch&gt; </span>(<span>Whether or not to support phrasal searches. If this is true, then the maxContexts
+                                 setting will be ignored, because all contexts are required to properly support phrasal
+                                 search.</span>)</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
+                           <td class="wovenodd-col2">http://hcmc.uvic.ca/ns/staticSearch</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                           <td class="wovenodd-col2">ss — <a class="link_ref" href="#schemaSpec" title="Schema specification and tag documentation">Schema specification and tag documentation</a></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Contained by</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="parent">
+                                 <div class="specChildren">
+                                    <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.params" title="&lt;params&gt;">params</a></span></div>
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="specChildren">
+                                 <div class="specChild">XSD boolean</div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+&lt;content&gt;
+ &lt;dataRef name="boolean"/&gt;
+&lt;/content&gt;
+    </pre>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+element phrasalSearch { xsd:boolean }</pre>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+               <div class="refdoc" id="TEI.recurse">
+                  <h3><span class="headingNumber">Appendix A.1.15 </span><span class="head">&lt;recurse&gt;</span></h3>
+                  <div class="table">
+                     <table class="wovenodd">
+                        <tr>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;recurse&gt; </span>(<span>Whether to recurse into subdirectories of the collection directory or not.</span>)</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
+                           <td class="wovenodd-col2">http://hcmc.uvic.ca/ns/staticSearch</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                           <td class="wovenodd-col2">ss — <a class="link_ref" href="#schemaSpec" title="Schema specification and tag documentation">Schema specification and tag documentation</a></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Contained by</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="parent">
+                                 <div class="specChildren">
+                                    <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.params" title="&lt;params&gt;">params</a></span></div>
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="specChildren">
+                                 <div class="specChild">XSD boolean</div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+&lt;content&gt;
+ &lt;dataRef name="boolean"/&gt;
+&lt;/content&gt;
+    </pre>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+element recurse { xsd:boolean }</pre>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+               <div class="refdoc" id="TEI.rule">
+                  <h3><span class="headingNumber">Appendix A.1.16 </span><span class="head">&lt;rule&gt;</span></h3>
+                  <div class="table">
+                     <table class="wovenodd">
+                        <tr>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;rule&gt; </span>(<span>A rule that specifies a document path in XPath, and provides weighting for search
+                                 terms found in that context.</span>)</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
+                           <td class="wovenodd-col2">http://hcmc.uvic.ca/ns/staticSearch</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                           <td class="wovenodd-col2">ss — <a class="link_ref" href="#schemaSpec" title="Schema specification and tag documentation">Schema specification and tag documentation</a></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Attributes</span></td>
+                           <td class="wovenodd-col2"><a class="link_ref" href="#TEI.att.xpath" title="att.xpath">att.xpath</a> (<span class="attribute">@xpath</span>) 
+                              <div class="table">
+                                 <table class="attList">
+                                    <tr>
+                                       <td class="odd_label">weight</td>
+                                       <td class="odd_value">(<span>The weighting to give to a search token found in the context specified by the xpath
+                                             attribute. Set to 0 to completely suppress indexing for a specific context, or greater
+                                             than 1 to give stronger weighting.</span>) 
+                                          <div class="table">
+                                             <table class="attDef">
+                                                <tr>
+                                                   <td class="odd_label"><span lang="en" class="label">Status</span></td>
+                                                   <td class="odd_value"><span lang="en"><span class="required">Required</span></span></td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="odd_label"><span lang="en" class="label">Datatype</span></td>
+                                                   <td class="odd_value"><a class="link_ref" href="https://www.w3.org/TR/xmlschema-2/#nonNegativeInteger">nonNegativeInteger</a></td>
+                                                </tr>
+                                             </table>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                 </table>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Contained by</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="parent">
+                                 <div class="specChildren">
+                                    <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.rules" title="&lt;rules&gt;">rules</a></span></div>
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
+                           <td class="wovenodd-col2"><span lang="en">Empty element</span></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+&lt;content&gt;
+ &lt;empty/&gt;
+&lt;/content&gt;
+    </pre>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg">
+element rule { <a class="link_ref" href="#TEI.att.xpath" title="att.xpath">att.xpath.attributes</a>, attribute weight { text }, empty }</pre>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+               <div class="refdoc" id="TEI.rules">
+                  <h3><span class="headingNumber">Appendix A.1.17 </span><span class="head">&lt;rules&gt;</span></h3>
+                  <div class="table">
+                     <table class="wovenodd">
+                        <tr>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;rules&gt; </span>(<span>The set of rules, expressed as XPath, that control weighting of search terms found
+                                 in specific contexts.</span>)</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
+                           <td class="wovenodd-col2">http://hcmc.uvic.ca/ns/staticSearch</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                           <td class="wovenodd-col2">ss — <a class="link_ref" href="#schemaSpec" title="Schema specification and tag documentation">Schema specification and tag documentation</a></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Contained by</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="parent">
+                                 <div class="specChildren">
+                                    <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.config" title="&lt;config&gt;">config</a></span></div>
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="specChildren">
+                                 <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.rule" title="&lt;rule&gt;">rule</a></span></div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+&lt;content&gt;
+ &lt;elementRef key="rule" minOccurs="1"
+  maxOccurs="unbounded"/&gt;
+&lt;/content&gt;
+    </pre>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg">
+element rules { <a class="link_ref" href="#TEI.rule" title="&lt;rule&gt;">rule</a>+ }</pre>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+               <div class="refdoc" id="TEI.searchFile">
+                  <h3><span class="headingNumber">Appendix A.1.18 </span><span class="head">&lt;searchFile&gt;</span></h3>
+                  <div class="table">
+                     <table class="wovenodd">
+                        <tr>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;searchFile&gt; </span>(<span>The search file (aka page) that will be the primary access point for the static search.
+                                 Note that this page must be at the root of the collection directory.</span>)</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
+                           <td class="wovenodd-col2">http://hcmc.uvic.ca/ns/staticSearch</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                           <td class="wovenodd-col2">ss — <a class="link_ref" href="#schemaSpec" title="Schema specification and tag documentation">Schema specification and tag documentation</a></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Contained by</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="parent">
+                                 <div class="specChildren">
+                                    <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.params" title="&lt;params&gt;">params</a></span></div>
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="specChildren">
+                                 <div class="specChild">XSD anyURI</div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+&lt;content&gt;
+ &lt;dataRef name="anyURI"/&gt;
+&lt;/content&gt;
+    </pre>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+element searchFile { xsd:anyURI }</pre>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+               <div class="refdoc" id="TEI.stopwordsFile">
+                  <h3><span class="headingNumber">Appendix A.1.19 </span><span class="head">&lt;stopwordsFile&gt;</span></h3>
+                  <div class="table">
+                     <table class="wovenodd">
+                        <tr>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;stopwordsFile&gt; </span>(<span>The location of a text file containing a list of stopwords (words to be ignored when
+                                 indexing). These are typically words too common to be worth searching for, but every
+                                 site will also have some specific terms which are used so widely across the site that
+                                 they should be suppressed to control the index size. The list should be in plain text
+                                 with one word per line.</span>)</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
+                           <td class="wovenodd-col2">http://hcmc.uvic.ca/ns/staticSearch</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                           <td class="wovenodd-col2">ss — <a class="link_ref" href="#schemaSpec" title="Schema specification and tag documentation">Schema specification and tag documentation</a></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Contained by</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="parent">
+                                 <div class="specChildren">
+                                    <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.params" title="&lt;params&gt;">params</a></span></div>
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="specChildren">
+                                 <div class="specChild">XSD anyURI</div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+&lt;content&gt;
+ &lt;dataRef name="anyURI"/&gt;
+&lt;/content&gt;
+    </pre>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+element stopwordsFile { xsd:anyURI }</pre>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+               <div class="refdoc" id="TEI.totalKwicLength">
+                  <h3><span class="headingNumber">Appendix A.1.20 </span><span class="head">&lt;totalKwicLength&gt;</span></h3>
+                  <div class="table">
+                     <table class="wovenodd">
+                        <tr>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;totalKwicLength&gt; </span>(<span>If createContexts is set to true, then this parameter controls how long the contexts
+                                 will be.</span>)</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
+                           <td class="wovenodd-col2">http://hcmc.uvic.ca/ns/staticSearch</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                           <td class="wovenodd-col2">ss — <a class="link_ref" href="#schemaSpec" title="Schema specification and tag documentation">Schema specification and tag documentation</a></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Contained by</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="parent">
+                                 <div class="specChildren">
+                                    <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.params" title="&lt;params&gt;">params</a></span></div>
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="specChildren">
+                                 <div class="specChild">XSD nonNegativeInteger</div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+&lt;content&gt;
+ &lt;dataRef name="nonNegativeInteger"/&gt;
+&lt;/content&gt;
+    </pre>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+element totalKwicLength { xsd:nonNegativeInteger }</pre>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+               <div class="refdoc" id="TEI.verbose">
+                  <h3><span class="headingNumber">Appendix A.1.21 </span><span class="head">&lt;verbose&gt;</span></h3>
+                  <div class="table">
+                     <table class="wovenodd">
+                        <tr>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;verbose&gt; </span>(<span>Turns on more detailed reporting during the indexing process.</span>)</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
+                           <td class="wovenodd-col2">http://hcmc.uvic.ca/ns/staticSearch</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                           <td class="wovenodd-col2">ss — <a class="link_ref" href="#schemaSpec" title="Schema specification and tag documentation">Schema specification and tag documentation</a></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Contained by</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="parent">
+                                 <div class="specChildren">
+                                    <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.params" title="&lt;params&gt;">params</a></span></div>
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="specChildren">
+                                 <div class="specChild">XSD boolean</div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+&lt;content&gt;
+ &lt;dataRef name="boolean"/&gt;
+&lt;/content&gt;
+    </pre>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+element verbose { xsd:boolean }</pre>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+               <div class="refdoc" id="TEI.versionFile">
+                  <h3><span class="headingNumber">Appendix A.1.22 </span><span class="head">&lt;versionFile&gt;</span></h3>
+                  <div class="table">
+                     <table class="wovenodd">
+                        <tr>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;versionFile&gt; </span>(<span>The relative path to a text file containing a single version identifier (such as 1.5,
+                                 123456, or 06ad419). This will be used to create unique filenames for JSON resources,
+                                 so that when a site is updated, so that the browser will not use cached versions of
+                                 older index files.</span>)</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
+                           <td class="wovenodd-col2">http://hcmc.uvic.ca/ns/staticSearch</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                           <td class="wovenodd-col2">ss — <a class="link_ref" href="#schemaSpec" title="Schema specification and tag documentation">Schema specification and tag documentation</a></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Contained by</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="parent">
+                                 <div class="specChildren">
+                                    <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.params" title="&lt;params&gt;">params</a></span></div>
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="specChildren">
+                                 <div class="specChild">XSD anyURI</div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+&lt;content&gt;
+ &lt;dataRef name="anyURI"/&gt;
+&lt;/content&gt;
+    </pre>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
+                           <td class="wovenodd-col2">
+                              <pre class="pre_eg cdata">
+element versionFile { xsd:anyURI }</pre>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+            </div>
+            <div class="teidiv1" id="index.xml-back.1_div.1_div.2">
+               <h3><span class="headingNumber">Appendix A.2 </span><span class="head">Attribute classes</span></h3>
+               <div class="refdoc" id="TEI.att.labelled">
+                  <h3><span class="headingNumber">Appendix A.2.1 </span><span class="head">att.labelled</span></h3>
+                  <div class="table">
+                     <table class="wovenodd">
+                        <tr>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">att.labelled</span> (<span>A class providing a label attribute that can be used to identify/describe contexts
+                                 and other things which benefit from description.</span>)</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                           <td class="wovenodd-col2">ss — <a class="link_ref" href="#schemaSpec" title="Schema specification and tag documentation">Schema specification and tag documentation</a></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Members</span></td>
+                           <td class="wovenodd-col2"><span class="showmembers1"><a class="link_odd_elementSpec" href="#TEI.context" title="&lt;context&gt;">context</a></span></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Attributes</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="table">
+                                 <table class="attList">
+                                    <tr>
+                                       <td class="odd_label">label</td>
+                                       <td class="odd_value">(<span>A string identifier which may be descriptive.</span>) 
+                                          <div class="table">
+                                             <table class="attDef">
+                                                <tr>
+                                                   <td class="odd_label"><span lang="en" class="label">Status</span></td>
+                                                   <td class="odd_value"><span lang="en">Optional</span></td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="odd_label"><span lang="en" class="label">Datatype</span></td>
+                                                   <td class="odd_value"><a class="link_ref" href="https://www.w3.org/TR/xmlschema-2/#string">string</a></td>
+                                                </tr>
+                                             </table>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                 </table>
+                              </div>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+               <div class="refdoc" id="TEI.att.xpath">
+                  <h3><span class="headingNumber">Appendix A.2.2 </span><span class="head">att.xpath</span></h3>
+                  <div class="table">
+                     <table class="wovenodd">
+                        <tr>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">att.xpath</span> (<span>A class providing attributes that enable specification of document locations.</span>)</td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                           <td class="wovenodd-col2">ss — <a class="link_ref" href="#schemaSpec" title="Schema specification and tag documentation">Schema specification and tag documentation</a></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Members</span></td>
+                           <td class="wovenodd-col2"><span class="showmembers1"><a class="link_odd_elementSpec" href="#TEI.context" title="&lt;context&gt;">context</a> <a class="link_odd_elementSpec" href="#TEI.exclude" title="&lt;exclude&gt;">exclude</a> <a class="link_odd_elementSpec" href="#TEI.rule" title="&lt;rule&gt;">rule</a></span></td>
+                        </tr>
+                        <tr>
+                           <td class="wovenodd-col1"><span lang="en" class="label">Attributes</span></td>
+                           <td class="wovenodd-col2">
+                              <div class="table">
+                                 <table class="attList">
+                                    <tr>
+                                       <td class="odd_label">xpath</td>
+                                       <td class="odd_value">(<span>An XPath equivalent to the @match attribute of an xsl:template, which specifies a
+                                             context in a document.</span>) 
+                                          <div class="table">
+                                             <table class="attDef">
+                                                <tr>
+                                                   <td class="odd_label"><span lang="en" class="label">Status</span></td>
+                                                   <td class="odd_value"><span lang="en"><span class="required">Required</span></span></td>
+                                                </tr>
+                                                <tr>
+                                                   <td class="odd_label"><span lang="en" class="label">Datatype</span></td>
+                                                   <td class="odd_value"><a class="link_ref" href="https://www.w3.org/TR/xmlschema-2/#string">string</a></td>
+                                                </tr>
+                                             </table>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                 </table>
+                              </div>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+            </div>
+         </section>
+      </div>
+      <!--Notes in [TEI]-->
+      <div class="notes">
+         <div class="noteHeading">Notes</div>
+         <div class="note" id="Note1"><span class="noteLabel">1 </span><div class="noteBody">This example taken from Thomas S. Kuhn, <span class="titlem">The Structure of Scientific Revolutions</span> (50th anniversary edition), University of Chicago Press, 2012: p. 191.</div> <a class="link_return" title="Go back to text" href="#Note1_return">↵</a></div>
+      </div>
+      <div class="stdfooter autogenerated">
+         <div class="footer"><!--standard links to project, institution etc--><a class="plain" href="http://www.example.com/"></a> <a class="plain" href="index.html">Home</a> <a class="plain" href="#">Feedback</a> </div>
+         <address>Martin Holmes and Joey Takeda.
+            	    Date: 2019-2020<br/>
+            <!--
+	  Generated from index.xml using XSLT stylesheets version 7.49.0
+	       based on http://www.tei-c.org/Stylesheets/
+	       on 2020-05-08T23:17:27Z.
+	       SAXON HE 10.0.
+		 --></address>
+      </div>
+   </body>
+</html>
