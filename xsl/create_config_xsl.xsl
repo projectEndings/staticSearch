@@ -488,7 +488,7 @@
         </xd:desc>
     </xd:doc>
     <xsl:template name="createRetainRules" exclude-result-prefixes="#all">
-        <xso:template match="{string-join($retainRules/@xpath,' | ')}" priority="1" mode="clean">
+        <xso:template match="{string-join($retainRules/@match,' | ')}" priority="1" mode="clean">
             <xso:if test="$verbose">
                 <xso:message>Template #clean: retaining <xso:value-of select="local-name(.)"/></xso:message>
             </xso:if>
@@ -509,7 +509,7 @@
         </xd:desc>
     </xd:doc>
     <xsl:template name="createDeleteRules" exclude-result-prefixes="#all">
-        <xso:template match="{string-join($deleteRules/@xpath,' | ')}" priority="1" mode="clean">
+        <xso:template match="{string-join($deleteRules/@match,' | ')}" priority="1" mode="clean">
             <xso:if test="$verbose">
                 <xso:message>Template #clean: Deleting <xso:value-of select="local-name(.)"/></xso:message>
             </xso:if>
@@ -525,7 +525,7 @@
         </xd:desc>
     </xd:doc>
     <xsl:template name="createExcludeRules" exclude-result-prefixes="#all">
-        <xso:template match="{string-join($excludeRules/@xpath, ' | ')}" priority="1" mode="exclude">
+        <xso:template match="{string-join($excludeRules/@match, ' | ')}" priority="1" mode="exclude">
             <xso:if test="$verbose">
                 <xso:message>Template #exclude: Adding @data-staticSearch-exclude flag to <xso:value-of select="local-name(.)"/></xso:message>
             </xso:if>
@@ -544,14 +544,14 @@
         </xd:desc>
     </xd:doc>
     <xsl:template name="createContextRules" exclude-result-prefixes="#all">
-        <xso:template match="{string-join($contexts/@xpath,' | ')}" priority="1" mode="contextualize">
+        <xso:template match="{string-join($contexts/@match,' | ')}" priority="1" mode="contextualize">
             <xso:if test="$verbose">
                 <xso:message>Template #contextualize: Adding @data-staticSearch-context flag to <xso:value-of select="local-name(.)"/></xso:message>
             </xso:if>
             <xso:copy>
                 <xso:apply-templates select="@*" mode="#current"/>
                 <xsl:for-each select="$contexts">
-                    <xso:if test="self::{@xpath}">
+                    <xso:if test="self::{@match}">
                         <xso:attribute name="data-staticSearch-context" select="{concat('''',hcmc:stringToBoolean(@context),'''')}"/>
                     </xso:if>
                 </xsl:for-each>
@@ -568,14 +568,14 @@
         </xd:desc>
     </xd:doc>
     <xsl:template name="createWeightingRules" exclude-result-prefixes="#all">
-        <xso:template match="{string-join($weightedRules/@xpath,' | ')}" priority="1" mode="weigh">
+        <xso:template match="{string-join($weightedRules/@match,' | ')}" priority="1" mode="weigh">
             <xso:if test="$verbose">
                 <xso:message>Template #weigh: Adding @data-weight to <xso:value-of select="local-name(.)"/></xso:message>
             </xso:if>
             <xso:copy>
                 <xso:apply-templates select="@*" mode="#current"/>
                 <xsl:for-each select="$weightedRules[xs:integer(@weight) gt 1]">
-                    <xso:if test="self::{@xpath}">
+                    <xso:if test="self::{@match}">
                         <xso:attribute name="data-staticSearch-weight" select="{@weight}"/>
                     </xso:if>
                 </xsl:for-each>
