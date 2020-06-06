@@ -1,0 +1,53 @@
+
+  { "token" : "xml",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 5,
+        "contexts" : 
+        [ 
+          { "form" : "XML",
+            "context" : "...pages. That means web pages which are well-formed <mark>XML<\/mark>, using the XHTML namespace. If your site...",
+            "weight" : 1,
+            "pos" : 47 },
+          
+          { "form" : "XML",
+            "context" : "The configuration file is an <mark>XML<\/mark> document which tells the Generator where to...",
+            "weight" : 1,
+            "pos" : 457 },
+          
+          { "form" : "XML",
+            "context" : "...different locations. The value must conform with the <mark>XML<\/mark> Name specification.",
+            "weight" : 1,
+            "pos" : 1051 },
+          
+          { "form" : "XML",
+            "context" : "...document (which must of course also be well-formed <mark>XML<\/mark>, so it can be processed), containing all...",
+            "weight" : 1,
+            "pos" : 1668 },
+          
+          { "form" : "xml",
+            "context" : "mholmes@linuxbox:~\/Documents\/staticSearch$ ant ant -DconfigFile=\/home\/mholmes\/mysite\/config_staticSearch.<mark>xml<\/mark> ",
+            "weight" : 1,
+            "pos" : 1934 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "XML",
+            "context" : "...back-end database search engine (perhaps Solr or an <mark>XML<\/mark> database), or they rely on commercial services...",
+            "weight" : 1,
+            "pos" : 135 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "XML",
+            "context" : "...the site search. This should conform with the <mark>XML<\/mark> Name specification.)",
+            "weight" : 1,
+            "pos" : 479 } ] } ] }

@@ -1,0 +1,18 @@
+
+  { "token" : "line",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "line",
+            "context" : "...location of a dictionary file (one word per <mark>line<\/mark>) which will be used to check tokens...",
+            "weight" : 1,
+            "pos" : 179 },
+          
+          { "form" : "line",
+            "context" : "...be in plain text with one word per <mark>line<\/mark>.)",
+            "weight" : 1,
+            "pos" : 792 } ] } ] }

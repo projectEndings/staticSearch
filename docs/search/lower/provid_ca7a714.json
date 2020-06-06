@@ -1,0 +1,83 @@
+
+  { "token" : "provid",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "providing",
+            "context" : "<context> (A context definition, <mark>providing<\/mark> a match attribute that identifies the context,...",
+            "weight" : 1,
+            "pos" : 45 },
+          
+          { "form" : "provides",
+            "context" : "...a document path as XPath in match, and <mark>provides<\/mark> weighting for search terms found in that...",
+            "weight" : 1,
+            "pos" : 627 },
+          
+          { "form" : "providing",
+            "context" : "att.labelled (A class <mark>providing<\/mark> a label attribute that can be used...",
+            "weight" : 1,
+            "pos" : 961 },
+          
+          { "form" : "providing",
+            "context" : "att.match (A class <mark>providing<\/mark> attributes that enable specification of document locations.)...",
+            "weight" : 1,
+            "pos" : 995 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "providing",
+            "context" : "...you can override the document title value by <mark>providing<\/mark> another meta tag, like this:",
+            "weight" : 1,
+            "pos" : 363 },
+          
+          { "form" : "provides",
+            "context" : "...want the search to index), the searchFile parameter <mark>provides<\/mark> the necessary information for knowing what document...",
+            "weight" : 1,
+            "pos" : 550 },
+          
+          { "form" : "provide",
+            "context" : "...not contain any spaces or punctuation. If you <mark>provide<\/mark> a version file, the version string will...",
+            "weight" : 1,
+            "pos" : 684 },
+          
+          { "form" : "providing",
+            "context" : "...the document: You can customize this CSS by <mark>providing<\/mark> your own CSS that overrides it, using...",
+            "weight" : 1,
+            "pos" : 1738 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "provides",
+            "context" : "staticSearch solves this problem. It <mark>provides<\/mark> the capability to build a sophisticated faceted...",
+            "weight" : 1,
+            "pos" : 171 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "provide",
+            "context" : "In order to <mark>provide<\/mark> fast, responsive search results, the search page...",
+            "weight" : 1,
+            "pos" : 128 } ] },
+      
+      { "docId" : "whatDoesItDo",
+        "docUri" : "whatDoesItDo.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "provide",
+            "context" : "...terms and retrieves the required JSON files to <mark>provide<\/mark> search results.",
+            "weight" : 1,
+            "pos" : 57 } ] } ] }

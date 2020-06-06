@@ -1,0 +1,23 @@
+
+  { "token" : "server-sid",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "server-side",
+            "context" : "...the long term than sites which use more <mark>server-side<\/mark> technology, and are also much easier to...",
+            "weight" : 1,
+            "pos" : 81 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "server-side",
+            "context" : "...However, since the tokenizer is unaware of any <mark>server-side<\/mark> processing, it understands the <span> as an...",
+            "weight" : 1,
+            "pos" : 1368 } ] } ] }

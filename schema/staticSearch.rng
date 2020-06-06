@@ -5,7 +5,7 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2020-06-05T21:34:58Z. 2019-2020.
+Schema generated from ODD source 2020-06-06T00:52:29Z. 2019-2020.
 TEI Edition: Version 4.0.0. Last updated on
 	13th February 2020, revision ccd19b0ba
 TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 4.0.0/
@@ -41,6 +41,9 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 4.0.0/
             <ref name="recurse"/>
             <optional>
                <ref name="phrasalSearch"/>
+            </optional>
+            <optional>
+               <ref name="wildcardSearch"/>
             </optional>
             <optional>
                <ref name="createContexts"/>
@@ -245,6 +248,12 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 4.0.0/
       <element name="phrasalSearch" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Whether or not to support phrasal searches. If this is true, then the maxContexts
             setting will be ignored, because all contexts are required to properly support phrasal search.) </a:documentation>
+         <data type="boolean"/>
+      </element>
+   </define>
+   <define name="wildcardSearch">
+      <element name="wildcardSearch" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Whether or not to support wildcard searches.) </a:documentation>
          <data type="boolean"/>
       </element>
    </define>

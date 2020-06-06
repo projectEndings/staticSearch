@@ -1,0 +1,98 @@
+
+  { "token" : "attribut",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 12,
+        "contexts" : 
+        [ 
+          { "form" : "Attribute",
+            "context" : "Appendix A.2 <mark>Attribute<\/mark> classes",
+            "weight" : 2,
+            "pos" : 952 },
+          
+          { "form" : "attribute",
+            "context" : "...<context> (A context definition, providing a match <mark>attribute<\/mark> that identifies the context, allowing keyword-in-context fragments...",
+            "weight" : 1,
+            "pos" : 47 },
+          
+          { "form" : "Attributes",
+            "context" : "<mark>Attributes<\/mark>",
+            "weight" : 1,
+            "pos" : 68 },
+          
+          { "form" : "Attributes",
+            "context" : "<mark>Attributes<\/mark>",
+            "weight" : 1,
+            "pos" : 227 },
+          
+          { "form" : "Attributes",
+            "context" : "<mark>Attributes<\/mark>",
+            "weight" : 1,
+            "pos" : 643 },
+          
+          { "form" : "attribute",
+            "context" : "...found in the context specified by the match <mark>attribute<\/mark>. Set to 0 to completely suppress indexing...",
+            "weight" : 1,
+            "pos" : 656 },
+          
+          { "form" : "attribute",
+            "context" : "att.labelled (A class providing a label <mark>attribute<\/mark> that can be used to identify\/describe contexts...",
+            "weight" : 1,
+            "pos" : 963 },
+          
+          { "form" : "Attributes",
+            "context" : "<mark>Attributes<\/mark>",
+            "weight" : 1,
+            "pos" : 978 },
+          
+          { "form" : "attributes",
+            "context" : "att.match (A class providing <mark>attributes<\/mark> that enable specification of document locations.)",
+            "weight" : 1,
+            "pos" : 996 },
+          
+          { "form" : "Attributes",
+            "context" : "<mark>Attributes<\/mark>",
+            "weight" : 1,
+            "pos" : 1010 },
+          
+          { "form" : "attribute",
+            "context" : "(An XPath equivalent to the @match <mark>attribute<\/mark> of an xsl:template, which specifies a context...",
+            "weight" : 1,
+            "pos" : 1015 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 6,
+        "contexts" : 
+        [ 
+          { "form" : "attribute",
+            "context" : "...to a thumbnail image like this: The content <mark>attribute<\/mark> value should either be the path to...",
+            "weight" : 1,
+            "pos" : 424 },
+          
+          { "form" : "attribute",
+            "context" : "...the parser, using XPath statements in the match <mark>attribute<\/mark>, specific weights to assign to particular parts...",
+            "weight" : 1,
+            "pos" : 1072 },
+          
+          { "form" : "attribute",
+            "context" : "The value of the match <mark>attribute<\/mark> is transformed in a XSLT template match...",
+            "weight" : 1,
+            "pos" : 1134 },
+          
+          { "form" : "attribute",
+            "context" : "...attribute is transformed in a XSLT template match <mark>attribute<\/mark>, and thus must follow the same rules...",
+            "weight" : 1,
+            "pos" : 1139 },
+          
+          { "form" : "attribute",
+            "context" : "...case, if the <li> was not a context <mark>attribute<\/mark>, the term 'search' would produce a context...",
+            "weight" : 1,
+            "pos" : 1303 },
+          
+          { "form" : "attribute",
+            "context" : "...contains one <div> element with the correct id <mark>attribute<\/mark>: This <div> will be empty initially. The...",
+            "weight" : 1,
+            "pos" : 1688 } ] } ] }

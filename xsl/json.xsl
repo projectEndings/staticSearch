@@ -53,7 +53,7 @@
         <xsl:call-template name="createTitleJson"/>
         <xsl:call-template name="createFiltersJson"/>
         <xsl:call-template name="createStopwordsJson"/>
-        <xsl:call-template name="createWordListJson"/>
+<!--        <xsl:call-template name="createWordListJson"/>-->
         <xsl:call-template name="createConfigJson"/>
     </xsl:template>
 

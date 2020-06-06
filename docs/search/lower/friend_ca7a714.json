@@ -1,0 +1,23 @@
+
+  { "token" : "friend",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "friendly",
+            "context" : "...the index considerably, but it allows for more user-<mark>friendly<\/mark> search results, as well as phrasal searches.)...",
+            "weight" : 1,
+            "pos" : 143 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "friendly",
+            "context" : "...but of course it makes for much more user-<mark>friendly<\/mark> search results.",
+            "weight" : 1,
+            "pos" : 793 } ] } ] }

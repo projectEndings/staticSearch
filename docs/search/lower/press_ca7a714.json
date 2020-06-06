@@ -1,0 +1,93 @@
+
+  { "token" : "press",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Press",
+            "context" : "...Scientific Revolutions (50th anniversary edition), University of Chicago <mark>Press<\/mark>, 2012: p. 191.",
+            "weight" : 1,
+            "pos" : 76 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Press",
+            "context" : "...Scientific Revolutions (50th anniversary edition), University of Chicago <mark>Press<\/mark>, 2012: p. 191.",
+            "weight" : 1,
+            "pos" : 203 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Press",
+            "context" : "...Scientific Revolutions (50th anniversary edition), University of Chicago <mark>Press<\/mark>, 2012: p. 191.",
+            "weight" : 1,
+            "pos" : 297 } ] },
+      
+      { "docId" : "whatDoesItDo",
+        "docUri" : "whatDoesItDo.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Press",
+            "context" : "...Scientific Revolutions (50th anniversary edition), University of Chicago <mark>Press<\/mark>, 2012: p. 191.",
+            "weight" : 1,
+            "pos" : 72 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Press",
+            "context" : "...Scientific Revolutions (50th anniversary edition), University of Chicago <mark>Press<\/mark>, 2012: p. 191.",
+            "weight" : 1,
+            "pos" : 1037 } ] },
+      
+      { "docId" : "searchFacetFeatures",
+        "docUri" : "searchFacetFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Press",
+            "context" : "...Scientific Revolutions (50th anniversary edition), University of Chicago <mark>Press<\/mark>, 2012: p. 191.",
+            "weight" : 1,
+            "pos" : 89 } ] },
+      
+      { "docId" : "index",
+        "docUri" : "index.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Press",
+            "context" : "...Scientific Revolutions (50th anniversary edition), University of Chicago <mark>Press<\/mark>, 2012: p. 191.",
+            "weight" : 1,
+            "pos" : 26 } ] },
+      
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Press",
+            "context" : "...Scientific Revolutions (50th anniversary edition), University of Chicago <mark>Press<\/mark>, 2012: p. 191.",
+            "weight" : 1,
+            "pos" : 133 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Press",
+            "context" : "...Scientific Revolutions (50th anniversary edition), University of Chicago <mark>Press<\/mark>, 2012: p. 191.",
+            "weight" : 1,
+            "pos" : 1967 } ] } ] }

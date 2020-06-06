@@ -1,0 +1,18 @@
+
+  { "token" : "member",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "Members",
+            "context" : "<mark>Members<\/mark>",
+            "weight" : 1,
+            "pos" : 976 },
+          
+          { "form" : "Members",
+            "context" : "<mark>Members<\/mark>",
+            "weight" : 1,
+            "pos" : 1006 } ] } ] }

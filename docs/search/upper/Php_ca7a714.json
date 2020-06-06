@@ -1,0 +1,23 @@
+
+  { "token" : "Php",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "PHP",
+            "context" : "...on back-end server systems such as databases or <mark>PHP<\/mark> processing) are far more resilient in the...",
+            "weight" : 1,
+            "pos" : 73 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "PHP",
+            "context" : "...that folder, using the Python HTTP server or <mark>PHP<\/mark>'s built-in web server.",
+            "weight" : 1,
+            "pos" : 1905 } ] } ] }

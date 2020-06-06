@@ -1,0 +1,23 @@
+
+  { "token" : "begin",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "beginning",
+            "context" : "...will be used to signal ellipsis at the <mark>beginning<\/mark> and end of a keyword-in-context extract. Conventionally...",
+            "weight" : 1,
+            "pos" : 353 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "beginning",
+            "context" : "...character you would like to use at the <mark>beginning<\/mark> and\/or the end of a kwic which...",
+            "weight" : 1,
+            "pos" : 862 } ] } ] }

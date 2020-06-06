@@ -1,0 +1,133 @@
+
+  { "token" : "model",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 23,
+        "contexts" : 
+        [ 
+          { "form" : "model",
+            "context" : "Content <mark>model<\/mark>",
+            "weight" : 1,
+            "pos" : 36 },
+          
+          { "form" : "model",
+            "context" : "Content <mark>model<\/mark>",
+            "weight" : 1,
+            "pos" : 87 },
+          
+          { "form" : "model",
+            "context" : "Content <mark>model<\/mark>",
+            "weight" : 1,
+            "pos" : 122 },
+          
+          { "form" : "model",
+            "context" : "Content <mark>model<\/mark>",
+            "weight" : 1,
+            "pos" : 166 },
+          
+          { "form" : "model",
+            "context" : "Content <mark>model<\/mark>",
+            "weight" : 1,
+            "pos" : 201 },
+          
+          { "form" : "model",
+            "context" : "Content <mark>model<\/mark>",
+            "weight" : 1,
+            "pos" : 269 },
+          
+          { "form" : "model",
+            "context" : "Content <mark>model<\/mark>",
+            "weight" : 1,
+            "pos" : 302 },
+          
+          { "form" : "model",
+            "context" : "Content <mark>model<\/mark>",
+            "weight" : 1,
+            "pos" : 342 },
+          
+          { "form" : "model",
+            "context" : "Content <mark>model<\/mark>",
+            "weight" : 1,
+            "pos" : 381 },
+          
+          { "form" : "model",
+            "context" : "Content <mark>model<\/mark>",
+            "weight" : 1,
+            "pos" : 425 },
+          
+          { "form" : "model",
+            "context" : "Content <mark>model<\/mark>",
+            "weight" : 1,
+            "pos" : 462 },
+          
+          { "form" : "model",
+            "context" : "Content <mark>model<\/mark>",
+            "weight" : 1,
+            "pos" : 499 },
+          
+          { "form" : "model",
+            "context" : "Content <mark>model<\/mark>",
+            "weight" : 1,
+            "pos" : 547 },
+          
+          { "form" : "model",
+            "context" : "Content <mark>model<\/mark>",
+            "weight" : 1,
+            "pos" : 585 },
+          
+          { "form" : "model",
+            "context" : "Content <mark>model<\/mark>",
+            "weight" : 1,
+            "pos" : 614 },
+          
+          { "form" : "model",
+            "context" : "Content <mark>model<\/mark>",
+            "weight" : 1,
+            "pos" : 678 },
+          
+          { "form" : "model",
+            "context" : "Content <mark>model<\/mark>",
+            "weight" : 1,
+            "pos" : 713 },
+          
+          { "form" : "model",
+            "context" : "Content <mark>model<\/mark>",
+            "weight" : 1,
+            "pos" : 752 },
+          
+          { "form" : "model",
+            "context" : "Content <mark>model<\/mark>",
+            "weight" : 1,
+            "pos" : 810 },
+          
+          { "form" : "model",
+            "context" : "Content <mark>model<\/mark>",
+            "weight" : 1,
+            "pos" : 841 },
+          
+          { "form" : "model",
+            "context" : "Content <mark>model<\/mark>",
+            "weight" : 1,
+            "pos" : 870 },
+          
+          { "form" : "model",
+            "context" : "Content <mark>model<\/mark>",
+            "weight" : 1,
+            "pos" : 920 },
+          
+          { "form" : "model",
+            "context" : "Content <mark>model<\/mark>",
+            "weight" : 1,
+            "pos" : 948 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "model",
+            "context" : "...for moving digital projects to an all-static publication <mark>model<\/mark>. The most problematic component in the all-static...",
+            "weight" : 1,
+            "pos" : 112 } ] } ] }

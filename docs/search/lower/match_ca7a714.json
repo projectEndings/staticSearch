@@ -1,0 +1,188 @@
+
+  { "token" : "match",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 19,
+        "contexts" : 
+        [ 
+          { "form" : "match",
+            "context" : "Appendix A.2.2 att.<mark>match<\/mark>",
+            "weight" : 2,
+            "pos" : 991 },
+          
+          { "form" : "match",
+            "context" : "<context> (A context definition, providing a <mark>match<\/mark> attribute that identifies the context, allowing keyword-in-context...",
+            "weight" : 1,
+            "pos" : 46 },
+          
+          { "form" : "match",
+            "context" : "att.<mark>match<\/mark> (@match) att.labelled (@label)",
+            "weight" : 1,
+            "pos" : 70 },
+          
+          { "form" : "match",
+            "context" : "att.match (@<mark>match<\/mark>) att.labelled (@label)",
+            "weight" : 1,
+            "pos" : 71 },
+          
+          { "form" : "match",
+            "context" : "...(The set of contexts, expressed as XPath in <mark>match<\/mark>, that controls the identification of contexts for...",
+            "weight" : 1,
+            "pos" : 98 },
+          
+          { "form" : "match",
+            "context" : "...or filters as defined by an XPath in <mark>match<\/mark>.)",
+            "weight" : 1,
+            "pos" : 216 },
+          
+          { "form" : "match",
+            "context" : "att.<mark>match<\/mark> (@match)",
+            "weight" : 1,
+            "pos" : 229 },
+          
+          { "form" : "match",
+            "context" : "att.match (@<mark>match<\/mark>)",
+            "weight" : 1,
+            "pos" : 230 },
+          
+          { "form" : "matches",
+            "context" : "...document index. filter (Filter exclusion) An exclusion that <mark>matches<\/mark> an HTML meta tag to exclude from...",
+            "weight" : 1,
+            "pos" : 253 },
+          
+          { "form" : "match",
+            "context" : "...(The set of exclusions, expressed as XPath in <mark>match<\/mark>, that control the subset of documents for...",
+            "weight" : 1,
+            "pos" : 280 },
+          
+          { "form" : "match",
+            "context" : "...that specifies a document path as XPath in <mark>match<\/mark>, and provides weighting for search terms found...",
+            "weight" : 1,
+            "pos" : 626 },
+          
+          { "form" : "match",
+            "context" : "att.<mark>match<\/mark> (@match)",
+            "weight" : 1,
+            "pos" : 645 },
+          
+          { "form" : "match",
+            "context" : "att.match (@<mark>match<\/mark>)",
+            "weight" : 1,
+            "pos" : 646 },
+          
+          { "form" : "match",
+            "context" : "...token found in the context specified by the <mark>match<\/mark> attribute. Set to 0 to completely suppress...",
+            "weight" : 1,
+            "pos" : 655 },
+          
+          { "form" : "match",
+            "context" : "...(The set of rules, expressed as XPath in <mark>match<\/mark>, that control weighting of search terms found...",
+            "weight" : 1,
+            "pos" : 689 },
+          
+          { "form" : "match",
+            "context" : "att.<mark>match<\/mark> (A class providing attributes that enable specification of...",
+            "weight" : 1,
+            "pos" : 993 },
+          
+          { "form" : "match",
+            "context" : "<mark>match<\/mark>",
+            "weight" : 1,
+            "pos" : 1011 },
+          
+          { "form" : "match",
+            "context" : "(An XPath equivalent to the @<mark>match<\/mark> attribute of an xsl:template, which specifies a...",
+            "weight" : 1,
+            "pos" : 1014 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 15,
+        "contexts" : 
+        [ 
+          { "form" : "match",
+            "context" : "...tell the parser, using XPath statements in the <mark>match<\/mark> attribute, specific weights to assign to particular...",
+            "weight" : 1,
+            "pos" : 1071 },
+          
+          { "form" : "match",
+            "context" : "<rules>  <rule weight=\"2\"   <mark>match<\/mark>=\"h1 | h2 | h3 | h4 |...",
+            "weight" : 1,
+            "pos" : 1099 },
+          
+          { "form" : "match",
+            "context" : "<rules>  <rule weight=\"2\"   <mark>match<\/mark>=\"*[matches(local-name(),'^h\\d+$')]\"\/> <\/rules>",
+            "weight" : 1,
+            "pos" : 1112 },
+          
+          { "form" : "matches",
+            "context" : "<rules>  <rule weight=\"2\"   match=\"*[<mark>matches<\/mark>(local-name(),'^h\\d+$')]\"\/> <\/rules>",
+            "weight" : 1,
+            "pos" : 1113 },
+          
+          { "form" : "match",
+            "context" : "The value of the <mark>match<\/mark> attribute is transformed in a XSLT template...",
+            "weight" : 1,
+            "pos" : 1133 },
+          
+          { "form" : "match",
+            "context" : "...match attribute is transformed in a XSLT template <mark>match<\/mark> attribute, and thus must follow the same...",
+            "weight" : 1,
+            "pos" : 1138 },
+          
+          { "form" : "match",
+            "context" : "<rule weight=\"0\" <mark>match<\/mark>=\"footer | header\"\/>",
+            "weight" : 1,
+            "pos" : 1192 },
+          
+          { "form" : "match",
+            "context" : "<rule weight=\"0\" <mark>match<\/mark>=\"a[@href=.\/text()]\"\/>",
+            "weight" : 1,
+            "pos" : 1211 },
+          
+          { "form" : "match",
+            "context" : "...its token, use the <context> element with an <mark>match<\/mark> pattern:",
+            "weight" : 1,
+            "pos" : 1399 },
+          
+          { "form" : "match",
+            "context" : "<contexts>  <context <mark>match<\/mark>=\"span[contains-token(@class,'sidenote')]\"\/> <\/contexts>",
+            "weight" : 1,
+            "pos" : 1403 },
+          
+          { "form" : "match",
+            "context" : "<contexts>  <context <mark>match<\/mark>=\"div\" context=\"false\"\/> <\/contexts>",
+            "weight" : 1,
+            "pos" : 1430 },
+          
+          { "form" : "match",
+            "context" : "<rules>  <rule <mark>match<\/mark>=\"text()[not(ancestor::div[@class='figure']or ancestor::title)]\"   weight=\"0\"\/> <\/rules>",
+            "weight" : 1,
+            "pos" : 1497 },
+          
+          { "form" : "match",
+            "context" : "...files which have illustrations in them. -->  <exclude type=\"index\"   <mark>match<\/mark>=\"html[not(descendant::meta[@name='Has illustration(s)'][@content='true'])]\"\/> <!-- We ignore the document type...",
+            "weight" : 1,
+            "pos" : 1548 },
+          
+          { "form" : "match",
+            "context" : "...indexing one type of document anyway. -->  <exclude type=\"filter\"   <mark>match<\/mark>=\"meta[@name='Document type']\"\/> <!-- We exclude the filter that...",
+            "weight" : 1,
+            "pos" : 1568 },
+          
+          { "form" : "match",
+            "context" : "...specifies these documents because it's pointless. -->  <exclude type=\"filter\"   <mark>match<\/mark>=\"meta[@name='Has illustration(s)']\"\/> <\/excludes>",
+            "weight" : 1,
+            "pos" : 1581 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "match",
+            "context" : "...of the document identifiers for all documents which <mark>match<\/mark> the filters; so if some of your...",
+            "weight" : 1,
+            "pos" : 89 } ] } ] }

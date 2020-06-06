@@ -1,0 +1,133 @@
+
+  { "token" : "html",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 17,
+        "contexts" : 
+        [ 
+          { "form" : "HTML",
+            "context" : "...use this tool. You can tidy up your <mark>HTML<\/mark> using HTML Tidy.",
+            "weight" : 1,
+            "pos" : 59 },
+          
+          { "form" : "HTML",
+            "context" : "...tool. You can tidy up your HTML using <mark>HTML<\/mark> Tidy.",
+            "weight" : 1,
+            "pos" : 61 },
+          
+          { "form" : "HTML",
+            "context" : "...called images which is a sibling of the <mark>HTML<\/mark> file containing the tag, and that folder...",
+            "weight" : 1,
+            "pos" : 440 },
+          
+          { "form" : "html",
+            "context" : "novel.<mark>html<\/mark>",
+            "weight" : 1,
+            "pos" : 592 },
+          
+          { "form" : "html",
+            "context" : "poem.<mark>html<\/mark>",
+            "weight" : 1,
+            "pos" : 594 },
+          
+          { "form" : "html",
+            "context" : "shortstory.<mark>html<\/mark>",
+            "weight" : 1,
+            "pos" : 596 },
+          
+          { "form" : "html",
+            "context" : "search.<mark>html<\/mark>",
+            "weight" : 1,
+            "pos" : 598 },
+          
+          { "form" : "html",
+            "context" : "novel.<mark>html<\/mark>",
+            "weight" : 1,
+            "pos" : 607 },
+          
+          { "form" : "html",
+            "context" : "poem.<mark>html<\/mark>",
+            "weight" : 1,
+            "pos" : 609 },
+          
+          { "form" : "html",
+            "context" : "shortstory.<mark>html<\/mark>",
+            "weight" : 1,
+            "pos" : 611 },
+          
+          { "form" : "html",
+            "context" : "search.<mark>html<\/mark>",
+            "weight" : 1,
+            "pos" : 613 },
+          
+          { "form" : "\"html",
+            "context" : "...files which have illustrations in them. -->  <exclude type=\"index\"   match=<mark>\"html<\/mark>[not(descendant::meta[@name='Has illustration(s)'][@content='true'])]\"\/> <!-- We ignore the document type...",
+            "weight" : 1,
+            "pos" : 1549 },
+          
+          { "form" : "HTML",
+            "context" : "...of your site. You can create a complete <mark>HTML<\/mark> document (which must of course also be...",
+            "weight" : 1,
+            "pos" : 1660 },
+          
+          { "form" : "html",
+            "context" : "...You can take a look at the<mark>html<\/mark> page for an example of how to...",
+            "weight" : 1,
+            "pos" : 1772 },
+          
+          { "form" : "HTML",
+            "context" : "Once you have configured your <mark>HTML<\/mark> and your configuration file, you're ready to...",
+            "weight" : 1,
+            "pos" : 1804 },
+          
+          { "form" : "html",
+            "context" : "...if it's successful, you should have a modified search.<mark>html<\/mark> page as well as a lot of...",
+            "weight" : 1,
+            "pos" : 1940 },
+          
+          { "form" : "HTML",
+            "context" : "...index files in JSON format in your site <mark>HTML<\/mark> folder. Now you can test your own...",
+            "weight" : 1,
+            "pos" : 1949 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "HTML",
+            "context" : "...index (Index exclusion) An exclusion that specifies <mark>HTML<\/mark> fragment (which itself can be the root...",
+            "weight" : 1,
+            "pos" : 241 },
+          
+          { "form" : "HTML",
+            "context" : "...HTML fragment (which itself can be the root <mark>HTML<\/mark> element) to exclude from the document index....",
+            "weight" : 1,
+            "pos" : 244 },
+          
+          { "form" : "HTML",
+            "context" : "...filter (Filter exclusion) An exclusion that matches an <mark>HTML<\/mark> meta tag to exclude from the filter...",
+            "weight" : 1,
+            "pos" : 254 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "HTML",
+            "context" : "...However, static websites (websites which consist entirely of <mark>HTML<\/mark>, CSS and JavaScript, without any dependency on...",
+            "weight" : 1,
+            "pos" : 62 } ] },
+      
+      { "docId" : "index",
+        "docUri" : "index.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "HTML",
+            "context" : "...for creating a static search engine for your <mark>HTML<\/mark>5 site",
+            "weight" : 1,
+            "pos" : 12 } ] } ] }

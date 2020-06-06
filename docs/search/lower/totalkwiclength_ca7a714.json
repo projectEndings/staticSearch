@@ -1,0 +1,33 @@
+
+  { "token" : "totalkwiclength",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "totalKwicLength",
+            "context" : "Appendix A.1.20 <<mark>totalKwicLength<\/mark>>",
+            "weight" : 2,
+            "pos" : 815 },
+          
+          { "form" : "totalKwicLength",
+            "context" : "...kwicTruncateString maxKwicsToHarvest maxKwicsToShow outputFolder phrasalSearch recurse searchFile stopwordsFile <mark>totalKwicLength<\/mark> verbose versionFile wildcardSearch",
+            "weight" : 1,
+            "pos" : 542 },
+          
+          { "form" : "totalKwicLength",
+            "context" : "<<mark>totalKwicLength<\/mark>> (If createContexts is set to true, then...",
+            "weight" : 1,
+            "pos" : 816 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "totalKwicLength",
+            "context" : "<<mark>totalKwicLength<\/mark>> is an integer specifying how long a...",
+            "weight" : 1,
+            "pos" : 834 } ] } ] }

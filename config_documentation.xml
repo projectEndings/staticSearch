@@ -21,19 +21,19 @@
     
     <rules>
         <rule weight="2"
-            xpath="h1 | h2"/>
+            match="h1 | h2"/>
         <!--ignore the TOC-->
         <rule weight="0"
-            xpath="div[contains-token(@class,'tei_front')]"/>
+            match="div[contains-token(@class,'tei_front')]"/>
         
         <!--Don't index codeblocks in table cells-->
-        <rule weight="0" xpath="td/pre"/>
+        <rule weight="0" match="td/pre"/>
         
     </rules>
     
     <excludes>
         <!--Ignore the master SS doc from the search-->
-        <exclude type="index" xpath="html[matches(document-uri(/),'staticSearch.html$')]"/>
+        <exclude type="index" match="html[matches(document-uri(/),'staticSearch.html$')]"/>
     </excludes>
 
 </config>

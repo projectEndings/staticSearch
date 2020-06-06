@@ -1,0 +1,123 @@
+
+  { "token" : "hcmc",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 23,
+        "contexts" : 
+        [ 
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 20 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 60 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 108 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 151 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 186 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 219 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 288 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 327 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 366 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 410 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 447 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 484 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 519 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 570 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 599 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 635 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 699 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 737 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 795 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 826 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 855 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 905 },
+          
+          { "form" : "hcmc",
+            "context" : "http:\/\/<mark>hcmc<\/mark>.uvic.ca\/ns\/staticSearch",
+            "weight" : 1,
+            "pos" : 933 } ] } ] }

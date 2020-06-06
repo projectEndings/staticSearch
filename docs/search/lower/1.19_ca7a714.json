@@ -1,0 +1,13 @@
+
+  { "token" : "1.19",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "1.19",
+            "context" : "Appendix A.<mark>1.19<\/mark> <stopwordsFile>",
+            "weight" : 2,
+            "pos" : 756 } ] } ] }

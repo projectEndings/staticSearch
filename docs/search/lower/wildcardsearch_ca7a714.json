@@ -1,0 +1,23 @@
+
+  { "token" : "wildcardsearch",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "wildcardSearch",
+            "context" : "Appendix A.1.23 <<mark>wildcardSearch<\/mark>>",
+            "weight" : 2,
+            "pos" : 925 },
+          
+          { "form" : "wildcardSearch",
+            "context" : "...outputFolder phrasalSearch recurse searchFile stopwordsFile totalKwicLength verbose versionFile <mark>wildcardSearch<\/mark>",
+            "weight" : 1,
+            "pos" : 545 },
+          
+          { "form" : "wildcardSearch",
+            "context" : "<<mark>wildcardSearch<\/mark>> (Whether or not to support wildcard searches.)...",
+            "weight" : 1,
+            "pos" : 926 } ] } ] }

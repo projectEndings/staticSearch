@@ -1,0 +1,48 @@
+
+  { "token" : "path",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 5,
+        "contexts" : 
+        [ 
+          { "form" : "path",
+            "context" : "...The content attribute value should either be the <mark>path<\/mark> to an image relative to the document...",
+            "weight" : 1,
+            "pos" : 427 },
+          
+          { "form" : "path",
+            "context" : "<versionFile> enables you to specify the <mark>path<\/mark> to a plain-text file containing a simple...",
+            "weight" : 1,
+            "pos" : 655 },
+          
+          { "form" : "path",
+            "context" : "...the new version will have different filenames. The <mark>path<\/mark> specified is relative to the location of...",
+            "weight" : 1,
+            "pos" : 717 },
+          
+          { "form" : "path",
+            "context" : "...<stopwordsFile> is a string parameter containing the relative <mark>path<\/mark> (from the config file) to a text...",
+            "weight" : 1,
+            "pos" : 891 },
+          
+          { "form" : "path",
+            "context" : "<dictionaryFile> is the relative <mark>path<\/mark> to a file containing an English dictionary...",
+            "weight" : 1,
+            "pos" : 957 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "path",
+            "context" : "...<rule> (A rule that specifies a document <mark>path<\/mark> as XPath in match, and provides weighting...",
+            "weight" : 1,
+            "pos" : 624 },
+          
+          { "form" : "path",
+            "context" : "<versionFile> (The relative <mark>path<\/mark> to a text file containing a single...",
+            "weight" : 1,
+            "pos" : 878 } ] } ] }

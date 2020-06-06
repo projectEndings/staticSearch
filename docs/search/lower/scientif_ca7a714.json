@@ -1,0 +1,93 @@
+
+  { "token" : "scientif",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Scientific",
+            "context" : "...taken from Thomas S. Kuhn, The Structure of <mark>Scientific<\/mark> Revolutions (50th anniversary edition), University of Chicago...",
+            "weight" : 1,
+            "pos" : 70 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Scientific",
+            "context" : "...taken from Thomas S. Kuhn, The Structure of <mark>Scientific<\/mark> Revolutions (50th anniversary edition), University of Chicago...",
+            "weight" : 1,
+            "pos" : 197 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Scientific",
+            "context" : "...taken from Thomas S. Kuhn, The Structure of <mark>Scientific<\/mark> Revolutions (50th anniversary edition), University of Chicago...",
+            "weight" : 1,
+            "pos" : 291 } ] },
+      
+      { "docId" : "whatDoesItDo",
+        "docUri" : "whatDoesItDo.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Scientific",
+            "context" : "...taken from Thomas S. Kuhn, The Structure of <mark>Scientific<\/mark> Revolutions (50th anniversary edition), University of Chicago...",
+            "weight" : 1,
+            "pos" : 66 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Scientific",
+            "context" : "...taken from Thomas S. Kuhn, The Structure of <mark>Scientific<\/mark> Revolutions (50th anniversary edition), University of Chicago...",
+            "weight" : 1,
+            "pos" : 1031 } ] },
+      
+      { "docId" : "searchFacetFeatures",
+        "docUri" : "searchFacetFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Scientific",
+            "context" : "...taken from Thomas S. Kuhn, The Structure of <mark>Scientific<\/mark> Revolutions (50th anniversary edition), University of Chicago...",
+            "weight" : 1,
+            "pos" : 83 } ] },
+      
+      { "docId" : "index",
+        "docUri" : "index.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Scientific",
+            "context" : "...taken from Thomas S. Kuhn, The Structure of <mark>Scientific<\/mark> Revolutions (50th anniversary edition), University of Chicago...",
+            "weight" : 1,
+            "pos" : 20 } ] },
+      
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Scientific",
+            "context" : "...taken from Thomas S. Kuhn, The Structure of <mark>Scientific<\/mark> Revolutions (50th anniversary edition), University of Chicago...",
+            "weight" : 1,
+            "pos" : 127 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Scientific",
+            "context" : "...taken from Thomas S. Kuhn, The Structure of <mark>Scientific<\/mark> Revolutions (50th anniversary edition), University of Chicago...",
+            "weight" : 1,
+            "pos" : 1961 } ] } ] }

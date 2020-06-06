@@ -1,0 +1,78 @@
+
+  { "token" : "featur",
+    "instances" : 
+    [ 
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "features",
+            "context" : "3 Text search <mark>features<\/mark>",
+            "weight" : 2,
+            "pos" : 8 },
+          
+          { "form" : "features",
+            "context" : "4 Search facet <mark>features<\/mark>",
+            "weight" : 1,
+            "pos" : 5 },
+          
+          { "form" : "features",
+            "context" : "The Generator supports the following <mark>features<\/mark>:",
+            "weight" : 1,
+            "pos" : 18 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "features",
+            "context" : "...where to find your site, and what search <mark>features<\/mark> you would like to include. The configuration...",
+            "weight" : 1,
+            "pos" : 464 },
+          
+          { "form" : "feature",
+            "context" : "...searches (quoted strings). Obviously this is a useful <mark>feature<\/mark>, but it is also costly in terms...",
+            "weight" : 1,
+            "pos" : 740 },
+          
+          { "form" : "features",
+            "context" : "...likely that you will want to exclude certain <mark>features<\/mark> or documents from a specialized search page,...",
+            "weight" : 1,
+            "pos" : 1528 } ] },
+      
+      { "docId" : "searchFacetFeatures",
+        "docUri" : "searchFacetFeatures.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "features",
+            "context" : "4 Search facet <mark>features<\/mark>",
+            "weight" : 2,
+            "pos" : 7 },
+          
+          { "form" : "features",
+            "context" : "3 Text search <mark>features<\/mark>",
+            "weight" : 1,
+            "pos" : 3 } ] },
+      
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "features",
+            "context" : "4 Search facet <mark>features<\/mark>",
+            "weight" : 1,
+            "pos" : 3 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "features",
+            "context" : "3 Text search <mark>features<\/mark>",
+            "weight" : 1,
+            "pos" : 3 } ] } ] }

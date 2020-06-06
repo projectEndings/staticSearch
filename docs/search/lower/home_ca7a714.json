@@ -1,0 +1,98 @@
+
+  { "token" : "home",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "home",
+            "context" : "mholmes@linuxbox:~\/Documents\/staticSearch$ ant ant -DconfigFile=\/<mark>home<\/mark>\/mholmes\/mysite\/config_staticSearch.xml",
+            "weight" : 1,
+            "pos" : 1929 },
+          
+          { "form" : "Home",
+            "context" : " <mark>Home<\/mark> Github ",
+            "weight" : 1,
+            "pos" : 1970 } ] },
+      
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Home",
+            "context" : " <mark>Home<\/mark> Github ",
+            "weight" : 1,
+            "pos" : 79 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Home",
+            "context" : " <mark>Home<\/mark> Github ",
+            "weight" : 1,
+            "pos" : 206 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Home",
+            "context" : " <mark>Home<\/mark> Github ",
+            "weight" : 1,
+            "pos" : 300 } ] },
+      
+      { "docId" : "whatDoesItDo",
+        "docUri" : "whatDoesItDo.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Home",
+            "context" : " <mark>Home<\/mark> Github ",
+            "weight" : 1,
+            "pos" : 75 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Home",
+            "context" : " <mark>Home<\/mark> Github ",
+            "weight" : 1,
+            "pos" : 1040 } ] },
+      
+      { "docId" : "searchFacetFeatures",
+        "docUri" : "searchFacetFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Home",
+            "context" : " <mark>Home<\/mark> Github ",
+            "weight" : 1,
+            "pos" : 92 } ] },
+      
+      { "docId" : "index",
+        "docUri" : "index.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Home",
+            "context" : " <mark>Home<\/mark> Github ",
+            "weight" : 1,
+            "pos" : 29 } ] },
+      
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Home",
+            "context" : " <mark>Home<\/mark> Github ",
+            "weight" : 1,
+            "pos" : 136 } ] } ] }

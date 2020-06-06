@@ -1,0 +1,78 @@
+
+  { "token" : "xsd",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 14,
+        "contexts" : 
+        [ 
+          { "form" : "XSD",
+            "context" : "<mark>XSD<\/mark> boolean",
+            "weight" : 1,
+            "pos" : 163 },
+          
+          { "form" : "XSD",
+            "context" : "<mark>XSD<\/mark> anyURI",
+            "weight" : 1,
+            "pos" : 198 },
+          
+          { "form" : "XSD",
+            "context" : "<mark>XSD<\/mark> boolean",
+            "weight" : 1,
+            "pos" : 339 },
+          
+          { "form" : "XSD",
+            "context" : "<mark>XSD<\/mark> nonNegativeInteger",
+            "weight" : 1,
+            "pos" : 422 },
+          
+          { "form" : "XSD",
+            "context" : "<mark>XSD<\/mark> nonNegativeInteger",
+            "weight" : 1,
+            "pos" : 459 },
+          
+          { "form" : "XSD",
+            "context" : "<mark>XSD<\/mark> NCName",
+            "weight" : 1,
+            "pos" : 496 },
+          
+          { "form" : "XSD",
+            "context" : "<mark>XSD<\/mark> boolean",
+            "weight" : 1,
+            "pos" : 582 },
+          
+          { "form" : "XSD",
+            "context" : "<mark>XSD<\/mark> boolean",
+            "weight" : 1,
+            "pos" : 611 },
+          
+          { "form" : "XSD",
+            "context" : "<mark>XSD<\/mark> anyURI",
+            "weight" : 1,
+            "pos" : 749 },
+          
+          { "form" : "XSD",
+            "context" : "<mark>XSD<\/mark> anyURI",
+            "weight" : 1,
+            "pos" : 807 },
+          
+          { "form" : "XSD",
+            "context" : "<mark>XSD<\/mark> nonNegativeInteger",
+            "weight" : 1,
+            "pos" : 838 },
+          
+          { "form" : "XSD",
+            "context" : "<mark>XSD<\/mark> boolean",
+            "weight" : 1,
+            "pos" : 867 },
+          
+          { "form" : "XSD",
+            "context" : "<mark>XSD<\/mark> anyURI",
+            "weight" : 1,
+            "pos" : 917 },
+          
+          { "form" : "XSD",
+            "context" : "<mark>XSD<\/mark> boolean",
+            "weight" : 1,
+            "pos" : 945 } ] } ] }

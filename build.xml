@@ -205,6 +205,31 @@
             <arg value="--suppressXsltNamespaceCheck:on"/>
         </java>
     </target>
+    
+    <target name="createTokensFile">
+        <description>
+            target: createTokensFile
+            
+            This target creates the ssTokens.json file by first retrieving the length of all the JSONs available,
+            and then create a JSON from that document. This is necessary for running wildcard searches.
+        </description>
+        
+       <echo message="Creating ssTokens.json file..."/>
+       <echo message="First, measure the JSON files..."/>
+       <length property="tokenLines" mode="each">
+           <fileset dir="${staticSearchDir}">
+                <include name="lower/**.json"/>
+                <include name="upper/**.json"/>
+            </fileset>     
+       </length>
+       <echo message="Now create the tokens file..."/>
+        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
+            <arg value="-xsl:${basedir}/xsl/create_ssTokens.xsl"/>
+            <arg value="-s:${basedir}/xsl/create_ssTokens.xsl"/>
+            <arg value="tokenLines=${tokenLines}"/>
+            <arg value="--suppressXsltNamespaceCheck:on"/>
+        </java>
+    </target>
 
     
  

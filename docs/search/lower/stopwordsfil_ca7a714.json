@@ -1,0 +1,33 @@
+
+  { "token" : "stopwordsfil",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "stopwordsFile",
+            "context" : "Appendix A.1.19 <<mark>stopwordsFile<\/mark>>",
+            "weight" : 2,
+            "pos" : 757 },
+          
+          { "form" : "stopwordsFile",
+            "context" : "...indentJSON kwicTruncateString maxKwicsToHarvest maxKwicsToShow outputFolder phrasalSearch recurse searchFile <mark>stopwordsFile<\/mark> totalKwicLength verbose versionFile wildcardSearch",
+            "weight" : 1,
+            "pos" : 541 },
+          
+          { "form" : "stopwordsFile",
+            "context" : "<<mark>stopwordsFile<\/mark>> (The location of a text file containing...",
+            "weight" : 1,
+            "pos" : 758 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "stopwordsFile",
+            "context" : "<<mark>stopwordsFile<\/mark>> is a string parameter containing the relative...",
+            "weight" : 1,
+            "pos" : 886 } ] } ] }

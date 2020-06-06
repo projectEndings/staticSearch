@@ -1,0 +1,133 @@
+
+  { "token" : "exclud",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 13,
+        "contexts" : 
+        [ 
+          { "form" : "exclude",
+            "context" : "...However, common elements that you might want to <mark>exclude<\/mark> include:",
+            "weight" : 1,
+            "pos" : 1234 },
+          
+          { "form" : "exclude",
+            "context" : "...it's also likely that you will want to <mark>exclude<\/mark> certain features or documents from a specialized...",
+            "weight" : 1,
+            "pos" : 1526 },
+          
+          { "form" : "excludes",
+            "context" : "...search page, and this is done using the <<mark>excludes<\/mark>> section and its child <exclude> elements.",
+            "weight" : 1,
+            "pos" : 1535 },
+          
+          { "form" : "exclude",
+            "context" : "...done using the <excludes> section and its child <<mark>exclude<\/mark>> elements.",
+            "weight" : 1,
+            "pos" : 1538 },
+          
+          { "form" : "excludes",
+            "context" : "<<mark>excludes<\/mark>> <!-- We only index files which have...",
+            "weight" : 1,
+            "pos" : 1541 },
+          
+          { "form" : "exclude",
+            "context" : "...index files which have illustrations in them. -->  <<mark>exclude<\/mark> type=\"index\"   match=\"html[not(descendant::meta[@name='Has illustration(s)'][@content='true'])]\"\/> <!-- We ignore the document...",
+            "weight" : 1,
+            "pos" : 1545 },
+          
+          { "form" : "exclude",
+            "context" : "...only indexing one type of document anyway. -->  <<mark>exclude<\/mark> type=\"filter\"   match=\"meta[@name='Document type']\"\/> <!-- We exclude the filter...",
+            "weight" : 1,
+            "pos" : 1565 },
+          
+          { "form" : "exclude",
+            "context" : "...document anyway. -->  <exclude type=\"filter\"   match=\"meta[@name='Document type']\"\/> <!-- We <mark>exclude<\/mark> the filter that specifies these documents because...",
+            "weight" : 1,
+            "pos" : 1573 },
+          
+          { "form" : "exclude",
+            "context" : "...that specifies these documents because it's pointless. -->  <<mark>exclude<\/mark> type=\"filter\"   match=\"meta[@name='Has illustration(s)']\"\/> <\/excludes>",
+            "weight" : 1,
+            "pos" : 1578 },
+          
+          { "form" : "excludes",
+            "context" : "...documents because it's pointless. -->  <exclude type=\"filter\"   match=\"meta[@name='Has illustration(s)']\"\/> <\/<mark>excludes<\/mark>>",
+            "weight" : 1,
+            "pos" : 1585 },
+          
+          { "form" : "exclude",
+            "context" : "...Here is an example: Here we use<mark>exclude<\/mark> type=\"index\"\/> to specify that all documents which...",
+            "weight" : 1,
+            "pos" : 1587 },
+          
+          { "form" : "exclude",
+            "context" : "...content=\"true\"\/>> should be ignored. Then we use two <<mark>exclude<\/mark> type=\"filter\"\/> tags to specify first that the...",
+            "weight" : 1,
+            "pos" : 1601 },
+          
+          { "form" : "excluded",
+            "context" : "...the boolean filter Has illustrations(s) should also be <mark>excluded<\/mark>.",
+            "weight" : 1,
+            "pos" : 1619 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 13,
+        "contexts" : 
+        [ 
+          { "form" : "exclude",
+            "context" : "Appendix A.1.6 <<mark>exclude<\/mark>>",
+            "weight" : 2,
+            "pos" : 206 },
+          
+          { "form" : "excludes",
+            "context" : "Appendix A.1.7 <<mark>excludes<\/mark>>",
+            "weight" : 2,
+            "pos" : 274 },
+          
+          { "form" : "excludes",
+            "context" : "ss: contexts <mark>excludes<\/mark> params rules",
+            "weight" : 1,
+            "pos" : 32 },
+          
+          { "form" : "exclude",
+            "context" : "<<mark>exclude<\/mark>> (An exclusion definition, which excludes either documents...",
+            "weight" : 1,
+            "pos" : 207 },
+          
+          { "form" : "excludes",
+            "context" : "<exclude> (An exclusion definition, which <mark>excludes<\/mark> either documents or filters as defined by...",
+            "weight" : 1,
+            "pos" : 210 },
+          
+          { "form" : "exclude",
+            "context" : "...itself can be the root HTML element) to <mark>exclude<\/mark> from the document index. filter (Filter exclusion)...",
+            "weight" : 1,
+            "pos" : 246 },
+          
+          { "form" : "exclude",
+            "context" : "...exclusion that matches an HTML meta tag to <mark>exclude<\/mark> from the filter controls on the search...",
+            "weight" : 1,
+            "pos" : 257 },
+          
+          { "form" : "excludes",
+            "context" : "ss: <mark>excludes<\/mark>",
+            "weight" : 1,
+            "pos" : 263 },
+          
+          { "form" : "excludes",
+            "context" : "<<mark>excludes<\/mark>> (The set of exclusions, expressed as XPath...",
+            "weight" : 1,
+            "pos" : 275 },
+          
+          { "form" : "exclude",
+            "context" : "ss: <mark>exclude<\/mark>",
+            "weight" : 1,
+            "pos" : 300 },
+          
+          { "form" : "exclude",
+            "context" : "context <mark>exclude<\/mark> rule",
+            "weight" : 1,
+            "pos" : 1008 } ] } ] }

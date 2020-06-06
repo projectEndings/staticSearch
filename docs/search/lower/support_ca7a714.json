@@ -1,0 +1,68 @@
+
+  { "token" : "support",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "support",
+            "context" : "<phrasalSearch> (Whether or not to <mark>support<\/mark> phrasal searches. If this is true, then...",
+            "weight" : 1,
+            "pos" : 555 },
+          
+          { "form" : "support",
+            "context" : "...ignored, because all contexts are required to properly <mark>support<\/mark> phrasal search.)",
+            "weight" : 1,
+            "pos" : 565 },
+          
+          { "form" : "support",
+            "context" : "<wildcardSearch> (Whether or not to <mark>support<\/mark> wildcard searches.)",
+            "weight" : 1,
+            "pos" : 928 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "supports",
+            "context" : "...documents to specify what these filters are. staticSearch <mark>supports<\/mark> four filter types.",
+            "weight" : 1,
+            "pos" : 96 },
+          
+          { "form" : "support",
+            "context" : "...specifies whether you want your search engine to <mark>support<\/mark> phrasal searches (quoted strings). Obviously this is...",
+            "weight" : 1,
+            "pos" : 733 },
+          
+          { "form" : "support",
+            "context" : "...size of JSON token files; in order to <mark>support<\/mark> this kind of search, we store contexts...",
+            "weight" : 1,
+            "pos" : 749 } ] },
+      
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "supports",
+            "context" : "The Generator <mark>supports<\/mark> the following features:",
+            "weight" : 1,
+            "pos" : 16 },
+          
+          { "form" : "support",
+            "context" : "...least one of them. Note that phrasal search <mark>support<\/mark> requires a specific setting in your configuration...",
+            "weight" : 1,
+            "pos" : 87 } ] },
+      
+      { "docId" : "searchFacetFeatures",
+        "docUri" : "searchFacetFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "supports",
+            "context" : "The Generator <mark>supports<\/mark> the following search facets:",
+            "weight" : 1,
+            "pos" : 15 } ] } ] }

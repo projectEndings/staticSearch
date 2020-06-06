@@ -1,0 +1,68 @@
+
+  { "token" : "allow",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 5,
+        "contexts" : 
+        [ 
+          { "form" : "allow",
+            "context" : "...search filters or not. If you want to <mark>allow<\/mark> your users to search (for example) only...",
+            "weight" : 1,
+            "pos" : 76 },
+          
+          { "form" : "allow",
+            "context" : "...or decimal). For example, you might want to <mark>allow<\/mark> people to filter documents in the search...",
+            "weight" : 1,
+            "pos" : 252 },
+          
+          { "form" : "allows",
+            "context" : "...for the search. This is useful because it <mark>allows<\/mark> the browser to cache such resources when...",
+            "weight" : 1,
+            "pos" : 697 },
+          
+          { "form" : "allowable",
+            "context" : "...the W3C XSLT Specification for further details on <mark>allowable<\/mark> pattern rules.",
+            "weight" : 1,
+            "pos" : 1153 },
+          
+          { "form" : "allowing",
+            "context" : "...index.<\/li>  <li>Search filtering using any metadata you like, <mark>allowing<\/mark> users to limit their search to specific...",
+            "weight" : 1,
+            "pos" : 1282 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "allowing",
+            "context" : "...providing a match attribute that identifies the context, <mark>allowing<\/mark> keyword-in-context fragments to be bounded by a...",
+            "weight" : 1,
+            "pos" : 50 },
+          
+          { "form" : "allows",
+            "context" : "...the size of the index considerably, but it <mark>allows<\/mark> for more user-friendly search results, as well...",
+            "weight" : 1,
+            "pos" : 140 } ] },
+      
+      { "docId" : "whatDoesItDo",
+        "docUri" : "whatDoesItDo.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "allow",
+            "context" : "...specify in the headers of your documents, to <mark>allow<\/mark> searches for documents by type, by date...",
+            "weight" : 1,
+            "pos" : 39 } ] },
+      
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "allowing",
+            "context" : "...Search filtering using any metadata you like, <mark>allowing<\/mark> users to limit their search to specific...",
+            "weight" : 1,
+            "pos" : 114 } ] } ] }

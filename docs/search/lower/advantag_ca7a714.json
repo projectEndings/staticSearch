@@ -1,0 +1,23 @@
+
+  { "token" : "advantag",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "advantage",
+            "context" : "...that facet be downloaded. So there is some <mark>advantage<\/mark> in having the JavaScript start downloading some...",
+            "weight" : 1,
+            "pos" : 204 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "advantage",
+            "context" : "...as we discuss shortly, we highly suggest taking <mark>advantage<\/mark> of the <rules> and <contexts> for the...",
+            "weight" : 1,
+            "pos" : 489 } ] } ] }

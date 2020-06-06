@@ -1,0 +1,23 @@
+
+  { "token" : "entir",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "entirely",
+            "context" : "However, static websites (websites which consist <mark>entirely<\/mark> of HTML, CSS and JavaScript, without any...",
+            "weight" : 1,
+            "pos" : 61 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "entire",
+            "context" : "...search. Obviously, if it were to download the <mark>entire<\/mark> collection of thousands of token files, the...",
+            "weight" : 1,
+            "pos" : 143 } ] } ] }

@@ -1,0 +1,28 @@
+
+  { "token" : "nonnegativeinteg",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "nonNegativeInteger",
+            "context" : "XSD <mark>nonNegativeInteger<\/mark>",
+            "weight" : 1,
+            "pos" : 423 },
+          
+          { "form" : "nonNegativeInteger",
+            "context" : "XSD <mark>nonNegativeInteger<\/mark>",
+            "weight" : 1,
+            "pos" : 460 },
+          
+          { "form" : "nonNegativeInteger",
+            "context" : "<mark>nonNegativeInteger<\/mark>",
+            "weight" : 1,
+            "pos" : 670 },
+          
+          { "form" : "nonNegativeInteger",
+            "context" : "XSD <mark>nonNegativeInteger<\/mark>",
+            "weight" : 1,
+            "pos" : 839 } ] } ] }
