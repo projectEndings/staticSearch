@@ -5,6 +5,7 @@
         <versionFile>test/VERSION</versionFile>
         <recurse>true<!--Need to set recurse to true for the test--></recurse>
         <phrasalSearch>true</phrasalSearch>
+        <wildcardSearch>true</wildcardSearch>
         <createContexts>true</createContexts>
         <!--NOTE: If phrasalSearch is set to TRUE, then
         maxContexts prop will be ignored-->

@@ -969,12 +969,14 @@
               <dataRef name="boolean"/>
             </content>
           </elementSpec>
+          
           <elementSpec ident="wildcardSearch" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>Whether or not to support wildcard searches.</gloss>
             <content>
               <dataRef name="boolean"/>
             </content>
           </elementSpec>
+          
           <elementSpec ident="verbose" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>Turns on more detailed reporting during the indexing process.</gloss>
             <content>

@@ -28,7 +28,7 @@
   * find an elegant way to do that.
   */
 /**
-  * @constant PHRASE, MUST_CONTAIN, MUST_NOT_CONTAIN, MAY_CONTAIN
+  * @constant PHRASE, MUST_CONTAIN, MUST_NOT_CONTAIN, MAY_CONTAIN, WILDCARD
   * @type {Number}
   * @description Constants representing different types of search command.
   */
@@ -37,13 +37,14 @@
   const MUST_CONTAIN         = 1;
   const MUST_NOT_CONTAIN     = 2;
   const MAY_CONTAIN          = 3;
+  const WILDCARD             = 4;
 
 /**@constant arrTermTypes
    * @type {Array}
    * @description array of PHRASE, MUST_CONTAIN, MUST_NOT_CONTAIN, MAY_CONTAIN
    *              used so we can easily iterate through them.
    */
-  const arrTermTypes = [PHRASE, MUST_CONTAIN, MUST_NOT_CONTAIN, MAY_CONTAIN];
+  const arrTermTypes = [PHRASE, MUST_CONTAIN, MUST_NOT_CONTAIN, MAY_CONTAIN, WILDCARD];
 
 /**
   * @constant TO_GET, GETTING, GOT, FAILED
@@ -82,6 +83,7 @@
   ss.captions['en'][MUST_CONTAIN]        = 'Must contain: ';
   ss.captions['en'][MUST_NOT_CONTAIN]    = 'Must not contain: ';
   ss.captions['en'][MAY_CONTAIN]         = 'May contain: ';
+  ss.captions['en'][WILDCARD]            = 'Wildcard term: ';
   ss.captions['en'].strScore             = 'Score: ';
 
 
@@ -227,8 +229,15 @@ class StaticSearch{
       //Default
       this.allowPhrasal = true;
       tmp = document.querySelector("form[data-allowPhrasal]");
-      if (tmp && !/(y|Y|yes|true|True|1)/.test(tmp.getAttribute('data-AllowPhrasal'))){
+      if (tmp && !/(y|Y|yes|true|True|1)/.test(tmp.getAttribute('data-allowphrasal'))){
         this.allowPhrasal = false;
+      }
+
+      //Configuration for use of wildcards. Defaults to false.
+      this.allowWildcards = false;
+      tmp = document.querySelector("form[data-allowWildcards]");
+      if (tmp && /(y|Y|yes|true|True|1)/.test(tmp.getAttribute('data-allowwildcards'))){
+        this.allowWildcards = true;
       }
 
       //Configuration of a specific version string to avoid JSON caching.
@@ -577,8 +586,14 @@ class StaticSearch{
       strSearch = strSearch.replace(/[“”]/g, '"');
       strSearch = strSearch.replace(/[‘’‛]/g, "'");
 
-      //Strip out all other punctuation that isn't between numbers
-      strSearch = strSearch.replace(/(^|[^\d])[\.',!;:@#$%\^&*]+([^\d]|$)/g, '$1$2');
+      //Strip out all other punctuation that isn't between numbers. We do this
+      //slightly differently depending on whether wildcard searching is enabled.
+      if (this.allowWildcards){
+        strSearch = strSearch.replace(/(^|[^\d])[\.',!;:@#$%\^&]+([^\d]|$)/g, '$1$2');
+      }
+      else{
+        strSearch = strSearch.replace(/(^|[^\d])[\.',!;:@#$%\^&*?\[\]]+([^\d]|$)/g, '$1$2');
+      }
 
       //If we're not supporting phrasal searches, get rid of double quotes.
       if (!this.allowPhrasal){
