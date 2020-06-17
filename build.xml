@@ -335,7 +335,7 @@
     
 
     
-    <target name="all" depends="init, validate, config, tokenize, json, copyFiles, makeSearchPage, report, clean">
+    <target name="all" depends="init, validate, config, tokenize, json,  createTokensFile, copyFiles, makeSearchPage, report, clean">
         <description>
             target: all
             
@@ -343,7 +343,7 @@
         </description>
     </target>
 
-    <target name="allButValidate" depends="init, config, tokenize, json, copyFiles, makeSearchPage, report, clean">
+    <target name="allButValidate" depends="init, config, tokenize, json, createTokensFile, copyFiles, makeSearchPage, report, clean">
         <description>
             target: allButValidate
             
@@ -352,7 +352,7 @@
         </description>
     </target>
 
-    <target name="test" depends="init, validate, config, tokenize, json, copyFiles, makeSearchPage, report">
+    <target name="test" depends="init, validate, config, tokenize, json, createTokensFile, copyFiles, makeSearchPage, report">
         <description>
             target: test
             
@@ -360,7 +360,7 @@
         </description>
     </target>
     
-    <target name="basic" depends="init, validate, config, tokenize, json, copyFiles, makeSearchPage, clean">
+    <target name="basic" depends="init, validate, config, tokenize, json, createTokensFile, copyFiles, makeSearchPage, clean">
         <description>
             target: basic
             
