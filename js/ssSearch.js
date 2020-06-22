@@ -480,6 +480,27 @@ class StaticSearch{
   * @return {Boolean} true if a search is initiated otherwise false.
   */
   doSearch(popping = false){
+    //We start by intercepting any situation in which we may need the ssTokens
+    //collection, but we don't yet have it.
+    if (this.allowWildcards){
+      if (/[\[\]?*]/.test(this.queryBox.value)){
+        if (this.mapJsonRetrieved.get('ssTokens') != GOT){
+          let promise = fetch(self.jsonDirectory + 'ssTokens' + this.versionString + '.json', this.fetchHeaders)
+            .then(function(response) {
+              return response.json();
+            })
+            .then(function(json) {
+              self.tokens = new Map(Object.entries(json));
+              self.mapJsonRetrieved.set('ssTokens', GOT);
+              self.doSearch();
+            }.bind(self))
+            .catch(function(e){
+              console.log('Error attempting to retrieve token list: ' + e);
+            }.bind(self));
+          return false;
+        }
+      }
+    }
     setTimeout(function(){
                 this.searchingDiv.style.display = 'block';
                 document.body.style.cursor = 'progress';}.bind(this), 0);
@@ -703,6 +724,8 @@ class StaticSearch{
       //Else is it a wildcard?
       if (this.allowWildcards && /[\[\]?*]/.test(strInput)){
         console.log('Wildcard found...');
+        //TODO: THIS IS WHERE THE REAL WORK HAS TO HAPPEN.
+
       }
       else{
         //Else is it a must-contain?
