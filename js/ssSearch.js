@@ -240,6 +240,16 @@ class StaticSearch{
         this.allowWildcards = true;
       }
 
+      //Limit to the weight of JSON that will be downloaded for a single wildcard term.
+      this.downloadLimit = 1000000; //default.
+      tmp = document.querySelector("form[data-downloadLimit]");
+      if (tmp){
+        let i = parseInt(tmp.getAttribute('data-downloadLimit'));
+        if ( i > 0){
+          this.downloadLimit = i;
+        }
+      }
+
       //Configuration of a specific version string to avoid JSON caching.
       this.versionString = this.ssForm.getAttribute('data-versionString');
 
@@ -724,8 +734,23 @@ class StaticSearch{
       //Else is it a wildcard?
       if (this.allowWildcards && /[\[\]?*]/.test(strInput)){
         console.log('Wildcard found...');
-        //TODO: THIS IS WHERE THE REAL WORK HAS TO HAPPEN.
-
+        let re = this.wildcardToRegex(strInput);
+        let tokenList = [];
+        let totalWeight = 0;
+        this.tokens.forEach(function(value, key){
+          //console.log('Testing ' + key);
+          if (re.test(key)){
+            tokenList.push(key);
+            totalWeight += value[0];
+          }
+        });
+        //console.log('Tokens: ' + tokenList.join(', '));
+        //console.log('Total weight: ' + totalWeight);
+        if (totalWeight < this.downloadLimit){
+          tokenList.forEach(token =>{
+            this.terms.push({str: strInput, stem: token, capFirst: startsWithCap, type: MAY_CONTAIN});
+          });
+        }
       }
       else{
         //Else is it a must-contain?
