@@ -738,7 +738,6 @@ class StaticSearch{
         let tokenList = [];
         let totalWeight = 0;
         this.tokens.forEach(function(value, key){
-          //console.log('Testing ' + key);
           if (re.test(key)){
             tokenList.push(key);
             totalWeight += value[0];
