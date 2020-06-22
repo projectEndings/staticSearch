@@ -342,7 +342,7 @@ class StaticSearch{
       return;
     }
     if (path.match(/ssTokens.*json$/)){
-      this.tokens = json;
+      this.tokens = new Map(Object.entries(json));
       this.mapJsonRetrieved.set('ssTokens', GOT);
       return;
     }
@@ -700,23 +700,28 @@ class StaticSearch{
       }
     }
     else{
-      //Else is it a must-contain?
-      if (/^[\+]/.test(strInput)){
-        let term = strInput.substring(1).toLowerCase();
-        this.terms.push({str: strInput.substring(1), stem: this.stemmer.stem(term), capFirst: startsWithCap, type: MUST_CONTAIN});
+      //Else is it a wildcard?
+      if (this.allowWildcards && /[\[\]?*]/.test(strInput)){
+        console.log('Wildcard found...');
       }
       else{
-      //Else is it a must-not-contain?
-        if (/^[\-]/.test(strInput)){
+        //Else is it a must-contain?
+        if (/^[\+]/.test(strInput)){
           let term = strInput.substring(1).toLowerCase();
-          this.terms.push({str: strInput.substring(1), stem: this.stemmer.stem(term), capFirst: startsWithCap, type: MUST_NOT_CONTAIN});
+          this.terms.push({str: strInput.substring(1), stem: this.stemmer.stem(term), capFirst: startsWithCap, type: MUST_CONTAIN});
         }
         else{
-        //Else may-contain.
-          let term = strInput.toLowerCase();
-          this.terms.push({str: strInput, stem: this.stemmer.stem(term), capFirst: startsWithCap, type: MAY_CONTAIN});
+        //Else is it a must-not-contain?
+          if (/^[\-]/.test(strInput)){
+            let term = strInput.substring(1).toLowerCase();
+            this.terms.push({str: strInput.substring(1), stem: this.stemmer.stem(term), capFirst: startsWithCap, type: MUST_NOT_CONTAIN});
+          }
+          else{
+          //Else may-contain.
+            let term = strInput.toLowerCase();
+            this.terms.push({str: strInput, stem: this.stemmer.stem(term), capFirst: startsWithCap, type: MAY_CONTAIN});
+          }
         }
-
       }
     }
     return (this.terms.length > 0);
@@ -1074,8 +1079,22 @@ class StaticSearch{
               console.log('Error attempting to retrieve title list: ' + e);
             }.bind(self));
         }
-//TODO: When we add glob searching, we'll need to care about the list of tokens too.
-
+//For glob searching, we'll need to care about the list of tokens too.
+        if (this.allowWildcards == true){
+          if (this.mapJsonRetrieved.get('ssTokens') != GOT){
+            promises[promises.length] = fetch(self.jsonDirectory + 'ssTokens' + this.versionString + '.json', this.fetchHeaders)
+              .then(function(response) {
+                return response.json();
+              })
+              .then(function(json) {
+                self.tokens = new Map(Object.entries(json));
+                self.mapJsonRetrieved.set('ssTokens', GOT);
+              }.bind(self))
+              .catch(function(e){
+                console.log('Error attempting to retrieve token list: ' + e);
+              }.bind(self));
+          }
+        }
       }
 
       //If we do need to retrieve JSON index data, then do it
