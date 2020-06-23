@@ -1,0 +1,18 @@
+
+  { "token" : "pars",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "parse",
+            "context" : "...are correctly configured so that the Generator can <mark>parse<\/mark> them. Then, you will have to create...",
+            "weight" : 1,
+            "pos" : 18 },
+          
+          { "form" : "parse",
+            "context" : "The generator is expecting to <mark>parse<\/mark> well-formed XHTML5 web pages. That means web...",
+            "weight" : 1,
+            "pos" : 34 } ] } ] }

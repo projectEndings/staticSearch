@@ -1,0 +1,13 @@
+
+  { "token" : "unsupport",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "unsupported",
+            "context" : "...use of technologies that may become obsolete or <mark>unsupported<\/mark>, or services which may change their terms...",
+            "weight" : 1,
+            "pos" : 160 } ] } ] }

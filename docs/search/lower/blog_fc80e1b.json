@@ -1,0 +1,13 @@
+
+  { "token" : "blog",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "blog",
+            "context" : "...poems, or only in articles, or only in <mark>blog<\/mark> posts, or any combination of these document...",
+            "weight" : 1,
+            "pos" : 82 } ] } ] }

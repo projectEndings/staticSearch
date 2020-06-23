@@ -1,0 +1,18 @@
+
+  { "token" : "snippet",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "\"snippets\"",
+            "context" : "...static search creates the keywords-in-contexts (the \"kwic\" or <mark>\"snippets\"<\/mark>) for each token, it does so by...",
+            "weight" : 1,
+            "pos" : 1250 },
+          
+          { "form" : "snippet",
+            "context" : "...by default, a context element, meaning that the <mark>snippet<\/mark> generated for each token will not extend...",
+            "weight" : 1,
+            "pos" : 1294 } ] } ] }

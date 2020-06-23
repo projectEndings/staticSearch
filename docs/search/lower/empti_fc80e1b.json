@@ -1,0 +1,43 @@
+
+  { "token" : "empti",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "empty",
+            "context" : "...the correct id attribute: This <div> will be <mark>empty<\/mark> initially. The build process will find insert...",
+            "weight" : 1,
+            "pos" : 1697 },
+          
+          { "form" : "empty",
+            "context" : "...There is no need to make sure it's <mark>empty<\/mark> every time.",
+            "weight" : 1,
+            "pos" : 1718 },
+          
+          { "form" : "empty",
+            "context" : "...need to start every time with a clean, <mark>empty<\/mark> version of the search page.",
+            "weight" : 1,
+            "pos" : 1764 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "Empty",
+            "context" : "<mark>Empty<\/mark> element",
+            "weight" : 1,
+            "pos" : 84 },
+          
+          { "form" : "Empty",
+            "context" : "<mark>Empty<\/mark> element",
+            "weight" : 1,
+            "pos" : 266 },
+          
+          { "form" : "Empty",
+            "context" : "<mark>Empty<\/mark> element",
+            "weight" : 1,
+            "pos" : 675 } ] } ] }

@@ -1,0 +1,13 @@
+
+  { "token" : "linuxbox",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "linuxbox",
+            "context" : "mholmes@<mark>linuxbox<\/mark>:~\/Documents\/staticSearch$ ant ant -DconfigFile=\/home\/mholmes\/mysite\/config_staticSearch.xml",
+            "weight" : 1,
+            "pos" : 1850 } ] } ] }

@@ -1,0 +1,18 @@
+
+  { "token" : "case",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "case",
+            "context" : "...We also require the <recurse> element in the <mark>case<\/mark> where the document collection may be nested...",
+            "weight" : 1,
+            "pos" : 619 },
+          
+          { "form" : "case",
+            "context" : "...extend beyond the <li> element boundaries; in this <mark>case<\/mark>, if the <li> was not a context...",
+            "weight" : 1,
+            "pos" : 1301 } ] } ] }

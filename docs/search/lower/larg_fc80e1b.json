@@ -1,0 +1,23 @@
+
+  { "token" : "larg",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "large",
+            "context" : "...each document, so if your site is very <mark>large<\/mark>, and your user base is unlikely to...",
+            "weight" : 1,
+            "pos" : 758 } ] },
+      
+      { "docId" : "whatDoesItDo",
+        "docUri" : "whatDoesItDo.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "large",
+            "context" : "...stores the index in the form of a <mark>large<\/mark> number of small JSON files. It also...",
+            "weight" : 1,
+            "pos" : 25 } ] } ] }

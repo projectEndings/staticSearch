@@ -1,0 +1,18 @@
+
+  { "token" : "noth",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "nothing",
+            "context" : "<p>About that program I shall have <mark>nothing<\/mark> to say here,<span class=\"sidenote\">Some information on this subject...",
+            "weight" : 1,
+            "pos" : 1340 },
+          
+          { "form" : "nothing",
+            "context" : "...element. A search for 'information' might then return: \"...<mark>nothing<\/mark> to say here,Some information on this subject...",
+            "weight" : 1,
+            "pos" : 1384 } ] } ] }

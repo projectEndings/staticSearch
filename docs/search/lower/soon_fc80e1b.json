@@ -1,0 +1,13 @@
+
+  { "token" : "soon",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "soon",
+            "context" : "...essential files (titles, stopwords and so on) as <mark>soon<\/mark> as the page loads, and it also...",
+            "weight" : 1,
+            "pos" : 212 } ] } ] }

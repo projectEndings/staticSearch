@@ -1,0 +1,13 @@
+
+  { "token" : "maxcontexts",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "maxContexts",
+            "context" : "...phrasal searches. If this is true, then the <mark>maxContexts<\/mark> setting will be ignored, because all contexts...",
+            "weight" : 1,
+            "pos" : 559 } ] } ] }

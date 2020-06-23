@@ -1,0 +1,13 @@
+
+  { "token" : "tokeniz",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "tokenizable",
+            "context" : "...in the <body> of a document are considered <mark>tokenizable<\/mark>. However, common elements that you might want...",
+            "weight" : 1,
+            "pos" : 1228 } ] } ] }

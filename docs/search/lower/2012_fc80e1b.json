@@ -1,0 +1,93 @@
+
+  { "token" : "2012",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "2012",
+            "context" : "...Revolutions (50th anniversary edition), University of Chicago Press, <mark>2012<\/mark>: p. 191.",
+            "weight" : 1,
+            "pos" : 77 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "2012",
+            "context" : "...Revolutions (50th anniversary edition), University of Chicago Press, <mark>2012<\/mark>: p. 191.",
+            "weight" : 1,
+            "pos" : 1968 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "2012",
+            "context" : "...Revolutions (50th anniversary edition), University of Chicago Press, <mark>2012<\/mark>: p. 191.",
+            "weight" : 1,
+            "pos" : 298 } ] },
+      
+      { "docId" : "index",
+        "docUri" : "index.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "2012",
+            "context" : "...Revolutions (50th anniversary edition), University of Chicago Press, <mark>2012<\/mark>: p. 191.",
+            "weight" : 1,
+            "pos" : 36 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "2012",
+            "context" : "...Revolutions (50th anniversary edition), University of Chicago Press, <mark>2012<\/mark>: p. 191.",
+            "weight" : 1,
+            "pos" : 1038 } ] },
+      
+      { "docId" : "searchFacetFeatures",
+        "docUri" : "searchFacetFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "2012",
+            "context" : "...Revolutions (50th anniversary edition), University of Chicago Press, <mark>2012<\/mark>: p. 191.",
+            "weight" : 1,
+            "pos" : 90 } ] },
+      
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "2012",
+            "context" : "...Revolutions (50th anniversary edition), University of Chicago Press, <mark>2012<\/mark>: p. 191.",
+            "weight" : 1,
+            "pos" : 134 } ] },
+      
+      { "docId" : "whatDoesItDo",
+        "docUri" : "whatDoesItDo.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "2012",
+            "context" : "...Revolutions (50th anniversary edition), University of Chicago Press, <mark>2012<\/mark>: p. 191.",
+            "weight" : 1,
+            "pos" : 73 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "2012",
+            "context" : "...Revolutions (50th anniversary edition), University of Chicago Press, <mark>2012<\/mark>: p. 191.",
+            "weight" : 1,
+            "pos" : 204 } ] } ] }

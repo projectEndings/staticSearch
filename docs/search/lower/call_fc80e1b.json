@@ -1,0 +1,23 @@
+
+  { "token" : "call",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "called",
+            "context" : "...there is to be a descriptive search filter <mark>called<\/mark> 'Document type', and one of the types...",
+            "weight" : 1,
+            "pos" : 126 },
+          
+          { "form" : "called",
+            "context" : "...the example above, there would be a folder <mark>called<\/mark> images which is a sibling of the...",
+            "weight" : 1,
+            "pos" : 437 },
+          
+          { "form" : "called",
+            "context" : "...tag, and that folder would contain a file <mark>called<\/mark> thisPage.jpg.",
+            "weight" : 1,
+            "pos" : 448 } ] } ] }

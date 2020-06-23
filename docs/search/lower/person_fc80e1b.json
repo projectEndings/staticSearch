@@ -1,0 +1,13 @@
+
+  { "token" : "person",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "person",
+            "context" : "...xsl\/english_stopwords.txt. If your site is all about a <mark>person<\/mark>, a place or some other entity, then...",
+            "weight" : 1,
+            "pos" : 921 } ] } ] }

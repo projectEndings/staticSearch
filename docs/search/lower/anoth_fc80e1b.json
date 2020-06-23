@@ -1,0 +1,48 @@
+
+  { "token" : "anoth",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "Another",
+            "context" : "...this <meta> tag is one of the Poems. <mark>Another<\/mark> type might be: If the Generator finds...",
+            "weight" : 1,
+            "pos" : 138 },
+          
+          { "form" : "Another",
+            "context" : "<mark>Another<\/mark> slightly different kind of search control is...",
+            "weight" : 1,
+            "pos" : 173 },
+          
+          { "form" : "another",
+            "context" : "...can override the document title value by providing <mark>another<\/mark> meta tag, like this:",
+            "weight" : 1,
+            "pos" : 364 } ] },
+      
+      { "docId" : "searchFacetFeatures",
+        "docUri" : "searchFacetFeatures.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "another",
+            "context" : "...a date range) for its first publication and <mark>another<\/mark> for its last publication; then users could...",
+            "weight" : 1,
+            "pos" : 45 },
+          
+          { "form" : "another",
+            "context" : "...a certain date range and last published before <mark>another<\/mark> date.",
+            "weight" : 1,
+            "pos" : 59 } ] },
+      
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "another",
+            "context" : "...for English, but if you have documents in <mark>another<\/mark> language, you can create and plug in...",
+            "weight" : 1,
+            "pos" : 33 } ] } ] }

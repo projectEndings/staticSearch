@@ -1,0 +1,33 @@
+
+  { "token" : "1895",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 5,
+        "contexts" : 
+        [ 
+          { "form" : "\"1895",
+            "context" : "<meta name=\"Date of publication\"  class=\"staticSearch.date\" content=<mark>\"1895<\/mark>-01-05\"\/>",
+            "weight" : 1,
+            "pos" : 198 },
+          
+          { "form" : "1895",
+            "context" : "<mark>1895<\/mark> (year only)",
+            "weight" : 1,
+            "pos" : 204 },
+          
+          { "form" : "1895",
+            "context" : "<mark>1895<\/mark>-01 (year and month)",
+            "weight" : 1,
+            "pos" : 206 },
+          
+          { "form" : "1895",
+            "context" : "<mark>1895<\/mark>-01-05 (year, month and day)",
+            "weight" : 1,
+            "pos" : 209 },
+          
+          { "form" : "1895",
+            "context" : "<mark>1895<\/mark>\/1897",
+            "weight" : 1,
+            "pos" : 233 } ] } ] }

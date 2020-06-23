@@ -1,0 +1,48 @@
+
+  { "token" : "ant",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 8,
+        "contexts" : 
+        [ 
+          { "form" : "ant",
+            "context" : "...for your site. This requires that you run <mark>ant<\/mark> in the root folder of the staticSearch...",
+            "weight" : 1,
+            "pos" : 1816 },
+          
+          { "form" : "Ant",
+            "context" : "...Note: you will need Java and Apache <mark>Ant<\/mark> installed, as well as ant-contrib.",
+            "weight" : 1,
+            "pos" : 1827 },
+          
+          { "form" : "ant",
+            "context" : "...Java and Apache Ant installed, as well as <mark>ant<\/mark>-contrib.",
+            "weight" : 1,
+            "pos" : 1831 },
+          
+          { "form" : "ant",
+            "context" : "...the test materials. If you simply run the <mark>ant<\/mark> command, like this:",
+            "weight" : 1,
+            "pos" : 1846 },
+          
+          { "form" : "ant",
+            "context" : "mholmes@linuxbox:~\/Documents\/staticSearch$ <mark>ant<\/mark> ant -DconfigFile=\/home\/mholmes\/mysite\/config_staticSearch.xml",
+            "weight" : 1,
+            "pos" : 1853 },
+          
+          { "form" : "Ant",
+            "context" : "...error messages you see. (Do you have Java, <mark>Ant<\/mark> and ant-contrib installed and working on your...",
+            "weight" : 1,
+            "pos" : 1879 },
+          
+          { "form" : "ant",
+            "context" : "...you see. (Do you have Java, Ant and <mark>ant<\/mark>-contrib installed and working on your system?).",
+            "weight" : 1,
+            "pos" : 1881 },
+          
+          { "form" : "ant",
+            "context" : "mholmes@linuxbox:~\/Documents\/staticSearch$ ant <mark>ant<\/mark> -DconfigFile=\/home\/mholmes\/mysite\/config_staticSearch.xml",
+            "weight" : 1,
+            "pos" : 1927 } ] } ] }

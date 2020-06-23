@@ -1,0 +1,43 @@
+
+  { "token" : "sinc",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 5,
+        "contexts" : 
+        [ 
+          { "form" : "Since",
+            "context" : "...be the primary access point for the search. <mark>Since<\/mark> the search file must be at the...",
+            "weight" : 1,
+            "pos" : 534 },
+          
+          { "form" : "Since",
+            "context" : "...can do so using a rule like so: <mark>Since<\/mark> we're using XPath 3.0 and XSLT 3.0,...",
+            "weight" : 1,
+            "pos" : 1101 },
+          
+          { "form" : "since",
+            "context" : "...<ul>  <li>Keyword-in-context search results. This is also configurable, <mark>since<\/mark> including contexts    increases the size of...",
+            "weight" : 1,
+            "pos" : 1271 },
+          
+          { "form" : "since",
+            "context" : "...made into a clickable object using Javascript. However, <mark>since<\/mark> the tokenizer is unaware of any server-side...",
+            "weight" : 1,
+            "pos" : 1365 },
+          
+          { "form" : "since",
+            "context" : "...to configure the search page (although note that <mark>since<\/mark> this page has already been processed, it...",
+            "weight" : 1,
+            "pos" : 1780 } ] },
+      
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "since",
+            "context" : "...Keyword-in-context search results. This is also configurable, <mark>since<\/mark> including contexts increases the size of the...",
+            "weight" : 1,
+            "pos" : 103 } ] } ] }

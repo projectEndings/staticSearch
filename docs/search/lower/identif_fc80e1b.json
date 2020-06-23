@@ -1,0 +1,13 @@
+
+  { "token" : "identif",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "identification",
+            "context" : "...expressed as XPath in match, that controls the <mark>identification<\/mark> of contexts for keyword-in-context fragments.)",
+            "weight" : 1,
+            "pos" : 100 } ] } ] }

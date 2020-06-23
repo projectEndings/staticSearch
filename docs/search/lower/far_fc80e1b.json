@@ -1,0 +1,13 @@
+
+  { "token" : "far",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "far",
+            "context" : "...systems such as databases or PHP processing) are <mark>far<\/mark> more resilient in the long term than...",
+            "weight" : 1,
+            "pos" : 75 } ] } ] }

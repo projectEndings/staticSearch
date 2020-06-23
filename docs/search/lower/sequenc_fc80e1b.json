@@ -1,0 +1,13 @@
+
+  { "token" : "sequenc",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "sequence",
+            "context" : "...downloaded as fast as possible overriding the trickle <mark>sequence<\/mark> for files that are needed immediately.",
+            "weight" : 1,
+            "pos" : 253 } ] } ] }

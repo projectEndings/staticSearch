@@ -1,0 +1,18 @@
+
+  { "token" : "tidi",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "tidy",
+            "context" : "...then you can't use this tool. You can <mark>tidy<\/mark> up your HTML using HTML Tidy.",
+            "weight" : 1,
+            "pos" : 58 },
+          
+          { "form" : "Tidy",
+            "context" : "...You can tidy up your HTML using HTML <mark>Tidy<\/mark>.",
+            "weight" : 1,
+            "pos" : 62 } ] } ] }

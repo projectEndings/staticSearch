@@ -1,0 +1,13 @@
+
+  { "token" : "raggedi",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "raggedy",
+            "context" : "...the XHTML namespace. If your site is just <mark>raggedy<\/mark> tag-soup, then you can't use this tool....",
+            "weight" : 1,
+            "pos" : 52 } ] } ] }

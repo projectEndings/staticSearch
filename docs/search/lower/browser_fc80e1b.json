@@ -1,0 +1,33 @@
+
+  { "token" : "browser",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "browser",
+            "context" : "...search. This is useful because it allows the <mark>browser<\/mark> to cache such resources when users repeatedly...",
+            "weight" : 1,
+            "pos" : 698 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "browser",
+            "context" : "...retrieved (assuming they weren't already cached by the <mark>browser<\/mark>), so the only files required for any...",
+            "weight" : 1,
+            "pos" : 269 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "browser",
+            "context" : "...when a site is updated, so that the <mark>browser<\/mark> will not use cached versions of older...",
+            "weight" : 1,
+            "pos" : 896 } ] } ] }

@@ -1,0 +1,13 @@
+
+  { "token" : "aka",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "aka",
+            "context" : "<searchFile> (The search file (<mark>aka<\/mark> page) that will be the primary access...",
+            "weight" : 1,
+            "pos" : 722 } ] } ] }

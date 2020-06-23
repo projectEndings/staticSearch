@@ -1,0 +1,23 @@
+
+  { "token" : "initi",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "initially",
+            "context" : "...correct id attribute: This <div> will be empty <mark>initially<\/mark>. The build process will find insert the...",
+            "weight" : 1,
+            "pos" : 1698 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "initiated",
+            "context" : "...at a time. Then if a search is <mark>initiated<\/mark>, all the files required for that specific...",
+            "weight" : 1,
+            "pos" : 243 } ] } ] }

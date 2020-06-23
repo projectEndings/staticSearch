@@ -1,0 +1,13 @@
+
+  { "token" : "unavail",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "unavailable",
+            "context" : "...may change their terms of use or become <mark>unavailable<\/mark>.",
+            "weight" : 1,
+            "pos" : 167 } ] } ] }

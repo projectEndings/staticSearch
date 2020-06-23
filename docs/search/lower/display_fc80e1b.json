@@ -1,0 +1,13 @@
+
+  { "token" : "display",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "display",
+            "context" : "...is required for all or many searches. To <mark>display<\/mark> any results, the list of document titles...",
+            "weight" : 1,
+            "pos" : 175 } ] } ] }

@@ -1,0 +1,23 @@
+
+  { "token" : "fragment",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "fragments",
+            "context" : "...match attribute that identifies the context, allowing keyword-in-context <mark>fragments<\/mark> to be bounded by a specific context.)...",
+            "weight" : 1,
+            "pos" : 54 },
+          
+          { "form" : "fragments",
+            "context" : "...that controls the identification of contexts for keyword-in-context <mark>fragments<\/mark>.)",
+            "weight" : 1,
+            "pos" : 105 },
+          
+          { "form" : "fragment",
+            "context" : "...index (Index exclusion) An exclusion that specifies HTML <mark>fragment<\/mark> (which itself can be the root HTML...",
+            "weight" : 1,
+            "pos" : 242 } ] } ] }

@@ -1,0 +1,23 @@
+
+  { "token" : "etc",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "etc",
+            "context" : "...if you wanted all heading elements (<h1>, <h2>, <mark>etc<\/mark>) in documents to be given a greater...",
+            "weight" : 1,
+            "pos" : 1083 } ] },
+      
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "etc",
+            "context" : "...for 'wait' will also retrieve 'waiting', 'waits', 'waited' <mark>etc<\/mark>.). Our stemmer is for English, but if...",
+            "weight" : 1,
+            "pos" : 29 } ] } ] }

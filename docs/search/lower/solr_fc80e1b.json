@@ -1,0 +1,13 @@
+
+  { "token" : "solr",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Solr",
+            "context" : "...have their own back-end database search engine (perhaps <mark>Solr<\/mark> or an XML database), or they rely...",
+            "weight" : 1,
+            "pos" : 134 } ] } ] }

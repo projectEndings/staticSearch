@@ -1,0 +1,13 @@
+
+  { "token" : "main",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "main",
+            "context" : "There are three <mark>main<\/mark> sections of the configuration file:",
+            "weight" : 1,
+            "pos" : 474 } ] } ] }

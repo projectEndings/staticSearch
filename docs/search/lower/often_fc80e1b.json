@@ -1,0 +1,13 @@
+
+  { "token" : "often",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Often",
+            "context" : "<mark>Often<\/mark>, there will be elements that you want...",
+            "weight" : 1,
+            "pos" : 1156 } ] } ] }

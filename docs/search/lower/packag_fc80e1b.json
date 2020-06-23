@@ -1,0 +1,13 @@
+
+  { "token" : "packag",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "package",
+            "context" : "...code. The first is to download a release <mark>package<\/mark> from the project release page; we recommend...",
+            "weight" : 1,
+            "pos" : 20 } ] } ] }

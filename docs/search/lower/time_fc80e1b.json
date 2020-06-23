@@ -1,0 +1,53 @@
+
+  { "token" : "time",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 5,
+        "contexts" : 
+        [ 
+          { "form" : "time",
+            "context" : "...the expense of additional disk space and build <mark>time<\/mark>, of course; each of these searches needs...",
+            "weight" : 1,
+            "pos" : 1638 },
+          
+          { "form" : "time",
+            "context" : "...no need to make sure it's empty every <mark>time<\/mark>.",
+            "weight" : 1,
+            "pos" : 1720 },
+          
+          { "form" : "time",
+            "context" : "...added, you can process it again at any <mark>time<\/mark>; there is no need to start every...",
+            "weight" : 1,
+            "pos" : 1758 },
+          
+          { "form" : "time",
+            "context" : "...time; there is no need to start every <mark>time<\/mark> with a clean, empty version of the...",
+            "weight" : 1,
+            "pos" : 1762 },
+          
+          { "form" : "time",
+            "context" : "...need to run the same command, but this <mark>time<\/mark>, tell the build process where to find...",
+            "weight" : 1,
+            "pos" : 1919 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "time",
+            "context" : "At the same <mark>time<\/mark>, though, we don't want to clog up...",
+            "weight" : 1,
+            "pos" : 221 },
+          
+          { "form" : "time",
+            "context" : "...retrieved using a 'trickle' approach, one at a <mark>time<\/mark>. Then if a search is initiated, all...",
+            "weight" : 1,
+            "pos" : 241 },
+          
+          { "form" : "time",
+            "context" : "...on the search page for any length of <mark>time<\/mark>, all ancillary files will have been retrieved...",
+            "weight" : 1,
+            "pos" : 261 } ] } ] }

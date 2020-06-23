@@ -1,0 +1,18 @@
+
+  { "token" : "focus",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "focus",
+            "context" : "...may be for aesthetic reasons, or because the <mark>focus<\/mark> of the document itself is actually an...",
+            "weight" : 1,
+            "pos" : 394 },
+          
+          { "form" : "focuses",
+            "context" : "...you are creating a special search page that <mark>focuses<\/mark> only on the text describing images or...",
+            "weight" : 1,
+            "pos" : 1487 } ] } ] }

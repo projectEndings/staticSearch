@@ -1,0 +1,93 @@
+
+  { "token" : "joey",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Joey",
+            "context" : "Martin Holmes and <mark>Joey<\/mark> Takeda. Date: 2019-2020",
+            "weight" : 1,
+            "pos" : 83 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Joey",
+            "context" : "Martin Holmes and <mark>Joey<\/mark> Takeda. Date: 2019-2020",
+            "weight" : 1,
+            "pos" : 1974 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Joey",
+            "context" : "Martin Holmes and <mark>Joey<\/mark> Takeda. Date: 2019-2020",
+            "weight" : 1,
+            "pos" : 304 } ] },
+      
+      { "docId" : "index",
+        "docUri" : "index.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Joey",
+            "context" : "Martin Holmes and <mark>Joey<\/mark> Takeda. Date: 2019-2020",
+            "weight" : 1,
+            "pos" : 42 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Joey",
+            "context" : "Martin Holmes and <mark>Joey<\/mark> Takeda. Date: 2019-2020",
+            "weight" : 1,
+            "pos" : 1044 } ] },
+      
+      { "docId" : "searchFacetFeatures",
+        "docUri" : "searchFacetFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Joey",
+            "context" : "Martin Holmes and <mark>Joey<\/mark> Takeda. Date: 2019-2020",
+            "weight" : 1,
+            "pos" : 96 } ] },
+      
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Joey",
+            "context" : "Martin Holmes and <mark>Joey<\/mark> Takeda. Date: 2019-2020",
+            "weight" : 1,
+            "pos" : 140 } ] },
+      
+      { "docId" : "whatDoesItDo",
+        "docUri" : "whatDoesItDo.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Joey",
+            "context" : "Martin Holmes and <mark>Joey<\/mark> Takeda. Date: 2019-2020",
+            "weight" : 1,
+            "pos" : 79 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Joey",
+            "context" : "Martin Holmes and <mark>Joey<\/mark> Takeda. Date: 2019-2020",
+            "weight" : 1,
+            "pos" : 210 } ] } ] }

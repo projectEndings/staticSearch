@@ -1,0 +1,18 @@
+
+  { "token" : "complex",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "complex",
+            "context" : "...thus must follow the same rules (i.e. no <mark>complex<\/mark> rules like p\/ancestor::div). See the W3C XSLT...",
+            "weight" : 1,
+            "pos" : 1144 },
+          
+          { "form" : "complex",
+            "context" : "A <mark>complex<\/mark> site may have two or more search...",
+            "weight" : 1,
+            "pos" : 1448 } ] } ] }

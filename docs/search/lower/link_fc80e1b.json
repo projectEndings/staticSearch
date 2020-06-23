@@ -1,0 +1,38 @@
+
+  { "token" : "link",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "link",
+            "context" : "...that title will then be shown as a <mark>link<\/mark> to the document when it comes up...",
+            "weight" : 1,
+            "pos" : 332 },
+          
+          { "form" : "links",
+            "context" : "...pointless to include this in the search result <mark>links<\/mark>. Therefore you can override the document title...",
+            "weight" : 1,
+            "pos" : 357 },
+          
+          { "form" : "link",
+            "context" : "...instance). Whatever the reason, you can supply a <mark>link<\/mark> to a thumbnail image like this: The...",
+            "weight" : 1,
+            "pos" : 409 },
+          
+          { "form" : "link",
+            "context" : "...own CSS that overrides it, using <style>, or <<mark>link<\/mark>>, placed after it in the <head> element,...",
+            "weight" : 1,
+            "pos" : 1743 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "links",
+            "context" : "...for each distinct token found; this file contains <mark>links<\/mark> to each of the documents which contain...",
+            "weight" : 1,
+            "pos" : 40 } ] } ] }

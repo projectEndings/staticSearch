@@ -1,0 +1,13 @@
+
+  { "token" : "open",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "open",
+            "context" : "...and at the end, a results page should <mark>open<\/mark> up giving you a report on what...",
+            "weight" : 1,
+            "pos" : 1866 } ] } ] }

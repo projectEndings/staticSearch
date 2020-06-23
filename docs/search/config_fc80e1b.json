@@ -1,0 +1,18 @@
+
+  { "params" : 
+    [ 
+      { "searchFile" : "docs\/index.html",
+        "versionFile" : "test\/VERSION",
+        "recurse" : "false",
+        "phrasalSearch" : "true",
+        "wildcardSearch" : "true",
+        "createContexts" : "true",
+        "maxKwicsToHarvest" : 3,
+        "maxKwicsToShow" : 10,
+        "totalKwicLength" : 15,
+        "kwicTruncateString" : "...",
+        "verbose" : "false",
+        "stopwordsFile" : "xsl\/english_stopwords.txt",
+        "dictionaryFile" : "xsl\/english_words.txt",
+        "indentJSON" : "true",
+        "outputFolder" : "search" } ] }

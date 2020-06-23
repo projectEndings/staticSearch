@@ -1,0 +1,48 @@
+
+  { "token" : "css",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 6,
+        "contexts" : 
+        [ 
+          { "form" : "CSS",
+            "context" : "...your document beside its point of attachment: Using <mark>CSS<\/mark>, the footnote might be alongside the text...",
+            "weight" : 1,
+            "pos" : 1352 },
+          
+          { "form" : "CSS",
+            "context" : "...The search process will also add a <mark>CSS<\/mark> <style> element to the <head> of the...",
+            "weight" : 1,
+            "pos" : 1725 },
+          
+          { "form" : "CSS",
+            "context" : "...<head> of the document: You can customize this <mark>CSS<\/mark> by providing your own CSS that overrides...",
+            "weight" : 1,
+            "pos" : 1737 },
+          
+          { "form" : "CSS",
+            "context" : "...can customize this CSS by providing your own <mark>CSS<\/mark> that overrides it, using <style>, or <link>,...",
+            "weight" : 1,
+            "pos" : 1739 },
+          
+          { "form" : "CSS",
+            "context" : "...the <head> element, or by replacing the inserted <mark>CSS<\/mark> after the build process.",
+            "weight" : 1,
+            "pos" : 1749 },
+          
+          { "form" : "CSS",
+            "context" : "...page has already been processed, it has the <mark>CSS<\/mark> and the search controls embedded in it;...",
+            "weight" : 1,
+            "pos" : 1784 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "CSS",
+            "context" : "...static websites (websites which consist entirely of HTML, <mark>CSS<\/mark> and JavaScript, without any dependency on back-end...",
+            "weight" : 1,
+            "pos" : 63 } ] } ] }

@@ -1,0 +1,13 @@
+
+  { "token" : "life",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "life",
+            "context" : "...of their labours deserves to have a significant shelf-<mark>life<\/mark>, if possible comparable with that of a...",
+            "weight" : 1,
+            "pos" : 33 } ] } ] }

@@ -1,0 +1,28 @@
+
+  { "token" : "system",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "system",
+            "context" : "...your own site, you can test that your <mark>system<\/mark> is able to do the build by...",
+            "weight" : 1,
+            "pos" : 1837 },
+          
+          { "form" : "system",
+            "context" : "...Ant and ant-contrib installed and working on your <mark>system<\/mark>?).",
+            "weight" : 1,
+            "pos" : 1885 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "systems",
+            "context" : "...and JavaScript, without any dependency on back-end server <mark>systems<\/mark> such as databases or PHP processing) are...",
+            "weight" : 1,
+            "pos" : 71 } ] } ] }

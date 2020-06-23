@@ -1,0 +1,53 @@
+
+  { "token" : "fals",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "false",
+            "context" : "...A fourth filter type is the boolean<mark>false<\/mark>) filter. To use boolean filters, add meta...",
+            "weight" : 1,
+            "pos" : 291 },
+          
+          { "form" : "false",
+            "context" : "...The <recurse> element is a boolean (true or <mark>false<\/mark>) that determines whether or not to recurse...",
+            "weight" : 1,
+            "pos" : 634 },
+          
+          { "form" : "false",
+            "context" : "...consider it as such using context set to <mark>false<\/mark>:",
+            "weight" : 1,
+            "pos" : 1427 },
+          
+          { "form" : "\"false\"",
+            "context" : "<contexts>  <context match=\"div\" context=<mark>\"false\"<\/mark>\/> <\/contexts>",
+            "weight" : 1,
+            "pos" : 1433 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "false",
+            "context" : "...specified as 'Illustrated' and some not (true or <mark>false<\/mark>), a JSON file will be created for...",
+            "weight" : 1,
+            "pos" : 95 },
+          
+          { "form" : "false",
+            "context" : "...facet, and a list of documents which are <mark>false<\/mark>.",
+            "weight" : 1,
+            "pos" : 107 } ] },
+      
+      { "docId" : "searchFacetFeatures",
+        "docUri" : "searchFacetFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "false",
+            "context" : "Booleans (true\/<mark>false<\/mark> values). You might for instance specify that...",
+            "weight" : 1,
+            "pos" : 63 } ] } ] }

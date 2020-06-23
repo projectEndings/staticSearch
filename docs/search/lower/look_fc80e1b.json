@@ -1,0 +1,38 @@
+
+  { "token" : "look",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 6,
+        "contexts" : 
+        [ 
+          { "form" : "looks",
+            "context" : "...page. For instance, in a document collection that <mark>looks<\/mark> something like:",
+            "weight" : 1,
+            "pos" : 587 },
+          
+          { "form" : "looking",
+            "context" : "...more useful the KWICs will be for users <mark>looking<\/mark> at the search results.",
+            "weight" : 1,
+            "pos" : 852 },
+          
+          { "form" : "looking",
+            "context" : "...\"snippets\") for each token, it does so by <mark>looking<\/mark> for the nearest block-level element that it...",
+            "weight" : 1,
+            "pos" : 1252 },
+          
+          { "form" : "looks",
+            "context" : "...the term 'search' would produce a context that <mark>looks<\/mark> something like: \"...the size of the index.Search...",
+            "weight" : 1,
+            "pos" : 1309 },
+          
+          { "form" : "look",
+            "context" : "...page for your site to conform with the <mark>look<\/mark> and feel of the rest of your...",
+            "weight" : 1,
+            "pos" : 1654 },
+          
+          { "form" : "look",
+            "context" : "You can take a <mark>look<\/mark> at the test\/search.html page for an example...",
+            "weight" : 1,
+            "pos" : 1769 } ] } ] }

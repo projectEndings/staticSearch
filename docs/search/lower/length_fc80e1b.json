@@ -1,0 +1,13 @@
+
+  { "token" : "length",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "length",
+            "context" : "...has been on the search page for any <mark>length<\/mark> of time, all ancillary files will have...",
+            "weight" : 1,
+            "pos" : 260 } ] } ] }

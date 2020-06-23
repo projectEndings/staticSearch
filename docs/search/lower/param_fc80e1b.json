@@ -1,0 +1,118 @@
+
+  { "token" : "param",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 19,
+        "contexts" : 
+        [ 
+          { "form" : "params",
+            "context" : "Appendix A.1.13 <<mark>params<\/mark>>",
+            "weight" : 2,
+            "pos" : 504 },
+          
+          { "form" : "params",
+            "context" : "ss: contexts excludes <mark>params<\/mark> rules",
+            "weight" : 1,
+            "pos" : 33 },
+          
+          { "form" : "params",
+            "context" : "ss: <mark>params<\/mark>",
+            "weight" : 1,
+            "pos" : 160 },
+          
+          { "form" : "params",
+            "context" : "ss: <mark>params<\/mark>",
+            "weight" : 1,
+            "pos" : 195 },
+          
+          { "form" : "params",
+            "context" : "ss: <mark>params<\/mark>",
+            "weight" : 1,
+            "pos" : 336 },
+          
+          { "form" : "params",
+            "context" : "ss: <mark>params<\/mark>",
+            "weight" : 1,
+            "pos" : 375 },
+          
+          { "form" : "params",
+            "context" : "ss: <mark>params<\/mark>",
+            "weight" : 1,
+            "pos" : 419 },
+          
+          { "form" : "params",
+            "context" : "ss: <mark>params<\/mark>",
+            "weight" : 1,
+            "pos" : 456 },
+          
+          { "form" : "params",
+            "context" : "ss: <mark>params<\/mark>",
+            "weight" : 1,
+            "pos" : 493 },
+          
+          { "form" : "params",
+            "context" : "<<mark>params<\/mark>> (Element containing most of the settings which...",
+            "weight" : 1,
+            "pos" : 505 },
+          
+          { "form" : "params",
+            "context" : "ss: <mark>params<\/mark>",
+            "weight" : 1,
+            "pos" : 579 },
+          
+          { "form" : "params",
+            "context" : "ss: <mark>params<\/mark>",
+            "weight" : 1,
+            "pos" : 608 },
+          
+          { "form" : "params",
+            "context" : "ss: <mark>params<\/mark>",
+            "weight" : 1,
+            "pos" : 746 },
+          
+          { "form" : "params",
+            "context" : "ss: <mark>params<\/mark>",
+            "weight" : 1,
+            "pos" : 804 },
+          
+          { "form" : "params",
+            "context" : "ss: <mark>params<\/mark>",
+            "weight" : 1,
+            "pos" : 835 },
+          
+          { "form" : "params",
+            "context" : "ss: <mark>params<\/mark>",
+            "weight" : 1,
+            "pos" : 864 },
+          
+          { "form" : "params",
+            "context" : "ss: <mark>params<\/mark>",
+            "weight" : 1,
+            "pos" : 914 },
+          
+          { "form" : "params",
+            "context" : "ss: <mark>params<\/mark>",
+            "weight" : 1,
+            "pos" : 942 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "params",
+            "context" : "<<mark>params<\/mark>>",
+            "weight" : 1,
+            "pos" : 478 },
+          
+          { "form" : "params",
+            "context" : "Only the <<mark>params<\/mark>> element is necessary, but, as we discuss...",
+            "weight" : 1,
+            "pos" : 481 },
+          
+          { "form" : "params",
+            "context" : "The <<mark>params<\/mark>> element has two required elements for determining...",
+            "weight" : 1,
+            "pos" : 501 } ] } ] }

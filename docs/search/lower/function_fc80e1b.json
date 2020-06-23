@@ -1,0 +1,23 @@
+
+  { "token" : "function",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "functionality",
+            "context" : "...Then you run the generator, and the search <mark>functionality<\/mark> should be added to your site.",
+            "weight" : 1,
+            "pos" : 29 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "function",
+            "context" : "...sadly short, and many disappear or cease to <mark>function<\/mark> within a few years of their creation,...",
+            "weight" : 1,
+            "pos" : 48 } ] } ] }

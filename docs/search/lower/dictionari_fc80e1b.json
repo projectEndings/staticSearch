@@ -1,0 +1,33 @@
+
+  { "token" : "dictionari",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "dictionary",
+            "context" : "...relative path to a file containing an English <mark>dictionary<\/mark> (assuming your site is in English). This...",
+            "weight" : 1,
+            "pos" : 961 },
+          
+          { "form" : "dictionary",
+            "context" : "...the site which do not appear in the <mark>dictionary<\/mark>. This is a useful way to find...",
+            "weight" : 1,
+            "pos" : 977 },
+          
+          { "form" : "dictionary",
+            "context" : "...in your site. Again, there is a default <mark>dictionary<\/mark> in xsl\/english_words.txt which you might copy and...",
+            "weight" : 1,
+            "pos" : 984 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "dictionary",
+            "context" : "<dictionaryFile> (The location of a <mark>dictionary<\/mark> file (one word per line) which will...",
+            "weight" : 1,
+            "pos" : 174 } ] } ] }

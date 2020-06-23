@@ -1,0 +1,13 @@
+
+  { "token" : "materi",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "materials",
+            "context" : "...doing the (very quick) build of the test <mark>materials<\/mark>. If you simply run the ant command,...",
+            "weight" : 1,
+            "pos" : 1843 } ] } ] }

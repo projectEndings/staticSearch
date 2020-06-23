@@ -1,0 +1,28 @@
+
+  { "token" : "constitut",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "constitutes",
+            "context" : "...as an inline element and assumes the <p> <mark>constitutes<\/mark> the context of the element. A search...",
+            "weight" : 1,
+            "pos" : 1377 },
+          
+          { "form" : "constitutes",
+            "context" : "...found... To tell the tokenizer that the <span> <mark>constitutes<\/mark> the context block for any of its...",
+            "weight" : 1,
+            "pos" : 1392 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "constitute",
+            "context" : "...but most of them are quite small. These <mark>constitute<\/mark> the textual index.",
+            "weight" : 1,
+            "pos" : 56 } ] } ] }

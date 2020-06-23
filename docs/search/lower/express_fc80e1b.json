@@ -1,0 +1,23 @@
+
+  { "token" : "express",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "expressed",
+            "context" : "<contexts> (The set of contexts, <mark>expressed<\/mark> as XPath in match, that controls the...",
+            "weight" : 1,
+            "pos" : 96 },
+          
+          { "form" : "expressed",
+            "context" : "<excludes> (The set of exclusions, <mark>expressed<\/mark> as XPath in match, that control the...",
+            "weight" : 1,
+            "pos" : 278 },
+          
+          { "form" : "expressed",
+            "context" : "<rules> (The set of rules, <mark>expressed<\/mark> as XPath in match, that control weighting...",
+            "weight" : 1,
+            "pos" : 687 } ] } ] }

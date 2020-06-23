@@ -1,0 +1,18 @@
+
+  { "token" : "simpli",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "simply",
+            "context" : "...on every page. These elements can be ignored <mark>simply<\/mark> by using a <rule> and setting its...",
+            "weight" : 1,
+            "pos" : 1173 },
+          
+          { "form" : "simply",
+            "context" : "...quick) build of the test materials. If you <mark>simply<\/mark> run the ant command, like this:",
+            "weight" : 1,
+            "pos" : 1844 } ] } ] }

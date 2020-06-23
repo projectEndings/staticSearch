@@ -1,0 +1,13 @@
+
+  { "token" : "fruit",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "fruit",
+            "context" : "...of people collaborating over many years, and the <mark>fruit<\/mark> of their labours deserves to have a...",
+            "weight" : 1,
+            "pos" : 27 } ] } ] }

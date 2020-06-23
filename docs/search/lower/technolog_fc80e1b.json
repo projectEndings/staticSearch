@@ -1,0 +1,23 @@
+
+  { "token" : "technolog",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "technologies",
+            "context" : "...because of their dependency on transient tools and <mark>technologies<\/mark>.",
+            "weight" : 1,
+            "pos" : 55 },
+          
+          { "form" : "technology",
+            "context" : "...long term than sites which use more server-side <mark>technology<\/mark>, and are also much easier to archive...",
+            "weight" : 1,
+            "pos" : 84 },
+          
+          { "form" : "technologies",
+            "context" : "...searching, but typically this requires the use of <mark>technologies<\/mark> that may become obsolete or unsupported, or...",
+            "weight" : 1,
+            "pos" : 156 } ] } ] }

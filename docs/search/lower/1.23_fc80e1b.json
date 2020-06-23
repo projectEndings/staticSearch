@@ -1,0 +1,13 @@
+
+  { "token" : "1.23",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "1.23",
+            "context" : "Appendix A.<mark>1.23<\/mark> <wildcardSearch>",
+            "weight" : 2,
+            "pos" : 924 } ] } ] }

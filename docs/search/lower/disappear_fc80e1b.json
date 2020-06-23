@@ -1,0 +1,13 @@
+
+  { "token" : "disappear",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "disappear",
+            "context" : "...of DH projects is sadly short, and many <mark>disappear<\/mark> or cease to function within a few...",
+            "weight" : 1,
+            "pos" : 46 } ] } ] }

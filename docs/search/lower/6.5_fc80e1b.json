@@ -1,0 +1,13 @@
+
+  { "token" : "6.5",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "6.5",
+            "context" : "<mark>6.5<\/mark> Creating a search page",
+            "weight" : 2,
+            "pos" : 1644 } ] } ] }

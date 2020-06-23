@@ -1,0 +1,73 @@
+
+  { "token" : "end",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "end",
+            "context" : "...using a slash to separate the start and <mark>end<\/mark> dates of the range (following ISO 8601):...",
+            "weight" : 1,
+            "pos" : 227 },
+          
+          { "form" : "end",
+            "context" : "...like to use at the beginning and\/or the <mark>end<\/mark> of a kwic which is not a...",
+            "weight" : 1,
+            "pos" : 863 },
+          
+          { "form" : "end",
+            "context" : "...indexing process, and a report generated at the <mark>end<\/mark> will list all the terms in the...",
+            "weight" : 1,
+            "pos" : 972 },
+          
+          { "form" : "end",
+            "context" : "...small test collection of documents, and at the <mark>end<\/mark>, a results page should open up giving...",
+            "weight" : 1,
+            "pos" : 1863 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 4,
+        "contexts" : 
+        [ 
+          { "form" : "end",
+            "context" : "...HTML, CSS and JavaScript, without any dependency on back-<mark>end<\/mark> server systems such as databases or PHP...",
+            "weight" : 1,
+            "pos" : 69 },
+          
+          { "form" : "Endings",
+            "context" : "...a server anyway?). For this reason, the Project <mark>Endings<\/mark> team have been developing and publicizing strategies...",
+            "weight" : 1,
+            "pos" : 101 },
+          
+          { "form" : "end",
+            "context" : "...approaches to search: either they have their own back-<mark>end<\/mark> database search engine (perhaps Solr or an...",
+            "weight" : 1,
+            "pos" : 129 },
+          
+          { "form" : "end",
+            "context" : "...into your website without the need for any back-<mark>end<\/mark> services at all (except of course for...",
+            "weight" : 1,
+            "pos" : 183 } ] },
+      
+      { "docId" : "index",
+        "docUri" : "index.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Endings",
+            "context" : "Project <mark>Endings<\/mark> Static Search Generator",
+            "weight" : 1,
+            "pos" : 2 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "end",
+            "context" : "...used to signal ellipsis at the beginning and <mark>end<\/mark> of a keyword-in-context extract. Conventionally three periods,...",
+            "weight" : 1,
+            "pos" : 354 } ] } ] }

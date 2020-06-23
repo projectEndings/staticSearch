@@ -1,0 +1,18 @@
+
+  { "token" : "becom",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "become",
+            "context" : "...this requires the use of technologies that may <mark>become<\/mark> obsolete or unsupported, or services which may...",
+            "weight" : 1,
+            "pos" : 158 },
+          
+          { "form" : "become",
+            "context" : "...which may change their terms of use or <mark>become<\/mark> unavailable.",
+            "weight" : 1,
+            "pos" : 166 } ] } ] }

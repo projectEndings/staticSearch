@@ -1,0 +1,93 @@
+
+  { "token" : "kuhn",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Kuhn",
+            "context" : "This example taken from Thomas S. <mark>Kuhn<\/mark>, The Structure of Scientific Revolutions (50th anniversary...",
+            "weight" : 1,
+            "pos" : 68 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Kuhn",
+            "context" : "This example taken from Thomas S. <mark>Kuhn<\/mark>, The Structure of Scientific Revolutions (50th anniversary...",
+            "weight" : 1,
+            "pos" : 1959 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Kuhn",
+            "context" : "This example taken from Thomas S. <mark>Kuhn<\/mark>, The Structure of Scientific Revolutions (50th anniversary...",
+            "weight" : 1,
+            "pos" : 289 } ] },
+      
+      { "docId" : "index",
+        "docUri" : "index.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Kuhn",
+            "context" : "This example taken from Thomas S. <mark>Kuhn<\/mark>, The Structure of Scientific Revolutions (50th anniversary...",
+            "weight" : 1,
+            "pos" : 27 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Kuhn",
+            "context" : "This example taken from Thomas S. <mark>Kuhn<\/mark>, The Structure of Scientific Revolutions (50th anniversary...",
+            "weight" : 1,
+            "pos" : 1029 } ] },
+      
+      { "docId" : "searchFacetFeatures",
+        "docUri" : "searchFacetFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Kuhn",
+            "context" : "This example taken from Thomas S. <mark>Kuhn<\/mark>, The Structure of Scientific Revolutions (50th anniversary...",
+            "weight" : 1,
+            "pos" : 81 } ] },
+      
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Kuhn",
+            "context" : "This example taken from Thomas S. <mark>Kuhn<\/mark>, The Structure of Scientific Revolutions (50th anniversary...",
+            "weight" : 1,
+            "pos" : 125 } ] },
+      
+      { "docId" : "whatDoesItDo",
+        "docUri" : "whatDoesItDo.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Kuhn",
+            "context" : "This example taken from Thomas S. <mark>Kuhn<\/mark>, The Structure of Scientific Revolutions (50th anniversary...",
+            "weight" : 1,
+            "pos" : 64 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Kuhn",
+            "context" : "This example taken from Thomas S. <mark>Kuhn<\/mark>, The Structure of Scientific Revolutions (50th anniversary...",
+            "weight" : 1,
+            "pos" : 195 } ] } ] }

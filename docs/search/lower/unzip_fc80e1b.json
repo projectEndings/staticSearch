@@ -1,0 +1,13 @@
+
+  { "token" : "unzip",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "unzip",
+            "context" : "...version. You can download a zip file and <mark>unzip<\/mark> it to create a folder containing the...",
+            "weight" : 1,
+            "pos" : 31 } ] } ] }

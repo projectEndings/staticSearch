@@ -1,0 +1,13 @@
+
+  { "token" : "1.20",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "1.20",
+            "context" : "Appendix A.<mark>1.20<\/mark> <totalKwicLength>",
+            "weight" : 2,
+            "pos" : 814 } ] } ] }

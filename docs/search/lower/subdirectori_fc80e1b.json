@@ -1,0 +1,23 @@
+
+  { "token" : "subdirectori",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "subdirectories",
+            "context" : "...determines whether or not to recurse into the <mark>subdirectories<\/mark> of the collection and index those files....",
+            "weight" : 1,
+            "pos" : 638 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "subdirectories",
+            "context" : "<recurse> (Whether to recurse into <mark>subdirectories<\/mark> of the collection directory or not.)",
+            "weight" : 1,
+            "pos" : 594 } ] } ] }

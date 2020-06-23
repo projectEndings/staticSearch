@@ -1,0 +1,13 @@
+
+  { "token" : "7.2",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "7.2",
+            "context" : "<mark>7.2<\/mark> The search page",
+            "weight" : 2,
+            "pos" : 124 } ] } ] }

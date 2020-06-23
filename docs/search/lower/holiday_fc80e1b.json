@@ -1,0 +1,13 @@
+
+  { "token" : "holiday",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "holidays\"",
+            "context" : "<meta name=\"docTitle\"  class=\"staticSearch.docTitle\" content=\"What I did in my <mark>holidays\"<\/mark>\/>",
+            "weight" : 1,
+            "pos" : 375 } ] } ] }

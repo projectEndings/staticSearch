@@ -1,0 +1,23 @@
+
+  { "token" : "decemb",
+    "instances" : 
+    [ 
+      { "docId" : "textSearchFeatures",
+        "docUri" : "textSearchFeatures.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "December",
+            "context" : "Last Updated: 16 <mark>December<\/mark> 2019",
+            "weight" : 1,
+            "pos" : 13 } ] },
+      
+      { "docId" : "whatDoesItDo",
+        "docUri" : "whatDoesItDo.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "December",
+            "context" : "Last Updated: 16 <mark>December<\/mark> 2019",
+            "weight" : 1,
+            "pos" : 7 } ] } ] }

@@ -1,0 +1,13 @@
+
+  { "token" : "load",
+    "instances" : 
+    [ 
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "loads",
+            "context" : "...and so on) as soon as the page <mark>loads<\/mark>, and it also starts downloading the facet...",
+            "weight" : 1,
+            "pos" : 214 } ] } ] }

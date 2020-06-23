@@ -1,0 +1,18 @@
+
+  { "token" : "href",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "href",
+            "context" : "...is identical to the URL specified in its <mark>href<\/mark>, you could do something like:",
+            "weight" : 1,
+            "pos" : 1205 },
+          
+          { "form" : "href",
+            "context" : "<rule weight=\"0\" match=\"a[@<mark>href<\/mark>=.\/text()]\"\/>",
+            "weight" : 1,
+            "pos" : 1212 } ] } ] }

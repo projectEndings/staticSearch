@@ -1,0 +1,23 @@
+
+  { "token" : "word-count",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "word-count",
+            "context" : "...documents in the search results based on their <mark>word-count<\/mark>: Users would then be able to set...",
+            "weight" : 1,
+            "pos" : 259 },
+          
+          { "form" : "\"Word-count\"",
+            "context" : "<meta name=<mark>\"Word-count\"<\/mark>  class=\"staticSearch.num\" content=\"2193\"\/>",
+            "weight" : 1,
+            "pos" : 264 },
+          
+          { "form" : "word-count",
+            "context" : "...be able to set a minimum and\/or maximum <mark>word-count<\/mark> when searching for documents.",
+            "weight" : 1,
+            "pos" : 278 } ] } ] }

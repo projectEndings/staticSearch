@@ -1,0 +1,68 @@
+
+  { "token" : "static",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "static",
+            "context" : "...collection may be nested (as is common with <mark>static<\/mark> sites generated from Jekyll or Wordpress). The...",
+            "weight" : 1,
+            "pos" : 625 },
+          
+          { "form" : "static",
+            "context" : "...default, which is the only preconfigured weight in <mark>static<\/mark> search.)",
+            "weight" : 1,
+            "pos" : 1130 },
+          
+          { "form" : "static",
+            "context" : "When the <mark>static<\/mark> search creates the keywords-in-contexts (the \"kwic\" or...",
+            "weight" : 1,
+            "pos" : 1243 } ] },
+      
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 3,
+        "contexts" : 
+        [ 
+          { "form" : "static",
+            "context" : "However, <mark>static<\/mark> websites (websites which consist entirely of HTML,...",
+            "weight" : 1,
+            "pos" : 57 },
+          
+          { "form" : "static",
+            "context" : "...publicizing strategies for moving digital projects to an all-<mark>static<\/mark> publication model. The most problematic component in...",
+            "weight" : 1,
+            "pos" : 110 },
+          
+          { "form" : "static",
+            "context" : "...publication model. The most problematic component in the all-<mark>static<\/mark> approach is search.",
+            "weight" : 1,
+            "pos" : 116 } ] },
+      
+      { "docId" : "index",
+        "docUri" : "index.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "Static",
+            "context" : "Project Endings <mark>Static<\/mark> Search Generator",
+            "weight" : 1,
+            "pos" : 3 },
+          
+          { "form" : "static",
+            "context" : "Schema and guidelines for creating a <mark>static<\/mark> search engine for your HTML5 site",
+            "weight" : 1,
+            "pos" : 9 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "static",
+            "context" : "...will be the primary access point for the <mark>static<\/mark> search. Note that this page must be...",
+            "weight" : 1,
+            "pos" : 727 } ] } ] }

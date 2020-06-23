@@ -1,0 +1,13 @@
+
+  { "token" : "prefabr",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Prefabricated",
+            "context" : "...and replicate (see Holmes and Takeda (2019), The <mark>Prefabricated<\/mark> Website: Who needs a server anyway?). For...",
+            "weight" : 1,
+            "pos" : 94 } ] } ] }

@@ -1,0 +1,13 @@
+
+  { "token" : "solv",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "solves",
+            "context" : "staticSearch <mark>solves<\/mark> this problem. It provides the capability to...",
+            "weight" : 1,
+            "pos" : 169 } ] } ] }

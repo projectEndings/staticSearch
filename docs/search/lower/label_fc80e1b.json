@@ -1,0 +1,38 @@
+
+  { "token" : "label",
+    "instances" : 
+    [ 
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 7,
+        "contexts" : 
+        [ 
+          { "form" : "labelled",
+            "context" : "Appendix A.2.1 att.<mark>labelled<\/mark>",
+            "weight" : 2,
+            "pos" : 957 },
+          
+          { "form" : "labelled",
+            "context" : "att.match (@match) att.<mark>labelled<\/mark> (@label)",
+            "weight" : 1,
+            "pos" : 73 },
+          
+          { "form" : "label",
+            "context" : "att.match (@match) att.labelled (@<mark>label<\/mark>)",
+            "weight" : 1,
+            "pos" : 74 },
+          
+          { "form" : "labelled",
+            "context" : "att.<mark>labelled<\/mark> (A class providing a label attribute that can...",
+            "weight" : 1,
+            "pos" : 959 },
+          
+          { "form" : "label",
+            "context" : "att.labelled (A class providing a <mark>label<\/mark> attribute that can be used to identify\/describe...",
+            "weight" : 1,
+            "pos" : 962 },
+          
+          { "form" : "label",
+            "context" : "<mark>label<\/mark>",
+            "weight" : 1,
+            "pos" : 979 } ] } ] }

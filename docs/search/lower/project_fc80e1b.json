@@ -1,0 +1,88 @@
+
+  { "token" : "project",
+    "instances" : 
+    [ 
+      { "docId" : "whyWouldIUseIt",
+        "docUri" : "whyWouldIUseIt.html",
+        "score" : 6,
+        "contexts" : 
+        [ 
+          { "form" : "projects",
+            "context" : "Digital Humanities <mark>projects<\/mark> such as digital editions of historical and...",
+            "weight" : 1,
+            "pos" : 14 },
+          
+          { "form" : "projects",
+            "context" : "...traditional print publication. However, digital longevity of DH <mark>projects<\/mark> is sadly short, and many disappear or...",
+            "weight" : 1,
+            "pos" : 42 },
+          
+          { "form" : "Project",
+            "context" : "...needs a server anyway?). For this reason, the <mark>Project<\/mark> Endings team have been developing and publicizing...",
+            "weight" : 1,
+            "pos" : 100 },
+          
+          { "form" : "projects",
+            "context" : "...been developing and publicizing strategies for moving digital <mark>projects<\/mark> to an all-static publication model. The most...",
+            "weight" : 1,
+            "pos" : 108 },
+          
+          { "form" : "project",
+            "context" : "...but are still beyond the control of the <mark>project<\/mark> team). DH projects need sophisticated options for...",
+            "weight" : 1,
+            "pos" : 146 },
+          
+          { "form" : "projects",
+            "context" : "...beyond the control of the project team). DH <mark>projects<\/mark> need sophisticated options for searching, but typically...",
+            "weight" : 1,
+            "pos" : 148 } ] },
+      
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 5,
+        "contexts" : 
+        [ 
+          { "form" : "projects",
+            "context" : "...The following parameters are optional, but most <mark>projects<\/mark> will want to specify some of them:...",
+            "weight" : 1,
+            "pos" : 649 },
+          
+          { "form" : "project",
+            "context" : "...file containing a simple version number for the <mark>project<\/mark>. This might take the form of a...",
+            "weight" : 1,
+            "pos" : 664 },
+          
+          { "form" : "project",
+            "context" : "...repeatedly visit the search page, but if the <mark>project<\/mark> is rebuilt with a new version, those...",
+            "weight" : 1,
+            "pos" : 706 },
+          
+          { "form" : "project",
+            "context" : "...common (the, a, you and so on). The <mark>project<\/mark> has a built-in set of common stopwords...",
+            "weight" : 1,
+            "pos" : 906 },
+          
+          { "form" : "project",
+            "context" : "...ant in the root folder of the staticSearch <mark>project<\/mark> that you have downloaded or cloned.",
+            "weight" : 1,
+            "pos" : 1820 } ] },
+      
+      { "docId" : "howDoIGetIt",
+        "docUri" : "howDoIGetIt.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "project",
+            "context" : "...is to download a release package from the <mark>project<\/mark> release page; we recommend that you get...",
+            "weight" : 1,
+            "pos" : 21 } ] },
+      
+      { "docId" : "index",
+        "docUri" : "index.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "Project",
+            "context" : "<mark>Project<\/mark> Endings Static Search Generator",
+            "weight" : 1,
+            "pos" : 1 } ] } ] }

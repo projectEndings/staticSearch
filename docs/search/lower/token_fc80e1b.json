@@ -1,0 +1,108 @@
+
+  { "token" : "token",
+    "instances" : 
+    [ 
+      { "docId" : "howDoIUseIt",
+        "docUri" : "howDoIUseIt.html",
+        "score" : 10,
+        "contexts" : 
+        [ 
+          { "form" : "token",
+            "context" : "...costly in terms of the size of JSON <mark>token<\/mark> files; in order to support this kind...",
+            "weight" : 1,
+            "pos" : 746 },
+          
+          { "form" : "token",
+            "context" : "...we store contexts for all hits for each <mark>token<\/mark> in each document, so if your site...",
+            "weight" : 1,
+            "pos" : 755 },
+          
+          { "form" : "tokenizer",
+            "context" : "...there will be elements that you want the <mark>tokenizer<\/mark> to ignore completely; for instance, if you...",
+            "weight" : 1,
+            "pos" : 1159 },
+          
+          { "form" : "tokenize",
+            "context" : "Note that the indexer does not <mark>tokenize<\/mark> any content in the <head> of the...",
+            "weight" : 1,
+            "pos" : 1216 },
+          
+          { "form" : "token",
+            "context" : "...the keywords-in-contexts (the \"kwic\" or \"snippets\") for each <mark>token<\/mark>, it does so by looking for the...",
+            "weight" : 1,
+            "pos" : 1251 },
+          
+          { "form" : "token",
+            "context" : "...element, meaning that the snippet generated for each <mark>token<\/mark> will not extend beyond the <li> element...",
+            "weight" : 1,
+            "pos" : 1296 },
+          
+          { "form" : "tokenizer",
+            "context" : "...a clickable object using Javascript. However, since the <mark>tokenizer<\/mark> is unaware of any server-side processing, it...",
+            "weight" : 1,
+            "pos" : 1366 },
+          
+          { "form" : "tokenizer",
+            "context" : "...this subject can be found... To tell the <mark>tokenizer<\/mark> that the <span> constitutes the context block...",
+            "weight" : 1,
+            "pos" : 1390 },
+          
+          { "form" : "token",
+            "context" : "...constitutes the context block for any of its <mark>token<\/mark>, use the <context> element with an match...",
+            "weight" : 1,
+            "pos" : 1395 },
+          
+          { "form" : "token",
+            "context" : "<contexts>  <context match=\"span[contains-<mark>token<\/mark>(@class,'sidenote')]\"\/> <\/contexts>",
+            "weight" : 1,
+            "pos" : 1407 } ] },
+      
+      { "docId" : "howDoesItWork",
+        "docUri" : "howDoesItWork.html",
+        "score" : 6,
+        "contexts" : 
+        [ 
+          { "form" : "tokenizing",
+            "context" : "The <mark>tokenizing<\/mark> process first processes your configuration file to...",
+            "weight" : 1,
+            "pos" : 12 },
+          
+          { "form" : "tokenized",
+            "context" : "...document collection using those settings. Each document is <mark>tokenized<\/mark>, and then a separate JSON file is...",
+            "weight" : 1,
+            "pos" : 30 },
+          
+          { "form" : "token",
+            "context" : "...separate JSON file is created for each distinct <mark>token<\/mark> found; this file contains links to each...",
+            "weight" : 1,
+            "pos" : 36 },
+          
+          { "form" : "token",
+            "context" : "...to each of the documents which contain that <mark>token<\/mark>, as well as keyword-in-context strings for the...",
+            "weight" : 1,
+            "pos" : 43 },
+          
+          { "form" : "tokens",
+            "context" : "...as well as keyword-in-context strings for the actual <mark>tokens<\/mark>. There will most likely be thousands of...",
+            "weight" : 1,
+            "pos" : 50 },
+          
+          { "form" : "token",
+            "context" : "...to download the entire collection of thousands of <mark>token<\/mark> files, the process would take forever. So...",
+            "weight" : 1,
+            "pos" : 146 } ] },
+      
+      { "docId" : "schemaSpec",
+        "docUri" : "schemaSpec.html",
+        "score" : 2,
+        "contexts" : 
+        [ 
+          { "form" : "tokens",
+            "context" : "...per line) which will be used to check <mark>tokens<\/mark> when indexing.)",
+            "weight" : 1,
+            "pos" : 182 },
+          
+          { "form" : "token",
+            "context" : "...(The weighting to give to a search <mark>token<\/mark> found in the context specified by the...",
+            "weight" : 1,
+            "pos" : 651 } ] } ] }

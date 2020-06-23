@@ -1,0 +1,13 @@
+
+  { "token" : "guidelin",
+    "instances" : 
+    [ 
+      { "docId" : "index",
+        "docUri" : "index.html",
+        "score" : 1,
+        "contexts" : 
+        [ 
+          { "form" : "guidelines",
+            "context" : "Schema and <mark>guidelines<\/mark> for creating a static search engine for...",
+            "weight" : 1,
+            "pos" : 7 } ] } ] }
