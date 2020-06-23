@@ -4,6 +4,7 @@
         <searchFile>emod/search.html</searchFile>
         <recurse>true<!--Need to set recurse to true for the test--></recurse>
         <phrasalSearch>true</phrasalSearch>
+        <wildcardSearch>true</wildcardSearch>
         <createContexts>true</createContexts>
         <!--NOTE: If phrasalSearch is set to TRUE, then
         maxContexts prop will be ignored-->
@@ -20,9 +21,9 @@
     
     <rules>
         <rule weight="2"
-            xpath="h1 | h2"/>
+            match="h1 | h2"/>
         <rule weight="0"
-            xpath="span[@class='lineNum']"/>
+            match="span[@class='lineNum']"/>
     </rules>
 
 </config>
