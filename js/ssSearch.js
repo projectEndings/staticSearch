@@ -733,23 +733,14 @@ class StaticSearch{
     else{
       //Else is it a wildcard?
       if (this.allowWildcards && /[\[\]?*]/.test(strInput)){
-        console.log('Wildcard found...');
         let re = this.wildcardToRegex(strInput);
-        let tokenList = [];
         let totalWeight = 0;
         this.tokens.forEach(function(value, key){
-          if (re.test(key)){
-            tokenList.push(key);
+          if (re.test(key) && (totalWeight < this.downloadLimit)){
+            this.terms.push({str: strInput, stem: key, capFirst: startsWithCap, type: MAY_CONTAIN});
             totalWeight += value[0];
           }
-        });
-        //console.log('Tokens: ' + tokenList.join(', '));
-        //console.log('Total weight: ' + totalWeight);
-        if (totalWeight < this.downloadLimit){
-          tokenList.forEach(token =>{
-            this.terms.push({str: strInput, stem: token, capFirst: startsWithCap, type: MAY_CONTAIN});
-          });
-        }
+        }.bind(this));
       }
       else{
         //Else is it a must-contain?

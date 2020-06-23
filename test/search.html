@@ -275,6 +275,12 @@
                                          console.log('Testing results for the word "dog", in a document mentioning at least three animals.');
                                          checkResults({docsFound: 2, contextsFound: 4, scoreTotal: 4});}});
 
+           //Search using the a wildcard.
+           tests.push({setup: function(){Sch.queryBox.value = 'att*'},
+                                         check: function(num){console.log('Search hook ' + num);
+                                         console.log('Testing results for the wildcard "att*", which should find "attempt" and "attached".');
+                                         checkResults({docsFound: 2, contextsFound: 2, scoreTotal: 2});}});
+
 
            function runTests(){
              reportDiv = document.querySelector('div#testResults');
