@@ -1599,7 +1599,7 @@ class StaticSearch{
   * input. The token should contain wildcard characters (asterisk,
   * question mark and square brackets). The function converts this
   * to a JS regular expression. For example: th*n[gk]? would 
-  * become /^th.*[gk].?$/.
+  * become /^th.*[gk].$/.
   * @param {String}   strToken a string of text with no spaces.
   * @return {RegExp | null} a regular expression; or null if one 
   *                         cannot be constructed.
