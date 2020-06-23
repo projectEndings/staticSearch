@@ -28,7 +28,7 @@
   * find an elegant way to do that.
   */
 /**
-  * @constant PHRASE, MUST_CONTAIN, MUST_NOT_CONTAIN, MAY_CONTAIN
+  * @constant PHRASE, MUST_CONTAIN, MUST_NOT_CONTAIN, MAY_CONTAIN, WILDCARD
   * @type {Number}
   * @description Constants representing different types of search command.
   */
@@ -37,13 +37,14 @@
   const MUST_CONTAIN         = 1;
   const MUST_NOT_CONTAIN     = 2;
   const MAY_CONTAIN          = 3;
+  const WILDCARD             = 4;
 
 /**@constant arrTermTypes
    * @type {Array}
    * @description array of PHRASE, MUST_CONTAIN, MUST_NOT_CONTAIN, MAY_CONTAIN
    *              used so we can easily iterate through them.
    */
-  const arrTermTypes = [PHRASE, MUST_CONTAIN, MUST_NOT_CONTAIN, MAY_CONTAIN];
+  const arrTermTypes = [PHRASE, MUST_CONTAIN, MUST_NOT_CONTAIN, MAY_CONTAIN, WILDCARD];
 
 /**
   * @constant TO_GET, GETTING, GOT, FAILED
@@ -82,6 +83,7 @@
   ss.captions['en'][MUST_CONTAIN]        = 'Must contain: ';
   ss.captions['en'][MUST_NOT_CONTAIN]    = 'Must not contain: ';
   ss.captions['en'][MAY_CONTAIN]         = 'May contain: ';
+  ss.captions['en'][WILDCARD]            = 'Wildcard term: ';
   ss.captions['en'].strScore             = 'Score: ';
 
 
@@ -227,8 +229,25 @@ class StaticSearch{
       //Default
       this.allowPhrasal = true;
       tmp = document.querySelector("form[data-allowPhrasal]");
-      if (tmp && !/(y|Y|yes|true|True|1)/.test(tmp.getAttribute('data-AllowPhrasal'))){
+      if (tmp && !/(y|Y|yes|true|True|1)/.test(tmp.getAttribute('data-allowphrasal'))){
         this.allowPhrasal = false;
+      }
+
+      //Configuration for use of wildcards. Defaults to false.
+      this.allowWildcards = false;
+      tmp = document.querySelector("form[data-allowWildcards]");
+      if (tmp && /(y|Y|yes|true|True|1)/.test(tmp.getAttribute('data-allowwildcards'))){
+        this.allowWildcards = true;
+      }
+
+      //Limit to the weight of JSON that will be downloaded for a single wildcard term.
+      this.downloadLimit = 1000000; //default.
+      tmp = document.querySelector("form[data-downloadLimit]");
+      if (tmp){
+        let i = parseInt(tmp.getAttribute('data-downloadLimit'));
+        if ( i > 0){
+          this.downloadLimit = i;
+        }
       }
 
       //Configuration of a specific version string to avoid JSON caching.
@@ -333,7 +352,7 @@ class StaticSearch{
       return;
     }
     if (path.match(/ssTokens.*json$/)){
-      this.tokens = json;
+      this.tokens = new Map(Object.entries(json));
       this.mapJsonRetrieved.set('ssTokens', GOT);
       return;
     }
@@ -471,6 +490,27 @@ class StaticSearch{
   * @return {Boolean} true if a search is initiated otherwise false.
   */
   doSearch(popping = false){
+    //We start by intercepting any situation in which we may need the ssTokens
+    //collection, but we don't yet have it.
+    if (this.allowWildcards){
+      if (/[\[\]?*]/.test(this.queryBox.value)){
+        if (this.mapJsonRetrieved.get('ssTokens') != GOT){
+          let promise = fetch(self.jsonDirectory + 'ssTokens' + this.versionString + '.json', this.fetchHeaders)
+            .then(function(response) {
+              return response.json();
+            })
+            .then(function(json) {
+              self.tokens = new Map(Object.entries(json));
+              self.mapJsonRetrieved.set('ssTokens', GOT);
+              self.doSearch();
+            }.bind(self))
+            .catch(function(e){
+              console.log('Error attempting to retrieve token list: ' + e);
+            }.bind(self));
+          return false;
+        }
+      }
+    }
     setTimeout(function(){
                 this.searchingDiv.style.display = 'block';
                 document.body.style.cursor = 'progress';}.bind(this), 0);
@@ -577,8 +617,14 @@ class StaticSearch{
       strSearch = strSearch.replace(/[“”]/g, '"');
       strSearch = strSearch.replace(/[‘’‛]/g, "'");
 
-      //Strip out all other punctuation that isn't between numbers
-      strSearch = strSearch.replace(/(^|[^\d])[\.',!;:@#$%\^&*]+([^\d]|$)/g, '$1$2');
+      //Strip out all other punctuation that isn't between numbers. We do this
+      //slightly differently depending on whether wildcard searching is enabled.
+      if (this.allowWildcards){
+        strSearch = strSearch.replace(/(^|[^\d])[\.',!;:@#$%\^&]+([^\d]|$)/g, '$1$2');
+      }
+      else{
+        strSearch = strSearch.replace(/(^|[^\d])[\.',!;:@#$%\^&*?\[\]]+([^\d]|$)/g, '$1$2');
+      }
 
       //If we're not supporting phrasal searches, get rid of double quotes.
       if (!this.allowPhrasal){
@@ -685,23 +731,35 @@ class StaticSearch{
       }
     }
     else{
-      //Else is it a must-contain?
-      if (/^[\+]/.test(strInput)){
-        let term = strInput.substring(1).toLowerCase();
-        this.terms.push({str: strInput.substring(1), stem: this.stemmer.stem(term), capFirst: startsWithCap, type: MUST_CONTAIN});
+      //Else is it a wildcard?
+      if (this.allowWildcards && /[\[\]?*]/.test(strInput)){
+        let re = this.wildcardToRegex(strInput);
+        let totalWeight = 0;
+        this.tokens.forEach(function(value, key){
+          if (re.test(key) && (totalWeight < this.downloadLimit)){
+            this.terms.push({str: strInput, stem: key, capFirst: startsWithCap, type: MAY_CONTAIN});
+            totalWeight += value[0];
+          }
+        }.bind(this));
       }
       else{
-      //Else is it a must-not-contain?
-        if (/^[\-]/.test(strInput)){
+        //Else is it a must-contain?
+        if (/^[\+]/.test(strInput)){
           let term = strInput.substring(1).toLowerCase();
-          this.terms.push({str: strInput.substring(1), stem: this.stemmer.stem(term), capFirst: startsWithCap, type: MUST_NOT_CONTAIN});
+          this.terms.push({str: strInput.substring(1), stem: this.stemmer.stem(term), capFirst: startsWithCap, type: MUST_CONTAIN});
         }
         else{
-        //Else may-contain.
-          let term = strInput.toLowerCase();
-          this.terms.push({str: strInput, stem: this.stemmer.stem(term), capFirst: startsWithCap, type: MAY_CONTAIN});
+        //Else is it a must-not-contain?
+          if (/^[\-]/.test(strInput)){
+            let term = strInput.substring(1).toLowerCase();
+            this.terms.push({str: strInput.substring(1), stem: this.stemmer.stem(term), capFirst: startsWithCap, type: MUST_NOT_CONTAIN});
+          }
+          else{
+          //Else may-contain.
+            let term = strInput.toLowerCase();
+            this.terms.push({str: strInput, stem: this.stemmer.stem(term), capFirst: startsWithCap, type: MAY_CONTAIN});
+          }
         }
-
       }
     }
     return (this.terms.length > 0);
@@ -1059,8 +1117,22 @@ class StaticSearch{
               console.log('Error attempting to retrieve title list: ' + e);
             }.bind(self));
         }
-//TODO: When we add glob searching, we'll need to care about the list of tokens too.
-
+//For glob searching, we'll need to care about the list of tokens too.
+        if (this.allowWildcards == true){
+          if (this.mapJsonRetrieved.get('ssTokens') != GOT){
+            promises[promises.length] = fetch(self.jsonDirectory + 'ssTokens' + this.versionString + '.json', this.fetchHeaders)
+              .then(function(response) {
+                return response.json();
+              })
+              .then(function(json) {
+                self.tokens = new Map(Object.entries(json));
+                self.mapJsonRetrieved.set('ssTokens', GOT);
+              }.bind(self))
+              .catch(function(e){
+                console.log('Error attempting to retrieve token list: ' + e);
+              }.bind(self));
+          }
+        }
       }
 
       //If we do need to retrieve JSON index data, then do it
@@ -1293,7 +1365,7 @@ class StaticSearch{
                   let unmarkedContext = cntxt.context.replace(/<[^>]+>/g, '');
                   if (rePhr.test(unmarkedContext)){
   //We have a candidate document for inclusion, and a candidate context.
-                    let c = unmarkedContext.replace(rePhr, '<mark>' + self.terms[phr].str + '</mark>');
+                    let c = unmarkedContext.replace(rePhr, '<mark>' + '$&' + '</mark>');
                     currContexts.push({form: self.terms[phr].str, context: c, weight: 2});
                   }
                 }
@@ -1518,7 +1590,7 @@ class StaticSearch{
   * input. The token should contain wildcard characters (asterisk,
   * question mark and square brackets). The function converts this
   * to a JS regular expression. For example: th*n[gk]? would 
-  * become /^th.*[gk].?$/.
+  * become /^th.*[gk].$/.
   * @param {String}   strToken a string of text with no spaces.
   * @return {RegExp | null} a regular expression; or null if one 
   *                         cannot be constructed.
@@ -1531,7 +1603,7 @@ class StaticSearch{
     }
     //Generate the regex.
     let esc = strToken.replace(/[.+^${}()|\\]/g, '\\$&');
-    let strRe  = esc.replace(/[\*\?]/g, '\.$&');
+    let strRe  = esc.replace(/[\*]/g, '\.$&').replace(/[\?]/g, '\.');
     //Test the regex, and return it if OK, otherwise return null.
     try{
       let re = new RegExp('^' + strRe + '$');
