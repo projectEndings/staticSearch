@@ -1374,7 +1374,7 @@ class StaticSearch{
                   let unmarkedContext = cntxt.context.replace(/<[^>]+>/g, '');
                   if (rePhr.test(unmarkedContext)){
   //We have a candidate document for inclusion, and a candidate context.
-                    let c = unmarkedContext.replace(rePhr, '<mark>' + self.terms[phr].str + '</mark>');
+                    let c = unmarkedContext.replace(rePhr, '<mark>' + '$&' + '</mark>');
                     currContexts.push({form: self.terms[phr].str, context: c, weight: 2});
                   }
                 }
