@@ -1612,7 +1612,7 @@ class StaticSearch{
     }
     //Generate the regex.
     let esc = strToken.replace(/[.+^${}()|\\]/g, '\\$&');
-    let strRe  = esc.replace(/[\*\?]/g, '\.$&');
+    let strRe  = esc.replace(/[\*]/g, '\.$&').replace(/[\?]/g, '\.');
     //Test the regex, and return it if OK, otherwise return null.
     try{
       let re = new RegExp('^' + strRe + '$');
