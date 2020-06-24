@@ -1646,7 +1646,7 @@ class StaticSearch{
     let strRe  = esc.replace(/[\*]/g, '\.$&').replace(/[\?]/g, '\.');
     //Test the regex, and return it if OK, otherwise return null.
     try{
-      let re = new RegExp('^' + strRe + '$');
+      let re = new RegExp('^' + strRe + '$', 'i');
       return re;
     }
     catch(e){
