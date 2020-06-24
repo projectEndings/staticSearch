@@ -30,7 +30,9 @@
 /**
   * @constant PHRASE, MUST_CONTAIN, MUST_NOT_CONTAIN, MAY_CONTAIN, WILDCARD
   * @type {Number}
-  * @description Constants representing different types of search command.
+  * @description Constants representing different types of search command. Note
+  *              that WILDCARD is not currently used, but will be if the 
+  *              implementation of wildcards is changed.
   */
 
   const PHRASE               = 0;
@@ -41,8 +43,8 @@
 
 /**@constant arrTermTypes
    * @type {Array}
-   * @description array of PHRASE, MUST_CONTAIN, MUST_NOT_CONTAIN, MAY_CONTAIN
-   *              used so we can easily iterate through them.
+   * @description array of PHRASE, MUST_CONTAIN, MUST_NOT_CONTAIN, MAY_CONTAIN,
+   *              WILDCARD used so we can easily iterate through them.
    */
   const arrTermTypes = [PHRASE, MUST_CONTAIN, MUST_NOT_CONTAIN, MAY_CONTAIN, WILDCARD];
 
@@ -250,6 +252,9 @@ class StaticSearch{
         }
       }
 
+      //A flag for easier debugging.
+      this.debug = false;
+
       //Configuration of a specific version string to avoid JSON caching.
       this.versionString = this.ssForm.getAttribute('data-versionString');
 
@@ -314,7 +319,7 @@ class StaticSearch{
       //This allows the user to navigate through searches using the back and
       //forward buttons; to avoid repeatedly pushing state when this happens,
       //we pass popping = true.
-      window.onpopstate = function(){this.parseQueryString(true)}.bind(this);
+      window.onpopstate = function(){this.parseUrlQueryString(true)}.bind(this);
 
       //We may need to turn off the browser history manipulation to do
       //automated tests, so make this switchable.
@@ -329,7 +334,7 @@ class StaticSearch{
 
       //Now we're instantiated, check to see if there's a query
       //string that should initiate a search.
-      this.parseQueryString();
+      this.parseUrlQueryString();
     }
     catch(e){
       console.log('ERROR: ' + e.message);
@@ -402,7 +407,7 @@ class StaticSearch{
     }
   }
 
-/** @function StaticSearch~parseQueryString
+/** @function StaticSearch~parseUrlQueryString
   * @description this function is run after the class is instantiated
   *              to check whether there is a search string in the
   *              browser URL. If so, it parses it out and runs the
@@ -413,7 +418,7 @@ class StaticSearch{
   *                  the browser history)
   * @return {Boolean} true if a search is initiated otherwise false.
   */
-  parseQueryString(popping = false){
+  parseUrlQueryString(popping = false){
     let searchParams = new URLSearchParams(decodeURI(document.location.search));
     //Do we need to do a search?
     let searchToDo = false; //default
@@ -494,19 +499,20 @@ class StaticSearch{
     //collection, but we don't yet have it.
     if (this.allowWildcards){
       if (/[\[\]?*]/.test(this.queryBox.value)){
+        var self = this;
         if (this.mapJsonRetrieved.get('ssTokens') != GOT){
-          let promise = fetch(self.jsonDirectory + 'ssTokens' + this.versionString + '.json', this.fetchHeaders)
+          let promise = fetch(self.jsonDirectory + 'ssTokens' + self.versionString + '.json', self.fetchHeaders)
             .then(function(response) {
               return response.json();
-            })
+            }.bind(this))
             .then(function(json) {
               self.tokens = new Map(Object.entries(json));
               self.mapJsonRetrieved.set('ssTokens', GOT);
               self.doSearch();
-            }.bind(self))
+            }.bind(this))
             .catch(function(e){
               console.log('Error attempting to retrieve token list: ' + e);
-            }.bind(self));
+            }.bind(this));
           return false;
         }
       }
@@ -731,7 +737,7 @@ class StaticSearch{
       }
     }
     else{
-      //Else is it a wildcard?
+      //Else is it a wildcard? Wildcards are expanded to a sequence of matching terms.
       if (this.allowWildcards && /[\[\]?*]/.test(strInput)){
         let re = this.wildcardToRegex(strInput);
         let totalWeight = 0;
@@ -947,11 +953,45 @@ class StaticSearch{
     }
 
 /** @function StaticSearch~writeSearchReport
-  * @description this outputs a human-readable explanation of the search
-  * that's being done, to clarify for users what they've chosen to look for.
+  * @description This outputs a human-readable explanation of the search
+  *              that's being done, to clarify for users what they've chosen 
+  *              to look for. Note that the output div is hidden by default. 
   * @return {Boolean} true if the process succeeds, otherwise false.
   */
   writeSearchReport(){
+    if (this.showSearchReport){
+      try{
+        let sr = document.querySelector('#searchReport');
+        if (sr){sr.parentNode.removeChild(sr);}
+        let arrOutput = [];
+        let i, d, p, t;
+        for (i=0; i<this.terms.length; i++){
+          if (!arrOutput[this.terms[i].type]){
+            arrOutput[this.terms[i].type] = {type: this.terms[i].type, terms: []};
+          }
+          //arrOutput[this.terms[i].type].terms.push('"' + this.terms[i].str + '"');
+          arrOutput[this.terms[i].type].terms.push(`"${this.terms[i].str}" (${this.terms[i].stem})`);
+        }
+        arrOutput.sort(function(a, b){return a.type - b.type;})
+
+        d = document.createElement('div');
+        d.setAttribute('id', 'searchReport');
+
+        arrOutput.forEach((obj)=>{
+          p = document.createElement('p');
+          t = document.createTextNode(this.captionSet[obj.type] + obj.terms.join(', '));
+          p.appendChild(t);
+          d.appendChild(p);
+        });
+        //this.resultsDiv.insertBefore(d, this.resultsDiv.firstChild);
+        this.resultsDiv.parentNode.insertBefore(d, this.resultsDiv);
+        return true;
+      }
+      catch(e){
+        console.log('ERROR: ' + e.message);
+        return false;
+      }
+    }
     try{
       let sp = document.querySelector('#searchReport');
       if (sp){sp.parentNode.removeChild(sp);}

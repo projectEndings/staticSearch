@@ -132,7 +132,7 @@
       <div id="staticSearch"><script src="ssTest/ssPorter2Stemmer.js"></script><script src="ssTest/ssSearch.js"></script><script>
                 var Sch;
                 window.addEventListener('load', function(){Sch = new StaticSearch();});
-            </script><form accept-charset="UTF-8" id="ssForm" data-allowphrasal="yes" data-allowwildcards="yes" data-maxkwicstoshow="3" onsubmit="return false;" data-versionstring="_fc80e1b" data-ssfolder="ssTest"><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><span class="clearButton"><button id="ssClear">Clear</button></span><div class="ssDescFilters">
+            </script><form accept-charset="UTF-8" id="ssForm" data-allowphrasal="yes" data-allowwildcards="yes" data-maxkwicstoshow="3" onsubmit="return false;" data-versionstring="_de906e2" data-ssfolder="ssTest"><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><span class="clearButton"><button id="ssClear">Clear</button></span><div class="ssDescFilters">
                <fieldset class="ssFieldset" title="Document type" id="ssDesc1">
                   <legend>Document type</legend>
                   <ul class="ssDescCheckboxList">
@@ -288,6 +288,10 @@
             //Turn off browser history tracking otherwise life gets complicated
             //when running a sequence of automated tests.
              Sch.storeSearchesInBrowserHistory = false;
+             //Turning on the report functionality so we have better clues
+             //when things go wrong.
+             Sch.showSearchReport = true;
+             
              reportResults('Running automated tests.', true);
 
            }
