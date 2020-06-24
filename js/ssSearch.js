@@ -991,36 +991,37 @@ class StaticSearch{
         console.log('ERROR: ' + e.message);
         return false;
       }
-    }
-    try{
-      let sp = document.querySelector('#searchReport');
-      if (sp){sp.parentNode.removeChild(sp);}
-      let arrOutput = [];
-      let i, d, p, t;
-      for (i=0; i<this.terms.length; i++){
-        if (!arrOutput[this.terms[i].type]){
-          arrOutput[this.terms[i].type] = {type: this.terms[i].type, terms: []};
+      try{
+        let sp = document.querySelector('#searchReport');
+        if (sp){sp.parentNode.removeChild(sp);}
+        let arrOutput = [];
+        let i, d, p, t;
+        for (i=0; i<this.terms.length; i++){
+          if (!arrOutput[this.terms[i].type]){
+            arrOutput[this.terms[i].type] = {type: this.terms[i].type, terms: []};
+          }
+          arrOutput[this.terms[i].type].terms.push('"' + this.terms[i].str + '"');
         }
-        arrOutput[this.terms[i].type].terms.push('"' + this.terms[i].str + '"');
+        arrOutput.sort(function(a, b){return a.type - b.type;})
+
+        d = document.createElement('div');
+        d.setAttribute('id', 'searchReport');
+
+        arrOutput.forEach((obj)=>{
+          p = document.createElement('p');
+          t = document.createTextNode(this.captionSet[obj.type] + obj.terms.join(', '));
+          p.appendChild(t);
+          d.appendChild(p);
+        });
+        this.resultsDiv.insertBefore(d, this.resultsDiv.firstChild);
+        return true;
       }
-      arrOutput.sort(function(a, b){return a.type - b.type;})
-
-      d = document.createElement('div');
-      d.setAttribute('id', 'searchReport');
-
-      arrOutput.forEach((obj)=>{
-        p = document.createElement('p');
-        t = document.createTextNode(this.captionSet[obj.type] + obj.terms.join(', '));
-        p.appendChild(t);
-        d.appendChild(p);
-      });
-      this.resultsDiv.insertBefore(d, this.resultsDiv.firstChild);
-      return true;
+      catch(e){
+        console.log('ERROR: ' + e.message);
+        return false;
+      }
     }
-    catch(e){
-      console.log('ERROR: ' + e.message);
-      return false;
-    }
+    return true;
   }
 
 /**
