@@ -411,6 +411,10 @@
             <xsl:if test="not($configDoc//params/outputFolder)">
                 <xso:param name="outputFolder">staticSearch</xso:param>
             </xsl:if>
+            
+            <xsl:if test="not($configDoc//params/wildcardSearch)">
+                <xso:param name="wildcardSearch" select="false()"/>
+            </xsl:if>
             <!-- Finally, add the parsed-out version string from the versionFile. -->
             <xso:param name="versionString"><xsl:value-of select="if (($versionDocUri != '') and (unparsed-text-available($versionDocUri))) then concat('_', replace(normalize-space(unparsed-text($versionDocUri)), '\s+', '_')) else ''"/></xso:param>
             
