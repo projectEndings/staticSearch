@@ -274,6 +274,11 @@ class StaticSearch{
       //at the beginning of every new search.
       this.terms = new Array();
 
+      //An arbitrary limit on the number of stems we will search for in 
+      //any given search. TODO: Make this configurable and provide error
+      //messages for the user when exceeded.
+      this.termLimit = 20;
+
       //Captions
       this.captions = ss.captions; //Default; override this if you wish by setting the property after instantiation.
       this.captionLang  = document.getElementsByTagName('html')[0].getAttribute('lang') || 'en'; //Document language.
@@ -287,7 +292,7 @@ class StaticSearch{
       this.jsonToRetrieve.push({id: 'ssStopwords', path: this.jsonDirectory + 'ssStopwords' + this.versionString + '.json'});
       this.jsonToRetrieve.push({id: 'ssTitles', path: this.jsonDirectory + 'ssTitles' + this.versionString + '.json'});
       this.jsonToRetrieve.push({id: 'ssWordString', path: this.jsonDirectory + 'ssWordString' + this.versionString + '.txt'});
-      this.jsonToRetrieve.push({id: 'ssStems', path: this.jsonDirectory + 'ssStems' + this.versionString + '.json'});
+      //this.jsonToRetrieve.push({id: 'ssStems', path: this.jsonDirectory + 'ssStems' + this.versionString + '.json'});
       for (var f of document.querySelectorAll('fieldset.ssFieldset[id], fieldset.ssFieldset select[id]')){
         this.jsonToRetrieve.push({id: f.id, path: this.jsonDirectory + 'filters/' + f.id + this.versionString + '.json'});
       }
@@ -366,11 +371,11 @@ class StaticSearch{
       this.mapJsonRetrieved.set('ssWordString', GOT);
       return;
     }
-    if (path.match(/ssStems.*json$/)){
+    /*if (path.match(/ssStems.*json$/)){
       this.stems = new Map(Object.entries(json));
       this.mapJsonRetrieved.set('ssStems', GOT);
       return;
-    }
+    }*/
     if (path.match(/ssTitles.*json$/)){
       this.resultSet.titles = new Map(Object.entries(json));
       this.mapJsonRetrieved.set('ssTitles', GOT);
@@ -505,23 +510,23 @@ class StaticSearch{
   * @return {Boolean} true if a search is initiated otherwise false.
   */
   doSearch(popping = false){
-    //We start by intercepting any situation in which we may need the ssStems
-    //collection, but we don't yet have it.
+    //We start by intercepting any situation in which we may need the
+    //ssWordString resource, but we don't yet have it.
     if (this.allowWildcards){
       if (/[\[\]?*]/.test(this.queryBox.value)){
         var self = this;
-        if (this.mapJsonRetrieved.get('ssStems') != GOT){
-          let promise = fetch(self.jsonDirectory + 'ssStems' + self.versionString + '.json', self.fetchHeaders)
+        if (this.mapJsonRetrieved.get('ssWordString') != GOT){
+          let promise = fetch(self.jsonDirectory + 'ssWordString' + self.versionString + '.txt', self.fetchHeaders)
             .then(function(response) {
-              return response.json();
+              return response.text();
             }.bind(this))
-            .then(function(json) {
-              self.stems = new Map(Object.entries(json));
-              self.mapJsonRetrieved.set('ssStems', GOT);
+            .then(function(text) {
+              self.wordString = text;
+              self.mapJsonRetrieved.set('ssWordString', GOT);
               self.doSearch();
             }.bind(this))
             .catch(function(e){
-              console.log('Error attempting to retrieve stem list: ' + e);
+              console.log('Error attempting to retrieve word list: ' + e);
             }.bind(this));
           return false;
         }
@@ -750,11 +755,17 @@ class StaticSearch{
       //Else is it a wildcard? Wildcards are expanded to a sequence of matching terms.
       if (this.allowWildcards && /[\[\]?*]/.test(strInput)){
         let re = this.wildcardToRegex(strInput);
-        let totalWeight = 0;
-        this.stems.forEach(function(value, key){
-          if (re.test(key) && (totalWeight < this.downloadLimit)){
-            this.terms.push({str: strInput, stem: key, capFirst: startsWithCap, type: MAY_CONTAIN});
-            totalWeight += value[0];
+        let matches = [...this.wordString.matchAll(re)];
+        //Now we have a nested array of matches. We need to stem and filter.
+        let stems = [];
+        for (let m of matches){
+          let mStem = this.stemmer.stem(m[1]);
+          if (stems.indexOf(mStem) < 0){stems.push(mStem);}
+        }
+        //Now we add each stem, up to the limit allowed.
+        stems.forEach(function(s){
+          if (this.terms.length < this.termLimit){
+            this.terms.push({str: strInput, stem: s, capFirst: startsWithCap, type: MAY_CONTAIN});
           }
         }.bind(this));
       }
@@ -1168,8 +1179,24 @@ class StaticSearch{
               console.log('Error attempting to retrieve title list: ' + e);
             }.bind(self));
         }
-//For glob searching, we'll need to care about the list of stems too.
+//For glob searching, we'll need to care about the string of words too.
         if (this.allowWildcards == true){
+          if (this.mapJsonRetrieved.get('ssWordString') != GOT){
+            promises[promises.length] = fetch(self.jsonDirectory + 'ssWordString' + this.versionString + '.txt', this.fetchHeaders)
+              .then(function(response) {
+                return response.text();
+              })
+              .then(function(text) {
+                self.wordString = text;
+                self.mapJsonRetrieved.set('ssWordString', GOT);
+              }.bind(self))
+              .catch(function(e){
+                console.log('Error attempting to retrieve word string: ' + e);
+              }.bind(self));
+          }
+        }
+        //OLD approach
+        /*if (this.allowWildcards == true){
           if (this.mapJsonRetrieved.get('ssStems') != GOT){
             promises[promises.length] = fetch(self.jsonDirectory + 'ssStems' + this.versionString + '.json', this.fetchHeaders)
               .then(function(response) {
@@ -1183,7 +1210,7 @@ class StaticSearch{
                 console.log('Error attempting to retrieve stem list: ' + e);
               }.bind(self));
           }
-        }
+        }*/
       }
 
       //If we do need to retrieve JSON index data, then do it
@@ -1641,7 +1668,12 @@ class StaticSearch{
   * input. The token should contain wildcard characters (asterisk,
   * question mark and square brackets). The function converts this
   * to a JS regular expression. For example: th*n[gk]? would 
-  * become /^th.*[gk].$/.
+  * become /^th.*[gk].$/. The regex is created with leading and
+  * trailing pipe characters, because the string of words against
+  * which it will be matched uses these as delimiters, and it has
+  * a capturing group for the content between the pipes. Because of
+  * the use of the pipe delimiter, a negative character class [^\\|]
+  * (i.e. 'not a pipe') is used in place of a dot.
   * @param {String}   strToken a string of text with no spaces.
   * @return {RegExp | null} a regular expression; or null if one 
   *                         cannot be constructed.
@@ -1654,10 +1686,10 @@ class StaticSearch{
     }
     //Generate the regex.
     let esc = strToken.replace(/[.+^${}()|\\]/g, '\\$&');
-    let strRe  = esc.replace(/[\*]/g, '\.$&').replace(/[\?]/g, '\.');
+    let strRe  = esc.replace(/[\?]/g, '[^\\|]').replace(/[\*]/g, '[^\\|]$&?');
     //Test the regex, and return it if OK, otherwise return null.
     try{
-      let re = new RegExp('^' + strRe + '$', 'i');
+      let re = new RegExp('\\|(' + strRe + ')\\|', 'g');
       return re;
     }
     catch(e){
