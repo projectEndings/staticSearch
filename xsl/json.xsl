@@ -3,7 +3,8 @@
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
-    xmlns:map="http://www.w3.org/2005/xpath-functions"
+    xmlns:j="http://www.w3.org/2005/xpath-functions"
+    xmlns:map="http://www.w3.org/2005/xpath-functions/map"
     xmlns:hcmc="http://hcmc.uvic.ca/ns/staticSearch"
     xpath-default-namespace="http://www.w3.org/1999/xhtml"
     xmlns="http://www.w3.org/1999/xhtml"
@@ -504,7 +505,7 @@
                 <xsl:variable name="thisId" select="current-group()[1]/@data-staticSearch-filter-id"/>
                     <xsl:choose>
                         <xsl:when test="$thisClass = 'staticSearch.desc'">
-                            <xsl:variable name="tmpMap" as="element(map:map)">
+                            <xsl:variable name="tmpMap" as="element(j:map)">
                                 <map xmlns="http://www.w3.org/2005/xpath-functions">
                                     <string key="filterId"><xsl:value-of select="$thisId"/></string>
                                     <string key="filterName"><xsl:value-of select="$thisName"/></string>
@@ -536,7 +537,7 @@
                         
                         
                         <xsl:when test="$thisClass='staticSearch.bool'">
-                            <xsl:variable name="tmpMap" as="element(map:map)">
+                            <xsl:variable name="tmpMap" as="element(j:map)">
                                 <map xmlns="http://www.w3.org/2005/xpath-functions">
                                     <string key="filterId"><xsl:value-of select="$thisId"/></string>
                                     <string key="filterName"><xsl:value-of select="@name"/></string>
@@ -561,7 +562,7 @@
                         </xsl:when>
                         
                         <xsl:when test="$thisClass='staticSearch.date'">
-                            <xsl:variable name="tmpMap" as="element(map:map)">
+                            <xsl:variable name="tmpMap" as="element(j:map)">
                                 <map xmlns="http://www.w3.org/2005/xpath-functions">
                                     <string key="filterId"><xsl:value-of select="$thisId"/></string>
                                     <string key="filterName"><xsl:value-of select="$thisName"/></string>
@@ -585,7 +586,7 @@
                             </xsl:result-document>
                         </xsl:when>
                         <xsl:when test="$thisClass ='staticSearch.num'">
-                            <xsl:variable name="tmpMap" as="element(map:map)">
+                            <xsl:variable name="tmpMap" as="element(j:map)">
                                 <map xmlns="http://www.w3.org/2005/xpath-functions">
                                     <string key="filterId"><xsl:value-of select="$thisId"/></string>
                                     <string key="filterName"><xsl:value-of select="$thisName"/></string>
@@ -684,17 +685,17 @@
     </xd:doc>
     <xsl:template name="createTitleJson">
         <xsl:result-document href="{$outDir}/ssTitles{$versionString}.json" method="text">
-            <xsl:variable name="map">
-                <map:map>
+            <xsl:variable name="map" as="element(j:map)">
+                <map xmlns="http://www.w3.org/2005/xpath-functions">
                     <xsl:for-each select="$tokenizedDocs//html">
-                        <map:array key="{@data-staticSearch-relativeUri}">
-                            <map:string><xsl:value-of select="hcmc:getDocTitle(.)"/></map:string>
+                        <array key="{@data-staticSearch-relativeUri}">
+                            <string><xsl:value-of select="hcmc:getDocTitle(.)"/></string>
                             <!-- Add a thumbnail graphic if one is specified. This generates
                             nothing if there isn't. -->
                             <xsl:sequence select="hcmc:getDocThumbnail(.)"/>
-                        </map:array>
+                        </array>
                     </xsl:for-each>
-                </map:map>
+                </map>
             </xsl:variable>
             <xsl:value-of select="xml-to-json($map, map{'indent': $indentJSON})"/>
         </xsl:result-document>
@@ -707,25 +708,22 @@
             delimiters. This will be used as the basis for the wildcard search
             (second implementation).</xd:desc>
     </xd:doc>
-    <!--<xsl:template name="createWordListJson">
-        <xsl:message>Creating word list JSON...</xsl:message>
-        <xsl:variable name="lowerWords" select="uri-collection(concat($outDir,'/lower?select=*.json'))"/>
-        <xsl:variable name="upperWords" select="uri-collection(concat($outDir,'/upper?select=*.json'))"/>
-        <xsl:variable name="map" as="element(map:map)">
-            <map:map>
-               <map:array key="tokens">
-                   <xsl:for-each select="($lowerWords,$upperWords)">
-                       <xsl:sort select="lower-case(.)"/>
-                       <xsl:sort select="string-length(.)"/>
-                       <map:string><xsl:value-of select="tokenize(.,'/')[last()] => substring-before('.json') => normalize-space()"/></map:string>
-                   </xsl:for-each>
-               </map:array>
-            </map:map>
+    <xsl:template name="createWordStringTxt">
+        <xsl:message>Creating word string text file...</xsl:message>
+        <xsl:variable name="wordMap" as="map(xs:string, xs:string)">
+            <xsl:map>
+                <xsl:for-each select="$tokenizedDocs//span[@data-staticSearch-stem]">
+                   <xsl:map-entry key="." select="."/>
+                </xsl:for-each>
+            </xsl:map>
         </xsl:variable>
-        <xsl:result-document href="{$outDir}/ssTokens{$versionString}.json" method="text">
-            <xsl:value-of select="xml-to-json($map, map{'ident': $indentJSON})"/>
+        <xsl:result-document encoding="UTF-8" href="{$outDir}/ssWordString{$versionString}.txt" method="text">
+            <xsl:for-each select="distinct-values(map:keys($wordMap))">
+                <xsl:sort select="lower-case(.)"/>
+                <xsl:sequence select="concat('|', ., '|')"/>
+            </xsl:for-each>
         </xsl:result-document>
-    </xsl:template>-->
+    </xsl:template>
 
 <!--    Create a config file for the JSON-->
     <xd:doc>
@@ -755,11 +753,11 @@
         of word elements inside a words element to a JSON/XML structure.</xd:desc>
     </xd:doc>
     <xsl:template match="hcmc:words" mode="dictToArray">
-        <map:map>
-            <map:array key="words">
+        <j:map>
+            <j:array key="words">
                 <xsl:apply-templates mode="#current"/>
-            </map:array>
-        </map:map>
+            </j:array>
+        </j:map>
     </xsl:template>
 
     <xd:doc>
@@ -767,7 +765,7 @@
             a words element to a JSON/XML string.</xd:desc>
     </xd:doc>
     <xsl:template match="hcmc:word" mode="dictToArray">
-        <map:string><xsl:value-of select="."/></map:string>
+        <j:string><xsl:value-of select="."/></j:string>
     </xsl:template>
 
 
@@ -778,20 +776,20 @@
         <xd:desc>Template to convert an hcmc:config element to a JSON map.</xd:desc>
     </xd:doc>
     <xsl:template match="hcmc:config" mode="configToArray">
-        <map:map key="config">
+        <j:map key="config">
             <xsl:apply-templates mode="#current"/>
-        </map:map>
+        </j:map>
     </xsl:template>
 
     <xd:doc>
         <xd:desc>Template to convert an hcmc:params element to a JSON array.</xd:desc>
     </xd:doc>
     <xsl:template match="hcmc:params" mode="configToArray">
-        <map:array key="params">
-            <map:map>
+        <j:array key="params">
+            <j:map>
                 <xsl:apply-templates mode="#current"/>
-            </map:map>
-        </map:array>
+            </j:map>
+        </j:array>
     </xsl:template>
 
     <xd:doc>
@@ -838,10 +836,10 @@
         <xd:param name="doc">The input document, which must be an HTML element.</xd:param>
         <xd:result>A map:string element, if there is a configured graphic, or the empty sequence.</xd:result>
     </xd:doc>
-    <xsl:function name="hcmc:getDocThumbnail" as="element(map:string)?">
+    <xsl:function name="hcmc:getDocThumbnail" as="element(j:string)?">
         <xsl:param name="doc" as="element(html)"/>
         <xsl:if test="$doc/head/meta[@name='docImage'][@class='staticSearch.docImage']">
-            <map:string><xsl:value-of select="$doc/head/meta[@name='docImage'][@class='staticSearch.docImage'][1]/@content"/></map:string>
+            <j:string><xsl:value-of select="$doc/head/meta[@name='docImage'][@class='staticSearch.docImage'][1]/@content"/></j:string>
         </xsl:if>
     </xsl:function>
     
