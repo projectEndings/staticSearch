@@ -17,7 +17,7 @@
             via the process described in <xd:a href="tokenize.xsl">tokenize.xsl</xd:a>) and creates
             a JSON file for each stemmed token. It also creates a separate JSON file for the project's
             stopwords list, for all the document titles in the collection, and for each of the filter facets.
-            Finally, it creates a single JSON file listing all the tokens, which may be used for glob searches.</xd:p>
+            Finally, it creates a single JSON file listing all the stems, which may be used for glob searches.</xd:p>
         </xd:desc>
         <xd:param name="ellipses">A string parameter to denote what sorts of ellipses one wants in the KWIC.</xd:param>
     </xd:doc>
@@ -86,7 +86,7 @@
             the XML map (created in the makeMap template) and converts it into a JSON for
             each unique stem. It does so by first grouping the HTML span elements by their
             @data-staticSearch-stem (and note this is tokenized, since @data-staticSearch-stem
-            can contain more than one token) and then passing those spans to the makeMap template.</xd:desc>
+            can contain more than one stem) and then passing those spans to the makeMap template.</xd:desc>
         <xd:param name="stems">The collection of span[@data-staticSearch-stem[ passed from the tokenized documents.</xd:param>
     </xd:doc>
     <xsl:template name="createMap">
@@ -100,11 +100,11 @@
 
 <!--            Variable that is simply the current-grouping-key (i.e. the stem from which
                 a JSON is being created)-->
-            <xsl:variable name="token" select="current-grouping-key()"/>
+            <xsl:variable name="stem" select="current-grouping-key()"/>
 
 <!--            Simple message-->
             <xsl:if test="$verbose">
-                <xsl:message>Processing <xsl:value-of select="$token"/></xsl:message>
+                <xsl:message>Processing <xsl:value-of select="$stem"/></xsl:message>
             </xsl:if>
 
 <!--            Now create the map element by passing the current grouping key as a term and
@@ -112,7 +112,7 @@
                 of the for-each-group-->
             <xsl:variable name="map" as="element()">
                 <xsl:call-template name="makeMap">
-                    <xsl:with-param name="term" select="$token"/>
+                    <xsl:with-param name="term" select="$stem"/>
                 </xsl:call-template>
             </xsl:variable>
 
@@ -122,7 +122,7 @@
                     august.json
 
                 would silently (as of Saxon 9.8) overwrite the first.-->
-            <xsl:result-document href="{$outDir}/{if (matches($token,'^[A-Z]')) then 'upper' else 'lower'}/{$token}{$versionString}.json" method="text">
+            <xsl:result-document href="{$outDir}/{if (matches($stem,'^[A-Z]')) then 'upper' else 'lower'}/{$stem}{$versionString}.json" method="text">
                 <xsl:value-of select="xml-to-json($map, map{'indent': $indentJSON})"/>
             </xsl:result-document>
         </xsl:for-each-group>
@@ -137,7 +137,7 @@
             </xd:p>
            <xd:ul>
                <xd:li>
-                   <xd:b>token (string):</xd:b> the stem, passed as a parameter
+                   <xd:b>stem (string):</xd:b> the stem, passed as a parameter
                </xd:li>
                <xd:li><xd:b>instances (array):</xd:b> an array of all the documents that contain that stem
                    <xd:ul>
@@ -149,7 +149,7 @@
                            the html/head/title or, if that is missing, is constructed from the document URI</xd:li>-->
                        <xd:li><xd:b>docUri (string):</xd:b> The URI of the source document.</xd:li>
                        <xd:li><xd:b>score (number):</xd:b> The sum of the weighted scores of each span that
-                           is in that document. For instance, if some document had n instances of token x
+                           is in that document. For instance, if some document had n instances of stem x
                            ({x1, x2, ..., xn}) with corresponding scores ({s1, s2, ..., sn}), then the score
                            for the document is the sum of all s: s1 + s2 + . . . + sn.</xd:li>
                        <xd:li><xd:b>contexts (array)</xd:b>: an array of all of the contexts in which the
@@ -190,9 +190,9 @@
 <!--        Start map-->
         <map xmlns="http://www.w3.org/2005/xpath-functions">
 
-<!--            The token is the top level string key for this map; it should be
+<!--            The stem is the top level string key for this map; it should be
                 the same as the JSON file name.-->
-            <string key="token">
+            <string key="stem">
                 <xsl:value-of select="$term"/>
             </string>
 
@@ -701,12 +701,13 @@
     </xsl:template>
     
     <xd:doc>
-        <xd:desc><xd:ref name="createWordListJson">createWordListJson</xd:ref> 
-            creates a list of the all of the tokens that have been
-        created by the process; primarily, this JSON will be used 
-        for wildcard searches.</xd:desc>
+        <xd:desc><xd:ref name="createWordStringTxt">createWordStringTxt</xd:ref> 
+            creates a string of the all of the unique words in the tokenized
+            documents, in the form of a text file listing them, with pipe 
+            delimiters. This will be used as the basis for the wildcard search
+            (second implementation).</xd:desc>
     </xd:doc>
-    <xsl:template name="createWordListJson">
+    <!--<xsl:template name="createWordListJson">
         <xsl:message>Creating word list JSON...</xsl:message>
         <xsl:variable name="lowerWords" select="uri-collection(concat($outDir,'/lower?select=*.json'))"/>
         <xsl:variable name="upperWords" select="uri-collection(concat($outDir,'/upper?select=*.json'))"/>
@@ -724,7 +725,7 @@
         <xsl:result-document href="{$outDir}/ssTokens{$versionString}.json" method="text">
             <xsl:value-of select="xml-to-json($map, map{'ident': $indentJSON})"/>
         </xsl:result-document>
-    </xsl:template>
+    </xsl:template>-->
 
 <!--    Create a config file for the JSON-->
     <xd:doc>

@@ -206,17 +206,17 @@
         </java>
     </target>
     
-    <target name="createTokensFile">
+    <target name="createStemsFile">
         <description>
-            target: createTokensFile
+            target: createStemsFile
             
-            This target creates the ssTokens.json file by first retrieving the length of all the JSONs available,
+            This target creates the ssStems.json file by first retrieving the length of all the JSONs available,
             and then create a JSON from that document. This is necessary for running wildcard searches.
         </description>
         
-       <echo message="Creating ssTokens.json file..."/>
+       <echo message="Creating ssStems.json file..."/>
        <echo message="First, measure the JSON files..."/>
-       <length property="tokenLines" mode="each">
+       <length property="stemLines" mode="each">
            <fileset dir="${staticSearchDir}">
                 <include name="lower/**.json"/>
                 <include name="upper/**.json"/>
@@ -224,9 +224,9 @@
        </length>
        <echo message="Now create the tokens file..."/>
         <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
-            <arg value="-xsl:${basedir}/xsl/create_ssTokens.xsl"/>
-            <arg value="-s:${basedir}/xsl/create_ssTokens.xsl"/>
-            <arg value="tokenLines=${tokenLines}"/>
+            <arg value="-xsl:${basedir}/xsl/create_ssStems.xsl"/>
+            <arg value="-s:${basedir}/xsl/create_ssStems.xsl"/>
+            <arg value="stemLines=${stemLines}"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
         </java>
     </target>
@@ -335,7 +335,7 @@
     
 
     
-    <target name="all" depends="init, validate, config, tokenize, json,  createTokensFile, copyFiles, makeSearchPage, report, clean">
+    <target name="all" depends="init, validate, config, tokenize, json,  createStemsFile, copyFiles, makeSearchPage, report, clean">
         <description>
             target: all
             
@@ -343,7 +343,7 @@
         </description>
     </target>
 
-    <target name="allButValidate" depends="init, config, tokenize, json, createTokensFile, copyFiles, makeSearchPage, report, clean">
+    <target name="allButValidate" depends="init, config, tokenize, json, createStemsFile, copyFiles, makeSearchPage, report, clean">
         <description>
             target: allButValidate
             
@@ -352,7 +352,7 @@
         </description>
     </target>
 
-    <target name="test" depends="init, validate, config, tokenize, json, createTokensFile, copyFiles, makeSearchPage, report">
+    <target name="test" depends="init, validate, config, tokenize, json, createStemsFile, copyFiles, makeSearchPage, report">
         <description>
             target: test
             
@@ -360,7 +360,7 @@
         </description>
     </target>
     
-    <target name="basic" depends="init, validate, config, tokenize, json, createTokensFile, copyFiles, makeSearchPage, clean">
+    <target name="basic" depends="init, validate, config, tokenize, json, createStemsFile, copyFiles, makeSearchPage, clean">
         <description>
             target: basic
             

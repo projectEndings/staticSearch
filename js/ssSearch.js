@@ -204,9 +204,9 @@ class StaticSearch{
            Array.from(document.querySelectorAll("select[class='staticSearch.bool']"));
 
       //An object which will be filled with a complete list of all the
-      //individual tokens indexed for the site. Data retrieved later by
+      //individual stems indexed for the site. Data retrieved later by
       //AJAX.
-      this.tokens = null;
+      this.stems = null;
 
       //A Map object that will be populated with filter data retrieved by AJAX.
       this.mapFilterData = new Map();
@@ -279,7 +279,7 @@ class StaticSearch{
       this.jsonToRetrieve = [];
       this.jsonToRetrieve.push({id: 'ssStopwords', path: this.jsonDirectory + 'ssStopwords' + this.versionString + '.json'});
       this.jsonToRetrieve.push({id: 'ssTitles', path: this.jsonDirectory + 'ssTitles' + this.versionString + '.json'});
-      this.jsonToRetrieve.push({id: 'ssTokens', path: this.jsonDirectory + 'ssTokens' + this.versionString + '.json'});
+      this.jsonToRetrieve.push({id: 'ssStems', path: this.jsonDirectory + 'ssStems' + this.versionString + '.json'});
       for (var f of document.querySelectorAll('fieldset.ssFieldset[id], fieldset.ssFieldset select[id]')){
         this.jsonToRetrieve.push({id: f.id, path: this.jsonDirectory + 'filters/' + f.id + this.versionString + '.json'});
       }
@@ -356,9 +356,9 @@ class StaticSearch{
       this.mapJsonRetrieved.set('ssStopwords', GOT);
       return;
     }
-    if (path.match(/ssTokens.*json$/)){
-      this.tokens = new Map(Object.entries(json));
-      this.mapJsonRetrieved.set('ssTokens', GOT);
+    if (path.match(/ssStems.*json$/)){
+      this.stems = new Map(Object.entries(json));
+      this.mapJsonRetrieved.set('ssStems', GOT);
       return;
     }
     if (path.match(/ssTitles.*json$/)){
@@ -495,23 +495,23 @@ class StaticSearch{
   * @return {Boolean} true if a search is initiated otherwise false.
   */
   doSearch(popping = false){
-    //We start by intercepting any situation in which we may need the ssTokens
+    //We start by intercepting any situation in which we may need the ssStems
     //collection, but we don't yet have it.
     if (this.allowWildcards){
       if (/[\[\]?*]/.test(this.queryBox.value)){
         var self = this;
-        if (this.mapJsonRetrieved.get('ssTokens') != GOT){
-          let promise = fetch(self.jsonDirectory + 'ssTokens' + self.versionString + '.json', self.fetchHeaders)
+        if (this.mapJsonRetrieved.get('ssStems') != GOT){
+          let promise = fetch(self.jsonDirectory + 'ssStems' + self.versionString + '.json', self.fetchHeaders)
             .then(function(response) {
               return response.json();
             }.bind(this))
             .then(function(json) {
-              self.tokens = new Map(Object.entries(json));
-              self.mapJsonRetrieved.set('ssTokens', GOT);
+              self.stems = new Map(Object.entries(json));
+              self.mapJsonRetrieved.set('ssStems', GOT);
               self.doSearch();
             }.bind(this))
             .catch(function(e){
-              console.log('Error attempting to retrieve token list: ' + e);
+              console.log('Error attempting to retrieve stem list: ' + e);
             }.bind(this));
           return false;
         }
@@ -741,7 +741,7 @@ class StaticSearch{
       if (this.allowWildcards && /[\[\]?*]/.test(strInput)){
         let re = this.wildcardToRegex(strInput);
         let totalWeight = 0;
-        this.tokens.forEach(function(value, key){
+        this.stems.forEach(function(value, key){
           if (re.test(key) && (totalWeight < this.downloadLimit)){
             this.terms.push({str: strInput, stem: key, capFirst: startsWithCap, type: MAY_CONTAIN});
             totalWeight += value[0];
@@ -1050,7 +1050,7 @@ class StaticSearch{
   * are ready to handle a search, in that attempts have been made to
   * retrieve all JSON files relating to the current search.
   * The index is deemed ready when either a) all the JSON files
-  * for required tokens and filters have been retrieved and their
+  * for required stems and filters have been retrieved and their
   * contents merged into the required structures, or b) a retrieval
   * has failed, so an empty placeholder has been inserted to signify
   * that there is no such dataset.
@@ -1059,22 +1059,22 @@ class StaticSearch{
   * .then() calls the processResults function.
   */
   populateIndexes(){
-    var i, imax, tokensToFind = [], promises = [], emptyIndex,
+    var i, imax, stemsToFind = [], promises = [], emptyIndex,
     jsonSubfolder, filterSelector, filterIds;
 //We need a self pointer because this will go out of scope.
     var self = this;
     try{
-  //For each token in the search string
+  //For each stem in the search string
       for (i=0, imax=this.terms.length; i<imax; i++){
-  //Now check whether we already have an index entry for this token
+  //Now check whether we already have an index entry for this stem
         if (!this.index.hasOwnProperty(this.terms[i].stem)){
-  //If not, add it to the array of tokens we want to retrieve.
-          tokensToFind.push(this.terms[i].stem);
+  //If not, add it to the array of stems we want to retrieve.
+          stemsToFind.push(this.terms[i].stem);
         }
         if (this.terms[i].capFirst){
           if (!this.index.hasOwnProperty(this.terms[i].str)){
-    //If not, add it to the array of tokens we want to retrieve.
-            tokensToFind.push(this.terms[i].str);
+    //If not, add it to the array of stems we want to retrieve.
+            stemsToFind.push(this.terms[i].str);
           }
         }
       }
@@ -1158,43 +1158,43 @@ class StaticSearch{
               console.log('Error attempting to retrieve title list: ' + e);
             }.bind(self));
         }
-//For glob searching, we'll need to care about the list of tokens too.
+//For glob searching, we'll need to care about the list of stems too.
         if (this.allowWildcards == true){
-          if (this.mapJsonRetrieved.get('ssTokens') != GOT){
-            promises[promises.length] = fetch(self.jsonDirectory + 'ssTokens' + this.versionString + '.json', this.fetchHeaders)
+          if (this.mapJsonRetrieved.get('ssStems') != GOT){
+            promises[promises.length] = fetch(self.jsonDirectory + 'ssStems' + this.versionString + '.json', this.fetchHeaders)
               .then(function(response) {
                 return response.json();
               })
               .then(function(json) {
-                self.tokens = new Map(Object.entries(json));
-                self.mapJsonRetrieved.set('ssTokens', GOT);
+                self.stems = new Map(Object.entries(json));
+                self.mapJsonRetrieved.set('ssStems', GOT);
               }.bind(self))
               .catch(function(e){
-                console.log('Error attempting to retrieve token list: ' + e);
+                console.log('Error attempting to retrieve stem list: ' + e);
               }.bind(self));
           }
         }
       }
 
       //If we do need to retrieve JSON index data, then do it
-      if (tokensToFind.length > 0){
+      if (stemsToFind.length > 0){
 
 //Set off fetch operations for the things we don't have yet.
-        for (i=0, imax=tokensToFind.length; i<imax; i++){
+        for (i=0, imax=stemsToFind.length; i<imax; i++){
 
 //We will first add an empty index so that if nothing is found, we won't need
 //to search again.
-          emptyIndex = {'token': tokensToFind[i], 'instances': []}; //used as return value when nothing retrieved.
+          emptyIndex = {'stem': stemsToFind[i], 'instances': []}; //used as return value when nothing retrieved.
 
-          this.tokenFound(emptyIndex);
+          this.stemFound(emptyIndex);
 
-//Figure out whether we're retrieving a lower-case or an upper-case token.
+//Figure out whether we're retrieving a lower-case or an upper-case stem.
 //TODO: Do we need to worry about camel-case?
-          jsonSubfolder = (tokensToFind[i].toLowerCase() == tokensToFind[i])? 'lower/' : 'upper/';
+          jsonSubfolder = (stemsToFind[i].toLowerCase() == stemsToFind[i])? 'lower/' : 'upper/';
 
-//We create an array of fetches to get the json file for each token,
+//We create an array of fetches to get the json file for each stem,
 //assuming it's there.
-          promises[promises.length] = fetch(self.jsonDirectory + jsonSubfolder + tokensToFind[i] + this.versionString + '.json', this.fetchHeaders)
+          promises[promises.length] = fetch(self.jsonDirectory + jsonSubfolder + stemsToFind[i] + this.versionString + '.json', this.fetchHeaders)
 //If we get a response, and it looks good
               .then(function(response){
                 if ((response.status >= 200) &&
@@ -1202,14 +1202,14 @@ class StaticSearch{
                     (response.headers.get('content-type')) &&
                     (response.headers.get('content-type').includes('application/json'))) {
 //then we ask for response.json(), which is itself a promise, to which we add a .then to store the data.
-                  return response.json().then(function(data){ self.tokenFound(data); }.bind(self));
+                  return response.json().then(function(data){ self.stemFound(data); }.bind(self));
                 }
               })
 //If something goes wrong, then we store an empty index
 //through the notFound function.
               .catch(function(e){
-                console.log('Error attempting to retrieve ' + tokensToFind[i] + ': ' + e);
-                return function(emptyIndex){self.tokenFound(emptyIndex);}.bind(self, emptyIndex);
+                console.log('Error attempting to retrieve ' + stemsToFind[i] + ': ' + e);
+                return function(emptyIndex){self.stemFound(emptyIndex);}.bind(self, emptyIndex);
               }.bind(self));
             }
       }
@@ -1232,23 +1232,23 @@ class StaticSearch{
   }
 
 /**
-  * @function StaticSearch~tokenFound
+  * @function StaticSearch~stemFound
   * @description Before a request for a JSON file is initially made,
-  *              an empty index is stored, indexed under the token
+  *              an empty index is stored, indexed under the stem
   *              which is being searched, so that whether or not we
   *              successfully retrieve data, we won't have to try
   *              again in a subsequent search in the same session.
   *              Then, when a request for a JSON file for a specific
-  *              token results in a JSON file with data, we overwrite
-  *              the data in the index, indexed under the token.
+  *              stem results in a JSON file with data, we overwrite
+  *              the data in the index, indexed under the stem.
   *              Sometimes the data coming in may be an instance
   *              of an empty index, if the retrieval code knows it
   *              got nothing.
-  * @param {Object} data the data structure retrieved for the token.
+  * @param {Object} data the data structure retrieved for the stem.
   */
-  tokenFound(data){
+  stemFound(data){
     try{
-      this.index[data.token] = data;
+      this.index[data.stem] = data;
     }
     catch(e){
       console.log('ERROR: ' + e.message);
@@ -1256,19 +1256,19 @@ class StaticSearch{
   }
 
 /**
-  * @function staticSearch~indexTokenHasDoc
-  * @description This function, given an index token and a docUri, searches
-  *              to see if there is an entry in the token's instances for
+  * @function staticSearch~indexStemHasDoc
+  * @description This function, given an index stem and a docUri, searches
+  *              to see if there is an entry in the stem's instances for
   *              that docUri.
-  * @param {String} token the index token to search for.
+  * @param {String} stem the index stem to search for.
   * @param {String} docUri the docUri to search for.
   * @return {Boolean} true if found, false if not.
   */
-  indexTokenHasDoc(token, docUri){
+  indexStemHasDoc(stem, docUri){
     let result = false;
-    if (this.index[token]){
-      for (let i=0; i<this.index[token].instances.length; i++){
-        if (this.index[token].instances[i].docUri == docUri){
+    if (this.index[stem]){
+      for (let i=0; i<this.index[stem].instances.length; i++){
+        if (this.index[stem].instances[i].docUri == docUri){
           result = true;
           break;
         }
@@ -1502,7 +1502,7 @@ class StaticSearch{
             let docUrisToDelete = [];
             for (let docUri of self.resultSet.mapDocs.keys()){
               for (let mc of must_contains){
-                if (! self.indexTokenHasDoc(self.terms[mc].stem, docUri)){
+                if (! self.indexStemHasDoc(self.terms[mc].stem, docUri)){
                   docUrisToDelete.push(docUri);
                 }
               }
