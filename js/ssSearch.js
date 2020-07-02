@@ -208,11 +208,15 @@ class StaticSearch{
       //AJAX.
       this.stems = null;
 
+      //A string which will contain a chain of all the distinct word-forms 
+      //on the site, used to support wildcard searches.
+      this.wordString = '';
+
       //A Map object that will be populated with filter data retrieved by AJAX.
       this.mapFilterData = new Map();
 
       //A Map object that will track the retrieval of search filter data and
-      //other JSON files we need to get.
+      //other JSON files we need to get. Note: one of the files is txt, not JSON.
       this.mapJsonRetrieved = new Map();
 
       //A Map object which will be repopulated on every search initiation,
@@ -275,10 +279,14 @@ class StaticSearch{
       this.captionLang  = document.getElementsByTagName('html')[0].getAttribute('lang') || 'en'; //Document language.
       this.captionSet   = this.captions[this.captionLang]; //Pointer to the caption object we're going to use.
 
+      //Default set of stopwords
+      this.stopwords = ss.stopwords; //temporary default.
+
       //The collection of JSON filter files that we need to retrieve.
       this.jsonToRetrieve = [];
       this.jsonToRetrieve.push({id: 'ssStopwords', path: this.jsonDirectory + 'ssStopwords' + this.versionString + '.json'});
       this.jsonToRetrieve.push({id: 'ssTitles', path: this.jsonDirectory + 'ssTitles' + this.versionString + '.json'});
+      this.jsonToRetrieve.push({id: 'ssWordString', path: this.jsonDirectory + 'ssWordString' + this.versionString + '.txt'});
       this.jsonToRetrieve.push({id: 'ssStems', path: this.jsonDirectory + 'ssStems' + this.versionString + '.json'});
       for (var f of document.querySelectorAll('fieldset.ssFieldset[id], fieldset.ssFieldset select[id]')){
         this.jsonToRetrieve.push({id: f.id, path: this.jsonDirectory + 'filters/' + f.id + this.versionString + '.json'});
@@ -286,9 +294,6 @@ class StaticSearch{
       //Flag to be set when all JSON is retrieved, to save laborious checking on
       //every search.
       this.allJsonRetrieved = false;
-
-      //Default set of stopwords
-      this.stopwords = ss.stopwords; //temporary default.
 
       //Boolean: should this instance report the details of its search
       //in human-readable form?
@@ -356,6 +361,11 @@ class StaticSearch{
       this.mapJsonRetrieved.set('ssStopwords', GOT);
       return;
     }
+    if (path.match(/ssWordString.*txt$/)){
+      this.wordString = json; //Not really JSON in this one case.
+      this.mapJsonRetrieved.set('ssWordString', GOT);
+      return;
+    }
     if (path.match(/ssStems.*json$/)){
       this.stems = new Map(Object.entries(json));
       this.mapJsonRetrieved.set('ssStems', GOT);
@@ -389,7 +399,7 @@ class StaticSearch{
         if (this.mapJsonRetrieved.get(this.jsonToRetrieve[jsonIndex].id) != GOT){
           this.mapJsonRetrieved.set(this.jsonToRetrieve[jsonIndex].id, GETTING);
           let fch = await fetch(this.jsonToRetrieve[jsonIndex].path);
-          let json = await fch.json();
+          let json = /.*\.txt$/.test(this.jsonToRetrieve[jsonIndex].path)? await fch.text() : await fch.json();
           this.jsonRetrieved(json, this.jsonToRetrieve[jsonIndex].path);
         }
         else{
