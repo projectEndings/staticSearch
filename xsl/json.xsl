@@ -54,7 +54,7 @@
         <xsl:call-template name="createTitleJson"/>
         <xsl:call-template name="createFiltersJson"/>
         <xsl:call-template name="createStopwordsJson"/>
-<!--        <xsl:call-template name="createWordListJson"/>-->
+        <xsl:call-template name="createWordStringTxt"/>
         <xsl:call-template name="createConfigJson"/>
     </xsl:template>
 
@@ -710,15 +710,10 @@
     </xd:doc>
     <xsl:template name="createWordStringTxt">
         <xsl:message>Creating word string text file...</xsl:message>
-        <xsl:variable name="wordMap" as="map(xs:string, xs:string)">
-            <xsl:map>
-                <xsl:for-each select="$tokenizedDocs//span[@data-staticSearch-stem]">
-                   <xsl:map-entry key="." select="."/>
-                </xsl:for-each>
-            </xsl:map>
-        </xsl:variable>
-        <xsl:result-document encoding="UTF-8" href="{$outDir}/ssWordString{$versionString}.txt" method="text">
-            <xsl:for-each select="distinct-values(map:keys($wordMap))">
+        <xsl:variable name="words" as="xs:string*" select="for $w in $tokenizedDocs//span[@data-staticSearch-stem] 
+            return replace($w, '((^[^\p{L}\p{Nd}]+)|([^\p{L}\p{Nd}]+$))', '')"/>
+        <xsl:result-document encoding="UTF-8" href="{$outDir}/ssWordString{$versionString}.txt" method="text" item-separator="">
+            <xsl:for-each select="distinct-values($words)">
                 <xsl:sort select="lower-case(.)"/>
                 <xsl:sequence select="concat('|', ., '|')"/>
             </xsl:for-each>
@@ -828,13 +823,13 @@
     <xd:doc>
         <xd:desc>
             <xd:p><xd:ref name="hcmc:getDocThumbnail" type="function">hcmc:getDocThumbnail</xd:ref> 
-                generates a map:string element containing a pointer to the first of any configured graphics, 
+                generates a j:string element containing a pointer to the first of any configured graphics, 
                 relative to the search page location. NOTE: this function assumes that the graphic path has
             been massaged as necessary during the tokenizing process, so that it is now relative to the 
             search page location, not to the containing document.</xd:p>
         </xd:desc>
         <xd:param name="doc">The input document, which must be an HTML element.</xd:param>
-        <xd:result>A map:string element, if there is a configured graphic, or the empty sequence.</xd:result>
+        <xd:result>A j:string element, if there is a configured graphic, or the empty sequence.</xd:result>
     </xd:doc>
     <xsl:function name="hcmc:getDocThumbnail" as="element(j:string)?">
         <xsl:param name="doc" as="element(html)"/>
