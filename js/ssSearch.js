@@ -736,7 +736,7 @@ class StaticSearch{
 
     //Broadness check
     if (!isPhrasal && !this.termPattern.test(strInput)){
-      alert(this.captionSet.strSearchTooBroad);
+      alert(this.captionSet.strSearchTooBroad + ' (' + strInput + ')');
       return false;
     }
 
