@@ -87,6 +87,7 @@
   ss.captions['en'][MAY_CONTAIN]         = 'May contain: ';
   ss.captions['en'][WILDCARD]            = 'Wildcard term: ';
   ss.captions['en'].strScore             = 'Score: ';
+  ss.captions['en'].strSearchTooBroad    = 'Your search is too broad. Include at least three letters in every term.';
 
 
 /**
@@ -203,6 +204,10 @@ class StaticSearch{
       this.boolFilterSelects =
            Array.from(document.querySelectorAll("select[class='staticSearch.bool']"));
 
+      //A pattern to check the search string to ensure that it's not going
+      //to retrieve a million words.
+      this.termPattern = /^([\*\?\[\]]*[^\*\?\[\]]){3,}[\*\?\[\]]*$/;
+      
       //An object which will be filled with a complete list of all the
       //individual stems indexed for the site. Data retrieved later by
       //AJAX.
@@ -726,6 +731,12 @@ class StaticSearch{
   addSearchItem(strInput, isPhrasal){
     //Sanity check
     if (strInput.length < 1){
+      return false;
+    }
+
+    //Broadness check
+    if (!isPhrasal && !this.termPattern.test(strInput)){
+      alert(this.captionSet.strSearchTooBroad);
       return false;
     }
 

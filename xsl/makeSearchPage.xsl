@@ -264,7 +264,8 @@
                 
                 <!--Standard inputs-->
                 <span class="ssQueryAndButton">
-                    <input type="text" id="ssQuery"/>
+                    <xsl:variable name="validationPattern" as="xs:string">\s*(.*([^\*\?\[\]\s]+[^\s]*){3})+\s*</xsl:variable>
+                    <input type="text" id="ssQuery" pattern="{$validationPattern}"/>
                     <button id="ssDoSearch">Search</button>
                 </span>
                 
