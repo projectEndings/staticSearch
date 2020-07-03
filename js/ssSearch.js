@@ -277,7 +277,7 @@ class StaticSearch{
       //An arbitrary limit on the number of stems we will search for in 
       //any given search. TODO: Make this configurable and provide error
       //messages for the user when exceeded.
-      this.termLimit = 20;
+      this.termLimit = 50;
 
       //Captions
       this.captions = ss.captions; //Default; override this if you wish by setting the property after instantiation.
@@ -758,9 +758,14 @@ class StaticSearch{
           let mStem = this.stemmer.stem(m[1].toLowerCase());
           let term = m[0].replace(/[\|]/g, '');
           console.log(term);
-          //if (this.terms.length < this.termLimit){
-            this.terms.push({str: term, stem: mStem, capFirst: startsWithCap, type: PHRASE});
-          //}
+          if (this.terms.length < this.termLimit){
+            if (this.allowPhrasal){
+              this.terms.push({str: term, stem: mStem, capFirst: startsWithCap, type: PHRASE});
+            }
+            else{
+              this.terms.push({str: term, stem: mStem, capFirst: startsWithCap, type: MAY_CONTAIN});
+            }
+          }
         }
       }
       else{
