@@ -352,12 +352,13 @@ class StaticSearch{
   }
 
 /** @function staticSearch~jsonRetrieved
-  * @description this function is called whenever a JSON resource is retrieved
+  * @description this function is called whenever a resource is retrieved
   *              by the trickle-download process initiated on startup. It
   *              stores the data in the right place, and sets a flag to say
   *              that the data has been retrieved (or was not available).
   *
-  * @param json {json} the JSON retrieved by the AJAX request.
+  * @param json {json} the JSON retrieved by the AJAX request (not always
+  *             actually JSON).
   * @param path {String} the path from which it was retrieved.
   */
   jsonRetrieved(json, path){
@@ -371,11 +372,6 @@ class StaticSearch{
       this.mapJsonRetrieved.set('ssWordString', GOT);
       return;
     }
-    /*if (path.match(/ssStems.*json$/)){
-      this.stems = new Map(Object.entries(json));
-      this.mapJsonRetrieved.set('ssStems', GOT);
-      return;
-    }*/
     if (path.match(/ssTitles.*json$/)){
       this.resultSet.titles = new Map(Object.entries(json));
       this.mapJsonRetrieved.set('ssTitles', GOT);
@@ -389,7 +385,7 @@ class StaticSearch{
   }
 
 /** @function staticSearch~getJson
-  * @description this function trickle-downloads a series of JSON files
+  * @description this function trickle-downloads a series of resource files
   *              which the object has determined it may need, getting
   *              them one at a time to avoid saturating the connection;
   *              while this is happening, a live search may be initiated
@@ -412,7 +408,7 @@ class StaticSearch{
         }
       }
       catch(e){
-        console.log('ERROR: failed to retrieve JSON resource ' + this.jsonToRetrieve[jsonIndex].path + ': ' + e.message);
+        console.log('ERROR: failed to retrieve resource ' + this.jsonToRetrieve[jsonIndex].path + ': ' + e.message);
         this.mapJsonRetrieved.set(this.jsonToRetrieve[jsonIndex].id, FAILED);
       }
       return this.getJson(jsonIndex + 1);
@@ -760,14 +756,10 @@ class StaticSearch{
         let stems = [];
         for (let m of matches){
           let mStem = this.stemmer.stem(m[1]);
-          if (stems.indexOf(mStem) < 0){stems.push(mStem);}
-        }
-        //Now we add each stem, up to the limit allowed.
-        stems.forEach(function(s){
           if (this.terms.length < this.termLimit){
-            this.terms.push({str: strInput, stem: s, capFirst: startsWithCap, type: MAY_CONTAIN});
+            this.terms.push({str: m[1], stem: mStem, capFirst: startsWithCap, type: PHRASE});
           }
-        }.bind(this));
+        }
       }
       else{
         //Else is it a must-contain?
