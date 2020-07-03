@@ -5,7 +5,7 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2020-06-06T00:52:29Z. 2019-2020.
+Schema generated from ODD source 2020-07-03T18:56:18Z. 2019-2020.
 TEI Edition: Version 4.0.0. Last updated on
 	13th February 2020, revision ccd19b0ba
 TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 4.0.0/
@@ -253,7 +253,9 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 4.0.0/
    </define>
    <define name="wildcardSearch">
       <element name="wildcardSearch" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Whether or not to support wildcard searches.) </a:documentation>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Whether or not to support wildcard searches. Note that wildcard searches are
+            more effective when phrasal searching is also turned on, because the contexts 
+            available for phrasal searches are also used to provide wildcard results.) </a:documentation>
          <data type="boolean"/>
       </element>
    </define>

@@ -30,7 +30,9 @@
 /**
   * @constant PHRASE, MUST_CONTAIN, MUST_NOT_CONTAIN, MAY_CONTAIN, WILDCARD
   * @type {Number}
-  * @description Constants representing different types of search command.
+  * @description Constants representing different types of search command. Note
+  *              that WILDCARD is not currently used, but will be if the 
+  *              implementation of wildcards is changed.
   */
 
   const PHRASE               = 0;
@@ -41,8 +43,8 @@
 
 /**@constant arrTermTypes
    * @type {Array}
-   * @description array of PHRASE, MUST_CONTAIN, MUST_NOT_CONTAIN, MAY_CONTAIN
-   *              used so we can easily iterate through them.
+   * @description array of PHRASE, MUST_CONTAIN, MUST_NOT_CONTAIN, MAY_CONTAIN,
+   *              WILDCARD used so we can easily iterate through them.
    */
   const arrTermTypes = [PHRASE, MUST_CONTAIN, MUST_NOT_CONTAIN, MAY_CONTAIN, WILDCARD];
 
@@ -85,6 +87,7 @@
   ss.captions['en'][MAY_CONTAIN]         = 'May contain: ';
   ss.captions['en'][WILDCARD]            = 'Wildcard term: ';
   ss.captions['en'].strScore             = 'Score: ';
+  ss.captions['en'].strSearchTooBroad    = 'Your search is too broad. Include at least three letters in every term.';
 
 
 /**
@@ -201,16 +204,24 @@ class StaticSearch{
       this.boolFilterSelects =
            Array.from(document.querySelectorAll("select[class='staticSearch.bool']"));
 
+      //A pattern to check the search string to ensure that it's not going
+      //to retrieve a million words.
+      this.termPattern = /^([\*\?\[\]]*[^\*\?\[\]]){3,}[\*\?\[\]]*$/;
+      
       //An object which will be filled with a complete list of all the
-      //individual tokens indexed for the site. Data retrieved later by
+      //individual stems indexed for the site. Data retrieved later by
       //AJAX.
-      this.tokens = null;
+      this.stems = null;
+
+      //A string which will contain a chain of all the distinct word-forms 
+      //on the site, used to support wildcard searches.
+      this.wordString = '';
 
       //A Map object that will be populated with filter data retrieved by AJAX.
       this.mapFilterData = new Map();
 
       //A Map object that will track the retrieval of search filter data and
-      //other JSON files we need to get.
+      //other JSON files we need to get. Note: one of the files is txt, not JSON.
       this.mapJsonRetrieved = new Map();
 
       //A Map object which will be repopulated on every search initiation,
@@ -250,6 +261,9 @@ class StaticSearch{
         }
       }
 
+      //A flag for easier debugging.
+      this.debug = false;
+
       //Configuration of a specific version string to avoid JSON caching.
       this.versionString = this.ssForm.getAttribute('data-versionString');
 
@@ -265,25 +279,31 @@ class StaticSearch{
       //at the beginning of every new search.
       this.terms = new Array();
 
+      //An arbitrary limit on the number of stems we will search for in 
+      //any given search. TODO: Make this configurable and provide error
+      //messages for the user when exceeded.
+      this.termLimit = 50;
+
       //Captions
       this.captions = ss.captions; //Default; override this if you wish by setting the property after instantiation.
       this.captionLang  = document.getElementsByTagName('html')[0].getAttribute('lang') || 'en'; //Document language.
       this.captionSet   = this.captions[this.captionLang]; //Pointer to the caption object we're going to use.
 
+      //Default set of stopwords
+      this.stopwords = ss.stopwords; //temporary default.
+
       //The collection of JSON filter files that we need to retrieve.
       this.jsonToRetrieve = [];
       this.jsonToRetrieve.push({id: 'ssStopwords', path: this.jsonDirectory + 'ssStopwords' + this.versionString + '.json'});
       this.jsonToRetrieve.push({id: 'ssTitles', path: this.jsonDirectory + 'ssTitles' + this.versionString + '.json'});
-      this.jsonToRetrieve.push({id: 'ssTokens', path: this.jsonDirectory + 'ssTokens' + this.versionString + '.json'});
+      this.jsonToRetrieve.push({id: 'ssWordString', path: this.jsonDirectory + 'ssWordString' + this.versionString + '.txt'});
+      //this.jsonToRetrieve.push({id: 'ssStems', path: this.jsonDirectory + 'ssStems' + this.versionString + '.json'});
       for (var f of document.querySelectorAll('fieldset.ssFieldset[id], fieldset.ssFieldset select[id]')){
         this.jsonToRetrieve.push({id: f.id, path: this.jsonDirectory + 'filters/' + f.id + this.versionString + '.json'});
       }
       //Flag to be set when all JSON is retrieved, to save laborious checking on
       //every search.
       this.allJsonRetrieved = false;
-
-      //Default set of stopwords
-      this.stopwords = ss.stopwords; //temporary default.
 
       //Boolean: should this instance report the details of its search
       //in human-readable form?
@@ -314,7 +334,7 @@ class StaticSearch{
       //This allows the user to navigate through searches using the back and
       //forward buttons; to avoid repeatedly pushing state when this happens,
       //we pass popping = true.
-      window.onpopstate = function(){this.parseQueryString(true)}.bind(this);
+      window.onpopstate = function(){this.parseUrlQueryString(true)}.bind(this);
 
       //We may need to turn off the browser history manipulation to do
       //automated tests, so make this switchable.
@@ -329,7 +349,7 @@ class StaticSearch{
 
       //Now we're instantiated, check to see if there's a query
       //string that should initiate a search.
-      this.parseQueryString();
+      this.parseUrlQueryString();
     }
     catch(e){
       console.log('ERROR: ' + e.message);
@@ -337,12 +357,13 @@ class StaticSearch{
   }
 
 /** @function staticSearch~jsonRetrieved
-  * @description this function is called whenever a JSON resource is retrieved
+  * @description this function is called whenever a resource is retrieved
   *              by the trickle-download process initiated on startup. It
   *              stores the data in the right place, and sets a flag to say
   *              that the data has been retrieved (or was not available).
   *
-  * @param json {json} the JSON retrieved by the AJAX request.
+  * @param json {json} the JSON retrieved by the AJAX request (not always
+  *             actually JSON).
   * @param path {String} the path from which it was retrieved.
   */
   jsonRetrieved(json, path){
@@ -351,9 +372,9 @@ class StaticSearch{
       this.mapJsonRetrieved.set('ssStopwords', GOT);
       return;
     }
-    if (path.match(/ssTokens.*json$/)){
-      this.tokens = new Map(Object.entries(json));
-      this.mapJsonRetrieved.set('ssTokens', GOT);
+    if (path.match(/ssWordString.*txt$/)){
+      this.wordString = json; //Not really JSON in this one case.
+      this.mapJsonRetrieved.set('ssWordString', GOT);
       return;
     }
     if (path.match(/ssTitles.*json$/)){
@@ -369,7 +390,7 @@ class StaticSearch{
   }
 
 /** @function staticSearch~getJson
-  * @description this function trickle-downloads a series of JSON files
+  * @description this function trickle-downloads a series of resource files
   *              which the object has determined it may need, getting
   *              them one at a time to avoid saturating the connection;
   *              while this is happening, a live search may be initiated
@@ -384,7 +405,7 @@ class StaticSearch{
         if (this.mapJsonRetrieved.get(this.jsonToRetrieve[jsonIndex].id) != GOT){
           this.mapJsonRetrieved.set(this.jsonToRetrieve[jsonIndex].id, GETTING);
           let fch = await fetch(this.jsonToRetrieve[jsonIndex].path);
-          let json = await fch.json();
+          let json = /.*\.txt$/.test(this.jsonToRetrieve[jsonIndex].path)? await fch.text() : await fch.json();
           this.jsonRetrieved(json, this.jsonToRetrieve[jsonIndex].path);
         }
         else{
@@ -392,7 +413,7 @@ class StaticSearch{
         }
       }
       catch(e){
-        console.log('ERROR: failed to retrieve JSON resource ' + this.jsonToRetrieve[jsonIndex].path + ': ' + e.message);
+        console.log('ERROR: failed to retrieve resource ' + this.jsonToRetrieve[jsonIndex].path + ': ' + e.message);
         this.mapJsonRetrieved.set(this.jsonToRetrieve[jsonIndex].id, FAILED);
       }
       return this.getJson(jsonIndex + 1);
@@ -402,7 +423,7 @@ class StaticSearch{
     }
   }
 
-/** @function StaticSearch~parseQueryString
+/** @function StaticSearch~parseUrlQueryString
   * @description this function is run after the class is instantiated
   *              to check whether there is a search string in the
   *              browser URL. If so, it parses it out and runs the
@@ -413,7 +434,7 @@ class StaticSearch{
   *                  the browser history)
   * @return {Boolean} true if a search is initiated otherwise false.
   */
-  parseQueryString(popping = false){
+  parseUrlQueryString(popping = false){
     let searchParams = new URLSearchParams(decodeURI(document.location.search));
     //Do we need to do a search?
     let searchToDo = false; //default
@@ -490,23 +511,24 @@ class StaticSearch{
   * @return {Boolean} true if a search is initiated otherwise false.
   */
   doSearch(popping = false){
-    //We start by intercepting any situation in which we may need the ssTokens
-    //collection, but we don't yet have it.
+    //We start by intercepting any situation in which we may need the
+    //ssWordString resource, but we don't yet have it.
     if (this.allowWildcards){
       if (/[\[\]?*]/.test(this.queryBox.value)){
-        if (this.mapJsonRetrieved.get('ssTokens') != GOT){
-          let promise = fetch(self.jsonDirectory + 'ssTokens' + this.versionString + '.json', this.fetchHeaders)
+        var self = this;
+        if (this.mapJsonRetrieved.get('ssWordString') != GOT){
+          let promise = fetch(self.jsonDirectory + 'ssWordString' + self.versionString + '.txt', self.fetchHeaders)
             .then(function(response) {
-              return response.json();
-            })
-            .then(function(json) {
-              self.tokens = new Map(Object.entries(json));
-              self.mapJsonRetrieved.set('ssTokens', GOT);
+              return response.text();
+            }.bind(this))
+            .then(function(text) {
+              self.wordString = text;
+              self.mapJsonRetrieved.set('ssWordString', GOT);
               self.doSearch();
-            }.bind(self))
+            }.bind(this))
             .catch(function(e){
-              console.log('Error attempting to retrieve token list: ' + e);
-            }.bind(self));
+              console.log('Error attempting to retrieve word list: ' + e);
+            }.bind(this));
           return false;
         }
       }
@@ -712,6 +734,12 @@ class StaticSearch{
       return false;
     }
 
+    //Broadness check
+    if (!isPhrasal && !this.termPattern.test(strInput)){
+      alert(this.captionSet.strSearchTooBroad + ' (' + strInput + ')');
+      return false;
+    }
+
     //Set a flag if it starts with a cap.
     let firstLetter = strInput.replace(/^[\+\-]/, '').substring(0, 1);
     let startsWithCap = (firstLetter.toLowerCase() !== firstLetter);
@@ -731,16 +759,25 @@ class StaticSearch{
       }
     }
     else{
-      //Else is it a wildcard?
+      //Else is it a wildcard? Wildcards are expanded to a sequence of matching terms.
       if (this.allowWildcards && /[\[\]?*]/.test(strInput)){
         let re = this.wildcardToRegex(strInput);
-        let totalWeight = 0;
-        this.tokens.forEach(function(value, key){
-          if (re.test(key) && (totalWeight < this.downloadLimit)){
-            this.terms.push({str: strInput, stem: key, capFirst: startsWithCap, type: MAY_CONTAIN});
-            totalWeight += value[0];
+        let matches = [...this.wordString.matchAll(re)];
+        //Now we have a nested array of matches. We need to stem and filter.
+        let stems = [];
+        for (let m of matches){
+          let mStem = this.stemmer.stem(m[1].toLowerCase());
+          let term = m[0].replace(/[\|]/g, '');
+          console.log(term);
+          if (this.terms.length < this.termLimit){
+            if (this.allowPhrasal){
+              this.terms.push({str: term, stem: mStem, capFirst: startsWithCap, type: PHRASE});
+            }
+            else{
+              this.terms.push({str: term, stem: mStem, capFirst: startsWithCap, type: MAY_CONTAIN});
+            }
           }
-        }.bind(this));
+        }
       }
       else{
         //Else is it a must-contain?
@@ -947,40 +984,75 @@ class StaticSearch{
     }
 
 /** @function StaticSearch~writeSearchReport
-  * @description this outputs a human-readable explanation of the search
-  * that's being done, to clarify for users what they've chosen to look for.
+  * @description This outputs a human-readable explanation of the search
+  *              that's being done, to clarify for users what they've chosen 
+  *              to look for. Note that the output div is hidden by default. 
   * @return {Boolean} true if the process succeeds, otherwise false.
   */
   writeSearchReport(){
-    try{
-      let sp = document.querySelector('#searchReport');
-      if (sp){sp.parentNode.removeChild(sp);}
-      let arrOutput = [];
-      let i, d, p, t;
-      for (i=0; i<this.terms.length; i++){
-        if (!arrOutput[this.terms[i].type]){
-          arrOutput[this.terms[i].type] = {type: this.terms[i].type, terms: []};
+    if (this.showSearchReport){
+      try{
+        let sr = document.querySelector('#searchReport');
+        if (sr){sr.parentNode.removeChild(sr);}
+        let arrOutput = [];
+        let i, d, p, t;
+        for (i=0; i<this.terms.length; i++){
+          if (!arrOutput[this.terms[i].type]){
+            arrOutput[this.terms[i].type] = {type: this.terms[i].type, terms: []};
+          }
+          //arrOutput[this.terms[i].type].terms.push('"' + this.terms[i].str + '"');
+          arrOutput[this.terms[i].type].terms.push(`"${this.terms[i].str}" (${this.terms[i].stem})`);
         }
-        arrOutput[this.terms[i].type].terms.push('"' + this.terms[i].str + '"');
+        arrOutput.sort(function(a, b){return a.type - b.type;})
+
+        d = document.createElement('div');
+        d.setAttribute('id', 'searchReport');
+
+        arrOutput.forEach((obj)=>{
+          p = document.createElement('p');
+          t = document.createTextNode(this.captionSet[obj.type] + obj.terms.join(', '));
+          p.appendChild(t);
+          d.appendChild(p);
+        });
+        //this.resultsDiv.insertBefore(d, this.resultsDiv.firstChild);
+        this.resultsDiv.parentNode.insertBefore(d, this.resultsDiv);
+        return true;
       }
-      arrOutput.sort(function(a, b){return a.type - b.type;})
+      catch(e){
+        console.log('ERROR: ' + e.message);
+        return false;
+      }
+      try{
+        let sp = document.querySelector('#searchReport');
+        if (sp){sp.parentNode.removeChild(sp);}
+        let arrOutput = [];
+        let i, d, p, t;
+        for (i=0; i<this.terms.length; i++){
+          if (!arrOutput[this.terms[i].type]){
+            arrOutput[this.terms[i].type] = {type: this.terms[i].type, terms: []};
+          }
+          arrOutput[this.terms[i].type].terms.push('"' + this.terms[i].str + '"');
+        }
+        arrOutput.sort(function(a, b){return a.type - b.type;})
 
-      d = document.createElement('div');
-      d.setAttribute('id', 'searchReport');
+        d = document.createElement('div');
+        d.setAttribute('id', 'searchReport');
 
-      arrOutput.forEach((obj)=>{
-        p = document.createElement('p');
-        t = document.createTextNode(this.captionSet[obj.type] + obj.terms.join(', '));
-        p.appendChild(t);
-        d.appendChild(p);
-      });
-      this.resultsDiv.insertBefore(d, this.resultsDiv.firstChild);
-      return true;
+        arrOutput.forEach((obj)=>{
+          p = document.createElement('p');
+          t = document.createTextNode(this.captionSet[obj.type] + obj.terms.join(', '));
+          p.appendChild(t);
+          d.appendChild(p);
+        });
+        this.resultsDiv.insertBefore(d, this.resultsDiv.firstChild);
+        return true;
+      }
+      catch(e){
+        console.log('ERROR: ' + e.message);
+        return false;
+      }
     }
-    catch(e){
-      console.log('ERROR: ' + e.message);
-      return false;
-    }
+    return true;
   }
 
 /**
@@ -1009,7 +1081,7 @@ class StaticSearch{
   * are ready to handle a search, in that attempts have been made to
   * retrieve all JSON files relating to the current search.
   * The index is deemed ready when either a) all the JSON files
-  * for required tokens and filters have been retrieved and their
+  * for required stems and filters have been retrieved and their
   * contents merged into the required structures, or b) a retrieval
   * has failed, so an empty placeholder has been inserted to signify
   * that there is no such dataset.
@@ -1018,22 +1090,22 @@ class StaticSearch{
   * .then() calls the processResults function.
   */
   populateIndexes(){
-    var i, imax, tokensToFind = [], promises = [], emptyIndex,
+    var i, imax, stemsToFind = [], promises = [], emptyIndex,
     jsonSubfolder, filterSelector, filterIds;
 //We need a self pointer because this will go out of scope.
     var self = this;
     try{
-  //For each token in the search string
+  //For each stem in the search string
       for (i=0, imax=this.terms.length; i<imax; i++){
-  //Now check whether we already have an index entry for this token
+  //Now check whether we already have an index entry for this stem
         if (!this.index.hasOwnProperty(this.terms[i].stem)){
-  //If not, add it to the array of tokens we want to retrieve.
-          tokensToFind.push(this.terms[i].stem);
+  //If not, add it to the array of stems we want to retrieve.
+          stemsToFind.push(this.terms[i].stem);
         }
         if (this.terms[i].capFirst){
           if (!this.index.hasOwnProperty(this.terms[i].str)){
-    //If not, add it to the array of tokens we want to retrieve.
-            tokensToFind.push(this.terms[i].str);
+    //If not, add it to the array of stems we want to retrieve.
+            stemsToFind.push(this.terms[i].str);
           }
         }
       }
@@ -1117,43 +1189,59 @@ class StaticSearch{
               console.log('Error attempting to retrieve title list: ' + e);
             }.bind(self));
         }
-//For glob searching, we'll need to care about the list of tokens too.
+//For glob searching, we'll need to care about the string of words too.
         if (this.allowWildcards == true){
-          if (this.mapJsonRetrieved.get('ssTokens') != GOT){
-            promises[promises.length] = fetch(self.jsonDirectory + 'ssTokens' + this.versionString + '.json', this.fetchHeaders)
+          if (this.mapJsonRetrieved.get('ssWordString') != GOT){
+            promises[promises.length] = fetch(self.jsonDirectory + 'ssWordString' + this.versionString + '.txt', this.fetchHeaders)
+              .then(function(response) {
+                return response.text();
+              })
+              .then(function(text) {
+                self.wordString = text;
+                self.mapJsonRetrieved.set('ssWordString', GOT);
+              }.bind(self))
+              .catch(function(e){
+                console.log('Error attempting to retrieve word string: ' + e);
+              }.bind(self));
+          }
+        }
+        //OLD approach
+        /*if (this.allowWildcards == true){
+          if (this.mapJsonRetrieved.get('ssStems') != GOT){
+            promises[promises.length] = fetch(self.jsonDirectory + 'ssStems' + this.versionString + '.json', this.fetchHeaders)
               .then(function(response) {
                 return response.json();
               })
               .then(function(json) {
-                self.tokens = new Map(Object.entries(json));
-                self.mapJsonRetrieved.set('ssTokens', GOT);
+                self.stems = new Map(Object.entries(json));
+                self.mapJsonRetrieved.set('ssStems', GOT);
               }.bind(self))
               .catch(function(e){
-                console.log('Error attempting to retrieve token list: ' + e);
+                console.log('Error attempting to retrieve stem list: ' + e);
               }.bind(self));
           }
-        }
+        }*/
       }
 
       //If we do need to retrieve JSON index data, then do it
-      if (tokensToFind.length > 0){
+      if (stemsToFind.length > 0){
 
 //Set off fetch operations for the things we don't have yet.
-        for (i=0, imax=tokensToFind.length; i<imax; i++){
+        for (i=0, imax=stemsToFind.length; i<imax; i++){
 
 //We will first add an empty index so that if nothing is found, we won't need
 //to search again.
-          emptyIndex = {'token': tokensToFind[i], 'instances': []}; //used as return value when nothing retrieved.
+          emptyIndex = {'stem': stemsToFind[i], 'instances': []}; //used as return value when nothing retrieved.
 
-          this.tokenFound(emptyIndex);
+          this.stemFound(emptyIndex);
 
-//Figure out whether we're retrieving a lower-case or an upper-case token.
+//Figure out whether we're retrieving a lower-case or an upper-case stem.
 //TODO: Do we need to worry about camel-case?
-          jsonSubfolder = (tokensToFind[i].toLowerCase() == tokensToFind[i])? 'lower/' : 'upper/';
+          jsonSubfolder = (stemsToFind[i].toLowerCase() == stemsToFind[i])? 'lower/' : 'upper/';
 
-//We create an array of fetches to get the json file for each token,
+//We create an array of fetches to get the json file for each stem,
 //assuming it's there.
-          promises[promises.length] = fetch(self.jsonDirectory + jsonSubfolder + tokensToFind[i] + this.versionString + '.json', this.fetchHeaders)
+          promises[promises.length] = fetch(self.jsonDirectory + jsonSubfolder + stemsToFind[i] + this.versionString + '.json', this.fetchHeaders)
 //If we get a response, and it looks good
               .then(function(response){
                 if ((response.status >= 200) &&
@@ -1161,14 +1249,14 @@ class StaticSearch{
                     (response.headers.get('content-type')) &&
                     (response.headers.get('content-type').includes('application/json'))) {
 //then we ask for response.json(), which is itself a promise, to which we add a .then to store the data.
-                  return response.json().then(function(data){ self.tokenFound(data); }.bind(self));
+                  return response.json().then(function(data){ self.stemFound(data); }.bind(self));
                 }
               })
 //If something goes wrong, then we store an empty index
 //through the notFound function.
               .catch(function(e){
-                console.log('Error attempting to retrieve ' + tokensToFind[i] + ': ' + e);
-                return function(emptyIndex){self.tokenFound(emptyIndex);}.bind(self, emptyIndex);
+                console.log('Error attempting to retrieve ' + stemsToFind[i] + ': ' + e);
+                return function(emptyIndex){self.stemFound(emptyIndex);}.bind(self, emptyIndex);
               }.bind(self));
             }
       }
@@ -1191,23 +1279,23 @@ class StaticSearch{
   }
 
 /**
-  * @function StaticSearch~tokenFound
+  * @function StaticSearch~stemFound
   * @description Before a request for a JSON file is initially made,
-  *              an empty index is stored, indexed under the token
+  *              an empty index is stored, indexed under the stem
   *              which is being searched, so that whether or not we
   *              successfully retrieve data, we won't have to try
   *              again in a subsequent search in the same session.
   *              Then, when a request for a JSON file for a specific
-  *              token results in a JSON file with data, we overwrite
-  *              the data in the index, indexed under the token.
+  *              stem results in a JSON file with data, we overwrite
+  *              the data in the index, indexed under the stem.
   *              Sometimes the data coming in may be an instance
   *              of an empty index, if the retrieval code knows it
   *              got nothing.
-  * @param {Object} data the data structure retrieved for the token.
+  * @param {Object} data the data structure retrieved for the stem.
   */
-  tokenFound(data){
+  stemFound(data){
     try{
-      this.index[data.token] = data;
+      this.index[data.stem] = data;
     }
     catch(e){
       console.log('ERROR: ' + e.message);
@@ -1215,19 +1303,19 @@ class StaticSearch{
   }
 
 /**
-  * @function staticSearch~indexTokenHasDoc
-  * @description This function, given an index token and a docUri, searches
-  *              to see if there is an entry in the token's instances for
+  * @function staticSearch~indexStemHasDoc
+  * @description This function, given an index stem and a docUri, searches
+  *              to see if there is an entry in the stem's instances for
   *              that docUri.
-  * @param {String} token the index token to search for.
+  * @param {String} stem the index stem to search for.
   * @param {String} docUri the docUri to search for.
   * @return {Boolean} true if found, false if not.
   */
-  indexTokenHasDoc(token, docUri){
+  indexStemHasDoc(stem, docUri){
     let result = false;
-    if (this.index[token]){
-      for (let i=0; i<this.index[token].instances.length; i++){
-        if (this.index[token].instances[i].docUri == docUri){
+    if (this.index[stem]){
+      for (let i=0; i<this.index[stem].instances.length; i++){
+        if (this.index[stem].instances[i].docUri == docUri){
           result = true;
           break;
         }
@@ -1461,7 +1549,7 @@ class StaticSearch{
             let docUrisToDelete = [];
             for (let docUri of self.resultSet.mapDocs.keys()){
               for (let mc of must_contains){
-                if (! self.indexTokenHasDoc(self.terms[mc].stem, docUri)){
+                if (! self.indexStemHasDoc(self.terms[mc].stem, docUri)){
                   docUrisToDelete.push(docUri);
                 }
               }
@@ -1590,7 +1678,12 @@ class StaticSearch{
   * input. The token should contain wildcard characters (asterisk,
   * question mark and square brackets). The function converts this
   * to a JS regular expression. For example: th*n[gk]? would 
-  * become /^th.*[gk].$/.
+  * become /^th.*[gk].$/. The regex is created with leading and
+  * trailing pipe characters, because the string of words against
+  * which it will be matched uses these as delimiters, and it has
+  * a capturing group for the content between the pipes. Because of
+  * the use of the pipe delimiter, a negative character class [^\\|]
+  * (i.e. 'not a pipe') is used in place of a dot.
   * @param {String}   strToken a string of text with no spaces.
   * @return {RegExp | null} a regular expression; or null if one 
   *                         cannot be constructed.
@@ -1603,10 +1696,10 @@ class StaticSearch{
     }
     //Generate the regex.
     let esc = strToken.replace(/[.+^${}()|\\]/g, '\\$&');
-    let strRe  = esc.replace(/[\*]/g, '\.$&').replace(/[\?]/g, '\.');
+    let strRe  = esc.replace(/[\?]/g, '[^\\|]').replace(/[\*]/g, '[^\\|]$&?');
     //Test the regex, and return it if OK, otherwise return null.
     try{
-      let re = new RegExp('^' + strRe + '$');
+      let re = new RegExp('\\|(' + strRe + ')\\|', 'g');
       return re;
     }
     catch(e){

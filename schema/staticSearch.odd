@@ -69,7 +69,7 @@
           <head>Text search features</head>
           <list>
             <item>Level: Intermediate</item>
-            <item>Last Updated: <date when="2019-12-16">16 December 2019</date></item>
+            <item>Last Updated: <date when="2020-07-03">3 July 2020</date></item>
           </list>
           <p>The Generator supports the following features:</p>
           <list>
@@ -87,8 +87,10 @@
             size of the index.</item>
             <item>Keyword-in-context search results. This is also configurable, since including contexts
             increases the size of the index.</item>
+            <item>Wildcard searches, using the asterisk (*), question mark (?) and character
+            classes ([ab]). So you can search for <code>lo[uv]e?</code> to find <q>loved</q>, <q>loued</q>, <q>loves</q>, <q>louer</q>, etc.</item>
             <item>Search filtering using any metadata you like, allowing users to limit their search to specific
-            document types.</item>
+            document types, date ranges, or other features.</item>
           </list>
         </div>
       <div xml:id="searchFacetFeatures">
@@ -104,6 +106,10 @@
           <item><term>Date ranges</term>. You might assign each document a date (or a date range) for its first 
           publication and another for its last publication; then users could search for documents first published in a certain
           date range and last published before another date.</item>
+          <item><term>Number ranges</term>. Similar to date ranges, you can assign a number to
+          each document and then filter the search on a subrange of those numbers. For example, 
+          a collection of poems might be filtered on the number of stanzas, so users could
+          find all two-stanza poems or all poems with three or more stanzas.</item>
           <item><term>Booleans</term> (true/false values). You might for instance specify that some poems are 
           illustrated while others are not. The user could then limit their search only to illustrated poems.</item>
         </list>
@@ -661,7 +667,7 @@
         <head>How does it work?</head>
         <list>
           <item>Level: Advanced</item>
-          <item>Last Updated: <date when="2020-03-20">20 March 2020</date></item>
+          <item>Last Updated: <date when="2020-07-03">3 July 2020</date></item>
         </list>
         <div xml:id="buildingTheIndex">
           <head>Building the index</head>
@@ -674,7 +680,8 @@
             index.</p>
           
           <p>In addition, separate JSON files are created for the list of document titles, and for your 
-            stopword list if you have specified one.</p>
+            stopword list if you have specified one. A single text file is also created containing
+            all the unique terms in the collection, used when doing wildcard searches.</p>
           
           <p>Next, if you have specified search facets in your document headers, the processor
             will then create a separate JSON file for each of those search facets, consisting of a list 
@@ -705,7 +712,8 @@
          wanting a list of all the documents classified as <soCalled>Poems</soCalled>. This requires that
          the JSON file with information about that facet be downloaded. So there is some advantage 
          in having the JavaScript start downloading some of the essential files (titles, stopwords and
-         so on) as soon as the page loads, and it also starts downloading the facet files in the background.</p>
+         so on) as soon as the page loads, and it also starts downloading the facet files in the
+         background.</p>
          
          <p>At the same time, though, we don't want to clog up the connection downloading these files
          when the user may do a simple text search which doesn't depend on them, so these files
@@ -971,7 +979,9 @@
           </elementSpec>
           
           <elementSpec ident="wildcardSearch" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
-            <gloss>Whether or not to support wildcard searches.</gloss>
+            <gloss>Whether or not to support wildcard searches. Note that wildcard searches are
+            more effective when phrasal searching is also turned on, because the contexts 
+            available for phrasal searches are also used to provide wildcard results.</gloss>
             <content>
               <dataRef name="boolean"/>
             </content>
