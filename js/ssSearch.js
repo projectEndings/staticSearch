@@ -755,10 +755,12 @@ class StaticSearch{
         //Now we have a nested array of matches. We need to stem and filter.
         let stems = [];
         for (let m of matches){
-          let mStem = this.stemmer.stem(m[1]);
-          if (this.terms.length < this.termLimit){
-            this.terms.push({str: m[1], stem: mStem, capFirst: startsWithCap, type: PHRASE});
-          }
+          let mStem = this.stemmer.stem(m[1].toLowerCase());
+          let term = m[0].replace(/[\|]/g, '');
+          console.log(term);
+          //if (this.terms.length < this.termLimit){
+            this.terms.push({str: term, stem: mStem, capFirst: startsWithCap, type: PHRASE});
+          //}
         }
       }
       else{
