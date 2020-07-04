@@ -203,10 +203,6 @@ class StaticSearch{
       //Boolean filters
       this.boolFilterSelects =
            Array.from(document.querySelectorAll("select[class='staticSearch.bool']"));
-
-      //A pattern to check the search string to ensure that it's not going
-      //to retrieve a million words.
-      this.termPattern = /^([\*\?\[\]]*[^\*\?\[\]]){3,}[\*\?\[\]]*$/;
       
       //An object which will be filled with a complete list of all the
       //individual stems indexed for the site. Data retrieved later by
@@ -280,9 +276,33 @@ class StaticSearch{
       this.terms = new Array();
 
       //An arbitrary limit on the number of stems we will search for in 
-      //any given search. TODO: Make this configurable and provide error
-      //messages for the user when exceeded.
-      this.termLimit = 50;
+      //any given search. TODO: May need to provide an error message 
+      //for this.
+      this.termLimit = 50; //default
+      tmp = document.querySelector("form[data-termLimit]");
+      if (tmp){
+        let i = parseInt(tmp.getAttribute('data-termLimit'));
+        if ( i > 0){
+          this.termLimit = i;
+        }
+      }
+
+      //An arbitrary limit on the number of literal characters
+      //that must be required in a search term before it is
+      //processed (to avoid over-broad searches).
+      this.charsRequired = 3; //default; suits English
+      tmp = document.querySelector("form[data-charsRequired]");
+      if (tmp){
+        let i = parseInt(tmp.getAttribute('data-charsRequired'));
+        if ( i > 0){
+          this.charsRequired = i;
+        }
+      }
+
+      //A pattern to check the search string to ensure that it's not going
+      //to retrieve a million words.
+      this.termPattern = new RegExp('^([\\*\\?\\[\\]]*[^\\*\\?\\[\\]]){' + this.charsRequired + ',}[\\*\\?\\[\\]]*$');
+      //this.termPattern = /^([\*\?\[\]]*[^\*\?\[\]]){3,}[\*\?\[\]]*$/;
 
       //Captions
       this.captions = ss.captions; //Default; override this if you wish by setting the property after instantiation.
