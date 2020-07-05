@@ -87,7 +87,7 @@
   ss.captions['en'][MAY_CONTAIN]         = 'May contain: ';
   ss.captions['en'][WILDCARD]            = 'Wildcard term: ';
   ss.captions['en'].strScore             = 'Score: ';
-  ss.captions['en'].strSearchTooBroad    = 'Your search is too broad. Include at least three letters in every term.';
+  ss.captions['en'].strSearchTooBroad    = 'Your search is too broad. Include more letters in every term.';
 
 
 /**
