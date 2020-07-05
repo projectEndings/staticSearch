@@ -152,7 +152,8 @@ class StaticSearch{
               redirect: 'follow',
               referrer: 'no-referrer'
         };
-      let tmp;
+
+      //Essential query text box.
       this.queryBox =
            document.querySelector("input#ssQuery[type='text']");
       if (!this.queryBox){
@@ -232,30 +233,28 @@ class StaticSearch{
       //Any / all selector for combining filters. TODO. MAY NOT BE USED.
       this.matchAllFilters = false;
 
-      //Configuration for phrasal searches if found.
-      //Default
-      this.allowPhrasal = true;
-      tmp = document.querySelector("form[data-allowPhrasal]");
-      if (tmp && !/(y|Y|yes|true|True|1)/.test(tmp.getAttribute('data-allowphrasal'))){
-        this.allowPhrasal = false;
+      //Nested convenience function for getting int values from form attributes.
+      this.getConfigInt = function getConfigInt(ident, defaultVal){
+        let i = parseInt(this.ssForm.getAttribute('data-' + ident.toLowerCase()));
+        return (isNaN(i))? defaultVal : i;
       }
 
-      //Configuration for use of wildcards. Defaults to false.
-      this.allowWildcards = false;
-      tmp = document.querySelector("form[data-allowWildcards]");
-      if (tmp && /(y|Y|yes|true|True|1)/.test(tmp.getAttribute('data-allowwildcards'))){
-        this.allowWildcards = true;
+      //Nested convenience function for getting bool values from form attributes.
+      //This allows latitude in how bools are specified.
+      this.getConfigBool = function getConfigBool(ident, defaultVal){
+        let b = this.ssForm.getAttribute('data-' + ident.toLowerCase());
+        return (/^\s*(y|Y|yes|true|True|1)\s*$/.test(b))? true : (/^\s*(n|N|no|false|False|0)\s*$/.test(b))? false: defaultVal;
       }
 
-      //Limit to the weight of JSON that will be downloaded for a single wildcard term.
-      this.downloadLimit = 1000000; //default.
-      tmp = document.querySelector("form[data-downloadLimit]");
-      if (tmp){
-        let i = parseInt(tmp.getAttribute('data-downloadLimit'));
-        if ( i > 0){
-          this.downloadLimit = i;
-        }
-      }
+      //Configuration for phrasal searches if found. Default true.
+      this.allowPhrasal = this.getConfigBool('allowPhrasal', true);
+
+      //Configuration for use of wildcards. Default false.
+      this.allowWildcards = this.getConfigBool('allowWildcards', false);
+
+      //Limit to the weight of JSON that will be downloaded for a 
+      //single wildcard term. NOT CURRENTLY USED. Default 1MB.
+      this.downloadLimit = this.getConfigInt('downloadLimit', 1000000);
 
       //A flag for easier debugging.
       this.debug = false;
@@ -277,32 +276,18 @@ class StaticSearch{
 
       //An arbitrary limit on the number of stems we will search for in 
       //any given search. TODO: May need to provide an error message 
-      //for this.
-      this.termLimit = 50; //default
-      tmp = document.querySelector("form[data-termLimit]");
-      if (tmp){
-        let i = parseInt(tmp.getAttribute('data-termLimit'));
-        if ( i > 0){
-          this.termLimit = i;
-        }
-      }
+      //for this. Default 50.
+      this.termLimit = this.getConfigInt('termLimit', 50);
 
       //An arbitrary limit on the number of literal characters
       //that must be required in a search term before it is
-      //processed (to avoid over-broad searches).
-      this.charsRequired = 3; //default; suits English
-      tmp = document.querySelector("form[data-charsRequired]");
-      if (tmp){
-        let i = parseInt(tmp.getAttribute('data-charsRequired'));
-        if ( i > 0){
-          this.charsRequired = i;
-        }
-      }
+      //processed (to avoid over-broad searches). Default of 3 suits 
+      //English.
+      this.charsRequired = this.getConfigInt('charsRequired', 3);
 
       //A pattern to check the search string to ensure that it's not going
       //to retrieve a million words.
       this.termPattern = new RegExp('^([\\*\\?\\[\\]]*[^\\*\\?\\[\\]]){' + this.charsRequired + ',}[\\*\\?\\[\\]]*$');
-      //this.termPattern = /^([\*\?\[\]]*[^\*\?\[\]]){3,}[\*\?\[\]]*$/;
 
       //Captions
       this.captions = ss.captions; //Default; override this if you wish by setting the property after instantiation.
@@ -329,24 +314,13 @@ class StaticSearch{
       //in human-readable form?
       this.showSearchReport = false;
 
-      //How many results should be shown per page?
+      //How many results should be shown per page? Default 10.
       //Default. NOT USED, AND PROBABLY POINTLESS.
-      this.resultsPerPage = 10;
-      tmp = document.querySelector("form[data-resultsperpage]");
-      if (tmp){
-        let parsed = parseInt(tmp.getAttribute('data-resultsperpage'));
-        if (!isNaN(parsed)){this.resultsPerPage = parsed;}
-      }
+      this.resultsPerPage = this.getConfigInt('resultsPerPage', 10);
 
       //How many keyword in context strings should be included
-      //in search results?
-      //Default
-      this.maxKwicsToShow = 10;
-      tmp = document.querySelector("form[data-maxkwicstoshow]");
-      if (tmp){
-        let parsed = parseInt(tmp.getAttribute('data-maxkwicstoshow'));
-        if (!isNaN(parsed)){this.maxKwicsToShow = parsed;}
-      }
+      //in search results? Default 10.
+      this.maxKwicsToShow = this.getConfigInt('maxKwicsToShow', 10);
 
       //Result handling object
       this.resultSet = new SSResultSet(this.maxKwicsToShow);
