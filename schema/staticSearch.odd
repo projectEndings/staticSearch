@@ -757,6 +757,7 @@
               <sequence preserveOrder="false">
                 <elementRef key="searchFile"/>
                 <elementRef key="versionFile" minOccurs="0"/>
+                <elementRef key="stemmerFolder" minOccurs="0"/>
                 <elementRef key="recurse"/>
                 <elementRef key="phrasalSearch" minOccurs="0"/>
                 <elementRef key="wildcardSearch" minOccurs="0"/>
@@ -904,6 +905,16 @@
             will not use cached versions of older index files.</gloss>
             <content>
               <dataRef name="anyURI"/>
+            </content>
+          </elementSpec>
+          
+          <elementSpec ident="stemmerFolder" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>The name of a folder inside the staticSearch <code>/stemmers/</code> folder, 
+              in which the JavaScript and XSLT implementations
+            of stemmers can be found. If left blank, then the staticSearch default English 
+            stemmer will be used (<code>stemmers/en</code>).</gloss>
+            <content>
+              <dataRef name="NCName"/>
             </content>
           </elementSpec>
           

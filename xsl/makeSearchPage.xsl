@@ -243,7 +243,7 @@
             </xsl:if>
 
             <!--Now add the scripts to the staticSearch library-->
-            <script src="{$outputFolder}/ssPorter2Stemmer.js"><!-- Don't self-close script tags. --></script>
+            <script src="{$outputFolder}/ssStemmer.js"><!-- Don't self-close script tags. --></script>
             <script src="{$outputFolder}/ssSearch.js"><!-- Don't self-close script tags. --></script>
 
             <!--Special on script onload to the start up the StaticSearch-->

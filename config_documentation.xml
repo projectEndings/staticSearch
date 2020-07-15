@@ -3,6 +3,7 @@
     <params>
         <searchFile>docs/index.html</searchFile>
         <versionFile>test/VERSION</versionFile>
+        <stemmerFolder>en</stemmerFolder>
         <recurse>false<!--Need to set recurse to true for the test--></recurse>
         <phrasalSearch>true</phrasalSearch>
         <wildcardSearch>true</wildcardSearch>
