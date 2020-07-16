@@ -68,6 +68,11 @@
     <property name="outputFolder" if:set="config.params.outputFolder" value="${config.params.outputFolder}"/>
     <property name="outputFolder" unless:set="config.params.outputFolder" value="staticSearch"/>
     
+    <!--Stemmer folder, which is forked, depending on whether or not a stemmer folder
+        is specified in the configuration file-->
+    <property name="stemmerFolder" if:set="config.params.stemmerFolder" value="${config.params.stemmerFolder}"/>
+    <property name="stemmerFolder" unless:set="config.params.stemmerFolder" value="en"/>
+    
     <!--The directory for all of the static search assets (JSON files, Javascripts, et cetera).
         Note that the static search directory is placed directly within the collection directory-->
     <property name="staticSearchDir" value="${collectionDirName}/${outputFolder}/"/>
@@ -318,6 +323,11 @@
         <copy todir="${staticSearchDir}/">
             <fileset dir="${basedir}/js">
                 <include name="ss**.js"/>
+            </fileset>
+        </copy>
+        <copy todir="${staticSearchDir}/">
+            <fileset dir="${basedir}/stemmers/${stemmerFolder}">
+                <include name="ssStemmer.js"/>
             </fileset>
         </copy>
     </target>

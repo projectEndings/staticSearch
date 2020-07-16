@@ -3,6 +3,7 @@
     <params>
         <searchFile>test/searchWorthReading.html</searchFile>
         <versionFile>test/VERSION</versionFile>
+        <stemmerFolder>en</stemmerFolder>
         <recurse>true<!--Need to set recurse to true for the test--></recurse>
         <phrasalSearch>true</phrasalSearch>
         <createContexts>true</createContexts>

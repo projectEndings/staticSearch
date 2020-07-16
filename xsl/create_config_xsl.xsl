@@ -69,10 +69,20 @@
     
     
     <xd:doc>
-        <xd:desc><xd:ref name="schema" type="variable">$ssBasedir</xd:ref> is the base directory for the static
+        <xd:desc><xd:ref name="ssBasedir" type="variable">$ssBasedir</xd:ref> is the base directory for the static
             search codebase. It is just the directory above the /xsl/ directory that contains this file.</xd:desc>
     </xd:doc>
     <xsl:variable name="ssBaseDir" select="substring-before(document-uri(/),'/xsl/create_config_xsl.xsl')"/>
+    
+    <xd:doc>
+        <xd:desc><xd:ref name="ssDefaultStemmerFolder" 
+            type="variable">$ssDefaultStemmerFolder</xd:ref>
+            is the location to use when no specific stemmer has been supplied. 
+            It's the location of the English Porter 2 stemmer.
+        </xd:desc>
+    </xd:doc>
+    <xsl:variable name="ssDefaultStemmerFolder" as="xs:string" 
+        select="'en'"/>
     
     
     <xd:doc>
@@ -148,6 +158,13 @@
             versionDoc if there is one; otherwise it is an empty string.</xd:desc>
     </xd:doc>
     <xsl:variable name="versionString" select="if (($versionDocUri != '') and (unparsed-text-available($versionDocUri))) then replace(normalize-space(unparsed-text($versionDocUri)), '\s+', '_') else ''" as="xs:string"/>
+    
+    <xd:doc>
+        <xd:desc><xd:ref name="stemmerFolder" type="variable">$stemmerFolder</xd:ref> is the location of 
+        a folder containing XSLT and JavaScript implementations of stemmers. If empty, we default to 
+        ssDefaultStemmerFolder.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="stemmerFolder" select="if ($configDoc//stemmerFolder) then $configDoc//stemmerFolder/text() else $ssDefaultStemmerFolder" as="xs:string"/>
     
     <xd:doc>
         <xd:desc><xd:ref name="collectionDir" type="variable">$searchDirName</xd:ref> is the path to the
@@ -294,6 +311,10 @@
                     </xd:desc>
                 </xd:doc>
                 
+                <!-- First, we have to include the stemmer. We can't do this dynamically because
+                    a dynamic variable can't be used to create a shadow attribute. -->
+                <xso:include href="{$ssBaseDir || '/stemmers/' || $stemmerFolder || '/ssStemmer.xsl'}"/>
+                
                 <!--Now, create all the parameters-->
                 
                 <!--First, create the global varialbes and parameters-->
@@ -405,7 +426,9 @@
                     </xsl:choose>
                 </xso:param>
             </xsl:for-each>
-      
+            
+            <!-- We record the current default stemmer folder. -->
+            <xso:param name="defaultStemmerFolder"><xsl:value-of select="$ssDefaultStemmerFolder"/></xso:param>
             
             <!-- We need an outputFolder element even if the user hasn't put one in. -->
             <xsl:if test="not($configDoc//params/outputFolder)">
@@ -433,6 +456,7 @@
         <xso:variable name="tempDir"><xsl:value-of select="$tempDir"/></xso:variable>
         <xso:variable name="ssBaseDir"><xsl:value-of select="$ssBaseDir"/></xso:variable>
         
+        
         <xso:variable name="kwicLengthHalf"
             select="{xs:integer(round(xs:integer($configDoc//totalKwicLength) div 2))}"/>
         <xso:variable name="docs" 
@@ -449,7 +473,6 @@
         
         <xso:variable name="hasExclusions" 
             select="{if ($configDoc//exclude) then 'true' else 'false'}()"/>
-        
         
         
         <xso:template name="echoParams">

@@ -6,22 +6,18 @@
     xmlns="http://www.w3.org/1999/xhtml"
     exclude-result-prefixes="#all"
     xpath-default-namespace="http://www.w3.org/1999/xhtml"
-    xmlns:pt="http://hcmc.uvic.ca/ns/porter2"
+    xmlns:ss="http://hcmc.uvic.ca/ns/ssStemmer"
     version="3.0">
     
     <!--JT TO ADD DOCUMENTATION HERE-->
     
     
-    <!--Include the configuration file, which is generated via another XSLT-->
+    <!--Include the configuration file, which is generated via another XSLT. That also
+    includes the stemmer file. -->
     <xsl:include href="config.xsl"/>
     
    <!-- Include the functions file.   -->
     <xsl:include href="functions.xsl"/>
-    
-    <!--And include the PORTER2STEMMER; we should also include PORTER1, I think
-        and let users choose which one they want (tho, I don't see why anyone would
-        use PORTER1 and not PORTER2-->
-    <xsl:include href="porter2Stemmer.xsl"/>
     
     <!--Simple regular expression for match document names-->
     <xsl:variable name="docRegex">(.+)(\..?htm.?$)</xsl:variable>
@@ -489,7 +485,7 @@
                 <xsl:when test="$containsCapital">
 
                     <!--Produce the stem of the lowercase version-->
-                    <xsl:value-of select="pt:stem($lcWord)"/>
+                    <xsl:value-of select="ss:stem($lcWord)"/>
                     
                     <!--And if it's not in the dictionary, then return the cleaned word-->
                     <xsl:if test="not($inDictionary)">
@@ -498,7 +494,7 @@
                     
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:value-of select="pt:stem($lcWord)"/>
+                    <xsl:value-of select="ss:stem($lcWord)"/>
                 </xsl:otherwise>
                 <!--Don't return it if it's not in the dictionary and it's hyphenated;
                     we'll process each individual token instead-->
