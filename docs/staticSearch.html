@@ -174,15 +174,15 @@ function showByMod() {
             </header>
             <ul>
                <li class="item">Level: Basic</li>
-               <li class="item">Last Updated: <span class="date">16 December 2019</span></li>
+               <li class="item">Last Updated: <span class="date">17 July 2020</span></li>
             </ul>
             <p>The generator tool processes your site to create an index of all the words appearing
-               in the site, stemmed using a Porter2 stemmer, and stores the index in the form of
-               a large number of small JSON files. It also creates JSON files for other search facets
-               that you specify in the headers of your documents, to allow searches for documents
-               by type, by date range, and so on. Then it creates a search page for your site, which
-               processes user search terms and retrieves the required JSON files to provide search
-               results.</p>
+               in the site, stemmed (if desired) using a Porter2 stemmer, and stores the index in
+               the form of a large number of small JSON files. It also creates JSON files for other
+               search facets that you specify in the headers of your documents, to allow searches
+               for documents by type, by date range, and so on. Then it creates a search page for
+               your site, which processes user search terms and retrieves the required JSON files
+               to provide search results.</p>
          </section>
          <section class="teidiv0" id="whyWouldIUseIt">
             <header>
@@ -224,8 +224,8 @@ function showByMod() {
             </ul>
             <p>The Generator supports the following features:</p>
             <ul>
-               <li class="item">Porter 2 stemming of terms (so searching for <span class="q">‘wait’</span> will also retrieve <span class="q">‘waiting’</span>, <span class="q">‘waits’</span>, <span class="q">‘waited’</span> etc.). Our stemmer is for English, but if you have documents in another language,
-                  you can create and plug in your own stemmer.</li>
+               <li class="item">Porter 2 stemming of terms (so searching for <span class="q">‘wait’</span> will also retrieve <span class="q">‘waiting’</span>, <span class="q">‘waits’</span>, <span class="q">‘waited’</span> etc.). Our default stemmer is for English, but if you have documents in another language,
+                  you can create and plug in <a class="link_ref" href="#stemmerFolder" title="&lt;stemmerFolder&gt; is a string parameter specifying the name of a folder that is inside the stemmers folder in the staticSearch re...">your own stemmer</a>.</li>
                <li class="item">Boolean search operators. Adding <code>+</code> (plus) before a word means that search results <em>must contain</em> that word, and adding a <code>-</code> (minus) means that results <em>must not contain</em> that word. Words without plus or minus are treated as <em>may contain</em>, contributing to the score of any retrieved document.</li>
                <li class="item">Phrasal searches. Any quoted phrase will be searched as-is, and when quoted phrases
                   are included in a search, any hit document must contain at least one of them. Note
@@ -234,7 +234,9 @@ function showByMod() {
                <li class="item">Keyword-in-context search results. This is also configurable, since including contexts
                   increases the size of the index.</li>
                <li class="item">Wildcard searches, using the asterisk (*), question mark (?) and character classes
-                  ([ab]). So you can search for <code>lo[uv]e?</code> to find <span class="q">‘loved’</span>, <span class="q">‘loued’</span>, <span class="q">‘loves’</span>, <span class="q">‘louer’</span>, etc.</li>
+                  ([ab]). So you can search for <code>lo[uv]e?</code> to find <span class="q">‘loved’</span>, <span class="q">‘loued’</span>, <span class="q">‘loves’</span>, <span class="q">‘louer’</span>, etc. If you don't have a stemmer for the language of your document collection, this
+                  feature is a good alternative (although it can be combined with a stemmer as well
+                  for greater flexibility).</li>
                <li class="item">Search filtering using any metadata you like, allowing users to limit their search
                   to specific document types, date ranges, or other features.</li>
             </ul>
@@ -283,7 +285,7 @@ function showByMod() {
             </header>
             <ul>
                <li class="item">Level: Intermediate</li>
-               <li class="item">Last Updated: <span class="date">20 March 2020</span></li>
+               <li class="item">Last Updated: <span class="date">17 July 2020</span></li>
             </ul>
             <p>First, you will have to make sure your site pages are correctly configured so that
                the Generator can parse them. Then, you will have to create a configuration file specifying
@@ -302,8 +304,8 @@ function showByMod() {
                   <h3><span class="headingNumber">6.1.1 </span><span class="head">Description filters</span></h3>
                   <div class="p">The description (desc) filter is a word or phrase describing or associated with the
                      document. Here is a simple example: 
-                     <div id="index.xml-egXML-d38e181" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Document type</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.desc</span>" <span class="attribute">content</span>="<span class="attributevalue">Poems</span>"/&gt;</span></div> This specifies that there is to be a descriptive search filter called <span class="q">‘Document type’</span>, and one of the types is <span class="q">‘Poems’</span>; the document containing this <span class="gi">&lt;meta&gt;</span> tag is one of the Poems. Another type might be: 
-                     <div id="index.xml-egXML-d38e190" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Document type</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.desc</span>" <span class="attribute">content</span>="<span class="attributevalue">Short stories</span>"/&gt;</span></div> If the Generator finds such meta tags when it is indexing, it will create a set of
+                     <div id="index.xml-egXML-d38e184" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Document type</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.desc</span>" <span class="attribute">content</span>="<span class="attributevalue">Poems</span>"/&gt;</span></div> This specifies that there is to be a descriptive search filter called <span class="q">‘Document type’</span>, and one of the types is <span class="q">‘Poems’</span>; the document containing this <span class="gi">&lt;meta&gt;</span> tag is one of the Poems. Another type might be: 
+                     <div id="index.xml-egXML-d38e193" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Document type</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.desc</span>" <span class="attribute">content</span>="<span class="attributevalue">Short stories</span>"/&gt;</span></div> If the Generator finds such meta tags when it is indexing, it will create a set of
                      filter controls on the search page, enabling the user to constrain the search to a
                      specific set of filter settings.</div>
                </div>
@@ -311,7 +313,7 @@ function showByMod() {
                   <h3><span class="headingNumber">6.1.2 </span><span class="head">Date filters</span></h3>
                   <div class="p">Another slightly different kind of search control is a document date. If your collection
                      of documents has items from different dates, you can add a <span class="gi">&lt;meta&gt;</span> tag like this: 
-                     <div id="index.xml-egXML-d38e199" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Date of publication</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.date</span>" <span class="attribute">content</span>="<span class="attributevalue">1895-01-05</span>"/&gt;</span></div> The date may take any of the following forms: 
+                     <div id="index.xml-egXML-d38e202" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Date of publication</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.date</span>" <span class="attribute">content</span>="<span class="attributevalue">1895-01-05</span>"/&gt;</span></div> The date may take any of the following forms: 
                      <ul>
                         <li class="item">1895 (year only)</li>
                         <li class="item">1895-01 (year and month)</li>
@@ -330,14 +332,14 @@ function showByMod() {
                   <div class="p">You can also configure a range filter based on a numeric value (integer or decimal).
                      For example, you might want to allow people to filter documents in the search results
                      based on their word-count: 
-                     <div id="index.xml-egXML-d38e214" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Word-count</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.num</span>" <span class="attribute">content</span>="<span class="attributevalue">2193</span>"/&gt;</span></div> Users would then be able to set a minimum and/or maximum word-count when searching
+                     <div id="index.xml-egXML-d38e217" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Word-count</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.num</span>" <span class="attribute">content</span>="<span class="attributevalue">2193</span>"/&gt;</span></div> Users would then be able to set a minimum and/or maximum word-count when searching
                      for documents.</div>
                </div>
                <div class="teidiv2" id="boolFilters">
                   <h3><span class="headingNumber">6.1.4 </span><span class="head">Boolean filters</span></h3>
                   <div class="p">A fourth filter type is the boolean (true/false) filter. To use boolean filters, add
                      meta tags like this to your documents: 
-                     <div id="index.xml-egXML-d38e221" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Peer-reviewed</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.bool</span>" <span class="attribute">content</span>="<span class="attributevalue">true</span>"/&gt;</span></div>
+                     <div id="index.xml-egXML-d38e224" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Peer-reviewed</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.bool</span>" <span class="attribute">content</span>="<span class="attributevalue">true</span>"/&gt;</span></div>
                   </div>
                </div>
             </div>
@@ -350,7 +352,7 @@ function showByMod() {
                   part of their document title, but it would be pointless to include this in the search
                   result links. Therefore you can override the document title value by providing another
                   meta tag, like this: 
-                  <div id="index.xml-egXML-d38e229" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">docTitle</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.docTitle</span>" <span class="attribute">content</span>="<span class="attributevalue">What I did in my holidays</span>"/&gt;</span></div>
+                  <div id="index.xml-egXML-d38e232" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">docTitle</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.docTitle</span>" <span class="attribute">content</span>="<span class="attributevalue">What I did in my holidays</span>"/&gt;</span></div>
                </div>
             </div>
             <div class="teidiv1" id="configuringDocThumbnails">
@@ -360,7 +362,7 @@ function showByMod() {
                   document itself is actually an image (perhaps your site is a set of pages dealing
                   with works of art, for instance). Whatever the reason, you can supply a link to a
                   thumbnail image like this: 
-                  <div id="index.xml-egXML-d38e235" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">docImage</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.docImage</span>" <span class="attribute">content</span>="<span class="attributevalue">images/thisPage.jpg</span>"/&gt;</span></div> The <span class="att">content</span> attribute value should either be the path to an image relative to the document itself
+                  <div id="index.xml-egXML-d38e238" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">docImage</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.docImage</span>" <span class="attribute">content</span>="<span class="attributevalue">images/thisPage.jpg</span>"/&gt;</span></div> The <span class="att">content</span> attribute value should either be the path to an image relative to the document itself
                   or the URL to an external image; so in the example above, there would be a folder
                   called <span class="ident">images</span> which is a sibling of the HTML file containing the tag, and that folder would contain
                   a file called <span class="ident">thisPage.jpg</span>.</div>
@@ -445,6 +447,22 @@ function showByMod() {
                            search, we store contexts for all hits for each token in each document, so if your
                            site is very large, and your user base is unlikely to use phrasal searching, it may
                            not be worth the overhead. The default value is true.</li>
+                        <li class="item" id="stemmerFolder"><a class="link_ref" href="#TEI.stemmerFolder" title="&lt;stemmerFolder&gt;">&lt;stemmerFolder&gt;</a> is a string parameter specifying the name of a folder that is inside the <span class="ident">/stemmers/</span> folder in the staticSearch repository structure. 
+                           <p>The staticSearch project currently has only one working stemmer, an implementation
+                              of the Porter 2 algorithm for modern English. That appears in <span class="ident">/stemmers/en/</span>, so the default value for this parameter is <span class="val">en</span>. We will be adding more stemmers as the project develops. However, if your document
+                              collection is not English, you have a couple of options, one hard and one easy. </p>
+                           <ul>
+                              <li class="item"><em>Hard option</em>: implement your own stemmers. You will need to write two implementations of the stemmer
+                                 algorithm, one in XSLT (which must be named <span class="ident">ssStemmer.xsl</span>) and one in JavaScript (<span class="ident">ssStemmer.js</span>), and confirm that they both generate the same results. The XSLT stemmer is used
+                                 in the generation of the index files at build time, and the JavaScript version is
+                                 used to stem the user's input in the search page. You can look at the existing implementations
+                                 in the <span class="ident">/stemmers/en/</span> folder to see how the stemmers need to be constructed. Place your stemmers in a folder
+                                 called <span class="ident">/stemmers/[yourlang]/</span>, and specify <span class="val">yourlang</span> in the configuration file.</li>
+                              <li class="item"><em>Easy option</em>: Use the <span class="ident">identity stemmer</span> (which is equivalent to turning off stemming completely), and make sure wildcard
+                                 searching is turned on. Then your users can search using wildcards instead of having
+                                 their search terms automatically stemmed. To do this, specify the value <span class="val">identity</span> in your configuration file.</li>
+                           </ul>
+                        </li>
                         <li class="item"><a class="link_ref" href="#TEI.createContexts" title="&lt;createContexts&gt;">&lt;createContexts&gt;</a> is a boolean parameter that specifies whether you want the indexer to store keyword-in-context
                            extracts for each of the hits in a document. This increases the size of the index,
                            but of course it makes for much more user-friendly search results.</li>
@@ -490,8 +508,8 @@ function showByMod() {
                   <div class="p">The <a class="link_ref" href="#TEI.rules" title="&lt;rules&gt;">&lt;rules&gt;</a> elements specifies a list of conditions (using the <a class="link_ref" href="#TEI.rule" title="&lt;rule&gt;">&lt;rule&gt;</a> element) that tell the parser, using XPath statements in the <span class="att">match</span> attribute, specific weights to assign to particular parts of each document. For instance,
                      if you wanted all heading elements (<span class="gi">&lt;h1&gt;</span>, <span class="gi">&lt;h2&gt;</span>, etc) in documents to be given a greater weight and thus receive a higher score in
                      the results, you can do so using a rule like so: 
-                     <div id="index.xml-egXML-d38e413" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">2</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">h1 | h2 | h3 | h4 | h5 | h6</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> Since we're using XPath 3.0 and XSLT 3.0, this can also be simplified to: 
-                     <div id="index.xml-egXML-d38e417" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">2</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">*[matches(local-name(),'^h\d+$')]</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> (It is worth noting, however, the above example is unnecessary: all heading elements
+                     <div id="index.xml-egXML-d38e453" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">2</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">h1 | h2 | h3 | h4 | h5 | h6</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> Since we're using XPath 3.0 and XSLT 3.0, this can also be simplified to: 
+                     <div id="index.xml-egXML-d38e457" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">2</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">*[matches(local-name(),'^h\d+$')]</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> (It is worth noting, however, the above example is unnecessary: all heading elements
                      are given a weight of 2 by default, which is the only preconfigured weight in static
                      search.)</div>
                   <p>The value of the <span class="att">match</span> attribute is transformed in a XSLT template match attribute, and thus must follow
@@ -501,8 +519,8 @@ function showByMod() {
                      index its contents on every page. These elements can be ignored simply by using a
                      <a class="link_ref" href="#TEI.rule" title="&lt;rule&gt;">&lt;rule&gt;</a> and setting its weight to 0. For instance, if you want to remove the header and the
                      footer from the search indexing process, you could write something like: 
-                     <div id="index.xml-egXML-d38e436" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>" <span class="attribute">match</span>="<span class="attributevalue">footer | header</span>"/&gt;</span></div> Or if you want to remove XHTML anchor tags (<span class="gi">&lt;a&gt;</span>) whose text is identical to the URL specified in its <span class="att">href</span>, you could do something like: 
-                     <div id="index.xml-egXML-d38e444" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>" <span class="attribute">match</span>="<span class="attributevalue">a[@href=./text()]</span>"/&gt;</span></div>
+                     <div id="index.xml-egXML-d38e476" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>" <span class="attribute">match</span>="<span class="attributevalue">footer | header</span>"/&gt;</span></div> Or if you want to remove XHTML anchor tags (<span class="gi">&lt;a&gt;</span>) whose text is identical to the URL specified in its <span class="att">href</span>, you could do something like: 
+                     <div id="index.xml-egXML-d38e484" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>" <span class="attribute">match</span>="<span class="attributevalue">a[@href=./text()]</span>"/&gt;</span></div>
                   </div>
                   <p>Note that the indexer does not tokenize any content in the <span class="gi">&lt;head&gt;</span> of the document (but as noted above, metadata can be configured into filters) and
                      that all elements in the <span class="gi">&lt;body&gt;</span> of a document are considered tokenizable. However, common elements that you might
@@ -518,22 +536,22 @@ function showByMod() {
                   <div class="p">When the static search creates the keywords-in-contexts (the "kwic" or "snippets")
                      for each token, it does so by looking for the nearest block-level element that it
                      can use as its context. Take, for instance, this unordered list: 
-                     <div id="index.xml-egXML-d38e463" class="pre egXML_valid"><span class="element">&lt;ul&gt;</span><br/> <span class="element">&lt;li&gt;</span>Keyword-in-context search results. This is also configurable, since including contexts<br/>   increases the size of the index.<span class="element">&lt;/li&gt;</span><br/> <span class="element">&lt;li&gt;</span>Search filtering using any metadata you like, allowing users to limit their search
+                     <div id="index.xml-egXML-d38e503" class="pre egXML_valid"><span class="element">&lt;ul&gt;</span><br/> <span class="element">&lt;li&gt;</span>Keyword-in-context search results. This is also configurable, since including contexts<br/>   increases the size of the index.<span class="element">&lt;/li&gt;</span><br/> <span class="element">&lt;li&gt;</span>Search filtering using any metadata you like, allowing users to limit their search
                         to specific<br/>   document types.<span class="element">&lt;/li&gt;</span><br/><span class="element">&lt;/ul&gt;</span></div> Each <span class="gi">&lt;li&gt;</span> elements is, by default, a <span class="term">context</span> element, meaning that the snippet generated for each token will not extend beyond
                      the <span class="gi">&lt;li&gt;</span> element boundaries; in this case, if the <span class="gi">&lt;li&gt;</span> was not a context attribute, the term <span class="q">‘search’</span> would produce a context that looks something like: 
                      <pre class="pre_eg">"...the size of the index.<span style="font-weight:bold;">Search</span> filtering using any metadata you like,..."</pre>
                   </div>
                   <div class="p">Using the <a class="link_ref" href="#TEI.contexts" title="&lt;contexts&gt;">&lt;contexts&gt;</a> element, you can control what elements operate as contexts. For instance, say a page
                      contained a marginal note, encoded as a <span class="gi">&lt;span&gt;</span> in your document beside its point of attachment:<span id="Note1_return"><a class="notelink" title="This example taken from Thomas S. Kuhn, The Structure of Scientific Revolutions (50th anniversary edition), University of Chicago Press, 2012: p. 191." href="#Note1"><sup>1</sup></a></span> 
-                     <div id="index.xml-egXML-d38e499" class="pre egXML_valid"><span class="element">&lt;p&gt;</span>About that program I shall have nothing to say here,<span class="element">&lt;span <span class="attribute">class</span>="<span class="attributevalue">sidenote</span>"&gt;</span>Some information on this subject can be found in "Second Thoughts"<span class="element">&lt;/span&gt;</span> [...]<br/><span class="element">&lt;/p&gt;</span></div> Using CSS, the footnote might be alongside the text of the document in margin, or
+                     <div id="index.xml-egXML-d38e539" class="pre egXML_valid"><span class="element">&lt;p&gt;</span>About that program I shall have nothing to say here,<span class="element">&lt;span <span class="attribute">class</span>="<span class="attributevalue">sidenote</span>"&gt;</span>Some information on this subject can be found in "Second Thoughts"<span class="element">&lt;/span&gt;</span> [...]<br/><span class="element">&lt;/p&gt;</span></div> Using CSS, the footnote might be alongside the text of the document in margin, or
                      made into a clickable object using Javascript. However, since the tokenizer is unaware
                      of any server-side processing, it understands the <span class="gi">&lt;span&gt;</span> as an inline element and assumes the <span class="gi">&lt;p&gt;</span> constitutes the context of the element. A search for <span class="q">‘information’</span> might then return: 
                      <pre class="pre_eg">"...nothing to say here,Some <span style="font-weight:bold;">information</span> on this subject can be found...</pre> To tell the tokenizer that the <span class="gi">&lt;span&gt;</span> constitutes the context block for any of its token, use the <a class="link_ref" href="#TEI.context" title="&lt;context&gt;">&lt;context&gt;</a> element with an <span class="att">match</span> pattern: 
-                     <div id="index.xml-egXML-d38e528" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">match</span>="<span class="attributevalue">span[contains-token(@class,'sidenote')]</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
+                     <div id="index.xml-egXML-d38e568" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">match</span>="<span class="attributevalue">span[contains-token(@class,'sidenote')]</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
                   </div>
                   <div class="p">You can also configure it the other way: if a <span class="gi">&lt;div&gt;</span>, which is by default a context block, should not be understood as a context block,
                      then you can tell the parser to not consider it as such using <span class="att">context</span> set to false: 
-                     <div id="index.xml-egXML-d38e538" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">match</span>="<span class="attributevalue">div</span>" <span class="attribute">context</span>="<span class="attributevalue">false</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
+                     <div id="index.xml-egXML-d38e578" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">match</span>="<span class="attributevalue">div</span>" <span class="attribute">context</span>="<span class="attributevalue">false</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
                   </div>
                   <p>The default contexts elements are: </p>
                   <ul>
@@ -563,12 +581,12 @@ function showByMod() {
                      contexts and rules. For example, imagine that you are creating a special search page
                      that focuses only on the text describing images or figures in your documents. You
                      might do it like this: 
-                     <div id="index.xml-egXML-d38e587" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">match</span>="<span class="attributevalue">text()[not(ancestor::div[@class='figure']or ancestor::title)]</span>"<br/>  <span class="attribute">weight</span>="<span class="attributevalue">0</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> This specifies that all text nodes which are not part of the document title or descendants
+                     <div id="index.xml-egXML-d38e627" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">match</span>="<span class="attributevalue">text()[not(ancestor::div[@class='figure']or ancestor::title)]</span>"<br/>  <span class="attribute">weight</span>="<span class="attributevalue">0</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> This specifies that all text nodes which are not part of the document title or descendants
                      of <span class="tag">&lt;div class="figure"&gt;</span> should be ignored (<span class="att">weight</span>=<span class="val">0</span>), so only your target nodes will be indexed.</div>
                   <p>However, it's also likely that you will want to exclude certain features or documents
                      from a specialized search page, and this is done using the <a class="link_ref" href="#TEI.excludes" title="&lt;excludes&gt;">&lt;excludes&gt;</a> section and its child <a class="link_ref" href="#TEI.exclude" title="&lt;exclude&gt;">&lt;exclude&gt;</a> elements.</p>
                   <div class="p">Here is an example: 
-                     <div id="index.xml-egXML-d38e610" class="pre egXML_valid"><span class="element">&lt;excludes&gt;</span><br/><span class="comment">&lt;!-- We only index files which have illustrations in them. --&gt;</span><br/> <span class="element">&lt;exclude <span class="attribute">type</span>="<span class="attributevalue">index</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">html[not(descendant::meta[@name='Has illustration(s)'][@content='true'])]</span>"/&gt;</span><br/><span class="comment">&lt;!-- We ignore the document type filter, 
+                     <div id="index.xml-egXML-d38e650" class="pre egXML_valid"><span class="element">&lt;excludes&gt;</span><br/><span class="comment">&lt;!-- We only index files which have illustrations in them. --&gt;</span><br/> <span class="element">&lt;exclude <span class="attribute">type</span>="<span class="attributevalue">index</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">html[not(descendant::meta[@name='Has illustration(s)'][@content='true'])]</span>"/&gt;</span><br/><span class="comment">&lt;!-- We ignore the document type filter, 
                            because we are only indexing one type 
                            of document anyway. --&gt;</span><br/> <span class="element">&lt;exclude <span class="attribute">type</span>="<span class="attributevalue">filter</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">meta[@name='Document type']</span>"/&gt;</span><br/><span class="comment">&lt;!-- We exclude the filter that specifies 
                            these documents because it's pointless. --&gt;</span><br/> <span class="element">&lt;exclude <span class="attribute">type</span>="<span class="attributevalue">filter</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">meta[@name='Has illustration(s)']</span>"/&gt;</span><br/><span class="element">&lt;/excludes&gt;</span></div> Here we use <span class="tag">&lt;exclude type="index"/&gt;</span> to specify that all documents which do not contain <span class="tag">&lt;meta name="Has illustration(s)" content="true"/&gt;&gt;</span> should be ignored. Then we use two <span class="tag">&lt;exclude type="filter"/&gt;</span> tags to specify first that the <span class="ident">Document type</span> filter should be ignored (i.e. it should not appear on the search page), and second,
@@ -585,11 +603,11 @@ function showByMod() {
                   also be well-formed XML, so it can be processed), containing all the site components
                   you need, and then the search build process will insert all the necessary components
                   into that file. The only requirement is that the page contains one <span class="gi">&lt;div&gt;</span> element with the correct <span class="att">id</span> attribute: 
-                  <div id="index.xml-egXML-d38e643" class="pre egXML_valid"><span class="element">&lt;div <span class="attribute">id</span>="<span class="attributevalue">staticSearch</span>"&gt;</span> <br/> [...content will be supplied by the build process...]<br/><span class="element">&lt;/div&gt;</span></div> This <span class="gi">&lt;div&gt;</span> will be empty initially. The build process will find insert the search controls,
+                  <div id="index.xml-egXML-d38e683" class="pre egXML_valid"><span class="element">&lt;div <span class="attribute">id</span>="<span class="attributevalue">staticSearch</span>"&gt;</span> <br/> [...content will be supplied by the build process...]<br/><span class="element">&lt;/div&gt;</span></div> This <span class="gi">&lt;div&gt;</span> will be empty initially. The build process will find insert the search controls,
                   scripts and results <span class="gi">&lt;div&gt;</span> into this container. Then whenever you rebuild the search for your site, the contents
                   will be replaced. There is no need to make sure it's empty every time.</div>
                <div class="p">The search process will also add a CSS <span class="gi">&lt;style&gt;</span> element to the <span class="gi">&lt;head&gt;</span> of the document: 
-                  <div id="index.xml-egXML-d38e657" class="pre egXML_valid"><span class="element">&lt;style <span class="attribute">id</span>="<span class="attributevalue">ssCss</span>"&gt;</span> [...styles for search controls...]<br/><span class="element">&lt;/style&gt;</span></div> You can customize this CSS by providing your own CSS that overrides it, using <span class="gi">&lt;style&gt;</span>, or <span class="gi">&lt;link&gt;</span>, placed after it in the <span class="gi">&lt;head&gt;</span> element, or by replacing the inserted CSS after the build process.</div>
+                  <div id="index.xml-egXML-d38e697" class="pre egXML_valid"><span class="element">&lt;style <span class="attribute">id</span>="<span class="attributevalue">ssCss</span>"&gt;</span> [...styles for search controls...]<br/><span class="element">&lt;/style&gt;</span></div> You can customize this CSS by providing your own CSS that overrides it, using <span class="gi">&lt;style&gt;</span>, or <span class="gi">&lt;link&gt;</span>, placed after it in the <span class="gi">&lt;head&gt;</span> element, or by replacing the inserted CSS after the build process.</div>
                <p>Note that once your file has been processed and all this content has been added, you
                   can process it again at any time; there is no need to start every time with a clean,
                   empty version of the search page.</p>
@@ -628,7 +646,7 @@ function showByMod() {
             </header>
             <ul>
                <li class="item">Level: Advanced</li>
-               <li class="item">Last Updated: <span class="date">3 July 2020</span></li>
+               <li class="item">Last Updated: <span class="date">17 July 2020</span></li>
             </ul>
             <div class="teidiv1" id="buildingTheIndex">
                <h3><span class="headingNumber">7.1 </span><span class="head">Building the index</span></h3>
@@ -658,7 +676,9 @@ function showByMod() {
                   only the information it needs for each specific search. Obviously, if it were to download
                   the entire collection of thousands of token files, the process would take forever.
                   So when you search for the word <span class="mentioned">waiting</span>, what happens is that the JavaScript stems that word, producing <span class="mentioned">wait</span>, then it downloads only the single file containing indexing information for that
-                  specific word, which is very rapid.</p>
+                  specific word, which is very rapid. (If you are using a different stemmer, of course,
+                  then the token will be stemmed to a different output; if you are using the ‘identity
+                  stemmer’, then the token will be unchanged.)</p>
                <p>However, there is some information that is required for all or many searches. To display
                   any results, the list of document titles must be downloaded, for example. A user may
                   for instance use the search facets only, not searching for a particular word or phrase
@@ -2235,7 +2255,7 @@ element wildcardSearch { xsd:boolean }</pre>
             <!--
 	  Generated from index.xml using XSLT stylesheets version 7.49.0
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2020-07-15T00:08:31Z.
+	       on 2020-07-17T18:16:53Z.
 	       SAXON HE 10.0.
 		 --></address>
       </div>

@@ -268,7 +268,7 @@ class StaticSearch{
       this.index = {};
 
       //Porter2 stemmer object.
-      this.stemmer = new PT2();
+      this.stemmer = new SSStemmer();
 
       //Array of terms parsed out of search string. This is emptied
       //at the beginning of every new search.
