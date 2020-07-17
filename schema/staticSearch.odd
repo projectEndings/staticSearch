@@ -40,10 +40,11 @@
           <head>What does it do?</head>
           <list>
             <item>Level: Basic</item>
-            <item>Last Updated: <date when="2019-12-16">16 December 2019</date></item>
+            <item>Last Updated: <date when="2020-07-17">17 July 2020</date></item>
           </list>
           <p>The generator tool processes your site to create an index of all the words appearing
-          in the site, stemmed using a Porter2 stemmer, and stores the index in the form of a
+          in the site, stemmed (if desired) using a Porter2 stemmer, and stores the index in the 
+          form of a
           large number of small JSON files. It also creates JSON files for other search facets that 
           you specify in the headers of your documents, to allow searches for documents by 
           type, by date range, and so on. Then it creates a search page for your site, which 
@@ -74,9 +75,9 @@
           <p>The Generator supports the following features:</p>
           <list>
             <item>Porter 2 stemming of terms (so searching for <q>wait</q> will also
-            retrieve <q>waiting</q>, <q>waits</q>, <q>waited</q> etc.). Our stemmer
+            retrieve <q>waiting</q>, <q>waits</q>, <q>waited</q> etc.). Our default stemmer
             is for English, but if you have documents in another language, you can create
-            and plug in your own stemmer.</item>
+            and plug in <ref target="#stemmerFolder">your own stemmer</ref>.</item>
             <item>Boolean search operators. Adding <code>+</code> (plus) before a word means that
             search results <emph>must contain</emph> that word, and adding a <code>-</code> (minus) means
             that results <emph>must not contain</emph> that word. Words without plus or minus are treated
@@ -88,8 +89,12 @@
             <item>Keyword-in-context search results. This is also configurable, since including contexts
             increases the size of the index.</item>
             <item>Wildcard searches, using the asterisk (*), question mark (?) and character
-            classes ([ab]). So you can search for <code>lo[uv]e?</code> to find <q>loved</q>, <q>loued</q>, <q>loves</q>, <q>louer</q>, etc.</item>
-            <item>Search filtering using any metadata you like, allowing users to limit their search to specific
+            classes ([ab]). So you can search for <code>lo[uv]e?</code> to find <q>loved</q>,
+              <q>loued</q>, <q>loves</q>, <q>louer</q>, etc. If you don't have a stemmer for 
+            the language of your document collection, this feature is a good alternative (although
+            it can be combined with a stemmer as well for greater flexibility).</item>
+            <item>Search filtering using any metadata you like, allowing users to limit their 
+              search to specific
             document types, date ranges, or other features.</item>
           </list>
         </div>
@@ -134,7 +139,7 @@
           <head>How do I use it?</head>
           <list>
             <item>Level: Intermediate</item>
-            <item>Last Updated: <date when="2020-03-20">20 March 2020</date></item>
+            <item>Last Updated: <date when="2020-07-17">17 July 2020</date></item>
           </list>
           <p>First, you will have to make sure your site pages are correctly configured so that the Generator can
           parse them. Then, you will have to create a configuration file specifying what options you want to use. 
@@ -289,6 +294,8 @@
               Only the <gi>params</gi> element is necessary, but, as we discuss shortly, we highly suggest taking advantage of the <gi>rules</gi>
               and <gi>contexts</gi> for the best results.
             </p>
+            
+            
             <div xml:id="specifyingParameters">
               <head>Specifying Parameters</head>
               <div xml:id="paramsRequired">
@@ -354,6 +361,43 @@
                   in order to support this kind of search, we store contexts for all hits for each token
                   in each document, so if your site is very large, and your user base is unlikely to 
                   use phrasal searching, it may not be worth the overhead. The default value is true.</item>
+                  
+                  <item xml:id="stemmerFolder">
+                    <gi>stemmerFolder</gi> is a string parameter specifying the name
+                    of a folder that is inside the <ident>/stemmers/</ident> folder in
+                    the staticSearch repository structure.
+                    
+                    <p>The staticSearch project currently has only one working stemmer,
+                      an implementation of the Porter 2 algorithm for modern English. That 
+                      appears in <ident>/stemmers/en/</ident>, so the default value for
+                      this parameter is <val>en</val>. We will
+                      be adding more stemmers as the project develops. However, if your 
+                      document collection is not English, you have a couple of options, one 
+                      hard and one easy.
+                      
+                      <list>
+                        <item><emph>Hard option</emph>: implement your own stemmers. You will need to
+                          write two implementations of the stemmer algorithm, one in XSLT (which 
+                          must be named <ident>ssStemmer.xsl</ident>) and one in JavaScript
+                          (<ident>ssStemmer.js</ident>), and confirm that they both generate the
+                          same results. The XSLT stemmer is used in the generation of the 
+                          index files at build time, and the JavaScript version is used to 
+                          stem the user's input in the search page. You can look at the 
+                          existing implementations in the <ident>/stemmers/en/</ident> folder
+                          to see how the stemmers need to be constructed. Place your stemmers
+                          in a folder called <ident>/stemmers/[yourlang]/</ident>, and 
+                          specify <val>yourlang</val> in the configuration file.
+                        </item>
+                        <item><emph>Easy option</emph>: Use the <ident>identity stemmer</ident>
+                          (which is equivalent to turning off stemming completely), and 
+                          make sure wildcard searching is turned on. Then your users can 
+                          search using wildcards instead of having their search terms 
+                          automatically stemmed. To do this, specify the value <val>identity</val>
+                          in your configuration file.
+                        </item>
+                      </list>
+                    </p>
+                  </item>
                   
                   <item><gi>createContexts</gi> is a boolean parameter that specifies whether you 
                   want the indexer to store keyword-in-context extracts for each of the hits in a
@@ -667,7 +711,7 @@
         <head>How does it work?</head>
         <list>
           <item>Level: Advanced</item>
-          <item>Last Updated: <date when="2020-07-03">3 July 2020</date></item>
+          <item>Last Updated: <date when="2020-07-17">17 July 2020</date></item>
         </list>
         <div xml:id="buildingTheIndex">
           <head>Building the index</head>
@@ -675,9 +719,9 @@
             with all your settings embedded in it. Next, it processes your document collection using
             those settings. Each document is tokenized, and then a separate JSON file is created for
             each distinct token found; this file contains links to each of the documents which contain
-            that token, as well as keyword-in-context strings for the actual tokens. There will most likely
-            be thousands of these files, but most of them are quite small. These constitute the textual
-            index.</p>
+            that token, as well as keyword-in-context strings for the actual tokens. There will most
+            likely be thousands of these files, but most of them are quite small. These constitute the
+            textual index.</p>
           
           <p>In addition, separate JSON files are created for the list of document titles, and for your 
             stopword list if you have specified one. A single text file is also created containing
@@ -704,7 +748,9 @@
          you search for the word <mentioned>waiting</mentioned>, what happens is that the
          JavaScript stems that word, producing <mentioned>wait</mentioned>, then it downloads
          only the single file containing indexing information for that specific word, which is very 
-         rapid.</p>
+         rapid. (If you are using a different stemmer, of course, then the token will be stemmed to
+         a different output; if you are using the <soCalled>identity stemmer</soCalled>, then 
+         the token will be unchanged.)</p>
          
          <p>However, there is some information that is required for all or many searches. To display
            any results, the list of document titles must be downloaded, for example. A user may

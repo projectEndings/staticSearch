@@ -270,8 +270,8 @@ function showByMod() {
          
          <ul>
             
-            <li class="item">Porter 2 stemming of terms (so searching for <span class="q">‘wait’</span> will also retrieve <span class="q">‘waiting’</span>, <span class="q">‘waits’</span>, <span class="q">‘waited’</span> etc.). Our stemmer is for English, but if you have documents in another language,
-               you can create and plug in your own stemmer.</li>
+            <li class="item">Porter 2 stemming of terms (so searching for <span class="q">‘wait’</span> will also retrieve <span class="q">‘waiting’</span>, <span class="q">‘waits’</span>, <span class="q">‘waited’</span> etc.). Our default stemmer is for English, but if you have documents in another language,
+               you can create and plug in <a href="howDoIUseIt.html#stemmerFolder" class="link_ref" title="&lt;stemmerFolder&gt; is a string parameter specifying the name of a folder that is inside the stemmers folder in the staticSearch re...">your own stemmer</a>.</li>
             
             <li class="item">Boolean search operators. Adding <code>+</code> (plus) before a word means that search results <em>must contain</em> that word, and adding a <code>-</code> (minus) means that results <em>must not contain</em> that word. Words without plus or minus are treated as <em>may contain</em>, contributing to the score of any retrieved document.</li>
             
@@ -284,7 +284,9 @@ function showByMod() {
                increases the size of the index.</li>
             
             <li class="item">Wildcard searches, using the asterisk (*), question mark (?) and character classes
-               ([ab]). So you can search for <code>lo[uv]e?</code> to find <span class="q">‘loved’</span>, <span class="q">‘loued’</span>, <span class="q">‘loves’</span>, <span class="q">‘louer’</span>, etc.</li>
+               ([ab]). So you can search for <code>lo[uv]e?</code> to find <span class="q">‘loved’</span>, <span class="q">‘loued’</span>, <span class="q">‘loves’</span>, <span class="q">‘louer’</span>, etc. If you don't have a stemmer for the language of your document collection, this
+               feature is a good alternative (although it can be combined with a stemmer as well
+               for greater flexibility).</li>
             
             <li class="item">Search filtering using any metadata you like, allowing users to limit their search
                to specific document types, date ranges, or other features.</li>
@@ -315,7 +317,7 @@ function showByMod() {
             <!--
 	  Generated from index.xml using XSLT stylesheets version 7.49.0
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2020-07-15T00:08:31Z.
+	       on 2020-07-17T18:16:53Z.
 	       SAXON HE 10.0.
 		 --></address>
          </div>

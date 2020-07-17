@@ -1,4 +1,4 @@
-/*           stemmer.js             */
+/*           ssStemmer.js             */
 /* Authors: Martin Holmes and Joey Takeda. */
 /*        University of Victoria.          */
 
@@ -7,7 +7,7 @@
  *
  * https://snowballstem.org/algorithms/english/stemmer.html
  *
- * If is part of the projectEndings staticSearch
+ * It is part of the projectEndings staticSearch
  * project.
  *
  * Free to anyone for any purpose, but

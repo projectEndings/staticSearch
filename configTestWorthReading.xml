@@ -3,9 +3,10 @@
     <params>
         <searchFile>test/searchWorthReading.html</searchFile>
         <versionFile>test/VERSION</versionFile>
-        <stemmerFolder>en</stemmerFolder>
+        <stemmerFolder>identity</stemmerFolder>
         <recurse>true<!--Need to set recurse to true for the test--></recurse>
         <phrasalSearch>true</phrasalSearch>
+        <wildcardSearch>true</wildcardSearch>
         <createContexts>true</createContexts>
         <!--NOTE: If phrasalSearch is set to TRUE, then
         maxContexts prop will be ignored-->
