@@ -265,7 +265,7 @@
                 <!--Standard inputs-->
                 <span class="ssQueryAndButton">
                     <!-- NOTE: We no longer use a validation pattern because
-                         browser behaviour is to variable. -->
+                         browser behaviour is too variable. -->
                     <!--<xsl:variable name="validationPattern" as="xs:string">\s*(.*([^\*\?\[\]\s]+[^\s]*){3})+\s*</xsl:variable>
                     <input type="text" id="ssQuery" pattern="{$validationPattern}"/>-->
                     <input type="text" id="ssQuery"/>
