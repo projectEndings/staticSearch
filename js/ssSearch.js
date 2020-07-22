@@ -1398,6 +1398,7 @@ let pDiscarded = null;
 if (this.discardedTerms.length > 0){
   let txt = this.captionSet.strDiscardedTerms + ' ' + this.discardedTerms.join(', ');
   pDiscarded = document.createElement('p');
+  pDiscarded.classList.add('ssDiscarded');
   pDiscarded.append(txt);
   //pDiscarded.appendChild(txt);
 }
