@@ -405,19 +405,20 @@
                                     <xsl:variable name="minVal" select="min($vals)"/>
                                     <xsl:variable name="maxVal" select="max($vals)"/>
                                     
+                                    
                                     <fieldset class="ssFieldset" title="{$filterName}" id="{$filterId}">
                                         <!--And add the filter name as the legend-->
                                         <legend><xsl:value-of select="$filterName"/></legend>
                                         <span>
                                             <label for="{$filterId}_from">From: </label>
-                                            <input type="number" min="{$minVal}" max="{$maxVal}" placeholder="{$minVal}"
+                                            <input type="number" min="{$minVal}" max="{$maxVal}" placeholder="{$minVal}" step="any"
                                                 title="{$filterName}" id="{$filterId}_from" 
                                                 class="staticSearch.num"/>
                                         </span>
                                         
                                         <span>
                                             <label for="{$filterId}_to">To: </label>
-                                            <input type="number" min="{$minVal}" max="{$maxVal}" placeholder="{$maxVal}"
+                                            <input type="number" min="{$minVal}" max="{$maxVal}" placeholder="{$maxVal}" step="any"
                                                 title="{$filterName}" id="{$filterId}_to" 
                                                 class="staticSearch.num"/>
                                         </span>
