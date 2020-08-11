@@ -5,7 +5,7 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2020-07-17T18:16:38Z. 2019-2020.
+Schema generated from ODD source 2020-08-10T23:54:03Z. 2019-2020.
 TEI Edition: Version 4.0.0. Last updated on
 	13th February 2020, revision ccd19b0ba
 TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 4.0.0/
@@ -42,6 +42,9 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 4.0.0/
                <ref name="stemmerFolder"/>
             </optional>
             <ref name="recurse"/>
+            <optional>
+               <ref name="scoringAlgorithm"/>
+            </optional>
             <optional>
                <ref name="phrasalSearch"/>
             </optional>
@@ -200,6 +203,18 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 4.0.0/
             of stemmers can be found. If left blank, then the staticSearch default English 
             stemmer will be used (stemmers/en).) </a:documentation>
          <data type="NCName"/>
+      </element>
+   </define>
+   <define name="scoringAlgorithm">
+      <element name="scoringAlgorithm" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Which scoring algorithm to use. Default is "raw" (i.e. weighted counts)) </a:documentation>
+         <choice>
+            <value>raw</value>
+            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Default: Calculate the score based off of the weighted number of 
+                    instances of a term in a text.) raw score</a:documentation>
+            <value>tf-idf</value>
+            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Calculate the score based off of the tf-idf scoring algorithm.) </a:documentation>
+         </choice>
       </element>
    </define>
    <define name="recurse">

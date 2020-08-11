@@ -216,8 +216,7 @@
                     
                     <!--The spans that are contained within this document-->
                     <xsl:variable name="thisDocSpans" select="current-group()" as="element(span)*"/>
-                    
-                    
+
                     <!--Get the total number of documents (i.e. the number of iterations that this
                         for-each-group will perform) for this span-->
                     <xsl:variable name="stemDocsCount" select="last()" as="xs:integer"/>
@@ -232,9 +231,7 @@
                     <xsl:variable name="thisDoc"
                         select="current-group()[1]/ancestor::html"
                         as="element(html)"/>
-                    
-                    <xsl:variable name="totalTermsInDoc" 
-                        select="hcmc:getTotalTermsInDoc($currDocUri)" as="xs:integer"/>
+      
 
                     <!--Now the document ID, which we've created (if necessary) in the
                         tokenization step -->
@@ -253,23 +250,7 @@
                     <xsl:variable name="rawScore" 
                         select="sum(for $span in $thisDocSpans return hcmc:returnWeight($span))"
                         as="xs:integer"/>
-                    
-                    <!--Get the term frequence (i.e. tf). Note this is slightly altered
-                        since we're using a weighted term frequency -->
-                    <xsl:variable name="tf"
-                        select="($rawScore div $totalTermsInDoc)"
-                        as="xs:double"/>
-                    
-                    <!--Now get the inverse document frequency (i.e idf) -->
-                    <xsl:variable name="idf"
-                         select="math:log10($tokenizedDocsCount div $stemDocsCount)"
-                         as="xs:double"/>
-                    
-                    <!--Now get the term frequency index document frequency (i.e. tf-idf) -->
-                   
-                    <xsl:variable name="tf-idf" 
-                        select="$tf * $idf"
-                        as="xs:double"/>
+          
                     
                    <!--Now start the map that represents each document-->
                     <map xmlns="http://www.w3.org/2005/xpath-functions">
@@ -285,7 +266,14 @@
 
                        <!--Document score -->
                         <number key="score">
-                           <xsl:sequence select="$tf-idf"/>
+                            <xsl:choose>
+                                <xsl:when test="$scoringAlgorithm = 'tf-idf'">
+                                    <xsl:sequence select="hcmc:returnTfIdf($rawScore, $stemDocsCount, $currDocUri)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:sequence select="$rawScore"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
                         </number>
 
                         <!--Now add the contexts array, if specified to do so -->
@@ -342,7 +330,47 @@
         </map>
 
     </xsl:template>
+    
+    
+    <xd:doc>
+        <xd:desc><xd:ref name="hcmc:returnTfIdf" type="function">hcmc:tf-idf</xd:ref> returns the tf-idf 
+        score for a span; this is calculated following the standard tf-idf formula.</xd:desc>
+        <xd:param name="rawScore">The raw score for this term (t)</xd:param>
+        <xd:param name="stemDocsCount">The number of documents in which this stem appears (df)</xd:param>
+        <xd:param name="thisDocUri">The document URI from which we can generate the total terms that
+        appear in that document.(f)</xd:param>
+        <xd:return>A score as a double.</xd:return>
+    </xd:doc>
+    <xsl:function name="hcmc:returnTfIdf" as="xs:double">
+        <xsl:param name="rawScore" as="xs:integer"/>
+        <xsl:param name="stemDocsCount" as="xs:integer"/>
+        <xsl:param name="thisDocUri" as="xs:string"/>
+        
+        <!--Get the total terms in the document-->
+        <xsl:variable name="totalTermsInDoc" 
+            select="hcmc:getTotalTermsInDoc($thisDocUri)" as="xs:integer"/>
 
+        <!--Get the term frequence (i.e. tf). Note this is slightly altered
+                        since we're using a weighted term frequency -->
+        <xsl:variable name="tf"
+            select="($rawScore div $totalTermsInDoc)"
+            as="xs:double"/>
+        
+        <!--Now get the inverse document frequency (i.e idf) -->
+        <xsl:variable name="idf"
+            select="math:log10($tokenizedDocsCount div $stemDocsCount)"
+            as="xs:double"/>
+        
+        <!--Now get the term frequency index document frequency (i.e. tf-idf) -->
+        <xsl:variable name="tf-idf" select="$tf * $idf" as="xs:double"/>
+        <xsl:if test="$verbose">
+            <xsl:message>Calculated tf-idf: <xsl:sequence select="$tf-idf"/></xsl:message>
+        </xsl:if>
+        <xsl:sequence
+            select="$tf * $idf"/>
+        
+   
+    </xsl:function>
 
 
     <xd:doc>
