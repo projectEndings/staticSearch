@@ -215,19 +215,21 @@ function showByMod() {
                            
                            <li class="toc"><span class="headingNumber">Appendix A.1.17 </span><a href="schemaSpec.html#TEI.rules" class="toc toc_2" title="&lt;rules&gt;">&lt;rules&gt;</a></li>
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.18 </span><a href="schemaSpec.html#TEI.searchFile" class="toc toc_2" title="&lt;searchFile&gt;">&lt;searchFile&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.18 </span><a href="schemaSpec.html#TEI.scoringAlgorithm" class="toc toc_2" title="&lt;scoringAlgorithm&gt;">&lt;scoringAlgorithm&gt;</a></li>
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.19 </span><a href="schemaSpec.html#TEI.stemmerFolder" class="toc toc_2" title="&lt;stemmerFolder&gt;">&lt;stemmerFolder&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.19 </span><a href="schemaSpec.html#TEI.searchFile" class="toc toc_2" title="&lt;searchFile&gt;">&lt;searchFile&gt;</a></li>
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.20 </span><a href="schemaSpec.html#TEI.stopwordsFile" class="toc toc_2" title="&lt;stopwordsFile&gt;">&lt;stopwordsFile&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.20 </span><a href="schemaSpec.html#TEI.stemmerFolder" class="toc toc_2" title="&lt;stemmerFolder&gt;">&lt;stemmerFolder&gt;</a></li>
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.21 </span><a href="schemaSpec.html#TEI.totalKwicLength" class="toc toc_2" title="&lt;totalKwicLength&gt;">&lt;totalKwicLength&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.21 </span><a href="schemaSpec.html#TEI.stopwordsFile" class="toc toc_2" title="&lt;stopwordsFile&gt;">&lt;stopwordsFile&gt;</a></li>
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.22 </span><a href="schemaSpec.html#TEI.verbose" class="toc toc_2" title="&lt;verbose&gt;">&lt;verbose&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.22 </span><a href="schemaSpec.html#TEI.totalKwicLength" class="toc toc_2" title="&lt;totalKwicLength&gt;">&lt;totalKwicLength&gt;</a></li>
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.23 </span><a href="schemaSpec.html#TEI.versionFile" class="toc toc_2" title="&lt;versionFile&gt;">&lt;versionFile&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.23 </span><a href="schemaSpec.html#TEI.verbose" class="toc toc_2" title="&lt;verbose&gt;">&lt;verbose&gt;</a></li>
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.24 </span><a href="schemaSpec.html#TEI.wildcardSearch" class="toc toc_2" title="&lt;wildcardSearch&gt;">&lt;wildcardSearch&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.24 </span><a href="schemaSpec.html#TEI.versionFile" class="toc toc_2" title="&lt;versionFile&gt;">&lt;versionFile&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.25 </span><a href="schemaSpec.html#TEI.wildcardSearch" class="toc toc_2" title="&lt;wildcardSearch&gt;">&lt;wildcardSearch&gt;</a></li>
                            </ul>
                         </li>
                      
@@ -529,6 +531,29 @@ function showByMod() {
                            </ul>
                         </li>
                      
+                     <li class="item"><a href="schemaSpec.html#TEI.scoringAlgorithm" class="link_ref" title="&lt;scoringAlgorithm&gt;">&lt;scoringAlgorithm&gt;</a> is an optional attribute that specifies which scoring algorithm to use when calculating
+                        the score of a term and thus the order in which the results are sorted. There are
+                        currently two options: 
+                        
+                        <ul>
+                           
+                           <li class="item"><span class="val">raw</span>: This is the default option (and so does not need to be set explicitly). The raw
+                              score is simply the sum of all instances of a term (optionally multipled by a configured
+                              weight via the <span class="gi">&lt;weight&gt;</span> configuration) in a document. This will usually provide good results for most document
+                              collections.</li>
+                           
+                           <li class="item"><span class="val">tf-idf</span>: The tf-idf algorithm (term frequency-inverse document frequency) computes the mathematical
+                              relevance of a term within a document relative to the rest of the document collection.
+                              The Static Search implementation of tf-idf basically follows the textbook definition
+                              of tf-idf: tf-idf = ($instancesOfTerm / $totalTermsInDoc) * log( $allDocumentsCount
+                              / $docsWithThisTermCount ) This is fairly crude compared to other search engines,
+                              like <a class="link_ref" href="https://lucene.apache.org/core/3_5_0/scoring.html">Lucene</a>, but it may provide useful results for document collections of varying lengths or
+                              in instances where the raw score may be insufficient or misleading for whatever reason.
+                              There are a number of resources on tf-idf scoring, including: <a class="link_ref" href="https://en.wikipedia.org/wiki/Tf%E2%80%93idf">Wikipedia</a> and <a class="link_ref" href="https://nlp.stanford.edu/IR-book/html/htmledition/tf-idf-weighting-1.html">Christopher D. Manning, Prabhakar Raghavan and Hinrich Schütze, Introduction to Information
+                                 Retrieval, Cambridge University Press. 2008</a>.</li>
+                           </ul>
+                        </li>
+                     
                      <li class="item"><a href="schemaSpec.html#TEI.createContexts" class="link_ref" title="&lt;createContexts&gt;">&lt;createContexts&gt;</a> is a boolean parameter that specifies whether you want the indexer to store keyword-in-context
                         extracts for each of the hits in a document. This increases the size of the index,
                         but of course it makes for much more user-friendly search results.</li>
@@ -587,9 +612,9 @@ function showByMod() {
                   if you wanted all heading elements (<span class="gi">&lt;h1&gt;</span>, <span class="gi">&lt;h2&gt;</span>, etc) in documents to be given a greater weight and thus receive a higher score in
                   the results, you can do so using a rule like so: 
                   
-                  <div id="index.xml-egXML-d38e453" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">2</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">h1 | h2 | h3 | h4 | h5 | h6</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> Since we're using XPath 3.0 and XSLT 3.0, this can also be simplified to: 
+                  <div id="index.xml-egXML-d38e480" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">2</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">h1 | h2 | h3 | h4 | h5 | h6</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> Since we're using XPath 3.0 and XSLT 3.0, this can also be simplified to: 
                   
-                  <div id="index.xml-egXML-d38e457" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">2</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">*[matches(local-name(),'^h\d+$')]</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> (It is worth noting, however, the above example is unnecessary: all heading elements
+                  <div id="index.xml-egXML-d38e484" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">2</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">*[matches(local-name(),'^h\d+$')]</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> (It is worth noting, however, the above example is unnecessary: all heading elements
                   are given a weight of 2 by default, which is the only preconfigured weight in static
                   search.)</div>
                
@@ -602,9 +627,9 @@ function showByMod() {
                   <a href="schemaSpec.html#TEI.rule" class="link_ref" title="&lt;rule&gt;">&lt;rule&gt;</a> and setting its weight to 0. For instance, if you want to remove the header and the
                   footer from the search indexing process, you could write something like: 
                   
-                  <div id="index.xml-egXML-d38e476" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>" <span class="attribute">match</span>="<span class="attributevalue">footer | header</span>"/&gt;</span></div> Or if you want to remove XHTML anchor tags (<span class="gi">&lt;a&gt;</span>) whose text is identical to the URL specified in its <span class="att">href</span>, you could do something like: 
+                  <div id="index.xml-egXML-d38e503" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>" <span class="attribute">match</span>="<span class="attributevalue">footer | header</span>"/&gt;</span></div> Or if you want to remove XHTML anchor tags (<span class="gi">&lt;a&gt;</span>) whose text is identical to the URL specified in its <span class="att">href</span>, you could do something like: 
                   
-                  <div id="index.xml-egXML-d38e484" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>" <span class="attribute">match</span>="<span class="attributevalue">a[@href=./text()]</span>"/&gt;</span></div>
+                  <div id="index.xml-egXML-d38e511" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>" <span class="attribute">match</span>="<span class="attributevalue">a[@href=./text()]</span>"/&gt;</span></div>
                   </div>
                
                <p>Note that the indexer does not tokenize any content in the <span class="gi">&lt;head&gt;</span> of the document (but as noted above, metadata can be configured into filters) and
@@ -629,7 +654,7 @@ function showByMod() {
                   for each token, it does so by looking for the nearest block-level element that it
                   can use as its context. Take, for instance, this unordered list: 
                   
-                  <div id="index.xml-egXML-d38e503" class="pre egXML_valid"><span class="element">&lt;ul&gt;</span><br/> <span class="element">&lt;li&gt;</span>Keyword-in-context search results. This is also configurable, since including contexts<br/>   increases the size of the index.<span class="element">&lt;/li&gt;</span><br/> <span class="element">&lt;li&gt;</span>Search filtering using any metadata you like, allowing users to limit their search
+                  <div id="index.xml-egXML-d38e530" class="pre egXML_valid"><span class="element">&lt;ul&gt;</span><br/> <span class="element">&lt;li&gt;</span>Keyword-in-context search results. This is also configurable, since including contexts<br/>   increases the size of the index.<span class="element">&lt;/li&gt;</span><br/> <span class="element">&lt;li&gt;</span>Search filtering using any metadata you like, allowing users to limit their search
                      to specific<br/>   document types.<span class="element">&lt;/li&gt;</span><br/><span class="element">&lt;/ul&gt;</span></div> Each <span class="gi">&lt;li&gt;</span> elements is, by default, a <span class="term">context</span> element, meaning that the snippet generated for each token will not extend beyond
                   the <span class="gi">&lt;li&gt;</span> element boundaries; in this case, if the <span class="gi">&lt;li&gt;</span> was not a context attribute, the term <span class="q">‘search’</span> would produce a context that looks something like: 
                   
@@ -639,19 +664,19 @@ function showByMod() {
                <div class="p">Using the <a href="schemaSpec.html#TEI.contexts" class="link_ref" title="&lt;contexts&gt;">&lt;contexts&gt;</a> element, you can control what elements operate as contexts. For instance, say a page
                   contained a marginal note, encoded as a <span class="gi">&lt;span&gt;</span> in your document beside its point of attachment:<span id="Note1_return"></span> 
                   
-                  <div id="index.xml-egXML-d38e539" class="pre egXML_valid"><span class="element">&lt;p&gt;</span>About that program I shall have nothing to say here,<span class="element">&lt;span <span class="attribute">class</span>="<span class="attributevalue">sidenote</span>"&gt;</span>Some information on this subject can be found in "Second Thoughts"<span class="element">&lt;/span&gt;</span> [...]<br/><span class="element">&lt;/p&gt;</span></div> Using CSS, the footnote might be alongside the text of the document in margin, or
+                  <div id="index.xml-egXML-d38e566" class="pre egXML_valid"><span class="element">&lt;p&gt;</span>About that program I shall have nothing to say here,<span class="element">&lt;span <span class="attribute">class</span>="<span class="attributevalue">sidenote</span>"&gt;</span>Some information on this subject can be found in "Second Thoughts"<span class="element">&lt;/span&gt;</span> [...]<br/><span class="element">&lt;/p&gt;</span></div> Using CSS, the footnote might be alongside the text of the document in margin, or
                   made into a clickable object using Javascript. However, since the tokenizer is unaware
                   of any server-side processing, it understands the <span class="gi">&lt;span&gt;</span> as an inline element and assumes the <span class="gi">&lt;p&gt;</span> constitutes the context of the element. A search for <span class="q">‘information’</span> might then return: 
                   
                   <pre class="pre_eg">"...nothing to say here,Some <span style="font-weight:bold;">information</span> on this subject can be found...</pre> To tell the tokenizer that the <span class="gi">&lt;span&gt;</span> constitutes the context block for any of its token, use the <a href="schemaSpec.html#TEI.context" class="link_ref" title="&lt;context&gt;">&lt;context&gt;</a> element with an <span class="att">match</span> pattern: 
                   
-                  <div id="index.xml-egXML-d38e568" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">match</span>="<span class="attributevalue">span[contains-token(@class,'sidenote')]</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
+                  <div id="index.xml-egXML-d38e595" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">match</span>="<span class="attributevalue">span[contains-token(@class,'sidenote')]</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
                   </div>
                
                <div class="p">You can also configure it the other way: if a <span class="gi">&lt;div&gt;</span>, which is by default a context block, should not be understood as a context block,
                   then you can tell the parser to not consider it as such using <span class="att">context</span> set to false: 
                   
-                  <div id="index.xml-egXML-d38e578" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">match</span>="<span class="attributevalue">div</span>" <span class="attribute">context</span>="<span class="attributevalue">false</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
+                  <div id="index.xml-egXML-d38e605" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">match</span>="<span class="attributevalue">div</span>" <span class="attribute">context</span>="<span class="attributevalue">false</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
                   </div>
                
                <p>The default contexts elements are: </p>
@@ -703,7 +728,7 @@ function showByMod() {
                   that focuses only on the text describing images or figures in your documents. You
                   might do it like this: 
                   
-                  <div id="index.xml-egXML-d38e627" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">match</span>="<span class="attributevalue">text()[not(ancestor::div[@class='figure']or ancestor::title)]</span>"<br/>  <span class="attribute">weight</span>="<span class="attributevalue">0</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> This specifies that all text nodes which are not part of the document title or descendants
+                  <div id="index.xml-egXML-d38e654" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">match</span>="<span class="attributevalue">text()[not(ancestor::div[@class='figure']or ancestor::title)]</span>"<br/>  <span class="attribute">weight</span>="<span class="attributevalue">0</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> This specifies that all text nodes which are not part of the document title or descendants
                   of <span class="tag">&lt;div class="figure"&gt;</span> should be ignored (<span class="att">weight</span>=<span class="val">0</span>), so only your target nodes will be indexed.</div>
                
                <p>However, it's also likely that you will want to exclude certain features or documents
@@ -711,7 +736,7 @@ function showByMod() {
                
                <div class="p">Here is an example: 
                   
-                  <div id="index.xml-egXML-d38e650" class="pre egXML_valid"><span class="element">&lt;excludes&gt;</span><br/><span class="comment">&lt;!-- We only index files which have illustrations in them. --&gt;</span><br/> <span class="element">&lt;exclude <span class="attribute">type</span>="<span class="attributevalue">index</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">html[not(descendant::meta[@name='Has illustration(s)'][@content='true'])]</span>"/&gt;</span><br/><span class="comment">&lt;!-- We ignore the document type filter, 
+                  <div id="index.xml-egXML-d38e677" class="pre egXML_valid"><span class="element">&lt;excludes&gt;</span><br/><span class="comment">&lt;!-- We only index files which have illustrations in them. --&gt;</span><br/> <span class="element">&lt;exclude <span class="attribute">type</span>="<span class="attributevalue">index</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">html[not(descendant::meta[@name='Has illustration(s)'][@content='true'])]</span>"/&gt;</span><br/><span class="comment">&lt;!-- We ignore the document type filter, 
                         because we are only indexing one type 
                         of document anyway. --&gt;</span><br/> <span class="element">&lt;exclude <span class="attribute">type</span>="<span class="attributevalue">filter</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">meta[@name='Document type']</span>"/&gt;</span><br/><span class="comment">&lt;!-- We exclude the filter that specifies 
                         these documents because it's pointless. --&gt;</span><br/> <span class="element">&lt;exclude <span class="attribute">type</span>="<span class="attributevalue">filter</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">meta[@name='Has illustration(s)']</span>"/&gt;</span><br/><span class="element">&lt;/excludes&gt;</span></div> Here we use <span class="tag">&lt;exclude type="index"/&gt;</span> to specify that all documents which do not contain <span class="tag">&lt;meta name="Has illustration(s)" content="true"/&gt;&gt;</span> should be ignored. Then we use two <span class="tag">&lt;exclude type="filter"/&gt;</span> tags to specify first that the <span class="ident">Document type</span> filter should be ignored (i.e. it should not appear on the search page), and second,
@@ -733,13 +758,13 @@ function showByMod() {
                you need, and then the search build process will insert all the necessary components
                into that file. The only requirement is that the page contains one <span class="gi">&lt;div&gt;</span> element with the correct <span class="att">id</span> attribute: 
                
-               <div id="index.xml-egXML-d38e683" class="pre egXML_valid"><span class="element">&lt;div <span class="attribute">id</span>="<span class="attributevalue">staticSearch</span>"&gt;</span> <br/> [...content will be supplied by the build process...]<br/><span class="element">&lt;/div&gt;</span></div> This <span class="gi">&lt;div&gt;</span> will be empty initially. The build process will find insert the search controls,
+               <div id="index.xml-egXML-d38e710" class="pre egXML_valid"><span class="element">&lt;div <span class="attribute">id</span>="<span class="attributevalue">staticSearch</span>"&gt;</span> <br/> [...content will be supplied by the build process...]<br/><span class="element">&lt;/div&gt;</span></div> This <span class="gi">&lt;div&gt;</span> will be empty initially. The build process will find insert the search controls,
                scripts and results <span class="gi">&lt;div&gt;</span> into this container. Then whenever you rebuild the search for your site, the contents
                will be replaced. There is no need to make sure it's empty every time.</div>
             
             <div class="p">The search process will also add a CSS <span class="gi">&lt;style&gt;</span> element to the <span class="gi">&lt;head&gt;</span> of the document: 
                
-               <div id="index.xml-egXML-d38e697" class="pre egXML_valid"><span class="element">&lt;style <span class="attribute">id</span>="<span class="attributevalue">ssCss</span>"&gt;</span> [...styles for search controls...]<br/><span class="element">&lt;/style&gt;</span></div> You can customize this CSS by providing your own CSS that overrides it, using <span class="gi">&lt;style&gt;</span>, or <span class="gi">&lt;link&gt;</span>, placed after it in the <span class="gi">&lt;head&gt;</span> element, or by replacing the inserted CSS after the build process.</div>
+               <div id="index.xml-egXML-d38e724" class="pre egXML_valid"><span class="element">&lt;style <span class="attribute">id</span>="<span class="attributevalue">ssCss</span>"&gt;</span> [...styles for search controls...]<br/><span class="element">&lt;/style&gt;</span></div> You can customize this CSS by providing your own CSS that overrides it, using <span class="gi">&lt;style&gt;</span>, or <span class="gi">&lt;link&gt;</span>, placed after it in the <span class="gi">&lt;head&gt;</span> element, or by replacing the inserted CSS after the build process.</div>
             
             <p>Note that once your file has been processed and all this content has been added, you
                can process it again at any time; there is no need to start every time with a clean,
@@ -807,7 +832,7 @@ function showByMod() {
             <!--
 	  Generated from index.xml using XSLT stylesheets version 7.49.0
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2020-07-17T18:16:53Z.
+	       on 2020-08-10T23:54:22Z.
 	       SAXON HE 10.0.
 		 --></address>
          </div>

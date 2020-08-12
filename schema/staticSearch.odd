@@ -398,7 +398,27 @@
                       </list>
                     </p>
                   </item>
-                  
+                  <item><gi>scoringAlgorithm</gi> is an optional element that specifies which 
+                    scoring algorithm to use when calculating the score of a term and thus the order
+                    in which the results from a search are sorted. There are currently two options:
+                  <list>
+                    <item><val>raw</val>: This is the default option (and so does not need 
+                      to be set explicitly). The raw score is simply the sum of all instances of a term 
+                      (optionally multipled by a configured weight via the
+                      <gi>rule</gi>/<att>weight</att> <ref target="#specifyingRules">configuration</ref>) in a document. This will usually provide good
+                      results for most document collections.</item>
+                    <item><val>tf-idf</val>: The tf-idf algorithm (term frequency-inverse document frequency)
+                      computes the mathematical relevance of a term within a document relative to the rest
+                      of the document collection. The Static Search implementation of tf-idf basically follows the textbook definition of tf-idf:
+                      <formula style="display:block;">
+                        tf-idf = ($instancesOfTerm / $totalTermsInDoc) * log( $allDocumentsCount / $docsWithThisTermCount )
+                      </formula>
+                      This is fairly crude compared to other search engines, like <ref target="https://lucene.apache.org/core/3_5_0/scoring.html">Lucene</ref>, but it may provide useful results
+                    for document collections of varying lengths or in instances where the raw score may be
+                    insufficient or misleading. There are a number of resources on tf-idf
+                    scoring, including: <ref target="https://en.wikipedia.org/wiki/Tf%E2%80%93idf">Wikipedia</ref> and Christopher D. Manning, Prabhakar Raghavan and Hinrich Schütze, <ref target="https://nlp.stanford.edu/IR-book/html/htmledition/tf-idf-weighting-1.html">Introduction to Information Retrieval</ref>, Cambridge University Press. 2008.</item>
+                  </list>
+                  </item>
                   <item><gi>createContexts</gi> is a boolean parameter that specifies whether you 
                   want the indexer to store keyword-in-context extracts for each of the hits in a
                   document. This increases the size of the index, but of course it makes for much 
@@ -805,6 +825,7 @@
                 <elementRef key="versionFile" minOccurs="0"/>
                 <elementRef key="stemmerFolder" minOccurs="0"/>
                 <elementRef key="recurse"/>
+                <elementRef key="scoringAlgorithm" minOccurs="0"/>
                 <elementRef key="phrasalSearch" minOccurs="0"/>
                 <elementRef key="wildcardSearch" minOccurs="0"/>
                 <elementRef key="createContexts" minOccurs="0"/>
@@ -961,6 +982,22 @@
             stemmer will be used (<code>stemmers/en</code>).</gloss>
             <content>
               <dataRef name="NCName"/>
+            </content>
+          </elementSpec>
+          
+          <elementSpec ident="scoringAlgorithm" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>Which scoring algorithm to use. Default is "raw" (i.e. weighted counts)</gloss>
+            <content>
+              <valList type="closed">
+                <valItem ident="raw">
+                  <desc>raw score</desc>
+                  <gloss>Default: Calculate the score based off of the weighted number of 
+                    instances of a term in a text.</gloss>
+                </valItem>
+                <valItem ident="tf-idf">
+                  <gloss>Calculate the score based off of the tf-idf scoring algorithm.</gloss>
+                </valItem>
+              </valList>
             </content>
           </elementSpec>
           
