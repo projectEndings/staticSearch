@@ -88,6 +88,7 @@
   ss.captions['en'][WILDCARD]            = 'Wildcard term: ';
   ss.captions['en'].strScore             = 'Score: ';
   ss.captions['en'].strSearchTooBroad    = 'Your search is too broad. Include more letters in every term.';
+  ss.captions['en'].strDiscardedTerms    = 'Not searched (too common or too short): ';
 
 
 /**
@@ -279,6 +280,10 @@ class StaticSearch{
       //for this. Default 50.
       this.termLimit = this.getConfigInt('termLimit', 50);
 
+      //An array to collect terms which are to be ignored in the search
+      //because they are too short or are in the stopword list.
+      this.discardedTerms = [];
+
       //An arbitrary limit on the number of literal characters
       //that must be required in a search term before it is
       //processed (to avoid over-broad searches). Default of 3 suits 
@@ -286,7 +291,7 @@ class StaticSearch{
       this.charsRequired = this.getConfigInt('charsRequired', 3);
 
       //A pattern to check the search string to ensure that it's not going
-      //to retrieve a million words.
+      //to retrieve a million words. 
       this.termPattern = new RegExp('^([\\*\\?\\[\\]]*[^\\*\\?\\[\\]]){' + this.charsRequired + ',}[\\*\\?\\[\\]]*$');
 
       //Captions
@@ -532,6 +537,7 @@ class StaticSearch{
                 document.body.style.cursor = 'progress';}.bind(this), 0);
     this.docsMatchingFilters.filtersActive = false; //initialize.
     let result = false; //default.
+    this.discardedTerms = []; //Clear discarded terms.
     if (this.parseSearchQuery()){
       if (this.writeSearchReport()){
         this.populateIndexes();
@@ -730,7 +736,13 @@ class StaticSearch{
 
     //Broadness check
     if (!isPhrasal && !this.termPattern.test(strInput)){
-      alert(this.captionSet.strSearchTooBroad + ' (' + strInput + ')');
+      this.discardedTerms.push(strInput);
+      return false;
+    }
+
+    //Stopword check
+    if (this.stopwords.indexOf(strInput.toLowerCase()) > -1){
+      this.discardedTerms.push(strInput);
       return false;
     }
 
@@ -1368,8 +1380,10 @@ class StaticSearch{
 /*
   1. There are active filters and also search terms.
   2. There are search terms but no active filters.
-  3. There are active filters but no search terms.
-  4. There are no active filters and no search terms.
+  3. There are active filters but no search terms
+     (although search terms may have been discarded).
+  4. There are no active filters and no search terms 
+     (although search terms may have been discarded).
 
   For #1, process the term searches into the result set, and then
      filter it using the active filter matching doc list.
@@ -1378,14 +1392,26 @@ class StaticSearch{
      passing only ids and titles, for a simple listing display.
   For #4, do nothing at all (or possibly display an error message).
   */
+//Since we have to handle discarded search terms in the same
+//manner whatever the scenario, we do them first.
+let pDiscarded = null;
+if (this.discardedTerms.length > 0){
+  let txt = this.captionSet.strDiscardedTerms + ' ' + this.discardedTerms.join(', ');
+  pDiscarded = document.createElement('p');
+  pDiscarded.classList.add('ssDiscarded');
+  pDiscarded.append(txt);
+  //pDiscarded.appendChild(txt);
+}
 
 //Easy ones first: #4
       if ((this.terms.length < 1)&&(this.docsMatchingFilters.size < 1)){
         this.clearResultsDiv();
-        this.resultsDiv.appendChild(document.createElement('p')
-                       .appendChild(document.createTextNode(
-                         this.captionSet.strDocumentsFound + '0'
-                       )));
+        if (pDiscarded !== null){
+          this.resultsDiv.appendChild(pDiscarded);
+        }
+        let pFound = document.createElement('p');
+        pFound.append(this.captionSet.strDocumentsFound + '0');
+        this.resultsDiv.appendChild(pFound);
         this.searchFinishedHook(1);
         this.searchingDiv.style.display = 'none';
         document.body.style.cursor = 'default';
@@ -1395,10 +1421,12 @@ class StaticSearch{
       if ((this.terms.length < 1)&&(this.docsMatchingFilters.size > 0)){
         this.resultSet.addArray([...this.docsMatchingFilters]);
         this.clearResultsDiv();
-        this.resultsDiv.appendChild(document.createElement('p')
-                       .appendChild(document.createTextNode(
-                         this.captionSet.strDocumentsFound + this.resultSet.getSize()
-                       )));
+        if (pDiscarded !== null){
+          this.resultsDiv.appendChild(pDiscarded);
+        }
+        let pFound = document.createElement('p');
+        pFound.append(this.captionSet.strDocumentsFound + this.resultSet.getSize());
+        this.resultsDiv.appendChild(pFound);
         this.resultsDiv.appendChild(this.resultSet.resultsAsHtml(this.captionSet.strScore));
         if (this.resultSet.getSize() < 1){
           this.reportNoResults(true);
@@ -1645,10 +1673,12 @@ class StaticSearch{
 
       this.resultSet.sortByScoreDesc();
       this.clearResultsDiv();
-      this.resultsDiv.appendChild(document.createElement('p')
-                     .appendChild(document.createTextNode(
-                       this.captionSet.strDocumentsFound + this.resultSet.getSize()
-                     )));
+      if (pDiscarded !== null){
+        this.resultsDiv.appendChild(pDiscarded);
+      }
+      let pFound = document.createElement('p');
+      pFound.append(this.captionSet.strDocumentsFound + this.resultSet.getSize());
+      this.resultsDiv.appendChild(pFound);
       this.resultsDiv.appendChild(this.resultSet.resultsAsHtml(this.captionSet.strScore));
       if (this.resultSet.getSize() < 1){
         this.reportNoResults(true);
