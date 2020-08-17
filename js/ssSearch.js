@@ -1461,7 +1461,7 @@ if (this.discardedTerms.length > 0){
   //Get the term we decided to use to retrieve index data.
             let stem = self.terms[phr].stem;
   //Make the phrase into a regex for matching.
-            let rePhr = new RegExp(self.terms[phr].str, 'i');
+            let rePhr = new RegExp('\\b' + self.terms[phr].str + '\\b', 'i');
   //If that term is in the index (it should be, even if it's empty, but still...)
             if (self.index[stem]){
   //Look at each of the document instances for that term...

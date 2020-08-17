@@ -132,7 +132,7 @@
       <div id="staticSearch"><script src="ssTest/ssStemmer.js"></script><script src="ssTest/ssSearch.js"></script><script>
                 var Sch;
                 window.addEventListener('load', function(){Sch = new StaticSearch();});
-            </script><form accept-charset="UTF-8" id="ssForm" data-allowphrasal="yes" data-allowwildcards="yes" data-maxkwicstoshow="3" onsubmit="return false;" data-versionstring="_076834b" data-ssfolder="ssTest"><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><span class="clearButton"><button id="ssClear">Clear</button></span><div class="ssDescFilters">
+            </script><form accept-charset="UTF-8" id="ssForm" data-allowphrasal="yes" data-allowwildcards="yes" data-maxkwicstoshow="3" onsubmit="return false;" data-versionstring="_9cb42a5" data-ssfolder="ssTest"><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><span class="clearButton"><button id="ssClear">Clear</button></span><div class="ssDescFilters">
                <fieldset class="ssFieldset" title="Document type" id="ssDesc1">
                   <legend>Document type</legend>
                   <ul class="ssDescCheckboxList">
@@ -280,6 +280,13 @@
                                          check: function(num){console.log('Search hook ' + num);
                                          console.log('Testing results for the wildcard "att*", which should find "attempt" and "attached".');
                                          checkResults({docsFound: 2, contextsFound: 2, scoreTotal: 2});}});
+
+            //Search for a single word as a phrase, to test word-boundaries etc.
+            tests.push({setup: function(){Sch.queryBox.value = '"dog"'},
+                                         check: function(num){console.log('Search hook ' + num);
+                                         console.log('Testing results for the one-word phrase "dog", which should find 3 instances in one file.');
+                                         checkResults({docsFound: 1, contextsFound: 3, scoreTotal: 3});}});                             
+           
 
 
            function runTests(){
