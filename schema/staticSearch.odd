@@ -5,7 +5,7 @@
   <teiHeader>
     <fileDesc>
       <titleStmt>
-        <title>Project Endings Static Search Generator</title>
+        <title>Project Endings staticSearch Generator</title>
         <author><name>Martin Holmes</name></author>
         <author><name>Joey Takeda</name></author>
       </titleStmt>
@@ -22,20 +22,20 @@
     <front>
       <titlePage>
         <docTitle>
-          <titlePart type="main">Project Endings Static Search Generator</titlePart>
-          <titlePart type="sub">Schema and guidelines for creating a static search engine for your HTML5 site</titlePart>
+          <titlePart type="main">Project Endings staticSearch Generator</titlePart>
+          <titlePart type="sub">Schema and guidelines for creating a staticSearch engine for your HTML5 site</titlePart>
         </docTitle>
         <docAuthor>Martin Holmes</docAuthor>
         <docAuthor>Joey Takeda</docAuthor>
         <docDate>2019-2020</docDate>
       </titlePage>
       <p>This documentation provides instructions on how to use the Project Endings
-        Static Search Generator to provide a fully-functional search <soCalled>engine</soCalled>
+        staticSearch Generator to provide a fully-functional search <soCalled>engine</soCalled>
         to your website without any dependency on server-side code such as a database.</p>
       <divGen type="toc"/>
     </front>
     <body>
-        <head>Project Endings Static Search Generator</head>
+        <head>Project Endings staticSearch Generator</head>
         <div xml:id="whatDoesItDo">
           <head>What does it do?</head>
           <list>
@@ -409,7 +409,7 @@
                       results for most document collections.</item>
                     <item><val>tf-idf</val>: The tf-idf algorithm (term frequency-inverse document frequency)
                       computes the mathematical relevance of a term within a document relative to the rest
-                      of the document collection. The Static Search implementation of tf-idf basically follows the textbook definition of tf-idf:
+                      of the document collection. The staticSearch implementation of tf-idf basically follows the textbook definition of tf-idf:
                       <formula style="display:block;">
                         tf-idf = ($instancesOfTerm / $totalTermsInDoc) * log( $allDocumentsCount / $docsWithThisTermCount )
                       </formula>
@@ -495,7 +495,7 @@
                   <rule weight="2" match="*[matches(local-name(),'^h\d+$')]"/>
                 </rules>
               </egXML>
-              (It is worth noting, however, the above example is unnecessary: all heading elements are given a weight of 2 by default, which is the only preconfigured weight in static search.)
+              (It is worth noting, however, the above example is unnecessary: all heading elements are given a weight of 2 by default, which is the only preconfigured weight in staticSearch.)
             </p>
             <p>The value of the <att>match</att> attribute is transformed in a XSLT template match attribute, and thus must follow the same rules (i.e. no complex rules like <code>p/ancestor::div</code>). See the <ref target="https://www.w3.org/TR/xslt-30/#dt-pattern">W3C XSLT Specification</ref> for further details on allowable pattern rules.</p>
             <p>Often, there will be elements that you want the tokenizer to ignore completely; for instance, if you have the same header in every document, then there's no reason to index its contents on every page. These elements can be ignored simply by using a <gi>rule</gi> and setting its weight to 0. For instance, if you want to remove the header and the footer from the search indexing process, you could write something like:
@@ -517,7 +517,7 @@
           </div>
           <div xml:id="specifyingContexts">
             <head>Specifying Contexts (Optional)</head>
-            <p>When the static search creates the keywords-in-contexts (the "kwic" or "snippets") for each token, it does so by looking for the nearest block-level element that it can use as its context. Take, for instance, this unordered list:
+            <p>When the staticSearch creates the keywords-in-contexts (the "kwic" or "snippets") for each token, it does so by looking for the nearest block-level element that it can use as its context. Take, for instance, this unordered list:
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
                 <ul>
                   <li>Keyword-in-context search results. This is also configurable, since including contexts
@@ -803,7 +803,7 @@
           defaultExceptions="http://hcmc.uvic.ca/ns/staticSearch">
 
           <moduleSpec ident="ss">
-            <desc>Module for all of the static search elements.</desc>
+            <desc>Module for all of the staticSearch elements.</desc>
           </moduleSpec>
 
           <elementSpec ident="config" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
@@ -958,7 +958,7 @@
           </classSpec>
 
           <elementSpec ident="searchFile" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
-            <gloss>The search file (aka page) that will be the primary access point for the static search. Note
+            <gloss>The search file (aka page) that will be the primary access point for the staticSearch. Note
             that this page <emph>must</emph> be at the root of the collection directory.</gloss>
             <content>
               <dataRef name="anyURI"/>
