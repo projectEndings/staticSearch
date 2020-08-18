@@ -890,7 +890,7 @@ class StaticSearch{
         let sel = bool.selectedIndex;
         let valueId = bool.id + '_' + bool.selectedIndex;
         let boolName = bool.getAttribute('title');
-        if ((sel > 0) && (this.mapFilterData.has(boolName))){
+        if ((sel > 0) && (this.mapFilterData.has(boolName)) && (this.mapFilterData.get(boolName)[valueId] !== undefined)){
           currXSet = new XSet();
           currXSet.addArray(this.mapFilterData.get(boolName)[valueId].docs);
           xSets.push(currXSet);
