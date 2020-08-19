@@ -26,8 +26,13 @@
   
   <!-- Files we need to include from the js folder. -->
   <fileset id="js" dir="${basedir}">
-    <include name="js/ssPorter2Stemmer.js"/>
     <include name="js/ssSearch.js"/>
+  </fileset>
+  
+  <!-- Files we need to include from the stemmers folder. -->
+  <fileset id="stemmers" dir="${basedir}">
+    <include name="stemmers/**/ssStemmer.js"/>
+    <include name="stemmers/**/ssStemmer.xsl"/>
   </fileset>
   
   <!-- Files we need to include from the lib folder. -->
@@ -123,6 +128,7 @@
       <fileset refid="docs"/>
       <fileset refid="js"/>
       <fileset refid="lib"/>
+      <fileset refid="stemmers"/>
       <fileset refid="schema"/>
       <fileset refid="test"/>
       <fileset refid="xsl"/>
