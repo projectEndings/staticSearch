@@ -119,6 +119,15 @@
     <echo file="${basedir}/dist/VERSION.txt">${fullReleaseEdition}</echo>
   </target>
   
+  <target name="buildDocs">
+    <description>
+      TARGET buildDocs
+      This builds the latest version of the documentation and runs the
+      search configuration on it.
+    </description>
+    <ant antfile="${basedir}/buildSchema.xml"/>
+  </target>
+  
   <target name="copyFiles">
     <description>
       TARGET copyFiles
@@ -144,6 +153,6 @@
     <zip destfile="${basedir}/staticSearch-${fullReleaseEdition}.zip" basedir="${basedir}/dist"/>
   </target>
   
-  <target name="all" depends="clean, getVersion, copyFiles, zip"/>
+  <target name="all" depends="clean, getVersion, buildDocs, copyFiles, zip"/>
   
 </project>
