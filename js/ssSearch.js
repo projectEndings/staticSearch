@@ -2015,8 +2015,11 @@ class SSResultSet{
         d.appendChild(a);
 
         if (value.score > 0){
-          t = document.createTextNode(' ' + strScore + value.score);
-          d.append(t);
+          let scoreSpan = document.createElement('span');
+          let scoreSpace = document.createTextNode(' ');
+          scoreSpan.innerHTML = strScore + value.score;
+          d.append(scoreSpace);
+          d.appendChild(scoreSpan);
         }
         if (value.contexts.length > 0){
           //Sort these in document order.
