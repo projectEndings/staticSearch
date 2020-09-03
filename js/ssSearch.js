@@ -172,6 +172,14 @@ class StaticSearch{
       else{
         this.searchButton.addEventListener('click', function(){this.doSearch(); return false;}.bind(this));
       }
+
+      //Optional second search button
+      this.searchButton2 =
+           document.querySelector("button#ssDoSearch2");
+      if (this.searchButton2){
+        this.searchButton2.addEventListener('click', function(){this.doSearch(); return false;}.bind(this));
+      }
+
       //Clear button will be there if there are filter controls.
       this.clearButton = document.querySelector("button#ssClear");
       if (this.clearButton){
