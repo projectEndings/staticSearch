@@ -63,11 +63,12 @@
   <fileset id="xsl" dir="${basedir}">
     <include name="xsl/create_config_xsl.xsl"/>
     <include name="xsl/create_reports.xsl"/>
+    <include name="xsl/create_ssStems.xsl"/>
     <include name="xsl/english_stopwords.txt"/>
     <include name="xsl/english_words.txt"/>
     <include name="xsl/json.xsl"/>
     <include name="xsl/makeSearchPage.xsl"/>
-    <include name="xsl/porter2Stemmer.xsl"/>
+    <include name="xsl/functions.xsl"/>
     <include name="xsl/tokenize.xsl"/>
   </fileset>
   
