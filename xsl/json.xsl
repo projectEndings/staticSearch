@@ -231,7 +231,6 @@
                     <xsl:variable name="thisDoc"
                         select="current-group()[1]/ancestor::html"
                         as="element(html)"/>
-      
 
                     <!--Now the document ID, which we've created (if necessary) in the
                         tokenization step -->
