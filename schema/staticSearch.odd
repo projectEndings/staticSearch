@@ -793,6 +793,106 @@
          therefore be even faster for later searches than for early ones.</p>
        </div>
       </div>
+      <div xml:id="howDoI">
+        <head><q>How Do I...</q></head>
+        <p>Below are some of the most common things you might want to do using staticSearch:</p>
+        <table>
+          <row>
+            <cell>How do I get staticSearch to ignore large chunks of my document?</cell>
+            <cell>Any element with a weight of 0 is ignored completely by the indexer, so add a <gi>rule</gi> for the element. So to ignore all elements with the class <val>ignoreThisElement</val>, you could do something like:
+              <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                <rule weight="0" match="div[contains-token(@class,'ignoreThisElement')"/>
+              </egXML></cell>
+          </row>
+          <row>
+            <cell>How do I get staticSearch to ignore small inline bits and <emph>not</emph> have them in the KWIC?</cell>
+            <cell>As above, you can use a <gi>rule</gi> with an <att>weight</att>=<val>0</val></cell>
+          </row>
+          <row>
+            <cell>How do I get staticSearch to ignore an element, but retain their text in the KWIC?</cell>
+            <cell>Here, you'll want to use the <gi>exclude</gi> function, which excludes the element from indexing, but doesn't remove it from the document itself. So, if you wanted to exclude all keyboard entry items (<gi>xh:kbd</gi>), but still have them in the KWIC, you could do something like:
+              <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                <exclude match="kbd" type="index"/>
+              </egXML>
+            </cell>
+          </row>
+          <row>
+            <cell>How can I get staticSearch to show debugging messages?</cell>
+            <cell>Switch <gi>verbose</gi> to true in the configuration file:
+              <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                <config xmlns="http://hcmc.uvic.ca/ns/staticSearch">
+                  <params>
+                    <!--....-->
+                    <verbose>true</verbose>
+                    <!--....-->
+                  </params>
+                  <!--Rules, etc-->
+                </config>
+              </egXML>
+            </cell>
+          </row>
+        </table>
+      </div>
+      <div xml:id="projectsUsingSS">
+        <head>Projects using Static Search</head>
+        <table>
+          <row role="label">
+            <cell>Name</cell>
+            <cell>Static Search Version</cell>
+            <cell>Search Page(s)</cell>
+            <cell></cell>
+            <cell>Configuration file(s)</cell>
+          </row>
+          <row>
+            <cell><ref target="https://mapoflondon.uvic.ca">The Map of Early Modern London</ref></cell>
+            <cell>0.9</cell>
+            <cell><ref target="https://mapoflondon.uvic.ca/search.htm">Search</ref></cell>
+            <cell><ref target="https://hcmc.uvic.ca/svn/london/static/config_staticSearch.xml">SVN</ref></cell>
+          </row>
+          <row>
+            <cell><ref target="https://winnifredeatonarchive.org">The Winnifred Eaton Archive</ref></cell>
+            <cell>1.0 (dev)</cell>
+            <cell><ref target="https://winnifredeatonarchive.org/search.htm">Search</ref></cell>
+            <cell>
+              <ref target="https://github.com/winnifredeatonarchive/wea_data/blob/09ae8660007a10e23e80e2f5769aec0bf1f919c6/code/staticSearch/config.xml">Github</ref></cell>
+          </row>
+          <row>
+            <cell><ref target="https://johnkeats.uvic.ca/">Mapping Keat's Progress</ref></cell>
+            <cell><!--MH TO DO --></cell>
+            <cell><ref target="https://johnkeats.uvic.ca/search.html">Search</ref></cell>
+            <cell><!--MH TO DO--></cell>
+          </row>
+          <row>
+            <cell><ref target="https://myndir.uvic.ca/">My Norse Digital Image Repository</ref></cell>
+            <cell><!--MH TO DO --></cell>
+            <cell><ref target="https://myndir.uvic.ca/search.html">Search</ref></cell>
+            <cell><!--MH TO DO--></cell>
+          </row>
+          <!--COLDESPATCHES?-->
+          <row>
+            <cell>Le mariage sous L'Ancien Régime (forthcoming)</cell>
+            <cell/>
+            <cell/>
+            <cell/>
+          </row>
+          <row>
+            <cell>Digital Victorian Periodical Poetry (forthcoming)</cell>
+            <cell/>
+            <cell/>
+            <cell/>
+          </row>
+          <row>
+            <cell>Landscapes of Injustice (forthcoming)</cell>
+            <cell/>
+            <cell/>
+            <cell/>
+          </row>
+          <row>
+            <cell>Linked Early Modern Drama Online (forthcoming)</cell>
+          </row>
+        </table>
+      </div>
+      
       
     </body>
     <back>
