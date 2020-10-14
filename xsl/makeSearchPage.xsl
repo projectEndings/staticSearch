@@ -462,9 +462,9 @@
                             </fieldset>
                         </div>
                     </xsl:if>
-                    <div>
+                    <span class="postFilterSearchBtn">
                         <button id="ssDoSearch2">Search</button>
-                    </div>
+                    </span>
                
                 </xsl:if>
 
