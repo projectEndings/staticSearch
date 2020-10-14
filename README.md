@@ -8,7 +8,7 @@ The generation code uses XSLT3 and the search functionality is JavaScript. Imple
 
 The default branch of this repo is the dev branch; the main branch is used for releases. Formal releases started in early 2020, and the main branch will always reflect the latest release tag, so you can pin your own project either to master or to a specific release tag to avoid unexpected changes in behaviour due to codebase changes. For testing to prepare for upcoming changes, you can use the dev branch.
 
-Full documentation can be found in the file docs/staticSearch.html.
+Full documentation can be found in the file docs/staticSearch.html. Live searchable documentation (built using staticSearch) for the latest release can be found at the [Project Endings site](https://endings.uvic.ca/staticSearch/docs/).
 
 Please report all issues you encounter as tickets on the repo.
 
