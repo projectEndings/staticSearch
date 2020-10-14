@@ -68,6 +68,11 @@
     <property name="outputFolder" if:set="config.params.outputFolder" value="${config.params.outputFolder}"/>
     <property name="outputFolder" unless:set="config.params.outputFolder" value="staticSearch"/>
     
+    <!--Stemmer folder, which is forked, depending on whether or not a stemmer folder
+        is specified in the configuration file-->
+    <property name="stemmerFolder" if:set="config.params.stemmerFolder" value="${config.params.stemmerFolder}"/>
+    <property name="stemmerFolder" unless:set="config.params.stemmerFolder" value="en"/>
+    
     <!--The directory for all of the static search assets (JSON files, Javascripts, et cetera).
         Note that the static search directory is placed directly within the collection directory-->
     <property name="staticSearchDir" value="${collectionDirName}/${outputFolder}/"/>
@@ -205,6 +210,31 @@
             <arg value="--suppressXsltNamespaceCheck:on"/>
         </java>
     </target>
+    
+    <target name="createStemsFile">
+        <description>
+            target: createStemsFile
+            
+            This target creates the ssStems.json file by first retrieving the length of all the JSONs available,
+            and then create a JSON from that document. This is necessary for running wildcard searches.
+        </description>
+        
+       <echo message="Creating ssStems.json file..."/>
+       <echo message="First, measure the JSON files..."/>
+       <length property="stemLines" mode="each">
+           <fileset dir="${staticSearchDir}">
+                <include name="lower/**.json"/>
+                <include name="upper/**.json"/>
+            </fileset>     
+       </length>
+       <echo message="Now create the tokens file..."/>
+        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
+            <arg value="-xsl:${basedir}/xsl/create_ssStems.xsl"/>
+            <arg value="-s:${basedir}/xsl/create_ssStems.xsl"/>
+            <arg value="stemLines=${stemLines}"/>
+            <arg value="--suppressXsltNamespaceCheck:on"/>
+        </java>
+    </target>
 
     
  
@@ -295,6 +325,11 @@
                 <include name="ss**.js"/>
             </fileset>
         </copy>
+        <copy todir="${staticSearchDir}/">
+            <fileset dir="${basedir}/stemmers/${stemmerFolder}">
+                <include name="ssStemmer.js"/>
+            </fileset>
+        </copy>
     </target>
     
     <target name="clean">
@@ -310,7 +345,7 @@
     
 
     
-    <target name="all" depends="init, validate, config, tokenize, json, copyFiles, makeSearchPage, report, clean">
+    <target name="all" depends="init, validate, config, tokenize, json,  createStemsFile, copyFiles, makeSearchPage, report, clean">
         <description>
             target: all
             
@@ -318,7 +353,7 @@
         </description>
     </target>
 
-    <target name="allButValidate" depends="init, config, tokenize, json, copyFiles, makeSearchPage, report, clean">
+    <target name="allButValidate" depends="init, config, tokenize, json, createStemsFile, copyFiles, makeSearchPage, report, clean">
         <description>
             target: allButValidate
             
@@ -327,7 +362,7 @@
         </description>
     </target>
 
-    <target name="test" depends="init, validate, config, tokenize, json, copyFiles, makeSearchPage, report">
+    <target name="test" depends="init, validate, config, tokenize, json, createStemsFile, copyFiles, makeSearchPage, report">
         <description>
             target: test
             
@@ -335,7 +370,7 @@
         </description>
     </target>
     
-    <target name="basic" depends="init, validate, config, tokenize, json, copyFiles, makeSearchPage, clean">
+    <target name="basic" depends="init, validate, config, tokenize, json, createStemsFile, copyFiles, makeSearchPage, clean">
         <description>
             target: basic
             

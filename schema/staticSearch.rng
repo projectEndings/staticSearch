@@ -5,10 +5,10 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2020-05-08T23:17:10Z. 2019-2020.
-TEI Edition: Version 4.0.0. Last updated on
-	13th February 2020, revision ccd19b0ba
-TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 4.0.0/
+Schema generated from ODD source 2020-10-14T21:32:22Z. 2019-2020.
+TEI Edition: Version 4.1.0. Last updated on
+	19th August 2020, revision b414ba550
+TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
   
 --><!--Free to anyone for any purpose-->
    <sch:ns xmlns:sch="http://purl.oclc.org/dsdl/schematron"
@@ -38,9 +38,18 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 4.0.0/
             <optional>
                <ref name="versionFile"/>
             </optional>
+            <optional>
+               <ref name="stemmerFolder"/>
+            </optional>
             <ref name="recurse"/>
             <optional>
+               <ref name="scoringAlgorithm"/>
+            </optional>
+            <optional>
                <ref name="phrasalSearch"/>
+            </optional>
+            <optional>
+               <ref name="wildcardSearch"/>
             </optional>
             <optional>
                <ref name="createContexts"/>
@@ -77,7 +86,7 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 4.0.0/
    </define>
    <define name="rules">
       <element name="rules" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The set of rules, expressed as XPath, that control weighting of search terms
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The set of rules, expressed as XPath in match, that control weighting of search terms
               found in specific contexts.) </a:documentation>
          <oneOrMore>
             <ref name="rule"/>
@@ -86,13 +95,13 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 4.0.0/
    </define>
    <define name="rule">
       <element name="rule" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(A rule that specifies a document path in XPath, and provides weighting for search
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(A rule that specifies a document path as XPath in match, and provides weighting for search
               terms found in that context.) </a:documentation>
          <empty/>
-         <ref name="att.xpath.attributes"/>
+         <ref name="att.match.attributes"/>
          <attribute name="weight">
             <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The weighting to give to a search token found in the context specified by the
-                  xpath attribute. Set to 0 to completely suppress indexing for a
+                  match attribute. Set to 0 to completely suppress indexing for a
                   specific context, or greater than 1 to give stronger weighting.) </a:documentation>
             <data type="nonNegativeInteger"/>
          </attribute>
@@ -101,7 +110,7 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 4.0.0/
    </define>
    <define name="contexts">
       <element name="contexts" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The set of contexts, expressed as XPath, that controls the identification of
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The set of contexts, expressed as XPath in match, that controls the identification of
             contexts for keyword-in-context fragments.) </a:documentation>
          <oneOrMore>
             <ref name="context"/>
@@ -110,10 +119,10 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 4.0.0/
    </define>
    <define name="context">
       <element name="context" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(A context definition, providing an XPath attribute that identifies the context,
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(A context definition, providing a match attribute that identifies the context,
               allowing keyword-in-context fragments to be bounded by a specific context.) </a:documentation>
          <empty/>
-         <ref name="att.xpath.attributes"/>
+         <ref name="att.match.attributes"/>
          <ref name="att.labelled.attributes"/>
          <optional>
             <attribute name="context">
@@ -126,7 +135,7 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 4.0.0/
    </define>
    <define name="excludes">
       <element name="excludes" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The set of exclusions, expressed as XPath, that control the subset of documents
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The set of exclusions, expressed as XPath in match, that control the subset of documents
             for a particular search.) </a:documentation>
          <oneOrMore>
             <ref name="exclude"/>
@@ -135,9 +144,9 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 4.0.0/
    </define>
    <define name="exclude">
       <element name="exclude" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(An exclusion definition, which excludes either documents or filters as defined by an XPath.) </a:documentation>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(An exclusion definition, which excludes either documents or filters as defined by an XPath in match.) </a:documentation>
          <empty/>
-         <ref name="att.xpath.attributes"/>
+         <ref name="att.match.attributes"/>
          <attribute name="type">
             <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
             <choice>
@@ -150,11 +159,11 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 4.0.0/
          <empty/>
       </element>
    </define>
-   <define name="att.xpath.attributes">
-      <ref name="att.xpath.attribute.xpath"/>
+   <define name="att.match.attributes">
+      <ref name="att.match.attribute.match"/>
    </define>
-   <define name="att.xpath.attribute.xpath">
-      <attribute name="xpath">
+   <define name="att.match.attribute.match">
+      <attribute name="match">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(An XPath equivalent to the @match attribute of an xsl:template, which
                   specifies a context in a document.) </a:documentation>
          <data type="string"/>
@@ -173,7 +182,7 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 4.0.0/
    </define>
    <define name="searchFile">
       <element name="searchFile" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The search file (aka page) that will be the primary access point for the static search. Note
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The search file (aka page) that will be the primary access point for the staticSearch. Note
             that this page must be at the root of the collection directory.) </a:documentation>
          <data type="anyURI"/>
       </element>
@@ -185,6 +194,27 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 4.0.0/
             unique filenames for JSON resources, so that when a site is updated, so that the browser
             will not use cached versions of older index files.) </a:documentation>
          <data type="anyURI"/>
+      </element>
+   </define>
+   <define name="stemmerFolder">
+      <element name="stemmerFolder" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The name of a folder inside the staticSearch /stemmers/ folder, 
+              in which the JavaScript and XSLT implementations
+            of stemmers can be found. If left blank, then the staticSearch default English 
+            stemmer will be used (stemmers/en).) </a:documentation>
+         <data type="NCName"/>
+      </element>
+   </define>
+   <define name="scoringAlgorithm">
+      <element name="scoringAlgorithm" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Which scoring algorithm to use. Default is "raw" (i.e. weighted counts)) </a:documentation>
+         <choice>
+            <value>raw</value>
+            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Default: Calculate the score based off of the weighted number of 
+                    instances of a term in a text.) raw score</a:documentation>
+            <value>tf-idf</value>
+            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Calculate the score based off of the tf-idf scoring algorithm.) </a:documentation>
+         </choice>
       </element>
    </define>
    <define name="recurse">
@@ -245,6 +275,14 @@ TEI Edition Location: http://www.tei-c.org/Vault/P5/Version 4.0.0/
       <element name="phrasalSearch" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Whether or not to support phrasal searches. If this is true, then the maxContexts
             setting will be ignored, because all contexts are required to properly support phrasal search.) </a:documentation>
+         <data type="boolean"/>
+      </element>
+   </define>
+   <define name="wildcardSearch">
+      <element name="wildcardSearch" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Whether or not to support wildcard searches. Note that wildcard searches are
+            more effective when phrasal searching is also turned on, because the contexts 
+            available for phrasal searches are also used to provide wildcard results.) </a:documentation>
          <data type="boolean"/>
       </element>
    </define>

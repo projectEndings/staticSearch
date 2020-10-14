@@ -62,4 +62,5 @@
     <xsl:value-of select="string-join(($targetPathBits ! (if (position() lt count($rootPathBits) and $rootPathBits[position()] = .) then () else .)), '/')"/>
   </xsl:function>
   
+
 </xsl:stylesheet>

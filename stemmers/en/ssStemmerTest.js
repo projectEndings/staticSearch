@@ -242,67 +242,67 @@ xmlhttp.onreadystatechange = function() {
     runTests();
   }
 };
-xmlhttp.open("GET", "porter2TestData.json", true);
+xmlhttp.open("GET", "ssStemmerTestData.json", true);
 xmlhttp.send();
 
 function runTests(){
   showLog('Retrieved test file ' + testData.title, 'ok');
   showLog('Test data has ' + testData.voc.length + ' input vocabulary items, and ' + testData.output.length + ' output items.', 'ok');
-  var pt2 = new(PT2);
+  var ssStemmer = new(SSStemmer);
   for (var i=0; i<preflightData.length; i++){
-    var result = pt2.preflight(preflightData[i][0]);
+    var result = ssStemmer.preflight(preflightData[i][0]);
     showTestLog('preflight', preflightData[i][0], preflightData[i][1], result);
   }
   for (var i=0; i<R1R2Data.length; i++){
-    var result = pt2.getR1AndR2(R1R2Data[i][0]);
+    var result = ssStemmer.getR1AndR2(R1R2Data[i][0]);
     var jsonResult = JSON.stringify(result);
     var jsonExpected = JSON.stringify(R1R2Data[i][1]);
     showTestLog('getR1AndR2', R1R2Data[i][0], jsonExpected, jsonResult);
   }
   for (var i=0; i<step0Data.length; i++){
-    var result = pt2.step0(step0Data[i][0]);
+    var result = ssStemmer.step0(step0Data[i][0]);
     showTestLog('step0', step0Data[i][0], step0Data[i][1], result);
   }
   for (var i=0; i<wordIsShortData.length; i++){
-    var r1of = pt2.getR1AndR2(wordIsShortData[i][0]).r1of;
-    var result = pt2.wordIsShort(wordIsShortData[i][0], r1of);
+    var r1of = ssStemmer.getR1AndR2(wordIsShortData[i][0]).r1of;
+    var result = ssStemmer.wordIsShort(wordIsShortData[i][0], r1of);
     showTestLog('wordIsShort', wordIsShortData[i][0], wordIsShortData[i][1], result);
   }
   for (var i=0; i<step1Data.length; i++){
-    var r1of = pt2.getR1AndR2(step1Data[i][0]).r1of;
-    var result = pt2.step1(step1Data[i][0], r1of);
+    var r1of = ssStemmer.getR1AndR2(step1Data[i][0]).r1of;
+    var result = ssStemmer.step1(step1Data[i][0], r1of);
     showTestLog('step1', step1Data[i][0], step1Data[i][1], result);
   }
   for (var i=0; i<step2Data.length; i++){
-    var r1of = pt2.getR1AndR2(step2Data[i][0]).r1of;
-    var result = pt2.step2(step2Data[i][0], r1of);
+    var r1of = ssStemmer.getR1AndR2(step2Data[i][0]).r1of;
+    var result = ssStemmer.step2(step2Data[i][0], r1of);
     showTestLog('step2', step2Data[i][0], step2Data[i][1], result);
   }
   for (var i=0; i<step3Data.length; i++){
-    var R1R2 = pt2.getR1AndR2(step2Data[i][0])
+    var R1R2 = ssStemmer.getR1AndR2(step2Data[i][0])
     var r1of = R1R2.r1of;
     var r2of = R1R2.r2of;
-    var result = pt2.step3(step3Data[i][0], r1of, r2of);
+    var result = ssStemmer.step3(step3Data[i][0], r1of, r2of);
     showTestLog('step3', step3Data[i][0], step3Data[i][1], result);
   }
   for (var i=0; i<step4Data.length; i++){
-    var r2of = pt2.getR1AndR2(step4Data[i][0]).r2of;
-    var result = pt2.step4(step4Data[i][0], r2of);
+    var r2of = ssStemmer.getR1AndR2(step4Data[i][0]).r2of;
+    var result = ssStemmer.step4(step4Data[i][0], r2of);
     showTestLog('step4', step4Data[i][0], step4Data[i][1], result);
   }
   for (var i=0; i<step5Data.length; i++){
-    var R1R2 = pt2.getR1AndR2(step5Data[i][0])
+    var R1R2 = ssStemmer.getR1AndR2(step5Data[i][0])
     var r1of = R1R2.r1of;
     var r2of = R1R2.r2of;
-    var result = pt2.step5(step5Data[i][0], r1of, r2of);
+    var result = ssStemmer.step5(step5Data[i][0], r1of, r2of);
     showTestLog('step5', step5Data[i][0], step5Data[i][1], result);
   }
   for (var i=0; i<stemData.length; i++){
-    var result = pt2.stem(stemData[i][0]);
+    var result = ssStemmer.stem(stemData[i][0]);
     showTestLog('stem', stemData[i][0], stemData[i][1], result);
   }
   for (var i=0; i<testData.voc.length; i++){
-    var result = pt2.stem(testData.voc[i]);
+    var result = ssStemmer.stem(testData.voc[i]);
     showTestLog('stem', testData.voc[i], testData.output[i], result);
   }
 }

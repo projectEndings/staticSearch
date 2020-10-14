@@ -162,6 +162,8 @@
         div#ssResults>ul>li>a>img{
             max-width: 10em;
             margin-right: 1em;
+            min-width: 3em;
+            min-height: 3em;
         }
     </xsl:param>
     
@@ -241,7 +243,7 @@
             </xsl:if>
 
             <!--Now add the scripts to the staticSearch library-->
-            <script src="{$outputFolder}/ssPorter2Stemmer.js"><!-- Don't self-close script tags. --></script>
+            <script src="{$outputFolder}/ssStemmer.js"><!-- Don't self-close script tags. --></script>
             <script src="{$outputFolder}/ssSearch.js"><!-- Don't self-close script tags. --></script>
 
             <!--Special on script onload to the start up the StaticSearch-->
@@ -253,6 +255,7 @@
             <!--Now create the form-->
             <form accept-charset="UTF-8" id="ssForm"
                 data-allowphrasal="{if ($phrasalSearch) then 'yes' else 'no'}"
+                data-allowwildcards="{if ($wildcardSearch) then 'yes' else 'no'}"
                 data-maxkwicstoshow="{if ($maxKwicsToShow) then $maxKwicsToShow else 10}"
                 onsubmit="return false;"
                 data-versionstring="{$versionString}"
@@ -261,6 +264,10 @@
                 
                 <!--Standard inputs-->
                 <span class="ssQueryAndButton">
+                    <!-- NOTE: We no longer use a validation pattern because
+                         browser behaviour is too variable. -->
+                    <!--<xsl:variable name="validationPattern" as="xs:string">\s*(.*([^\*\?\[\]\s]+[^\s]*){3})+\s*</xsl:variable>
+                    <input type="text" id="ssQuery" pattern="{$validationPattern}"/>-->
                     <input type="text" id="ssQuery"/>
                     <button id="ssDoSearch">Search</button>
                 </span>
@@ -297,18 +304,18 @@
                                         <ul class="ssDescCheckboxList">
                                             <!-- Before sorting checkbox items, we need to know
                                               whether they're numeric or not. -->
-                                            <xsl:variable name="notNumeric" select="some $n in (for $s in $jsonDoc//map:map[@key]/map:string[@key='name'] return $s castable as xs:decimal) satisfies $n = false()"/>
+                                            <xsl:variable name="notNumeric" select="some $n in (for $s in $jsonDoc//map:map[@key]/map:string[@key='sortKey'] return $s castable as xs:decimal) satisfies $n = false()"/>
                                             <xsl:variable name="sortedMaps" as="element(map:map)+">
                                                 <xsl:choose>
                                                     <xsl:when test="$notNumeric">
                                                         <xsl:for-each select="$jsonDoc//map:map[@key]">
-                                                            <xsl:sort select="replace(map:string[@key='name'], '^((the)|(a)|(an))\s+', '', 'i')"/>
+                                                            <xsl:sort select="replace(map:string[@key='sortKey'], '^((the)|(a)|(an))\s+', '', 'i')"/>
                                                             <xsl:sequence select="."/>
                                                         </xsl:for-each>
                                                     </xsl:when>
                                                     <xsl:otherwise>
                                                         <xsl:for-each select="$jsonDoc//map:map[@key]">
-                                                            <xsl:sort select="map:string[@key='name']" data-type="number"/>
+                                                            <xsl:sort select="map:string[@key='sortKey']" data-type="number"/>
                                                             <xsl:sequence select="."/>
                                                         </xsl:for-each>
                                                     </xsl:otherwise>
@@ -398,19 +405,20 @@
                                     <xsl:variable name="minVal" select="min($vals)"/>
                                     <xsl:variable name="maxVal" select="max($vals)"/>
                                     
+                                    
                                     <fieldset class="ssFieldset" title="{$filterName}" id="{$filterId}">
                                         <!--And add the filter name as the legend-->
                                         <legend><xsl:value-of select="$filterName"/></legend>
                                         <span>
                                             <label for="{$filterId}_from">From: </label>
-                                            <input type="number" min="{$minVal}" max="{$maxVal}" placeholder="{$minVal}"
+                                            <input type="number" min="{$minVal}" max="{$maxVal}" placeholder="{$minVal}" step="any"
                                                 title="{$filterName}" id="{$filterId}_from" 
                                                 class="staticSearch.num"/>
                                         </span>
                                         
                                         <span>
                                             <label for="{$filterId}_to">To: </label>
-                                            <input type="number" min="{$minVal}" max="{$maxVal}" placeholder="{$maxVal}"
+                                            <input type="number" min="{$minVal}" max="{$maxVal}" placeholder="{$maxVal}" step="any"
                                                 title="{$filterName}" id="{$filterId}_to" 
                                                 class="staticSearch.num"/>
                                         </span>
@@ -454,6 +462,9 @@
                             </fieldset>
                         </div>
                     </xsl:if>
+                    <span class="postFilterSearchBtn">
+                        <button id="ssDoSearch2">Search</button>
+                    </span>
                
                 </xsl:if>
 

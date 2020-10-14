@@ -9,7 +9,7 @@
         * This creates a folder called dist and puts in it all   *
         * files required for a working system, omitting some     *
         * irrelevant and unwanted bits and pieces.               *
-        * When this is run, it will ask for the version number   *
+        * When this is run, it will build the edition identifier *
         * for the release, and add it in a VERSION.txt file in   *
         * the distribution it creates.                           *
         **********************************************************
@@ -26,8 +26,13 @@
   
   <!-- Files we need to include from the js folder. -->
   <fileset id="js" dir="${basedir}">
-    <include name="js/ssPorter2Stemmer.js"/>
     <include name="js/ssSearch.js"/>
+  </fileset>
+  
+  <!-- Files we need to include from the stemmers folder. -->
+  <fileset id="stemmers" dir="${basedir}">
+    <include name="stemmers/**/ssStemmer.js"/>
+    <include name="stemmers/**/ssStemmer.xsl"/>
   </fileset>
   
   <!-- Files we need to include from the lib folder. -->
@@ -58,11 +63,12 @@
   <fileset id="xsl" dir="${basedir}">
     <include name="xsl/create_config_xsl.xsl"/>
     <include name="xsl/create_reports.xsl"/>
+    <include name="xsl/create_ssStems.xsl"/>
     <include name="xsl/english_stopwords.txt"/>
     <include name="xsl/english_words.txt"/>
     <include name="xsl/json.xsl"/>
     <include name="xsl/makeSearchPage.xsl"/>
-    <include name="xsl/porter2Stemmer.xsl"/>
+    <include name="xsl/functions.xsl"/>
     <include name="xsl/tokenize.xsl"/>
   </fileset>
   
@@ -80,19 +86,47 @@
   <target name="getVersion">
     <description>
       TARGET getVersion
-      Asks the user to supply the version number for the release.
-      Saves the result to a VERSION.txt in the dist folder. It 
-      also writes the date and time to the file.
+      Reads the EDITION file to get the version number 
+      for the release. Saves the result to a VERSION.txt 
+      in the dist folder, adding the date and repo hash 
+      to the file to create a full descriptor for the 
+      release.
     </description>
     <tstamp>
       <format property="date" pattern="yyyy-MM-dd" locale="en,CA"/>
     </tstamp>
-    <input message="What is the version number for this release?"
+    <delete file="${basedir}/dist/VERSION.txt"/>
+    
+    <!-- OLD approach was to ask. -->
+    <!--<input message="What is the version number for this release?"
       addproperty="releaseVersion"
-      defaultValue="0.7"/>
-    <echo file="${basedir}/dist/VERSION.txt">${releaseVersion}</echo>
-    <echo file="${basedir}/dist/VERSION.txt" append="true">&#x0a;</echo>
-    <echo file="${basedir}/dist/VERSION.txt" append="true">${date}</echo>
+      defaultValue="0.7"/>-->
+    <!-- Now we read it from disk. -->
+    <loadfile srcfile="${basedir}/EDITION" property="releaseEditionRaw"/>
+    <propertyregex
+      property="releaseEdition"
+      input="${releaseEditionRaw}"
+      regexp="\s+"
+      replace=""
+      override="true"
+    />
+    <exec executable="git" outputproperty="gitHash">
+      <arg value="rev-parse"/>
+      <arg value="--short"/>
+      <arg value="HEAD"/>
+    </exec>
+    
+    <property name="fullReleaseEdition" value="${releaseEdition}+${date}.${gitHash}"/>
+    <echo file="${basedir}/dist/VERSION.txt">${fullReleaseEdition}</echo>
+  </target>
+  
+  <target name="buildDocs">
+    <description>
+      TARGET buildDocs
+      This builds the latest version of the documentation and runs the
+      search configuration on it.
+    </description>
+    <ant antfile="${basedir}/buildSchema.xml"/>
   </target>
   
   <target name="copyFiles">
@@ -104,6 +138,7 @@
       <fileset refid="docs"/>
       <fileset refid="js"/>
       <fileset refid="lib"/>
+      <fileset refid="stemmers"/>
       <fileset refid="schema"/>
       <fileset refid="test"/>
       <fileset refid="xsl"/>
@@ -116,9 +151,9 @@
       TARGET zip
       Zips up all the files in the dist folder into a release package.
     </description>
-    <zip destfile="${basedir}/staticSearch-${releaseVersion}.zip" basedir="${basedir}/dist"/>
+    <zip destfile="${basedir}/staticSearch-${fullReleaseEdition}.zip" basedir="${basedir}/dist"/>
   </target>
   
-  <target name="all" depends="clean, getVersion, copyFiles, zip"/>
+  <target name="all" depends="clean, getVersion, buildDocs, copyFiles, zip"/>
   
 </project>

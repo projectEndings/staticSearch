@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://hcmc.uvic.ca/ns/staticSearch">
+    <params>
+        <searchFile>docs/index.html</searchFile>
+        <versionFile>test/VERSION</versionFile>
+        <stemmerFolder>en</stemmerFolder>
+        <recurse>false<!--Need to set recurse to true for the test--></recurse>
+        <phrasalSearch>true</phrasalSearch>
+        <wildcardSearch>true</wildcardSearch>
+        <createContexts>true</createContexts>
+        <!--NOTE: If phrasalSearch is set to TRUE, then
+        maxContexts prop will be ignored-->
+        <maxKwicsToHarvest>3</maxKwicsToHarvest>
+        <maxKwicsToShow>10</maxKwicsToShow>
+        <totalKwicLength>15</totalKwicLength>
+        <kwicTruncateString>...</kwicTruncateString>
+        <verbose>false</verbose>
+        <stopwordsFile>xsl/english_stopwords.txt</stopwordsFile>
+        <dictionaryFile>xsl/english_words.txt</dictionaryFile>
+        <indentJSON>true</indentJSON>
+        <outputFolder>search</outputFolder>
+    </params>
+    
+    <rules>
+        <rule weight="2"
+            match="h1 | h2"/>
+        <!--ignore the TOC-->
+        <rule weight="0"
+            match="div[contains-token(@class,'tei_front')]"/>
+        
+        <!--Don't index codeblocks in table cells-->
+        <rule weight="0" match="td/pre"/>
+        
+    </rules>
+    
+    <excludes>
+        <!--Ignore the master SS doc from the search-->
+        <exclude type="index" match="html[matches(document-uri(/),'staticSearch.html$')]"/>
+    </excludes>
+
+</config>

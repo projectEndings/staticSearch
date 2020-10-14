@@ -69,10 +69,20 @@
     
     
     <xd:doc>
-        <xd:desc><xd:ref name="schema" type="variable">$ssBasedir</xd:ref> is the base directory for the static
+        <xd:desc><xd:ref name="ssBasedir" type="variable">$ssBasedir</xd:ref> is the base directory for the static
             search codebase. It is just the directory above the /xsl/ directory that contains this file.</xd:desc>
     </xd:doc>
     <xsl:variable name="ssBaseDir" select="substring-before(document-uri(/),'/xsl/create_config_xsl.xsl')"/>
+    
+    <xd:doc>
+        <xd:desc><xd:ref name="ssDefaultStemmerFolder" 
+            type="variable">$ssDefaultStemmerFolder</xd:ref>
+            is the location to use when no specific stemmer has been supplied. 
+            It's the location of the English Porter 2 stemmer.
+        </xd:desc>
+    </xd:doc>
+    <xsl:variable name="ssDefaultStemmerFolder" as="xs:string" 
+        select="'en'"/>
     
     
     <xd:doc>
@@ -148,6 +158,13 @@
             versionDoc if there is one; otherwise it is an empty string.</xd:desc>
     </xd:doc>
     <xsl:variable name="versionString" select="if (($versionDocUri != '') and (unparsed-text-available($versionDocUri))) then replace(normalize-space(unparsed-text($versionDocUri)), '\s+', '_') else ''" as="xs:string"/>
+    
+    <xd:doc>
+        <xd:desc><xd:ref name="stemmerFolder" type="variable">$stemmerFolder</xd:ref> is the location of 
+        a folder containing XSLT and JavaScript implementations of stemmers. If empty, we default to 
+        ssDefaultStemmerFolder.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="stemmerFolder" select="if ($configDoc//stemmerFolder) then $configDoc//stemmerFolder/text() else $ssDefaultStemmerFolder" as="xs:string"/>
     
     <xd:doc>
         <xd:desc><xd:ref name="collectionDir" type="variable">$searchDirName</xd:ref> is the path to the
@@ -294,6 +311,10 @@
                     </xd:desc>
                 </xd:doc>
                 
+                <!-- First, we have to include the stemmer. We can't do this dynamically because
+                    a dynamic variable can't be used to create a shadow attribute. -->
+                <xso:include href="{$ssBaseDir || '/stemmers/' || $stemmerFolder || '/ssStemmer.xsl'}"/>
+                
                 <!--Now, create all the parameters-->
                 
                 <!--First, create the global varialbes and parameters-->
@@ -405,12 +426,25 @@
                     </xsl:choose>
                 </xso:param>
             </xsl:for-each>
-      
+            
+            <!-- We record the current default stemmer folder. -->
+            <xso:param name="defaultStemmerFolder"><xsl:value-of select="$ssDefaultStemmerFolder"/></xso:param>
             
             <!-- We need an outputFolder element even if the user hasn't put one in. -->
             <xsl:if test="not($configDoc//params/outputFolder)">
                 <xso:param name="outputFolder">staticSearch</xso:param>
             </xsl:if>
+            
+            <!--Specify whether or not wildcard search should be performed; we default false-->
+            <xsl:if test="not($configDoc//params/wildcardSearch)">
+                <xso:param name="wildcardSearch" select="false()"/>
+            </xsl:if>
+            
+            <!--Set the scoring algorithm, if it's not set-->
+            <xsl:if test="not($configDoc//params/scoringAlgorithm)">
+                <xso:param name="scoringAlgorithm" select="'raw'"/>
+            </xsl:if>
+            
             <!-- Finally, add the parsed-out version string from the versionFile. -->
             <xso:param name="versionString"><xsl:value-of select="if (($versionDocUri != '') and (unparsed-text-available($versionDocUri))) then concat('_', replace(normalize-space(unparsed-text($versionDocUri)), '\s+', '_')) else ''"/></xso:param>
             
@@ -429,6 +463,7 @@
         <xso:variable name="tempDir"><xsl:value-of select="$tempDir"/></xso:variable>
         <xso:variable name="ssBaseDir"><xsl:value-of select="$ssBaseDir"/></xso:variable>
         
+        
         <xso:variable name="kwicLengthHalf"
             select="{xs:integer(round(xs:integer($configDoc//totalKwicLength) div 2))}"/>
         <xso:variable name="docs" 
@@ -445,7 +480,6 @@
         
         <xso:variable name="hasExclusions" 
             select="{if ($configDoc//exclude) then 'true' else 'false'}()"/>
-        
         
         
         <xso:template name="echoParams">
@@ -488,7 +522,7 @@
         </xd:desc>
     </xd:doc>
     <xsl:template name="createRetainRules" exclude-result-prefixes="#all">
-        <xso:template match="{string-join($retainRules/@xpath,' | ')}" priority="1" mode="clean">
+        <xso:template match="{string-join($retainRules/@match,' | ')}" priority="1" mode="clean">
             <xso:if test="$verbose">
                 <xso:message>Template #clean: retaining <xso:value-of select="local-name(.)"/></xso:message>
             </xso:if>
@@ -509,7 +543,7 @@
         </xd:desc>
     </xd:doc>
     <xsl:template name="createDeleteRules" exclude-result-prefixes="#all">
-        <xso:template match="{string-join($deleteRules/@xpath,' | ')}" priority="1" mode="clean">
+        <xso:template match="{string-join($deleteRules/@match,' | ')}" priority="1" mode="clean">
             <xso:if test="$verbose">
                 <xso:message>Template #clean: Deleting <xso:value-of select="local-name(.)"/></xso:message>
             </xso:if>
@@ -525,7 +559,7 @@
         </xd:desc>
     </xd:doc>
     <xsl:template name="createExcludeRules" exclude-result-prefixes="#all">
-        <xso:template match="{string-join($excludeRules/@xpath, ' | ')}" priority="1" mode="exclude">
+        <xso:template match="{string-join($excludeRules/@match, ' | ')}" priority="1" mode="exclude">
             <xso:if test="$verbose">
                 <xso:message>Template #exclude: Adding @data-staticSearch-exclude flag to <xso:value-of select="local-name(.)"/></xso:message>
             </xso:if>
@@ -544,14 +578,14 @@
         </xd:desc>
     </xd:doc>
     <xsl:template name="createContextRules" exclude-result-prefixes="#all">
-        <xso:template match="{string-join($contexts/@xpath,' | ')}" priority="1" mode="contextualize">
+        <xso:template match="{string-join($contexts/@match,' | ')}" priority="1" mode="contextualize">
             <xso:if test="$verbose">
                 <xso:message>Template #contextualize: Adding @data-staticSearch-context flag to <xso:value-of select="local-name(.)"/></xso:message>
             </xso:if>
             <xso:copy>
                 <xso:apply-templates select="@*" mode="#current"/>
                 <xsl:for-each select="$contexts">
-                    <xso:if test="self::{@xpath}">
+                    <xso:if test="self::{@match}">
                         <xso:attribute name="data-staticSearch-context" select="{concat('''',hcmc:stringToBoolean(@context),'''')}"/>
                     </xso:if>
                 </xsl:for-each>
@@ -568,14 +602,14 @@
         </xd:desc>
     </xd:doc>
     <xsl:template name="createWeightingRules" exclude-result-prefixes="#all">
-        <xso:template match="{string-join($weightedRules/@xpath,' | ')}" priority="1" mode="weigh">
+        <xso:template match="{string-join($weightedRules/@match,' | ')}" priority="1" mode="weigh">
             <xso:if test="$verbose">
                 <xso:message>Template #weigh: Adding @data-weight to <xso:value-of select="local-name(.)"/></xso:message>
             </xso:if>
             <xso:copy>
                 <xso:apply-templates select="@*" mode="#current"/>
                 <xsl:for-each select="$weightedRules[xs:integer(@weight) gt 1]">
-                    <xso:if test="self::{@xpath}">
+                    <xso:if test="self::{@match}">
                         <xso:attribute name="data-staticSearch-weight" select="{@weight}"/>
                     </xso:if>
                 </xsl:for-each>

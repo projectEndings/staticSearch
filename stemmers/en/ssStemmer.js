@@ -1,4 +1,4 @@
-/*           porter2Stemmer.js             */
+/*           ssStemmer.js             */
 /* Authors: Martin Holmes and Joey Takeda. */
 /*        University of Victoria.          */
 
@@ -7,15 +7,15 @@
  *
  * https://snowballstem.org/algorithms/english/stemmer.html
  *
- * If is part of the projectEndings staticSearch
+ * It is part of the projectEndings staticSearch
  * project.
  *
  * Free to anyone for any purpose, but
  * acknowledgement would be appreciated. */
 
  /** HOW TO USE:
-     var pt2 = new PT2();
-     var stemmedToken = pt2.stem(token);
+     var ssStemmer = new SSStemmer();
+     var stemmedToken = ssStemmer.stem(token);
   */
 
  /** WARNING:
@@ -31,9 +31,9 @@
 "use strict";
 
 /*  We use a class to put everything in our
- *  Pt2 'namespace' (= Porter2). */
+ *  SSStemmer 'namespace' (= staticSearch Stemmer). */
 
-class PT2{
+class SSStemmer{
   constructor(){
     // A character class of vowels
       this.vowel                         = '[aeiouy]';

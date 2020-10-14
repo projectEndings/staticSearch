@@ -60,19 +60,19 @@
     <!--************ XSLTs ************** -->
     
     <!--ODD 2 ODD XSLT (from the TEI framework)-->
-    <property name="odd2odd.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/master/odds/odd2odd.xsl"/>
+    <property name="odd2odd.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/released/odds/odd2odd.xsl"/>
     
     <!--ODD 2 RNG XSLT (from the TEI framework)-->
-    <property name="odd2rng.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/master/profiles/tei/relaxng/to.xsl"/>
+    <property name="odd2rng.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/released/profiles/tei/relaxng/to.xsl"/>
     
     <!--ODD 2 Schematron XSLT (from the TEI framework)-->
-    <property name="odd2sch.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/master/odds/extract-isosch.xsl"/>
+    <property name="odd2sch.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/released/odds/extract-isosch.xsl"/>
     
     <!--ODD 2 HTML XSLT -->
-    <property name="odd2html.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/master/odds/odd2html.xsl"/>
+    <property name="odd2html.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/released/odds/odd2html.xsl"/>
     
     <!--ODD 2 Lite XSLT-->
-    <property name="odd2Lite.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/dev/odds/odd2lite.xsl"/>
+    <property name="odd2Lite.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/released/odds/odd2lite.xsl"/>
     
     
     <!--Saxon-->
@@ -186,12 +186,40 @@
     
     
     <target name="clean">
+        <echo message="Cleaning up unnecessary temporary documents..."/>
         <delete file="${odd.processed}"/>
+        <delete file="${odd.lite}"/>
+    </target>
+    
+    
+    <target name="split">
+        <description>
+            target: split
+            
+            Split the documentation into component HTML pages so that 
+            a) We can demonstrate features in the search
+            b) Make the search documentation a bit nicer to use/deploy
+        </description>
+        <echo message="Splitting the documentation into chapters..."/>
+        <java jar="${saxon}" fork="true" failonerror="true">
+            <arg line="-s:${odd.doc}"/>
+            <arg line="-xsl:${xsl.dir}/split_documentation.xsl"/>
+        </java>
+        
+    </target>
+    
+    <target name="makeSearch">
+        <echo message="Creating the search..."/>
+        <!--Now we call the staticSearch build-->
+        <ant antfile="build.xml" inheritall="false">
+            <property name="config" value="config_documentation.xml"/>
+            <property name="headless" value="true"/>
+        </ant>
     </target>
     
     
     
-    <target name="all" depends="odd2processedOdd, odd2rng, rng2Sch, odd2Doc, clean">
+    <target name="all" depends="odd2processedOdd, odd2rng, rng2Sch, odd2Doc, clean, split, makeSearch">
         <description>
             TARGET: all
             

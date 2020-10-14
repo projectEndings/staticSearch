@@ -5,6 +5,7 @@
         <versionFile>test/VERSION</versionFile>
         <recurse>true<!--Need to set recurse to true for the test--></recurse>
         <phrasalSearch>true</phrasalSearch>
+        <wildcardSearch>true</wildcardSearch>
         <createContexts>true</createContexts>
         <!--NOTE: If phrasalSearch is set to TRUE, then
         maxContexts prop will be ignored-->
@@ -21,15 +22,15 @@
     
     <rules>
         <rule weight="2"
-            xpath="h1 | h2"/>
+            match="h1 | h2"/>
         <rule weight="0"
-            xpath="span[@class='lineNum']"/>
+            match="span[@class='lineNum']"/>
         <rule weight="0"
-            xpath="script | style"/>
+            match="script | style"/>
     </rules>
     
     <contexts>
-        <context xpath="div[@class='l']" label="poetic lines"/>
-        <context xpath="span[@class='note']" label="notes"/>
+        <context match="div[@class='l']" label="poetic lines"/>
+        <context match="span[@class='note']" label="notes"/>
     </contexts>
 </config>

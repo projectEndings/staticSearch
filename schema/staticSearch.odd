@@ -5,7 +5,7 @@
   <teiHeader>
     <fileDesc>
       <titleStmt>
-        <title>Project Endings Static Search Generator</title>
+        <title>Project Endings staticSearch Generator</title>
         <author><name>Martin Holmes</name></author>
         <author><name>Joey Takeda</name></author>
       </titleStmt>
@@ -22,32 +22,36 @@
     <front>
       <titlePage>
         <docTitle>
-          <titlePart type="main">Project Endings Static Search Generator</titlePart>
-          <titlePart type="sub">Schema and guidelines for creating a static search engine for your HTML5 site</titlePart>
+          <titlePart type="main">Project Endings staticSearch Generator</titlePart>
+          <titlePart type="sub">Schema and guidelines for creating a staticSearch engine for your HTML5 site</titlePart>
         </docTitle>
         <docAuthor>Martin Holmes</docAuthor>
         <docAuthor>Joey Takeda</docAuthor>
         <docDate>2019-2020</docDate>
       </titlePage>
       <p>This documentation provides instructions on how to use the Project Endings
-        Static Search Generator to provide a fully-functional search <soCalled>engine</soCalled>
+        staticSearch Generator to provide a fully-functional search <soCalled>engine</soCalled>
         to your website without any dependency on server-side code such as a database.</p>
       <divGen type="toc"/>
     </front>
     <body>
-        <head>Project Endings Static Search Generator</head>
+        <head>Project Endings staticSearch Generator</head>
         <div xml:id="whatDoesItDo">
           <head>What does it do?</head>
           <list>
             <item>Level: Basic</item>
-            <item>Last Updated: <date when="2019-12-16">16 December 2019</date></item>
+            <item>Last Updated: <date when="2020-10-14">14 October 2020</date></item>
           </list>
           <p>The generator tool processes your site to create an index of all the words appearing
-          in the site, stemmed using a Porter2 stemmer, and stores the index in the form of a
+          in the site, stemmed (if desired) using a Porter2 stemmer, and stores the index in the 
+          form of a
           large number of small JSON files. It also creates JSON files for other search facets that 
           you specify in the headers of your documents, to allow searches for documents by 
           type, by date range, and so on. Then it creates a search page for your site, which 
           processes user search terms and retrieves the required JSON files to provide search results.</p>
+          <p>You can see several examples of sites and projects which use staticSearch in 
+            <ref target="#projectsUsingSS">Projects using staticSearch</ref>.</p>
+          
         </div>
       <div xml:id="whyWouldIUseIt">
         <head>Why would I use it?</head>
@@ -69,14 +73,14 @@
           <head>Text search features</head>
           <list>
             <item>Level: Intermediate</item>
-            <item>Last Updated: <date when="2019-12-16">16 December 2019</date></item>
+            <item>Last Updated: <date when="2020-07-03">3 July 2020</date></item>
           </list>
           <p>The Generator supports the following features:</p>
           <list>
             <item>Porter 2 stemming of terms (so searching for <q>wait</q> will also
-            retrieve <q>waiting</q>, <q>waits</q>, <q>waited</q> etc.). Our stemmer
+            retrieve <q>waiting</q>, <q>waits</q>, <q>waited</q> etc.). Our default stemmer
             is for English, but if you have documents in another language, you can create
-            and plug in your own stemmer.</item>
+            and plug in <ref target="#stemmerFolder">your own stemmer</ref>.</item>
             <item>Boolean search operators. Adding <code>+</code> (plus) before a word means that
             search results <emph>must contain</emph> that word, and adding a <code>-</code> (minus) means
             that results <emph>must not contain</emph> that word. Words without plus or minus are treated
@@ -87,8 +91,14 @@
             size of the index.</item>
             <item>Keyword-in-context search results. This is also configurable, since including contexts
             increases the size of the index.</item>
-            <item>Search filtering using any metadata you like, allowing users to limit their search to specific
-            document types.</item>
+            <item>Wildcard searches, using the asterisk (*), question mark (?) and character
+            classes ([ab]). So you can search for <code>lo[uv]e?</code> to find <q>loved</q>,
+              <q>loued</q>, <q>loves</q>, <q>louer</q>, etc. If you don't have a stemmer for 
+            the language of your document collection, this feature is a good alternative (although
+            it can be combined with a stemmer as well for greater flexibility).</item>
+            <item>Search filtering using any metadata you like, allowing users to limit their 
+              search to specific
+            document types, date ranges, or other features.</item>
           </list>
         </div>
       <div xml:id="searchFacetFeatures">
@@ -104,6 +114,10 @@
           <item><term>Date ranges</term>. You might assign each document a date (or a date range) for its first 
           publication and another for its last publication; then users could search for documents first published in a certain
           date range and last published before another date.</item>
+          <item><term>Number ranges</term>. Similar to date ranges, you can assign a number to
+          each document and then filter the search on a subrange of those numbers. For example, 
+          a collection of poems might be filtered on the number of stanzas, so users could
+          find all two-stanza poems or all poems with three or more stanzas.</item>
           <item><term>Booleans</term> (true/false values). You might for instance specify that some poems are 
           illustrated while others are not. The user could then limit their search only to illustrated poems.</item>
         </list>
@@ -128,7 +142,7 @@
           <head>How do I use it?</head>
           <list>
             <item>Level: Intermediate</item>
-            <item>Last Updated: <date when="2020-03-20">20 March 2020</date></item>
+            <item>Last Updated: <date when="2020-07-17">17 July 2020</date></item>
           </list>
           <p>First, you will have to make sure your site pages are correctly configured so that the Generator can
           parse them. Then, you will have to create a configuration file specifying what options you want to use. 
@@ -283,8 +297,10 @@
               Only the <gi>params</gi> element is necessary, but, as we discuss shortly, we highly suggest taking advantage of the <gi>rules</gi>
               and <gi>contexts</gi> for the best results.
             </p>
+            
+            
             <div xml:id="specifyingParameters">
-              <head>Specifying Parameters</head>
+              <head>Specifying parameters</head>
               <div xml:id="paramsRequired">
                 <head>Required parameters</head>
                 <p>The <gi>params</gi> element has two required elements for determining the resource collection that you wish to index:
@@ -326,7 +342,7 @@
               </div>
               
               <div xml:id="paramsOptional">
-                <head>Optional Parameters</head>
+                <head>Optional parameters</head>
                 <p>The following parameters are optional, but most projects will want to specify 
                 some of them:</p>
                 <list>
@@ -349,6 +365,63 @@
                   in each document, so if your site is very large, and your user base is unlikely to 
                   use phrasal searching, it may not be worth the overhead. The default value is true.</item>
                   
+                  <item xml:id="stemmerFolder">
+                    <gi>stemmerFolder</gi> is a string parameter specifying the name
+                    of a folder that is inside the <ident>/stemmers/</ident> folder in
+                    the staticSearch repository structure.
+                    
+                    <p>The staticSearch project currently has only one working stemmer,
+                      an implementation of the Porter 2 algorithm for modern English. That 
+                      appears in <ident>/stemmers/en/</ident>, so the default value for
+                      this parameter is <val>en</val>. We will
+                      be adding more stemmers as the project develops. However, if your 
+                      document collection is not English, you have a couple of options, one 
+                      hard and one easy.
+                      
+                      <list>
+                        <item><emph>Hard option</emph>: implement your own stemmers. You will need to
+                          write two implementations of the stemmer algorithm, one in XSLT (which 
+                          must be named <ident>ssStemmer.xsl</ident>) and one in JavaScript
+                          (<ident>ssStemmer.js</ident>), and confirm that they both generate the
+                          same results. The XSLT stemmer is used in the generation of the 
+                          index files at build time, and the JavaScript version is used to 
+                          stem the user's input in the search page. You can look at the 
+                          existing implementations in the <ident>/stemmers/en/</ident> folder
+                          to see how the stemmers need to be constructed. Place your stemmers
+                          in a folder called <ident>/stemmers/[yourlang]/</ident>, and 
+                          specify <val>yourlang</val> in the configuration file.
+                        </item>
+                        <item><emph>Easy option</emph>: Use the <ident>identity stemmer</ident>
+                          (which is equivalent to turning off stemming completely), and 
+                          make sure wildcard searching is turned on. Then your users can 
+                          search using wildcards instead of having their search terms 
+                          automatically stemmed. To do this, specify the value <val>identity</val>
+                          in your configuration file.
+                        </item>
+                      </list>
+                    </p>
+                  </item>
+                  <item><gi>scoringAlgorithm</gi> is an optional element that specifies which 
+                    scoring algorithm to use when calculating the score of a term and thus the order
+                    in which the results from a search are sorted. There are currently two options:
+                  <list>
+                    <item><val>raw</val>: This is the default option (and so does not need 
+                      to be set explicitly). The raw score is simply the sum of all instances of a term 
+                      (optionally multipled by a configured weight via the
+                      <gi>rule</gi>/<att>weight</att> <ref target="#specifyingRules">configuration</ref>) in a document. This will usually provide good
+                      results for most document collections.</item>
+                    <item><val>tf-idf</val>: The tf-idf algorithm (term frequency-inverse document frequency)
+                      computes the mathematical relevance of a term within a document relative to the rest
+                      of the document collection. The staticSearch implementation of tf-idf basically follows the textbook definition of tf-idf:
+                      <formula style="display:block;">
+                        tf-idf = ($instancesOfTerm / $totalTermsInDoc) * log( $allDocumentsCount / $docsWithThisTermCount )
+                      </formula>
+                      This is fairly crude compared to other search engines, like <ref target="https://lucene.apache.org/core/3_5_0/scoring.html">Lucene</ref>, but it may provide useful results
+                    for document collections of varying lengths or in instances where the raw score may be
+                    insufficient or misleading. There are a number of resources on tf-idf
+                    scoring, including: <ref target="https://en.wikipedia.org/wiki/Tf%E2%80%93idf">Wikipedia</ref> and Christopher D. Manning, Prabhakar Raghavan and Hinrich Schütze, <ref target="https://nlp.stanford.edu/IR-book/html/htmledition/tf-idf-weighting-1.html">Introduction to Information Retrieval</ref>, Cambridge University Press. 2008.</item>
+                  </list>
+                  </item>
                   <item><gi>createContexts</gi> is a boolean parameter that specifies whether you 
                   want the indexer to store keyword-in-context extracts for each of the hits in a
                   document. This increases the size of the index, but of course it makes for much 
@@ -410,11 +483,11 @@
               </div>
             </div>
           <div xml:id="specifyingRules">
-            <head>Specifying Rules (Optional)</head>
-            <p>The <gi>rules</gi> elements specifies a list of conditions (using the <gi>rule</gi> element) that tell the parser, using XPath statements in the <att>xpath</att> attribute, specific weights to assign to particular parts of each document. For instance, if you wanted all heading elements (<gi>h1</gi>, <gi>h2</gi>, etc) in documents to be given a greater weight and thus receive a higher score in the results, you can do so using a rule like so:
+            <head>Specifying rules (optional)</head>
+            <p>The <gi>rules</gi> elements specifies a list of conditions (using the <gi>rule</gi> element) that tell the parser, using XPath statements in the <att>match</att> attribute, specific weights to assign to particular parts of each document. For instance, if you wanted all heading elements (<gi>h1</gi>, <gi>h2</gi>, etc) in documents to be given a greater weight and thus receive a higher score in the results, you can do so using a rule like so:
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
                 <rules>
-                  <rule weight="2" xpath="h1 | h2 | h3 | h4 | h5 | h6"/>
+                  <rule weight="2" match="h1 | h2 | h3 | h4 | h5 | h6"/>
                 </rules>
               </egXML>
               
@@ -422,19 +495,19 @@
               
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
                 <rules>
-                  <rule weight="2" xpath="*[matches(local-name(),'^h\d+$')]"/>
+                  <rule weight="2" match="*[matches(local-name(),'^h\d+$')]"/>
                 </rules>
               </egXML>
-              (It is worth noting, however, the above example is unnecessary: all heading elements are given a weight of 2 by default, which is the only preconfigured weight in static search.)
+              (It is worth noting, however, the above example is unnecessary: all heading elements are given a weight of 2 by default, which is the only preconfigured weight in staticSearch.)
             </p>
-            <p>The value of the <att>xpath</att> attribute is transformed in a XSLT template match attribute, and thus must follow the same rules (i.e. no complex rules like <code>p/ancestor::div</code>). See the <ref target="https://www.w3.org/TR/xslt-30/#dt-pattern">W3C XSLT Specification</ref> for further details on allowable pattern rules.</p>
+            <p>The value of the <att>match</att> attribute is transformed in a XSLT template match attribute, and thus must follow the same rules (i.e. no complex rules like <code>p/ancestor::div</code>). See the <ref target="https://www.w3.org/TR/xslt-30/#dt-pattern">W3C XSLT Specification</ref> for further details on allowable pattern rules.</p>
             <p>Often, there will be elements that you want the tokenizer to ignore completely; for instance, if you have the same header in every document, then there's no reason to index its contents on every page. These elements can be ignored simply by using a <gi>rule</gi> and setting its weight to 0. For instance, if you want to remove the header and the footer from the search indexing process, you could write something like:
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
-                <rule weight="0" xpath="footer | header"/>
+                <rule weight="0" match="footer | header"/>
               </egXML>
               Or if you want to remove XHTML anchor tags (<gi>a</gi>) whose text is identical to the URL specified in its <att>href</att>, you could do something like:
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
-                <rule weight="0" xpath="a[@href=./text()]"/>
+                <rule weight="0" match="a[@href=./text()]"/>
               </egXML>
             </p>
             <p>Note that the indexer does not tokenize any content in the <gi>head</gi> of the document (but as noted above, metadata can be configured into filters) and that all elements in the <gi>body</gi> of a document are considered tokenizable. However, common elements that you might want to exclude include:
@@ -446,8 +519,8 @@
             </p>
           </div>
           <div xml:id="specifyingContexts">
-            <head>Specifying Contexts (Optional)</head>
-            <p>When the static search creates the keywords-in-contexts (the "kwic" or "snippets") for each token, it does so by looking for the nearest block-level element that it can use as its context. Take, for instance, this unordered list:
+            <head>Specifying contexts (optional)</head>
+            <p>When the staticSearch creates the keywords-in-contexts (the "kwic" or "snippets") for each token, it does so by looking for the nearest block-level element that it can use as its context. Take, for instance, this unordered list:
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
                 <ul>
                   <li>Keyword-in-context search results. This is also configurable, since including contexts
@@ -470,17 +543,17 @@
               
               <eg>"...nothing to say here,Some <hi style="font-weight:bold;">information</hi> on this subject can be found...</eg>
               
-              To tell the tokenizer that the <gi>span</gi> constitutes the context block for any of its token, use the <gi>context</gi> element with an <att>xpath</att> pattern:
+              To tell the tokenizer that the <gi>span</gi> constitutes the context block for any of its token, use the <gi>context</gi> element with an <att>match</att> pattern:
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
                 <contexts>
-                  <context xpath="span[contains-token(@class,'sidenote')]"/>
+                  <context match="span[contains-token(@class,'sidenote')]"/>
                 </contexts>
               </egXML>
             </p>
             <p>You can also configure it the other way: if a <gi>div</gi>, which is by default a context block, should not be understood as a context block, then you can tell the parser to not consider it as such using <att>context</att> set to false:
               <egXML xmlns="http://www.tei-c.org/ns/Examples"> 
                 <contexts>
-                  <context xpath="div" context="false"/>
+                  <context match="div" context="false"/>
                 </contexts>
               </egXML>
             </p>
@@ -505,7 +578,7 @@
             </p>
           </div>
             <div xml:id="specifyingExclusions">
-              <head>Specifying Exclusions (Optional)</head>
+              <head>Specifying exclusions (optional)</head>
               
               <p>A complex site may have two or more search pages targetting
               specific types of document or content, each of which may need 
@@ -521,7 +594,7 @@
               
                 <egXML xmlns="http://www.tei-c.org/ns/Examples">
                   <rules> 
-                    <rule xpath="text()[not(ancestor::div[@class='figure']or ancestor::title)]" weight="0"/>
+                    <rule match="text()[not(ancestor::div[@class='figure']or ancestor::title)]" weight="0"/>
                   </rules>
                 </egXML>
               
@@ -543,16 +616,16 @@
                   <excludes>
                     <!-- We only index files which have illustrations in them. -->
                     <exclude type="index" 
-                      xpath="html[not(descendant::meta[@name='Has illustration(s)'][@content='true'])]"/>
+                      match="html[not(descendant::meta[@name='Has illustration(s)'][@content='true'])]"/>
                     
                     <!-- We ignore the document type filter, 
                          because we are only indexing one type 
                          of document anyway. -->
-                    <exclude type="filter" xpath="meta[@name='Document type']"/>
+                    <exclude type="filter" match="meta[@name='Document type']"/>
                     
                     <!-- We exclude the filter that specifies 
                          these documents because it's pointless. -->
-                    <exclude type="filter" xpath="meta[@name='Has illustration(s)']"/>
+                    <exclude type="filter" match="meta[@name='Has illustration(s)']"/>
                   </excludes>
                 </egXML>
               
@@ -661,7 +734,7 @@
         <head>How does it work?</head>
         <list>
           <item>Level: Advanced</item>
-          <item>Last Updated: <date when="2020-03-20">20 March 2020</date></item>
+          <item>Last Updated: <date when="2020-07-17">17 July 2020</date></item>
         </list>
         <div xml:id="buildingTheIndex">
           <head>Building the index</head>
@@ -669,12 +742,13 @@
             with all your settings embedded in it. Next, it processes your document collection using
             those settings. Each document is tokenized, and then a separate JSON file is created for
             each distinct token found; this file contains links to each of the documents which contain
-            that token, as well as keyword-in-context strings for the actual tokens. There will most likely
-            be thousands of these files, but most of them are quite small. These constitute the textual
-            index.</p>
+            that token, as well as keyword-in-context strings for the actual tokens. There will most
+            likely be thousands of these files, but most of them are quite small. These constitute the
+            textual index.</p>
           
           <p>In addition, separate JSON files are created for the list of document titles, and for your 
-            stopword list if you have specified one.</p>
+            stopword list if you have specified one. A single text file is also created containing
+            all the unique terms in the collection, used when doing wildcard searches.</p>
           
           <p>Next, if you have specified search facets in your document headers, the processor
             will then create a separate JSON file for each of those search facets, consisting of a list 
@@ -697,7 +771,9 @@
          you search for the word <mentioned>waiting</mentioned>, what happens is that the
          JavaScript stems that word, producing <mentioned>wait</mentioned>, then it downloads
          only the single file containing indexing information for that specific word, which is very 
-         rapid.</p>
+         rapid. (If you are using a different stemmer, of course, then the token will be stemmed to
+         a different output; if you are using the <soCalled>identity stemmer</soCalled>, then 
+         the token will be unchanged.)</p>
          
          <p>However, there is some information that is required for all or many searches. To display
            any results, the list of document titles must be downloaded, for example. A user may
@@ -705,7 +781,8 @@
          wanting a list of all the documents classified as <soCalled>Poems</soCalled>. This requires that
          the JSON file with information about that facet be downloaded. So there is some advantage 
          in having the JavaScript start downloading some of the essential files (titles, stopwords and
-         so on) as soon as the page loads, and it also starts downloading the facet files in the background.</p>
+         so on) as soon as the page loads, and it also starts downloading the facet files in the
+         background.</p>
          
          <p>At the same time, though, we don't want to clog up the connection downloading these files
          when the user may do a simple text search which doesn't depend on them, so these files
@@ -719,6 +796,114 @@
          therefore be even faster for later searches than for early ones.</p>
        </div>
       </div>
+      <div xml:id="howDoI">
+        <head><q>How do I...</q></head>
+        <p>Below are some of the most common things you might want to do using staticSearch:</p>
+        <table>
+          <row>
+            <cell>How do I get staticSearch to ignore large chunks of my document?</cell>
+            <cell>Any element with a weight of 0 is ignored completely by the indexer, so add a <gi>rule</gi> for the element. So to ignore all elements with the class <val>ignoreThisElement</val>, you could do something like:
+              <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                <rule weight="0" match="div[contains-token(@class,'ignoreThisElement')"/>
+              </egXML></cell>
+          </row>
+          <row>
+            <cell>How do I get staticSearch to ignore small inline bits and <emph>not</emph> have them in the KWIC?</cell>
+            <cell>As above, you can use a <gi>rule</gi> with an <att>weight</att>=<val>0</val></cell>
+          </row>
+          <row>
+            <cell>How do I get staticSearch to ignore an element, but retain their text in the KWIC?</cell>
+            <cell>Here, you'll want to use the <gi>exclude</gi> function, which excludes the element from indexing, but doesn't remove it from the document itself. So, if you wanted to exclude all keyboard entry items (<gi>xh:kbd</gi>), but still have them in the KWIC, you could do something like:
+              <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                <exclude match="kbd" type="index"/>
+              </egXML>
+            </cell>
+          </row>
+          <row>
+            <cell>How can I get staticSearch to show debugging messages?</cell>
+            <cell>Switch <gi>verbose</gi> to true in the configuration file:
+              <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                <config xmlns="http://hcmc.uvic.ca/ns/staticSearch">
+                  <params>
+                    <!--....-->
+                    <verbose>true</verbose>
+                    <!--....-->
+                  </params>
+                  <!--Rules, etc-->
+                </config>
+              </egXML>
+            </cell>
+          </row>
+        </table>
+      </div>
+      <div xml:id="projectsUsingSS">
+        <head>Projects using staticSearch</head>
+        <list>
+          <item>Level: Basic</item>
+          <item>Last Updated: <date when="2020-10-14">14 October 2020</date></item>
+        </list>
+        <table>
+          <row role="label">
+            <cell>Name</cell>
+            <cell>staticSearch Version</cell>
+            <cell>Search Page(s)</cell>
+            <cell>Configuration file(s)</cell>
+          </row>
+          <row>
+            <cell><ref target="https://mapoflondon.uvic.ca">The Map of Early Modern London</ref></cell>
+            <cell>0.9</cell>
+            <cell><ref target="https://mapoflondon.uvic.ca/search.htm">Search</ref></cell>
+            <cell><ref target="https://hcmc.uvic.ca/svn/london/static/config_staticSearch.xml">SVN</ref></cell>
+          </row>
+          <row>
+            <cell><ref target="https://winnifredeatonarchive.org">The Winnifred Eaton Archive</ref></cell>
+            <cell>1.0 (dev)</cell>
+            <cell><ref target="https://winnifredeatonarchive.org/search.html">Search</ref></cell>
+            <cell>
+              <ref target="https://github.com/winnifredeatonarchive/wea_data/blob/09ae8660007a10e23e80e2f5769aec0bf1f919c6/code/staticSearch/config.xml">Github</ref></cell>
+          </row>
+          <row>
+            <cell><ref target="https://johnkeats.uvic.ca/">Mapping Keat's Progress</ref></cell>
+            <cell>1.0 (dev)</cell>
+            <cell><ref target="https://johnkeats.uvic.ca/search.html">Search</ref></cell>
+            <cell><ref target="https://hcmc.uvic.ca/svn/keats/config_staticSearch.xml">SVN</ref></cell>
+          </row>
+          <row>
+            <cell><ref target="https://myndir.uvic.ca/">My Norse Digital Image Repository</ref></cell>
+            <cell>1.0 (dev)</cell>
+            <cell><ref target="https://myndir.uvic.ca/search.html">Search</ref></cell>
+            <cell><ref target="https://hcmc.uvic.ca/svn/myndir/config_staticSearch.xml">SVN</ref></cell>
+          </row>
+          <row>
+            <cell><ref target="https://bcgenesis.uvic.ca/">The Colonial Despatches of BC and Vancouver Island</ref></cell>
+            <cell>1.0 (dev)</cell>
+            <cell><ref target="https://bcgenesis.uvic.ca/search.html">Search</ref></cell>
+            <cell><ref target="https://hcmc.uvic.ca/svn/coldesp/trunk/config_staticSearch.xml">SVN</ref></cell>
+          </row>
+          <row>
+            <cell><ref target="https://dvpp.uvic.ca">Digital Victorian Periodical Poetry</ref></cell>
+            <cell>1.0 (dev)</cell>
+            <cell><ref target="https://dvpp.uvic.ca/search.html">Search</ref> (multiple searches with individual pages)</cell>
+            <cell><ref target="https://hcmc.uvic.ca/svn/dvpp/">SVN</ref> (multiple configuration files)</cell>
+          </row>
+          <!--<row>
+            <cell>Le mariage sous L'Ancien Régime (forthcoming)</cell>
+            <cell/>
+            <cell/>
+            <cell/>
+          </row>
+          <row>
+            <cell>Landscapes of Injustice (forthcoming)</cell>
+            <cell/>
+            <cell/>
+            <cell/>
+          </row>
+          <row>
+            <cell>Linked Early Modern Drama Online (forthcoming)</cell>
+          </row>-->
+        </table>
+      </div>
+      
       
     </body>
     <back>
@@ -729,7 +914,7 @@
           defaultExceptions="http://hcmc.uvic.ca/ns/staticSearch">
 
           <moduleSpec ident="ss">
-            <desc>Module for all of the static search elements.</desc>
+            <desc>Module for all of the staticSearch elements.</desc>
           </moduleSpec>
 
           <elementSpec ident="config" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
@@ -749,8 +934,11 @@
               <sequence preserveOrder="false">
                 <elementRef key="searchFile"/>
                 <elementRef key="versionFile" minOccurs="0"/>
+                <elementRef key="stemmerFolder" minOccurs="0"/>
                 <elementRef key="recurse"/>
+                <elementRef key="scoringAlgorithm" minOccurs="0"/>
                 <elementRef key="phrasalSearch" minOccurs="0"/>
+                <elementRef key="wildcardSearch" minOccurs="0"/>
                 <elementRef key="createContexts" minOccurs="0"/>
                 <elementRef key="maxKwicsToHarvest" minOccurs="0"/>
                 <elementRef key="maxKwicsToShow" minOccurs="0"/>
@@ -767,7 +955,7 @@
           </elementSpec>
 
           <elementSpec ident="rules" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
-            <gloss>The set of rules, expressed as XPath, that control weighting of search terms
+            <gloss>The set of rules, expressed as XPath in <att>match</att>, that control weighting of search terms
               found in specific contexts.</gloss>
             <content>
               <elementRef key="rule" minOccurs="1" maxOccurs="unbounded"/>
@@ -775,10 +963,10 @@
           </elementSpec>
           
           <elementSpec ident="rule" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
-            <gloss>A rule that specifies a document path in XPath, and provides weighting for search
+            <gloss>A rule that specifies a document path as XPath in <att>match</att>, and provides weighting for search
               terms found in that context.</gloss>
             <classes>
-              <memberOf key="att.xpath"/>
+              <memberOf key="att.match"/>
             </classes>
             <content>
               <empty/>
@@ -786,7 +974,7 @@
             <attList>
               <attDef ident="weight" usage="req">
                 <gloss>The weighting to give to a search token found in the context specified by the
-                  <att>xpath</att> attribute. Set to 0 to completely suppress indexing for a
+                  <att>match</att> attribute. Set to 0 to completely suppress indexing for a
                   specific context, or greater than 1 to give stronger weighting.</gloss>
                 <datatype>
                   <dataRef name="nonNegativeInteger"/>
@@ -796,7 +984,7 @@
           </elementSpec>
 
           <elementSpec ident="contexts" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
-            <gloss>The set of contexts, expressed as XPath, that controls the identification of
+            <gloss>The set of contexts, expressed as XPath in <att>match</att>, that controls the identification of
             contexts for keyword-in-context fragments.</gloss>
             <content>
               <elementRef key="context" minOccurs="1" maxOccurs="unbounded"/>
@@ -804,10 +992,10 @@
           </elementSpec>
 
           <elementSpec ident="context" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
-            <gloss>A context definition, providing an XPath attribute that identifies the context,
+            <gloss>A context definition, providing a <att>match</att> attribute that identifies the context,
               allowing keyword-in-context fragments to be bounded by a specific context.</gloss>
             <classes>
-              <memberOf key="att.xpath"/>
+              <memberOf key="att.match"/>
               <memberOf key="att.labelled"/>
             </classes>
             <content>
@@ -823,7 +1011,7 @@
           </elementSpec>
           
           <elementSpec ident="excludes" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
-            <gloss>The set of exclusions, expressed as XPath, that control the subset of documents
+            <gloss>The set of exclusions, expressed as XPath in <att>match</att>, that control the subset of documents
             for a particular search.</gloss>
             <content>
               <elementRef key="exclude" minOccurs="1" maxOccurs="unbounded"/>
@@ -831,9 +1019,9 @@
           </elementSpec>
           
           <elementSpec ident="exclude" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
-            <gloss>An exclusion definition, which excludes either documents or filters as defined by an XPath.</gloss>
+            <gloss>An exclusion definition, which excludes either documents or filters as defined by an XPath in <att>match</att>.</gloss>
             <classes>
-              <memberOf key="att.xpath"/>
+              <memberOf key="att.match"/>
             </classes>
             <content>
               <empty/>
@@ -854,10 +1042,10 @@
             </attList>
           </elementSpec>
 
-          <classSpec ident="att.xpath" module="ss" type="atts">
+          <classSpec ident="att.match" module="ss" type="atts">
             <gloss>A class providing attributes that enable specification of document locations.</gloss>
             <attList>
-              <attDef usage="req" ident="xpath">
+              <attDef usage="req" ident="match">
                 <gloss>An XPath equivalent to the @match attribute of an xsl:template, which
                   specifies a context in a document.</gloss>
                 <datatype>
@@ -881,7 +1069,7 @@
           </classSpec>
 
           <elementSpec ident="searchFile" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
-            <gloss>The search file (aka page) that will be the primary access point for the static search. Note
+            <gloss>The search file (aka page) that will be the primary access point for the staticSearch. Note
             that this page <emph>must</emph> be at the root of the collection directory.</gloss>
             <content>
               <dataRef name="anyURI"/>
@@ -895,6 +1083,32 @@
             will not use cached versions of older index files.</gloss>
             <content>
               <dataRef name="anyURI"/>
+            </content>
+          </elementSpec>
+          
+          <elementSpec ident="stemmerFolder" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>The name of a folder inside the staticSearch <code>/stemmers/</code> folder, 
+              in which the JavaScript and XSLT implementations
+            of stemmers can be found. If left blank, then the staticSearch default English 
+            stemmer will be used (<code>stemmers/en</code>).</gloss>
+            <content>
+              <dataRef name="NCName"/>
+            </content>
+          </elementSpec>
+          
+          <elementSpec ident="scoringAlgorithm" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>Which scoring algorithm to use. Default is "raw" (i.e. weighted counts)</gloss>
+            <content>
+              <valList type="closed">
+                <valItem ident="raw">
+                  <desc>raw score</desc>
+                  <gloss>Default: Calculate the score based off of the weighted number of 
+                    instances of a term in a text.</gloss>
+                </valItem>
+                <valItem ident="tf-idf">
+                  <gloss>Calculate the score based off of the tf-idf scoring algorithm.</gloss>
+                </valItem>
+              </valList>
             </content>
           </elementSpec>
           
@@ -959,14 +1173,25 @@
               <dataRef name="boolean"/>
             </content>
           </elementSpec>
+          
+          
           <elementSpec ident="phrasalSearch" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>Whether or not to support phrasal searches. If this is true, then the <gi>maxContexts</gi>
             setting will be ignored, because all contexts are required to properly support phrasal search.</gloss>
             <content>
               <dataRef name="boolean"/>
             </content>
-
           </elementSpec>
+          
+          <elementSpec ident="wildcardSearch" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>Whether or not to support wildcard searches. Note that wildcard searches are
+            more effective when phrasal searching is also turned on, because the contexts 
+            available for phrasal searches are also used to provide wildcard results.</gloss>
+            <content>
+              <dataRef name="boolean"/>
+            </content>
+          </elementSpec>
+          
           <elementSpec ident="verbose" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>Turns on more detailed reporting during the indexing process.</gloss>
             <content>

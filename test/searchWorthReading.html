@@ -34,13 +34,15 @@
         input#ssQuery{
             flex: 1;
         }
-        div.ssDescFilters, div.ssDateFilters, div.ssBoolFilters{
+        div.ssDescFilters, div.ssDateFilters, div.ssNumFilters, div.ssBoolFilters{
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
         }
-        div.ssDescFilters fieldset, div.ssDateFilters fieldset, div.ssBoolFilters fieldset{
+        div.ssDescFilters fieldset, div.ssDateFilters fieldset, div.ssNumFilters fieldset, div.ssBoolFilters fieldset{
             margin: 0.25em auto;
+            padding: 0.25em;
+            /* Chromium bug means flex doesn't work in fieldsets. Curses. :-( */
             flex-grow: 1;
             display: flex;
             flex-wrap: wrap;
@@ -57,13 +59,16 @@
             flex-wrap: nowrap;
             align-items: flex-start;
         }
-        div.ssDateFilters fieldset.ssFieldset span, div.ssBoolFilters fieldset.ssFieldset span{
+        div.ssDateFilters fieldset.ssFieldset span, div.ssNumFilters fieldset.ssFieldset span, div.ssBoolFilters fieldset.ssFieldset span{
             padding: 0.5em 1em;
         }
         fieldset.ssFieldset > span {
             background-color: #ddd;
             border: solid 1px #aaa;
             margin: 0.2em;
+        }
+        div.ssNumFilters input[type="number"], div.ssDateFilters input[type="text"]{
+            padding: 0.5em;
         }
         div#ssSearching{
             background-color: #000000;
@@ -77,7 +82,24 @@
             transform: translate(-50%, -50%);
             display: none;
         }
-        
+        div#ssResults>ul>li{
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            margin-top: 0.75em;
+        }
+        div#ssResults>ul>li>a{
+            flex-grow: 0;
+        }
+        div#ssResults>ul>li>div{
+          flex-grow: 1;
+        }
+        div#ssResults>ul>li>a>img{
+            max-width: 10em;
+            margin-right: 1em;
+            min-width: 3em;
+            min-height: 3em;
+        }
     --></style>
       
       
@@ -88,10 +110,10 @@
    <body>
       
       
-      <div id="staticSearch"><script src="ssWorthReading/ssPorter2Stemmer.js"></script><script src="ssWorthReading/ssSearch.js"></script><script>
+      <div id="staticSearch"><script src="ssWorthReading/ssStemmer.js"></script><script src="ssWorthReading/ssSearch.js"></script><script>
                 var Sch;
                 window.addEventListener('load', function(){Sch = new StaticSearch();});
-            </script><form accept-charset="UTF-8" id="ssForm" data-allowphrasal="yes" data-maxkwicstoshow="3" onsubmit="return false;" data-versionstring="_941957f" data-ssfolder="ssWorthReading"><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><div class="ssDescFilters">
+            </script><form accept-charset="UTF-8" id="ssForm" data-allowphrasal="yes" data-allowwildcards="yes" data-maxkwicstoshow="3" onsubmit="return false;" data-versionstring="_4e7cece" data-ssfolder="ssWorthReading"><span class="ssQueryAndButton"><input type="text" id="ssQuery" pattern="\s*(.*([^\*\?\[\]\s]+[^\s]*){3})+\s*"/><button id="ssDoSearch">Search</button></span><span class="clearButton"><button id="ssClear">Clear</button></span><div class="ssDescFilters">
                <fieldset class="ssFieldset" title="Document type" id="ssDesc1">
                   <legend>Document type</legend>
                   <ul class="ssDescCheckboxList">
@@ -101,10 +123,24 @@
                      <li><input type="checkbox" title="Document type" value="Site info files" id="ssDesc1_2" class="staticSearch.desc"/><label for="ssDesc1_2">Site info files</label></li>
                   </ul>
                </fieldset>
+               <fieldset class="ssFieldset" title="Random numeric value" id="ssDesc2">
+                  <legend>Random numeric value</legend>
+                  <ul class="ssDescCheckboxList">
+                     <li><input type="checkbox" title="Random numeric value" value="2" id="ssDesc2_1" class="staticSearch.desc"/><label for="ssDesc2_1">2</label></li>
+                     <li><input type="checkbox" title="Random numeric value" value="4" id="ssDesc2_3" class="staticSearch.desc"/><label for="ssDesc2_3">4</label></li>
+                     <li><input type="checkbox" title="Random numeric value" value="11" id="ssDesc2_2" class="staticSearch.desc"/><label for="ssDesc2_2">11</label></li>
+                     <li><input type="checkbox" title="Random numeric value" value="21" id="ssDesc2_5" class="staticSearch.desc"/><label for="ssDesc2_5">21</label></li>
+                     <li><input type="checkbox" title="Random numeric value" value="41" id="ssDesc2_4" class="staticSearch.desc"/><label for="ssDesc2_4">41</label></li>
+                  </ul>
+               </fieldset>
             </div>
             <div class="ssDateFilters">
                <fieldset class="ssFieldset" title="Date range" id="ssDate1">
-                  <legend>Date range</legend><span><label for="ssDate1_from">From: </label><input type="text" maxlength="10" pattern="^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$" title="Date range" id="ssDate1_from" class="staticSearch.date" placeholder="1689-01-01" onchange="this.reportValidity()"/></span><span><label for="ssDate1_to">To: </label><input type="text" maxlength="10" pattern="^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$" title="Date range" id="ssDate1_to" class="staticSearch.date" placeholder="2019-12-31" onchange="this.reportValidity()"/></span></fieldset>
+                  <legend>Date range</legend><span><label for="ssDate1_from">From: </label><input type="text" placeholder="1689-01-01" title="Date range" id="ssDate1_from" onchange="this.reportValidity()" class="staticSearch.date" maxlength="10" pattern="^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$"/></span><span><label for="ssDate1_to">To: </label><input type="text" placeholder="2019-12-31" title="Date range" id="ssDate1_to" onchange="this.reportValidity()" class="staticSearch.date" maxlength="10" pattern="^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$"/></span></fieldset>
+            </div>
+            <div class="ssNumFilters">
+               <fieldset class="ssFieldset" title="Number of animal names" id="ssNum1">
+                  <legend>Number of animal names</legend><span><label for="ssNum1_from">From: </label><input type="number" placeholder="1" max="3" title="Number of animal names" id="ssNum1_from" min="1" class="staticSearch.num"/></span><span><label for="ssNum1_to">To: </label><input type="number" placeholder="3" max="3" title="Number of animal names" id="ssNum1_to" min="1" class="staticSearch.num"/></span></fieldset>
             </div>
          </form>
          <div id="ssSearching">Searching...</div>

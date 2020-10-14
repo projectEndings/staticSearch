@@ -1,0 +1,842 @@
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+   
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+      
+      <!--THIS FILE IS GENERATED FROM AN XML MASTER. DO NOT EDIT (5)-->
+      
+      <title>Static Search: How do I use it?</title>
+      
+      <meta name="author" content="Martin Holmes and Joey Takeda"/>
+      
+      <meta name="generator" content="Text Encoding Initiative Consortium XSLT stylesheets"/>
+      
+      <link rel="stylesheet" href="documentation.css" type="text/css"/>
+      <link rel="stylesheet" type="text/css" href="doc_chapters.css"/>
+      
+      <link rel="stylesheet" media="print" type="text/css" href="https://www.tei-c.org/release/xml/tei/stylesheet/tei-print.css"/><script type="text/javascript"><!--
+var displayXML=0;
+states=new Array()
+states[0]="element-a"
+states[1]="element-b"
+states[2]="element-c"
+states[3]="element-d"
+states[4]="element-e"
+states[5]="element-f"
+states[6]="element-g"
+states[7]="element-h"
+states[8]="element-i"
+states[9]="element-j"
+states[10]="element-k"
+states[11]="element-l"
+states[12]="element-m"
+states[13]="element-n"
+states[14]="element-o"
+states[15]="element-p"
+states[16]="element-q"
+states[17]="element-r"
+states[18]="element-s"
+states[19]="element-t"
+states[20]="element-u"
+states[21]="element-v"
+states[22]="element-w"
+states[23]="element-x"
+states[24]="element-y"
+states[25]="element-z"
+
+function startUp() {
+
+}
+
+function hideallExcept(elm) {
+for (var i = 0; i < states.length; i++) {
+ var layer;
+ if (layer = document.getElementById(states[i]) ) {
+  if (states[i] != elm) {
+    layer.style.display = "none";
+  }
+  else {
+   layer.style.display = "block";
+      }
+  }
+ }
+ var mod;
+ if ( mod = document.getElementById('byMod') ) {
+     mod.style.display = "none";
+ }
+}
+
+function showall() {
+ for (var i = 0; i < states.length; i++) {
+   var layer;
+   if (layer = document.getElementById(states[i]) ) {
+      layer.style.display = "block";
+      }
+  }
+}
+
+function showByMod() {
+  hideallExcept('');
+  var mod;
+  if (mod = document.getElementById('byMod') ) {
+     mod.style.display = "block";
+     }
+}
+
+	--></script><meta name="Date Updated" class="staticSearch.date" content="2020-07-17"/>
+      <meta name="Level" class="staticSearch.desc" content="Intermediate"/>
+   </head>
+   
+   <body class="simple" id="TOP"><!--TEI front-->
+      
+      <div class="tei_front">
+         <div>
+            
+            <div class="titlePage">
+               
+               <div class="docTitle">
+                  
+                  <div class="titlePart"><a href="index.html">Project Endings staticSearch Generator</a></div>
+                  
+                  <div class="titlePart">Schema and guidelines for creating a staticSearch engine for your HTML5 site</div>
+                  </div>
+               
+               <div class="docAuthor">Martin Holmes</div>
+               
+               <div class="docAuthor">Joey Takeda</div>
+               
+               <div class="docDate">2019-2020</div>
+               </div>
+            
+            <p>This documentation provides instructions on how to use the Project Endings staticSearch
+               Generator to provide a fully-functional search ‘engine’ to your website without any
+               dependency on server-side code such as a database.</p>
+            
+            <ul class="toc toc_body">
+               
+               <li class="toc"><span class="headingNumber"> 1 </span><a href="whatDoesItDo.html" class="toc toc_0" title="What does it do">What does it do?</a></li>
+               
+               <li class="toc"><span class="headingNumber"> 2 </span><a href="whyWouldIUseIt.html" class="toc toc_0" title="Why would I use it">Why would I use it?</a></li>
+               
+               <li class="toc"><span class="headingNumber"> 3 </span><a href="textSearchFeatures.html" class="toc toc_0" title="Text search features">Text search features</a></li>
+               
+               <li class="toc"><span class="headingNumber"> 4 </span><a href="searchFacetFeatures.html" class="toc toc_0" title="Search facet features">Search facet features</a></li>
+               
+               <li class="toc"><span class="headingNumber"> 5 </span><a href="howDoIGetIt.html" class="toc toc_0" title="How do I get it">How do I get it?</a></li>
+               
+               <li class="toc"><span class="headingNumber"> 6 </span><span class="current">How do I use it?</span><ul class="toc">
+                     
+                     <li class="toc"><span class="headingNumber"> 6.1 </span><a class="toc toc_1" href="#index.xml-body.1_div.6_div.1">Configuring your site: search filters</a><ul class="toc">
+                           
+                           <li class="toc"><span class="headingNumber">6.1.1 </span><a class="toc toc_2" href="#descFilters" title="Description filters">Description filters</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">6.1.2 </span><a class="toc toc_2" href="#dateFilters" title="Date filters">Date filters</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">6.1.3 </span><a class="toc toc_2" href="#numFilters" title="Number filters">Number filters</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">6.1.4 </span><a class="toc toc_2" href="#boolFilters" title="Boolean filters">Boolean filters</a></li>
+                           </ul>
+                        </li>
+                     
+                     <li class="toc"><span class="headingNumber"> 6.2 </span><a class="toc toc_1" href="#configuringDocTitles" title="Configuring your site document titles">Configuring your site: document titles</a></li>
+                     
+                     <li class="toc"><span class="headingNumber"> 6.3 </span><a class="toc toc_1" href="#configuringDocThumbnails" title="Configuring your site document thumbnails">Configuring your site: document thumbnails</a></li>
+                     
+                     <li class="toc"><span class="headingNumber"> 6.4 </span><a class="toc toc_1" href="#creatingConfigFile" title="Creating a configuration file">Creating a configuration file</a><ul class="toc">
+                           
+                           <li class="toc"><span class="headingNumber">6.4.1 </span><a class="toc toc_2" href="#specifyingParameters" title="Specifying parameters">Specifying parameters</a><ul class="toc">
+                                 
+                                 <li class="toc"><span class="headingNumber">6.4.1.1 </span><a class="toc toc_3" href="#paramsRequired" title="Required parameters">Required parameters</a></li>
+                                 
+                                 <li class="toc"><span class="headingNumber">6.4.1.2 </span><a class="toc toc_3" href="#paramsOptional" title="Optional parameters">Optional parameters</a></li>
+                                 </ul>
+                              </li>
+                           
+                           <li class="toc"><span class="headingNumber">6.4.2 </span><a class="toc toc_2" href="#specifyingRules" title="Specifying rules (optional)">Specifying rules (optional)</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">6.4.3 </span><a class="toc toc_2" href="#specifyingContexts" title="Specifying contexts (optional)">Specifying contexts (optional)</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">6.4.4 </span><a class="toc toc_2" href="#specifyingExclusions" title="Specifying exclusions (optional)">Specifying exclusions (optional)</a></li>
+                           </ul>
+                        </li>
+                     
+                     <li class="toc"><span class="headingNumber"> 6.5 </span><a class="toc toc_1" href="#searchPage" title="Creating a search page">Creating a search page</a></li>
+                     
+                     <li class="toc"><span class="headingNumber"> 6.6 </span><a class="toc toc_1" href="#searchBuildProcess" title="Running the search build process">Running the search build process</a></li>
+                     </ul>
+                  </li>
+               
+               <li class="toc"><span class="headingNumber"> 7 </span><a href="howDoesItWork.html" class="toc toc_0" title="How does it work">How does it work?</a><ul class="toc">
+                     
+                     <li class="toc"><span class="headingNumber"> 7.1 </span><a href="howDoesItWork.html#buildingTheIndex" class="toc toc_1" title="Building the index">Building the index</a></li>
+                     
+                     <li class="toc"><span class="headingNumber"> 7.2 </span><a href="howDoesItWork.html#theSearchPage" class="toc toc_1" title="The search page">The search page</a></li>
+                     </ul>
+                  </li>
+               
+               <li class="toc"><span class="headingNumber"> 8 </span><a href="howDoI.html" class="toc toc_0" title="How do I...">How do I...</a></li>
+               
+               <li class="toc"><span class="headingNumber"> 9 </span><a href="projectsUsingSS.html" class="toc toc_0" title="Projects using staticSearch">Projects using staticSearch</a></li>
+               </ul>
+            
+            <ul class="toc toc_back">
+               
+               <li class="toc"><span class="headingNumber">Appendix A </span><a href="schemaSpec.html" class="toc toc_0" title="Schema specification and tag documentation">Schema specification and tag documentation</a><ul class="toc">
+                     
+                     <li class="toc"><span class="headingNumber">Appendix A.1 </span><a href="schemaSpec.html#index.xml-back.1_div.1_div.1" class="toc toc_1">Elements</a><ul class="toc">
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.1 </span><a href="schemaSpec.html#TEI.config" class="toc toc_2" title="&lt;config&gt;">&lt;config&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.2 </span><a href="schemaSpec.html#TEI.context" class="toc toc_2" title="&lt;context&gt;">&lt;context&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.3 </span><a href="schemaSpec.html#TEI.contexts" class="toc toc_2" title="&lt;contexts&gt;">&lt;contexts&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.4 </span><a href="schemaSpec.html#TEI.createContexts" class="toc toc_2" title="&lt;createContexts&gt;">&lt;createContexts&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.5 </span><a href="schemaSpec.html#TEI.dictionaryFile" class="toc toc_2" title="&lt;dictionaryFile&gt;">&lt;dictionaryFile&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.6 </span><a href="schemaSpec.html#TEI.exclude" class="toc toc_2" title="&lt;exclude&gt;">&lt;exclude&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.7 </span><a href="schemaSpec.html#TEI.excludes" class="toc toc_2" title="&lt;excludes&gt;">&lt;excludes&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.8 </span><a href="schemaSpec.html#TEI.indentJSON" class="toc toc_2" title="&lt;indentJSON&gt;">&lt;indentJSON&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.9 </span><a href="schemaSpec.html#TEI.kwicTruncateString" class="toc toc_2" title="&lt;kwicTruncateString&gt;">&lt;kwicTruncateString&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.10 </span><a href="schemaSpec.html#TEI.maxKwicsToHarvest" class="toc toc_2" title="&lt;maxKwicsToHarvest&gt;">&lt;maxKwicsToHarvest&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.11 </span><a href="schemaSpec.html#TEI.maxKwicsToShow" class="toc toc_2" title="&lt;maxKwicsToShow&gt;">&lt;maxKwicsToShow&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.12 </span><a href="schemaSpec.html#TEI.outputFolder" class="toc toc_2" title="&lt;outputFolder&gt;">&lt;outputFolder&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.13 </span><a href="schemaSpec.html#TEI.params" class="toc toc_2" title="&lt;params&gt;">&lt;params&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.14 </span><a href="schemaSpec.html#TEI.phrasalSearch" class="toc toc_2" title="&lt;phrasalSearch&gt;">&lt;phrasalSearch&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.15 </span><a href="schemaSpec.html#TEI.recurse" class="toc toc_2" title="&lt;recurse&gt;">&lt;recurse&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.16 </span><a href="schemaSpec.html#TEI.rule" class="toc toc_2" title="&lt;rule&gt;">&lt;rule&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.17 </span><a href="schemaSpec.html#TEI.rules" class="toc toc_2" title="&lt;rules&gt;">&lt;rules&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.18 </span><a href="schemaSpec.html#TEI.scoringAlgorithm" class="toc toc_2" title="&lt;scoringAlgorithm&gt;">&lt;scoringAlgorithm&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.19 </span><a href="schemaSpec.html#TEI.searchFile" class="toc toc_2" title="&lt;searchFile&gt;">&lt;searchFile&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.20 </span><a href="schemaSpec.html#TEI.stemmerFolder" class="toc toc_2" title="&lt;stemmerFolder&gt;">&lt;stemmerFolder&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.21 </span><a href="schemaSpec.html#TEI.stopwordsFile" class="toc toc_2" title="&lt;stopwordsFile&gt;">&lt;stopwordsFile&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.22 </span><a href="schemaSpec.html#TEI.totalKwicLength" class="toc toc_2" title="&lt;totalKwicLength&gt;">&lt;totalKwicLength&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.23 </span><a href="schemaSpec.html#TEI.verbose" class="toc toc_2" title="&lt;verbose&gt;">&lt;verbose&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.24 </span><a href="schemaSpec.html#TEI.versionFile" class="toc toc_2" title="&lt;versionFile&gt;">&lt;versionFile&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.25 </span><a href="schemaSpec.html#TEI.wildcardSearch" class="toc toc_2" title="&lt;wildcardSearch&gt;">&lt;wildcardSearch&gt;</a></li>
+                           </ul>
+                        </li>
+                     
+                     <li class="toc"><span class="headingNumber">Appendix A.2 </span><a href="schemaSpec.html#index.xml-back.1_div.1_div.2" class="toc toc_1">Attribute classes</a><ul class="toc">
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.2.1 </span><a href="schemaSpec.html#TEI.att.labelled" class="toc toc_2" title="att.labelled">att.labelled</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.2.2 </span><a href="schemaSpec.html#TEI.att.match" class="toc toc_2" title="att.match">att.match</a></li>
+                           </ul>
+                        </li>
+                     </ul>
+                  </li>
+               </ul>
+            </div>
+      </div>
+      <!--TEI body-->
+      
+      <div data-section="howDoIUseIt" class="tei_body">
+         
+         <nav>
+            <ul>
+               <li class="prev"><a href="howDoIGetIt.html"><span class="headingNumber">5 </span><span class="head">How do I get it?</span></a></li>
+               <li class="next"><a href="howDoesItWork.html"><span class="headingNumber">7 </span><span class="head">How does it work?</span></a></li>
+            </ul>
+         </nav>
+         <h1><span class="headingNumber">6 </span><span class="head">How do I use it?</span></h1>
+         
+         
+         
+         
+         
+         
+         
+         
+         <ul>
+            
+            <li class="item">Level: Intermediate</li>
+            
+            <li class="item">Last Updated: <span class="date">17 July 2020</span></li>
+            </ul>
+         
+         <p>First, you will have to make sure your site pages are correctly configured so that
+            the Generator can parse them. Then, you will have to create a configuration file specifying
+            what options you want to use. Then you run the generator, and the search functionality
+            should be added to your site.</p>
+         
+         <p>The generator is expecting to parse <em>well-formed XHTML5 web pages</em>. That means web pages which are well-formed XML, using the XHTML namespace. If your
+            site is just raggedy tag-soup, then you can't use this tool. You can tidy up your
+            HTML using <a class="link_ref" href="http://www.html-tidy.org/">HTML Tidy</a>.</p>
+         
+         <div class="teidiv1" id="index.xml-body.1_div.6_div.1">
+            
+            <h3><span class="headingNumber">6.1 </span><span class="head">Configuring your site: search filters</span></h3>
+            
+            <p>Next, you will need to decide whether you want search filters or not. If you want
+               to allow your users to search (for example) only in poems, or only in articles, or
+               only in blog posts, or any combination of these document types, you will need to add
+               <span class="gi">&lt;meta&gt;</span> tags to the heads of your documents to specify what these filters are. <span class="titlem">staticSearch</span> supports four filter types.</p>
+            
+            <div class="teidiv2" id="descFilters">
+               
+               <h3><span class="headingNumber">6.1.1 </span><span class="head">Description filters</span></h3>
+               
+               <div class="p">The description (desc) filter is a word or phrase describing or associated with the
+                  document. Here is a simple example: 
+                  
+                  <div id="index.xml-egXML-d38e189" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Document type</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.desc</span>" <span class="attribute">content</span>="<span class="attributevalue">Poems</span>"/&gt;</span></div> This specifies that there is to be a descriptive search filter called <span class="q">‘Document type’</span>, and one of the types is <span class="q">‘Poems’</span>; the document containing this <span class="gi">&lt;meta&gt;</span> tag is one of the Poems. Another type might be: 
+                  
+                  <div id="index.xml-egXML-d38e198" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Document type</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.desc</span>" <span class="attribute">content</span>="<span class="attributevalue">Short stories</span>"/&gt;</span></div> If the Generator finds such meta tags when it is indexing, it will create a set of
+                  filter controls on the search page, enabling the user to constrain the search to a
+                  specific set of filter settings.</div>
+               </div>
+            
+            <div class="teidiv2" id="dateFilters">
+               
+               <h3><span class="headingNumber">6.1.2 </span><span class="head">Date filters</span></h3>
+               
+               <div class="p">Another slightly different kind of search control is a document date. If your collection
+                  of documents has items from different dates, you can add a <span class="gi">&lt;meta&gt;</span> tag like this: 
+                  
+                  <div id="index.xml-egXML-d38e207" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Date of publication</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.date</span>" <span class="attribute">content</span>="<span class="attributevalue">1895-01-05</span>"/&gt;</span></div> The date may take any of the following forms: 
+                  
+                  <ul>
+                     
+                     <li class="item">1895 (year only)</li>
+                     
+                     <li class="item">1895-01 (year and month)</li>
+                     
+                     <li class="item">1895-01-05 (year, month and day)</li>
+                     </ul> For some documents, it may not be possible to specify a single date in this form,
+                  so you can specify a range instead, using a slash to separate the start and end dates
+                  of the range (following ISO 8601): 
+                  
+                  <ul>
+                     
+                     <li class="item">1895/1897</li>
+                     
+                     <li class="item">1903-01-02/1905-05-31</li>
+                     </ul>
+                  </div>
+               </div>
+            
+            <div class="teidiv2" id="numFilters">
+               
+               <h3><span class="headingNumber">6.1.3 </span><span class="head">Number filters</span></h3>
+               
+               <div class="p">You can also configure a range filter based on a numeric value (integer or decimal).
+                  For example, you might want to allow people to filter documents in the search results
+                  based on their word-count: 
+                  
+                  <div id="index.xml-egXML-d38e222" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Word-count</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.num</span>" <span class="attribute">content</span>="<span class="attributevalue">2193</span>"/&gt;</span></div> Users would then be able to set a minimum and/or maximum word-count when searching
+                  for documents.</div>
+               </div>
+            
+            <div class="teidiv2" id="boolFilters">
+               
+               <h3><span class="headingNumber">6.1.4 </span><span class="head">Boolean filters</span></h3>
+               
+               <div class="p">A fourth filter type is the boolean (true/false) filter. To use boolean filters, add
+                  meta tags like this to your documents: 
+                  
+                  <div id="index.xml-egXML-d38e229" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Peer-reviewed</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.bool</span>" <span class="attribute">content</span>="<span class="attributevalue">true</span>"/&gt;</span></div>
+                  </div>
+               </div>
+            </div>
+         
+         <div class="teidiv1" id="configuringDocTitles">
+            
+            <h3><span class="headingNumber">6.2 </span><span class="head">Configuring your site: document titles</span></h3>
+            
+            <div class="p">When the indexing process runs over your document collection, by default it will use
+               the document title that it finds in the <span class="gi">&lt;title&gt;</span> element in the document header; that title will then be shown as a link to the document
+               when it comes up in search results. However, that may not be the ideal title for this
+               purpose; for example, all of your documents may include the site title as the first
+               part of their document title, but it would be pointless to include this in the search
+               result links. Therefore you can override the document title value by providing another
+               meta tag, like this: 
+               
+               <div id="index.xml-egXML-d38e237" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">docTitle</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.docTitle</span>" <span class="attribute">content</span>="<span class="attributevalue">What I did in my holidays</span>"/&gt;</span></div>
+               </div>
+            </div>
+         
+         <div class="teidiv1" id="configuringDocThumbnails">
+            
+            <h3><span class="headingNumber">6.3 </span><span class="head">Configuring your site: document thumbnails</span></h3>
+            
+            <div class="p">When a document is returned as a result of a search hit, you may want to include with
+               it a thumbnail image. This may be for aesthetic reasons, or because the focus of the
+               document itself is actually an image (perhaps your site is a set of pages dealing
+               with works of art, for instance). Whatever the reason, you can supply a link to a
+               thumbnail image like this: 
+               
+               <div id="index.xml-egXML-d38e243" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">docImage</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.docImage</span>" <span class="attribute">content</span>="<span class="attributevalue">images/thisPage.jpg</span>"/&gt;</span></div> The <span class="att">content</span> attribute value should either be the path to an image relative to the document itself
+               or the URL to an external image; so in the example above, there would be a folder
+               called <span class="ident">images</span> which is a sibling of the HTML file containing the tag, and that folder would contain
+               a file called <span class="ident">thisPage.jpg</span>.</div>
+            </div>
+         
+         <div class="teidiv1" id="creatingConfigFile">
+            
+            <h3><span class="headingNumber">6.4 </span><span class="head">Creating a configuration file</span></h3>
+            
+            <p>The configuration file is an XML document which tells the Generator where to find
+               your site, and what search features you would like to include. The configuration file
+               conforms to a schema which is documented here.</p>
+            
+            <p>There are three main sections of the configuration file: </p>
+            
+            <ul>
+               
+               <li class="item"><a href="schemaSpec.html#TEI.params" class="link_ref" title="&lt;params&gt;">&lt;params&gt;</a></li>
+               
+               <li class="item"><a href="schemaSpec.html#TEI.rules" class="link_ref" title="&lt;rules&gt;">&lt;rules&gt;</a></li>
+               
+               <li class="item"><a href="schemaSpec.html#TEI.contexts" class="link_ref" title="&lt;contexts&gt;">&lt;contexts&gt;</a></li>
+               </ul>
+            
+            <p> Only the <a href="schemaSpec.html#TEI.params" class="link_ref" title="&lt;params&gt;">&lt;params&gt;</a> element is necessary, but, as we discuss shortly, we highly suggest taking advantage
+               of the <a href="schemaSpec.html#TEI.rules" class="link_ref" title="&lt;rules&gt;">&lt;rules&gt;</a> and <a href="schemaSpec.html#TEI.contexts" class="link_ref" title="&lt;contexts&gt;">&lt;contexts&gt;</a> for the best results.</p>
+            
+            <div class="teidiv2" id="specifyingParameters">
+               
+               <h3><span class="headingNumber">6.4.1 </span><span class="head">Specifying parameters</span></h3>
+               
+               <div class="teidiv3" id="paramsRequired">
+                  
+                  <h4><span class="headingNumber">6.4.1.1 </span><span class="head">Required parameters</span></h4>
+                  
+                  <p>The <a href="schemaSpec.html#TEI.params" class="link_ref" title="&lt;params&gt;">&lt;params&gt;</a> element has two required elements for determining the resource collection that you
+                     wish to index: </p>
+                  
+                  <ul>
+                     
+                     <li class="item"><a href="schemaSpec.html#TEI.searchFile" class="link_ref" title="&lt;searchFile&gt;">&lt;searchFile&gt;</a></li>
+                     
+                     <li class="item"><a href="schemaSpec.html#TEI.recurse" class="link_ref" title="&lt;recurse&gt;">&lt;recurse&gt;</a></li>
+                     </ul>
+                  
+                  <p>The <a href="schemaSpec.html#TEI.searchFile" class="link_ref" title="&lt;searchFile&gt;">&lt;searchFile&gt;</a> element is a relative URI (resolved, like all URIs specified in the config file,
+                     against the configuration file location) that points directly to the search page that
+                     will be the primary access point for the search. Since the search file must be at
+                     the root of the directory that you wish to index (i.e. the directory that contains
+                     all of the XHTML you want the search to index), the searchFile parameter provides
+                     the necessary information for knowing what document collection to index and where
+                     to put the output JSON. In other words, in specifying the location of your search
+                     page, you are also specifying the location of your document collection. See <a class="link_ref" href="#searchPage" title="Creating a search page">Creating a search page</a> for more information on how to configure this file.</p>
+                  
+                  <p>Note that all output files will be in a directory that is a sibling to the search
+                     page. For instance, in a document collection that looks something like: </p>
+                  
+                  <ul style="font-family: monospace">
+                     
+                     <li class="item">myProject 
+                        
+                        <ul>
+                           
+                           <li class="item">novel.html</li>
+                           
+                           <li class="item">poem.html</li>
+                           
+                           <li class="item">shortstory.html</li>
+                           
+                           <li class="item">search.html</li>
+                           </ul>
+                        </li>
+                     </ul>
+                  
+                  <p> The collection of Javascript and JSON files will be in a directory like so: </p>
+                  
+                  <ul style="font-family: monospace">
+                     
+                     <li class="item">myProject 
+                        
+                        <ul>
+                           
+                           <li class="item">novel.html</li>
+                           
+                           <li class="item">poem.html</li>
+                           
+                           <li class="item">shortstory.html</li>
+                           
+                           <li class="item">search.html</li>
+                           
+                           <li class="item"><em>staticSearch</em></li>
+                           </ul>
+                        </li>
+                     </ul>
+                  
+                  <p>We also require the <a href="schemaSpec.html#TEI.recurse" class="link_ref" title="&lt;recurse&gt;">&lt;recurse&gt;</a> element in the case where the document collection may be nested (as is common with
+                     static sites generated from Jekyll or Wordpress). The <a href="schemaSpec.html#TEI.recurse" class="link_ref" title="&lt;recurse&gt;">&lt;recurse&gt;</a> element is a boolean (true or false) that determines whether or not to recurse into
+                     the subdirectories of the collection and index those files.</p>
+                  </div>
+               
+               <div class="teidiv3" id="paramsOptional">
+                  
+                  <h4><span class="headingNumber">6.4.1.2 </span><span class="head">Optional parameters</span></h4>
+                  
+                  <p>The following parameters are optional, but most projects will want to specify some
+                     of them:</p>
+                  
+                  <ul>
+                     
+                     <li class="item"><a href="schemaSpec.html#TEI.versionFile" class="link_ref" title="&lt;versionFile&gt;">&lt;versionFile&gt;</a> enables you to specify the path to a plain-text file containing a simple version
+                        number for the project. This might take the form of a software-release-style version
+                        number such as <span class="val">1.5</span>, or it might be a Subversion revision number or a Git commit id. It should not contain
+                        any spaces or punctuation. If you provide a version file, the version string will
+                        be used as part of the filenames for all the JSON resources created for the search.
+                        This is useful because it allows the browser to cache such resources when users repeatedly
+                        visit the search page, but if the project is rebuilt with a new version, those cached
+                        files will not be used because the new version will have different filenames. The
+                        path specified is relative to the location of the configuration file (or absolute,
+                        if you wish).</li>
+                     
+                     <li class="item"><a href="schemaSpec.html#TEI.phrasalSearch" class="link_ref" title="&lt;phrasalSearch&gt;">&lt;phrasalSearch&gt;</a> is a boolean parameter which specifies whether you want your search engine to support
+                        phrasal searches (quoted strings). Obviously this is a useful feature, but it is also
+                        costly in terms of the size of JSON token files; in order to support this kind of
+                        search, we store contexts for all hits for each token in each document, so if your
+                        site is very large, and your user base is unlikely to use phrasal searching, it may
+                        not be worth the overhead. The default value is true.</li>
+                     
+                     <li class="item" id="stemmerFolder"><a href="schemaSpec.html#TEI.stemmerFolder" class="link_ref" title="&lt;stemmerFolder&gt;">&lt;stemmerFolder&gt;</a> is a string parameter specifying the name of a folder that is inside the <span class="ident">/stemmers/</span> folder in the staticSearch repository structure. 
+                        
+                        <p>The staticSearch project currently has only one working stemmer, an implementation
+                           of the Porter 2 algorithm for modern English. That appears in <span class="ident">/stemmers/en/</span>, so the default value for this parameter is <span class="val">en</span>. We will be adding more stemmers as the project develops. However, if your document
+                           collection is not English, you have a couple of options, one hard and one easy. </p>
+                        
+                        <ul>
+                           
+                           <li class="item"><em>Hard option</em>: implement your own stemmers. You will need to write two implementations of the stemmer
+                              algorithm, one in XSLT (which must be named <span class="ident">ssStemmer.xsl</span>) and one in JavaScript (<span class="ident">ssStemmer.js</span>), and confirm that they both generate the same results. The XSLT stemmer is used
+                              in the generation of the index files at build time, and the JavaScript version is
+                              used to stem the user's input in the search page. You can look at the existing implementations
+                              in the <span class="ident">/stemmers/en/</span> folder to see how the stemmers need to be constructed. Place your stemmers in a folder
+                              called <span class="ident">/stemmers/[yourlang]/</span>, and specify <span class="val">yourlang</span> in the configuration file.</li>
+                           
+                           <li class="item"><em>Easy option</em>: Use the <span class="ident">identity stemmer</span> (which is equivalent to turning off stemming completely), and make sure wildcard
+                              searching is turned on. Then your users can search using wildcards instead of having
+                              their search terms automatically stemmed. To do this, specify the value <span class="val">identity</span> in your configuration file.</li>
+                           </ul>
+                        </li>
+                     
+                     <li class="item"><a href="schemaSpec.html#TEI.scoringAlgorithm" class="link_ref" title="&lt;scoringAlgorithm&gt;">&lt;scoringAlgorithm&gt;</a> is an optional element that specifies which scoring algorithm to use when calculating
+                        the score of a term and thus the order in which the results from a search are sorted.
+                        There are currently two options: 
+                        
+                        <ul>
+                           
+                           <li class="item"><span class="val">raw</span>: This is the default option (and so does not need to be set explicitly). The raw
+                              score is simply the sum of all instances of a term (optionally multipled by a configured
+                              weight via the <a href="schemaSpec.html#TEI.rule" class="link_ref" title="&lt;rule&gt;">&lt;rule&gt;</a>/<span class="att">weight</span> <a class="link_ref" href="#specifyingRules" title="Specifying rules (optional)">configuration</a>) in a document. This will usually provide good results for most document collections.</li>
+                           
+                           <li class="item"><span class="val">tf-idf</span>: The tf-idf algorithm (term frequency-inverse document frequency) computes the mathematical
+                              relevance of a term within a document relative to the rest of the document collection.
+                              The staticSearch implementation of tf-idf basically follows the textbook definition
+                              of tf-idf: tf-idf = ($instancesOfTerm / $totalTermsInDoc) * log( $allDocumentsCount
+                              / $docsWithThisTermCount ) This is fairly crude compared to other search engines,
+                              like <a class="link_ref" href="https://lucene.apache.org/core/3_5_0/scoring.html">Lucene</a>, but it may provide useful results for document collections of varying lengths or
+                              in instances where the raw score may be insufficient or misleading. There are a number
+                              of resources on tf-idf scoring, including: <a class="link_ref" href="https://en.wikipedia.org/wiki/Tf%E2%80%93idf">Wikipedia</a> and Christopher D. Manning, Prabhakar Raghavan and Hinrich Schütze, <a class="link_ref" href="https://nlp.stanford.edu/IR-book/html/htmledition/tf-idf-weighting-1.html">Introduction to Information Retrieval</a>, Cambridge University Press. 2008.</li>
+                           </ul>
+                        </li>
+                     
+                     <li class="item"><a href="schemaSpec.html#TEI.createContexts" class="link_ref" title="&lt;createContexts&gt;">&lt;createContexts&gt;</a> is a boolean parameter that specifies whether you want the indexer to store keyword-in-context
+                        extracts for each of the hits in a document. This increases the size of the index,
+                        but of course it makes for much more user-friendly search results.</li>
+                     
+                     <li class="item"><a href="schemaSpec.html#TEI.maxKwicsToHarvest" class="link_ref" title="&lt;maxKwicsToHarvest&gt;">&lt;maxKwicsToHarvest&gt;</a> controls the number of keyword-in-context extracts that will be harvested from the
+                        data for each term in a document. If you set this to a low number, the size of the
+                        JSON files will be constrained, but of course the user will only be able to see the
+                        KWICs that have been harvested in their search results.</li>
+                     
+                     <li class="item"><a href="schemaSpec.html#TEI.maxKwicsToShow" class="link_ref" title="&lt;maxKwicsToShow&gt;">&lt;maxKwicsToShow&gt;</a> controls the number of keyword-in-context extracts that will be shown in the search
+                        results for each hit document.</li>
+                     
+                     <li class="item"><a href="schemaSpec.html#TEI.totalKwicLength" class="link_ref" title="&lt;totalKwicLength&gt;">&lt;totalKwicLength&gt;</a> is an integer specifying how long a keyword-in-context string should be. Obviously,
+                        the higher this number is, the larger the individual index files will be, but the
+                        more useful the KWICs will be for users looking at the search results.</li>
+                     
+                     <li class="item"><a href="schemaSpec.html#TEI.kwicTruncateString" class="link_ref" title="&lt;kwicTruncateString&gt;">&lt;kwicTruncateString&gt;</a> is a string containing the character you would like to use at the beginning and/or
+                        the end of a kwic which is not a full sentence. An ellipsis character is the default.</li>
+                     
+                     <li class="item"><a href="schemaSpec.html#TEI.verbose" class="link_ref" title="&lt;verbose&gt;">&lt;verbose&gt;</a> is a boolean which turns on/off detailed output messages during the indexing process.
+                        You might set this to true if something is not working as expected and you need to
+                        do some debugging.</li>
+                     
+                     <li class="item"><a href="schemaSpec.html#TEI.stopwordsFile" class="link_ref" title="&lt;stopwordsFile&gt;">&lt;stopwordsFile&gt;</a> is a string parameter containing the relative path (from the config file) to a text
+                        file containing a list of stopwords that you want to use for your site. A stopword
+                        is a word that will not be indexed, because it is too common (<span class="mentioned">the</span>, <span class="mentioned">a</span>, <span class="mentioned">you</span> and so on). The project has a built-in set of common stopwords for English, which
+                        we recommend you start from; you'll find it in <span class="ident">xsl/english_stopwords.txt</span>. If your site is all about a person, a place or some other entity, then you might
+                        add their name to the stopwords list, because it will presumably appear on almost
+                        every page and it makes no sense to search for it. One way to find such terms is to
+                        generate your index, then search for the largest JSON index files that are generated,
+                        to see if they might be too common to be useful as search terms.</li>
+                     
+                     <li class="item"><a href="schemaSpec.html#TEI.dictionaryFile" class="link_ref" title="&lt;dictionaryFile&gt;">&lt;dictionaryFile&gt;</a> is the relative path to a file containing an English dictionary (assuming your site
+                        is in English). This is used to check words during the indexing process, and a report
+                        generated at the end will list all the terms in the site which do not appear in the
+                        dictionary. This is a useful way to find typos in your site. Again, there is a default
+                        dictionary in <span class="ident">xsl/english_words.txt</span> which you might copy and adapt.</li>
+                     
+                     <li class="item"><a href="schemaSpec.html#TEI.indentJSON" class="link_ref" title="&lt;indentJSON&gt;">&lt;indentJSON&gt;</a> is a boolean parameter which controls whether the JSON files generated for the index
+                        are indented or not. Indenting makes the files easier for a human to read, if you
+                        need to understand them or debug them, but obviously it adds to their file size.</li>
+                     
+                     <li class="item"><a href="schemaSpec.html#TEI.outputFolder" class="link_ref" title="&lt;outputFolder&gt;">&lt;outputFolder&gt;</a> is the name of a folder into which you would like to place the JavaScript and JSON
+                        index files your site search. The default is <span class="val">staticSearch</span>, but if you would prefer something else, you can specify it here. You may also use
+                        this element if you are defining two different searches within the same site, so that
+                        their files are kept in different locations. The value must conform with the <a class="link_ref" href="https://www.w3.org/TR/REC-xml/#dt-name">XML Name</a> specification.</li>
+                     </ul>
+                  </div>
+               </div>
+            
+            <div class="teidiv2" id="specifyingRules">
+               
+               <h3><span class="headingNumber">6.4.2 </span><span class="head">Specifying rules (optional)</span></h3>
+               
+               <div class="p">The <a href="schemaSpec.html#TEI.rules" class="link_ref" title="&lt;rules&gt;">&lt;rules&gt;</a> elements specifies a list of conditions (using the <a href="schemaSpec.html#TEI.rule" class="link_ref" title="&lt;rule&gt;">&lt;rule&gt;</a> element) that tell the parser, using XPath statements in the <span class="att">match</span> attribute, specific weights to assign to particular parts of each document. For instance,
+                  if you wanted all heading elements (<span class="gi">&lt;h1&gt;</span>, <span class="gi">&lt;h2&gt;</span>, etc) in documents to be given a greater weight and thus receive a higher score in
+                  the results, you can do so using a rule like so: 
+                  
+                  <div id="index.xml-egXML-d38e492" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">2</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">h1 | h2 | h3 | h4 | h5 | h6</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> Since we're using XPath 3.0 and XSLT 3.0, this can also be simplified to: 
+                  
+                  <div id="index.xml-egXML-d38e496" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">2</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">*[matches(local-name(),'^h\d+$')]</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> (It is worth noting, however, the above example is unnecessary: all heading elements
+                  are given a weight of 2 by default, which is the only preconfigured weight in staticSearch.)</div>
+               
+               <p>The value of the <span class="att">match</span> attribute is transformed in a XSLT template match attribute, and thus must follow
+                  the same rules (i.e. no complex rules like <code>p/ancestor::div</code>). See the <a class="link_ref" href="https://www.w3.org/TR/xslt-30/#dt-pattern">W3C XSLT Specification</a> for further details on allowable pattern rules.</p>
+               
+               <div class="p">Often, there will be elements that you want the tokenizer to ignore completely; for
+                  instance, if you have the same header in every document, then there's no reason to
+                  index its contents on every page. These elements can be ignored simply by using a
+                  <a href="schemaSpec.html#TEI.rule" class="link_ref" title="&lt;rule&gt;">&lt;rule&gt;</a> and setting its weight to 0. For instance, if you want to remove the header and the
+                  footer from the search indexing process, you could write something like: 
+                  
+                  <div id="index.xml-egXML-d38e515" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>" <span class="attribute">match</span>="<span class="attributevalue">footer | header</span>"/&gt;</span></div> Or if you want to remove XHTML anchor tags (<span class="gi">&lt;a&gt;</span>) whose text is identical to the URL specified in its <span class="att">href</span>, you could do something like: 
+                  
+                  <div id="index.xml-egXML-d38e523" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>" <span class="attribute">match</span>="<span class="attributevalue">a[@href=./text()]</span>"/&gt;</span></div>
+                  </div>
+               
+               <p>Note that the indexer does not tokenize any content in the <span class="gi">&lt;head&gt;</span> of the document (but as noted above, metadata can be configured into filters) and
+                  that all elements in the <span class="gi">&lt;body&gt;</span> of a document are considered tokenizable. However, common elements that you might
+                  want to exclude include: </p>
+               
+               <ul>
+                  
+                  <li class="item"><span class="gi">&lt;script&gt;</span></li>
+                  
+                  <li class="item"><span class="gi">&lt;style&gt;</span></li>
+                  
+                  <li class="item"><span class="gi">&lt;code&gt;</span></li>
+                  </ul>
+               </div>
+            
+            <div class="teidiv2" id="specifyingContexts">
+               
+               <h3><span class="headingNumber">6.4.3 </span><span class="head">Specifying contexts (optional)</span></h3>
+               
+               <div class="p">When the staticSearch creates the keywords-in-contexts (the "kwic" or "snippets")
+                  for each token, it does so by looking for the nearest block-level element that it
+                  can use as its context. Take, for instance, this unordered list: 
+                  
+                  <div id="index.xml-egXML-d38e542" class="pre egXML_valid"><span class="element">&lt;ul&gt;</span><br/> <span class="element">&lt;li&gt;</span>Keyword-in-context search results. This is also configurable, since including contexts<br/>   increases the size of the index.<span class="element">&lt;/li&gt;</span><br/> <span class="element">&lt;li&gt;</span>Search filtering using any metadata you like, allowing users to limit their search
+                     to specific<br/>   document types.<span class="element">&lt;/li&gt;</span><br/><span class="element">&lt;/ul&gt;</span></div> Each <span class="gi">&lt;li&gt;</span> elements is, by default, a <span class="term">context</span> element, meaning that the snippet generated for each token will not extend beyond
+                  the <span class="gi">&lt;li&gt;</span> element boundaries; in this case, if the <span class="gi">&lt;li&gt;</span> was not a context attribute, the term <span class="q">‘search’</span> would produce a context that looks something like: 
+                  
+                  <pre class="pre_eg">"...the size of the index.<span style="font-weight:bold;">Search</span> filtering using any metadata you like,..."</pre>
+                  </div>
+               
+               <div class="p">Using the <a href="schemaSpec.html#TEI.contexts" class="link_ref" title="&lt;contexts&gt;">&lt;contexts&gt;</a> element, you can control what elements operate as contexts. For instance, say a page
+                  contained a marginal note, encoded as a <span class="gi">&lt;span&gt;</span> in your document beside its point of attachment:<span id="Note1_return"></span> 
+                  
+                  <div id="index.xml-egXML-d38e578" class="pre egXML_valid"><span class="element">&lt;p&gt;</span>About that program I shall have nothing to say here,<span class="element">&lt;span <span class="attribute">class</span>="<span class="attributevalue">sidenote</span>"&gt;</span>Some information on this subject can be found in "Second Thoughts"<span class="element">&lt;/span&gt;</span> [...]<br/><span class="element">&lt;/p&gt;</span></div> Using CSS, the footnote might be alongside the text of the document in margin, or
+                  made into a clickable object using Javascript. However, since the tokenizer is unaware
+                  of any server-side processing, it understands the <span class="gi">&lt;span&gt;</span> as an inline element and assumes the <span class="gi">&lt;p&gt;</span> constitutes the context of the element. A search for <span class="q">‘information’</span> might then return: 
+                  
+                  <pre class="pre_eg">"...nothing to say here,Some <span style="font-weight:bold;">information</span> on this subject can be found...</pre> To tell the tokenizer that the <span class="gi">&lt;span&gt;</span> constitutes the context block for any of its token, use the <a href="schemaSpec.html#TEI.context" class="link_ref" title="&lt;context&gt;">&lt;context&gt;</a> element with an <span class="att">match</span> pattern: 
+                  
+                  <div id="index.xml-egXML-d38e607" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">match</span>="<span class="attributevalue">span[contains-token(@class,'sidenote')]</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
+                  </div>
+               
+               <div class="p">You can also configure it the other way: if a <span class="gi">&lt;div&gt;</span>, which is by default a context block, should not be understood as a context block,
+                  then you can tell the parser to not consider it as such using <span class="att">context</span> set to false: 
+                  
+                  <div id="index.xml-egXML-d38e617" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">match</span>="<span class="attributevalue">div</span>" <span class="attribute">context</span>="<span class="attributevalue">false</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
+                  </div>
+               
+               <p>The default contexts elements are: </p>
+               
+               <ul>
+                  
+                  <li class="item"><span class="gi">&lt;body&gt;</span></li>
+                  
+                  <li class="item"><span class="gi">&lt;div&gt;</span></li>
+                  
+                  <li class="item"><span class="gi">&lt;blockquote&gt;</span></li>
+                  
+                  <li class="item"><span class="gi">&lt;p&gt;</span></li>
+                  
+                  <li class="item"><span class="gi">&lt;li&gt;</span></li>
+                  
+                  <li class="item"><span class="gi">&lt;section&gt;</span></li>
+                  
+                  <li class="item"><span class="gi">&lt;article&gt;</span></li>
+                  
+                  <li class="item"><span class="gi">&lt;nav&gt;</span></li>
+                  
+                  <li class="item"><span class="gi">&lt;h1&gt;</span></li>
+                  
+                  <li class="item"><span class="gi">&lt;h2&gt;</span></li>
+                  
+                  <li class="item"><span class="gi">&lt;h3&gt;</span></li>
+                  
+                  <li class="item"><span class="gi">&lt;h4&gt;</span></li>
+                  
+                  <li class="item"><span class="gi">&lt;h5&gt;</span></li>
+                  
+                  <li class="item"><span class="gi">&lt;h6&gt;</span></li>
+                  
+                  <li class="item"><span class="gi">&lt;td&gt;</span></li>
+                  </ul>
+               </div>
+            
+            <div class="teidiv2" id="specifyingExclusions">
+               
+               <h3><span class="headingNumber">6.4.4 </span><span class="head">Specifying exclusions (optional)</span></h3>
+               
+               <p>A complex site may have two or more search pages targetting specific types of document
+                  or content, each of which may need its own particular search controls and indexes.
+                  This can easily be achieved by specifying a different <a href="schemaSpec.html#TEI.searchFile" class="link_ref" title="&lt;searchFile&gt;">&lt;searchFile&gt;</a> and <a href="schemaSpec.html#TEI.outputFolder" class="link_ref" title="&lt;outputFolder&gt;">&lt;outputFolder&gt;</a> in the configuration file for each search.</p>
+               
+               <div class="p">For these searches to be different from each other, they will also probably have different
+                  contexts and rules. For example, imagine that you are creating a special search page
+                  that focuses only on the text describing images or figures in your documents. You
+                  might do it like this: 
+                  
+                  <div id="index.xml-egXML-d38e666" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">match</span>="<span class="attributevalue">text()[not(ancestor::div[@class='figure']or ancestor::title)]</span>"<br/>  <span class="attribute">weight</span>="<span class="attributevalue">0</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> This specifies that all text nodes which are not part of the document title or descendants
+                  of <span class="tag">&lt;div class="figure"&gt;</span> should be ignored (<span class="att">weight</span>=<span class="val">0</span>), so only your target nodes will be indexed.</div>
+               
+               <p>However, it's also likely that you will want to exclude certain features or documents
+                  from a specialized search page, and this is done using the <a href="schemaSpec.html#TEI.excludes" class="link_ref" title="&lt;excludes&gt;">&lt;excludes&gt;</a> section and its child <a href="schemaSpec.html#TEI.exclude" class="link_ref" title="&lt;exclude&gt;">&lt;exclude&gt;</a> elements.</p>
+               
+               <div class="p">Here is an example: 
+                  
+                  <div id="index.xml-egXML-d38e689" class="pre egXML_valid"><span class="element">&lt;excludes&gt;</span><br/><span class="comment">&lt;!-- We only index files which have illustrations in them. --&gt;</span><br/> <span class="element">&lt;exclude <span class="attribute">type</span>="<span class="attributevalue">index</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">html[not(descendant::meta[@name='Has illustration(s)'][@content='true'])]</span>"/&gt;</span><br/><span class="comment">&lt;!-- We ignore the document type filter, 
+                        because we are only indexing one type 
+                        of document anyway. --&gt;</span><br/> <span class="element">&lt;exclude <span class="attribute">type</span>="<span class="attributevalue">filter</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">meta[@name='Document type']</span>"/&gt;</span><br/><span class="comment">&lt;!-- We exclude the filter that specifies 
+                        these documents because it's pointless. --&gt;</span><br/> <span class="element">&lt;exclude <span class="attribute">type</span>="<span class="attributevalue">filter</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">meta[@name='Has illustration(s)']</span>"/&gt;</span><br/><span class="element">&lt;/excludes&gt;</span></div> Here we use <span class="tag">&lt;exclude type="index"/&gt;</span> to specify that all documents which do not contain <span class="tag">&lt;meta name="Has illustration(s)" content="true"/&gt;&gt;</span> should be ignored. Then we use two <span class="tag">&lt;exclude type="filter"/&gt;</span> tags to specify first that the <span class="ident">Document type</span> filter should be ignored (i.e. it should not appear on the search page), and second,
+                  that the boolean filter <span class="ident">Has illustrations(s)</span> should also be excluded.</div>
+               
+               <p>Using exclusions, you can create multiple specialized search pages which have customized
+                  form controls within the same document collection. This is at the expense of additional
+                  disk space and build time, of course; each of these searches needs to be built separately.</p>
+               </div>
+            </div>
+         
+         <div class="teidiv1" id="searchPage">
+            
+            <h3><span class="headingNumber">6.5 </span><span class="head">Creating a search page</span></h3>
+            
+            <div class="p">You'll obviously want the search page for your site to conform with the look and feel
+               of the rest of your site. You can create a complete HTML document (which must of course
+               also be well-formed XML, so it can be processed), containing all the site components
+               you need, and then the search build process will insert all the necessary components
+               into that file. The only requirement is that the page contains one <span class="gi">&lt;div&gt;</span> element with the correct <span class="att">id</span> attribute: 
+               
+               <div id="index.xml-egXML-d38e722" class="pre egXML_valid"><span class="element">&lt;div <span class="attribute">id</span>="<span class="attributevalue">staticSearch</span>"&gt;</span> <br/> [...content will be supplied by the build process...]<br/><span class="element">&lt;/div&gt;</span></div> This <span class="gi">&lt;div&gt;</span> will be empty initially. The build process will find insert the search controls,
+               scripts and results <span class="gi">&lt;div&gt;</span> into this container. Then whenever you rebuild the search for your site, the contents
+               will be replaced. There is no need to make sure it's empty every time.</div>
+            
+            <div class="p">The search process will also add a CSS <span class="gi">&lt;style&gt;</span> element to the <span class="gi">&lt;head&gt;</span> of the document: 
+               
+               <div id="index.xml-egXML-d38e736" class="pre egXML_valid"><span class="element">&lt;style <span class="attribute">id</span>="<span class="attributevalue">ssCss</span>"&gt;</span> [...styles for search controls...]<br/><span class="element">&lt;/style&gt;</span></div> You can customize this CSS by providing your own CSS that overrides it, using <span class="gi">&lt;style&gt;</span>, or <span class="gi">&lt;link&gt;</span>, placed after it in the <span class="gi">&lt;head&gt;</span> element, or by replacing the inserted CSS after the build process.</div>
+            
+            <p>Note that once your file has been processed and all this content has been added, you
+               can process it again at any time; there is no need to start every time with a clean,
+               empty version of the search page.</p>
+            
+            <p>You can take a look at the <span class="ident">test/search.html</span> page for an example of how to configure the search page (although note that since
+               this page has already been processed, it has the CSS and the search controls embedded
+               in it; it also has some additional JavaScript which we use for testing the search
+               build results, which is not necessary for your site).</p>
+            </div>
+         
+         <div class="teidiv1" id="searchBuildProcess">
+            
+            <h3><span class="headingNumber">6.6 </span><span class="head">Running the search build process</span></h3>
+            
+            <p>Once you have configured your HTML and your configuration file, you're ready to create
+               a search index and a search page for your site. This requires that you run ant in
+               the root folder of the staticSearch project that you have downloaded or cloned.</p>
+            
+            <p>Note: you will need Java and <a class="link_ref" href="https://ant.apache.org/">Apache Ant</a> installed, as well as <a class="link_ref" href="http://ant-contrib.sourceforge.net/">ant-contrib</a>.</p>
+            
+            <p>Before running the search on your own site, you can test that your system is able
+               to do the build by doing the (very quick) build of the test materials. If you simply
+               run the <span class="ident">ant</span> command, like this:</p>
+            
+            <pre class="pre_eg cdata">mholmes@linuxbox:~/Documents/staticSearch$ ant</pre>
+            
+            <p>you should see a build process proceed using the small test collection of documents,
+               and at the end, a results page should open up giving you a report on what was done.
+               If this fails, then you'll need to troubleshoot the problem based on any error messages
+               you see. (Do you have Java, Ant and ant-contrib installed and working on your system?).</p>
+            
+            <p>If the test succeeds, you can view the results by uploading the <span class="ident">test</span> folder and all its contents to a web server, or by running a local webserver on your
+               machine in that folder, using the <a class="link_ref" href="https://docs.python.org/3.8/library/http.server.html">Python HTTP server</a> or <a class="link_ref" href="https://www.php.net/manual/en/features.commandline.webserver.php">PHP's built-in web server</a>.</p>
+            
+            <p>If the tests all work, then you're ready to build a search for your own site. Now
+               you need to run the same command, but this time, tell the build process where to find
+               your custom configuration file:</p>
+            
+            <pre class="pre_eg cdata">ant -DconfigFile=/home/mholmes/mysite/config_staticSearch.xml</pre>
+            
+            <p>The same process should run, and if it's successful, you should have a modified <span class="ident">search.html</span> page as well as a lot of index files in JSON format in your site HTML folder. Now
+               you can test your own search in the same ways suggested above.</p>
+            </div>
+         
+         
+         
+         
+         </div>
+      <!--TEI back-->
+      
+      <!--Notes in [TEI]-->
+      
+      <div class="notes">
+         
+         <div class="noteHeading">Notes</div>
+         
+         <div class="note" id="Note1"><span class="noteLabel">1 </span><div class="noteBody">This example taken from Thomas S. Kuhn, <span class="titlem">The Structure of Scientific Revolutions</span> (50th anniversary edition), University of Chicago Press, 2012: p. 191.</div> <a class="link_return" title="Go back to text" href="#Note1_return">↵</a></div>
+         </div>
+      
+      <div class="stdfooter autogenerated">
+         
+         <div class="footer"><!--standard links to project, institution etc--><a class="plain" href="http://www.example.com/"></a> <a class="plain" href="index.html">Home</a> <a href="https://github.com/projectEndings/staticSearch">Github</a> </div>
+         
+         <address>Martin Holmes and Joey Takeda. Date: 2019-2020<br/>
+            <!--
+	  Generated from index.xml using XSLT stylesheets version 7.50.1
+	       based on http://www.tei-c.org/Stylesheets/
+	       on 2020-10-14T21:32:32Z.
+	       SAXON HE 10.0.
+		 --></address>
+         </div>
+      </body>
+   </html>
