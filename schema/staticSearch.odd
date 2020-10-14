@@ -40,7 +40,7 @@
           <head>What does it do?</head>
           <list>
             <item>Level: Basic</item>
-            <item>Last Updated: <date when="2020-07-17">17 July 2020</date></item>
+            <item>Last Updated: <date when="2020-10-14">14 October 2020</date></item>
           </list>
           <p>The generator tool processes your site to create an index of all the words appearing
           in the site, stemmed (if desired) using a Porter2 stemmer, and stores the index in the 
@@ -49,6 +49,9 @@
           you specify in the headers of your documents, to allow searches for documents by 
           type, by date range, and so on. Then it creates a search page for your site, which 
           processes user search terms and retrieves the required JSON files to provide search results.</p>
+          <p>You can see several examples of sites and projects which use staticSearch in 
+            <ref target="#projectsUsingSS">Projects using staticSearch</ref>.</p>
+          
         </div>
       <div xml:id="whyWouldIUseIt">
         <head>Why would I use it?</head>
@@ -179,25 +182,6 @@
               If the Generator finds such meta tags when it is indexing, it will create a set of filter controls
               on the search page, enabling the user to constrain the search to a specific set of filter settings.
             </p>
-              
-              <p>When the search page controls are created, the process will sort the filter checkboxes
-              in alphanumeric order based on the <att>content</att> attribute (<q>Poems</q> followed by 
-                <q>Short stories</q>, for example). However, you may want to have greater control over how
-              this sorting is accomplished. For example, if you have filters labelled <q>Volume 9</q> and
-              <q>Volume 10</q>, these would typically sort in reverse order, because the <q>1</q> from 
-                <q>10</q> comes before the <q>9</q>. You can control this by adding an extra attribute
-              containing a sort key to the <gi>meta</gi> element:
-              
-                <egXML xmlns="http://www.tei-c.org/ns/Examples">
-                  <meta name="Document type" class="staticSearch.desc" content="Volume 9" data-ssFilterSortKey="vol_09"/>
-                  <meta name="Document type" class="staticSearch.desc" content="Volume 10" data-ssFilterSortKey="vol_10"/>
-                </egXML>
-                
-                This will ensure that the checkboxes are presented in the correct order on the web 
-                page. If you do use the <att>data-ssFilterSortKey</att> attribute, make sure you add
-                it to all the <gi>meta</gi> tags with the same name.
-              
-              </p> 
             </div>
             
             
@@ -316,7 +300,7 @@
             
             
             <div xml:id="specifyingParameters">
-              <head>Specifying Parameters</head>
+              <head>Specifying parameters</head>
               <div xml:id="paramsRequired">
                 <head>Required parameters</head>
                 <p>The <gi>params</gi> element has two required elements for determining the resource collection that you wish to index:
@@ -358,7 +342,7 @@
               </div>
               
               <div xml:id="paramsOptional">
-                <head>Optional Parameters</head>
+                <head>Optional parameters</head>
                 <p>The following parameters are optional, but most projects will want to specify 
                 some of them:</p>
                 <list>
@@ -499,7 +483,7 @@
               </div>
             </div>
           <div xml:id="specifyingRules">
-            <head>Specifying Rules (Optional)</head>
+            <head>Specifying rules (optional)</head>
             <p>The <gi>rules</gi> elements specifies a list of conditions (using the <gi>rule</gi> element) that tell the parser, using XPath statements in the <att>match</att> attribute, specific weights to assign to particular parts of each document. For instance, if you wanted all heading elements (<gi>h1</gi>, <gi>h2</gi>, etc) in documents to be given a greater weight and thus receive a higher score in the results, you can do so using a rule like so:
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
                 <rules>
@@ -535,7 +519,7 @@
             </p>
           </div>
           <div xml:id="specifyingContexts">
-            <head>Specifying Contexts (Optional)</head>
+            <head>Specifying contexts (optional)</head>
             <p>When the staticSearch creates the keywords-in-contexts (the "kwic" or "snippets") for each token, it does so by looking for the nearest block-level element that it can use as its context. Take, for instance, this unordered list:
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
                 <ul>
@@ -594,7 +578,7 @@
             </p>
           </div>
             <div xml:id="specifyingExclusions">
-              <head>Specifying Exclusions (Optional)</head>
+              <head>Specifying exclusions (optional)</head>
               
               <p>A complex site may have two or more search pages targetting
               specific types of document or content, each of which may need 
@@ -813,7 +797,7 @@
        </div>
       </div>
       <div xml:id="howDoI">
-        <head><q>How Do I...</q></head>
+        <head><q>How do I...</q></head>
         <p>Below are some of the most common things you might want to do using staticSearch:</p>
         <table>
           <row>
@@ -853,13 +837,16 @@
         </table>
       </div>
       <div xml:id="projectsUsingSS">
-        <head>Projects using Static Search</head>
+        <head>Projects using staticSearch</head>
+        <list>
+          <item>Level: Basic</item>
+          <item>Last Updated: <date when="2020-10-14">14 October 2020</date></item>
+        </list>
         <table>
           <row role="label">
             <cell>Name</cell>
-            <cell>Static Search Version</cell>
+            <cell>staticSearch Version</cell>
             <cell>Search Page(s)</cell>
-            <cell></cell>
             <cell>Configuration file(s)</cell>
           </row>
           <row>
@@ -871,31 +858,36 @@
           <row>
             <cell><ref target="https://winnifredeatonarchive.org">The Winnifred Eaton Archive</ref></cell>
             <cell>1.0 (dev)</cell>
-            <cell><ref target="https://winnifredeatonarchive.org/search.htm">Search</ref></cell>
+            <cell><ref target="https://winnifredeatonarchive.org/search.html">Search</ref></cell>
             <cell>
               <ref target="https://github.com/winnifredeatonarchive/wea_data/blob/09ae8660007a10e23e80e2f5769aec0bf1f919c6/code/staticSearch/config.xml">Github</ref></cell>
           </row>
           <row>
             <cell><ref target="https://johnkeats.uvic.ca/">Mapping Keat's Progress</ref></cell>
-            <cell><!--MH TO DO --></cell>
+            <cell>1.0 (dev)</cell>
             <cell><ref target="https://johnkeats.uvic.ca/search.html">Search</ref></cell>
-            <cell><!--MH TO DO--></cell>
+            <cell><ref target="https://hcmc.uvic.ca/svn/keats/config_staticSearch.xml">SVN</ref></cell>
           </row>
           <row>
             <cell><ref target="https://myndir.uvic.ca/">My Norse Digital Image Repository</ref></cell>
-            <cell><!--MH TO DO --></cell>
+            <cell>1.0 (dev)</cell>
             <cell><ref target="https://myndir.uvic.ca/search.html">Search</ref></cell>
-            <cell><!--MH TO DO--></cell>
+            <cell><ref target="https://hcmc.uvic.ca/svn/myndir/config_staticSearch.xml">SVN</ref></cell>
           </row>
-          <!--COLDESPATCHES?-->
           <row>
+            <cell><ref target="https://bcgenesis.uvic.ca/">The Colonial Despatches of BC and Vancouver Island</ref></cell>
+            <cell>1.0 (dev)</cell>
+            <cell><ref target="https://bcgenesis.uvic.ca/search.html">Search</ref></cell>
+            <cell><ref target="https://hcmc.uvic.ca/svn/coldesp/trunk/config_staticSearch.xml">SVN</ref></cell>
+          </row>
+          <row>
+            <cell><ref target="https://dvpp.uvic.ca">Digital Victorian Periodical Poetry</ref></cell>
+            <cell>1.0 (dev)</cell>
+            <cell><ref target="https://dvpp.uvic.ca/search.html">Search</ref> (multiple searches with individual pages)</cell>
+            <cell><ref target="https://hcmc.uvic.ca/svn/dvpp/">SVN</ref> (multiple configuration files)</cell>
+          </row>
+          <!--<row>
             <cell>Le mariage sous L'Ancien Régime (forthcoming)</cell>
-            <cell/>
-            <cell/>
-            <cell/>
-          </row>
-          <row>
-            <cell>Digital Victorian Periodical Poetry (forthcoming)</cell>
             <cell/>
             <cell/>
             <cell/>
@@ -908,7 +900,7 @@
           </row>
           <row>
             <cell>Linked Early Modern Drama Online (forthcoming)</cell>
-          </row>
+          </row>-->
         </table>
       </div>
       
