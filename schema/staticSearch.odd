@@ -179,6 +179,25 @@
               If the Generator finds such meta tags when it is indexing, it will create a set of filter controls
               on the search page, enabling the user to constrain the search to a specific set of filter settings.
             </p>
+              
+              <p>When the search page controls are created, the process will sort the filter checkboxes
+              in alphanumeric order based on the <att>content</att> attribute (<q>Poems</q> followed by 
+                <q>Short stories</q>, for example). However, you may want to have greater control over how
+              this sorting is accomplished. For example, if you have filters labelled <q>Volume 9</q> and
+              <q>Volume 10</q>, these would typically sort in reverse order, because the <q>1</q> from 
+                <q>10</q> comes before the <q>9</q>. You can control this by adding an extra attribute
+              containing a sort key to the <gi>meta</gi> element:
+              
+                <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                  <meta name="Document type" class="staticSearch.desc" content="Volume 9" data-ssFilterSortKey="vol_09"/>
+                  <meta name="Document type" class="staticSearch.desc" content="Volume 10" data-ssFilterSortKey="vol_10"/>
+                </egXML>
+                
+                This will ensure that the checkboxes are presented in the correct order on the web 
+                page. If you do use the <att>data-ssFilterSortKey</att> attribute, make sure you add
+                it to all the <gi>meta</gi> tags with the same name.
+              
+              </p> 
             </div>
             
             

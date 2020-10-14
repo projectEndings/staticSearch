@@ -304,18 +304,18 @@
                                         <ul class="ssDescCheckboxList">
                                             <!-- Before sorting checkbox items, we need to know
                                               whether they're numeric or not. -->
-                                            <xsl:variable name="notNumeric" select="some $n in (for $s in $jsonDoc//map:map[@key]/map:string[@key='name'] return $s castable as xs:decimal) satisfies $n = false()"/>
+                                            <xsl:variable name="notNumeric" select="some $n in (for $s in $jsonDoc//map:map[@key]/map:string[@key='sortKey'] return $s castable as xs:decimal) satisfies $n = false()"/>
                                             <xsl:variable name="sortedMaps" as="element(map:map)+">
                                                 <xsl:choose>
                                                     <xsl:when test="$notNumeric">
                                                         <xsl:for-each select="$jsonDoc//map:map[@key]">
-                                                            <xsl:sort select="replace(map:string[@key='name'], '^((the)|(a)|(an))\s+', '', 'i')"/>
+                                                            <xsl:sort select="replace(map:string[@key='sortKey'], '^((the)|(a)|(an))\s+', '', 'i')"/>
                                                             <xsl:sequence select="."/>
                                                         </xsl:for-each>
                                                     </xsl:when>
                                                     <xsl:otherwise>
                                                         <xsl:for-each select="$jsonDoc//map:map[@key]">
-                                                            <xsl:sort select="map:string[@key='name']" data-type="number"/>
+                                                            <xsl:sort select="map:string[@key='sortKey']" data-type="number"/>
                                                             <xsl:sequence select="."/>
                                                         </xsl:for-each>
                                                     </xsl:otherwise>

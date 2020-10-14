@@ -120,7 +120,11 @@
       <h1>Test search page</h1>
       
       
-      <p>This is a simple search page for the test collection.</p>
+      <p>This is a simple search page for the test collection. It runs a number of automated tests on load.
+      Note that the <q>Document type</q> options should appear sorted in reverse alphabetical order, 
+          as a test of the functionality of the <code>@data-ssFilterSortKey</code> setting; the <q>Random 
+              numeric value</q> options should appear in ascending numeric order although they do not have a
+          configured <code>@data-ssFilterSortKey</code> setting.</p>
       
       <!-- 
              This is the div into which the JavaScript and page components required for the
@@ -136,10 +140,10 @@
                <fieldset class="ssFieldset" title="Document type" id="ssDesc1">
                   <legend>Document type</legend>
                   <ul class="ssDescCheckboxList">
-                     <li><input type="checkbox" title="Document type" value="Article extracts" id="ssDesc1_4" class="staticSearch.desc"/><label for="ssDesc1_4">Article extracts</label></li>
-                     <li><input type="checkbox" title="Document type" value="Documents with tables" id="ssDesc1_3" class="staticSearch.desc"/><label for="ssDesc1_3">Documents with tables</label></li>
-                     <li><input type="checkbox" title="Document type" value="Poems" id="ssDesc1_2" class="staticSearch.desc"/><label for="ssDesc1_2">Poems</label></li>
                      <li><input type="checkbox" title="Document type" value="Site info files" id="ssDesc1_1" class="staticSearch.desc"/><label for="ssDesc1_1">Site info files</label></li>
+                     <li><input type="checkbox" title="Document type" value="Poems" id="ssDesc1_2" class="staticSearch.desc"/><label for="ssDesc1_2">Poems</label></li>
+                     <li><input type="checkbox" title="Document type" value="Documents with tables" id="ssDesc1_3" class="staticSearch.desc"/><label for="ssDesc1_3">Documents with tables</label></li>
+                     <li><input type="checkbox" title="Document type" value="Article extracts" id="ssDesc1_4" class="staticSearch.desc"/><label for="ssDesc1_4">Article extracts</label></li>
                   </ul>
                </fieldset>
                <fieldset class="ssFieldset" title="Random numeric value" id="ssDesc2">
