@@ -177,7 +177,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 1em;
         }
     </xsl:param>
     
@@ -494,8 +493,8 @@
             
             <!-- Finally, we add our logo and powered-by message. -->
             <div id="ssPoweredBy">
-                <xsl:apply-templates select="doc($svgLogoFile)" mode="svgLogo"/>
-                <p>Powered by <a href="https://github.com/projectEndings/staticSearch">staticSearch</a></p>
+                
+                <p>Powered by</p> <a href="https://github.com/projectEndings/staticSearch"><xsl:apply-templates select="doc($svgLogoFile)" mode="svgLogo"/></a>
             </div>
         </xsl:copy>
     </xsl:template>
