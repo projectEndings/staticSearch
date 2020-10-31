@@ -4,6 +4,7 @@
     xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
     xmlns:map="http://www.w3.org/2005/xpath-functions"
     xmlns:hcmc="http://hcmc.uvic.ca/ns/staticSearch"
+    xmlns:svg="http://www.w3.org/2000/svg"
     xpath-default-namespace="http://www.w3.org/1999/xhtml"
     xmlns="http://www.w3.org/1999/xhtml"
     exclude-result-prefixes="#all"
@@ -79,6 +80,12 @@
     
     <xsl:variable name="filterJSONURIs" select="if ($hasFilters = 'true') then
         uri-collection(concat($outDir,'/filters/?select=*.json')) else ()"/>
+    
+    <xd:doc>
+        <xd:desc><xd:ref name="svgLogoFile">svgLogoFile</xd:ref> is the relative path
+        from this XSLT to the file to be used as the staticSearch logo.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="svgLogoFile" as="xs:string" select="'../images/logo_01.svg'"/>
 
     <xd:doc>
         <xd:desc><xd:ref name="css" type="parameter">$css</xd:ref> is a pre-populated
@@ -164,6 +171,12 @@
             margin-right: 1em;
             min-width: 3em;
             min-height: 3em;
+        }
+        div#ssPoweredBy{
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     </xsl:param>
     
@@ -477,6 +490,12 @@
             <div id="ssResults">
                 <!--...results here...-->
             </div>
+            
+            <!-- Finally, we add our logo and powered-by message. -->
+            <div id="ssPoweredBy">
+                
+                <p>Powered by</p> <a href="https://github.com/projectEndings/staticSearch"><xsl:apply-templates select="doc($svgLogoFile)" mode="svgLogo"/></a>
+            </div>
         </xsl:copy>
     </xsl:template>
     
@@ -536,5 +555,41 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
-
+    
+    <!--**************************************************************
+       *                                                            *
+       *        Templates for cleaning up and simplifying SVG       *
+       *                                                            *
+       **************************************************************-->
+    <xd:doc>
+        <xd:desc>We create a mode for svg templates to keep it separate.</xd:desc>
+    </xd:doc>
+    <xsl:mode name="svgLogo" exclude-result-prefixes="#all" on-no-match="shallow-copy"/>
+    <xd:doc>
+        <xd:desc>We eliminate a few elements.</xd:desc>
+    </xd:doc>
+    <xsl:template match="svg:defs | svg:metadata" mode="svgLogo"/>
+    <xd:doc>
+        <xd:desc>We need to prevent the proliferation of namespaces which 
+        make things invalid.</xd:desc>
+    </xd:doc>
+    <xsl:template match="svg:*" mode="svgLogo" exclude-result-prefixes="#all">
+        <xsl:copy copy-namespaces="no">
+            <xsl:apply-templates mode="#current" select="@*|node()"/>
+        </xsl:copy>
+    </xsl:template>
+    
+    <xd:doc>
+        <xd:desc>We convert the size to something reasonable for a logo.</xd:desc>
+    </xd:doc>
+    <xsl:template match="svg:svg" mode="svgLogo">
+        <xsl:copy exclude-result-prefixes="#all" copy-namespaces="no">
+            <xsl:copy-of select="@*[local-name() != ('width', 'height')]"/>
+            <xsl:variable name="proportion" select="ceiling(xs:float(@width) div 40)"/>
+            <xsl:attribute name="width" select="round(xs:float(@width) div $proportion)"/>
+            <xsl:attribute name="height" select="round(xs:float(@height) div $proportion)"/>
+            <xsl:apply-templates mode="#current"/>
+        </xsl:copy>
+    </xsl:template>
+    
 </xsl:stylesheet>
