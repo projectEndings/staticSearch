@@ -313,8 +313,8 @@ function showByMod() {
                the entire collection of thousands of token files, the process would take forever.
                So when you search for the word <span class="mentioned">waiting</span>, what happens is that the JavaScript stems that word, producing <span class="mentioned">wait</span>, then it downloads only the single file containing indexing information for that
                specific word, which is very rapid. (If you are using a different stemmer, of course,
-               then the token will be stemmed to a different output; if you are using the ‘identity
-               stemmer’, then the token will be unchanged.)</p>
+               then the token will be stemmed to a different output. If you are using the <span class="ident">identity stemmer</span>, then the token will be unchanged; with the <span class="ident">stripDiacritics</span> pseudo-stemmer, all combining diacritics will be stripped from the search terms,
+               as they are in the corresponding index.)</p>
             
             <p>However, there is some information that is required for all or many searches. To display
                any results, the list of document titles must be downloaded, for example. A user may
@@ -359,7 +359,7 @@ function showByMod() {
             <!--
 	  Generated from index.xml using XSLT stylesheets version 7.50.1
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2020-10-14T21:32:32Z.
+	       on 2020-11-01T00:34:59Z.
 	       SAXON HE 10.0.
 		 --></address>
          </div>

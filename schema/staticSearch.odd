@@ -43,7 +43,7 @@
             <item>Last Updated: <date when="2020-10-14">14 October 2020</date></item>
           </list>
           <p>The generator tool processes your site to create an index of all the words appearing
-          in the site, stemmed (if desired) using a Porter2 stemmer, and stores the index in the 
+          in the site, stemmed (if desired) using a stemmer, and stores the index in the 
           form of a
           large number of small JSON files. It also creates JSON files for other search facets that 
           you specify in the headers of your documents, to allow searches for documents by 
@@ -77,9 +77,9 @@
           </list>
           <p>The Generator supports the following features:</p>
           <list>
-            <item>Porter 2 stemming of terms (so searching for <q>wait</q> will also
+            <item>Stemming of terms (so searching for <q>wait</q> will also
             retrieve <q>waiting</q>, <q>waits</q>, <q>waited</q> etc.). Our default stemmer
-            is for English, but if you have documents in another language, you can create
+            is the English Porter 2 stemmer, but if you have documents in another language, you can create
             and plug in <ref target="#stemmerFolder">your own stemmer</ref>.</item>
             <item>Boolean search operators. Adding <code>+</code> (plus) before a word means that
             search results <emph>must contain</emph> that word, and adding a <code>-</code> (minus) means
@@ -370,7 +370,7 @@
                     of a folder that is inside the <ident>/stemmers/</ident> folder in
                     the staticSearch repository structure.
                     
-                    <p>The staticSearch project currently has only one working stemmer,
+                    <p>The staticSearch project currently has only one real stemmer,
                       an implementation of the Porter 2 algorithm for modern English. That 
                       appears in <ident>/stemmers/en/</ident>, so the default value for
                       this parameter is <val>en</val>. We will
@@ -399,6 +399,20 @@
                           in your configuration file.
                         </item>
                       </list>
+                      Another alternative is the <ident>stripDiacritics</ident> stemmer. Like the
+                      <ident>identity stemmer</ident>, this is not really a stemmer at all; 
+                      what it does is to 
+                      strip out all combining diacritics from tokens. This is a useful approach
+                      if you document collection contains texts with accents and diacritics, but 
+                      your users may be unfamiliar with the use of diacritics and will want to
+                      search just with plain unaccented characters. For example, if a text contains
+                      the word <mentioned>élève</mentioned>, but you would like searchers to be able to
+                      find the word simply by typing the ascii string <mentioned>eleve</mentioned>, then this
+                      is a good option. Combined with wildcards, it can provide a very flexible and
+                      user-friendly search engine in the absence of a sophisticated stemmer, or for
+                      cases where there are mixed languages so a single stemmer will not do. To 
+                      use this option, specify the value <val>stripDiacritics</val>
+                      in your configuration file.
                     </p>
                   </item>
                   <item><gi>scoringAlgorithm</gi> is an optional element that specifies which 
@@ -772,8 +786,10 @@
          JavaScript stems that word, producing <mentioned>wait</mentioned>, then it downloads
          only the single file containing indexing information for that specific word, which is very 
          rapid. (If you are using a different stemmer, of course, then the token will be stemmed to
-         a different output; if you are using the <soCalled>identity stemmer</soCalled>, then 
-         the token will be unchanged.)</p>
+         a different output. If you are using the <ident>identity stemmer</ident>, then 
+         the token will be unchanged; with the <ident>stripDiacritics</ident> pseudo-stemmer,
+           all combining diacritics will be stripped from the search terms, as they are in 
+           the corresponding index.)</p>
          
          <p>However, there is some information that is required for all or many searches. To display
            any results, the list of document titles must be downloaded, for example. A user may
@@ -864,7 +880,7 @@
           </row>
           <row>
             <cell><ref target="https://johnkeats.uvic.ca/">Mapping Keat's Progress</ref></cell>
-            <cell>1.0 (dev)</cell>
+            <cell>1.0</cell>
             <cell><ref target="https://johnkeats.uvic.ca/search.html">Search</ref></cell>
             <cell><ref target="https://hcmc.uvic.ca/svn/keats/config_staticSearch.xml">SVN</ref></cell>
           </row>
