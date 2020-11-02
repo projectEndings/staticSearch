@@ -80,8 +80,8 @@
                             replace(
                             replace(
                             replace($token, 
-                                    '(' || $vowel || ')i(' || $vowel, ')', '$1I$2'),
-                                    '(' || $vowel || ')u(' || $vowel, ')', '$1u$2'),
+                                    '(' || $vowel || ')i(' || $vowel || ')', '$1I$2'),
+                                    '(' || $vowel || ')u(' || $vowel || ')', '$1U$2'),
                                     '(' || $vowel || ')y', '$1Y'),
                                     'y(' || $vowel || ')', 'Y$1'),
                                     'qu', 'qU')
