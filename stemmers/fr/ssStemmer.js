@@ -35,7 +35,12 @@
 
 class SSStemmer{
   constructor(){
-    
+    // A character class of vowels
+    this.vowel                         = '[aeiouyâàëéêèïîôûù]';
+    this.reVowel                       = new RegExp(this.vowel);
+    //A character class of non-vowels
+    this.nonVowel                      = '[^aeiouyâàëéêèïîôûù]';
+    this.reNonVowel                    = new RegExp(this.nonVowel);
   }
   /**
    * stem is the core function that takes a single token and returns

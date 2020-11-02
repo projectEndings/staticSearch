@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
+  xmlns:ss="http://hcmc.uvic.ca/ns/ssStemmer" stylesheet="ssStemmer.xsl">
+  <x:scenario label="Scenario for testing function stem">
+    <x:call function="ss:stem">
+      <x:param name="token" select="''"/>
+    </x:call>
+    <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+  </x:scenario>
+
+  <x:scenario label="Scenario for testing function preflight">
+    <x:scenario label="jouer to joUer">
+      <x:call function="ss:preflight">
+        <x:param name="token" select="'jouer'"/>
+      </x:call>
+      <x:expect label="U is upper" select="'joUer'"/>
+    </x:scenario>
+    <x:scenario label="ennuie to ennuIe">
+      <x:call function="ss:preflight">
+        <x:param name="token" select="'ennuie'"/>
+      </x:call>
+      <x:expect label="I is upper" select="'ennuIe'"/>
+    </x:scenario>
+    <x:scenario label="yeux to Yeux">
+      <x:call function="ss:preflight">
+        <x:param name="token" select="'yeux'"/>
+      </x:call>
+      <x:expect label="Y is upper" select="'Yeux'"/>
+    </x:scenario>
+    <x:scenario label="quand to qUand">
+      <x:call function="ss:preflight">
+        <x:param name="token" select="'quand'"/>
+      </x:call>
+      <x:expect label="U is upper" select="'qUand'"/>
+    </x:scenario>
+  </x:scenario>
+</x:description>
