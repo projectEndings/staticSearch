@@ -34,40 +34,102 @@
  *  SSStemmer 'namespace' (= staticSearch Stemmer). */
 
 class SSStemmer {
-    constructor() {
-            // A character class of vowels
-            this.vowel = '[aeiouyâàëéêèïîôûù]';
-            this.reVowel = new RegExp(this.vowel);
-            //A character class of non-vowels
-            this.nonVowel = '[^aeiouyâàëéêèïîôûù]';
-            this.reNonVowel = new RegExp(this.nonVowel);
-        }
-        /**
-         * stem is the core function that takes a single token and returns
-         * its stemmed version.
-         * @param  {String} token The input token
-         * @return {String}       the stemmed token
-         */
-    stem(token) {
-        if (token.length < 3) {
-            return token;
-        } else {
+  constructor() {
+    // A character class of vowels
+    this.vowel = '[aeiouyâàëéêèïîôûù]';
+    this.reVowel = new RegExp(this.vowel);
+    //A character class of non-vowels
+    this.nonVowel = '[^aeiouyâàëéêèïîôûù]';
+    this.reNonVowel = new RegExp(this.nonVowel);
+    //A regex which returns RV, defined as 
+    //"If the word begins with two vowels, 
+    //the region after the third letter, otherwise 
+    //the region after the first vowel not at the 
+    //beginning of the word, or the end of the word 
+    //if these positions cannot be found. (Exceptionally, 
+    //par, col or tap, at the beginning of a word is 
+    //also taken to define RV as the region to their right.)"
+    this.reRVA = new RegExp('^' + this.vowel + this.vowel + '.(.*)'); 
+    this.reRVB = new RegExp('^.*?' + this.nonVowel + '+' + this.vowel + '(.*)');
+    this.reRVExcept = /^(par|col|tap)(.*)$/;
+    // A regular expression which returns R1, defined as "the region after
+    // the first non-vowel following a vowel, or the end of the word if
+    // there is no such non-vowel".
+    //It also returns R2 when applied to R1.
+    this.reR1R2 = new RegExp('^.*?' + this.vowel + this.nonVowel + '(.*)$');
+  }
+  /**
+   * stem is the core function that takes a single token and returns
+   * its stemmed version.
+   * @param  {String} token The input token
+   * @return {String}       the stemmed token
+   */
+  stem(token) {
+    if (token.length < 3) {
+        return token;
+    } else {
 
-        }
     }
+  }
 
-    /**
-     * preflight does a couple of simple replacements that need to precede
-     * the actual stemming process.
-     * @param  {String} token the input token
-     * @return {String}       the result of the replacement operations
-     */
-    preflight(token) {
-        return token.replace(new RegExp('(' + this.vowel + ')i(' + this.vowel + ')'), '$1I$2')
-            .replace(new RegExp('(' + this.vowel + ')u(' + this.vowel + ')'), '$1U$2')
-            .replace(new RegExp('(' + this.vowel + ')y'), '$1Y')
-            .replace(new RegExp('y(' + this.vowel + ')'), 'Y$1')
-            .replace(new RegExp('qu'), 'qU');
+  /**
+   * preflight does a couple of simple replacements that need to precede
+   * the actual stemming process.
+   * @param  {String} token the input token
+   * @return {String}       the result of the replacement operations
+   */
+  preflight(token) {
+      return token.replace(new RegExp('(' + this.vowel + ')i(' + this.vowel + ')'), '$1I$2')
+          .replace(new RegExp('(' + this.vowel + ')u(' + this.vowel + ')'), '$1U$2')
+          .replace(new RegExp('(' + this.vowel + ')y'), '$1Y')
+          .replace(new RegExp('y(' + this.vowel + ')'), 'Y$1')
+          .replace('qu', 'qU')
+          .replace('ï', 'Hi')
+          .replace('ë', 'He');
+  }
+
+  /**
+   * getRVR1R2 decomposes an input token to get the RV, R1 and R2 regions,
+   * and returns the string values of those regions, along with their
+   * offsets.
+   * @param  {String} token The input token
+   * @return {Object}       an object with six members:
+   *                        rv {String} the part of the word constituting RV
+   *                        r1 {String} the part of the word constituting R1
+   *                        r2 {String} the part of the word constituting R2
+   *                        rvof {Number} the offset of the start of RV
+   *                        r1of {Number} the offset of the start of R1
+   *                        r2of {Number} the offset of the start of R2
+   */
+  getRVR1R2(token){
+    let RV = '';
+    if (token.match(this.reRVExcept)){
+      RV = token.replace(this.reRVExcept, '$2');
     }
-
+    else{
+      if (token.match(this.RVA)){
+        RV = token.replace(this.reRVA, '$1');
+      }
+      else{
+        if (token.match(this.RVB)){
+          RV = token.replace(this.reRVB, '$1');
+        }
+      }
+    }
+    let RVIndex = (token.length - RV.length) + 1;
+    let R1 = '';
+    if (token.match(this.reR1Except)){
+      R1 = token.replace(this.reR1Except, '$2');
+    }
+    else{
+      if (token.match(this.reR1R2)){
+        R1 = token.replace(this.reR1R2, '$1');
+      }
+    }
+    let R1Index = (token.length - R1.length) + 1;
+    let R2Candidate = R1.replace(this.reR1R2, '$1');
+    let R2 = (R2Candidate == R1)? '' : R2Candidate;
+    let R2Index = (R2Candidate == R1)? token.length + 1 : (token.length - R2.length) + 1;
+    return {rv: RV, r1: R1, r2: R2, rvof: RVIndex, r1of: R1Index, r2of: R2Index}
+  }
 }

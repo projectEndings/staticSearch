@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
   xmlns:ss="http://hcmc.uvic.ca/ns/ssStemmer" stylesheet="ssStemmer.xsl">
-  <x:scenario label="Scenario for testing function stem">
+  <!--<x:scenario label="Scenario for testing function stem">
     <x:call function="ss:stem">
       <x:param name="token" select="''"/>
     </x:call>
     <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
-  </x:scenario>
+  </x:scenario>-->
 
   <x:scenario label="Scenario for testing function preflight">
     <x:scenario label="jouer to joUer">
@@ -32,6 +32,18 @@
         <x:param name="token" select="'quand'"/>
       </x:call>
       <x:expect label="U is upper" select="'qUand'"/>
+    </x:scenario>
+    <x:scenario label="exiguë to exiguHe">
+      <x:call function="ss:preflight">
+        <x:param name="token" select="'exiguë'"/>
+      </x:call>
+      <x:expect label="ë becomes He" select="'exiguHe'"/>
+    </x:scenario>
+    <x:scenario label="aïeux to aHieux">
+      <x:call function="ss:preflight">
+        <x:param name="token" select="'aïeux'"/>
+      </x:call>
+      <x:expect label="ï becomes Hi" select="'aHieux'"/>
     </x:scenario>
   </x:scenario>
 </x:description>

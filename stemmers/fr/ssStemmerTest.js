@@ -4,7 +4,14 @@
 var preflightData =[['jouer', 'joUer'],
  ['ennuie', 'ennuIe'],
  ['yeux', 'Yeux'],
- ['quand', 'qUand']];
+ ['quand', 'qUand'],
+ ['aïeux', 'aHieux'],
+ ['exiguë', 'exiguHe']];
+ 
+var RVR1R2Data=[['aimer', {rv: 'er', r1: 'er',  r2: '', rvof: 4, r1of: 4, r2of: 6}],
+                ['voler', {rv: 'ler', r1: 'er',  r2: '', rvof: 3, r1of: 4, r2of: 6}],
+                ['paris', {rv: 'is', r1: 'er',  r2: '', rvof: 4, r1of: 4, r2of: 6}],
+                ['adorer', {rv: 'rer', r1: 'er',  r2: '', rvof: 4, r1of: 4, r2of: 6}]];
 
 
 var testData;
@@ -27,13 +34,13 @@ function runTests(){
     var result = ssStemmer.preflight(preflightData[i][0]);
     showTestLog('preflight', preflightData[i][0], preflightData[i][1], result);
   }
-  /*for (var i=0; i<R1R2Data.length; i++){
-    var result = ssStemmer.getR1AndR2(R1R2Data[i][0]);
+  for (var i=0; i<RVR1R2Data.length; i++){
+    var result = ssStemmer.getRVR1R2(RVR1R2Data[i][0]);
     var jsonResult = JSON.stringify(result);
-    var jsonExpected = JSON.stringify(R1R2Data[i][1]);
-    showTestLog('getR1AndR2', R1R2Data[i][0], jsonExpected, jsonResult);
+    var jsonExpected = JSON.stringify(RVR1R2Data[i][1]);
+    showTestLog('getRVR1R2', RVR1R2Data[i][0], jsonExpected, jsonResult);
   }
-  for (var i=0; i<step0Data.length; i++){
+  /*for (var i=0; i<step0Data.length; i++){
     var result = ssStemmer.step0(step0Data[i][0]);
     showTestLog('step0', step0Data[i][0], step0Data[i][1], result);
   }
