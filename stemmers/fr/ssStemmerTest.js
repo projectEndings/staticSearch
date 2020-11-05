@@ -10,8 +10,9 @@ var preflightData =[['jouer', 'joUer'],
  
 var RVR1R2Data=[['aimer', {rv: 'er', r1: 'er',  r2: '', rvof: 4, r1of: 4, r2of: 6}],
                 ['voler', {rv: 'ler', r1: 'er',  r2: '', rvof: 3, r1of: 4, r2of: 6}],
-                ['paris', {rv: 'is', r1: 'er',  r2: '', rvof: 4, r1of: 4, r2of: 6}],
-                ['adorer', {rv: 'rer', r1: 'er',  r2: '', rvof: 4, r1of: 4, r2of: 6}]];
+                ['paris', {rv: 'is', r1: 'is',  r2: '', rvof: 4, r1of: 4, r2of: 6}],
+                ['adorer', {rv: 'rer', r1: 'orer',  r2: 'er', rvof: 4, r1of: 3, r2of: 5}],
+                ['fameusement', {rv: 'meusement', r1: 'eusement',  r2: 'ement', rvof: 3, r1of: 4, r2of: 7}]];
 
 
 var testData;
@@ -26,10 +27,12 @@ xmlhttp.onreadystatechange = function() {
 xmlhttp.open("GET", "ssStemmerTestData.json", true);
 xmlhttp.send();
 
+var ssStemmer;
+
 function runTests(){
   showLog('Retrieved test file ' + testData.title, 'ok');
   showLog('Test data has ' + testData.voc.length + ' input vocabulary items, and ' + testData.output.length + ' output items.', 'ok');
-  var ssStemmer = new(SSStemmer);
+  ssStemmer = new(SSStemmer);
   for (var i=0; i<preflightData.length; i++){
     var result = ssStemmer.preflight(preflightData[i][0]);
     showTestLog('preflight', preflightData[i][0], preflightData[i][1], result);

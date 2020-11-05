@@ -44,7 +44,35 @@
     </xd:doc>
     <xsl:variable name="nonVowel">[^aeiouyâàëéêèïîôûù]</xsl:variable>
     
+    <xd:doc scope="component">
+      <xd:desc><xd:ref name="RVExceptRex">RVExceptRex</xd:ref> is a regular expression
+        which returns returns RV when applied to a token which fits the exception pattern.
+      </xd:desc>
+    </xd:doc>
+    <xsl:variable name="RVExceptRex" as="xs:string" select="'^(par|col|tap)(.*)$'"/>
     
+    <xd:doc scope="component">
+      <xd:desc><xd:ref name="RVARex">RVARex</xd:ref> is a regular expression
+        which returns returns RV for words beginning with two vowels.
+      </xd:desc>
+    </xd:doc>
+    <xsl:variable name="RVARex" as="xs:string" select="concat('^', $vowel, '{2}', '.(.*)$')"/>
+    
+    <xd:doc scope="component">
+      <xd:desc><xd:ref name="RVBRex">RVBRex</xd:ref> is a regular expression
+        which returns returns RV for words not beginning with two vowels.
+      </xd:desc>
+    </xd:doc>
+    <xsl:variable name="RVBRex" as="xs:string" select="concat('^.', $nonVowel, '*', $vowel, '(.*)$')"/>
+    
+    <xd:doc scope="component">
+      <xd:desc><xd:ref name="R1R2Rex">R1R2Rex</xd:ref> is a regular expression
+        which returns R1, defined as "the region after the first non-vowel 
+        following a vowel, or the end of the word if there is no such non-vowel".
+        It also returns R2 when applied to R1.
+      </xd:desc>
+    </xd:doc>
+    <xsl:variable name="R1R2Rex" as="xs:string" select="concat('^.*?', $vowel, $nonVowel, '(.*)$')"/>
     
     <!--**************************************************************
        *                                                            * 
@@ -92,5 +120,33 @@
         "/>
     </xsl:function>
   
+    <xd:doc scope="component">
+      <xd:desc><xd:ref name="ss:getRVR1R2" type="function">ss:getRVR1R2</xd:ref>
+        decomposes an input token to get the RV, R1 and R2 regions, 
+        and returns the string values of those three 
+        regions, along with their offsets.</xd:desc>
+      <xd:param name="token">Input token string</xd:param>
+      <xd:result>A sequence consisting of three strings for RV, R1 and
+        R2, and three integers for the offsets of RV, R1 and R2 respectively.</xd:result>
+    </xd:doc>
+    <xsl:function name="ss:getRVR1R2" as="item()+">
+      <xsl:param name="token" as="xs:string"/>
+      <xsl:variable name="RV" as="xs:string" select="if (matches($token, $RVExceptRex)) then 
+                                                         replace($token, $RVExceptRex, '$2') else
+                                                     if (matches($token, $RVARex)) then
+                                                         replace($token, $RVARex, '$1') else
+                                                     if (matches($token, $RVBRex)) then
+                                                         replace($token, $RVBRex, '$1') else
+                                                         ''"/>
+      <xsl:variable name="RVIndex" as="xs:integer" select="(string-length($token) - string-length($RV)) + 1"/>
+      <xsl:variable name="R1" as="xs:string" select="if (matches($token, $R1R2Rex)) then
+                                                         replace($token, $R1R2Rex, '$1') else
+                                                         ''"/>
+      <xsl:variable name="R1Index" as="xs:integer" select="(string-length($token) - string-length($R1)) + 1"/>
+      <xsl:variable name="R2Candidate" as="xs:string" select="replace($R1, $R1R2Rex, '$1')"/>
+      <xsl:variable name="R2" select="if ($R2Candidate = $R1) then '' else $R2Candidate"/>
+      <xsl:variable name="R2Index" as="xs:integer" select="if ($R2Candidate = $R1) then string-length($token) + 1 else (string-length($token) - string-length($R2)) + 1"/>
+      <xsl:sequence select="($RV, $R1, $R2, $RVIndex, $R1Index, $R2Index)"/>
+    </xsl:function>
   
 </xsl:stylesheet>

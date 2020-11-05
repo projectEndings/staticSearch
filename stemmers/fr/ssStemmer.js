@@ -49,8 +49,8 @@ class SSStemmer {
     //if these positions cannot be found. (Exceptionally, 
     //par, col or tap, at the beginning of a word is 
     //also taken to define RV as the region to their right.)"
-    this.reRVA = new RegExp('^' + this.vowel + this.vowel + '.(.*)'); 
-    this.reRVB = new RegExp('^.*?' + this.nonVowel + '+' + this.vowel + '(.*)');
+    this.reRVA = new RegExp('^' + this.vowel + this.vowel + '.(.*)$'); 
+    this.reRVB = new RegExp('^.' + this.nonVowel + '*' + this.vowel + '(.*)$');
     this.reRVExcept = /^(par|col|tap)(.*)$/;
     // A regular expression which returns R1, defined as "the region after
     // the first non-vowel following a vowel, or the end of the word if
@@ -107,24 +107,19 @@ class SSStemmer {
       RV = token.replace(this.reRVExcept, '$2');
     }
     else{
-      if (token.match(this.RVA)){
+      if (token.match(this.reRVA)){
         RV = token.replace(this.reRVA, '$1');
       }
       else{
-        if (token.match(this.RVB)){
+        if (token.match(this.reRVB)){
           RV = token.replace(this.reRVB, '$1');
         }
       }
     }
     let RVIndex = (token.length - RV.length) + 1;
     let R1 = '';
-    if (token.match(this.reR1Except)){
-      R1 = token.replace(this.reR1Except, '$2');
-    }
-    else{
-      if (token.match(this.reR1R2)){
-        R1 = token.replace(this.reR1R2, '$1');
-      }
+    if (token.match(this.reR1R2)){
+      R1 = token.replace(this.reR1R2, '$1');
     }
     let R1Index = (token.length - R1.length) + 1;
     let R2Candidate = R1.replace(this.reR1R2, '$1');

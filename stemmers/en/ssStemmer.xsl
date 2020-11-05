@@ -551,8 +551,8 @@
       decomposes an input token to get the R1 and R2 regions, and returns the string values of those two 
       regions, along with their offsets.</xd:desc>
     <xd:param name="token">Input token string</xd:param>
-    <xd:result>A sequence consisting of two integers for the offsets of R1 and
-    R2, and two strings consisting of R1 and R2 respectively.</xd:result>
+    <xd:result>A sequence consisting of two strings for R1 and R2 respectively,
+      ant two integers for the offsets of R1 and R2.</xd:result>
   </xd:doc>
   <xsl:function name="ss:getR1AndR2" as="item()+">
     <xsl:param name="token" as="xs:string"/>
