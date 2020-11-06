@@ -84,6 +84,16 @@
       '(ances?)|(iqUes?)|(ismes?)|(ables?)|(istes?)|(eux)$'
       "/>
     
+    <xd:doc>
+      <xd:desc><xd:ref name="reStep1b" as="xs:string">reStep1b</xd:ref>
+      is a regex for a sequence of suffixes that should be deleted if they
+      are in R2; or if they are not, but are preceded by 'ic', should be
+      replaced by '1qU'.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="reStep1b" as="xs:string" select="
+      '((atrices?)|(ateurs?)|(ations?))$'
+      "/>
+    
     
     <!--**************************************************************
        *                                                            * 
@@ -161,7 +171,8 @@
     </xsl:function>
     
     <xd:doc>
-      <xd:desc><xd:ref name="ss:step1a">ss:step1a</xd:ref> covers standard suffix removal.</xd:desc>
+      <xd:desc><xd:ref name="ss:step1a">ss:step1a</xd:ref> is the first 
+        part of standard suffix removal.</xd:desc>
       <xd:param name="token">Input token string</xd:param>
       <xd:param name="R2">Offset of the R2 region in the token</xd:param>
       <xd:result>The treated version of the token.</xd:result>
@@ -172,6 +183,37 @@
       <xsl:variable as="xs:string" name="rep" select="replace($token, $reStep1a, '')"/>
       <xsl:sequence select=" if ($rep ne $token and string-length($rep) ge ($R2 - 1)) 
                              then $rep else $token"/>
+    </xsl:function>
+    
+    <xd:doc>
+      <xd:desc><xd:ref name="ss:step1b">ss:step1b</xd:ref> is the second
+        part of standard suffix removal. Matching suffixes are removed if
+        they are in R2, but replaced with iqU if they are preceded by 
+        ic but not in R2.</xd:desc>
+      <xd:param name="token">Input token string</xd:param>
+      <xd:param name="R2">Offset of the R2 region in the token</xd:param>
+      <xd:result>The treated version of the token.</xd:result>
+    </xd:doc>
+    <xsl:function name="ss:step1b" as="xs:string">
+      <xsl:param name="token" as="xs:string"/>
+      <xsl:param name="R2" as="xs:integer"/>
+      <xsl:variable as="xs:string" name="rep" select="replace($token, $reStep1b, '')"/>
+      <xsl:choose>
+        <xsl:when test="$rep ne $token and string-length($rep) ge ($R2 - 1)">
+          <xsl:variable name="icGone" as="xs:string" select="replace($rep, 'ic$', '')"/>
+          <xsl:choose>
+            <xsl:when test="($icGone eq $rep) or (string-length($icGone) ge ($R2 - 1))">
+              <xsl:sequence select="$icGone"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:sequence select="$icGone || 'iqU'"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$token"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:function>
   
 </xsl:stylesheet>

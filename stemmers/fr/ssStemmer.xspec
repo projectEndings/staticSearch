@@ -94,12 +94,43 @@
       </x:call>
       <x:expect label="Result of step1a from 'vacances'" select="'vacances'"/>
     </x:scenario>
-    <x:scenario label="Testing ss:step1a: 'vacances'">
+    <x:scenario label="Testing ss:step1a: 'surréalisme'">
       <x:call function="ss:step1a">
         <x:param name="token" select="'surréalisme'"/>
         <x:param name="R2" select="ss:getRVR1R2(ss:preflight('surréalisme'))[6]"></x:param>
       </x:call>
       <x:expect label="Result of step1a from 'surréalisme'" select="'surréal'"/>
+    </x:scenario>
+  </x:scenario>
+  
+  <x:scenario label="Test function ss:step1b">
+    <x:scenario label="Testing ss:step1b: 'réalisations'">
+      <x:call function="ss:step1b">
+        <x:param name="token" select="'réalisations'"/>
+        <x:param name="R2" select="ss:getRVR1R2('réalisations')[6]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1b from 'réalisations'" select="'réalis'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1b: 'spécifications'">
+      <x:call function="ss:step1b">
+        <x:param name="token" select="'spécifications'"/>
+        <x:param name="R2" select="ss:getRVR1R2(ss:preflight('spécifications'))[6]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1b from 'spécifications'" select="'spécif'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1b: 'indications'">
+      <x:call function="ss:step1b">
+        <x:param name="token" select="'indications'"/>
+        <x:param name="R2" select="ss:getRVR1R2(ss:preflight('indications'))[6]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1b from 'indications'" select="'indiqU'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1b: 'cicatrice'">
+      <x:call function="ss:step1b">
+        <x:param name="token" select="'cicatrice'"/>
+        <x:param name="R2" select="ss:getRVR1R2(ss:preflight('cicatrice'))[6]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1b from 'cicatrice'" select="'cicatrice'"/>
     </x:scenario>
   </x:scenario>
   

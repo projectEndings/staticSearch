@@ -16,6 +16,11 @@ var RVR1R2Data=[['aimer', {rv: 'er', r1: 'er',  r2: '', rvof: 4, r1of: 4, r2of: 
 
 var step1aData = [['vacances', 'vacances'], ['surréalisme', 'surréal']];
 
+var step1bData = [['réalisations', 'réalis'], 
+                  ['spécifications', 'spécif'], 
+                  ['indications', 'indiqU'],
+                  ['cicatrice', 'cicatrice']];
+
 var testData;
 var errorCount = 0;
 var xmlhttp = new XMLHttpRequest();
@@ -50,6 +55,13 @@ function runTests(){
     var result = ssStemmer.step1a(step1aData[i][0], r2of);
     showTestLog('step1a', step1aData[i][0], step1aData[i][1], result);
   }
+  for (var i=0; i<step1bData.length; i++){
+    let RVR1R2 = ssStemmer.getRVR1R2(step1bData[i][0])
+    let r2of = RVR1R2.r2of;
+    var result = ssStemmer.step1b(step1bData[i][0], r2of);
+    showTestLog('step1b', step1bData[i][0], step1bData[i][1], result);
+  }
+  
   /*for (var i=0; i<step0Data.length; i++){
     var result = ssStemmer.step0(step0Data[i][0]);
     showTestLog('step0', step0Data[i][0], step0Data[i][1], result);

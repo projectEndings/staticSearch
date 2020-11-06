@@ -61,6 +61,9 @@ class SSStemmer {
     //reStep1a is a regular expression for suffixes to be deleted if they
     //are in R2.
     this.reStep1a = /(ances?)|(iqUes?)|(ismes?)|(ables?)|(istes?)|(eux)$/;
+    //reStep1b is a regex for suffixes to be deleted if in R2, or replaced
+    //with iqU if they are preceded by ic and not in R2.
+    this.reStep1b = /((atrices?)|(ateurs?)|(ations?))$/;
   }
   /**
    * stem is the core function that takes a single token and returns
@@ -133,7 +136,7 @@ class SSStemmer {
   }
 
   /**
-   * step1a replaces any of a number of suffixes if they appear within R2.
+   * step1a deletes any of a number of suffixes if they appear within R2.
    * @param  {String} token the input token
    * @param  {Number} r2of  the offset of R2 in the token.
    * @return {String}       the result of the replacement operations
@@ -141,5 +144,29 @@ class SSStemmer {
   step1a(token, r2of){
     let rep = token.replace(this.reStep1a, '');
     return ((rep !== token) && (rep.length >= (r2of - 1)))? rep : token;
+  }
+
+  /**
+   * step1b deletes any of a number of suffixes if they appear within R2;
+   * then deletes any preceding ic if it's in R2, or replaces it with iqU
+   * if it's not.
+   * @param  {String} token the input token
+   * @param  {Number} r2of  the offset of R2 in the token.
+   * @return {String}       the result of the replacement operations
+   */
+  step1b(token, r2of){
+    let rep = token.replace(this.reStep1b, '');
+    if ((rep !== token) && (rep.length >= (r2of - 1))){
+      let icGone = rep.replace(/ic$/, '');
+      if ((icGone == rep) || (icGone.length >= (r2of - 1))){
+        return icGone;
+      }
+      else{
+        return icGone + 'iqU';
+      }
+    }
+    else{
+      return token;
+    }
   }
 }
