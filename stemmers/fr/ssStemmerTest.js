@@ -21,6 +21,11 @@ var step1bData = [['réalisations', 'réalis'],
                   ['indications', 'indiqU'],
                   ['cicatrice', 'cicatrice']];
 
+var step1cData = [['traumatologie', 'traumatolog']];
+
+var step1dData = [['constitution', 'constitu'],
+                  ['effusion', 'effusion']];
+
 var testData;
 var errorCount = 0;
 var xmlhttp = new XMLHttpRequest();
@@ -60,6 +65,18 @@ function runTests(){
     let r2of = RVR1R2.r2of;
     var result = ssStemmer.step1b(step1bData[i][0], r2of);
     showTestLog('step1b', step1bData[i][0], step1bData[i][1], result);
+  }
+  for (var i=0; i<step1cData.length; i++){
+    let RVR1R2 = ssStemmer.getRVR1R2(step1cData[i][0])
+    let r2of = RVR1R2.r2of;
+    var result = ssStemmer.step1c(step1cData[i][0], r2of);
+    showTestLog('step1c', step1cData[i][0], step1cData[i][1], result);
+  }
+  for (var i=0; i<step1dData.length; i++){
+    let RVR1R2 = ssStemmer.getRVR1R2(step1dData[i][0])
+    let r2of = RVR1R2.r2of;
+    var result = ssStemmer.step1d(step1dData[i][0], r2of);
+    showTestLog('step1d', step1dData[i][0], step1dData[i][1], result);
   }
   
   /*for (var i=0; i<step0Data.length; i++){

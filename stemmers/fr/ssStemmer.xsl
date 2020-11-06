@@ -94,6 +94,23 @@
       '((atrices?)|(ateurs?)|(ations?))$'
       "/>
     
+    <xd:doc>
+      <xd:desc><xd:ref name="reStep1c" as="xs:string">reStep1c</xd:ref>
+        is a regex for a pair of suffixes that should be replaced with
+        'log' if they are in R2.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="reStep1c" as="xs:string" select="
+      'logies?$'
+      "/>
+    
+    <xd:doc>
+      <xd:desc><xd:ref name="reStep1d" as="xs:string">reStep1d</xd:ref>
+        is a regex for a sequence of suffixes that should be replaced with 
+        u if they are in R2.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="reStep1d" as="xs:string" select="
+      'u[st]ions?$'
+      "/>
     
     <!--**************************************************************
        *                                                            * 
@@ -214,6 +231,36 @@
           <xsl:value-of select="$token"/>
         </xsl:otherwise>
       </xsl:choose>
+    </xsl:function>
+    
+    <xd:doc>
+      <xd:desc><xd:ref name="ss:step1c">ss:step1c</xd:ref> is the third 
+        part of standard suffix removal.</xd:desc>
+      <xd:param name="token">Input token string</xd:param>
+      <xd:param name="R2">Offset of the R2 region in the token</xd:param>
+      <xd:result>The treated version of the token.</xd:result>
+    </xd:doc>
+    <xsl:function name="ss:step1c" as="xs:string">
+      <xsl:param name="token" as="xs:string"/>
+      <xsl:param name="R2" as="xs:integer"/>
+      <xsl:variable as="xs:string" name="rep" select="replace($token, $reStep1c, '')"/>
+      <xsl:sequence select=" if ($rep ne $token and string-length($rep) ge ($R2 - 1)) 
+        then $rep || 'log' else $token"/>
+    </xsl:function>
+    
+    <xd:doc>
+      <xd:desc><xd:ref name="ss:step1d">ss:step1d</xd:ref> is the fourth 
+        part of standard suffix removal.</xd:desc>
+      <xd:param name="token">Input token string</xd:param>
+      <xd:param name="R2">Offset of the R2 region in the token</xd:param>
+      <xd:result>The treated version of the token.</xd:result>
+    </xd:doc>
+    <xsl:function name="ss:step1d" as="xs:string">
+      <xsl:param name="token" as="xs:string"/>
+      <xsl:param name="R2" as="xs:integer"/>
+      <xsl:variable as="xs:string" name="rep" select="replace($token, $reStep1d, '')"/>
+      <xsl:sequence select=" if ($rep ne $token and string-length($rep) ge ($R2 - 1)) 
+        then $rep || 'u' else $token"/>
     </xsl:function>
   
 </xsl:stylesheet>

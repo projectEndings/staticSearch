@@ -78,11 +78,11 @@
       </x:call>
       <x:expect label="Result from 'fameusement'" select="('meusement', 'eusement', 'ement', 3, 4, 7)"/>
     </x:scenario>
-    <x:scenario label="Testing ss:getRVR1R2: vacances">
+    <x:scenario label="Testing ss:getRVR1R2: traumatologie">
       <x:call function="ss:getRVR1R2">
-        <x:param name="token" select="'vacances'"/>
+        <x:param name="token" select="'traumatologie'"/>
       </x:call>
-      <x:expect label="Result from 'fameusement'" select="('cances', 'ances', 'ces', 3, 4, 6)"/>
+      <x:expect label="Result from 'traumatologie'" select="('umatologie', 'atologie', 'ologie', 4, 6, 8)"/>
     </x:scenario>
   </x:scenario>
   
@@ -131,6 +131,33 @@
         <x:param name="R2" select="ss:getRVR1R2(ss:preflight('cicatrice'))[6]"></x:param>
       </x:call>
       <x:expect label="Result of step1b from 'cicatrice'" select="'cicatrice'"/>
+    </x:scenario>
+  </x:scenario>
+  
+  <x:scenario label="Test function ss:step1c">
+    <x:scenario label="Testing ss:step1c: 'traumatologie'">
+      <x:call function="ss:step1c">
+        <x:param name="token" select="'traumatologie'"/>
+        <x:param name="R2" select="ss:getRVR1R2('traumatologie')[6]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1c from 'traumatologie'" select="'traumatolog'"/>
+    </x:scenario>
+  </x:scenario>
+  
+  <x:scenario label="Test function ss:step1d">
+    <x:scenario label="Testing ss:step1d: 'constitution'">
+      <x:call function="ss:step1d">
+        <x:param name="token" select="'constitution'"/>
+        <x:param name="R2" select="ss:getRVR1R2('constitution')[6]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1d from 'constitution'" select="'constitu'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1d: 'effusion'">
+      <x:call function="ss:step1d">
+        <x:param name="token" select="'effusion'"/>
+        <x:param name="R2" select="ss:getRVR1R2('effusion')[6]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1d from 'effusion'" select="'effusion'"/>
     </x:scenario>
   </x:scenario>
   

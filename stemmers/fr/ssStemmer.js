@@ -64,6 +64,10 @@ class SSStemmer {
     //reStep1b is a regex for suffixes to be deleted if in R2, or replaced
     //with iqU if they are preceded by ic and not in R2.
     this.reStep1b = /((atrices?)|(ateurs?)|(ations?))$/;
+    //reStep1c: logie(s) ending to be replaced by log if in R2.
+    this.reStep1c = /logies?$/;
+    //reStep1d: suffixes to be replaced with u if in R2.
+    this.reStep1d = /u[st]ions?$/;
   }
   /**
    * stem is the core function that takes a single token and returns
@@ -168,5 +172,25 @@ class SSStemmer {
     else{
       return token;
     }
+  }
+  /**
+   * step1c replaces logie[s] with log if within R2.
+   * @param  {String} token the input token
+   * @param  {Number} r2of  the offset of R2 in the token.
+   * @return {String}       the result of the replacement operations
+   */
+  step1c(token, r2of){
+    let rep = token.replace(this.reStep1c, '');
+    return ((rep !== token) && (rep.length >= (r2of - 1)))? rep + 'log' : token;
+  }
+  /**
+   * step1d replaces u[st]ions? with u if within R2.
+   * @param  {String} token the input token
+   * @param  {Number} r2of  the offset of R2 in the token.
+   * @return {String}       the result of the replacement operations
+   */
+  step1d(token, r2of){
+    let rep = token.replace(this.reStep1d, '');
+    return ((rep !== token) && (rep.length >= (r2of - 1)))? rep + 'u' : token;
   }
 }
