@@ -74,6 +74,17 @@
     </xd:doc>
     <xsl:variable name="R1R2Rex" as="xs:string" select="concat('^.*?', $vowel, $nonVowel, '(.*)$')"/>
     
+    <xd:doc>
+      <xd:desc><xd:ref name="reStep1a">reStep1a</xd:ref>
+      is a sequence of suffixes that must be deleted if they lie entirely within
+      R2. The longest found should be deleted, so they are in descending 
+      order of size in the form of a regular expression.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="reStep1a" as="xs:string" select="
+      '(ances?)|(iqUes?)|(ismes?)|(ables?)|(istes?)|(eux)$'
+      "/>
+    
+    
     <!--**************************************************************
        *                                                            * 
        *                         Functions                          *
@@ -147,6 +158,20 @@
       <xsl:variable name="R2" select="if ($R2Candidate = $R1) then '' else $R2Candidate"/>
       <xsl:variable name="R2Index" as="xs:integer" select="if ($R2Candidate = $R1) then string-length($token) + 1 else (string-length($token) - string-length($R2)) + 1"/>
       <xsl:sequence select="($RV, $R1, $R2, $RVIndex, $R1Index, $R2Index)"/>
+    </xsl:function>
+    
+    <xd:doc>
+      <xd:desc><xd:ref name="ss:step1a">ss:step1a</xd:ref> covers standard suffix removal.</xd:desc>
+      <xd:param name="token">Input token string</xd:param>
+      <xd:param name="R2">Offset of the R2 region in the token</xd:param>
+      <xd:result>The treated version of the token.</xd:result>
+    </xd:doc>
+    <xsl:function name="ss:step1a" as="xs:string">
+      <xsl:param name="token" as="xs:string"/>
+      <xsl:param name="R2" as="xs:integer"/>
+      <xsl:variable as="xs:string" name="rep" select="replace($token, $reStep1a, '')"/>
+      <xsl:sequence select=" if ($rep ne $token and string-length($rep) ge ($R2 - 1)) 
+                             then $rep else $token"/>
     </xsl:function>
   
 </xsl:stylesheet>

@@ -57,6 +57,10 @@ class SSStemmer {
     // there is no such non-vowel".
     //It also returns R2 when applied to R1.
     this.reR1R2 = new RegExp('^.*?' + this.vowel + this.nonVowel + '(.*)$');
+
+    //reStep1a is a regular expression for suffixes to be deleted if they
+    //are in R2.
+    this.reStep1a = /(ances?)|(iqUes?)|(ismes?)|(ables?)|(istes?)|(eux)$/;
   }
   /**
    * stem is the core function that takes a single token and returns
@@ -92,7 +96,7 @@ class SSStemmer {
    * getRVR1R2 decomposes an input token to get the RV, R1 and R2 regions,
    * and returns the string values of those regions, along with their
    * offsets.
-   * @param  {String} token The input token
+   * @param  {String} token the input token
    * @return {Object}       an object with six members:
    *                        rv {String} the part of the word constituting RV
    *                        r1 {String} the part of the word constituting R1
@@ -126,5 +130,16 @@ class SSStemmer {
     let R2 = (R2Candidate == R1)? '' : R2Candidate;
     let R2Index = (R2Candidate == R1)? token.length + 1 : (token.length - R2.length) + 1;
     return {rv: RV, r1: R1, r2: R2, rvof: RVIndex, r1of: R1Index, r2of: R2Index}
+  }
+
+  /**
+   * step1a replaces any of a number of suffixes if they appear within R2.
+   * @param  {String} token the input token
+   * @param  {Number} r2of  the offset of R2 in the token.
+   * @return {String}       the result of the replacement operations
+   */
+  step1a(token, r2of){
+    let rep = token.replace(this.reStep1a, '');
+    return ((rep !== token) && (rep.length >= (r2of - 1)))? rep : token;
   }
 }

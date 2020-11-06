@@ -413,7 +413,7 @@ class SSStemmer{
      * process exits whether or not a replacement was done.
      * @param  {String} token the input token
      * @param  {Number} R1    the offset of the R1 region in the token
-     * @param  {Number} R2    the offset of the R1 region in the token
+     * @param  {Number} R2    the offset of the R2 region in the token
      * @return {String}       the result of the replacement operations
      */
    step3(token, R1, R2){
