@@ -195,7 +195,9 @@
             this is the full URI minus the collection dir.
             
             Note that we TRIM off the leading slash since it does the root of the server.-->
-            <xsl:variable name="relativeUri" select="substring-after($uri,$collectionDir) => replace('^(/|\\)','')" as="xs:string"/>
+            <xsl:variable name="relativeUri" 
+                select="substring-after($uri,$collectionDir) => replace('^(/|\\)','')"
+                as="xs:string"/>
             
             <!--This is the IDENTIFIER for the static search, which is just the relative URI with all of the punctuation/
              slashes et cetera that could conceivably be in filenames turned into underscores.
@@ -207,11 +209,16 @@
                 as="xs:string"/>
 
             <!--Now create the various documents, and we put the leading slash BACK in-->
-            <xsl:variable name="cleanedOutDoc" select="concat($tempDir,'/', $searchIdentifier,'_cleaned.html')"/>
-            <xsl:variable name="contextualizedOutDoc" select="concat($tempDir,'/',$searchIdentifier,'_contextualized.html')"/>
-            <xsl:variable name="weightedOutDoc" select="concat($tempDir,'/',$searchIdentifier,'_weighted.html')"/>
-            <xsl:variable name="tokenizedOutDoc" select="concat($tempDir,'/',$searchIdentifier,'_tokenized.html')"/>
-            <xsl:variable name="excludedOutDoc" select="concat($tempDir,'/',$searchIdentifier,'_excluded.html')"/>
+            <xsl:variable name="cleanedOutDoc"
+                select="concat($tempDir,'/', $searchIdentifier,'_cleaned.html')"/>
+            <xsl:variable name="contextualizedOutDoc"
+                select="concat($tempDir,'/',$searchIdentifier,'_contextualized.html')"/>
+            <xsl:variable name="weightedOutDoc"
+                select="concat($tempDir,'/',$searchIdentifier,'_weighted.html')"/>
+            <xsl:variable name="tokenizedOutDoc"
+                select="concat($tempDir,'/',$searchIdentifier,'_tokenized.html')"/>
+            <xsl:variable name="excludedOutDoc" 
+                select="concat($tempDir,'/',$searchIdentifier,'_excluded.html')"/>
    
            
            <!--Now create the excluded document if we have to-->
@@ -356,7 +363,8 @@
     </xsl:template>
     
     <xd:doc>
-        <xd:desc>Template to convert all self closing elements--except for the wbr element (processed below)--into single spaces since we assume that they are word boundary marking</xd:desc>
+        <xd:desc>Template to convert all self closing elements--except for the wbr element (processed below)--into
+            single spaces since we assume that they are word boundary marking</xd:desc>
     </xd:doc>
     <xsl:template match="br | hr | area | base | col | embed | hr | img | input | link[ancestor::body] | meta[ancestor::body] | param | source | track" mode="clean">
         <xsl:text> </xsl:text>
@@ -667,13 +675,9 @@
         <!--Now create the stem val-->
         <xsl:variable name="stemVal" as="xs:string*">
             <xsl:choose>
+                
                 <!--If it has a digit, then it makes no sense to stem it-->
                 <xsl:when test="$containsDigit">
-                    <xsl:value-of select="$wordToStem"/>
-                </xsl:when>
-                
-                <!--If it's foreign, just proceed-->
-                <xsl:when test="$isForeign">
                     <xsl:value-of select="$wordToStem"/>
                 </xsl:when>
                 
