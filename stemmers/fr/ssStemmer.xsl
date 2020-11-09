@@ -121,6 +121,15 @@
       'ences?$'
       "/>
     
+    <xd:doc>
+      <xd:desc><xd:ref name="reStep1f" as="xs:string">reStep1f</xd:ref>
+        is a regex for a sequence of suffixes that undergo one of a variety 
+      of transformations or deletion based on where they are in the word.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="reStep1f" as="xs:string" select="
+      'ements?$'
+      "/>
+    
     <!--**************************************************************
        *                                                            * 
        *                         Functions                          *
@@ -185,14 +194,14 @@
                                                      if (matches($token, $RVBRex)) then
                                                          replace($token, $RVBRex, '$1') else
                                                          ''"/>
-      <xsl:variable name="RVIndex" as="xs:integer" select="(string-length($token) - string-length($RV)) + 1"/>
+      <xsl:variable name="RVIndex" as="xs:integer" select="(string-length($token) - string-length($RV))"/>
       <xsl:variable name="R1" as="xs:string" select="if (matches($token, $R1R2Rex)) then
                                                          replace($token, $R1R2Rex, '$1') else
                                                          ''"/>
-      <xsl:variable name="R1Index" as="xs:integer" select="(string-length($token) - string-length($R1)) + 1"/>
+      <xsl:variable name="R1Index" as="xs:integer" select="(string-length($token) - string-length($R1))"/>
       <xsl:variable name="R2Candidate" as="xs:string" select="replace($R1, $R1R2Rex, '$1')"/>
       <xsl:variable name="R2" select="if ($R2Candidate = $R1) then '' else $R2Candidate"/>
-      <xsl:variable name="R2Index" as="xs:integer" select="if ($R2Candidate = $R1) then string-length($token) + 1 else (string-length($token) - string-length($R2)) + 1"/>
+      <xsl:variable name="R2Index" as="xs:integer" select="if ($R2Candidate = $R1) then string-length($token) + 1 else (string-length($token) - string-length($R2))"/>
       <xsl:sequence select="($RV, $R1, $R2, $RVIndex, $R1Index, $R2Index)"/>
     </xsl:function>
     
@@ -207,7 +216,7 @@
       <xsl:param name="token" as="xs:string"/>
       <xsl:param name="R2" as="xs:integer"/>
       <xsl:variable as="xs:string" name="rep" select="replace($token, $reStep1a, '')"/>
-      <xsl:sequence select=" if ($rep ne $token and string-length($rep) ge ($R2 - 1)) 
+      <xsl:sequence select=" if ($rep ne $token and string-length($rep) ge $R2) 
                              then $rep else $token"/>
     </xsl:function>
     
@@ -225,10 +234,10 @@
       <xsl:param name="R2" as="xs:integer"/>
       <xsl:variable as="xs:string" name="rep" select="replace($token, $reStep1b, '')"/>
       <xsl:choose>
-        <xsl:when test="$rep ne $token and string-length($rep) ge ($R2 - 1)">
+        <xsl:when test="$rep ne $token and string-length($rep) ge $R2">
           <xsl:variable name="icGone" as="xs:string" select="replace($rep, 'ic$', '')"/>
           <xsl:choose>
-            <xsl:when test="($icGone eq $rep) or (string-length($icGone) ge ($R2 - 1))">
+            <xsl:when test="($icGone eq $rep) or (string-length($icGone) ge $R2)">
               <xsl:sequence select="$icGone"/>
             </xsl:when>
             <xsl:otherwise>
@@ -253,7 +262,7 @@
       <xsl:param name="token" as="xs:string"/>
       <xsl:param name="R2" as="xs:integer"/>
       <xsl:variable as="xs:string" name="rep" select="replace($token, $reStep1c, '')"/>
-      <xsl:sequence select=" if ($rep ne $token and string-length($rep) ge ($R2 - 1)) 
+      <xsl:sequence select=" if ($rep ne $token and string-length($rep) ge $R2) 
         then $rep || 'log' else $token"/>
     </xsl:function>
     
@@ -268,7 +277,7 @@
       <xsl:param name="token" as="xs:string"/>
       <xsl:param name="R2" as="xs:integer"/>
       <xsl:variable as="xs:string" name="rep" select="replace($token, $reStep1d, '')"/>
-      <xsl:sequence select=" if ($rep ne $token and string-length($rep) ge ($R2 - 1)) 
+      <xsl:sequence select=" if ($rep ne $token and string-length($rep) ge $R2) 
         then $rep || 'u' else $token"/>
     </xsl:function>
     
@@ -283,8 +292,66 @@
       <xsl:param name="token" as="xs:string"/>
       <xsl:param name="R2" as="xs:integer"/>
       <xsl:variable as="xs:string" name="rep" select="replace($token, $reStep1e, '')"/>
-      <xsl:sequence select=" if ($rep ne $token and string-length($rep) ge ($R2 - 1)) 
+      <xsl:sequence select=" if ($rep ne $token and string-length($rep) ge $R2) 
         then $rep || 'ent' else $token"/>
+    </xsl:function>
+  
+    <xd:doc>
+      <xd:desc><xd:ref name="ss:step1f">ss:step1f</xd:ref> is the sixth 
+        part of standard suffix removal, and is significantly more 
+        complex than the preceding ones.</xd:desc>
+      <xd:param name="token">Input token string</xd:param>
+      <xd:param name="rvr1r2">The complete sequence of items and offsets
+      calculated for the word.</xd:param>
+      <xd:result>The treated version of the token.</xd:result>
+    </xd:doc>
+    <xsl:function name="ss:step1f" as="xs:string">
+      <xsl:param name="token" as="xs:string"/>
+      <xsl:param name="rvr1r2" as="item()+"/>
+      <xsl:variable as="xs:string" name="rep" select="replace($token, $reStep1f, '')"/>
+      <xsl:variable as="xs:integer" name="repLen" select="string-length($rep)"/>
+      <xsl:choose>
+        <!-- Delete if in RV. -->
+        <xsl:when test="($rep ne $token) and ($repLen ge xs:integer($rvr1r2[4]))">
+          <xsl:choose>
+            <!-- if preceded by iv, delete if in R2 (and if further preceded by at, delete if in R2)...-->
+            <!-- We do the longer one first. -->
+            <xsl:when test="ends-with($rep, 'ativ') and ($repLen - 4) ge xs:integer($rvr1r2[6])">
+              <xsl:sequence select="replace($rep, 'ativ$', '')"/>
+            </xsl:when>
+            <!-- Now the shorter one. -->
+            <xsl:when test="ends-with($rep, 'iv') and ($repLen - 2) ge xs:integer($rvr1r2[6])">
+              <xsl:sequence select="replace($rep, 'iv$', '')"/>
+            </xsl:when>
+            <!-- In this one, the descriptive logic is out of order IMHO, so we reverse it: 
+                 rather than "if preceded by eus, delete if in R2, else replace by eux if in R1",
+                 we do "if preceded by eus, replace by eux if in R1, else delete if in R2" -->
+            <xsl:when test="ends-with($rep, 'eus')">
+              <xsl:choose>
+                <xsl:when test="($repLen - 3) ge xs:integer($rvr1r2[5])">
+                  <xsl:sequence select="replace($rep, 'eus$', 'eux')"/>
+                </xsl:when>
+                <xsl:when test="($repLen - 3) ge xs:integer($rvr1r2[6])">
+                  <xsl:sequence select="replace($rep, 'eus$', '')"/>
+                </xsl:when>
+              </xsl:choose>
+            </xsl:when>
+            <!-- if preceded by abl or iqU, delete if in R2...-->
+            <xsl:when test="matches($rep, '(abl)|(iqU)$') and ($repLen - 3) ge xs:integer($rvr1r2[6])">
+              <xsl:sequence select="replace($rep, '(abl)|(iqU)$', '')"/>
+            </xsl:when>
+            <xsl:when test="matches($rep, '[iI]èr$') and ($repLen - 3) ge xs:integer($rvr1r2[4])">
+              <xsl:sequence select="replace($rep, '[iI]èr$', 'i')"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:sequence select="$rep"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:sequence select="$token"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:function>
   
 </xsl:stylesheet>

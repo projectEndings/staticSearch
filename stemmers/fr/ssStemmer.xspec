@@ -52,37 +52,49 @@
       <x:call function="ss:getRVR1R2">
         <x:param name="token" select="'aimer'"/>
       </x:call>
-      <x:expect label="Result from 'aimer'" select="('er', 'er', '', 4, 4, 6)"/>
+      <x:expect label="Result from 'aimer'" select="('er', 'er', '', 3, 3, 5)"/>
     </x:scenario>
     <x:scenario label="Testing ss:getRVR1R2: voler">
       <x:call function="ss:getRVR1R2">
         <x:param name="token" select="'voler'"/>
       </x:call>
-      <x:expect label="Result from 'voler'" select="('ler', 'er', '', 3, 4, 6)"/>
+      <x:expect label="Result from 'voler'" select="('ler', 'er', '', 2, 3, 5)"/>
     </x:scenario>
     <x:scenario label="Testing ss:getRVR1R2: paris">
       <x:call function="ss:getRVR1R2">
         <x:param name="token" select="'paris'"/>
       </x:call>
-      <x:expect label="Result from 'paris'" select="('is', 'is', '', 4, 4, 6)"/>
+      <x:expect label="Result from 'paris'" select="('is', 'is', '', 3, 3, 5)"/>
     </x:scenario>
     <x:scenario label="Testing ss:getRVR1R2: adorer">
       <x:call function="ss:getRVR1R2">
         <x:param name="token" select="'adorer'"/>
       </x:call>
-      <x:expect label="Result from 'adorer'" select="('rer', 'orer', 'er', 4, 3, 5)"/>
+      <x:expect label="Result from 'adorer'" select="('rer', 'orer', 'er', 3, 2, 4)"/>
     </x:scenario>
     <x:scenario label="Testing ss:getRVR1R2: fameusement">
       <x:call function="ss:getRVR1R2">
         <x:param name="token" select="'fameusement'"/>
       </x:call>
-      <x:expect label="Result from 'fameusement'" select="('meusement', 'eusement', 'ement', 3, 4, 7)"/>
+      <x:expect label="Result from 'fameusement'" select="('meusement', 'eusement', 'ement', 2, 3, 6)"/>
     </x:scenario>
     <x:scenario label="Testing ss:getRVR1R2: traumatologie">
       <x:call function="ss:getRVR1R2">
         <x:param name="token" select="'traumatologie'"/>
       </x:call>
-      <x:expect label="Result from 'traumatologie'" select="('umatologie', 'atologie', 'ologie', 4, 6, 8)"/>
+      <x:expect label="Result from 'traumatologie'" select="('umatologie', 'atologie', 'ologie', 3, 5, 7)"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:getRVR1R2: comparativement">
+      <x:call function="ss:getRVR1R2">
+        <x:param name="token" select="'comparativement'"/>
+      </x:call>
+      <x:expect label="Result from 'comparativement'" select="('mparativement', 'parativement', 'ativement', 2, 3, 6)"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:getRVR1R2: accablement">
+      <x:call function="ss:getRVR1R2">
+        <x:param name="token" select="'accablement'"/>
+      </x:call>
+      <x:expect label="Result from 'accablement'" select="('blement', 'cablement', 'lement', 4, 2, 5)"/>
     </x:scenario>
   </x:scenario>
   
@@ -168,6 +180,30 @@
         <x:param name="R2" select="ss:getRVR1R2('experiences')[6]"></x:param>
       </x:call>
       <x:expect label="Result of step1e from 'experiences'" select="'experient'"/>
+    </x:scenario>
+  </x:scenario>
+  
+  <x:scenario label="Test function ss:step1f">
+    <x:scenario label="Testing ss:step1f: 'comparativement'">
+      <x:call function="ss:step1f">
+        <x:param name="token" select="'comparativement'"/>
+        <x:param name="rvr1r2" select="ss:getRVR1R2('comparativement')"></x:param>
+      </x:call>
+      <x:expect label="Result of step1f from 'comparativement'" select="'compar'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1f: 'consciencieusement'">
+      <x:call function="ss:step1f">
+        <x:param name="token" select="'consciencieusement'"/>
+        <x:param name="rvr1r2" select="ss:getRVR1R2('consciencieusement')"></x:param>
+      </x:call>
+      <x:expect label="Result of step1f from 'consciencieusement'" select="'consciencieux'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1f: 'accablement'">
+      <x:call function="ss:step1f">
+        <x:param name="token" select="'accablement'"/>
+        <x:param name="rvr1r2" select="ss:getRVR1R2('accablement')"></x:param>
+      </x:call>
+      <x:expect label="Result of step1f from 'accablement'" select="'accabl'"/>
     </x:scenario>
   </x:scenario>
   

@@ -12,7 +12,8 @@ var RVR1R2Data=[['aimer', {rv: 'er', r1: 'er',  r2: '', rvof: 4, r1of: 4, r2of: 
                 ['voler', {rv: 'ler', r1: 'er',  r2: '', rvof: 3, r1of: 4, r2of: 6}],
                 ['paris', {rv: 'is', r1: 'is',  r2: '', rvof: 4, r1of: 4, r2of: 6}],
                 ['adorer', {rv: 'rer', r1: 'orer',  r2: 'er', rvof: 4, r1of: 3, r2of: 5}],
-                ['fameusement', {rv: 'meusement', r1: 'eusement',  r2: 'ement', rvof: 3, r1of: 4, r2of: 7}]];
+                ['fameusement', {rv: 'meusement', r1: 'eusement',  r2: 'ement', rvof: 3, r1of: 4, r2of: 7}],
+                ['accablement', {rv: 'blement', r1: 'cablement',  r2: 'lement', rvof: 5, r1of: 3, r2of: 6}]];
 
 var step1aData = [['vacances', 'vacances'], ['surréalisme', 'surréal']];
 
@@ -151,5 +152,14 @@ function showTestLog(func, input, expected, result){
     errorCount++;
     document.getElementById('errorCount').innerHTML = errorCount;
     showLog('Input ' + input + ' to function ' + func+ ' gave result ' + result + ' instead of ' + expected + '!', 'broken');
+  }
+}
+
+
+function getStemmedForm(){
+  let word = document.getElementById('word').value;
+  let pos = testData.voc.indexOf(word);
+  if (pos > -1){
+    document.getElementById('stemmedForm').innerHTML = testData.output[pos];
   }
 }
