@@ -112,6 +112,15 @@
       'u[st]ions?$'
       "/>
     
+    <xd:doc>
+      <xd:desc><xd:ref name="reStep1e" as="xs:string">reStep1e</xd:ref>
+        is a regex for a sequence of suffixes that should be replaced with 
+        ent if they are in R2.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="reStep1e" as="xs:string" select="
+      'ences?$'
+      "/>
+    
     <!--**************************************************************
        *                                                            * 
        *                         Functions                          *
@@ -261,6 +270,21 @@
       <xsl:variable as="xs:string" name="rep" select="replace($token, $reStep1d, '')"/>
       <xsl:sequence select=" if ($rep ne $token and string-length($rep) ge ($R2 - 1)) 
         then $rep || 'u' else $token"/>
+    </xsl:function>
+    
+    <xd:doc>
+      <xd:desc><xd:ref name="ss:step1e">ss:step1e</xd:ref> is the fifth 
+        part of standard suffix removal.</xd:desc>
+      <xd:param name="token">Input token string</xd:param>
+      <xd:param name="R2">Offset of the R2 region in the token</xd:param>
+      <xd:result>The treated version of the token.</xd:result>
+    </xd:doc>
+    <xsl:function name="ss:step1e" as="xs:string">
+      <xsl:param name="token" as="xs:string"/>
+      <xsl:param name="R2" as="xs:integer"/>
+      <xsl:variable as="xs:string" name="rep" select="replace($token, $reStep1e, '')"/>
+      <xsl:sequence select=" if ($rep ne $token and string-length($rep) ge ($R2 - 1)) 
+        then $rep || 'ent' else $token"/>
     </xsl:function>
   
 </xsl:stylesheet>

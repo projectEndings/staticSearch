@@ -161,4 +161,14 @@
     </x:scenario>
   </x:scenario>
   
+  <x:scenario label="Test function ss:step1e">
+    <x:scenario label="Testing ss:step1e: 'experiences'">
+      <x:call function="ss:step1e">
+        <x:param name="token" select="'experiences'"/>
+        <x:param name="R2" select="ss:getRVR1R2('experiences')[6]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1e from 'experiences'" select="'experient'"/>
+    </x:scenario>
+  </x:scenario>
+  
 </x:description>

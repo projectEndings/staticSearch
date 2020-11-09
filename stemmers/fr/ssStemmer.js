@@ -68,6 +68,8 @@ class SSStemmer {
     this.reStep1c = /logies?$/;
     //reStep1d: suffixes to be replaced with u if in R2.
     this.reStep1d = /u[st]ions?$/;
+    //reStep1e: suffixes to be replaced with ent if in R2.
+    this.reStep1e = /ences?$/;
   }
   /**
    * stem is the core function that takes a single token and returns
@@ -192,5 +194,15 @@ class SSStemmer {
   step1d(token, r2of){
     let rep = token.replace(this.reStep1d, '');
     return ((rep !== token) && (rep.length >= (r2of - 1)))? rep + 'u' : token;
+  }
+  /**
+   * step1e replaces ences? with ent if within R2.
+   * @param  {String} token the input token
+   * @param  {Number} r2of  the offset of R2 in the token.
+   * @return {String}       the result of the replacement operations
+   */
+  step1e(token, r2of){
+    let rep = token.replace(this.reStep1e, '');
+    return ((rep !== token) && (rep.length >= (r2of - 1)))? rep + 'ent' : token;
   }
 }
