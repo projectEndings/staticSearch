@@ -70,6 +70,8 @@ class SSStemmer {
     this.reStep1d = /u[st]ions?$/;
     //reStep1e: suffixes to be replaced with ent if in R2.
     this.reStep1e = /ences?$/;
+    //reStep1f: suffixes to be handled in various complex ways
+    this.reStep1f = /ements?$/;
   }
   /**
    * stem is the core function that takes a single token and returns
@@ -129,15 +131,15 @@ class SSStemmer {
         }
       }
     }
-    let RVIndex = (token.length - RV.length) + 1;
+    let RVIndex = (token.length - RV.length);
     let R1 = '';
     if (token.match(this.reR1R2)){
       R1 = token.replace(this.reR1R2, '$1');
     }
-    let R1Index = (token.length - R1.length) + 1;
+    let R1Index = (token.length - R1.length);
     let R2Candidate = R1.replace(this.reR1R2, '$1');
     let R2 = (R2Candidate == R1)? '' : R2Candidate;
-    let R2Index = (R2Candidate == R1)? token.length + 1 : (token.length - R2.length) + 1;
+    let R2Index = (R2Candidate == R1)? token.length : (token.length - R2.length);
     return {rv: RV, r1: R1, r2: R2, rvof: RVIndex, r1of: R1Index, r2of: R2Index}
   }
 
@@ -149,7 +151,7 @@ class SSStemmer {
    */
   step1a(token, r2of){
     let rep = token.replace(this.reStep1a, '');
-    return ((rep !== token) && (rep.length >= (r2of - 1)))? rep : token;
+    return ((rep !== token) && (rep.length >= r2of))? rep : token;
   }
 
   /**
@@ -162,9 +164,9 @@ class SSStemmer {
    */
   step1b(token, r2of){
     let rep = token.replace(this.reStep1b, '');
-    if ((rep !== token) && (rep.length >= (r2of - 1))){
+    if ((rep !== token) && (rep.length >= r2of)){
       let icGone = rep.replace(/ic$/, '');
-      if ((icGone == rep) || (icGone.length >= (r2of - 1))){
+      if ((icGone == rep) || (icGone.length >= r2of)){
         return icGone;
       }
       else{
@@ -183,7 +185,7 @@ class SSStemmer {
    */
   step1c(token, r2of){
     let rep = token.replace(this.reStep1c, '');
-    return ((rep !== token) && (rep.length >= (r2of - 1)))? rep + 'log' : token;
+    return ((rep !== token) && (rep.length >= r2of))? rep + 'log' : token;
   }
   /**
    * step1d replaces u[st]ions? with u if within R2.
@@ -193,7 +195,7 @@ class SSStemmer {
    */
   step1d(token, r2of){
     let rep = token.replace(this.reStep1d, '');
-    return ((rep !== token) && (rep.length >= (r2of - 1)))? rep + 'u' : token;
+    return ((rep !== token) && (rep.length >= r2of))? rep + 'u' : token;
   }
   /**
    * step1e replaces ences? with ent if within R2.
@@ -203,6 +205,56 @@ class SSStemmer {
    */
   step1e(token, r2of){
     let rep = token.replace(this.reStep1e, '');
-    return ((rep !== token) && (rep.length >= (r2of - 1)))? rep + 'ent' : token;
+    return ((rep !== token) && (rep.length >= r2of))? rep + 'ent' : token;
   }
+  /**
+   * step1f deletes ements? and replaces preceding components in various
+   * ways depending on context
+   * @param  {String} token the input token
+   * @param  {Object} rvr1r2  the complete RVR1R2 object.
+   * @return {String}       the result of the replacement operations
+   */
+  step1f(token, rvr1r2){
+    //Delete if in RV.
+    let rep = token.replace(this.reStep1f, '');
+    let repLen = rep.length;
+    if ((rep != token) && (repLen >= rvr1r2.rvof)){
+      //if preceded by iv, delete if in R2 (and if further preceded by at, delete if in R2)...
+      if ((rep.match(/ativ$/)) && ((repLen - 4) >= rvr1r2.r2of)){
+        return rep.replace(/ativ$/, '');
+      }
+      if ((rep.match(/iv$/)) && ((repLen - 2) >= rvr1r2.r2of)){
+        return rep.replace(/iv$/, '');
+      }
+      //Rather than "if preceded by eus, delete if in R2, else replace by eux if in R1",
+      //we do "if preceded by eus, replace by eux if in R1, else delete if in R2"
+      //since this seems more logical.
+      if (rep.match(/eus$/)){
+        if ((repLen - 3) >= rvr1r2.r1of){
+          return rep.replace(/eus$/, 'eux');
+        }
+        if ((repLen - 3) >= rvr1r2.r2of){
+          return rep.replace(/eus$/, '');
+        }
+        else{
+          return rep;
+        }
+      }
+      //if preceded by abl or iqU, delete if in R2.
+      if ((rep.match(/(abl)|(iqU)$/)) && ((repLen - 3) >= rvr1r2.r2of)){
+        return rep.replace(/(abl)|(iqU)$/, '');
+      }
+      //if preceded by ièr or Ièr, replace by i if in RV.
+      if ((rep.match(/[iI]èr$/)) && ((repLen - 3) >= rvr1r2.rvof)){
+        return rep.replace(/[iI]èr$/, '');
+      }
+      else{
+        return rep;
+      }
+    }
+    else{
+      return token;
+    }
+  }
+
 }

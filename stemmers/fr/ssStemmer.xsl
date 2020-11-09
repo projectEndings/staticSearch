@@ -334,12 +334,16 @@
                 <xsl:when test="($repLen - 3) ge xs:integer($rvr1r2[6])">
                   <xsl:sequence select="replace($rep, 'eus$', '')"/>
                 </xsl:when>
+                <xsl:otherwise>
+                  <xsl:sequence select="$rep"/>
+                </xsl:otherwise>
               </xsl:choose>
             </xsl:when>
             <!-- if preceded by abl or iqU, delete if in R2...-->
             <xsl:when test="matches($rep, '(abl)|(iqU)$') and ($repLen - 3) ge xs:integer($rvr1r2[6])">
               <xsl:sequence select="replace($rep, '(abl)|(iqU)$', '')"/>
             </xsl:when>
+            <!-- if preceded by ièr or Ièr, replace by i if in RV...-->
             <xsl:when test="matches($rep, '[iI]èr$') and ($repLen - 3) ge xs:integer($rvr1r2[4])">
               <xsl:sequence select="replace($rep, '[iI]èr$', 'i')"/>
             </xsl:when>

@@ -8,12 +8,12 @@ var preflightData =[['jouer', 'joUer'],
  ['aïeux', 'aHieux'],
  ['exiguë', 'exiguHe']];
  
-var RVR1R2Data=[['aimer', {rv: 'er', r1: 'er',  r2: '', rvof: 4, r1of: 4, r2of: 6}],
-                ['voler', {rv: 'ler', r1: 'er',  r2: '', rvof: 3, r1of: 4, r2of: 6}],
-                ['paris', {rv: 'is', r1: 'is',  r2: '', rvof: 4, r1of: 4, r2of: 6}],
-                ['adorer', {rv: 'rer', r1: 'orer',  r2: 'er', rvof: 4, r1of: 3, r2of: 5}],
-                ['fameusement', {rv: 'meusement', r1: 'eusement',  r2: 'ement', rvof: 3, r1of: 4, r2of: 7}],
-                ['accablement', {rv: 'blement', r1: 'cablement',  r2: 'lement', rvof: 5, r1of: 3, r2of: 6}]];
+var RVR1R2Data=[['aimer', {rv: 'er', r1: 'er',  r2: '', rvof: 3, r1of: 3, r2of: 5}],
+                ['voler', {rv: 'ler', r1: 'er',  r2: '', rvof: 2, r1of: 3, r2of: 5}],
+                ['paris', {rv: 'is', r1: 'is',  r2: '', rvof: 3, r1of: 3, r2of: 5}],
+                ['adorer', {rv: 'rer', r1: 'orer',  r2: 'er', rvof: 3, r1of: 2, r2of: 4}],
+                ['fameusement', {rv: 'meusement', r1: 'eusement',  r2: 'ement', rvof: 2, r1of: 3, r2of: 6}],
+                ['accablement', {rv: 'blement', r1: 'cablement',  r2: 'lement', rvof: 4, r1of: 2, r2of: 5}]];
 
 var step1aData = [['vacances', 'vacances'], ['surréalisme', 'surréal']];
 
@@ -28,6 +28,10 @@ var step1dData = [['constitution', 'constitu'],
                   ['effusion', 'effusion']];
                   
 var step1eData = [['experiences', 'experient']];
+
+var step1fData = [['comparativement', 'compar'],
+                  ['consciencieusement', 'consciencieux'],
+                  ['accablement', 'accabl']];
 
 var testData;
 var errorCount = 0;
@@ -87,7 +91,11 @@ function runTests(){
     var result = ssStemmer.step1e(step1eData[i][0], r2of);
     showTestLog('step1e', step1eData[i][0], step1eData[i][1], result);
   }
-  
+  for (var i=0; i<step1fData.length; i++){
+    let RVR1R2 = ssStemmer.getRVR1R2(step1fData[i][0])
+    var result = ssStemmer.step1f(step1fData[i][0], RVR1R2);
+    showTestLog('step1f', step1fData[i][0], step1fData[i][1], result);
+  }
   /*for (var i=0; i<step0Data.length; i++){
     var result = ssStemmer.step0(step0Data[i][0]);
     showTestLog('step0', step0Data[i][0], step0Data[i][1], result);
