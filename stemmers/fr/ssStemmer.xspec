@@ -229,15 +229,31 @@
       </x:call>
       <x:expect label="Result of step1g from 'assiduités'" select="'assidu'"/>
     </x:scenario>
-    <!--<x:scenario label="Testing ss:step1g: 'cités'">
-      <x:call function="ss:step1g">
-        <x:param name="token" select="'cités'"/>
-        <x:param name="R2" select="ss:getRVR1R2('cités')[6]"></x:param>
-      </x:call>
-      <x:expect label="Result of step1g from 'cités'" select="'cit'"/>
-    </x:scenario>-->
   </x:scenario>
   
+  <x:scenario label="Test function ss:step1h">
+    <x:scenario label="Testing ss:step1h: 'significatives'">
+      <x:call function="ss:step1h">
+        <x:param name="token" select="'significatives'"/>
+        <x:param name="R2" select="ss:getRVR1R2('significatives')[6]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1h from 'significatives'" select="'signif'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1h: 'actif'">
+      <x:call function="ss:step1h">
+        <x:param name="token" select="'actif'"/>
+        <x:param name="R2" select="ss:getRVR1R2('actif')[6]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1h from 'actif'" select="'actif'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1h: 'incisif'">
+      <x:call function="ss:step1h">
+        <x:param name="token" select="'incisif'"/>
+        <x:param name="R2" select="ss:getRVR1R2('incisif')[6]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1h from 'incisif'" select="'incis'"/>
+    </x:scenario>
+  </x:scenario>
   
   
   <!-- The big fat complete test set. -->

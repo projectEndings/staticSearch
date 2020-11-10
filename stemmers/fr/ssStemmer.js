@@ -74,6 +74,8 @@ class SSStemmer {
     this.reStep1f = /ements?$/;
     //reStep1g: suffixes to be handled in various complex ways
     this.reStep1g = /ités?$/;
+    //reStep1h: suffixes to be deleted if in R2, and preceding bits handled. 
+    this.reStep1h = /i((f)|(ve))s?$/;
   }
   /**
    * stem is the core function that takes a single token and returns
@@ -259,8 +261,7 @@ class SSStemmer {
     }
   }
   /**
-   * step1g replaces /**
-   * step1e removes ités? if within R2 and modifies preceding bits.
+   * step1g  deletes ités? if within R2 and modifies preceding bits.
    * @param  {String} token the input token
    * @param  {Number} r2of  the offset of R2 in the token.
    * @return {String}       the result of the replacement operations
@@ -279,7 +280,35 @@ class SSStemmer {
       }
       //if preceded by iv, delete if in R2
       if (rep.match(/iv$/)){
-        return ((repLen - 2) >= r2of)? rep.replace(/ic$/, '') : rep;
+        return ((repLen - 2) >= r2of)? rep.replace(/iv$/, '') : rep;
+      }
+      else{
+        return rep;
+      }
+    }
+    else{
+      return token;
+    }
+  }
+  /**
+   * step1h  deletes i((f)|(ve))s?$ if within R2 and modifies preceding bits.
+   * @param  {String} token the input token
+   * @param  {Number} r2of  the offset of R2 in the token.
+   * @return {String}       the result of the replacement operations
+   */
+  step1h(token, r2of){
+    let rep = token.replace(this.reStep1h, '');
+    let repLen = rep.length;
+    if ((rep != token) && (repLen >= r2of)){
+      //if preceded by at, delete if in R2 (and if further preceded by ic, delete if in R2, else replace by iqU) 
+      if ((rep.match(/icat$/)) && ((repLen - 4) >= r2of)){
+        return rep.replace(/icat$/, '');
+      }
+      if ((rep.match(/icat$/)) && ((repLen - 2) >= r2of)){
+        return rep.replace(/icat$/, 'iqU');
+      }
+      if ((rep.match(/at$/)) && ((repLen - 2) >= r2of)){
+        return rep.replace(/at$/, '');
       }
       else{
         return rep;

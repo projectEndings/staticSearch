@@ -132,11 +132,20 @@
     
     <xd:doc>
       <xd:desc><xd:ref name="reStep1g" as="xs:string">reStep1g</xd:ref>
-        is a regex for a sequence of suffixes that undergo one of a variety 
-        of transformations or deletion based on where they are in the word.</xd:desc>
+        is a regex for a pair of suffixes that are deleted, then preceding
+        bits may be deleted or modified based on where they are in the word.</xd:desc>
     </xd:doc>
     <xsl:variable name="reStep1g" as="xs:string" select="
       'ités?$'
+      "/>
+    
+    <xd:doc>
+      <xd:desc><xd:ref name="reStep1h" as="xs:string">reStep1h</xd:ref>
+        is a regex for four suffixes that are deleted, then preceding
+        bits may be deleted or modified based on where they are in the word.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="reStep1h" as="xs:string" select="
+      'i((f)|(ve))s?$'
       "/>
     
     <!--**************************************************************
@@ -406,6 +415,41 @@
     </xsl:function>
     
     <xd:doc>
+      <xd:desc><xd:ref name="ss:step1h">ss:step1h</xd:ref> is the eighth 
+        part of standard suffix removal.</xd:desc>
+      <xd:param name="token">Input token string</xd:param>
+      <xd:param name="R2">Offset of the R2 region in the token</xd:param>
+      <xd:result>The treated version of the token.</xd:result>
+    </xd:doc>
+    <xsl:function name="ss:step1h" as="xs:string">
+      <xsl:param name="token" as="xs:string"/>
+      <xsl:param name="R2" as="xs:integer"/>
+      <xsl:variable as="xs:string" name="rep" select="replace($token, $reStep1h, '')"/>
+      <xsl:variable name="repLen" as="xs:integer" select="string-length($rep)"/>
+      <xsl:choose>
+        <xsl:when test="($rep ne $token) and ($repLen ge $R2)">
+          <xsl:choose>
+            <xsl:when test="matches($rep, 'icat$') and ($repLen - 4) ge $R2">
+              <xsl:sequence select="replace($rep, 'icat$', '')"/>
+            </xsl:when>
+            <xsl:when test="matches($rep, 'icat$') and ($repLen - 2) ge $R2">
+              <xsl:sequence select="replace($rep, 'icat$', 'iqU')"/>
+            </xsl:when>
+            <xsl:when test="matches($rep, 'at$') and ($repLen - 2) ge $R2">
+              <xsl:sequence select="replace($rep, 'at$', '')"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:sequence select="$rep"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:sequence select="$token"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:function>
+    
+    <xd:doc>
       <xd:desc><xd:ref name="ss:step1">ss:step1</xd:ref> combines all
       the substeps which are part of the step1 process.</xd:desc>
       <xd:param name="token">Input token string</xd:param>
@@ -415,6 +459,7 @@
       <xsl:param name="token" as="xs:string"/>
       <xsl:variable name="rvr1r2" as="item()+" select="ss:getRVR1R2($token)"/>
       <xsl:sequence select="
+                           ss:step1h(
                            ss:step1g(
                            ss:step1f(
                            ss:step1e(
@@ -427,6 +472,7 @@
                                      $rvr1r2[6]),
                                      $rvr1r2[6]),
                                      $rvr1r2),
+                                     $rvr1r2[6]),
                                      $rvr1r2[6])"/>
     </xsl:function>
     
