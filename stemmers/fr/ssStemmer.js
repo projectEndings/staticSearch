@@ -72,6 +72,8 @@ class SSStemmer {
     this.reStep1e = /ences?$/;
     //reStep1f: suffixes to be handled in various complex ways
     this.reStep1f = /ements?$/;
+    //reStep1g: suffixes to be handled in various complex ways
+    this.reStep1g = /ités?$/;
   }
   /**
    * stem is the core function that takes a single token and returns
@@ -256,5 +258,35 @@ class SSStemmer {
       return token;
     }
   }
-
+  /**
+   * step1g replaces /**
+   * step1e removes ités? if within R2 and modifies preceding bits.
+   * @param  {String} token the input token
+   * @param  {Number} r2of  the offset of R2 in the token.
+   * @return {String}       the result of the replacement operations
+   */
+  step1g(token, r2of){
+    let rep = token.replace(this.reStep1g, '');
+    let repLen = rep.length;
+    if ((rep != token) && (repLen >= r2of)){
+      //if preceded by abil, delete if in R2, else replace by abl
+      if (rep.match(/abil$/)){
+        return ((repLen - 4) >= r2of)? rep.replace(/abil$/, '') : rep.replace(/abil$/, 'abl');
+      }
+      //if preceded by ic, delete if in R2, else replace by iqU
+      if (rep.match(/ic$/)){
+        return ((repLen - 2) >= r2of)? rep.replace(/ic$/, '') : rep.replace(/ic$/, 'iqU');
+      }
+      //if preceded by iv, delete if in R2
+      if (rep.match(/iv$/)){
+        return ((repLen - 2) >= r2of)? rep.replace(/ic$/, '') : rep;
+      }
+      else{
+        return rep;
+      }
+    }
+    else{
+      return token;
+    }
+  }
 }

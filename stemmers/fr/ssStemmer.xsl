@@ -130,6 +130,15 @@
       'ements?$'
       "/>
     
+    <xd:doc>
+      <xd:desc><xd:ref name="reStep1g" as="xs:string">reStep1g</xd:ref>
+        is a regex for a sequence of suffixes that undergo one of a variety 
+        of transformations or deletion based on where they are in the word.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="reStep1g" as="xs:string" select="
+      'ités?$'
+      "/>
+    
     <!--**************************************************************
        *                                                            * 
        *                         Functions                          *
@@ -147,7 +156,8 @@
     <xsl:function name="ss:stem" as="xs:string" new-each-time="no">
       <xsl:param name="token" as="xs:string"/>
       <!-- TODO, of course. -->
-      <xsl:sequence select="$token"/>
+      <xsl:variable name="step1" as="xs:string" select="ss:step1($token)"/>
+      <xsl:sequence select="$step1"/>
     </xsl:function>
     
     <xd:doc scope="component">
@@ -354,6 +364,118 @@
           <xsl:sequence select="$token"/>
         </xsl:otherwise>
       </xsl:choose>
+    </xsl:function>
+    
+    <xd:doc>
+      <xd:desc><xd:ref name="ss:step1g">ss:step1g</xd:ref> is the seventh 
+        part of standard suffix removal.</xd:desc>
+      <xd:param name="token">Input token string</xd:param>
+      <xd:param name="R2">Offset of the R2 region in the token</xd:param>
+      <xd:result>The treated version of the token.</xd:result>
+    </xd:doc>
+    <xsl:function name="ss:step1g" as="xs:string">
+      <xsl:param name="token" as="xs:string"/>
+      <xsl:param name="R2" as="xs:integer"/>
+      <xsl:variable as="xs:string" name="rep" select="replace($token, $reStep1g, '')"/>
+      <!--    delete if in R2   -->
+      <xsl:variable name="repLen" as="xs:integer" select="string-length($rep)"/>
+      <xsl:choose>
+        <xsl:when test="($rep ne $token) and ($repLen ge $R2)">
+          <xsl:choose>
+            <!-- if preceded by abil, delete if in R2, else replace by abl, otherwise, -->
+            <xsl:when test="matches($rep, 'abil$')">
+              <xsl:sequence select="if (($repLen - 4) ge $R2) then replace($rep, 'abil$', '') else replace($rep, 'abil$', 'abl')"/>
+            </xsl:when>
+            <!-- if preceded by ic, delete if in R2, else replace by iqU, otherwise, -->
+            <xsl:when test="matches($rep, 'ic$')">
+              <xsl:sequence select="if (($repLen - 2) ge $R2) then replace($rep, 'ic$', '') else replace($rep, 'ic$', 'iqU')"/>
+            </xsl:when>
+            <!-- if preceded by iv, delete if in R2 -->
+            <xsl:when test="matches($rep, 'iv$')">
+              <xsl:sequence select="if (($repLen - 2) ge $R2) then replace($rep, 'ic$', '') else $rep"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:sequence select="$rep"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:sequence select="$token"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:function>
+    
+    <xd:doc>
+      <xd:desc><xd:ref name="ss:step1">ss:step1</xd:ref> combines all
+      the substeps which are part of the step1 process.</xd:desc>
+      <xd:param name="token">Input token string</xd:param>
+      <xd:result>The treated version of the token.</xd:result>
+    </xd:doc>
+    <xsl:function name="ss:step1" as="xs:string">
+      <xsl:param name="token" as="xs:string"/>
+      <xsl:variable name="rvr1r2" as="item()+" select="ss:getRVR1R2($token)"/>
+      <xsl:sequence select="
+                           ss:step1g(
+                           ss:step1f(
+                           ss:step1e(
+                           ss:step1d(
+                           ss:step1c(
+                           ss:step1b(
+                           ss:step1a($token, $rvr1r2[6]), 
+                                     $rvr1r2[6]), 
+                                     $rvr1r2[6]),
+                                     $rvr1r2[6]),
+                                     $rvr1r2[6]),
+                                     $rvr1r2),
+                                     $rvr1r2[6])"/>
+    </xsl:function>
+    
+    
+    <!--**************************************************************
+       *                                                            * 
+       *                          Testing                           *
+       *                                                            *
+       **************************************************************-->
+    
+    <xd:doc scope="component">
+      <xd:desc><xd:ref name="ss:runTests" type="function">ss:runTests</xd:ref>
+        feeds all of the test data into the ss:stem function and checks the 
+        results. There is a local set of test data used for development, but 
+        that test is commented out in favour of downloading and running
+        the full set of 20,000+ items from the snowballstem.org site.</xd:desc>
+      <xd:result>A sequence consisting of boolean true or false: tests all passed = true, 
+        any test failed = false, and an empty message or an error report.</xd:result>
+    </xd:doc>
+    <xsl:function name="ss:runTests" as="item()+">
+      <xsl:variable name="fullTokenSetUrl" as="xs:string" select="'https://raw.githubusercontent.com/snowballstem/snowball-data/master/french/voc.txt'"/>
+      <xsl:variable name="fullStemSetUrl" as="xs:string" select="'https://raw.githubusercontent.com/snowballstem/snowball-data/master/french/output.txt'"/>
+      <xsl:variable name="fullTokenSet" select="
+        if (unparsed-text-available('voc.txt')) 
+        then tokenize(unparsed-text('voc.txt'), '[\n\s]+')
+        else tokenize(unparsed-text($fullTokenSetUrl), '[\n\s]+')"/>
+      <xsl:variable name="fullStemSet" select="
+        if (unparsed-text-available('output.txt')) 
+        then tokenize(unparsed-text('output.txt'), '[\n\s]+')
+        else tokenize(unparsed-text($fullStemSetUrl), '[\n\s]+')"/>  
+      <xsl:iterate select="$fullTokenSet">
+        <xsl:on-completion select="(true(), '')"/>
+        <xsl:variable name="pos" select="position()"/>
+        <xsl:variable name="stem" select="$fullStemSet[$pos]"/>
+        <xsl:variable name="result" select="ss:stem(.)"/>
+        <xsl:choose>
+          <xsl:when test="$result = $stem">
+            <xsl:next-iteration/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:variable name="output"><xsl:text>&#x0a;</xsl:text> 
+              Failed test with input: <xsl:value-of select="."/><xsl:text>&#x0a;</xsl:text> 
+              at position <xsl:value-of select="$pos"/><xsl:text>&#x0a;</xsl:text> 
+              Result should be: <xsl:value-of select="$stem"/>.<xsl:text>&#x0a;</xsl:text> 
+              Result was <xsl:value-of select="$result"/></xsl:variable>
+            <xsl:break select="(false(), $output)"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:iterate>
     </xsl:function>
   
 </xsl:stylesheet>

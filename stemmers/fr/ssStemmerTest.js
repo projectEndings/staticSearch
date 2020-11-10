@@ -33,6 +33,9 @@ var step1fData = [['comparativement', 'compar'],
                   ['consciencieusement', 'conscienci'],
                   ['accablement', 'accabl'],
                   ['fameusement', 'fameux']];
+                  
+var step1gData = [['absurdités', 'absurd'],
+                  ['assiduités', 'assidu']];
 
 var testData;
 var errorCount = 0;
@@ -63,31 +66,31 @@ function runTests(){
     showTestLog('getRVR1R2', RVR1R2Data[i][0], jsonExpected, jsonResult);
   }
   for (var i=0; i<step1aData.length; i++){
-    let RVR1R2 = ssStemmer.getRVR1R2(step1aData[i][0])
+    let RVR1R2 = ssStemmer.getRVR1R2(step1aData[i][0]);
     let r2of = RVR1R2.r2of;
     var result = ssStemmer.step1a(step1aData[i][0], r2of);
     showTestLog('step1a', step1aData[i][0], step1aData[i][1], result);
   }
   for (var i=0; i<step1bData.length; i++){
-    let RVR1R2 = ssStemmer.getRVR1R2(step1bData[i][0])
+    let RVR1R2 = ssStemmer.getRVR1R2(step1bData[i][0]);
     let r2of = RVR1R2.r2of;
     var result = ssStemmer.step1b(step1bData[i][0], r2of);
     showTestLog('step1b', step1bData[i][0], step1bData[i][1], result);
   }
   for (var i=0; i<step1cData.length; i++){
-    let RVR1R2 = ssStemmer.getRVR1R2(step1cData[i][0])
+    let RVR1R2 = ssStemmer.getRVR1R2(step1cData[i][0]);
     let r2of = RVR1R2.r2of;
     var result = ssStemmer.step1c(step1cData[i][0], r2of);
     showTestLog('step1c', step1cData[i][0], step1cData[i][1], result);
   }
   for (var i=0; i<step1dData.length; i++){
-    let RVR1R2 = ssStemmer.getRVR1R2(step1dData[i][0])
+    let RVR1R2 = ssStemmer.getRVR1R2(step1dData[i][0]);
     let r2of = RVR1R2.r2of;
     var result = ssStemmer.step1d(step1dData[i][0], r2of);
     showTestLog('step1d', step1dData[i][0], step1dData[i][1], result);
   }
   for (var i=0; i<step1eData.length; i++){
-    let RVR1R2 = ssStemmer.getRVR1R2(step1eData[i][0])
+    let RVR1R2 = ssStemmer.getRVR1R2(step1eData[i][0]);
     let r2of = RVR1R2.r2of;
     var result = ssStemmer.step1e(step1eData[i][0], r2of);
     showTestLog('step1e', step1eData[i][0], step1eData[i][1], result);
@@ -96,6 +99,12 @@ function runTests(){
     let RVR1R2 = ssStemmer.getRVR1R2(step1fData[i][0])
     var result = ssStemmer.step1f(step1fData[i][0], RVR1R2);
     showTestLog('step1f', step1fData[i][0], step1fData[i][1], result);
+  }
+  for (var i=0; i<step1gData.length; i++){
+    let RVR1R2 = ssStemmer.getRVR1R2(step1gData[i][0]);
+    let r2of = RVR1R2.r2of;
+    var result = ssStemmer.step1g(step1gData[i][0], r2of);
+    showTestLog('step1g', step1gData[i][0], step1gData[i][1], result);
   }
   /*for (var i=0; i<step0Data.length; i++){
     var result = ssStemmer.step0(step0Data[i][0]);
