@@ -30,8 +30,9 @@ var step1dData = [['constitution', 'constitu'],
 var step1eData = [['experiences', 'experient']];
 
 var step1fData = [['comparativement', 'compar'],
-                  ['consciencieusement', 'consciencieux'],
-                  ['accablement', 'accabl']];
+                  ['consciencieusement', 'conscienci'],
+                  ['accablement', 'accabl'],
+                  ['fameusement', 'fameux']];
 
 var testData;
 var errorCount = 0;

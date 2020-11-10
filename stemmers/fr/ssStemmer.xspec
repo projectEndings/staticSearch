@@ -196,7 +196,7 @@
         <x:param name="token" select="'consciencieusement'"/>
         <x:param name="rvr1r2" select="ss:getRVR1R2('consciencieusement')"></x:param>
       </x:call>
-      <x:expect label="Result of step1f from 'consciencieusement'" select="'consciencieux'"/>
+      <x:expect label="Result of step1f from 'consciencieusement'" select="'conscienci'"/>
     </x:scenario>
     <x:scenario label="Testing ss:step1f: 'accablement'">
       <x:call function="ss:step1f">
@@ -204,6 +204,13 @@
         <x:param name="rvr1r2" select="ss:getRVR1R2('accablement')"></x:param>
       </x:call>
       <x:expect label="Result of step1f from 'accablement'" select="'accabl'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1f: 'fameusement'">
+      <x:call function="ss:step1f">
+        <x:param name="token" select="'fameusement'"/>
+        <x:param name="rvr1r2" select="ss:getRVR1R2('fameusement')"></x:param>
+      </x:call>
+      <x:expect label="Result of step1f from 'fameusement'" select="'fameux'"/>
     </x:scenario>
   </x:scenario>
   

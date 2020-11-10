@@ -323,16 +323,14 @@
             <xsl:when test="ends-with($rep, 'iv') and ($repLen - 2) ge xs:integer($rvr1r2[6])">
               <xsl:sequence select="replace($rep, 'iv$', '')"/>
             </xsl:when>
-            <!-- In this one, the descriptive logic is out of order IMHO, so we reverse it: 
-                 rather than "if preceded by eus, delete if in R2, else replace by eux if in R1",
-                 we do "if preceded by eus, replace by eux if in R1, else delete if in R2" -->
+            <!-- "if preceded by eus, delete if in R2, else replace by eux if in R1" -->
             <xsl:when test="ends-with($rep, 'eus')">
               <xsl:choose>
-                <xsl:when test="($repLen - 3) ge xs:integer($rvr1r2[5])">
-                  <xsl:sequence select="replace($rep, 'eus$', 'eux')"/>
-                </xsl:when>
                 <xsl:when test="($repLen - 3) ge xs:integer($rvr1r2[6])">
                   <xsl:sequence select="replace($rep, 'eus$', '')"/>
+                </xsl:when>
+                <xsl:when test="($repLen - 3) ge xs:integer($rvr1r2[5])">
+                  <xsl:sequence select="replace($rep, 'eus$', 'eux')"/>
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:sequence select="$rep"/>

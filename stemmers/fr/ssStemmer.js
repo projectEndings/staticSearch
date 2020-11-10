@@ -226,18 +226,18 @@ class SSStemmer {
       if ((rep.match(/iv$/)) && ((repLen - 2) >= rvr1r2.r2of)){
         return rep.replace(/iv$/, '');
       }
-      //Rather than "if preceded by eus, delete if in R2, else replace by eux if in R1",
-      //we do "if preceded by eus, replace by eux if in R1, else delete if in R2"
-      //since this seems more logical.
+      //if preceded by eus, delete if in R2, else replace by eux if in R1
       if (rep.match(/eus$/)){
-        if ((repLen - 3) >= rvr1r2.r1of){
-          return rep.replace(/eus$/, 'eux');
-        }
         if ((repLen - 3) >= rvr1r2.r2of){
           return rep.replace(/eus$/, '');
         }
         else{
-          return rep;
+          if ((repLen - 3) >= rvr1r2.r1of){
+            return rep.replace(/eus$/, 'eux');
+          }
+          else{
+            return rep;
+          }
         }
       }
       //if preceded by abl or iqU, delete if in R2.
