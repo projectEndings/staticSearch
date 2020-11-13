@@ -255,6 +255,23 @@
     </x:scenario>
   </x:scenario>
   
+  <x:scenario label="Test function ss:step1i">
+    <x:scenario label="Testing ss:step1i: 'agneaux'">
+      <x:call function="ss:step1i">
+        <x:param name="token" select="'agneaux'"/>
+        <x:param name="R1" select="ss:getRVR1R2('agneaux')[5]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1i from 'agneaux'" select="'agneau'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1i: 'animaux'">
+      <x:call function="ss:step1i">
+        <x:param name="token" select="'animaux'"/>
+        <x:param name="R1" select="ss:getRVR1R2('animaux')[5]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1i from 'animaux'" select="'animal'"/>
+    </x:scenario>
+  </x:scenario>
+  
   
   <!-- The big fat complete test set. -->
   <x:scenario label="Test function ss:stem, the core function">

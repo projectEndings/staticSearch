@@ -40,6 +40,9 @@ var step1gData = [['absurdités', 'absurd'],
 var step1hData = [['significatives', 'signif'], 
                   ['incisif', 'incis'], 
                   ['actif', 'actif']];
+                  
+var step1iData = [['agneaux', 'agneau'], 
+                  ['animaux', 'animal']];
 
 var testData;
 var errorCount = 0;
@@ -115,6 +118,12 @@ function runTests(){
     let r2of = RVR1R2.r2of;
     var result = ssStemmer.step1h(step1hData[i][0], r2of);
     showTestLog('step1h', step1hData[i][0], step1hData[i][1], result);
+  }
+  for (var i=0; i<step1iData.length; i++){
+    let RVR1R2 = ssStemmer.getRVR1R2(step1iData[i][0]);
+    let r1of = RVR1R2.r1of;
+    var result = ssStemmer.step1i(step1iData[i][0], r1of);
+    showTestLog('step1i', step1iData[i][0], step1iData[i][1], result);
   }
   /*for (var i=0; i<step0Data.length; i++){
     var result = ssStemmer.step0(step0Data[i][0]);

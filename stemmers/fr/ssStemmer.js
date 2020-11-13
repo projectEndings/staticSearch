@@ -76,6 +76,9 @@ class SSStemmer {
     this.reStep1g = /ités?$/;
     //reStep1h: suffixes to be deleted if in R2, and preceding bits handled. 
     this.reStep1h = /i((f)|(ve))s?$/;
+    //Step 1i is too simple to need a regex.
+    //reStep1j: two suffixes to be deleted or replaced depending on context.
+    this.reStep1j = /euses?$/;
   }
   /**
    * stem is the core function that takes a single token and returns
@@ -316,6 +319,21 @@ class SSStemmer {
     }
     else{
       return token;
+    }
+  }
+  /**
+   * step1i replaces eaux with eau, and aux with al if within R1.
+   * @param  {String} token the input token
+   * @param  {Number} r1of  the offset of R1 in the token.
+   * @return {String}       the result of the replacement operations
+   */
+  step1i(token, r1of){
+    if (token.match(/eaux$/)){
+      return token.replace(/eaux$/, 'eau');
+    }
+    else{
+      let rep = token.replace(/aux$/, 'al');
+      return ((rep !== token) && ((rep.length - 3) >= r1of))? rep : token;
     }
   }
 }
