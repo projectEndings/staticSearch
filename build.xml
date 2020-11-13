@@ -54,8 +54,8 @@
     <!--Load the configuration file as a property file-->
     <xmlproperty file="${configFile}" keeproot="true"/>
     
-    <!--Set the verbose flag to true by default; set to false to suppress messages-->
-    <property name="verbose" value="true"/>
+    <!--Set the verbose flag to false by default; set to true to see detailed messages-->
+    <property name="verbose" value="false"/>
     
     <!--The path to the search page, relative to the configuration directory-->
     <property name="searchFilePath" location="${configDir}/${config.params.searchFile}"/>
@@ -169,6 +169,7 @@
             <arg value="-s:${basedir}/xsl/create_config_xsl.xsl"/>
             <arg value="configFile=${configFile}"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
+            <arg value="verbose=${verbose}"/>
         </java>
     </target>
     

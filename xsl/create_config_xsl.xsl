@@ -317,7 +317,7 @@
                 
                 <!--Now, create all the parameters-->
                 
-                <!--First, create the global varialbes and parameters-->
+                <!--First, create the global variables and parameters-->
                 <xsl:call-template name="createGlobals" exclude-result-prefixes="#all"/>
                 
                 <!--Now create the DICTIONARY xml files-->
