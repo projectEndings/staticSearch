@@ -154,7 +154,7 @@
         depending on context.</xd:desc>
     </xd:doc>
     <xsl:variable name="reStep1j" as="xs:string" select="
-      'euses?$'
+      '(euses?)$'
       "/>
     
     
@@ -479,6 +479,35 @@
     </xsl:function>
     
     <xd:doc>
+      <xd:desc><xd:ref name="ss:step1j">ss:step1j</xd:ref> is the tenth 
+        part of standard suffix removal, handling euse(s).</xd:desc>
+      <xd:param name="token">Input token string</xd:param>
+      <xd:param name="rvr1r2">The complete sequence of items and offsets
+        calculated for the word.</xd:param>
+      <xd:result>The treated version of the token.</xd:result>
+    </xd:doc>
+    <xsl:function name="ss:step1j" as="xs:string">
+      <xsl:param name="token" as="xs:string"/>
+      <xsl:param name="rvr1r2" as="item()+"/>
+      <xsl:variable as="xs:string" name="rep" select="replace($token, $reStep1j, '')"/>
+      <xsl:variable name="repLen" as="xs:integer" select="string-length($rep)"/>
+      <xsl:choose>
+        <!--    delete if in R2   -->
+        <xsl:when test="($rep ne $token) and (string-length($rep)  ge xs:integer($rvr1r2[6]))">
+          <xsl:sequence select="$rep"/>
+        </xsl:when>
+        <!-- else replace by eux if in R1 -->  
+        <xsl:when test="($rep ne $token) and (string-length($rep)  ge xs:integer($rvr1r2[5]))">
+          <xsl:sequence select="$rep || 'eux'"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:sequence select="$token"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:function>
+    
+    
+    <xd:doc>
       <xd:desc><xd:ref name="ss:step1">ss:step1</xd:ref> combines all
       the substeps which are part of the step1 process.</xd:desc>
       <xd:param name="token">Input token string</xd:param>
@@ -488,6 +517,7 @@
       <xsl:param name="token" as="xs:string"/>
       <xsl:variable name="rvr1r2" as="item()+" select="ss:getRVR1R2($token)"/>
       <xsl:sequence select="
+                           ss:step1j(
                            ss:step1i(
                            ss:step1h(
                            ss:step1g(
@@ -504,7 +534,8 @@
                                      $rvr1r2),
                                      $rvr1r2[6]),
                                      $rvr1r2[6]),
-                                     $rvr1r2[5])"/>
+                                     $rvr1r2[5]),
+                                     $rvr1r2)"/>
     </xsl:function>
     
     

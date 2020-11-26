@@ -336,4 +336,20 @@ class SSStemmer {
       return ((rep !== token) && ((rep.length - 3) >= r1of))? rep : token;
     }
   }
+  /**
+   * step1j deletes euse(s) if in R2, or replaces with eux if within R1.
+   * @param  {String} token the input token
+   * @param  {Object} rvr1r2  the complete RVR1R2 object.
+   * @return {String}       the result of the replacement operations
+   */
+  step1j(token, rvr1r2){
+    let rep = token.replace(this.reStep1j, '');
+    let repLen = rep.length;
+    if ((rep != token) && (repLen >= rvr1r2.r2of)){
+      return rep;
+    }
+    else{
+      return ((rep != token) && (repLen >= rvr1r2.r1of))? rep + 'eux' : token;
+    }
+  }
 }
