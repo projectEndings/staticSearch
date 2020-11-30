@@ -46,6 +46,9 @@ var step1iData = [['agneaux', 'agneau'],
                   
 var step1jData = [['antigénéreuses', 'antigénér'], 
                   ['affreuse', 'affreux']];
+                  
+var step1kData = [['abaissement', 'abaissement'], 
+                  ['accomplissement', 'accompl']];
 
 var testData;
 var errorCount = 0;
@@ -132,6 +135,12 @@ function runTests(){
     let RVR1R2 = ssStemmer.getRVR1R2(step1jData[i][0]);
     var result = ssStemmer.step1j(step1jData[i][0], RVR1R2);
     showTestLog('step1j', step1jData[i][0], step1jData[i][1], result);
+  }
+  for (var i=0; i<step1kData.length; i++){
+    let RVR1R2 = ssStemmer.getRVR1R2(step1kData[i][0]);
+    let r1of = RVR1R2.r1of;
+    var result = ssStemmer.step1k(step1kData[i][0], r1of);
+    showTestLog('step1k', step1kData[i][0], step1kData[i][1], result);
   }
   
   /*for (var i=0; i<step0Data.length; i++){

@@ -157,6 +157,15 @@
       '(euses?)$'
       "/>
     
+    <xd:doc>
+      <xd:desc><xd:ref name="reStep1k" as="xs:string">reStep1k</xd:ref>
+        is a regex for two suffixes that are deleted if in R1 and preceded
+        by a non-vowel.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="reStep1k" as="xs:string" select="
+      '(' || $nonVowel || ')(issements?)$'
+      "/>
+    
     
     <!--**************************************************************
        *                                                            * 
@@ -506,6 +515,21 @@
       </xsl:choose>
     </xsl:function>
     
+    <xd:doc>
+      <xd:desc><xd:ref name="ss:step1k">ss:step1k</xd:ref> is the eleventh 
+        part of standard suffix removal, removing suffixes if in R1 and 
+        preceded by a non-vowel.</xd:desc>
+      <xd:param name="token">Input token string</xd:param>
+      <xd:param name="R1">Offset of the R1 region in the token</xd:param>
+      <xd:result>The treated version of the token.</xd:result>
+    </xd:doc>
+    <xsl:function name="ss:step1k" as="xs:string">
+      <xsl:param name="token" as="xs:string"/>
+      <xsl:param name="R1" as="xs:integer"/>
+      <xsl:variable name="rep" select="replace($token, $reStep1k, '$1')"/>
+      <xsl:sequence select="if (($rep ne $token) and (string-length($rep) ge $R1)) then $rep else $token"/>
+    </xsl:function>
+    
     
     <xd:doc>
       <xd:desc><xd:ref name="ss:step1">ss:step1</xd:ref> combines all
@@ -517,6 +541,7 @@
       <xsl:param name="token" as="xs:string"/>
       <xsl:variable name="rvr1r2" as="item()+" select="ss:getRVR1R2($token)"/>
       <xsl:sequence select="
+                           ss:step1k(
                            ss:step1j(
                            ss:step1i(
                            ss:step1h(
@@ -535,7 +560,8 @@
                                      $rvr1r2[6]),
                                      $rvr1r2[6]),
                                      $rvr1r2[5]),
-                                     $rvr1r2)"/>
+                                     $rvr1r2),
+                                     $rvr1r2[5])"/>
     </xsl:function>
     
     

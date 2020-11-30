@@ -289,6 +289,23 @@
     </x:scenario>
   </x:scenario>
   
+  <x:scenario label="Test function ss:step1k">
+    <x:scenario label="Testing ss:step1k: 'abaissement'">
+      <x:call function="ss:step1k">
+        <x:param name="token" select="'abaissement'"/>
+        <x:param name="R1" select="ss:getRVR1R2('abaissement')[5]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1k from 'abaissement'" select="'abaissement'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1k: 'accomplissement'">
+      <x:call function="ss:step1k">
+        <x:param name="token" select="'accomplissement'"/>
+        <x:param name="R1" select="ss:getRVR1R2('accomplissement')[5]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1k from 'accomplissement'" select="'accompl'"/>
+    </x:scenario>
+  </x:scenario>
+  
   
   <!-- The big fat complete test set. -->
   <x:scenario label="Test function ss:stem, the core function">
