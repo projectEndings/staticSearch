@@ -530,6 +530,20 @@
       <xsl:sequence select="if (($rep ne $token) and (string-length($rep) ge $R1)) then $rep else $token"/>
     </xsl:function>
     
+    <xd:doc>
+      <xd:desc><xd:ref name="ss:step1l">ss:step1l</xd:ref> is the twelfth 
+        part of standard suffix removal, replacing suffix amment with ant if in RV.</xd:desc>
+      <xd:param name="token">Input token string</xd:param>
+      <xd:param name="RV">Offset of the RV region in the token</xd:param>
+      <xd:result>The treated version of the token.</xd:result>
+    </xd:doc>
+    <xsl:function name="ss:step1l" as="xs:string">
+      <xsl:param name="token" as="xs:string"/>
+      <xsl:param name="RV" as="xs:integer"/>
+      <xsl:variable name="rep" select="replace($token, 'amment?', 'ant')"/>
+      <xsl:sequence select="if (($rep ne $token) and ((string-length($rep) - 3) ge $RV)) then $rep else $token"/>
+    </xsl:function>
+    
     
     <xd:doc>
       <xd:desc><xd:ref name="ss:step1">ss:step1</xd:ref> combines all
@@ -541,6 +555,7 @@
       <xsl:param name="token" as="xs:string"/>
       <xsl:variable name="rvr1r2" as="item()+" select="ss:getRVR1R2($token)"/>
       <xsl:sequence select="
+                           ss:step1l(
                            ss:step1k(
                            ss:step1j(
                            ss:step1i(
@@ -561,7 +576,8 @@
                                      $rvr1r2[6]),
                                      $rvr1r2[5]),
                                      $rvr1r2),
-                                     $rvr1r2[5])"/>
+                                     $rvr1r2[5]),
+                                     $rvr1r2[4])"/>
     </xsl:function>
     
     

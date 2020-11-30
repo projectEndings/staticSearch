@@ -49,6 +49,9 @@ var step1jData = [['antigénéreuses', 'antigénér'],
                   
 var step1kData = [['abaissement', 'abaissement'], 
                   ['accomplissement', 'accompl']];
+                  
+var step1lData = [['complaisamment', 'complaisant'], 
+                  ['constamment', 'constant']];
 
 var testData;
 var errorCount = 0;
@@ -141,6 +144,12 @@ function runTests(){
     let r1of = RVR1R2.r1of;
     var result = ssStemmer.step1k(step1kData[i][0], r1of);
     showTestLog('step1k', step1kData[i][0], step1kData[i][1], result);
+  }
+  for (var i=0; i<step1lData.length; i++){
+    let RVR1R2 = ssStemmer.getRVR1R2(step1lData[i][0]);
+    let rvof = RVR1R2.rvof;
+    var result = ssStemmer.step1l(step1lData[i][0], rvof);
+    showTestLog('step1l', step1lData[i][0], step1lData[i][1], result);
   }
   
   /*for (var i=0; i<step0Data.length; i++){

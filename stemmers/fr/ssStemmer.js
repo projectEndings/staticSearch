@@ -364,4 +364,14 @@ class SSStemmer {
     let rep = token.replace(this.reStep1k, '$1');
     return ((rep !== token) && (rep.length >= r1of))? rep : token;
   }
+  /**
+   * step1l replaces amment with ant if within RV.
+   * @param  {String} token the input token
+   * @param  {Number} rvof  the offset of RV in the token.
+   * @return {String}       the result of the replacement operations
+   */
+  step1l(token, rvof){
+    let rep = token.replace(/amment?/, 'ant');
+    return ((rep !== token) && ((rep.length - 3) >= rvof))? rep : token;
+  }
 }
