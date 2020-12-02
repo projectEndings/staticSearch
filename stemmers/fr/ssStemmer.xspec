@@ -321,6 +321,20 @@
       </x:call>
       <x:expect label="Result of step1l from 'constamment'" select="'constant'"/>
     </x:scenario>
+    <x:scenario label="Testing ss:step1l: 'conséquemment'">
+      <x:call function="ss:step1l">
+        <x:param name="token" select="'conséquemment'"/>
+        <x:param name="R1" select="ss:getRVR1R2('conséquemment')[4]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1l from 'conséquemment'" select="'conséquent'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1l: 'sciemment'">
+      <x:call function="ss:step1l">
+        <x:param name="token" select="'sciemment'"/>
+        <x:param name="R1" select="ss:getRVR1R2('sciemment')[4]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1l from 'sciemment'" select="'scient'"/>
+    </x:scenario>
   </x:scenario>
   
   

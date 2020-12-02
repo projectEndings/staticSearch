@@ -51,7 +51,9 @@ var step1kData = [['abaissement', 'abaissement'],
                   ['accomplissement', 'accompl']];
                   
 var step1lData = [['complaisamment', 'complaisant'], 
-                  ['constamment', 'constant']];
+                  ['constamment', 'constant'],
+                  ['conséquemment', 'conséquent'],
+                  ['sciemment', 'scient']];
 
 var testData;
 var errorCount = 0;

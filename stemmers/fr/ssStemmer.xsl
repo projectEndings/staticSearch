@@ -532,7 +532,9 @@
     
     <xd:doc>
       <xd:desc><xd:ref name="ss:step1l">ss:step1l</xd:ref> is the twelfth 
-        part of standard suffix removal, replacing suffix amment with ant if in RV.</xd:desc>
+        part of standard suffix removal, replacing suffix amment with ant and
+        emment with ent if in RV. (Shows as two steps in the algorithm 
+        description.</xd:desc>
       <xd:param name="token">Input token string</xd:param>
       <xd:param name="RV">Offset of the RV region in the token</xd:param>
       <xd:result>The treated version of the token.</xd:result>
@@ -540,7 +542,7 @@
     <xsl:function name="ss:step1l" as="xs:string">
       <xsl:param name="token" as="xs:string"/>
       <xsl:param name="RV" as="xs:integer"/>
-      <xsl:variable name="rep" select="replace($token, 'amment?', 'ant')"/>
+      <xsl:variable name="rep" select="replace($token, '([ea])mment?', '$1nt')"/>
       <xsl:sequence select="if (($rep ne $token) and ((string-length($rep) - 3) ge $RV)) then $rep else $token"/>
     </xsl:function>
     

@@ -365,13 +365,13 @@ class SSStemmer {
     return ((rep !== token) && (rep.length >= r1of))? rep : token;
   }
   /**
-   * step1l replaces amment with ant if within RV.
+   * step1l replaces amment with ant and emment with ent if within RV.
    * @param  {String} token the input token
    * @param  {Number} rvof  the offset of RV in the token.
    * @return {String}       the result of the replacement operations
    */
   step1l(token, rvof){
-    let rep = token.replace(/amment?/, 'ant');
+    let rep = token.replace(/([ae])mment?/, '$1nt');
     return ((rep !== token) && ((rep.length - 3) >= rvof))? rep : token;
   }
 }
