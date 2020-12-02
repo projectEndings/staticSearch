@@ -54,6 +54,9 @@ var step1lData = [['complaisamment', 'complaisant'],
                   ['constamment', 'constant'],
                   ['conséquemment', 'conséquent'],
                   ['sciemment', 'scient']];
+                  
+var step1mData = [['admirablement', 'admirable'],
+                  ['affirment', 'affirment']];
 
 var testData;
 var errorCount = 0;
@@ -153,7 +156,12 @@ function runTests(){
     var result = ssStemmer.step1l(step1lData[i][0], rvof);
     showTestLog('step1l', step1lData[i][0], step1lData[i][1], result);
   }
-  
+  for (var i=0; i<step1mData.length; i++){
+    let RVR1R2 = ssStemmer.getRVR1R2(step1mData[i][0]);
+    let rvof = RVR1R2.rvof;
+    var result = ssStemmer.step1m(step1mData[i][0], rvof);
+    showTestLog('step1m', step1mData[i][0], step1mData[i][1], result);
+  }
   /*for (var i=0; i<step0Data.length; i++){
     var result = ssStemmer.step0(step0Data[i][0]);
     showTestLog('step0', step0Data[i][0], step0Data[i][1], result);

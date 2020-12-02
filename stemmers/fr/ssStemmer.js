@@ -81,6 +81,10 @@ class SSStemmer {
     this.reStep1j = /euses?$/;
     //reStep1k: two suffixes to be deleted if in R1 and preceded by a non-vowel.
     this.reStep1k = new RegExp('(' + this.nonVowel + ')(issements?)$');
+    //reStep1m: ments? to be removed if preceded by a vowel in RV.
+    this.reStep1m = new RegExp('(' + this.vowel + ')(ments?)$');
+    
+
   }
   /**
    * stem is the core function that takes a single token and returns
@@ -371,7 +375,17 @@ class SSStemmer {
    * @return {String}       the result of the replacement operations
    */
   step1l(token, rvof){
-    let rep = token.replace(/([ae])mment?/, '$1nt');
+    let rep = token.replace(/([ae])mment$/, '$1nt');
     return ((rep !== token) && ((rep.length - 3) >= rvof))? rep : token;
+  }
+  /**
+   * step1m removes ments? if preceded by a vowel within RV.
+   * @param  {String} token the input token
+   * @param  {Number} rvof  the offset of RV in the token.
+   * @return {String}       the result of the replacement operations
+   */
+  step1m(token, rvof){
+    let rep = token.replace(this.reStep1m, '$1');
+    return ((rep !== token) && ((rep.length - 1) >= rvof))? rep : token;
   }
 }
