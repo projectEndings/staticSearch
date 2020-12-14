@@ -154,6 +154,9 @@
             transform: translate(-50%, -50%);
             display: none;
         }
+        div#ssResults{
+          min-height: 50vh;
+        }
         div#ssResults>ul>li{
             display: flex;
             flex-direction: row;
