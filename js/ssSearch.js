@@ -1,4 +1,4 @@
-/*               search.js                 */
+/*              ssSearch.js                */
 /* Authors: Martin Holmes and Joey Takeda. */
 /*        University of Victoria.          */
 
