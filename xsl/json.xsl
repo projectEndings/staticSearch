@@ -615,7 +615,7 @@
                                         <xsl:variable name="filterId" select="$thisId || '_' || $subGroupPos"/>
                                         <map key="{$filterId}">
                                             <string key="name"><xsl:value-of select="$thisContent"/></string>
-                                            <string key="sortKey"><xsl:value-of select="if (current-group()[1]/@data-ssFilterSortKey) then current-group()[1]/@data-ssFilterSortKey else $thisContent"/></string>
+                                            <string key="sortKey"><xsl:value-of select="if (current-group()[1]/@data-ssfiltersortkey) then current-group()[1]/@data-ssfiltersortkey else $thisContent"/></string>
                                             <array key="docs">
                                                 <xsl:for-each-group select="current-group()" group-by="ancestor::html[not(@data-staticSearch-exclude)]/@data-staticSearch-relativeUri">
                                                     
