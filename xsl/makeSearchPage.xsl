@@ -54,7 +54,8 @@
         propery DOCTYPE processing instruction.</xd:desc>
     </xd:doc>
     <xsl:output method="xhtml" encoding="UTF-8" normalization-form="NFC"
-        exclude-result-prefixes="#all" omit-xml-declaration="yes" html-version="5.0"/>
+        exclude-result-prefixes="#all" omit-xml-declaration="yes" html-version="5.0"
+        cdata-section-elements="style script"/>
 
     <!--**************************************************************
        *                                                            *
