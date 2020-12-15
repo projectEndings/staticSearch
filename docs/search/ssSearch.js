@@ -1,4 +1,4 @@
-/*               search.js                 */
+/*              ssSearch.js                */
 /* Authors: Martin Holmes and Joey Takeda. */
 /*        University of Victoria.          */
 
@@ -564,7 +564,6 @@ class StaticSearch{
       document.body.style.cursor = 'default';
     }
     window.scroll({ top: this.resultsDiv.offsetTop, behavior: "smooth" });
-    /*this.resultsDiv.scrollIntoView({behavior: "smooth", block: "nearest"});*/
     return result;
   }
 

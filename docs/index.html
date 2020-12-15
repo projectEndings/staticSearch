@@ -65,6 +65,9 @@
             transform: translate(-50%, -50%);
             display: none;
         }
+        div#ssResults{
+          min-height: 50vh;
+        }
         div#ssResults>ul>li{
             display: flex;
             flex-direction: row;
@@ -241,7 +244,12 @@ function showByMod() {
                      <li class="toc"><span class="headingNumber"> 6.1 </span><a href="howDoIUseIt.html#index.xml-body.1_div.6_div.1" class="toc toc_1">Configuring your site: search filters</a><ul class="toc">
                            
                            
-                           <li class="toc"><span class="headingNumber">6.1.1 </span><a href="howDoIUseIt.html#descFilters" class="toc toc_2" title="Description filters">Description filters</a></li>
+                           <li class="toc"><span class="headingNumber">6.1.1 </span><a href="howDoIUseIt.html#descFilters" class="toc toc_2" title="Description filters">Description filters</a><ul class="toc">
+                                 
+                                 
+                                 <li class="toc"><span class="headingNumber">6.1.1.1 </span><a href="howDoIUseIt.html#descFilterSorting" class="toc toc_3" title="Sort order for description filters">Sort order for description filters</a></li>
+                                 </ul>
+                              </li>
                            
                            
                            <li class="toc"><span class="headingNumber">6.1.2 </span><a href="howDoIUseIt.html#dateFilters" class="toc toc_2" title="Date filters">Date filters</a></li>
@@ -429,12 +437,12 @@ function showByMod() {
          <div id="staticSearch"><script src="search/ssStemmer.js"></script><script src="search/ssSearch.js"></script><script>
                 var Sch;
                 window.addEventListener('load', function(){Sch = new StaticSearch();});
-            </script><form accept-charset="UTF-8" id="ssForm" data-allowphrasal="yes" data-allowwildcards="yes" data-maxkwicstoshow="10" onsubmit="return false;" data-versionstring="_2f55ee0" data-ssfolder="search"><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><span class="clearButton"><button id="ssClear">Clear</button></span><div class="ssDescFilters">
+            </script><form accept-charset="UTF-8" id="ssForm" data-allowphrasal="yes" data-allowwildcards="yes" data-maxkwicstoshow="10" onsubmit="return false;" data-versionstring="_0eb77d9" data-ssfolder="search"><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><span class="clearButton"><button id="ssClear">Clear</button></span><div class="ssDescFilters">
                   <fieldset class="ssFieldset" title="Level" id="ssDesc1">
                      <legend>Level</legend>
                      <ul class="ssDescCheckboxList">
-                        <li><input type="checkbox" title="Level" value="Advanced" id="ssDesc1_3" class="staticSearch.desc"/><label for="ssDesc1_3">Advanced</label></li>
-                        <li><input type="checkbox" title="Level" value="Basic" id="ssDesc1_1" class="staticSearch.desc"/><label for="ssDesc1_1">Basic</label></li>
+                        <li><input type="checkbox" title="Level" value="Advanced" id="ssDesc1_1" class="staticSearch.desc"/><label for="ssDesc1_1">Advanced</label></li>
+                        <li><input type="checkbox" title="Level" value="Basic" id="ssDesc1_3" class="staticSearch.desc"/><label for="ssDesc1_3">Basic</label></li>
                         <li><input type="checkbox" title="Level" value="Intermediate" id="ssDesc1_2" class="staticSearch.desc"/><label for="ssDesc1_2">Intermediate</label></li>
                      </ul>
                   </fieldset>
@@ -513,7 +521,7 @@ function showByMod() {
             <!--
 	  Generated from index.xml using XSLT stylesheets version 7.50.1
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2020-11-01T00:34:59Z.
+	       on 2020-12-15T22:50:53Z.
 	       SAXON HE 10.0.
 		 --></address>
          </div>
