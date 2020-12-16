@@ -2028,19 +2028,26 @@ class SSResultSet{
           d.append(scoreSpace);
           d.appendChild(scoreSpan);
         }
+        //Now process KWIC contexts if they exist.
         if (value.contexts.length > 0){
           //Sort these in document order.
           value.contexts.sort(function(a, b){return a.pos - b.pos;});
           let ul2 = document.createElement('ul');
           ul2.setAttribute('class', 'kwic');
           for (let i=0; i<Math.min(value.contexts.length, this.maxKwicsToShow); i++){
+            //Output the KWIC.
             let li2 = document.createElement('li');
             li2.innerHTML = value.contexts[i].context;
             console.log(value.contexts[i]);
-            if ((value.contexts[i].hasOwnProperty('fid'))&&(value.contexts[i].fid !== '')){
+            //Create a text fragment identifier (see https://wicg.github.io/scroll-to-text-fragment/)
+            let tfiList = value.contexts[i].context.split(/<\/?mark>/);
+            let tfi = tfiList.length > 1? encodeURI(':~:text=' + tfiList[1]) : '';
+            //If we have a fragment id, output that.
+            if (((value.contexts[i].hasOwnProperty('fid'))&&(value.contexts[i].fid !== ''))||(tfi !== '')){
+              let fid = value.contexts[i].hasOwnProperty('fid')? value.contexts[i].fid : '';
               let a2 = document.createElement('a');
               a2.appendChild(document.createTextNode('\u21ac'));
-              a2.setAttribute('href', value.docUri + '#' + value.contexts[i].fid);
+              a2.setAttribute('href', value.docUri + '#' + fid + tfi);
               a2.setAttribute('class', 'fidLink');
               li2.appendChild(a2);
             }
