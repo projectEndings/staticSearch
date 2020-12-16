@@ -445,6 +445,11 @@
                 <xso:param name="scoringAlgorithm" select="'raw'"/>
             </xsl:if>
             
+            <!--Specify whether or not to link to fragments; we default true-->
+            <xsl:if test="not($configDoc//params/linkToFragment)">
+                <xso:param name="linkToFragment" select="true()"/>
+            </xsl:if>
+            
             <!-- Finally, add the parsed-out version string from the versionFile. -->
             <xso:param name="versionString"><xsl:value-of select="if (($versionDocUri != '') and (unparsed-text-available($versionDocUri))) then concat('_', replace(normalize-space(unparsed-text($versionDocUri)), '\s+', '_')) else ''"/></xso:param>
             

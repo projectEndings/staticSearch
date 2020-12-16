@@ -105,9 +105,12 @@
     </xsl:template>
     
     <xsl:template name="createDiagnostics">
+        
         <xsl:variable name="docsWithoutIds" select="$tokenizedDocs//html[not(@id)]"/>
         <xsl:variable name="docsWithoutLang" select="$tokenizedDocs//html[not(@lang)]"/>
         <xsl:variable name="badNumericFilters" select="$tokenizedDocs//meta[contains-token(@class,'staticSearch.num')][not(@content castable as xs:decimal)]"/>
+        <xsl:variable name="docsWithoutFragmentIds" select="$tokenizedDocs//body[not(descendant::*[@id])]"/>
+        
         <section>
             <h2>Diagnostics</h2>
             <details>
@@ -143,6 +146,8 @@
                     </xsl:choose>
                 
             </details>
+
+            
             <details>
                 <summary>Bad Numeric Filters (<xsl:value-of select="count($badNumericFilters)"/>)</summary>
                 <xsl:choose>
@@ -167,8 +172,21 @@
                     </xsl:otherwise>
                 </xsl:choose>
             </details>
-
             
+            <xsl:if test="$linkToFragment">
+                <details>
+                    <summary>Documents without ids within the body (<xsl:value-of select="count($docsWithoutFragmentIds)"/>)</summary>
+                   <xsl:choose>
+                       <xsl:when test="count($docsWithoutFragmentIds) gt 0">
+                           <ul>
+                               <xsl:for-each select="$docsWithoutFragmentIds">
+                                   <li><xsl:value-of select="document-uri(root(.))"/></li>
+                               </xsl:for-each>
+                           </ul>
+                       </xsl:when>
+                   </xsl:choose>
+                </details>
+            </xsl:if>
         </section>
     </xsl:template>
  
