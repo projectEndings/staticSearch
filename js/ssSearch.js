@@ -2041,7 +2041,7 @@ class SSResultSet{
             console.log(value.contexts[i]);
             //Create a text fragment identifier (see https://wicg.github.io/scroll-to-text-fragment/)
             let tfiList = value.contexts[i].context.split(/<\/?mark>/);
-            let tfi = tfiList.length > 1? encodeURI(':~:text=' + tfiList[1]) : '';
+            let tfi = ((document.fragmentDirective) && (tfiList.length > 1))? encodeURI(':~:text=' + tfiList[1]) : '';
             //If we have a fragment id, output that.
             if (((value.contexts[i].hasOwnProperty('fid'))&&(value.contexts[i].fid !== ''))||(tfi !== '')){
               let fid = value.contexts[i].hasOwnProperty('fid')? value.contexts[i].fid : '';
