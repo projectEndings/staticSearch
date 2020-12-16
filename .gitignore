@@ -17,3 +17,6 @@ VERSION
 
 # Temporary files from the build #
 ssTemp_*
+
+# Generated configuration file #
+config.xsl
