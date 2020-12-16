@@ -175,6 +175,9 @@
             min-width: 3em;
             min-height: 3em;
         }
+        a.fidLink{
+            text-decoration: none;
+        }
         div#ssPoweredBy{
             font-size: 0.75rem;
             display: flex;

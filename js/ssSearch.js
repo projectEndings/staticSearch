@@ -1483,7 +1483,7 @@ if (this.discardedTerms.length > 0){
                   if (rePhr.test(unmarkedContext)){
   //We have a candidate document for inclusion, and a candidate context.
                     let c = unmarkedContext.replace(rePhr, '<mark>' + '$&' + '</mark>');
-                    currContexts.push({form: self.terms[phr].str, context: c, weight: 2});
+                    currContexts.push({form: self.terms[phr].str, context: c, weight: 2, fid: cntxt.fid? cntxt.fid : ''});
                   }
                 }
   //If we've found contexts, we know we have a document to add to the results.
@@ -2036,6 +2036,14 @@ class SSResultSet{
           for (let i=0; i<Math.min(value.contexts.length, this.maxKwicsToShow); i++){
             let li2 = document.createElement('li');
             li2.innerHTML = value.contexts[i].context;
+            console.log(value.contexts[i]);
+            if ((value.contexts[i].hasOwnProperty('fid'))&&(value.contexts[i].fid !== '')){
+              let a2 = document.createElement('a');
+              a2.appendChild(document.createTextNode('\u21ac'));
+              a2.setAttribute('href', value.docUri + '#' + value.contexts[i].fid);
+              a2.setAttribute('class', 'fidLink');
+              li2.appendChild(a2);
+            }
             ul2.appendChild(li2);
           }
           d.appendChild(ul2);
