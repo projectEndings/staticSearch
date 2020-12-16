@@ -5,7 +5,7 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2020-12-15T22:50:44Z. 2019-2020.
+Schema generated from ODD source 2020-12-16T05:04:00Z. 2019-2020.
 TEI Edition: Version 4.1.0. Last updated on
 	19th August 2020, revision b414ba550
 TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
@@ -42,6 +42,9 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
                <ref name="stemmerFolder"/>
             </optional>
             <ref name="recurse"/>
+            <optional>
+               <ref name="linkToFragment"/>
+            </optional>
             <optional>
                <ref name="scoringAlgorithm"/>
             </optional>
@@ -229,6 +232,12 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Whether to include keyword-in-context extracts in the index. This increases the
               size of the index considerably, but it allows for more user-friendly search results,
               as well as phrasal searches.) </a:documentation>
+         <data type="boolean"/>
+      </element>
+   </define>
+   <define name="linkToFragment">
+      <element name="linkToFragment" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Whether to link keyword-in-context extracts to the nearest id in the document. Default is true.) </a:documentation>
          <data type="boolean"/>
       </element>
    </define>

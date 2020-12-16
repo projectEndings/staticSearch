@@ -482,6 +482,14 @@
                   to use at the beginning and/or the end of a kwic which is not a full sentence. An 
                   ellipsis character is the default.</item>
                   
+                  <item><gi>linkToFragment</gi> is a boolean parameter that specifies whether you want
+                    the search engine to link each keyword-in-context extract with the closest element that 
+                    has an <att>id</att>. If the element has an ancestor with an <att>id</att>, then the indexer will associate
+                    that keyword-in-context extract with that <att>id</att>; if there are no suitable ancestor elements that have
+                    an <att>id</att>, then the extract is associated with first preceding element with an <att>id</att>.
+               </item>
+                  
+                  
                   <item><gi>verbose</gi> is a boolean which turns on/off detailed output messages
                   during the indexing process. You might set this to true if something is not working 
                   as expected and you need to do some debugging.</item>
@@ -853,7 +861,7 @@
             <cell>As above, you can use a <gi>rule</gi> with an <att>weight</att>=<val>0</val></cell>
           </row>
           <row>
-            <cell>How do I get staticSearch to ignore an element, but retain their text in the KWIC?</cell>
+            <cell>How do I get staticSearch to ignore an element, but retain its text in the KWIC?</cell>
             <cell>Here, you'll want to use the <gi>exclude</gi> function, which excludes the element from indexing, but doesn't remove it from the document itself. So, if you wanted to exclude all keyboard entry items (<gi>xh:kbd</gi>), but still have them in the KWIC, you could do something like:
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
                 <exclude match="kbd" type="index"/>
@@ -874,6 +882,12 @@
                 </config>
               </egXML>
             </cell>
+          </row>
+          <row>
+            <cell>How can I get staticSearch to jump straight to a specific hit in the document from a search result?</cell>
+            <cell>The best way to do this is to ensure that <gi>linkToFragment</gi> is set to the <val>true</val> and that the
+            input HTML contains ids at whatever level you think is most helpful. For instance, if possible, you could give each
+            <gi>xhtml:p</gi> element an <att>id</att>, which would mean that each KWIC could be associated with the input document.</cell>
           </row>
         </table>
       </div>
@@ -977,6 +991,7 @@
                 <elementRef key="versionFile" minOccurs="0"/>
                 <elementRef key="stemmerFolder" minOccurs="0"/>
                 <elementRef key="recurse"/>
+                <elementRef key="linkToFragment" minOccurs="0"/>
                 <elementRef key="scoringAlgorithm" minOccurs="0"/>
                 <elementRef key="phrasalSearch" minOccurs="0"/>
                 <elementRef key="wildcardSearch" minOccurs="0"/>
@@ -1170,6 +1185,13 @@
             </content>
           </elementSpec>
           
+          <elementSpec ident="linkToFragment" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>Whether to link keyword-in-context extracts to the nearest id in the document. Default is true.</gloss>
+            <content>
+              <dataRef name="boolean"/>
+            </content>
+          </elementSpec>
+          
           <elementSpec ident="totalKwicLength" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>If <gi>createContexts</gi> is set to true, then this parameter controls how long
               the contexts will be.</gloss>
@@ -1223,6 +1245,7 @@
               <dataRef name="boolean"/>
             </content>
           </elementSpec>
+          
           
           <elementSpec ident="wildcardSearch" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>Whether or not to support wildcard searches. Note that wildcard searches are
