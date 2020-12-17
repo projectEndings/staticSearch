@@ -447,8 +447,11 @@ class StaticSearch{
     let searchToDo = false; //default
 
     if (searchParams.has('q')){
-      this.queryBox.value = searchParams.get('q');
-      searchToDo = true;
+      let currQ = searchParams.get('q').trim();
+      if (currQ !== ''){
+        this.queryBox.value = searchParams.get('q');
+        searchToDo = true;
+      }
     }
     for (let cbx of this.descFilterCheckboxes){
       let key = cbx.getAttribute('title');
