@@ -446,8 +446,8 @@
             </xsl:if>
             
             <!--Specify whether or not to link to fragments; we default true-->
-            <xsl:if test="not($configDoc//params/linkToFragment)">
-                <xso:param name="linkToFragment" select="true()"/>
+            <xsl:if test="not($configDoc//params/linkToFragmentId)">
+                <xso:param name="linkToFragmentId" select="true()"/>
             </xsl:if>
             
             <!-- Finally, add the parsed-out version string from the versionFile. -->

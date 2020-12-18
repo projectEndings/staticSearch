@@ -322,7 +322,7 @@
                                         <number key="pos"><xsl:value-of select="@data-staticSearch-pos"/></number>
                                         
                                         <!--Get the best fragment id if that's set-->
-                                        <xsl:if test="$linkToFragment and @data-staticSearch-fid">
+                                        <xsl:if test="$linkToFragmentId and @data-staticSearch-fid">
                                             <string key="fid">
                                                 <xsl:value-of select="@data-staticSearch-fid"/>
                                             </string>

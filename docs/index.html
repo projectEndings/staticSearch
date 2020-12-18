@@ -86,6 +86,9 @@
             min-width: 3em;
             min-height: 3em;
         }
+        a.fidLink{
+            text-decoration: none;
+        }
         div#ssPoweredBy{
             font-size: 0.75rem;
             display: flex;
@@ -356,7 +359,7 @@ function showByMod() {
                            <li class="toc"><span class="headingNumber">Appendix A.1.9 </span><a href="schemaSpec.html#TEI.kwicTruncateString" class="toc toc_2" title="&lt;kwicTruncateString&gt;">&lt;kwicTruncateString&gt;</a></li>
                            
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.10 </span><a href="schemaSpec.html#TEI.linkToFragment" class="toc toc_2" title="&lt;linkToFragment&gt;">&lt;linkToFragment&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.10 </span><a href="schemaSpec.html#TEI.linkToFragmentId" class="toc toc_2" title="&lt;linkToFragmentId&gt;">&lt;linkToFragmentId&gt;</a></li>
                            
                            
                            <li class="toc"><span class="headingNumber">Appendix A.1.11 </span><a href="schemaSpec.html#TEI.maxKwicsToHarvest" class="toc toc_2" title="&lt;maxKwicsToHarvest&gt;">&lt;maxKwicsToHarvest&gt;</a></li>
@@ -386,25 +389,28 @@ function showByMod() {
                            <li class="toc"><span class="headingNumber">Appendix A.1.19 </span><a href="schemaSpec.html#TEI.scoringAlgorithm" class="toc toc_2" title="&lt;scoringAlgorithm&gt;">&lt;scoringAlgorithm&gt;</a></li>
                            
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.20 </span><a href="schemaSpec.html#TEI.searchFile" class="toc toc_2" title="&lt;searchFile&gt;">&lt;searchFile&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.20 </span><a href="schemaSpec.html#TEI.scrollToTextFragment" class="toc toc_2" title="&lt;scrollToTextFragment&gt;">&lt;scrollToTextFragment&gt;</a></li>
                            
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.21 </span><a href="schemaSpec.html#TEI.stemmerFolder" class="toc toc_2" title="&lt;stemmerFolder&gt;">&lt;stemmerFolder&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.21 </span><a href="schemaSpec.html#TEI.searchFile" class="toc toc_2" title="&lt;searchFile&gt;">&lt;searchFile&gt;</a></li>
                            
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.22 </span><a href="schemaSpec.html#TEI.stopwordsFile" class="toc toc_2" title="&lt;stopwordsFile&gt;">&lt;stopwordsFile&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.22 </span><a href="schemaSpec.html#TEI.stemmerFolder" class="toc toc_2" title="&lt;stemmerFolder&gt;">&lt;stemmerFolder&gt;</a></li>
                            
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.23 </span><a href="schemaSpec.html#TEI.totalKwicLength" class="toc toc_2" title="&lt;totalKwicLength&gt;">&lt;totalKwicLength&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.23 </span><a href="schemaSpec.html#TEI.stopwordsFile" class="toc toc_2" title="&lt;stopwordsFile&gt;">&lt;stopwordsFile&gt;</a></li>
                            
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.24 </span><a href="schemaSpec.html#TEI.verbose" class="toc toc_2" title="&lt;verbose&gt;">&lt;verbose&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.24 </span><a href="schemaSpec.html#TEI.totalKwicLength" class="toc toc_2" title="&lt;totalKwicLength&gt;">&lt;totalKwicLength&gt;</a></li>
                            
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.25 </span><a href="schemaSpec.html#TEI.versionFile" class="toc toc_2" title="&lt;versionFile&gt;">&lt;versionFile&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.25 </span><a href="schemaSpec.html#TEI.verbose" class="toc toc_2" title="&lt;verbose&gt;">&lt;verbose&gt;</a></li>
                            
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.26 </span><a href="schemaSpec.html#TEI.wildcardSearch" class="toc toc_2" title="&lt;wildcardSearch&gt;">&lt;wildcardSearch&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.26 </span><a href="schemaSpec.html#TEI.versionFile" class="toc toc_2" title="&lt;versionFile&gt;">&lt;versionFile&gt;</a></li>
+                           
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.27 </span><a href="schemaSpec.html#TEI.wildcardSearch" class="toc toc_2" title="&lt;wildcardSearch&gt;">&lt;wildcardSearch&gt;</a></li>
                            </ul>
                         </li>
                      
@@ -440,19 +446,19 @@ function showByMod() {
          <div id="staticSearch"><script src="search/ssStemmer.js"></script><script src="search/ssSearch.js"></script><script>
                 var Sch;
                 window.addEventListener('load', function(){Sch = new StaticSearch();});
-            </script><form accept-charset="UTF-8" id="ssForm" data-allowphrasal="yes" data-allowwildcards="yes" data-maxkwicstoshow="10" onsubmit="return false;" data-versionstring="_da02e27" data-ssfolder="search"><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><span class="clearButton"><button id="ssClear">Clear</button></span><div class="ssDescFilters">
+            </script><form accept-charset="UTF-8" id="ssForm" data-allowphrasal="yes" data-allowwildcards="yes" data-maxkwicstoshow="10" onsubmit="return false;" data-versionstring="_abf18ae" data-ssfolder="search"><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><span class="clearButton"><button id="ssClear">Clear</button></span><div class="ssDescFilters">
                   <fieldset class="ssFieldset" title="Level" id="ssDesc1">
                      <legend>Level</legend>
                      <ul class="ssDescCheckboxList">
-                        <li><input type="checkbox" title="Level" value="Advanced" id="ssDesc1_2" class="staticSearch.desc"/><label for="ssDesc1_2">Advanced</label></li>
+                        <li><input type="checkbox" title="Level" value="Advanced" id="ssDesc1_3" class="staticSearch.desc"/><label for="ssDesc1_3">Advanced</label></li>
                         <li><input type="checkbox" title="Level" value="Basic" id="ssDesc1_1" class="staticSearch.desc"/><label for="ssDesc1_1">Basic</label></li>
-                        <li><input type="checkbox" title="Level" value="Intermediate" id="ssDesc1_3" class="staticSearch.desc"/><label for="ssDesc1_3">Intermediate</label></li>
+                        <li><input type="checkbox" title="Level" value="Intermediate" id="ssDesc1_2" class="staticSearch.desc"/><label for="ssDesc1_2">Intermediate</label></li>
                      </ul>
                   </fieldset>
                </div>
                <div class="ssDateFilters">
                   <fieldset class="ssFieldset" title="Date Updated" id="ssDate1">
-                     <legend>Date Updated</legend><span><label for="ssDate1_from">From: </label><input type="text" placeholder="2020-01-13" title="Date Updated" id="ssDate1_from" onchange="this.reportValidity()" class="staticSearch.date" maxlength="10" pattern="^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$"/></span><span><label for="ssDate1_to">To: </label><input type="text" placeholder="2020-10-14" title="Date Updated" id="ssDate1_to" onchange="this.reportValidity()" class="staticSearch.date" maxlength="10" pattern="^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$"/></span></fieldset>
+                     <legend>Date Updated</legend><span><label for="ssDate1_from">From: </label><input type="text" placeholder="2020-01-13" title="Date Updated" id="ssDate1_from" onchange="this.reportValidity()" class="staticSearch.date" maxlength="10" pattern="^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$"/></span><span><label for="ssDate1_to">To: </label><input type="text" placeholder="2020-12-18" title="Date Updated" id="ssDate1_to" onchange="this.reportValidity()" class="staticSearch.date" maxlength="10" pattern="^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$"/></span></fieldset>
                </div><span class="postFilterSearchBtn"><button id="ssDoSearch2">Search</button></span></form>
             <div id="ssSearching">Searching...</div>
             <div id="ssResults"></div>
@@ -524,7 +530,7 @@ function showByMod() {
             <!--
 	  Generated from index.xml using XSLT stylesheets version 7.50.1
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2020-12-16T05:04:18Z.
+	       on 2020-12-18T15:40:43Z.
 	       SAXON HE 10.0.
 		 --></address>
          </div>

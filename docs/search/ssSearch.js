@@ -447,8 +447,11 @@ class StaticSearch{
     let searchToDo = false; //default
 
     if (searchParams.has('q')){
-      this.queryBox.value = searchParams.get('q');
-      searchToDo = true;
+      let currQ = searchParams.get('q').trim();
+      if (currQ !== ''){
+        this.queryBox.value = searchParams.get('q');
+        searchToDo = true;
+      }
     }
     for (let cbx of this.descFilterCheckboxes){
       let key = cbx.getAttribute('title');
@@ -1483,7 +1486,7 @@ if (this.discardedTerms.length > 0){
                   if (rePhr.test(unmarkedContext)){
   //We have a candidate document for inclusion, and a candidate context.
                     let c = unmarkedContext.replace(rePhr, '<mark>' + '$&' + '</mark>');
-                    currContexts.push({form: self.terms[phr].str, context: c, weight: 2});
+                    currContexts.push({form: self.terms[phr].str, context: c, weight: 2, fid: cntxt.fid? cntxt.fid : ''});
                   }
                 }
   //If we've found contexts, we know we have a document to add to the results.
@@ -2028,14 +2031,29 @@ class SSResultSet{
           d.append(scoreSpace);
           d.appendChild(scoreSpan);
         }
+        //Now process KWIC contexts if they exist.
         if (value.contexts.length > 0){
           //Sort these in document order.
           value.contexts.sort(function(a, b){return a.pos - b.pos;});
           let ul2 = document.createElement('ul');
           ul2.setAttribute('class', 'kwic');
           for (let i=0; i<Math.min(value.contexts.length, this.maxKwicsToShow); i++){
+            //Output the KWIC.
             let li2 = document.createElement('li');
             li2.innerHTML = value.contexts[i].context;
+            console.log(value.contexts[i]);
+            //Create a text fragment identifier (see https://wicg.github.io/scroll-to-text-fragment/)
+            let tfiList = value.contexts[i].context.split(/<\/?mark>/);
+            let tfi = ((document.fragmentDirective) && (tfiList.length > 1))? encodeURI(':~:text=' + tfiList[1]) : '';
+            //If we have a fragment id, output that.
+            if (((value.contexts[i].hasOwnProperty('fid'))&&(value.contexts[i].fid !== ''))||(tfi !== '')){
+              let fid = value.contexts[i].hasOwnProperty('fid')? value.contexts[i].fid : '';
+              let a2 = document.createElement('a');
+              a2.appendChild(document.createTextNode('\u21ac'));
+              a2.setAttribute('href', value.docUri + '#' + fid + tfi);
+              a2.setAttribute('class', 'fidLink');
+              li2.appendChild(a2);
+            }
             ul2.appendChild(li2);
           }
           d.appendChild(ul2);

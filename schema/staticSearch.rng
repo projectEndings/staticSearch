@@ -5,7 +5,7 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2020-12-16T05:04:00Z. 2019-2020.
+Schema generated from ODD source 2020-12-18T15:40:30Z. 2019-2020.
 TEI Edition: Version 4.1.0. Last updated on
 	19th August 2020, revision b414ba550
 TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
@@ -43,7 +43,10 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
             </optional>
             <ref name="recurse"/>
             <optional>
-               <ref name="linkToFragment"/>
+               <ref name="linkToFragmentId"/>
+            </optional>
+            <optional>
+               <ref name="scrollToTextFragment"/>
             </optional>
             <optional>
                <ref name="scoringAlgorithm"/>
@@ -235,9 +238,17 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
          <data type="boolean"/>
       </element>
    </define>
-   <define name="linkToFragment">
-      <element name="linkToFragment" ns="http://hcmc.uvic.ca/ns/staticSearch">
+   <define name="linkToFragmentId">
+      <element name="linkToFragmentId" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Whether to link keyword-in-context extracts to the nearest id in the document. Default is true.) </a:documentation>
+         <data type="boolean"/>
+      </element>
+   </define>
+   <define name="scrollToTextFragment">
+      <element name="scrollToTextFragment" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(WARNING: Experimental technology. This turns on a feature currently only 
+            supported by a subset of browsers, enabling links from keyword-in-context results
+            directly to the specific text string in the target document.) </a:documentation>
          <data type="boolean"/>
       </element>
    </define>

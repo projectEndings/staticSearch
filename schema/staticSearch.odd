@@ -142,7 +142,7 @@
           <head>How do I use it?</head>
           <list>
             <item>Level: Intermediate</item>
-            <item>Last Updated: <date when="2020-07-17">17 July 2020</date></item>
+            <item>Last Updated: <date when="2020-12-18">18 December 2020</date></item>
           </list>
           <p>First, you will have to make sure your site pages are correctly configured so that the Generator can
           parse them. Then, you will have to create a configuration file specifying what options you want to use. 
@@ -482,12 +482,31 @@
                   to use at the beginning and/or the end of a kwic which is not a full sentence. An 
                   ellipsis character is the default.</item>
                   
-                  <item><gi>linkToFragment</gi> is a boolean parameter that specifies whether you want
+                  <item><gi>linkToFragmentId</gi> is a boolean parameter that specifies whether you want
                     the search engine to link each keyword-in-context extract with the closest element that 
                     has an <att>id</att>. If the element has an ancestor with an <att>id</att>, then the indexer will associate
                     that keyword-in-context extract with that <att>id</att>; if there are no suitable ancestor elements that have
                     an <att>id</att>, then the extract is associated with first preceding element with an <att>id</att>.
                </item>
+                  
+                  <item><gi>scrollToTextFragment</gi> (WARNING: experimental feature). 
+                    Google has proposed a browser feature called <ref target="https://wicg.github.io/scroll-to-text-fragment/">Text Fragments</ref>, which would support 
+                    a special kind of link that targets a specific string of text inside a page.
+                    When clicking on such a link, the browser would scroll to, and then highlight,
+                    the target text. This has been implemented in Chrome-based browsers (Chrome, 
+                    Chromium and Edge) at the time of writing, but other browser producers are sceptical
+                    with regard to the specification and worried about possible security implications.
+                    The specification is subject to radical change. <gi>scrollToTextFragment</gi> is a 
+                    boolean parameter that specifies whether you want to turn on this feature for 
+                    browsers that support it. It depends on the availability of keyword-in-context 
+                    strings, so <gi>createContexts</gi> must also be turned on to make it work. The
+                    feature is automatically suppressed for browsers which do not support it. We recommend 
+                    only using this feature on sites which are in steady development, so that if 
+                    necessary it can be turned off, our the staticSearch implementation can be 
+                    updated to take account of changes. For sites intended to remain unchanged or
+                    archived for any length of time, this feature should be left turned off. It is
+                    off by default.
+                  </item>
                   
                   
                   <item><gi>verbose</gi> is a boolean which turns on/off detailed output messages
@@ -885,7 +904,7 @@
           </row>
           <row>
             <cell>How can I get staticSearch to jump straight to a specific hit in the document from a search result?</cell>
-            <cell>The best way to do this is to ensure that <gi>linkToFragment</gi> is set to the <val>true</val> and that the
+            <cell>The best way to do this is to ensure that <gi>linkToFragmentId</gi> is set to the <val>true</val> and that the
             input HTML contains ids at whatever level you think is most helpful. For instance, if possible, you could give each
             <gi>xhtml:p</gi> element an <att>id</att>, which would mean that each KWIC could be associated with the input document.</cell>
           </row>
@@ -991,7 +1010,8 @@
                 <elementRef key="versionFile" minOccurs="0"/>
                 <elementRef key="stemmerFolder" minOccurs="0"/>
                 <elementRef key="recurse"/>
-                <elementRef key="linkToFragment" minOccurs="0"/>
+                <elementRef key="linkToFragmentId" minOccurs="0"/>
+                <elementRef key="scrollToTextFragment" minOccurs="0"/>
                 <elementRef key="scoringAlgorithm" minOccurs="0"/>
                 <elementRef key="phrasalSearch" minOccurs="0"/>
                 <elementRef key="wildcardSearch" minOccurs="0"/>
@@ -1185,8 +1205,17 @@
             </content>
           </elementSpec>
           
-          <elementSpec ident="linkToFragment" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+          <elementSpec ident="linkToFragmentId" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>Whether to link keyword-in-context extracts to the nearest id in the document. Default is true.</gloss>
+            <content>
+              <dataRef name="boolean"/>
+            </content>
+          </elementSpec>
+          
+          <elementSpec ident="scrollToTextFragment" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>WARNING: Experimental technology. This turns on a feature currently only 
+            supported by a subset of browsers, enabling links from keyword-in-context results
+            directly to the specific text string in the target document.</gloss>
             <content>
               <dataRef name="boolean"/>
             </content>

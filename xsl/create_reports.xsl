@@ -173,7 +173,7 @@
                 </xsl:choose>
             </details>
             
-            <xsl:if test="$linkToFragment">
+            <xsl:if test="$linkToFragmentId">
                 <details>
                     <summary>Documents without ids within the body (<xsl:value-of select="count($docsWithoutFragmentIds)"/>)</summary>
                    <xsl:choose>
