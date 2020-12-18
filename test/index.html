@@ -14,7 +14,7 @@
         <div>
             <h1>Test data set</h1>
             <p>Documents in the collection: <a href="badthings.html">badthings.html</a>, 
-                <a href="badthings.html">badthings.html</a>, 
+                <a href="apostrophes.html">apostrophes.html</a>, 
                 <a href="clues.html">clues.html</a>, 
                 <a href="poems/ditty.html">ditty.html</a>, 
                 <a href="poems/shizukesaya.html">shizukesaya.html</a>, 
@@ -37,14 +37,16 @@
                 <li>Good range of HTML elements providing scope for testing context stuff.</li>
                 <li>Foreign languages and non-latin stuff such as Japanese.</li>
                 <li>Hyphenated terms, single and double, such as one-way street and hard-to-process sequences.</li>
+                <li>Apostrophes in various positions, including leading, trailing, and word-internal.</li>
                 <li>Names, both in sentence-initial and sentence medial positions. Fred Bloggs and Mary Wollstonecraft Shelley are examples.</li>
                 <li>Numbers such as 25, 2,302, and 3.14159, or currency amounts such as £4,500 or ¥9,000,000.</li>
                 <li>Items that should not be indexed (such as line numbers attached to poetic lines).</li>
                 <li>Constrained contexts which should delimit keyword-in-context ranges, such as table cells.</li>
                 <li>Inline elements whose boundaries should be ignored when indexing.</li>
+                <li>Fragment ids for specifying anchor links from KWICs</li>
             </ul>
             <p>There are three poems, two Victorian and one Japanese (about cicadas). There are also two documents
-            with tables, one of which dals with liquor consumption in British Columbia, while the other has numbers
+            with tables, one of which deals with liquor consumption in British Columbia, while the other has numbers
             such as 1783 and percentages such as 73.58%. One of the poems includes the phrase <q>summer day—our day</q>, 
             and if we follow that to the next line we get <q>our day Was clouded</q>, which should be indexed/found 
                 in this document, but not in the source poem, where lines are boundary contexts.</p>

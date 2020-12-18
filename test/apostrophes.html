@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html id="apostrophes" xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Selection from Martin Porter's "The apostrophe character"</title>
+        
+        <meta name="Document type" class="staticSearch.desc" content="Article extracts"/>
+        <meta name="Date range" class="staticSearch.date" content="1689" />
+        <meta name="Worth reading" class="staticSearch.bool" content="true" />
+        <style>
+            body{
+                max-width: 45rem;
+                margin: 0 auto;
+            }
+            #text{
+                padding: 1rem;
+                margin-left: 1rem;
+                border: 1px dashed #141414;
+            }
+           
+        </style>
+    </head>
+    <body>
+        <div id="preamble">
+            <p>The following is taken from Martin Porter's discussion of apostrophes in English for the Porter2 Stemmer:
+                <a href="http://snowball.tartarus.org/texts/apostrophe.html">http://snowball.tartarus.org/texts/apostrophe.html</a>. The text is unchanged,
+                but it has been slightly re-encoded (<code>p</code>s instead of <code>br</code>s, for instance).
+            
+            </p>
+        </div>
+        <div id="text">
+            <blockquote>
+                <h2>The apostrophe character</h2>
+                
+                <p>Representing apostrophe is problematical for various reasons,</p>
+                <ol style="list-style-type: lower-alpha;">
+                    <li>There are two Unicode characters for apostrophe, U+0027 (also ASCII hex
+                        27), and U+2019. Compare <br/>
+                        <pre>        Hamlet's father's ghost (U+0027)
+        Hamlet’s father’s ghost (U+2019)
+</pre></li>
+                    <li>Although conceptually different from an apostrophe, a single closing
+                        quote is also represented by character U+2019.</li>
+                    <li>Character U+0027 is used for apostrophe, single closing quote and
+                        single opening quote (U+2018).</li>
+                    <li>A fourth character, U+201B, like U+2018 but with the tail ‘rising’
+                        instead of ‘descending’, is also sometimes used as apostrophe (in the
+                        house style of certain publishers, for surnames like <i>M’Coy</i> and so on.)
+                    </li>
+                </ol>
+                <p>In the English stemming algorithm, it is assumed that apostrophe is
+                    represented by U+0027. This makes it ASCII compatible. Clearly other codes
+                    for apostrophe can be mapped to this code prior to stemming.</p>
+                
+                <p>In English orthography, apostrophe has one of three functions.</p>
+                <ol>
+                    <li>It indicates a contraction in what is now accepted as a single word:
+                        <i>o’clock</i>, <i>O’Reilly</i>, <i>M’Coy</i>. Except in proper names such forms
+                        are rare: the apostrophe in <i>Hallowe’en</i> is disappearing, and in
+                        <i>’bus</i> has disappeared.</li>
+                    <li>It indicates a standard contraction with auxiliary or modal verbs:
+                        <i>you’re</i>, <i>isn’t</i>, <i>we’d</i>. There are about forty of these forms in
+                        contemporary English, and their use is increasing as they displace the full
+                        forms that were at one time used in formal documents. Although they can be
+                        reduced to word pairs, it is more convenient to treat them as single items
+                        (usually stopwords) in IR work. And then preserving the apostrophe is
+                        important, so that <i>he’ll</i>, <i>she’ll</i>, <i>we’ll</i> are not equated with
+                        <i>hell</i>, <i>shell</i>, <i>well</i> etc.</li>
+                    <li>It is used to form the ‘English genitive’, <i>John's book</i>, <i>the horses’
+                        hooves</i> etc. This is a development of (1), where historically the apostrophe
+                        stood for an elided <b><i>e</i></b>. (Similarly the printed form <b><i>’d</i></b> for <b><i>ed</i></b> was
+                        very common before the nineteenth century.) Although in decline (witness <i>pigs
+                            trotters</i>, <i>Girls School Trust</i>), its use continues in contemporary
+                        English, where it is fiercely promoted as correct grammar, despite (or it might
+                        be closer to the truth to say <i>because of</i>) its complete semantic redundancy.</li>
+                </ol>
+                <p>For these reasons, the English stemmer treats apostrophe as a letter, removing
+                    it from the beginning of a word, where it might have stood for an opening
+                    quote, from the end of the word, where it might have stood for a closing quote,
+                    or been an apostrophe following <b><i>s</i></b>. The form <b><i>’s</i></b> is also treated as an ending.</p>
+            </blockquote>
+            <cite>Martin Porter, "The apostrophe character," <a href="http://snowball.tartarus.org/texts/apostrophe.html">http://snowball.tartarus.org/texts/apostrophe.html</a></cite>
+            
+        </div>
+    </body>
+</html>
