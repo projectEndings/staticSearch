@@ -665,14 +665,17 @@ class StaticSearch{
       //Next, replace curly quotes/apostrophes with straight.
       strSearch = strSearch.replace(/[“”]/g, '"');
       strSearch = strSearch.replace(/[‘’‛]/g, "'");
+      
+      //Then remove any leading or trailing apostrophes
+      strSearch = strSearch.replace(/(^'|'$)/g,'');
 
       //Strip out all other punctuation that isn't between numbers. We do this
       //slightly differently depending on whether wildcard searching is enabled.
       if (this.allowWildcards){
-        strSearch = strSearch.replace(/(^|[^\d])[\.',!;:@#$%\^&]+([^\d]|$)/g, '$1$2');
+        strSearch = strSearch.replace(/(^|[^\d])[\.,!;:@#$%\^&]+([^\d]|$)/g, '$1$2');
       }
       else{
-        strSearch = strSearch.replace(/(^|[^\d])[\.',!;:@#$%\^&*?\[\]]+([^\d]|$)/g, '$1$2');
+        strSearch = strSearch.replace(/(^|[^\d])[\.,!;:@#$%\^&*?\[\]]+([^\d]|$)/g, '$1$2');
       }
 
       //If we're not supporting phrasal searches, get rid of double quotes.
