@@ -83,15 +83,22 @@
     <xsl:variable name="curlyDoubleAposClose">”</xsl:variable>
     <xsl:variable name="straightDoubleApos">"</xsl:variable>
     
-    <xsl:variable name="allSingleApos" select="($straightSingleApos, $curlyAposOpen, $curlyAposClose)" as="xs:string+"/>
-    <xsl:variable name="allDoubleApos" select="($curlyDoubleAposClose, $curlyDoubleAposOpen, $straightDoubleApos)" as="xs:string+"/>
-    
-    <xd:doc>
-        <xd:desc>All apostrophes as a sequence (not concatenated or joined)</xd:desc>
-    </xd:doc>
-    <xsl:variable name="allApos" 
-        select="($allSingleApos, $allDoubleApos)"
+    <xsl:variable name="allSingleApos" 
+        select="($straightSingleApos, $curlyAposOpen, $curlyAposClose)"
         as="xs:string+"/>
+    
+    <xsl:variable name="allSingleAposCharClassRex" 
+        select="'[' || string-join($allSingleApos) || ']'" 
+        as="xs:string"/>
+    
+    <xsl:variable name="allDoubleApos" 
+        select="($curlyDoubleAposClose, $curlyDoubleAposOpen, $straightDoubleApos)" 
+        as="xs:string+"/>
+    
+    <xsl:variable name="allDoubleAposCharClassRex"
+        select="'[' || string-join($allDoubleApos) || ']'"
+        as="xs:string"/>
+    
     
      <xd:desc>
          <xd:doc>Regex to match words that are numeric with a decimal</xd:doc>
@@ -779,11 +786,15 @@
     </xd:doc>
     <xsl:function name="hcmc:cleanWordForStemming" as="xs:string">
         <xsl:param name="word" as="xs:string"/>
-        <!--First, replace any quotation marks in the middle of the word if there happen
-            to be any; then trim off any following periods -->
-        <xsl:value-of select="replace($word, '[' || string-join($allDoubleApos,'') || ']', '')
-            => replace('\.$','')
-            => translate('ſ','s')"/>
+        
+        <xsl:value-of select="
+            replace($word, $allDoubleAposCharClassRex, '') (: Remove all quotation marks :)
+            => replace($allSingleAposCharClassRex, $straightSingleApos) (: Normalize all apostrophes to straight :)
+            => replace('\.$','') (: Remove trailing period :)
+            => replace('^' || $straightSingleApos, '') (: Remove leading apostrope :)
+            => replace($straightSingleApos || '$', '') (: Remove trailing apostrophe :)
+            => translate('ſ','s') (: Normalize long-s to regular s :)
+            "/>
     </xsl:function>
     
     <xd:doc>
