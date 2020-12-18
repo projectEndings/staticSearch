@@ -4,6 +4,8 @@
         <searchFile>test/search.html</searchFile>
         <versionFile>test/VERSION</versionFile>
         <recurse>true<!--Need to set recurse to true for the test--></recurse>
+        <linkToFragmentId>true</linkToFragmentId>
+        <scrollToTextFragment>true</scrollToTextFragment>
         <phrasalSearch>true</phrasalSearch>
         <wildcardSearch>true</wildcardSearch>
         <createContexts>true</createContexts>

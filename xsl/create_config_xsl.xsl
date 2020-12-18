@@ -445,6 +445,16 @@
                 <xso:param name="scoringAlgorithm" select="'raw'"/>
             </xsl:if>
             
+            <!--Specify whether or not to link to fragments; we default true-->
+            <xsl:if test="not($configDoc//params/linkToFragmentId)">
+                <xso:param name="linkToFragmentId" select="true()"/>
+            </xsl:if>
+            
+            <!--Turn on experimental scroll-to-text feature: default false.-->
+            <xsl:if test="not($configDoc//params/scrollToTextFragment)">
+                <xso:param name="scrollToTextFragment" select="false()"/>
+            </xsl:if>
+            
             <!-- Finally, add the parsed-out version string from the versionFile. -->
             <xso:param name="versionString"><xsl:value-of select="if (($versionDocUri != '') and (unparsed-text-available($versionDocUri))) then concat('_', replace(normalize-space(unparsed-text($versionDocUri)), '\s+', '_')) else ''"/></xso:param>
             

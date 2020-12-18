@@ -318,7 +318,15 @@
                                         <!--Get the weight, using hcmc:returnWeight function -->
                                         <number key="weight"><xsl:value-of select="hcmc:returnWeight(.)"/></number>
                                         
+                                        <!--Get the current position-->
                                         <number key="pos"><xsl:value-of select="@data-staticSearch-pos"/></number>
+                                        
+                                        <!--Get the best fragment id if that's set-->
+                                        <xsl:if test="$linkToFragmentId and @data-staticSearch-fid">
+                                            <string key="fid">
+                                                <xsl:value-of select="@data-staticSearch-fid"/>
+                                            </string>
+                                        </xsl:if>
                                     </map>
                                 </xsl:for-each>
                             </array>
@@ -386,13 +394,6 @@
         <xsl:variable name="thisTerm"
             select="string-join($span/descendant::text(),'')"
             as="xs:string"/>
-        
-        <!-- For future use: retrieve the nearest id if there is one, so that we can link to 
-             a useful fragment in the document. -->
-        <xsl:variable name="nearestId" as="xs:string" select="xs:string(if ($span/ancestor::*[@id][not(self::html)]) then $span/ancestor::*[@id][not(self::html)][1]/@id else if ($span/preceding::*[@id][not(self::html)]) then $span/preceding::*[@id][not(self::html)][1]/@id else '')"/>
-        <xsl:if test="$verbose and string-length($nearestId) gt 0">
-            <xsl:message>For term <xsl:sequence select="$thisTerm"/> found nearest fragment id <xsl:sequence select="$nearestId"/></xsl:message>
-        </xsl:if>
 
         <!--The first ancestor that has been signaled as an ancestor-->
         <xsl:variable name="contextAncestor"

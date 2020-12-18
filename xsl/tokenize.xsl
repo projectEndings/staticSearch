@@ -83,16 +83,25 @@
     <xsl:variable name="curlyDoubleAposClose">”</xsl:variable>
     <xsl:variable name="straightDoubleApos">"</xsl:variable>
     
+    <xsl:variable name="allSingleApos" select="($straightSingleApos, $curlyAposOpen, $curlyAposClose)" as="xs:string+"/>
+    <xsl:variable name="allDoubleApos" select="($curlyDoubleAposClose, $curlyDoubleAposOpen, $straightDoubleApos)" as="xs:string+"/>
+    
+    <xd:doc>
+        <xd:desc>All apostrophes as a sequence (not concatenated or joined)</xd:desc>
+    </xd:doc>
+    <xsl:variable name="allApos" 
+        select="($allSingleApos, $allDoubleApos)"
+        as="xs:string+"/>
     
      <xd:desc>
          <xd:doc>Regex to match words that are numeric with a decimal</xd:doc>
      </xd:desc>
-    <xsl:variable name="numericWithDecimal">[<xsl:value-of select="$straightDoubleApos"/>\d]+([\.,]?\d+)</xsl:variable>
+    <xsl:variable name="numericWithDecimal">[<xsl:value-of select="string-join($allDoubleApos,'')"/>\d]+([\.,]?\d+)</xsl:variable>
     
     <xd:desc>
         <xd:doc>Regex to match alphanumeric words</xd:doc>
     </xd:desc>
-    <xsl:variable name="alphanumeric">[\p{L}<xsl:value-of select="$straightDoubleApos"/>]+</xsl:variable>
+    <xsl:variable name="alphanumeric">[\p{L}<xsl:value-of select="string-join($allDoubleApos,'')"/>]+</xsl:variable>
     
     <xd:desc>
         <xd:doc>Regex to match hyphenated words</xd:doc>
@@ -383,21 +392,20 @@
     <xsl:template match="script" mode="clean"/>
     
   
-    <xd:doc>
+<!--    <xd:doc>
         <xd:desc>Template that normalizes the variety of apostrophe types into straight double apostrophes;
             we do this here so that we don't have to account for it in the tokenization step.</xd:desc>
     </xd:doc>
     <xsl:template match="text()[matches(.,string-join(($curlyAposOpen,$curlyAposClose,$curlyDoubleAposClose, $curlyDoubleAposOpen),'|'))]" mode="clean">
         <xsl:value-of select="replace(.,string-join(($curlyAposOpen,$curlyAposClose),'|'), $straightSingleApos) => replace(string-join(($curlyDoubleAposOpen,$curlyDoubleAposClose),'|'),$straightDoubleApos)"/>
-    </xsl:template>
+    </xsl:template>-->
     
     
     <xd:doc>
-        <xd:desc>Template to retain all elements that have a declared language, since that information must
-        be retained in the tokenization step to determine whether or not a particular term exists outside of the
-        declared root language.</xd:desc>
+        <xd:desc>Template to retain all elements that have a declared language or have a declared id,
+        since we may need those elements in other contexts.</xd:desc>
     </xd:doc>
-    <xsl:template match="*[@lang or @xml:lang][ancestor::body]" mode="clean">
+    <xsl:template match="*[@lang or @xml:lang or @id][ancestor::body]" mode="clean">
         <xsl:copy>
             <xsl:apply-templates select="@*|node()" mode="#current"/>
         </xsl:copy>
@@ -773,7 +781,9 @@
         <xsl:param name="word" as="xs:string"/>
         <!--First, replace any quotation marks in the middle of the word if there happen
             to be any; then trim off any following periods -->
-        <xsl:value-of select="replace($word, $straightDoubleApos, '') => replace('\.$','') => translate('ſ','s')"/>
+        <xsl:value-of select="replace($word, '[' || string-join($allDoubleApos,'') || ']', '')
+            => replace('\.$','')
+            => translate('ſ','s')"/>
     </xsl:function>
     
     <xd:doc>
@@ -851,12 +861,47 @@
     </xsl:accumulator>
     
     <xd:doc>
+        <xd:desc>Accumulator that keeps track of the last processed id, which is helpful in instances where something
+            may not have an ancestor id.</xd:desc>
+    </xd:doc>
+    <xsl:accumulator name="fragment-id" initial-value="()">
+        <xsl:accumulator-rule match="*[@id][ancestor::body]"
+            select="string(@id)"/>
+    </xsl:accumulator>
+    
+    
+    <xd:doc>
+        <xd:desc>Template to match all ancestor ids</xd:desc>
+    </xd:doc>
+    
+    <xsl:template match="*[@id][ancestor::body]" mode="enumerate">
+        <xsl:copy>
+            <xsl:apply-templates select="@*|node()" mode="#current">
+                <xsl:with-param name="id" select="string(@id)" tunnel="yes"/>
+            </xsl:apply-templates>
+        </xsl:copy>
+    </xsl:template>
+    
+    
+    <xd:doc>
         <xd:desc>Match all of the generated spans and add a position to the element so that we
         can simply determine their order in later processes.</xd:desc>
     </xd:doc>
     <xsl:template match="span[@data-staticSearch-stem]" mode="enumerate">
+        <xsl:param name="id" as="xs:string?" tunnel="yes"/>
+        <!--Get the fragment id: if there's a tunneled id parameter, then we want to use that,
+                since it is from the stem's ancestor; if there isn't, then we use the nearest preceding id.-->
+        <xsl:variable name="fragmentId"
+            select="if ($id) then $id else accumulator-before('fragment-id')" 
+            as="xs:string?"/>
         <xsl:copy>
             <xsl:attribute name="data-staticSearch-pos" select="accumulator-before('stem-position')"/>
+            <xsl:if test="exists($fragmentId)">
+                <xsl:if test="$verbose">
+                    <xsl:message>Found fragment id: <xsl:value-of select="$fragmentId"/> (method: <xsl:value-of select="if ($fragmentId = $id) then 'ancestor' else 'accumulator'"/>)</xsl:message>
+                </xsl:if>
+                <xsl:attribute name="data-staticSearch-fid" select="$fragmentId"/>
+            </xsl:if>
             <xsl:apply-templates select="@*|node()" mode="#current"/>
         </xsl:copy>
     </xsl:template>
