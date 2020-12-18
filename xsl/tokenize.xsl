@@ -83,16 +83,25 @@
     <xsl:variable name="curlyDoubleAposClose">”</xsl:variable>
     <xsl:variable name="straightDoubleApos">"</xsl:variable>
     
+    <xsl:variable name="allSingleApos" select="($straightSingleApos, $curlyAposOpen, $curlyAposClose)" as="xs:string+"/>
+    <xsl:variable name="allDoubleApos" select="($curlyDoubleAposClose, $curlyDoubleAposOpen, $straightDoubleApos)" as="xs:string+"/>
+    
+    <xd:doc>
+        <xd:desc>All apostrophes as a sequence (not concatenated or joined)</xd:desc>
+    </xd:doc>
+    <xsl:variable name="allApos" 
+        select="($allSingleApos, $allDoubleApos)"
+        as="xs:string+"/>
     
      <xd:desc>
          <xd:doc>Regex to match words that are numeric with a decimal</xd:doc>
      </xd:desc>
-    <xsl:variable name="numericWithDecimal">[<xsl:value-of select="$straightDoubleApos"/>\d]+([\.,]?\d+)</xsl:variable>
+    <xsl:variable name="numericWithDecimal">[<xsl:value-of select="string-join($allDoubleApos,'')"/>\d]+([\.,]?\d+)</xsl:variable>
     
     <xd:desc>
         <xd:doc>Regex to match alphanumeric words</xd:doc>
     </xd:desc>
-    <xsl:variable name="alphanumeric">[\p{L}<xsl:value-of select="$straightDoubleApos"/>]+</xsl:variable>
+    <xsl:variable name="alphanumeric">[\p{L}<xsl:value-of select="string-join($allDoubleApos,'')"/>]+</xsl:variable>
     
     <xd:desc>
         <xd:doc>Regex to match hyphenated words</xd:doc>
@@ -383,13 +392,13 @@
     <xsl:template match="script" mode="clean"/>
     
   
-    <xd:doc>
+<!--    <xd:doc>
         <xd:desc>Template that normalizes the variety of apostrophe types into straight double apostrophes;
             we do this here so that we don't have to account for it in the tokenization step.</xd:desc>
     </xd:doc>
     <xsl:template match="text()[matches(.,string-join(($curlyAposOpen,$curlyAposClose,$curlyDoubleAposClose, $curlyDoubleAposOpen),'|'))]" mode="clean">
         <xsl:value-of select="replace(.,string-join(($curlyAposOpen,$curlyAposClose),'|'), $straightSingleApos) => replace(string-join(($curlyDoubleAposOpen,$curlyDoubleAposClose),'|'),$straightDoubleApos)"/>
-    </xsl:template>
+    </xsl:template>-->
     
     
     <xd:doc>
@@ -772,7 +781,9 @@
         <xsl:param name="word" as="xs:string"/>
         <!--First, replace any quotation marks in the middle of the word if there happen
             to be any; then trim off any following periods -->
-        <xsl:value-of select="replace($word, $straightDoubleApos, '') => replace('\.$','') => translate('ſ','s')"/>
+        <xsl:value-of select="replace($word, '[' || string-join($allDoubleApos,'') || ']', '')
+            => replace('\.$','')
+            => translate('ſ','s')"/>
     </xsl:function>
     
     <xd:doc>
