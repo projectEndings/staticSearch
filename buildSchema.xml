@@ -39,6 +39,9 @@
     <!--The base odd-->
     <property name="odd.src" value="${schema.dir}/staticSearch.odd"/>
     
+    <!--The base odd-->
+    <property name="odd.patched" value="${schema.dir}/staticSearch_patched.odd"/>
+    
     <!--Processed (i.e. combined with P5)-->
     <property name="odd.processed" value="${schema.dir}/staticSearch-processed.odd"/>
     
@@ -58,6 +61,8 @@
     
     
     <!--************ XSLTs ************** -->
+    <!--Local utility ODD to patch our ODD before TEI processing.-->
+    <property name="patch_tei_odd.xsl" value="${xsl.dir}/patch_tei_odd.xsl"/>
     
     <!--ODD 2 ODD XSLT (from the TEI framework)-->
     <property name="odd2odd.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/released/odds/odd2odd.xsl"/>
@@ -106,16 +111,30 @@
      *                                                              *
      ****************************************************************-->
     
+    <target name="patchOddSrc">
+        <description>Patches the staticSearch ODD to use RNG interleave
+        to work around bugs in TEI's regular processing.</description>
+        <echo message="${echo.separator}"/>
+        <echo message="Patching the staticSearch ODD ..."/>
+        <echo message="${echo.separator}"/>
+        <java jar="${saxon}" fork="true" failonerror="true">
+            <arg line="-s:${odd.src}"/>
+            <arg line="-o:${odd.patched}"/>
+            <arg line="-xsl:'${patch_tei_odd.xsl}'"/>
+            <arg line="defaultTEIServer=${defaultTEIServer}"/>
+            <arg line="defaultTEIVersion=${defaultTEIVersion}"/>
+        </java>
+    </target>
     
     
     <target name="odd2processedOdd">
-        <description>Processes the Static Search ODD against the TEI All using
+        <description>Processes the patched staticSearch ODD against the TEI All using
             TEI stylesheets.</description>
         <echo message="${echo.separator}"/>
         <echo message="Processing the Static Search ODD ..."/>
         <echo message="${echo.separator}"/>
         <java jar="${saxon}" fork="true" failonerror="true">
-            <arg line="-s:${odd.src}"/>
+            <arg line="-s:${odd.patched}"/>
             <arg line="-o:${odd.processed}"/>
             <arg line="-xsl:'${odd2odd.xsl}'"/>
             <arg line="defaultTEIServer=${defaultTEIServer}"/>
@@ -219,7 +238,7 @@
     
     
     
-    <target name="all" depends="odd2processedOdd, odd2rng, rng2Sch, odd2Doc, clean, split, makeSearch">
+    <target name="all" depends="patchOddSrc, odd2processedOdd, odd2rng, rng2Sch, odd2Doc, clean, split, makeSearch">
         <description>
             TARGET: all
             
