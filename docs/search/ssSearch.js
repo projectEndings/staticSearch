@@ -248,6 +248,12 @@ class StaticSearch{
         return (isNaN(i))? defaultVal : i;
       }
 
+      //Nested convenience function for getting string values from form attributes.
+      this.getConfigStr = function getConfigStr(ident, defaultVal){
+        let str = this.ssForm.getAttribute('data-' + ident.toLowerCase());
+        return (str != null)? str : defaultVal;
+      }
+
       //Nested convenience function for getting bool values from form attributes.
       //This allows latitude in how bools are specified.
       this.getConfigBool = function getConfigBool(ident, defaultVal){
@@ -256,10 +262,21 @@ class StaticSearch{
       }
 
       //Configuration for phrasal searches if found. Default true.
-      this.allowPhrasal = this.getConfigBool('allowPhrasal', true);
+      this.allowPhrasal = this.getConfigBool('allowphrasal', true);
 
       //Configuration for use of wildcards. Default false.
-      this.allowWildcards = this.getConfigBool('allowWildcards', false);
+      this.allowWildcards = this.getConfigBool('allowwildcards', false);
+
+      //Configuration for use of experimental scroll-to-text-fragment feature. 
+      //Default false, and also depends on browser support.
+      this.scrollToTextFragment = ((this.getConfigBool('scrolltotextfragment', false)) && ('fragmentDirective' in document));
+
+      //String for leading and trailing truncations of KWICs.
+      this.kwicTruncateString = this.getConfigStr('datakwictruncatestring', '...');
+
+      //Regex for removing truncate strings
+      let escTrunc = this.kwicTruncateString.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      this.reKwicTruncateStr = new RegExp('(^' + escTrunc + ')|(' + escTrunc + '$)', 'g');
 
       //Limit to the weight of JSON that will be downloaded for a 
       //single wildcard term. NOT CURRENTLY USED. Default 1MB.
@@ -336,7 +353,7 @@ class StaticSearch{
       this.maxKwicsToShow = this.getConfigInt('maxKwicsToShow', 10);
 
       //Result handling object
-      this.resultSet = new SSResultSet(this.maxKwicsToShow);
+      this.resultSet = new SSResultSet(this.maxKwicsToShow, this.scrollToTextFragment, this.reKwicTruncateStr);
 
       //This allows the user to navigate through searches using the back and
       //forward buttons; to avoid repeatedly pushing state when this happens,
@@ -1753,12 +1770,16 @@ if (this.discardedTerms.length > 0){
   * objects returned from the search index queries.
   */
 class SSResultSet{
-  constructor(maxKwicsToShow){
+  constructor(maxKwicsToShow, scrollToTextFragment, reKwicTruncateStr){
     try{
       this.mapDocs = new Map([]);
       //The maximum allowed number of keyword-in-context results to be
       //included in output.
       this.maxKwicsToShow = maxKwicsToShow;
+      //Whether to try using scroll-to-text-fragment feature.
+      this.scrollToTextFragment = scrollToTextFragment;
+      //A regex to trim KWICs
+      this.reKwicTruncateStr = reKwicTruncateStr;
       //A list of titles indexed by docUri is retrieved by AJAX
       //and set later.
       this.titles = null;
@@ -2043,14 +2064,14 @@ class SSResultSet{
             li2.innerHTML = value.contexts[i].context;
             console.log(value.contexts[i]);
             //Create a text fragment identifier (see https://wicg.github.io/scroll-to-text-fragment/)
-            let tfiList = value.contexts[i].context.split(/<\/?mark>/);
-            let tfi = ((document.fragmentDirective) && (tfiList.length > 1))? encodeURI(':~:text=' + tfiList[1]) : '';
+            let cleanContext = value.contexts[i].context.replace(/<\/?mark>/g, '').replace(this.reKwicTruncateStr, '');
+            let tf = ((this.scrollToTextFragment) && (cleanContext.length > 1))? encodeURI(':~:text=' + cleanContext) : '';
             //If we have a fragment id, output that.
-            if (((value.contexts[i].hasOwnProperty('fid'))&&(value.contexts[i].fid !== ''))||(tfi !== '')){
+            if (((value.contexts[i].hasOwnProperty('fid'))&&(value.contexts[i].fid !== ''))||(tf !== '')){
               let fid = value.contexts[i].hasOwnProperty('fid')? value.contexts[i].fid : '';
               let a2 = document.createElement('a');
               a2.appendChild(document.createTextNode('\u21ac'));
-              a2.setAttribute('href', value.docUri + '#' + fid + tfi);
+              a2.setAttribute('href', value.docUri + '#' + fid + tf);
               a2.setAttribute('class', 'fidLink');
               li2.appendChild(a2);
             }
