@@ -755,8 +755,9 @@
                         <array key="{@data-staticSearch-relativeUri}">
                             <string><xsl:value-of select="hcmc:getDocTitle(.)"/></string>
                              <!--Add a thumbnail graphic if one is specified. This generates
-                            nothing if there isn't. -->
+                            an empty string or nothing if there isn't. -->
                             <xsl:sequence select="hcmc:getDocThumbnail(.)"/>
+                            <xsl:sequence select="hcmc:getDocSortKey(.)"/>
                         </array>
                     </xsl:for-each>
                 </map>
@@ -929,12 +930,35 @@
             been massaged as necessary during the tokenizing process, so that it is now relative to the 
             search page location, not to the containing document.</xd:desc>
         <xd:param name="doc">The input document, which must be an HTML element.</xd:param>
-        <xd:result>A j:string element, if there is a configured graphic, or the empty sequence.</xd:result>
+        <xd:result>A j:string element, if there is a configured graphic, or an empty string if there is a subsequent sort key, or the empty
+            sequence if not. We return the empty string in the 
+        second case so that the sort key ends up at the right 
+        position in the array.</xd:result>
     </xd:doc>
     <xsl:function name="hcmc:getDocThumbnail" as="element(j:string)?">
         <xsl:param name="doc" as="element(html)"/>
-        <xsl:if test="$doc/head/meta[@name='docImage'][@class='staticSearch.docImage']">
-            <j:string><xsl:value-of select="$doc/head/meta[@name='docImage'][@class='staticSearch.docImage'][1]/@content"/></j:string>
+        <xsl:choose>
+            <xsl:when test="$doc/head/meta[@name='docImage'][@class='staticSearch.docImage']">
+                <j:string><xsl:value-of select="$doc/head/meta[@name='docImage'][@class='staticSearch.docImage'][1]/@content"/></j:string>
+            </xsl:when>
+            <xsl:when test="$doc/head/meta[@name='ssDocSortKey']">
+                <j:string></j:string>
+            </xsl:when>
+        </xsl:choose>
+    </xsl:function>
+    
+    <xd:doc>
+        <xd:desc><xd:ref name="hcmc:getDocSortKey" type="function">hcmc:getDocSortKey</xd:ref> 
+            generates a j:string element containing a string read
+            from the meta[@name='ssDocSortKey'] element if there
+            is one, or the empty sequence if not..</xd:desc>
+        <xd:param name="doc">The input document, which must be an HTML element.</xd:param>
+        <xd:result>A j:string element, if there is a configured sort key, or the empty sequence.</xd:result>
+    </xd:doc>
+    <xsl:function name="hcmc:getDocSortKey" as="element(j:string)?">
+        <xsl:param name="doc" as="element(html)"/>
+        <xsl:if test="$doc/head/meta[@name='ssDocSortKey']">
+            <j:string><xsl:value-of select="$doc/head/meta[@name='ssDocSortKey'][1]/@content"/></j:string>
         </xsl:if>
     </xsl:function>
     
