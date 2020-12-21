@@ -272,7 +272,7 @@ class StaticSearch{
       this.scrollToTextFragment = ((this.getConfigBool('scrolltotextfragment', false)) && ('fragmentDirective' in document));
 
       //String for leading and trailing truncations of KWICs.
-      this.kwicTruncateString = this.getConfigStr('datakwictruncatestring', '...');
+      this.kwicTruncateString = this.getConfigStr('kwictruncatestring', '...');
 
       //Regex for removing truncate strings
       let escTrunc = this.kwicTruncateString.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
