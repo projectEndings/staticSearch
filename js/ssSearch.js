@@ -665,14 +665,17 @@ class StaticSearch{
       //Next, replace curly quotes/apostrophes with straight.
       strSearch = strSearch.replace(/[“”]/g, '"');
       strSearch = strSearch.replace(/[‘’‛]/g, "'");
+      
+      //Then remove any leading or trailing apostrophes
+      strSearch = strSearch.replace(/(^'|'$)/g,'');
 
       //Strip out all other punctuation that isn't between numbers. We do this
       //slightly differently depending on whether wildcard searching is enabled.
       if (this.allowWildcards){
-        strSearch = strSearch.replace(/(^|[^\d])[\.',!;:@#$%\^&]+([^\d]|$)/g, '$1$2');
+        strSearch = strSearch.replace(/(^|[^\d])[\.,!;:@#$%\^&]+([^\d]|$)/g, '$1$2');
       }
       else{
-        strSearch = strSearch.replace(/(^|[^\d])[\.',!;:@#$%\^&*?\[\]]+([^\d]|$)/g, '$1$2');
+        strSearch = strSearch.replace(/(^|[^\d])[\.,!;:@#$%\^&*?\[\]]+([^\d]|$)/g, '$1$2');
       }
 
       //If we're not supporting phrasal searches, get rid of double quotes.
@@ -1487,8 +1490,12 @@ if (this.discardedTerms.length > 0){
           for (let phr of phrases){
   //Get the term we decided to use to retrieve index data.
             let stem = self.terms[phr].stem;
+            
+  //Expand apostrophes into their variants
+           let rePhrStr = self.terms[phr].str.replace(/'/g, "['‘’‛]");
+  
   //Make the phrase into a regex for matching.
-            let rePhr = new RegExp('\\b' + self.terms[phr].str + '\\b', 'i');
+            let rePhr = new RegExp('\\b' + rePhrStr + '\\b', 'i');
   //If that term is in the index (it should be, even if it's empty, but still...)
             if (self.index[stem]){
   //Look at each of the document instances for that term...
