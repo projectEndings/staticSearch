@@ -272,7 +272,7 @@ class StaticSearch{
       this.scrollToTextFragment = ((this.getConfigBool('scrolltotextfragment', false)) && ('fragmentDirective' in document));
 
       //String for leading and trailing truncations of KWICs.
-      this.kwicTruncateString = this.getConfigStr('datakwictruncatestring', '...');
+      this.kwicTruncateString = this.getConfigStr('kwictruncatestring', '...');
 
       //Regex for removing truncate strings
       let escTrunc = this.kwicTruncateString.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -665,14 +665,17 @@ class StaticSearch{
       //Next, replace curly quotes/apostrophes with straight.
       strSearch = strSearch.replace(/[“”]/g, '"');
       strSearch = strSearch.replace(/[‘’‛]/g, "'");
+      
+      //Then remove any leading or trailing apostrophes
+      strSearch = strSearch.replace(/(^'|'$)/g,'');
 
       //Strip out all other punctuation that isn't between numbers. We do this
       //slightly differently depending on whether wildcard searching is enabled.
       if (this.allowWildcards){
-        strSearch = strSearch.replace(/(^|[^\d])[\.',!;:@#$%\^&]+([^\d]|$)/g, '$1$2');
+        strSearch = strSearch.replace(/(^|[^\d])[\.,!;:@#$%\^&]+([^\d]|$)/g, '$1$2');
       }
       else{
-        strSearch = strSearch.replace(/(^|[^\d])[\.',!;:@#$%\^&*?\[\]]+([^\d]|$)/g, '$1$2');
+        strSearch = strSearch.replace(/(^|[^\d])[\.,!;:@#$%\^&*?\[\]]+([^\d]|$)/g, '$1$2');
       }
 
       //If we're not supporting phrasal searches, get rid of double quotes.
@@ -1447,6 +1450,7 @@ if (this.discardedTerms.length > 0){
 //#3
       if ((this.terms.length < 1)&&(this.docsMatchingFilters.size > 0)){
         this.resultSet.addArray([...this.docsMatchingFilters]);
+        this.resultSet.sortByScoreDesc();
         this.clearResultsDiv();
         if (pDiscarded !== null){
           this.resultsDiv.appendChild(pDiscarded);
@@ -1487,8 +1491,12 @@ if (this.discardedTerms.length > 0){
           for (let phr of phrases){
   //Get the term we decided to use to retrieve index data.
             let stem = self.terms[phr].stem;
+            
+  //Expand apostrophes into their variants
+           let rePhrStr = self.terms[phr].str.replace(/'/g, "['‘’‛]");
+  
   //Make the phrase into a regex for matching.
-            let rePhr = new RegExp('\\b' + self.terms[phr].str + '\\b', 'i');
+            let rePhr = new RegExp('\\b' + rePhrStr + '\\b', 'i');
   //If that term is in the index (it should be, even if it's empty, but still...)
             if (self.index[stem]){
   //Look at each of the document instances for that term...
@@ -1815,7 +1823,7 @@ class SSResultSet{
   addArray(docUris){
     try{
       for (let docUri of docUris){
-        this.mapDocs.set(docUri, {docUri: docUri, score: 0, contexts: []});
+        this.mapDocs.set(docUri, {docUri: docUri, score: 0, sortKey: this.getSortKeyByDocId(docUri), contexts: []});
       }
       return true;
     }
@@ -1854,6 +1862,8 @@ class SSResultSet{
         }
         else{
           this.mapDocs.set(docUri, data);
+//Add the sort key if there is one.
+          this.mapDocs.get(docUri).sortKey = this.getSortKeyByDocId(docUri);
 //Now we need to truncate the list of kwic contexts in case it's too long.
           this.mapDocs.get(docUri).contexts = this.mapDocs.get(docUri).contexts.slice(0, this.maxKwicsToShow);
         }
@@ -1878,6 +1888,7 @@ class SSResultSet{
       try{
         if (!this.mapDocs.has(docUri)){
           this.mapDocs.set(docUri, data);
+          this.mapDocs.get(docUri).sortKey = this.getSortKeyByDocId(docUri);
         }
         else{
           let currEntry = this.mapDocs.get(docUri);
@@ -2002,7 +2013,11 @@ class SSResultSet{
     sortByScoreDesc(){
       try{
         let s = this.mapDocs.size;
-        this.mapDocs = new Map([...this.mapDocs.entries()].sort((a, b) => b[1].score - a[1].score));
+        //this.mapDocs = new Map([...this.mapDocs.entries()].sort((a, b) => b[1].score - a[1].score));
+        this.mapDocs = new Map([...this.mapDocs.entries()].sort(function(a, b){
+          let x = b[1].score - a[1].score; 
+          return (x == 0)? a[1].sortKey.localeCompare(b[1].sortKey) : x; 
+        })); 
         return (s === this.mapDocs.size);
       }
       catch(e){
@@ -2120,6 +2135,28 @@ class SSResultSet{
         return '';
       }
     }
+
+/** @function SSResultSet~getSortKeyByDocId
+  * @description this function returns a pre-configured sort key for a document
+  *              based on its id. If no sort key is defined in the ssTitles
+  *              JSON, it returns an empty string. Sort keys are used to 
+  *              sequence result sets where their scores are identical.
+  * @param {String} docId the id of the document.
+  * @return {String} the sort key for this document, or an empty string.
+  */
+ getSortKeyByDocId(docId){
+  try{
+    if (this.titles.get(docId).length > 2){
+      return this.titles.get(docId)[2];
+    }
+    else{
+      return '';
+    }
+  }
+  catch(e){
+    return '';
+  }
+}
 
 /**
   * @function SSResultSet~resultsAsObject

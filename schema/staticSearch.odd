@@ -286,6 +286,32 @@
             </p>
           </div>
           
+          <div xml:id="configuringDocSortKey">
+            <head>Configuring your site: document sort keys</head>
+            
+            <p>When a user searches for text on your site, the documents
+              retrieved will be presented in a sequence based on the 
+              <soCalled>hit score</soCalled> or <soCalled>relevance
+                score</soCalled>; documents with the highest scores will
+              be presented first, and the list will be in descending
+              order of relevance. However, if you have search filters on
+              your site, it is possible that users will not enter any 
+              search text at all; they may simply select some filters 
+              and get a list of matching documents. In this case, there
+              will be no relevance scores, so the documents will be 
+              presented in a random order. However, you may wish to 
+              control the order in which documents without hit scores, 
+              or sequences of documents with the same hit score, are
+              presented. You can do this by adding a single meta tag
+              to the document providing a <soCalled>sort key</soCalled>,
+              which can be used to sort the list of hits. This is an 
+              example:
+              <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                <meta name="ssDocSortKey" content="d_1854-01-02" />
+              </egXML>
+            </p>
+          </div>
+          
           <div xml:id="configuringDocThumbnails">
             <head>Configuring your site: document thumbnails</head>
             
