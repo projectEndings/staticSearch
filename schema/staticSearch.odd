@@ -307,7 +307,7 @@
               which can be used to sort the list of hits. This is an 
               example:
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
-                <meta name="ssDocSortKey" content="d_1854-01-02" />
+                <meta name="docSortKey" class="staticSearch.docSortKey" content="d_1854-01-02" />
               </egXML>
             </p>
           </div>

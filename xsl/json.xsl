@@ -941,7 +941,7 @@
             <xsl:when test="$doc/head/meta[@name='docImage'][@class='staticSearch.docImage']">
                 <j:string><xsl:value-of select="$doc/head/meta[@name='docImage'][@class='staticSearch.docImage'][1]/@content"/></j:string>
             </xsl:when>
-            <xsl:when test="$doc/head/meta[@name='ssDocSortKey']">
+            <xsl:when test="$doc/head/meta[@name='docSortKey'][@class='staticSearch.docSortKey']">
                 <j:string></j:string>
             </xsl:when>
         </xsl:choose>
@@ -957,8 +957,8 @@
     </xd:doc>
     <xsl:function name="hcmc:getDocSortKey" as="element(j:string)?">
         <xsl:param name="doc" as="element(html)"/>
-        <xsl:if test="$doc/head/meta[@name='ssDocSortKey']">
-            <j:string><xsl:value-of select="$doc/head/meta[@name='ssDocSortKey'][1]/@content"/></j:string>
+        <xsl:if test="$doc/head/meta[@name='docSortKey'][@class='staticSearch.docSortKey']">
+            <j:string><xsl:value-of select="$doc/head/meta[@name='docSortKey'][@class='staticSearch.docSortKey'][1]/@content"/></j:string>
         </xsl:if>
     </xsl:function>
     
