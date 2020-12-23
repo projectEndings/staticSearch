@@ -69,6 +69,15 @@ div[data-section] > h1 + ul > li:first-child{
 
 }
 
+div[data-section] table td {
+    vertical-align: top;
+    padding: 0.25em;
+}
+
+div[data-section] table, div[data-section] table td {
+    border: solid 1pt gray;
+}
+
 
 h3{
     margin-left:0;
