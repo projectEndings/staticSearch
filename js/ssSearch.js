@@ -132,6 +132,12 @@
   * they will be incorporated.
   */
 class StaticSearch{
+/** 
+  * @constructor
+  * @description The constructor has no paramaters since it
+  *              reads everything it requires from the host
+  *              HTML page. 
+  */
   constructor(){
     try {
       this.ssForm = document.querySelector('#ssForm');
@@ -1778,6 +1784,25 @@ if (this.discardedTerms.length > 0){
   * objects returned from the search index queries.
   */
 class SSResultSet{
+/** 
+  * @constructor
+  * @description The constructor is typically called from the host
+  *              StaticSearch instance, and it passes only the 
+  *              information required by the result set object.
+  * @param {integer} maxKwicsToShow The maximum number of keyword-
+  *              in-context strings to display for any single hit
+  *              document.
+  * @param {Boolean} scrollToTextFragment Whether to construct 
+  *              scroll-to-text-fragment result links for individual
+  *              KWICs. This depends on browser support for the 
+  *              feature and user configuration to turn it on.
+  * @param {RegExp} reKwicTruncateStr A pre-constructed regular 
+  *              expression that will remove leading and trailing 
+  *              ellipses (whatever form these take, configured by
+  *              the user) from a KWIC form before using it to create
+  *              a scroll-to-text-fragment link.
+  */
+  
   constructor(maxKwicsToShow, scrollToTextFragment, reKwicTruncateStr){
     try{
       this.mapDocs = new Map([]);
@@ -2192,6 +2217,16 @@ class SSResultSet{
   * adds native versions.
   */
   class XSet extends Set{
+/** 
+  * @constructor
+  * @description The constructor receives a single optional parameter
+  *              which if present is used by the ancestor Set object
+  *              constructor.
+  * @param {Iterable} iterable An optional Iterable object. If an 
+  *              iterable object is passed, all of its elements will 
+  *              be added to the new XSet.
+  *              
+  */
     constructor(iterable){
       super(iterable);
       this.filtersActive = false; //Used when a set is empty, to distinguish
