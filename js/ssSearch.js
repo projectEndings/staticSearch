@@ -1508,7 +1508,7 @@ if (this.discardedTerms.length > 0){
           for (let phr of phrases){
   //Get the term we decided to use to retrieve index data.
             let stem = self.terms[phr].stem;
-  //Escape the phrase to have proper punctuation matching          
+  //Escape the phrase to have proper punctuation matching
             let escapedPhrase = self.terms[phr].str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
   //Expand the apostrophes into a character class          
             let expandedPhrase = escapedPhrase.replace(/'/g, "['‘’‛]");
