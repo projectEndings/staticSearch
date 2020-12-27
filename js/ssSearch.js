@@ -327,6 +327,10 @@ class StaticSearch{
 
       //Characters to be discarded in all but phrasal
       this.charsToDiscardPattern = /[\.,!;:@#$%\^&]/g;
+      if (!this.allowWildcards){
+          this.charsToDiscardPattern = /[\.,!;:@#$%\^&*?\[\]]/g;
+         
+      };
 
       //Captions
       this.captions = ss.captions; //Default; override this if you wish by setting the property after instantiation.
@@ -736,9 +740,14 @@ class StaticSearch{
       // spaces
       this.queryBox.value = this.terms.map(term => {
         let str = term.str;
-        //If it's a phrase, add quotation marks around it
+        if (term.type === MUST_CONTAIN){
+            return '+' + str;
+        }
+        if (term.type === MUST_NOT_CONTAIN){
+            return '-' + str;
+        }
         if (term.type === PHRASE){
-            str = '"' + str + '"';
+            return '"' + str + '"';
         }
         return str;
       }).join(" ");
