@@ -325,6 +325,9 @@ class StaticSearch{
       //to retrieve a million words. 
       this.termPattern = new RegExp('^([\\*\\?\\[\\]]*[^\\*\\?\\[\\]]){' + this.charsRequired + ',}[\\*\\?\\[\\]]*$');
 
+      //Characters to be discarded in all but phrasal
+      this.charsToDiscardPattern = /[\.,!;:@#$%\^&]/g;
+
       //Captions
       this.captions = ss.captions; //Default; override this if you wish by setting the property after instantiation.
       this.captionLang  = document.getElementsByTagName('html')[0].getAttribute('lang') || 'en'; //Document language.
@@ -675,45 +678,33 @@ class StaticSearch{
       //Then remove any leading or trailing apostrophes
       strSearch = strSearch.replace(/(^'|'$)/g,'');
 
-      //Strip out all other punctuation that isn't between numbers. We do this
-      //slightly differently depending on whether wildcard searching is enabled.
-      if (this.allowWildcards){
-        strSearch = strSearch.replace(/(^|[^\d])[\.,!;:@#$%\^&]+([^\d]|$)/g, '$1$2');
-      }
-      else{
-        strSearch = strSearch.replace(/(^|[^\d])[\.,!;:@#$%\^&*?\[\]]+([^\d]|$)/g, '$1$2');
-      }
 
       //If we're not supporting phrasal searches, get rid of double quotes.
       if (!this.allowPhrasal){
         strSearch = strSearch.replace(/"/g, '');
       }
+      //Otherwise, we rationalize the quotation marks
       else{
       //Get rid of any quote pairs with nothing between them.
         strSearch = strSearch.replace(/""/g, '');
-      }
-
-      //Now delete any unmatched double quotes.
-      let qCount = 0;
-      let lastQPos = -1;
-      let tmp = '';
-      for (i=0; i<strSearch.length; i++){
+        //Now delete any unmatched double quotes
+        let qCount = 0;
+        let lastQPos = -1;
+        let tmp = '';
+        for (i=0; i<strSearch.length; i++){
           tmp += strSearch.charAt(i);
           if (strSearch.charAt(i) === '"'){
             qCount++;
             lastQPos = i;
           }
+        }
+        if (qCount % 2 > 0){
+          strSearch = tmp.substr(0, lastQPos) + tmp.substr(lastQPos + 1, tmp.length);
+        }
+        else{
+          strSearch = tmp;
+        }
       }
-      if (qCount % 2 > 0){
-        strSearch = tmp.substr(0, lastQPos) + tmp.substr(lastQPos + 1, tmp.length);
-      }
-      else{
-        strSearch = tmp;
-      }
-
-      //Put that fixed string back in the box to make
-      //clear to the user what's been understood.
-      this.queryBox.value = strSearch;
 
       //Now iterate through the string, paying attention
       //to whether you're inside a quote or not.
@@ -727,23 +718,40 @@ class StaticSearch{
           strSoFar = '';
         }
         else{
-          if ((c === ' ')&&(!inPhrase)){
+          // If we're not in a phrase, and encounter some sort of punctuation, then skip it
+          if (this.charsToDiscardPattern.test(c) && (!inPhrase)) {
+            // Just skip the bit of punctuation
+          } else if ((c === ' ') && (!inPhrase)){
             this.addSearchItem(strSoFar, false);
             strSoFar = '';
-          }
-          else{
+          } else{
             strSoFar += c;
           }
         }
       }
       this.addSearchItem(strSoFar, inPhrase);
+     
+      // Now clear the queryBox and replace its contents
+      // By mapping the strings and then joining them with
+      // spaces
+      this.queryBox.value = this.terms.map(term => {
+        let str = term.str;
+        //If it's a phrase, add quotation marks around it
+        if (term.type === PHRASE){
+            str = '"' + str + '"';
+        }
+        return str;
+      }).join(" ");
+      
+
       //We always want to handle the terms in order of
       //precedence, starting with phrases.
       this.terms.sort(function(a, b){return a.type - b.type;});
+      
       //return (this.terms.length > 0);
-//Even if we found no terms to search for, we should go
-//ahead with the search, either listing all the documents
-//or listing them based on the filters.
+      //Even if we found no terms to search for, we should go
+      //ahead with the search, either listing all the documents
+     //or listing them based on the filters.
       return true;
     }
     catch(e){
@@ -782,6 +790,9 @@ class StaticSearch{
       return false;
     }
 
+    let displayString = (isPhrasal) ? '"' + strInput + '"' : strInput;
+
+
     //Set a flag if it starts with a cap.
     let firstLetter = strInput.replace(/^[\+\-]/, '').substring(0, 1);
     let startsWithCap = (firstLetter.toLowerCase() !== firstLetter);
@@ -789,7 +800,7 @@ class StaticSearch{
     //Is it a phrase?
     if ((/\s/.test(strInput)) || (isPhrasal)){
     //We need to find the first component which is not a stopword.
-      let subterms = strInput.toLowerCase().split(/\s+/);
+      let subterms = strInput.toLowerCase().split(/\s+/).map(term => term.replaceAll(this.charsToDiscardRex,''));
       let i;
       for (i = 0; i <= subterms.length; i++){
         if (this.stopwords.indexOf(subterms[i]) < 0){
@@ -1497,12 +1508,12 @@ if (this.discardedTerms.length > 0){
           for (let phr of phrases){
   //Get the term we decided to use to retrieve index data.
             let stem = self.terms[phr].stem;
-            
-  //Expand apostrophes into their variants
-           let rePhrStr = self.terms[phr].str.replace(/'/g, "['‘’‛]");
-  
+  //Escape the phrase to have proper punctuation matching          
+            let escapedPhrase = self.terms[phr].str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+  //Expand the apostrophes into a character class          
+            let expandedPhrase = escapedPhrase.replace(/'/g, "['‘’‛]");
   //Make the phrase into a regex for matching.
-            let rePhr = new RegExp('\\b' + rePhrStr + '\\b', 'i');
+            let rePhr = new RegExp('\\b' + expandedPhrase + '\\b');
   //If that term is in the index (it should be, even if it's empty, but still...)
             if (self.index[stem]){
   //Look at each of the document instances for that term...
