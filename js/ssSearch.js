@@ -780,8 +780,6 @@ class StaticSearch{
     if (!isPhrasal && !this.termPattern.test(strInput)){
       this.normalizedQuery.push(strInput);
       this.discardedTerms.push(strInput);
-      // If this is a too broad wildcard, then add it back
-      // to the query string
       return false;
     }
 
