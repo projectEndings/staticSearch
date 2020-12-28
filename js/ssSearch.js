@@ -668,7 +668,9 @@ class StaticSearch{
       let i;
       //Clear anything in the existing array.
       this.terms = [];
+      this.normalizedQuery = [];
       let strSearch = this.queryBox.value;
+
       //Start by normalizing whitespace.
       strSearch = strSearch.replace(/((^\s+)|\s+$)/g, '');
       strSearch = strSearch.replace(/\s+/g, ' ');
@@ -734,21 +736,8 @@ class StaticSearch{
       this.addSearchItem(strSoFar, inPhrase);
      
       // Now clear the queryBox and replace its contents
-      // By mapping the strings and then joining them with
-      // spaces
-      this.queryBox.value = this.terms.map(term => {
-        let str = term.str;
-        if (term.type === MUST_CONTAIN){
-            return '+' + str;
-        }
-        if (term.type === MUST_NOT_CONTAIN){
-            return '-' + str;
-        }
-        if (term.type === PHRASE){
-            return '"' + str + '"';
-        }
-        return str;
-      }).join(" ");
+      // By joining the normalized query
+      this.queryBox.value = this.normalizedQuery.join(" ");
       
 
       //We always want to handle the terms in order of
@@ -780,6 +769,8 @@ class StaticSearch{
   * @return {Boolean} true if terms found, otherwise false.
   */
   addSearchItem(strInput, isPhrasal){
+
+
     //Sanity check
     if (strInput.length < 1){
       return false;
@@ -787,18 +778,27 @@ class StaticSearch{
 
     //Broadness check
     if (!isPhrasal && !this.termPattern.test(strInput)){
+      this.normalizedQuery.push(strInput);
       this.discardedTerms.push(strInput);
+      // If this is a too broad wildcard, then add it back
+      // to the query string
       return false;
     }
 
     //Stopword check
     if (this.stopwords.indexOf(strInput.toLowerCase()) > -1){
+      this.normalizedQuery.push(strInput);
       this.discardedTerms.push(strInput);
       return false;
     }
 
     //Is it a phrase?
     if ((/\s/.test(strInput)) || (isPhrasal)){
+
+    // If this is a phrasal, we need to surround with quotation marks
+    // before we push to the normalized query
+    this.normalizedQuery.push('"' + strInput + '"');
+
     //We need to find the first component which is not a stopword.
       let subterms = strInput.toLowerCase().split(/\s+/).map(term => term.replaceAll(this.charsToDiscardRex,''));
       let i;
@@ -809,9 +809,12 @@ class StaticSearch{
       }
       if (i < subterms.length){
         this.terms.push({str: strInput, stem: this.stemmer.stem(subterms[i]), type: PHRASE});
+
       }
     }
     else{
+      //Push the string to the normalized query
+      this.normalizedQuery.push(strInput);
       //Else is it a wildcard? Wildcards are expanded to a sequence of matching terms.
       if (this.allowWildcards && /[\[\]?*]/.test(strInput)){
         let re = this.wildcardToRegex(strInput);
@@ -821,7 +824,6 @@ class StaticSearch{
         for (let m of matches){
           let mStem = this.stemmer.stem(m[1].toLowerCase());
           let term = m[0].replace(/[\|]/g, '');
-          console.log(term);
           if (this.terms.length < this.termLimit){
             if (this.allowPhrasal){
               this.terms.push({str: term, stem: mStem, type: PHRASE});
