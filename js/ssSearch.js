@@ -798,7 +798,7 @@ class StaticSearch{
     this.normalizedQuery.push('"' + strInput + '"');
 
     //We need to find the first component which is not a stopword.
-      let subterms = strInput.toLowerCase().split(/\s+/).map(term => term.replaceAll(this.charsToDiscardRex,''));
+      let subterms = strInput.toLowerCase().split(/\s+/).map(term => term.replaceAll(this.charsToDiscardPattern,''));
       let i;
       for (i = 0; i <= subterms.length; i++){
         if (this.stopwords.indexOf(subterms[i]) < 0){
