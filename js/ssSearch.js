@@ -144,9 +144,7 @@ class StaticSearch{
       if (!this.ssForm){
         throw new Error('Failed to find search form. Search functionality will probably break.');
       }
-      //Directory for JSON files. Inside this directory will be a
-      //'lower' dir and an 'upper' dir, where the two sets of case-
-      //distinguished JSON files are stored.
+      //Directory where all of the JSONs are stored
       this.jsonDirectory = this.ssForm.getAttribute('data-ssfolder') || 'staticSearch'; //Where to find all the stuff.
       this.jsonDirectory += '/';
 
@@ -799,13 +797,6 @@ class StaticSearch{
       return false;
     }
 
-    let displayString = (isPhrasal) ? '"' + strInput + '"' : strInput;
-
-
-    //Set a flag if it starts with a cap.
-    let firstLetter = strInput.replace(/^[\+\-]/, '').substring(0, 1);
-    let startsWithCap = (firstLetter.toLowerCase() !== firstLetter);
-
     //Is it a phrase?
     if ((/\s/.test(strInput)) || (isPhrasal)){
     //We need to find the first component which is not a stopword.
@@ -817,7 +808,7 @@ class StaticSearch{
         }
       }
       if (i < subterms.length){
-        this.terms.push({str: strInput, stem: this.stemmer.stem(subterms[i]), capFirst: startsWithCap, type: PHRASE});
+        this.terms.push({str: strInput, stem: this.stemmer.stem(subterms[i]), type: PHRASE});
       }
     }
     else{
@@ -833,10 +824,10 @@ class StaticSearch{
           console.log(term);
           if (this.terms.length < this.termLimit){
             if (this.allowPhrasal){
-              this.terms.push({str: term, stem: mStem, capFirst: startsWithCap, type: PHRASE});
+              this.terms.push({str: term, stem: mStem, type: PHRASE});
             }
             else{
-              this.terms.push({str: term, stem: mStem, capFirst: startsWithCap, type: MAY_CONTAIN});
+              this.terms.push({str: term, stem: mStem, type: MAY_CONTAIN});
             }
           }
         }
@@ -845,18 +836,18 @@ class StaticSearch{
         //Else is it a must-contain?
         if (/^[\+]/.test(strInput)){
           let term = strInput.substring(1).toLowerCase();
-          this.terms.push({str: strInput.substring(1), stem: this.stemmer.stem(term), capFirst: startsWithCap, type: MUST_CONTAIN});
+          this.terms.push({str: strInput.substring(1), stem: this.stemmer.stem(term), type: MUST_CONTAIN});
         }
         else{
         //Else is it a must-not-contain?
           if (/^[\-]/.test(strInput)){
             let term = strInput.substring(1).toLowerCase();
-            this.terms.push({str: strInput.substring(1), stem: this.stemmer.stem(term), capFirst: startsWithCap, type: MUST_NOT_CONTAIN});
+            this.terms.push({str: strInput.substring(1), stem: this.stemmer.stem(term), type: MUST_NOT_CONTAIN});
           }
           else{
           //Else may-contain.
             let term = strInput.toLowerCase();
-            this.terms.push({str: strInput, stem: this.stemmer.stem(term), capFirst: startsWithCap, type: MAY_CONTAIN});
+            this.terms.push({str: strInput, stem: this.stemmer.stem(term),  type: MAY_CONTAIN});
           }
         }
       }
@@ -1152,8 +1143,7 @@ class StaticSearch{
   * .then() calls the processResults function.
   */
   populateIndexes(){
-    var i, imax, stemsToFind = [], promises = [], emptyIndex,
-    jsonSubfolder, filterSelector, filterIds;
+    var i, imax, stemsToFind = [], promises = [], emptyIndex, filterSelector, filterIds;
 //We need a self pointer because this will go out of scope.
     var self = this;
     try{
@@ -1163,12 +1153,6 @@ class StaticSearch{
         if (!this.index.hasOwnProperty(this.terms[i].stem)){
   //If not, add it to the array of stems we want to retrieve.
           stemsToFind.push(this.terms[i].stem);
-        }
-        if (this.terms[i].capFirst){
-          if (!this.index.hasOwnProperty(this.terms[i].str)){
-    //If not, add it to the array of stems we want to retrieve.
-            stemsToFind.push(this.terms[i].str);
-          }
         }
       }
 
@@ -1297,13 +1281,9 @@ class StaticSearch{
 
           this.stemFound(emptyIndex);
 
-//Figure out whether we're retrieving a lower-case or an upper-case stem.
-//TODO: Do we need to worry about camel-case?
-          jsonSubfolder = (stemsToFind[i].toLowerCase() == stemsToFind[i])? 'lower/' : 'upper/';
-
 //We create an array of fetches to get the json file for each stem,
 //assuming it's there.
-          promises[promises.length] = fetch(self.jsonDirectory + jsonSubfolder + stemsToFind[i] + this.versionString + '.json', this.fetchHeaders)
+          promises[promises.length] = fetch(self.jsonDirectory + 'stems/' + stemsToFind[i] + this.versionString + '.json', this.fetchHeaders)
 //If we get a response, and it looks good
               .then(function(response){
                 if ((response.status >= 200) &&
@@ -2122,7 +2102,6 @@ class SSResultSet{
             //Output the KWIC.
             let li2 = document.createElement('li');
             li2.innerHTML = value.contexts[i].context;
-            console.log(value.contexts[i]);
             //Create a text fragment identifier (see https://wicg.github.io/scroll-to-text-fragment/)
             let cleanContext = value.contexts[i].context.replace(/<\/?mark>/g, '').replace(this.reKwicTruncateStr, '');
             let tf = ((this.scrollToTextFragment) && (cleanContext.length > 1))? encodeURI(':~:text=' + cleanContext) : '';

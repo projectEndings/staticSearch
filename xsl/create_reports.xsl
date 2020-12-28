@@ -18,8 +18,16 @@
         </xd:desc>
     </xd:doc>
     
+    <xd:doc>
+        <xd:desc>Include the generated config file.</xd:desc>
+    </xd:doc>
     <xsl:include href="config.xsl"/>
  
+    <xd:doc>
+        <xd:desc>Include the functions</xd:desc>
+    </xd:doc>
+    <xsl:include href="functions.xsl"/>
+    
     
     <xd:doc>
         <xd:desc><xd:ref name="hasFilters">$hasFilters</xd:ref> is used to specify whether
@@ -405,15 +413,17 @@
             <h2>Words Not In Dictionary</h2>
             
             <xsl:variable name="wordsNotInDictionary" as="xs:string*">
-                <xsl:for-each-group select="$spans[@data-staticSearch-notInDictionary]" group-by="@data-staticSearch-notInDictionary">
-                    <xsl:value-of select="current-grouping-key()"/>
-                </xsl:for-each-group>
-                <xsl:for-each-group select="$spans[span[@data-staticSearch-stem]][every $s in span[@data-staticSearch-stem] satisfies $s[@data-staticSearch-notInDictionary]]" group-by="string-join(descendant::text(),'')">
-                    <xsl:value-of select="current-grouping-key()"/>
+                <xsl:for-each-group select="$spans" group-by="replace(lower-case(string(.)),'^[“”]|[“”]$','')">
+                    <xsl:if test="not(matches(current-grouping-key(),'\d'))">
+                        <xsl:if test="not(exists(key('w', current-grouping-key(), $dictionaryFileXml)))">
+                            <xsl:sequence select="current-grouping-key()"/>
+                        </xsl:if>
+                    </xsl:if>                   
                 </xsl:for-each-group>
             </xsl:variable>
             
             <xsl:variable name="wordsNotInDictionaryCount" select="count($wordsNotInDictionary)" as="xs:integer"/>
+            
             <details>
                 <summary>Total words not in dictionary: <xsl:value-of select="$wordsNotInDictionaryCount"/></summary>
                 
@@ -434,11 +444,17 @@
         <xsl:message>Creating Foreign Word list...</xsl:message>
         <section>
             <h2>Foreign Words</h2>
+            
             <xsl:variable name="foreignWords" as="xs:string*">
-                <xsl:for-each-group select="$spans[@data-staticSearch-foreign]" group-by="tokenize(@data-staticSearch-stem,'\s+')">
-                    <xsl:value-of select="current-grouping-key()"/>
+                <xsl:for-each-group select="$spans" group-by="hcmc:isForeign(.)">
+                     <xsl:if test="current-grouping-key()">
+                         <xsl:for-each-group select="current-group()" group-by="string(.)">
+                             <xsl:sequence select="current-group()"/>
+                         </xsl:for-each-group>
+                     </xsl:if>
                 </xsl:for-each-group>
             </xsl:variable>
+            
             <details>
                 <summary>Total foreign words: <xsl:value-of select="count($foreignWords)"/></summary>
                 <xsl:if test="not(empty($foreignWords))">
@@ -446,7 +462,7 @@
                         <xsl:for-each select="$foreignWords">
                             <xsl:sort/>
                             <li>
-                                <xsl:value-of select="."/>
+                                <xsl:value-of select="string(.)"/>
                             </li>
                         </xsl:for-each>
                     </ul>
