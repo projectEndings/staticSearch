@@ -324,7 +324,7 @@ class StaticSearch{
       this.termPattern = new RegExp('^([\\*\\?\\[\\]]*[^\\*\\?\\[\\]]){' + this.charsRequired + ',}[\\*\\?\\[\\]]*$');
 
       //Characters to be discarded in all but phrasal
-      this.charsToDiscardPattern = /[\.,!;:@#$%\^&]/g;
+      this.charsToDiscardPattern = /[\.,!;:@#$%”“\^&]/g;
       if (!this.allowWildcards){
           this.charsToDiscardPattern = /[\.,!;:@#$%\^&*?\[\]]/g;
          
@@ -675,8 +675,7 @@ class StaticSearch{
       strSearch = strSearch.replace(/((^\s+)|\s+$)/g, '');
       strSearch = strSearch.replace(/\s+/g, ' ');
 
-      //Next, replace curly quotes/apostrophes with straight.
-      strSearch = strSearch.replace(/[“”]/g, '"');
+      //Next, replace curly apostrophes with straight.
       strSearch = strSearch.replace(/[‘’‛]/g, "'");
       
       //Then remove any leading or trailing apostrophes
@@ -1501,6 +1500,8 @@ if (this.discardedTerms.length > 0){
             let escapedPhrase = self.terms[phr].str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
   //Expand the apostrophes into a character class          
             let expandedPhrase = escapedPhrase.replace(/'/g, "['‘’‛]");
+  //Expand the quotation marks into a character class
+             expandedPhrase = expandedPhrase.replace(/[“”]/g, '[“”"]');
   //Make the phrase into a regex for matching.
             let rePhr = new RegExp('\\b' + expandedPhrase + '\\b');
   //If that term is in the index (it should be, even if it's empty, but still...)
