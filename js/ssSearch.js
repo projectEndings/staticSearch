@@ -797,7 +797,7 @@ class StaticSearch{
     this.normalizedQuery.push('"' + strInput + '"');
 
     //We need to find the first component which is not a stopword.
-      let subterms = strInput.toLowerCase().split(/\s+/).map(term => term.replaceAll(this.charsToDiscardPattern,''));
+      let subterms = strInput.trim().toLowerCase().split(/\s+/).map(term => term.replaceAll(this.charsToDiscardPattern,''));
       let i;
       for (i = 0; i <= subterms.length; i++){
         if (this.stopwords.indexOf(subterms[i]) < 0){
@@ -1496,14 +1496,8 @@ if (this.discardedTerms.length > 0){
           for (let phr of phrases){
   //Get the term we decided to use to retrieve index data.
             let stem = self.terms[phr].stem;
-  //Escape the phrase to have proper punctuation matching
-            let escapedPhrase = self.terms[phr].str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-  //Expand the apostrophes into a character class          
-            let expandedPhrase = escapedPhrase.replace(/'/g, "['‘’‛]");
-  //Expand the quotation marks into a character class
-             expandedPhrase = expandedPhrase.replace(/[“”]/g, '[“”"]');
-  //Make the phrase into a regex for matching.
-            let rePhr = new RegExp('\\b' + expandedPhrase + '\\b');
+            let str = self.terms[phr].str;
+            let phraseRegex = self.phraseToRegex(str);
   //If that term is in the index (it should be, even if it's empty, but still...)
             if (self.index[stem]){
   //Look at each of the document instances for that term...
@@ -1515,10 +1509,10 @@ if (this.discardedTerms.length > 0){
   //Check whether our phrase matches that context (remembering to strip
   //out any <mark> tags)...
                   let unmarkedContext = cntxt.context.replace(/<[^>]+>/g, '');
-                  if (rePhr.test(unmarkedContext)){
+                  if (phraseRegex.test(unmarkedContext)){
   //We have a candidate document for inclusion, and a candidate context.
-                    let c = unmarkedContext.replace(rePhr, '<mark>' + '$&' + '</mark>');
-                    currContexts.push({form: self.terms[phr].str, context: c, weight: 2, fid: cntxt.fid? cntxt.fid : ''});
+                    let c = unmarkedContext.replace(phraseRegex, '<mark>' + '$&' + '</mark>');
+                    currContexts.push({form: str, context: c, weight: 2, fid: cntxt.fid ? cntxt.fid : ''});
                   }
                 }
   //If we've found contexts, we know we have a document to add to the results.
@@ -1738,6 +1732,42 @@ if (this.discardedTerms.length > 0){
       return false;
     }
   }
+
+  /** @function StaticSearch~phraseToRegex
+   *  @description This method takes a phrase and converts it
+   *  into the regular expression that will be matched against
+   *  contexts. This function first escapes all characters
+   *  to prevent from unintentional regular expression, then expands all
+   *  apostrophes (i.e. treating U+0027, U+2018, U+2019, U+201B as equivalent) and
+   *  all quotation marks.
+   * @param {String} str a string of text
+   * @return {RegExp|null} a regular expression, or null if one can't be constructed
+   */
+  phraseToRegex(str){
+    //Escape the phrase to have proper punctuation matching
+    let esc = str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    //Expand the apostrophes into a character class
+    let strRe = esc.replace(/'/g, "['‘’‛]").replace(/[“”]/g, '[“”"]');
+    //Set starting anchor
+    if (/^\w/.test(str)){
+      strRe = '\\b' + strRe;
+    }
+    //Set ending anchor
+    if (/\w$/.test(str)){
+      strRe = strRe + '\\b';
+    }
+    // Test the regex and return null if it's broken
+    try{
+      //Make the phrase into a regex for matching.
+      let re = new RegExp(strRe);
+      return re
+    }
+    catch(e){
+      console.log('Invalid regex from phrase created: ' + strRe);
+      return null;
+    }
+  }
+
 
 /** @function StaticSearch~wildcardToRegex
   * @description This method is provided with a single token as 
