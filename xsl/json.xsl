@@ -116,14 +116,9 @@
             </xsl:variable>
             
               
-                <!--Now create the result document. Note that the JSONs are output into two directories (upper and lower)
-                as operating systems other than Linux tend to be case-insensitive, meaning that the last of
-                    August.json
-                    august.json
-
-                would silently overwrite the first. -->
+                <!--Now create the result document. -->
             
-            <xsl:result-document href="{$outDir}/{if (matches($stem,'^[A-Z]')) then 'upper' else 'lower'}/{$stem}{$versionString}.json" method="text">
+            <xsl:result-document href="{$outDir}/stems/{$stem}{$versionString}.json" method="text">
                 <xsl:value-of select="xml-to-json($map, map{'indent': $indentJSON})"/>
             </xsl:result-document>
         </xsl:for-each-group>

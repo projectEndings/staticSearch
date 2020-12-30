@@ -62,5 +62,47 @@
     <xsl:value-of select="string-join(($targetPathBits ! (if (position() lt count($rootPathBits) and $rootPathBits[position()] = .) then () else .)), '/')"/>
   </xsl:function>
   
+  
+  
+  <xd:doc>
+    <xd:desc><xd:ref name="hcmc:isForeign">hcmc:isForeign</xd:ref> determiners
+      whether or not an element is foreign (i.e. its declared language differs from the root language).</xd:desc>
+    <xd:param name="node">The node to check.</xd:param>
+    <xd:return>A boolean for whether or not the word is foreign.</xd:return>
+  </xd:doc>
+  <xsl:function name="hcmc:isForeign" as="xs:boolean">
+    <xsl:param name="node" as="node()"/>
+    
+    <!--Get the root HTML element-->
+    <xsl:variable name="root" select="$node/ancestor::html" as="element(html)"/>
+    
+    <!--Has a root language been declared?-->
+    <xsl:variable name="rootLangDeclared" select="boolean($root[@lang or @xml:lang])" as="xs:boolean"/>
+    
+    <!--Return the node's first ancestor with a declared language, if available-->
+    <xsl:variable name="langAncestor" select="$node/ancestor::*[not(self::html)][@*:lang][1]" as="element()?"/>
+    
+    <xsl:choose>
+      <!--If there is a declared language at the top and theres a lang ancestor
+                    then return the negation of whether or not they are equal
+                i.e. if they are equal, then return false (since it is NOT foreign)
+                -->
+      <xsl:when test="$rootLangDeclared and $langAncestor">
+        <xsl:value-of select="not(boolean($root/@*:lang = $langAncestor/@*:lang))"/>
+      </xsl:when>
+      
+      <!--If there is a lang ancestor but no root lang declared,
+                    then we must assume that it is foreign-->
+      <xsl:when test="$langAncestor and not($rootLangDeclared)">
+        <xsl:value-of select="true()"/>
+      </xsl:when>
+      
+      <!--Otherwise, just make it false-->
+      <xsl:otherwise>
+        <xsl:value-of select="false()"/>
+      </xsl:otherwise>
+    </xsl:choose>            
+  </xsl:function>
+  
 
 </xsl:stylesheet>
