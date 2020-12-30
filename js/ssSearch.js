@@ -1760,7 +1760,7 @@ if (this.discardedTerms.length > 0){
     try{
       //Make the phrase into a regex for matching.
       let re = new RegExp(strRe);
-      return re
+      return re;
     }
     catch(e){
       console.log('Invalid regex from phrase created: ' + strRe);
