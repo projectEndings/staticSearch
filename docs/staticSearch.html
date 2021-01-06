@@ -131,7 +131,11 @@ function showByMod() {
                </ul>
             </li>
             <li class="toc"><span class="headingNumber"> 8 </span><a class="toc toc_0" href="#howDoI" title="How do I...">How do I...</a></li>
-            <li class="toc"><span class="headingNumber"> 9 </span><a class="toc toc_0" href="#projectsUsingSS" title="Projects using staticSearch">Projects using staticSearch</a></li>
+            <li class="toc"><span class="headingNumber"> 9 </span><a class="toc toc_0" href="#newSinceVersion1" title="Whats new since version 1.0">What's new since version 1.0?</a><ul class="toc">
+                  <li class="toc"><span class="headingNumber"> 9.1 </span><a class="toc toc_1" href="#index.xml-body.1_div.9_div.1">Changes in version 1.1</a></li>
+               </ul>
+            </li>
+            <li class="toc"><span class="headingNumber">10 </span><a class="toc toc_0" href="#projectsUsingSS" title="Projects using staticSearch">Projects using staticSearch</a></li>
          </ul>
          <ul class="toc toc_back">
             <li class="toc"><span class="headingNumber">Appendix A </span><a class="toc toc_0" href="#schemaSpec" title="Schema specification and tag documentation">Schema specification and tag documentation</a><ul class="toc">
@@ -808,60 +812,99 @@ function showByMod() {
                      <td>How can I get staticSearch to jump straight to a specific hit in the document from
                         a search result?</td>
                      <td>The best way to do this is to ensure that <a class="link_ref" href="#TEI.linkToFragmentId" title="&lt;linkToFragmentId&gt;">&lt;linkToFragmentId&gt;</a> is set to the <span class="val">true</span> and that the input HTML contains ids at whatever level you think is most helpful.
-                        For instance, if possible, you could give each <span class="gi">&lt;xhtml:p&gt;</span> element an <span class="att">id</span>, which would mean that each KWIC could be associated with the input document.</td>
+                        For instance, if possible, you could give each <span class="gi">&lt;xhtml:p&gt;</span> element an <span class="att">id</span>, which would mean that each KWIC could be linked to the right paragraph in the input
+                        document.</td>
                   </tr>
                </table>
             </div>
          </section>
+         <section class="teidiv0" id="newSinceVersion1">
+            <header>
+               <h2><span class="headingNumber">9 </span><span class="head">What's new since version 1.0?</span></h2>
+            </header>
+            <ul>
+               <li class="item">Level: Intermediate</li>
+               <li class="item">Last Updated: <span class="date">6 January 2021</span></li>
+            </ul>
+            <div class="teidiv1" id="index.xml-body.1_div.9_div.1">
+               <h3><span class="headingNumber">9.1 </span><span class="head">Changes in version 1.1</span></h3>
+               <p>New features and enhancements:</p>
+               <ul>
+                  <li class="item">Search results can now be sorted using a <a class="link_ref" href="#configuringDocSortKey" title="Configuring your site document sort keys">user-supplied sort key</a>. This is useful when searching only with filters (so all documents have the same
+                     relevance score) or where many results have the same relevance score.</li>
+                  <li class="item">Using the new <a class="link_ref" href="#TEI.linkToFragmentId" title="&lt;linkToFragmentId&gt;">&lt;linkToFragmentId&gt;</a> parameter, keyword-in-context results can now have individual links to nearest ancestor
+                     fragment id, so the searcher can go directly to the relevant section of a document.</li>
+                  <li class="item">The order of parameter elements in the configuration file is no longer fixed. The
+                     schema now allows elements to appear in any order.</li>
+                  <li class="item">We have added a new <a class="link_ref" href="#howDoI" title="How do I...">How Do I...</a> section in the documentation.</li>
+                  <li class="item">Phrasal searches are now case-sensitive, meaning that you can use a ‘phrasal search’
+                     to search for proper names, by putting quotation marks around them and making the
+                     first letter upper-case.</li>
+                  <li class="item">Indexing is faster and the size of the index is smaller because we have eliminated
+                     the upper-case index.</li>
+               </ul>
+               <p>Bug fixes:</p>
+               <ul>
+                  <li class="item">URL containing empty search query string caused unwanted page scroll.</li>
+                  <li class="item">The build process would fail to open the search report when running under very recent
+                     versions of Java.</li>
+                  <li class="item">Punctuation is no longer stripped from phrasal searches, so searching for longer phrases
+                     including punctuation should be more successful.</li>
+               </ul>
+            </div>
+         </section>
          <section class="teidiv0" id="projectsUsingSS">
             <header>
-               <h2><span class="headingNumber">9 </span><span class="head">Projects using staticSearch</span></h2>
+               <h2><span class="headingNumber">10 </span><span class="head">Projects using staticSearch</span></h2>
             </header>
             <ul>
                <li class="item">Level: Basic</li>
-               <li class="item">Last Updated: <span class="date">14 October 2020</span></li>
+               <li class="item">Last Updated: <span class="date">6 January 2021</span></li>
             </ul>
             <div class="table">
                <table>
                   <tr class="label">
                      <td>Name</td>
-                     <td>staticSearch Version</td>
                      <td>Search Page(s)</td>
                      <td>Configuration file(s)</td>
                   </tr>
                   <tr>
                      <td><a class="link_ref" href="https://mapoflondon.uvic.ca">The Map of Early Modern London</a></td>
-                     <td>0.9</td>
                      <td><a class="link_ref" href="https://mapoflondon.uvic.ca/search.htm">Search</a></td>
                      <td><a class="link_ref" href="https://hcmc.uvic.ca/svn/london/static/config_staticSearch.xml">SVN</a></td>
                   </tr>
                   <tr>
                      <td><a class="link_ref" href="https://winnifredeatonarchive.org">The Winnifred Eaton Archive</a></td>
-                     <td>1.0 (dev)</td>
                      <td><a class="link_ref" href="https://winnifredeatonarchive.org/search.html">Search</a></td>
                      <td><a class="link_ref" href="https://github.com/winnifredeatonarchive/wea_data/blob/09ae8660007a10e23e80e2f5769aec0bf1f919c6/code/staticSearch/config.xml">Github</a></td>
                   </tr>
                   <tr>
                      <td><a class="link_ref" href="https://johnkeats.uvic.ca/">Mapping Keat's Progress</a></td>
-                     <td>1.0</td>
                      <td><a class="link_ref" href="https://johnkeats.uvic.ca/search.html">Search</a></td>
                      <td><a class="link_ref" href="https://hcmc.uvic.ca/svn/keats/config_staticSearch.xml">SVN</a></td>
                   </tr>
                   <tr>
                      <td><a class="link_ref" href="https://myndir.uvic.ca/">My Norse Digital Image Repository</a></td>
-                     <td>1.0 (dev)</td>
                      <td><a class="link_ref" href="https://myndir.uvic.ca/search.html">Search</a></td>
                      <td><a class="link_ref" href="https://hcmc.uvic.ca/svn/myndir/config_staticSearch.xml">SVN</a></td>
                   </tr>
                   <tr>
                      <td><a class="link_ref" href="https://bcgenesis.uvic.ca/">The Colonial Despatches of BC and Vancouver Island</a></td>
-                     <td>1.0 (dev)</td>
                      <td><a class="link_ref" href="https://bcgenesis.uvic.ca/search.html">Search</a></td>
                      <td><a class="link_ref" href="https://hcmc.uvic.ca/svn/coldesp/trunk/config_staticSearch.xml">SVN</a></td>
                   </tr>
                   <tr>
+                     <td><a class="link_ref" href="https://scancan.net">The Scandinavian-Canadian Studies Journal</a></td>
+                     <td><a class="link_ref" href="https://scancan.net/search.htm">Search</a></td>
+                     <td><a class="link_ref" href="https://hcmc.uvic.ca/svn/scancan/config_staticSearch.xml">SVN</a></td>
+                  </tr>
+                  <tr>
+                     <td><a class="link_ref" href="https://graves.uvic.ca/">The Robert Graves Diary</a></td>
+                     <td><a class="link_ref" href="https://graves.uvic.ca/search.html">Search</a></td>
+                     <td><a class="link_ref" href="https://hcmc.uvic.ca/svn/graves/config_staticSearch.xml">SVN</a></td>
+                  </tr>
+                  <tr>
                      <td><a class="link_ref" href="https://dvpp.uvic.ca">Digital Victorian Periodical Poetry</a></td>
-                     <td>1.0 (dev)</td>
                      <td><a class="link_ref" href="https://dvpp.uvic.ca/search.html">Search</a> (multiple searches with individual pages)</td>
                      <td><a class="link_ref" href="https://hcmc.uvic.ca/svn/dvpp/">SVN</a> (multiple configuration files)</td>
                   </tr>
@@ -2589,7 +2632,7 @@ element wildcardSearch { xsd:boolean }</pre>
             <!--
 	  Generated from index.xml using XSLT stylesheets version 7.50.1
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2020-12-23T16:46:30Z.
+	       on 2021-01-06T23:48:36Z.
 	       SAXON HE 10.0.
 		 --></address>
       </div>

@@ -932,57 +932,96 @@
             <cell>How can I get staticSearch to jump straight to a specific hit in the document from a search result?</cell>
             <cell>The best way to do this is to ensure that <gi>linkToFragmentId</gi> is set to the <val>true</val> and that the
             input HTML contains ids at whatever level you think is most helpful. For instance, if possible, you could give each
-            <gi>xhtml:p</gi> element an <att>id</att>, which would mean that each KWIC could be associated with the input document.</cell>
+            <gi>xhtml:p</gi> element an <att>id</att>, which would mean that each KWIC could be linked to the right paragraph in the input document.</cell>
           </row>
         </table>
       </div>
+      
+      
+      
+      <div xml:id="newSinceVersion1">
+        <head>What's new since version 1.0?</head>
+        <list>
+          <item>Level: Intermediate</item>
+          <item>Last Updated: <date when="2021-01-06">6 January 2021</date></item>
+        </list>
+        <div>
+          <head>Changes in version 1.1</head>
+          <p>New features and enhancements:</p>
+          <list>
+            <item>Search results can now be sorted using a 
+              <ref target="#configuringDocSortKey">user-supplied sort key</ref>. This is useful
+              when searching only with filters (so all documents have the same relevance score) or 
+              where many results have the same relevance score.</item>
+            <item>Using the new <gi>linkToFragmentId</gi> parameter, keyword-in-context results can now have individual links to nearest ancestor fragment id, so the searcher can go directly to the relevant section of a document.</item>
+            <item>The order of parameter elements in the configuration file is no longer fixed. The schema now allows elements to appear in any order.</item>
+            <item>We have added a new <ref target="#howDoI">How Do I...</ref> section in the documentation.</item>
+            <item>Phrasal searches are now case-sensitive, meaning that you can use a <soCalled>phrasal search</soCalled> to search for proper names, by putting quotation marks around them and making the 
+              first letter upper-case.</item>
+            <item>Indexing is faster and the size of the index is smaller because we have eliminated
+              the upper-case index.</item>
+          </list>
+          <p>Bug fixes:</p>
+          <list>
+            <item>URL containing empty search query string caused unwanted page scroll.</item>
+            <item>The build process would fail to open the search report when running under very recent 
+              versions of Java.</item>
+            <item>Punctuation is no longer stripped from phrasal searches, so searching for
+              longer phrases including punctuation should be more successful.</item>
+          </list>
+        </div>
+      </div>
+      
       <div xml:id="projectsUsingSS">
         <head>Projects using staticSearch</head>
         <list>
           <item>Level: Basic</item>
-          <item>Last Updated: <date when="2020-10-14">14 October 2020</date></item>
+          <item>Last Updated: <date when="2021-01-06">6 January 2021</date></item>
         </list>
         <table>
           <row role="label">
             <cell>Name</cell>
-            <cell>staticSearch Version</cell>
             <cell>Search Page(s)</cell>
             <cell>Configuration file(s)</cell>
           </row>
           <row>
             <cell><ref target="https://mapoflondon.uvic.ca">The Map of Early Modern London</ref></cell>
-            <cell>0.9</cell>
             <cell><ref target="https://mapoflondon.uvic.ca/search.htm">Search</ref></cell>
             <cell><ref target="https://hcmc.uvic.ca/svn/london/static/config_staticSearch.xml">SVN</ref></cell>
           </row>
           <row>
             <cell><ref target="https://winnifredeatonarchive.org">The Winnifred Eaton Archive</ref></cell>
-            <cell>1.0 (dev)</cell>
             <cell><ref target="https://winnifredeatonarchive.org/search.html">Search</ref></cell>
             <cell>
               <ref target="https://github.com/winnifredeatonarchive/wea_data/blob/09ae8660007a10e23e80e2f5769aec0bf1f919c6/code/staticSearch/config.xml">Github</ref></cell>
           </row>
           <row>
             <cell><ref target="https://johnkeats.uvic.ca/">Mapping Keat's Progress</ref></cell>
-            <cell>1.0</cell>
             <cell><ref target="https://johnkeats.uvic.ca/search.html">Search</ref></cell>
             <cell><ref target="https://hcmc.uvic.ca/svn/keats/config_staticSearch.xml">SVN</ref></cell>
           </row>
           <row>
             <cell><ref target="https://myndir.uvic.ca/">My Norse Digital Image Repository</ref></cell>
-            <cell>1.0 (dev)</cell>
             <cell><ref target="https://myndir.uvic.ca/search.html">Search</ref></cell>
             <cell><ref target="https://hcmc.uvic.ca/svn/myndir/config_staticSearch.xml">SVN</ref></cell>
           </row>
           <row>
             <cell><ref target="https://bcgenesis.uvic.ca/">The Colonial Despatches of BC and Vancouver Island</ref></cell>
-            <cell>1.0 (dev)</cell>
             <cell><ref target="https://bcgenesis.uvic.ca/search.html">Search</ref></cell>
             <cell><ref target="https://hcmc.uvic.ca/svn/coldesp/trunk/config_staticSearch.xml">SVN</ref></cell>
           </row>
           <row>
+            <cell><ref target="https://scancan.net">The Scandinavian-Canadian Studies Journal</ref></cell>
+            <cell><ref target="https://scancan.net/search.htm">Search</ref></cell>
+            <cell><ref target="https://hcmc.uvic.ca/svn/scancan/config_staticSearch.xml">SVN</ref></cell>
+          </row>
+          <row>
+            <cell><ref target="https://graves.uvic.ca/">The Robert Graves Diary</ref></cell>
+            <cell><ref target="https://graves.uvic.ca/search.html">Search</ref></cell>
+            <cell><ref target="https://hcmc.uvic.ca/svn/graves/config_staticSearch.xml">SVN</ref></cell>
+          </row>
+          <row>
             <cell><ref target="https://dvpp.uvic.ca">Digital Victorian Periodical Poetry</ref></cell>
-            <cell>1.0 (dev)</cell>
             <cell><ref target="https://dvpp.uvic.ca/search.html">Search</ref> (multiple searches with individual pages)</cell>
             <cell><ref target="https://hcmc.uvic.ca/svn/dvpp/">SVN</ref> (multiple configuration files)</cell>
           </row>

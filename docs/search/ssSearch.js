@@ -132,15 +132,19 @@
   * they will be incorporated.
   */
 class StaticSearch{
+/** 
+  * @constructor
+  * @description The constructor has no paramaters since it
+  *              reads everything it requires from the host
+  *              HTML page. 
+  */
   constructor(){
     try {
       this.ssForm = document.querySelector('#ssForm');
       if (!this.ssForm){
         throw new Error('Failed to find search form. Search functionality will probably break.');
       }
-      //Directory for JSON files. Inside this directory will be a
-      //'lower' dir and an 'upper' dir, where the two sets of case-
-      //distinguished JSON files are stored.
+      //Directory where all of the JSONs are stored
       this.jsonDirectory = this.ssForm.getAttribute('data-ssfolder') || 'staticSearch'; //Where to find all the stuff.
       this.jsonDirectory += '/';
 
@@ -318,6 +322,13 @@ class StaticSearch{
       //A pattern to check the search string to ensure that it's not going
       //to retrieve a million words. 
       this.termPattern = new RegExp('^([\\*\\?\\[\\]]*[^\\*\\?\\[\\]]){' + this.charsRequired + ',}[\\*\\?\\[\\]]*$');
+
+      //Characters to be discarded in all but phrasal
+      this.charsToDiscardPattern = /[\.,!;:@#$%”“\^&]/g;
+      if (!this.allowWildcards){
+          this.charsToDiscardPattern = /[\.,!;:@#$%\^&*?\[\]]/g;
+         
+      };
 
       //Captions
       this.captions = ss.captions; //Default; override this if you wish by setting the property after instantiation.
@@ -657,57 +668,46 @@ class StaticSearch{
       let i;
       //Clear anything in the existing array.
       this.terms = [];
+      this.normalizedQuery = [];
       let strSearch = this.queryBox.value;
+
       //Start by normalizing whitespace.
       strSearch = strSearch.replace(/((^\s+)|\s+$)/g, '');
       strSearch = strSearch.replace(/\s+/g, ' ');
 
-      //Next, replace curly quotes/apostrophes with straight.
-      strSearch = strSearch.replace(/[“”]/g, '"');
+      //Next, replace curly apostrophes with straight.
       strSearch = strSearch.replace(/[‘’‛]/g, "'");
       
       //Then remove any leading or trailing apostrophes
       strSearch = strSearch.replace(/(^'|'$)/g,'');
 
-      //Strip out all other punctuation that isn't between numbers. We do this
-      //slightly differently depending on whether wildcard searching is enabled.
-      if (this.allowWildcards){
-        strSearch = strSearch.replace(/(^|[^\d])[\.,!;:@#$%\^&]+([^\d]|$)/g, '$1$2');
-      }
-      else{
-        strSearch = strSearch.replace(/(^|[^\d])[\.,!;:@#$%\^&*?\[\]]+([^\d]|$)/g, '$1$2');
-      }
 
       //If we're not supporting phrasal searches, get rid of double quotes.
       if (!this.allowPhrasal){
         strSearch = strSearch.replace(/"/g, '');
       }
+      //Otherwise, we rationalize the quotation marks
       else{
       //Get rid of any quote pairs with nothing between them.
         strSearch = strSearch.replace(/""/g, '');
-      }
-
-      //Now delete any unmatched double quotes.
-      let qCount = 0;
-      let lastQPos = -1;
-      let tmp = '';
-      for (i=0; i<strSearch.length; i++){
+        //Now delete any unmatched double quotes
+        let qCount = 0;
+        let lastQPos = -1;
+        let tmp = '';
+        for (i=0; i<strSearch.length; i++){
           tmp += strSearch.charAt(i);
           if (strSearch.charAt(i) === '"'){
             qCount++;
             lastQPos = i;
           }
+        }
+        if (qCount % 2 > 0){
+          strSearch = tmp.substr(0, lastQPos) + tmp.substr(lastQPos + 1, tmp.length);
+        }
+        else{
+          strSearch = tmp;
+        }
       }
-      if (qCount % 2 > 0){
-        strSearch = tmp.substr(0, lastQPos) + tmp.substr(lastQPos + 1, tmp.length);
-      }
-      else{
-        strSearch = tmp;
-      }
-
-      //Put that fixed string back in the box to make
-      //clear to the user what's been understood.
-      this.queryBox.value = strSearch;
 
       //Now iterate through the string, paying attention
       //to whether you're inside a quote or not.
@@ -721,23 +721,32 @@ class StaticSearch{
           strSoFar = '';
         }
         else{
-          if ((c === ' ')&&(!inPhrase)){
+          // If we're not in a phrase, and encounter some sort of punctuation, then skip it
+          if (this.charsToDiscardPattern.test(c) && (!inPhrase)) {
+            // Just skip the bit of punctuation
+          } else if ((c === ' ') && (!inPhrase)){
             this.addSearchItem(strSoFar, false);
             strSoFar = '';
-          }
-          else{
+          } else{
             strSoFar += c;
           }
         }
       }
       this.addSearchItem(strSoFar, inPhrase);
+     
+      // Now clear the queryBox and replace its contents
+      // By joining the normalized query
+      this.queryBox.value = this.normalizedQuery.join(" ");
+      
+
       //We always want to handle the terms in order of
       //precedence, starting with phrases.
       this.terms.sort(function(a, b){return a.type - b.type;});
+      
       //return (this.terms.length > 0);
-//Even if we found no terms to search for, we should go
-//ahead with the search, either listing all the documents
-//or listing them based on the filters.
+      //Even if we found no terms to search for, we should go
+      //ahead with the search, either listing all the documents
+     //or listing them based on the filters.
       return true;
     }
     catch(e){
@@ -759,6 +768,8 @@ class StaticSearch{
   * @return {Boolean} true if terms found, otherwise false.
   */
   addSearchItem(strInput, isPhrasal){
+
+
     //Sanity check
     if (strInput.length < 1){
       return false;
@@ -766,24 +777,27 @@ class StaticSearch{
 
     //Broadness check
     if (!isPhrasal && !this.termPattern.test(strInput)){
+      this.normalizedQuery.push(strInput);
       this.discardedTerms.push(strInput);
       return false;
     }
 
     //Stopword check
     if (this.stopwords.indexOf(strInput.toLowerCase()) > -1){
+      this.normalizedQuery.push(strInput);
       this.discardedTerms.push(strInput);
       return false;
     }
 
-    //Set a flag if it starts with a cap.
-    let firstLetter = strInput.replace(/^[\+\-]/, '').substring(0, 1);
-    let startsWithCap = (firstLetter.toLowerCase() !== firstLetter);
-
     //Is it a phrase?
     if ((/\s/.test(strInput)) || (isPhrasal)){
+
+    // If this is a phrasal, we need to surround with quotation marks
+    // before we push to the normalized query
+    this.normalizedQuery.push('"' + strInput + '"');
+
     //We need to find the first component which is not a stopword.
-      let subterms = strInput.toLowerCase().split(/\s+/);
+      let subterms = strInput.trim().toLowerCase().split(/\s+/).map(term => term.replaceAll(this.charsToDiscardPattern,''));
       let i;
       for (i = 0; i <= subterms.length; i++){
         if (this.stopwords.indexOf(subterms[i]) < 0){
@@ -791,10 +805,13 @@ class StaticSearch{
         }
       }
       if (i < subterms.length){
-        this.terms.push({str: strInput, stem: this.stemmer.stem(subterms[i]), capFirst: startsWithCap, type: PHRASE});
+        this.terms.push({str: strInput, stem: this.stemmer.stem(subterms[i]), type: PHRASE});
+
       }
     }
     else{
+      //Push the string to the normalized query
+      this.normalizedQuery.push(strInput);
       //Else is it a wildcard? Wildcards are expanded to a sequence of matching terms.
       if (this.allowWildcards && /[\[\]?*]/.test(strInput)){
         let re = this.wildcardToRegex(strInput);
@@ -804,13 +821,12 @@ class StaticSearch{
         for (let m of matches){
           let mStem = this.stemmer.stem(m[1].toLowerCase());
           let term = m[0].replace(/[\|]/g, '');
-          console.log(term);
           if (this.terms.length < this.termLimit){
             if (this.allowPhrasal){
-              this.terms.push({str: term, stem: mStem, capFirst: startsWithCap, type: PHRASE});
+              this.terms.push({str: term, stem: mStem, type: PHRASE});
             }
             else{
-              this.terms.push({str: term, stem: mStem, capFirst: startsWithCap, type: MAY_CONTAIN});
+              this.terms.push({str: term, stem: mStem, type: MAY_CONTAIN});
             }
           }
         }
@@ -819,18 +835,18 @@ class StaticSearch{
         //Else is it a must-contain?
         if (/^[\+]/.test(strInput)){
           let term = strInput.substring(1).toLowerCase();
-          this.terms.push({str: strInput.substring(1), stem: this.stemmer.stem(term), capFirst: startsWithCap, type: MUST_CONTAIN});
+          this.terms.push({str: strInput.substring(1), stem: this.stemmer.stem(term), type: MUST_CONTAIN});
         }
         else{
         //Else is it a must-not-contain?
           if (/^[\-]/.test(strInput)){
             let term = strInput.substring(1).toLowerCase();
-            this.terms.push({str: strInput.substring(1), stem: this.stemmer.stem(term), capFirst: startsWithCap, type: MUST_NOT_CONTAIN});
+            this.terms.push({str: strInput.substring(1), stem: this.stemmer.stem(term), type: MUST_NOT_CONTAIN});
           }
           else{
           //Else may-contain.
             let term = strInput.toLowerCase();
-            this.terms.push({str: strInput, stem: this.stemmer.stem(term), capFirst: startsWithCap, type: MAY_CONTAIN});
+            this.terms.push({str: strInput, stem: this.stemmer.stem(term),  type: MAY_CONTAIN});
           }
         }
       }
@@ -1126,8 +1142,7 @@ class StaticSearch{
   * .then() calls the processResults function.
   */
   populateIndexes(){
-    var i, imax, stemsToFind = [], promises = [], emptyIndex,
-    jsonSubfolder, filterSelector, filterIds;
+    var i, imax, stemsToFind = [], promises = [], emptyIndex, filterSelector, filterIds;
 //We need a self pointer because this will go out of scope.
     var self = this;
     try{
@@ -1137,12 +1152,6 @@ class StaticSearch{
         if (!this.index.hasOwnProperty(this.terms[i].stem)){
   //If not, add it to the array of stems we want to retrieve.
           stemsToFind.push(this.terms[i].stem);
-        }
-        if (this.terms[i].capFirst){
-          if (!this.index.hasOwnProperty(this.terms[i].str)){
-    //If not, add it to the array of stems we want to retrieve.
-            stemsToFind.push(this.terms[i].str);
-          }
         }
       }
 
@@ -1271,13 +1280,9 @@ class StaticSearch{
 
           this.stemFound(emptyIndex);
 
-//Figure out whether we're retrieving a lower-case or an upper-case stem.
-//TODO: Do we need to worry about camel-case?
-          jsonSubfolder = (stemsToFind[i].toLowerCase() == stemsToFind[i])? 'lower/' : 'upper/';
-
 //We create an array of fetches to get the json file for each stem,
 //assuming it's there.
-          promises[promises.length] = fetch(self.jsonDirectory + jsonSubfolder + stemsToFind[i] + this.versionString + '.json', this.fetchHeaders)
+          promises[promises.length] = fetch(self.jsonDirectory + 'stems/' + stemsToFind[i] + this.versionString + '.json', this.fetchHeaders)
 //If we get a response, and it looks good
               .then(function(response){
                 if ((response.status >= 200) &&
@@ -1491,12 +1496,8 @@ if (this.discardedTerms.length > 0){
           for (let phr of phrases){
   //Get the term we decided to use to retrieve index data.
             let stem = self.terms[phr].stem;
-            
-  //Expand apostrophes into their variants
-           let rePhrStr = self.terms[phr].str.replace(/'/g, "['‘’‛]");
-  
-  //Make the phrase into a regex for matching.
-            let rePhr = new RegExp('\\b' + rePhrStr + '\\b', 'i');
+            let str = self.terms[phr].str;
+            let phraseRegex = self.phraseToRegex(str);
   //If that term is in the index (it should be, even if it's empty, but still...)
             if (self.index[stem]){
   //Look at each of the document instances for that term...
@@ -1508,10 +1509,10 @@ if (this.discardedTerms.length > 0){
   //Check whether our phrase matches that context (remembering to strip
   //out any <mark> tags)...
                   let unmarkedContext = cntxt.context.replace(/<[^>]+>/g, '');
-                  if (rePhr.test(unmarkedContext)){
+                  if (phraseRegex.test(unmarkedContext)){
   //We have a candidate document for inclusion, and a candidate context.
-                    let c = unmarkedContext.replace(rePhr, '<mark>' + '$&' + '</mark>');
-                    currContexts.push({form: self.terms[phr].str, context: c, weight: 2, fid: cntxt.fid? cntxt.fid : ''});
+                    let c = unmarkedContext.replace(phraseRegex, '<mark>' + '$&' + '</mark>');
+                    currContexts.push({form: str, context: c, weight: 2, fid: cntxt.fid ? cntxt.fid : ''});
                   }
                 }
   //If we've found contexts, we know we have a document to add to the results.
@@ -1732,6 +1733,42 @@ if (this.discardedTerms.length > 0){
     }
   }
 
+  /** @function StaticSearch~phraseToRegex
+   *  @description This method takes a phrase and converts it
+   *  into the regular expression that will be matched against
+   *  contexts. This function first escapes all characters
+   *  to prevent from unintentional regular expression, then expands all
+   *  apostrophes (i.e. treating U+0027, U+2018, U+2019, U+201B as equivalent) and
+   *  all quotation marks.
+   * @param {String} str a string of text
+   * @return {RegExp|null} a regular expression, or null if one can't be constructed
+   */
+  phraseToRegex(str){
+    //Escape the phrase to have proper punctuation matching
+    let esc = str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    //Expand the apostrophes into a character class
+    let strRe = esc.replace(/'/g, "['‘’‛]").replace(/[“”]/g, '[“”"]');
+    //Set starting anchor
+    if (/^\w/.test(str)){
+      strRe = '\\b' + strRe;
+    }
+    //Set ending anchor
+    if (/\w$/.test(str)){
+      strRe = strRe + '\\b';
+    }
+    // Test the regex and return null if it's broken
+    try{
+      //Make the phrase into a regex for matching.
+      let re = new RegExp(strRe);
+      return re;
+    }
+    catch(e){
+      console.log('Invalid regex from phrase created: ' + strRe);
+      return null;
+    }
+  }
+
+
 /** @function StaticSearch~wildcardToRegex
   * @description This method is provided with a single token as 
   * input. The token should contain wildcard characters (asterisk,
@@ -1778,6 +1815,25 @@ if (this.discardedTerms.length > 0){
   * objects returned from the search index queries.
   */
 class SSResultSet{
+/** 
+  * @constructor
+  * @description The constructor is typically called from the host
+  *              StaticSearch instance, and it passes only the 
+  *              information required by the result set object.
+  * @param {integer} maxKwicsToShow The maximum number of keyword-
+  *              in-context strings to display for any single hit
+  *              document.
+  * @param {Boolean} scrollToTextFragment Whether to construct 
+  *              scroll-to-text-fragment result links for individual
+  *              KWICs. This depends on browser support for the 
+  *              feature and user configuration to turn it on.
+  * @param {RegExp} reKwicTruncateStr A pre-constructed regular 
+  *              expression that will remove leading and trailing 
+  *              ellipses (whatever form these take, configured by
+  *              the user) from a KWIC form before using it to create
+  *              a scroll-to-text-fragment link.
+  */
+  
   constructor(maxKwicsToShow, scrollToTextFragment, reKwicTruncateStr){
     try{
       this.mapDocs = new Map([]);
@@ -2077,7 +2133,6 @@ class SSResultSet{
             //Output the KWIC.
             let li2 = document.createElement('li');
             li2.innerHTML = value.contexts[i].context;
-            console.log(value.contexts[i]);
             //Create a text fragment identifier (see https://wicg.github.io/scroll-to-text-fragment/)
             let cleanContext = value.contexts[i].context.replace(/<\/?mark>/g, '').replace(this.reKwicTruncateStr, '');
             let tf = ((this.scrollToTextFragment) && (cleanContext.length > 1))? encodeURI(':~:text=' + cleanContext) : '';
@@ -2192,6 +2247,16 @@ class SSResultSet{
   * adds native versions.
   */
   class XSet extends Set{
+/** 
+  * @constructor
+  * @description The constructor receives a single optional parameter
+  *              which if present is used by the ancestor Set object
+  *              constructor.
+  * @param {Iterable} iterable An optional Iterable object. If an 
+  *              iterable object is passed, all of its elements will 
+  *              be added to the new XSet.
+  *              
+  */
     constructor(iterable){
       super(iterable);
       this.filtersActive = false; //Used when a set is empty, to distinguish
