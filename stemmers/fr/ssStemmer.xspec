@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
+  xmlns:ss="http://hcmc.uvic.ca/ns/ssStemmer" stylesheet="ssStemmer.xsl">
+  <!--<x:scenario label="Scenario for testing function stem">
+    <x:call function="ss:stem">
+      <x:param name="token" select="''"/>
+    </x:call>
+    <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+  </x:scenario>-->
+
+  <x:scenario label="Scenario for testing function ss:preflight">
+    <x:scenario label="jouer to joUer">
+      <x:call function="ss:preflight">
+        <x:param name="token" select="'jouer'"/>
+      </x:call>
+      <x:expect label="U is upper" select="'joUer'"/>
+    </x:scenario>
+    <x:scenario label="ennuie to ennuIe">
+      <x:call function="ss:preflight">
+        <x:param name="token" select="'ennuie'"/>
+      </x:call>
+      <x:expect label="I is upper" select="'ennuIe'"/>
+    </x:scenario>
+    <x:scenario label="yeux to Yeux">
+      <x:call function="ss:preflight">
+        <x:param name="token" select="'yeux'"/>
+      </x:call>
+      <x:expect label="Y is upper" select="'Yeux'"/>
+    </x:scenario>
+    <x:scenario label="quand to qUand">
+      <x:call function="ss:preflight">
+        <x:param name="token" select="'quand'"/>
+      </x:call>
+      <x:expect label="U is upper" select="'qUand'"/>
+    </x:scenario>
+    <x:scenario label="exiguë to exiguHe">
+      <x:call function="ss:preflight">
+        <x:param name="token" select="'exiguë'"/>
+      </x:call>
+      <x:expect label="ë becomes He" select="'exiguHe'"/>
+    </x:scenario>
+    <x:scenario label="aïeux to aHieux">
+      <x:call function="ss:preflight">
+        <x:param name="token" select="'aïeux'"/>
+      </x:call>
+      <x:expect label="ï becomes Hi" select="'aHieux'"/>
+    </x:scenario>
+  </x:scenario>
+  
+  <x:scenario label="Test function ss:getRVR1R2">
+    <x:scenario label="Testing ss:getRVR1R2: word beginning with two vowels">
+      <x:call function="ss:getRVR1R2">
+        <x:param name="token" select="'aimer'"/>
+      </x:call>
+      <x:expect label="Result from 'aimer'" select="('er', 'er', '', 3, 3, 5)"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:getRVR1R2: voler">
+      <x:call function="ss:getRVR1R2">
+        <x:param name="token" select="'voler'"/>
+      </x:call>
+      <x:expect label="Result from 'voler'" select="('ler', 'er', '', 2, 3, 5)"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:getRVR1R2: paris">
+      <x:call function="ss:getRVR1R2">
+        <x:param name="token" select="'paris'"/>
+      </x:call>
+      <x:expect label="Result from 'paris'" select="('is', 'is', '', 3, 3, 5)"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:getRVR1R2: adorer">
+      <x:call function="ss:getRVR1R2">
+        <x:param name="token" select="'adorer'"/>
+      </x:call>
+      <x:expect label="Result from 'adorer'" select="('rer', 'orer', 'er', 3, 2, 4)"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:getRVR1R2: fameusement">
+      <x:call function="ss:getRVR1R2">
+        <x:param name="token" select="'fameusement'"/>
+      </x:call>
+      <x:expect label="Result from 'fameusement'" select="('meusement', 'eusement', 'ement', 2, 3, 6)"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:getRVR1R2: traumatologie">
+      <x:call function="ss:getRVR1R2">
+        <x:param name="token" select="'traumatologie'"/>
+      </x:call>
+      <x:expect label="Result from 'traumatologie'" select="('umatologie', 'atologie', 'ologie', 3, 5, 7)"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:getRVR1R2: comparativement">
+      <x:call function="ss:getRVR1R2">
+        <x:param name="token" select="'comparativement'"/>
+      </x:call>
+      <x:expect label="Result from 'comparativement'" select="('mparativement', 'parativement', 'ativement', 2, 3, 6)"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:getRVR1R2: accablement">
+      <x:call function="ss:getRVR1R2">
+        <x:param name="token" select="'accablement'"/>
+      </x:call>
+      <x:expect label="Result from 'accablement'" select="('blement', 'cablement', 'lement', 4, 2, 5)"/>
+    </x:scenario>
+  </x:scenario>
+  
+  <x:scenario label="Test function ss:step1a">
+    <x:scenario label="Testing ss:step1a: 'vacances'">
+      <x:call function="ss:step1a">
+        <x:param name="token" select="'vacances'"/>
+        <x:param name="R2" select="ss:getRVR1R2('vacances')[6]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1a from 'vacances'" select="'vacances'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1a: 'surréalisme'">
+      <x:call function="ss:step1a">
+        <x:param name="token" select="'surréalisme'"/>
+        <x:param name="R2" select="ss:getRVR1R2(ss:preflight('surréalisme'))[6]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1a from 'surréalisme'" select="'surréal'"/>
+    </x:scenario>
+  </x:scenario>
+  
+  <x:scenario label="Test function ss:step1b">
+    <x:scenario label="Testing ss:step1b: 'réalisations'">
+      <x:call function="ss:step1b">
+        <x:param name="token" select="'réalisations'"/>
+        <x:param name="R2" select="ss:getRVR1R2('réalisations')[6]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1b from 'réalisations'" select="'réalis'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1b: 'spécifications'">
+      <x:call function="ss:step1b">
+        <x:param name="token" select="'spécifications'"/>
+        <x:param name="R2" select="ss:getRVR1R2(ss:preflight('spécifications'))[6]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1b from 'spécifications'" select="'spécif'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1b: 'indications'">
+      <x:call function="ss:step1b">
+        <x:param name="token" select="'indications'"/>
+        <x:param name="R2" select="ss:getRVR1R2(ss:preflight('indications'))[6]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1b from 'indications'" select="'indiqU'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1b: 'cicatrice'">
+      <x:call function="ss:step1b">
+        <x:param name="token" select="'cicatrice'"/>
+        <x:param name="R2" select="ss:getRVR1R2(ss:preflight('cicatrice'))[6]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1b from 'cicatrice'" select="'cicatrice'"/>
+    </x:scenario>
+  </x:scenario>
+  
+  <x:scenario label="Test function ss:step1c">
+    <x:scenario label="Testing ss:step1c: 'traumatologie'">
+      <x:call function="ss:step1c">
+        <x:param name="token" select="'traumatologie'"/>
+        <x:param name="R2" select="ss:getRVR1R2('traumatologie')[6]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1c from 'traumatologie'" select="'traumatolog'"/>
+    </x:scenario>
+  </x:scenario>
+  
+  <x:scenario label="Test function ss:step1d">
+    <x:scenario label="Testing ss:step1d: 'constitution'">
+      <x:call function="ss:step1d">
+        <x:param name="token" select="'constitution'"/>
+        <x:param name="R2" select="ss:getRVR1R2('constitution')[6]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1d from 'constitution'" select="'constitu'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1d: 'effusion'">
+      <x:call function="ss:step1d">
+        <x:param name="token" select="'effusion'"/>
+        <x:param name="R2" select="ss:getRVR1R2('effusion')[6]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1d from 'effusion'" select="'effusion'"/>
+    </x:scenario>
+  </x:scenario>
+  
+  <x:scenario label="Test function ss:step1e">
+    <x:scenario label="Testing ss:step1e: 'experiences'">
+      <x:call function="ss:step1e">
+        <x:param name="token" select="'experiences'"/>
+        <x:param name="R2" select="ss:getRVR1R2('experiences')[6]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1e from 'experiences'" select="'experient'"/>
+    </x:scenario>
+  </x:scenario>
+  
+  <x:scenario label="Test function ss:step1f">
+    <x:scenario label="Testing ss:step1f: 'comparativement'">
+      <x:call function="ss:step1f">
+        <x:param name="token" select="'comparativement'"/>
+        <x:param name="rvr1r2" select="ss:getRVR1R2('comparativement')"></x:param>
+      </x:call>
+      <x:expect label="Result of step1f from 'comparativement'" select="'compar'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1f: 'consciencieusement'">
+      <x:call function="ss:step1f">
+        <x:param name="token" select="'consciencieusement'"/>
+        <x:param name="rvr1r2" select="ss:getRVR1R2('consciencieusement')"></x:param>
+      </x:call>
+      <x:expect label="Result of step1f from 'consciencieusement'" select="'conscienci'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1f: 'accablement'">
+      <x:call function="ss:step1f">
+        <x:param name="token" select="'accablement'"/>
+        <x:param name="rvr1r2" select="ss:getRVR1R2('accablement')"></x:param>
+      </x:call>
+      <x:expect label="Result of step1f from 'accablement'" select="'accabl'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1f: 'fameusement'">
+      <x:call function="ss:step1f">
+        <x:param name="token" select="'fameusement'"/>
+        <x:param name="rvr1r2" select="ss:getRVR1R2('fameusement')"></x:param>
+      </x:call>
+      <x:expect label="Result of step1f from 'fameusement'" select="'fameux'"/>
+    </x:scenario>
+  </x:scenario>
+  
+  <x:scenario label="Test function ss:step1g">
+    <x:scenario label="Testing ss:step1g: 'absurdités'">
+      <x:call function="ss:step1g">
+        <x:param name="token" select="'absurdités'"/>
+        <x:param name="R2" select="ss:getRVR1R2('absurdités')[6]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1g from 'absurdités'" select="'absurd'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1g: 'assiduités'">
+      <x:call function="ss:step1g">
+        <x:param name="token" select="'assiduités'"/>
+        <x:param name="R2" select="ss:getRVR1R2('assiduités')[6]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1g from 'assiduités'" select="'assidu'"/>
+    </x:scenario>
+  </x:scenario>
+  
+  <x:scenario label="Test function ss:step1h">
+    <x:scenario label="Testing ss:step1h: 'significatives'">
+      <x:call function="ss:step1h">
+        <x:param name="token" select="'significatives'"/>
+        <x:param name="R2" select="ss:getRVR1R2('significatives')[6]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1h from 'significatives'" select="'signif'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1h: 'actif'">
+      <x:call function="ss:step1h">
+        <x:param name="token" select="'actif'"/>
+        <x:param name="R2" select="ss:getRVR1R2('actif')[6]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1h from 'actif'" select="'actif'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1h: 'incisif'">
+      <x:call function="ss:step1h">
+        <x:param name="token" select="'incisif'"/>
+        <x:param name="R2" select="ss:getRVR1R2('incisif')[6]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1h from 'incisif'" select="'incis'"/>
+    </x:scenario>
+  </x:scenario>
+  
+  <x:scenario label="Test function ss:step1i">
+    <x:scenario label="Testing ss:step1i: 'agneaux'">
+      <x:call function="ss:step1i">
+        <x:param name="token" select="'agneaux'"/>
+        <x:param name="R1" select="ss:getRVR1R2('agneaux')[5]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1i from 'agneaux'" select="'agneau'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1i: 'animaux'">
+      <x:call function="ss:step1i">
+        <x:param name="token" select="'animaux'"/>
+        <x:param name="R1" select="ss:getRVR1R2('animaux')[5]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1i from 'animaux'" select="'animal'"/>
+    </x:scenario>
+  </x:scenario>
+  
+  <x:scenario label="Test function ss:step1j">
+    <x:scenario label="Testing ss:step1j: 'antigénéreuses'">
+      <x:call function="ss:step1j">
+        <x:param name="token" select="'antigénéreuses'"/>
+        <x:param name="rvr1r2" select="ss:getRVR1R2('antigénéreuses')"></x:param>
+      </x:call>
+      <x:expect label="Result of step1j from 'antigénéreuses'" select="'antigénér'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1j: 'affreuse'">
+      <x:call function="ss:step1j">
+        <x:param name="token" select="'affreuse'"/>
+        <x:param name="rvr1r2" select="ss:getRVR1R2('affreuse')"></x:param>
+      </x:call>
+      <x:expect label="Result of step1j from ''" select="'affreux'"/>
+    </x:scenario>
+  </x:scenario>
+  
+  <x:scenario label="Test function ss:step1k">
+    <x:scenario label="Testing ss:step1k: 'abaissement'">
+      <x:call function="ss:step1k">
+        <x:param name="token" select="'abaissement'"/>
+        <x:param name="R1" select="ss:getRVR1R2('abaissement')[5]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1k from 'abaissement'" select="'abaissement'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1k: 'accomplissement'">
+      <x:call function="ss:step1k">
+        <x:param name="token" select="'accomplissement'"/>
+        <x:param name="R1" select="ss:getRVR1R2('accomplissement')[5]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1k from 'accomplissement'" select="'accompl'"/>
+    </x:scenario>
+  </x:scenario>
+  
+  <x:scenario label="Test function ss:step1l">
+    <x:scenario label="Testing ss:step1l: 'complaisamment'">
+      <x:call function="ss:step1l">
+        <x:param name="token" select="'complaisamment'"/>
+        <x:param name="R1" select="ss:getRVR1R2('complaisamment')[4]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1l from 'complaisamment'" select="'complaisant'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1l: 'constamment'">
+      <x:call function="ss:step1l">
+        <x:param name="token" select="'constamment'"/>
+        <x:param name="R1" select="ss:getRVR1R2('constamment')[4]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1l from 'constamment'" select="'constant'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1l: 'conséquemment'">
+      <x:call function="ss:step1l">
+        <x:param name="token" select="'conséquemment'"/>
+        <x:param name="R1" select="ss:getRVR1R2('conséquemment')[4]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1l from 'conséquemment'" select="'conséquent'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1l: 'sciemment'">
+      <x:call function="ss:step1l">
+        <x:param name="token" select="'sciemment'"/>
+        <x:param name="R1" select="ss:getRVR1R2('sciemment')[4]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1l from 'sciemment'" select="'scient'"/>
+    </x:scenario>
+  </x:scenario>
+  
+  <x:scenario label="Test function ss:step1m">
+    <x:scenario label="Testing ss:step1m: 'admirablement'">
+      <x:call function="ss:step1m">
+        <x:param name="token" select="'admirablement'"/>
+        <x:param name="R1" select="ss:getRVR1R2('admirablement')[4]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1m from 'admirablement'" select="'admirable'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1m: 'affirment'">
+      <x:call function="ss:step1m">
+        <x:param name="token" select="'affirment'"/>
+        <x:param name="R1" select="ss:getRVR1R2('affirment')[4]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1m from 'affirment'" select="'affirment'"/>
+    </x:scenario>
+  </x:scenario>
+  
+  
+  <!-- The big fat complete test set. -->
+  <x:scenario label="Test function ss:stem, the core function">
+    <x:call function="ss:runTests"/>
+    <x:expect label="Result from running built-in tests." select="(true(), '')"/>
+  </x:scenario>
+  
+</x:description>
