@@ -465,7 +465,7 @@
             <xsl:when test="local-name()=('id','lang')">
                 <xsl:copy-of select="."/>
             </xsl:when>
-            <xsl:when test="starts-with(local-name(),'data-staticSearch')">
+            <xsl:when test="matches(local-name(),'^data-(staticSearch|ss)-')">
                 <xsl:copy-of select="."/>
             </xsl:when>
             <xsl:otherwise/>

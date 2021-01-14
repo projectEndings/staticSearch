@@ -63,8 +63,6 @@
        *                                                            *
        **************************************************************-->
 
-    <!--ROOT TEMPLATE -->
-
     <xd:doc>
         <xd:desc>Root template, which calls the rest of the templates. Note that 
         these do not have to be run in any particular order.</xd:desc>
@@ -93,32 +91,17 @@
     </xd:doc>
     <xsl:template name="createStemmedTokenJson">
         <xsl:message>Found <xsl:value-of select="$tokenizedDocsCount"/> tokenized documents...</xsl:message>
-        
-         <!--Group by each of the static search stem values-->
+        <!--Group all of the stems by their values;  tokenizing is a bit overzealous here-->
         <xsl:for-each-group select="$stems" group-by="tokenize(@data-staticSearch-stem,'\s+')">
-            
-             <!--Sort these (for no reason, really). -->
-            <xsl:sort select="current-grouping-key()" case-order="upper-first"/>
-            
-             <!--Variable that is simply the current-grouping-key (i.e. the stem from which
-                a JSON is being created)-->
             <xsl:variable name="stem" select="current-grouping-key()"/>
-            
-             <!--Simple message if one wants it -->
             <xsl:if test="$verbose">
                 <xsl:message>Processing <xsl:value-of select="$stem"/></xsl:message>
             </xsl:if>
-            
-             <!--Now create the JSON map structure. Since we're calling a template, all of the contexts
-                 are inherited -->
-            <xsl:variable name="map" as="element()">
-                <xsl:call-template name="makeMap"/>
-            </xsl:variable>
-            
-              
-                <!--Now create the result document. -->
-            
             <xsl:result-document href="{$outDir}/stems/{$stem}{$versionString}.json" method="text">
+                <!--Create the JSON map structure in a separate process -->
+                <xsl:variable name="map" as="element()">
+                    <xsl:call-template name="makeMap"/>
+                </xsl:variable>
                 <xsl:value-of select="xml-to-json($map, map{'indent': $indentJSON})"/>
             </xsl:result-document>
         </xsl:for-each-group>
@@ -174,7 +157,6 @@
         </xd:desc>
     </xd:doc>
     <xsl:template name="makeMap" as="element(j:map)">
-        
         <!--The term we're creating a JSON for, inherited from the createMap template -->
         <xsl:variable name="stem" select="current-grouping-key()" as="xs:string"/>
         
@@ -182,8 +164,6 @@
             in its @data-staticSearch-stem -->
         <xsl:variable name="stemGroup" select="current-group()" as="element(span)*"/>
         
-       
-
         <!--Create the outermost part of the structure-->
         <map xmlns="http://www.w3.org/2005/xpath-functions">
 
@@ -215,8 +195,6 @@
                     <!--Get the total number of documents (i.e. the number of iterations that this
                         for-each-group will perform) for this span-->
                     <xsl:variable name="stemDocsCount" select="last()" as="xs:integer"/>
-                    
-                    <!--Output message, if verbose-->
                     <xsl:if test="$verbose">
                         <xsl:message><xsl:value-of select="$stem"/>: Processing <xsl:value-of select="$currDocUri"/></xsl:message>
                     </xsl:if>
@@ -238,7 +216,7 @@
                     <xsl:variable name="relativeUri"
                         select="$thisDoc/@data-staticSearch-relativeUri"
                         as="xs:string"/>
-                    
+
                     <!--Get the raw score of all the spans by getting the weight for 
                         each span and then adding them all together -->
                     <xsl:variable name="rawScore" 
@@ -248,6 +226,7 @@
                     
                    <!--Now start the map that represents each document-->
                     <map xmlns="http://www.w3.org/2005/xpath-functions">
+                        
                         <!--Document id -->
                         <string key="docId">
                             <xsl:value-of select="$docId"/>
@@ -272,66 +251,128 @@
 
                         <!--Now add the contexts array, if specified to do so -->
                         <xsl:if test="$phrasalSearch or $createContexts">
-                            <array key="contexts">
-
-                                <!--Return only the number of contexts we want;
-                                    if a limit has been specified, only return
-                                    up to the limit; otherwise, return them all. -->
-                                <xsl:variable name="contexts" as="element(span)+"
-                                    select="
-                                    if ($phrasalSearch)
-                                    then $thisDocSpans
-                                    else subsequence($thisDocSpans, 1, $maxKwicsToHarvest)"
-                                 />
-
-                                <!--Count the contexts -->
-                                <xsl:variable name="contextsCount" select="count($contexts)" as="xs:integer"/>
-
-                                <!--Debugging message, if we're in verbose mode-->
-                                <xsl:if test="$verbose">
-                                    <xsl:message>
-                                        <xsl:value-of select="$stem"/>: <xsl:value-of select="$currDocUri"/>: Processing <xsl:value-of select="$contextsCount"/> contexts.
-                                    </xsl:message>
-                                </xsl:if>
-
-                                <!--Now iterate through the contexts, returning a simple map that gives its
-                                    form, context, and weight.-->
-                                <xsl:for-each select="$contexts">
-                                    
-                                    <!--Sort by weight, since we want the highest weighted first -->
-                                    <xsl:sort select="hcmc:returnWeight(.)" order="descending"/>
-                                    <!--And then sort by its position secondarily-->
-                                    <xsl:sort select="xs:integer(@data-staticSearch-pos)" order="ascending"/>
-                                    <map>
-
-                                        <!--Get the form (which is just the text value of the span and any descendant spans) -->
-                                        <string key="form"><xsl:value-of select="string-join(descendant::text(),'')"/></string>
-
-                                        <!--Get the context using the hcmc:returnContext function -->
-                                        <string key="context"><xsl:value-of select="hcmc:returnContext(.)"/></string>
-
-                                        <!--Get the weight, using hcmc:returnWeight function -->
-                                        <number key="weight"><xsl:value-of select="hcmc:returnWeight(.)"/></number>
-                                        
-                                        <!--Get the current position-->
-                                        <number key="pos"><xsl:value-of select="@data-staticSearch-pos"/></number>
-                                        
-                                        <!--Get the best fragment id if that's set-->
-                                        <xsl:if test="$linkToFragmentId and @data-staticSearch-fid">
-                                            <string key="fid">
-                                                <xsl:value-of select="@data-staticSearch-fid"/>
-                                            </string>
-                                        </xsl:if>
-                                    </map>
-                                </xsl:for-each>
-                            </array>
+                            <xsl:call-template name="returnContextsArray"/>
                         </xsl:if>
                     </map>
                 </xsl:for-each-group>
             </array>
         </map>
-
     </xsl:template>
+    
+    <xsl:template name="returnContextsArray">
+        <array xmlns="http://www.w3.org/2005/xpath-functions" key="contexts">
+            
+            <xsl:variable name="contexts" as="element(span)+"
+                select="
+                if ($phrasalSearch)
+                then current-group()
+                else subsequence(current-group(), 1, $maxKwicsToHarvest)"
+            />
+            
+            <xsl:variable name="contextsCount"
+                select="count($contexts)" as="xs:integer"/>
+            
+            <xsl:for-each select="$contexts">
+                <xsl:variable name="properties"
+                    select="accumulator-before('properties')"/>
+                <map>
+                    <string key="form">
+                        <xsl:value-of select="string(.)"/>
+                    </string>
+                    <string key="weight">
+                        <xsl:value-of select="hcmc:returnWeight(.)"/>
+                    </string>
+                    <number key="pos">
+                        <xsl:value-of select="@data-staticSearch-pos"/>
+                    </number>
+                    <string key="context">
+                        <xsl:value-of select="hcmc:returnContext(.)"/>
+                    </string>
+                    
+                    <!--Now we add the custom properties-->
+                    <xsl:if test="map:size($properties) gt 0">
+                        <map key="prop">
+                            <xsl:for-each select="map:keys($properties)">
+                                <xsl:variable name="propVal" select="map:get($properties,.)[last()]" as="xs:string"/>
+                                <string key="{.}"><xsl:value-of select="$propVal"/></string>
+                            </xsl:for-each>
+                        </map>                
+                    </xsl:if>
+                    <!--Get the best fragment id if that's set-->
+                    <xsl:if test="$linkToFragmentId and @data-staticSearch-fid">
+                        <string key="fid">
+                            <xsl:value-of select="@data-staticSearch-fid"/>
+                        </string>
+                    </xsl:if>
+                </map>
+            </xsl:for-each>
+        </array>
+    </xsl:template>
+    
+    
+    <xsl:accumulator name="properties" initial-value="map{}">
+        <xsl:accumulator-rule match="*[@*[matches(local-name(),'^data-ss-')]]" phase="start">
+            <xsl:variable name="dataAtts" select="@*[matches(local-name(),'^data-ss-')]" as="attribute()+"/>
+            <xsl:variable name="newMap"
+                select="map:merge($dataAtts ! map{hcmc:dataAttToProp(local-name(.)): string(.)})"
+                as="map(xs:string, xs:string)"/>           
+            <xsl:sequence select="map:merge(($value, $newMap), map{'duplicates': 'combine'})"/>
+        </xsl:accumulator-rule>
+        <xsl:accumulator-rule match="*[@*[matches(local-name(),'data-ss-')]]" phase="end">
+            <xsl:variable name="dataAtts" select="@*[matches(local-name(),'^data-ss-')]" as="attribute()+"/>
+            <xsl:variable name="dataProps" select="$dataAtts ! hcmc:dataAttToProp(local-name())"/>
+            <xsl:map>
+                <xsl:for-each select="map:keys($value)">
+                    <xsl:variable name="key" select="."/>
+                    <xsl:variable name="val" select="$value($key)"/>
+                    <xsl:choose>
+                        <xsl:when test="not($key = $dataProps)">
+                            <xsl:map-entry key="$key" select="$val"/>
+                        </xsl:when>
+                        <xsl:when test="$key = $dataProps and count($val) gt 1">
+                            <xsl:map-entry key="$key" select="$val[not(last())]"/>
+                        </xsl:when>
+                        <xsl:otherwise/>
+                    </xsl:choose>
+                </xsl:for-each>
+            </xsl:map>
+        </xsl:accumulator-rule>
+    </xsl:accumulator>
+    
+    <xd:doc>
+        <xd:desc>Accumulator for weight: when entering an element, add the weight to the sequence,
+        and remove it when you leave.</xd:desc>
+    </xd:doc>
+    <xsl:accumulator name="weight" initial-value="1" as="xs:integer+">
+        <xsl:accumulator-rule match="*[@data-staticSearch-weight]" 
+            select="($value, xs:integer(@data-staticSearch-weight))" 
+            phase="start"/>
+        <xsl:accumulator-rule match="*[@data-staticSearch-weight]" 
+            select="$value[position() lt last()]" phase="end"/>
+    </xsl:accumulator>
+     
+    
+    <xsl:accumulator name="context" initial-value="()">
+        <xsl:accumulator-rule match="*[@data-staticSearch-context]" select="$value, ." phase="start"/>
+        <xsl:accumulator-rule match="*[@data-staticSearch-context]" select="$value[not(last())]" phase="end"/>
+    </xsl:accumulator>
+    
+    
+    <xsl:function name="hcmc:dataAttToProp" as="xs:string" new-each-time="no">
+        <xsl:param name="dataAtt" as="xs:string"/>
+        <xsl:variable name="suffix" select="substring-after($dataAtt,'data-ss-')" as="xs:string"/>
+        <xsl:message>Processing <xsl:value-of select="$dataAtt"/></xsl:message>
+        <xsl:value-of>
+            <xsl:analyze-string select="$suffix" regex="-([^-])">
+                <xsl:matching-substring>
+                    <xsl:value-of select="upper-case(regex-group(1))"/>
+                </xsl:matching-substring>
+                <xsl:non-matching-substring>
+                    <xsl:value-of select="."/>
+                </xsl:non-matching-substring> 
+            </xsl:analyze-string>
+        </xsl:value-of>
+    </xsl:function>
     
     
     <xd:doc>
@@ -515,14 +556,9 @@
         <xd:param name="span">The span element for which to retrieve the weight.</xd:param>
         <xd:return>The value of the span's weight derived from the ancestor or, if no ancestor, then 1.</xd:return>
     </xd:doc>
-    <xsl:function name="hcmc:returnWeight" as="xs:integer">
+    <xsl:function name="hcmc:returnWeight" as="xs:integer" new-each-time="no">
         <xsl:param name="span"/>
-        <xsl:variable name="ancestor" select="$span/ancestor::*[@data-staticSearch-weight][1]" as="element()?"/>
-        <xsl:sequence select="
-                if (not(empty($ancestor)))
-                then $ancestor/@data-staticSearch-weight/xs:integer(.)
-                else 1"
-        />
+        <xsl:sequence select="$span/accumulator-before('weight')[last()]"/>
     </xsl:function>
 
 
