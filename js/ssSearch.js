@@ -333,8 +333,13 @@ class StaticSearch{
       //Captions
       this.captions = ss.captions; //Default; override this if you wish by setting the property after instantiation.
       this.captionLang  = document.getElementsByTagName('html')[0].getAttribute('lang') || 'en'; //Document language.
-      this.captionSet   = this.captions[this.captionLang]; //Pointer to the caption object we're going to use.
-
+      if (this.captions[this.captionLang]){
+        this.captionSet   = this.captions[this.captionLang]; //Pointer to the caption object we're going to use.
+      }
+      else{
+        this.captionSet   = this.captions['en'];
+      }
+      
       //Default set of stopwords
       this.stopwords = ss.stopwords; //temporary default.
 
