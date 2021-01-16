@@ -403,10 +403,10 @@
     
     
     <xd:doc>
-        <xd:desc>Template to retain all elements that have a declared language or have a declared id,
-        since we may need those elements in other contexts.</xd:desc>
+        <xd:desc>Template to retain all elements that have a declared language, a declared id, or a
+            special data-ss- attribute since we may need those elements in other contexts.</xd:desc>
     </xd:doc>
-    <xsl:template match="*[@lang or @xml:lang or @id][ancestor::body]" mode="clean">
+    <xsl:template match="*[@lang or @xml:lang or @id or @*[matches(local-name(),'^data-ss-')]][ancestor::body]" mode="clean">
         <xsl:copy>
             <xsl:apply-templates select="@*|node()" mode="#current"/>
         </xsl:copy>
