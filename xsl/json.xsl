@@ -564,21 +564,17 @@
     <xsl:function name="hcmc:returnSnippet" as="xs:string?">
         <xsl:param name="nodes" as="node()*"/>
         <xsl:param name="isStartSnippet" as="xs:boolean"/>
-        <xsl:variable name="nodeCount" select="count($nodes)" as="xs:integer*"/>
-        <xsl:variable name="intSeq" select="if ($isStartSnippet) then reverse(1 to $nodeCount) else (1 to $nodeCount)" as="xs:integer*"/>
-        
+    
         <!--Iterate through the nodes: 
             if we're in the start snippet we want to go from the end to the beginning-->
-        <xsl:iterate select="$intSeq">
+        <xsl:iterate select="if ($isStartSnippet) then reverse($nodes) else $nodes">
             <xsl:param name="stringSoFar" as="xs:string?"/>
             <xsl:param name="tokenCount" select="0" as="xs:integer"/>
             <!--If the iteration completes, then just return the full string-->
             <xsl:on-completion>
                 <xsl:sequence select="$stringSoFar"/>
             </xsl:on-completion>
-            <xsl:variable name="n" select="." as="xs:integer"/>
-            <!--Retrieve the text node at this point-->
-            <xsl:variable name="thisNode" select="$nodes[$n]" as="node()"/>
+            <xsl:variable name="thisNode" select="."/>
             <!--Normalize and determine the word count of the text-->
             <xsl:variable name="thisText" select="replace(string-join($thisNode),'\s+', ' ')" as="xs:string"/>
             <xsl:variable name="tokens" select="tokenize($thisText)" as="xs:string*"/>
