@@ -129,7 +129,7 @@
                 <!--Iterate through the keys-->
                 <xsl:for-each select="map:keys($value)">
                     <xsl:variable name="key" select="." as="xs:string"/>
-                    <xsl:variable name="val" select="$value($key)" as="xs:string"/>
+                    <xsl:variable name="val" select="$value($key)" as="xs:string+"/>
                     <xsl:choose>
                         <!--If the accumulator is tracking an data attribute that isn't present
                             in this element, then retain it-->
