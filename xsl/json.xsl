@@ -83,13 +83,16 @@
             phase="end"/>
     </xsl:accumulator>
     
-    <xd:doc>
+    
+   <!--JT: This accumulator added for 110, but causes overflow issues in LOI;
+       commented out temporarily while testing-->
+<!--    <xd:doc>
         <xd:desc>Accumulator to keep track of the current context node.</xd:desc>
     </xd:doc>
     <xsl:accumulator name="context" initial-value="()">
         <xsl:accumulator-rule match="*[@data-staticSearch-context]" select="($value, .)" phase="start"/>
         <xsl:accumulator-rule match="*[@data-staticSearch-context]" select="$value[position() lt last()]" phase="end"/>
-    </xsl:accumulator>
+    </xsl:accumulator>-->
 
     
     <xd:doc>
@@ -192,14 +195,12 @@
         <xsl:message>Found <xsl:value-of select="$tokenizedDocsCount"/> tokenized documents...</xsl:message>
         <!--Group all of the stems by their values;  tokenizing is a bit overzealous here-->
         <xsl:for-each-group select="$stems" group-by="tokenize(@data-staticSearch-stem,'\s+')">
-            <xsl:variable name="stem" select="current-grouping-key()"/>
-            
+            <xsl:variable name="stem" select="current-grouping-key()" as="xs:string"/>
             <xsl:call-template name="makeTokenCounterMsg"/>
-            
+            <xsl:variable name="map" as="element(j:map)">
+                <xsl:call-template name="makeMap"/>
+            </xsl:variable>
             <xsl:result-document href="{$outDir}/stems/{$stem}{$versionString}.json" method="text">
-                <xsl:variable name="map" as="element(j:map)">
-                    <xsl:call-template name="makeMap"/>
-                </xsl:variable>
                 <xsl:sequence select="xml-to-json($map, map{'indent': $indentJSON})"/>
             </xsl:result-document>
         </xsl:for-each-group>
@@ -379,17 +380,23 @@
         </xd:desc>
     </xd:doc>
     <xsl:template name="returnContextsArray">
-        <array xmlns="http://www.w3.org/2005/xpath-functions" key="contexts">
-            
-            <!--If phrasal search is turned on, then we must process all of the contexts
+        <!--The document that we want to process will always be the ancestor html of
+                        any item of the current-group() -->
+        <xsl:variable name="thisDoc"
+            select="current-group()[1]/ancestor::html"
+            as="element(html)"/>
+        
+        <!--If phrasal search is turned on, then we must process all of the contexts
                 in order to perform phrasal search properly; otherwise, only create the number
                 of kwics set in the config.-->
-            <xsl:variable name="contexts" as="element(span)+"
-                select="
-                if ($phrasalSearch)
-                then current-group()
-                else subsequence(current-group(), 1, $maxKwicsToHarvest)"/>
-            
+        <xsl:variable name="contexts" as="element(span)+"
+            select="
+            if ($phrasalSearch)
+            then current-group()
+            else subsequence(current-group(), 1, $maxKwicsToHarvest)"/>        
+        <xsl:variable name="contextCount" select="count($contexts)" as="xs:integer"/>
+        
+        <array xmlns="http://www.w3.org/2005/xpath-functions" key="contexts">
             <!--Create a map for each hit in the document with data about that
                 context-->
             <xsl:for-each select="$contexts">
@@ -397,6 +404,10 @@
                 by position in the document (earliest to latest)-->
                 <xsl:sort select="hcmc:returnWeight(.)" order="descending"/>
                 <xsl:sort select="xs:integer(@data-staticSearch-pos)" order="ascending"/>
+                
+                <xsl:if test="$verbose">
+                    <xsl:message expand-text="true">{$thisDoc/@data-staticSearch-relativeUri}: {@data-staticSearch-stem} (ctx: {position()}/{$contextCount}):  pos: {@data-staticSearch-pos}</xsl:message>
+                </xsl:if>
                 
                 <!--Accumulated properties map, which may or may not exist -->
                 <xsl:variable name="properties"
@@ -409,7 +420,7 @@
                         <xsl:sequence select="hcmc:returnWeight(.)"/>
                     </string>
                     <number key="pos">
-                        <xsl:sequence select="xs:integer(@data-staticSearch-pos)"/>
+                        <xsl:sequence select="@data-staticSearch-pos"/>
                     </number>
                     <string key="context">
                         <xsl:sequence select="hcmc:returnContext(.)"/>
@@ -520,7 +531,7 @@
         
         <!--The first ancestor that has been signaled as an ancestor-->
         <xsl:variable name="contextAncestor"
-            select="$span/accumulator-before('context')[last()]"
+            select="$span/ancestor::*[@data-staticSearch-context][1]"
             as="element()"/>
         
         <!--Get all of the descendant text nodes for that ancestor-->
@@ -661,7 +672,9 @@
     </xd:doc>
     <xsl:function name="hcmc:getContextNodes" as="node()*" new-each-time="no">
         <xsl:param name="contextEl" as="element()"/>
-        <xsl:sequence select="$contextEl/descendant::text()[accumulator-before('context')[last()][. is $contextEl]]"/>
+        <!--TODO: Remove if we no longer use accumulator-->
+       <!-- <xsl:sequence select="$contextEl/descendant::text()[accumulator-before('context')[last()][. is $contextEl]]"/>-->
+        <xsl:sequence select="$contextEl/descendant::text()[ancestor::*[@data-staticSearch-context][1][. is $contextEl]]"/>
     </xsl:function>
 
     
