@@ -576,7 +576,7 @@
             </xsl:on-completion>
             <xsl:variable name="thisNode" select="."/>
             <!--Normalize and determine the word count of the text-->
-            <xsl:variable name="thisText" select="replace(string-join($thisNode),'\s+', ' ')" as="xs:string"/>
+            <xsl:variable name="thisText" select="replace(string($thisNode),'\s+', ' ')" as="xs:string"/>
             <xsl:variable name="tokens" select="tokenize($thisText)" as="xs:string*"/>
             <xsl:variable name="currTokenCount" select="count($tokens)" as="xs:integer"/>
             <xsl:variable name="fullTokenCount" select="$tokenCount + $currTokenCount" as="xs:integer"/>
