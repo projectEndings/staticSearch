@@ -90,6 +90,7 @@
         <xsl:accumulator-rule match="*[@data-staticSearch-context]" select="($value, .)" phase="start"/>
         <xsl:accumulator-rule match="*[@data-staticSearch-context]" select="$value[position() lt last()]" phase="end"/>
     </xsl:accumulator>
+
     
     <xd:doc>
         <xd:desc>Accumulator to keep track of custom @data-ss-* properties: on entering an element
@@ -509,8 +510,12 @@
     </xd:doc>
     <xsl:function name="hcmc:returnContext" as="xs:string">
         <xsl:param name="span" as="element(span)"/>
+        
+        <xsl:variable name="spanText" 
+            select="$span/descendant::text()" 
+            as="node()*"/>
         <xsl:variable name="thisTerm"
-            select="string($span)"
+            select="string-join($spanText)"
             as="xs:string"/>
         
         <!--The first ancestor that has been signaled as an ancestor-->
@@ -519,20 +524,25 @@
             as="element()"/>
         
         <!--Get all of the descendant text nodes for that ancestor-->
-        <xsl:variable name="thisContextNodes" select="hcmc:getContextNodes($contextAncestor)" as="node()*"/>
+        <xsl:variable name="thisContextNodes"
+            select="hcmc:getContextNodes($contextAncestor)"
+            as="node()*"/>
         
         <!--Find all of the nodes that precede this span for this context in document order-->
         <xsl:variable name="preNodes"
             select="$thisContextNodes[. &lt;&lt; $span]" as="node()*"/>
         
-        <!--All the text nodes that follow the node (and aren't included in the term,
-            which are all of the nodes except the preceding nodes-->
+        <!--All the text nodes that follow the node (and aren't the preceding nodes or the following ones)-->
         <xsl:variable name="folNodes" 
-            select="$thisContextNodes[not(ancestor::span[. is $span])] except $preNodes" as="node()*"/>
+            select="$thisContextNodes except ($preNodes, $spanText)" as="node()*"/>
 
         <!--The start and end snippets-->
-        <xsl:variable name="startSnippet" select="hcmc:returnSnippet($preNodes,true())" as="xs:string?"/>
-        <xsl:variable name="endSnippet"  select="hcmc:returnSnippet($folNodes, false())" as="xs:string?"/>
+        <xsl:variable name="startSnippet"
+            select="if (not(empty($preNodes))) then hcmc:returnSnippet($preNodes,true()) else ()"
+            as="xs:string?"/>
+        <xsl:variable name="endSnippet" 
+            select="if (not(empty($folNodes))) then hcmc:returnSnippet($folNodes, false()) else ()"
+            as="xs:string?"/>
 
         <!--Create the the context string, and add an escaped
             version of the mark element around it (the kwicTruncateString is added by the returnSnippet
