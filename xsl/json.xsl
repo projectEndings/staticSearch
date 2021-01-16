@@ -48,11 +48,67 @@
      </xd:doc>
     <xsl:variable name="tokenizedDocsCount" select="count($tokenizedDocs)" as="xs:integer"/>
     
-
     <xd:doc>
         <xd:desc>All stems from the tokenized docs; we use this in a few places.</xd:desc>
     </xd:doc>
     <xsl:variable name="stems" select="$tokenizedDocs//span[@data-staticSearch-stem]" as="element(span)*"/>
+    
+    
+    <!--**************************************************************
+       *                                                            *
+       *                        Accumulators                        *
+       *                                                            *
+       **************************************************************-->
+    
+    <xd:doc>
+        <xd:desc>Accumulator for weight: when entering an element, add the weight to the sequence,
+            and remove it when you leave.</xd:desc>
+    </xd:doc>
+    <xsl:accumulator name="weight" initial-value="1" as="xs:integer+">
+        <xsl:accumulator-rule match="*[@data-staticSearch-weight]" 
+            select="($value, xs:integer(@data-staticSearch-weight))" 
+            phase="start"/>
+        <xsl:accumulator-rule match="*[@data-staticSearch-weight]" 
+            select="$value[position() lt last()]" phase="end"/>
+    </xsl:accumulator>
+    
+    
+    <xsl:accumulator name="context" initial-value="()">
+        <xsl:accumulator-rule match="*[@data-staticSearch-context]" select="$value, ." phase="start"/>
+        <xsl:accumulator-rule match="*[@data-staticSearch-context]" select="$value[position() lt last()]" phase="end"/>
+    </xsl:accumulator>
+    
+    
+    <xsl:accumulator name="properties" initial-value="()">
+        <xsl:accumulator-rule match="*[@*[matches(local-name(),'^data-ss-')]]" phase="start">
+            <xsl:variable name="dataAtts" select="@*[matches(local-name(),'^data-ss-')]" as="attribute()+"/>
+            <xsl:variable name="newMap"
+                select="map:merge($dataAtts ! map{hcmc:dataAttToProp(local-name(.)): string(.)})"
+                as="map(xs:string, xs:string)"/>           
+            <xsl:sequence select="map:merge(($value, $newMap), map{'duplicates': 'combine'})"/>
+        </xsl:accumulator-rule>
+        <xsl:accumulator-rule match="*[@*[matches(local-name(),'data-ss-')]]" phase="end">
+            <xsl:variable name="dataAtts" select="@*[matches(local-name(),'^data-ss-')]" as="attribute()+"/>
+            <xsl:variable name="dataProps" select="$dataAtts ! hcmc:dataAttToProp(local-name())"/>
+            <xsl:map>
+                <xsl:for-each select="map:keys($value)">
+                    <xsl:variable name="key" select="."/>
+                    <xsl:variable name="val" select="$value($key)"/>
+                    <xsl:choose>
+                        <xsl:when test="not($key = $dataProps)">
+                            <xsl:map-entry key="$key" select="$val"/>
+                        </xsl:when>
+                        <xsl:when test="$key = $dataProps and count($val) gt 1">
+                            <xsl:map-entry key="$key" select="$val[not(last())]"/>
+                        </xsl:when>
+                        <xsl:otherwise/>
+                    </xsl:choose>
+                </xsl:for-each>
+            </xsl:map>
+        </xsl:accumulator-rule>
+    </xsl:accumulator>
+    
+
     
     
     
@@ -98,11 +154,10 @@
                 <xsl:message>Processing <xsl:value-of select="$stem"/></xsl:message>
             </xsl:if>
             <xsl:result-document href="{$outDir}/stems/{$stem}{$versionString}.json" method="text">
-                <!--Create the JSON map structure in a separate process -->
-                <xsl:variable name="map" as="element()">
+                <xsl:variable name="map" as="element(j:map)">
                     <xsl:call-template name="makeMap"/>
                 </xsl:variable>
-                <xsl:value-of select="xml-to-json($map, map{'indent': $indentJSON})"/>
+                <xsl:sequence select="xml-to-json($map, map{'indent': $indentJSON})"/>
             </xsl:result-document>
         </xsl:for-each-group>
     </xsl:template>
@@ -129,27 +184,8 @@
                            is in that document. For instance, if some document had n instances of stem x
                            ({x1, x2, ..., xn}) with corresponding scores ({s1, s2, ..., sn}), then the score
                            for the document is the sum of all s: s1 + s2 + . . . + sn.</xd:li>
-                       <xd:li><xd:b>contexts (array)</xd:b>: an array of all of the contexts in which the
-                           stem appears in the tokenized document; an entry is created for each span in the current group.
-                           Note that the contexts array is created iff the contexts parameter in the config file
-                           is set to true (or 1, T, yes, y). Also note
-                           that the number of contexts depends on the limit set in the config file. If no limit
-                           is set, then all contexts are used in the document. While this creates larger JSON
-                           files, this provides the search Javascript with enough information to do more precise
-                           phrasal searches.
-                          <xd:ul>
-                              <xd:li><xd:b>form (string):</xd:b> The text associated with the stemmed token
-                                 (for instance, for the word "ending", "end" is the stem, while "ending" is
-                                 the form).</xd:li>
-                              <xd:li><xd:b>context (string):</xd:b> The context of this span for use in the KWIC.
-                              The context string is determined by the KWIC length parameter (i.e. how many words
-                              can the KWIC be) and by the context weight attributes described in
-                              <xd:a href="tokenize.xsl">tokenize.xsl</xd:a>. The string returned from the
-                               context also contains the term pre-marked using the HTML mark element.</xd:li>
-                              <xd:li><xd:b>weight (number):</xd:b> The weight of this span in context.</xd:li>
-                          </xd:ul>
-
-                       </xd:li>
+                       <xd:li><xd:b>contexts (array)</xd:b>: an array of all of the contexts. See <xd:ref name="returnContextsArray"/></xd:li>
+                      
                    </xd:ul>
 
                </xd:li>
@@ -259,6 +295,30 @@
         </map>
     </xsl:template>
     
+    <xd:doc>
+        <xd:desc>
+            <xd:li><xd:b>contexts (array)</xd:b>: an array of all of the contexts in which the
+                stem appears in the tokenized document; an entry is created for each span in the current group.
+                Note that the contexts array is created iff the contexts parameter in the config file
+                is set to true (or 1, T, yes, y). Also note
+                that the number of contexts depends on the limit set in the config file. If no limit
+                is set, then all contexts are used in the document. While this creates larger JSON
+                files, this provides the search Javascript with enough information to do more precise
+                phrasal searches.
+                <xd:ul>
+                    <xd:li><xd:b>form (string):</xd:b> The text associated with the stemmed token
+                        (for instance, for the word "ending", "end" is the stem, while "ending" is
+                        the form).</xd:li>
+                    <xd:li><xd:b>context (string):</xd:b> The context of this span for use in the KWIC.
+                        The context string is determined by the KWIC length parameter (i.e. how many words
+                        can the KWIC be) and by the context weight attributes described in
+                        <xd:a href="tokenize.xsl">tokenize.xsl</xd:a>. The string returned from the
+                        context also contains the term pre-marked using the HTML mark element.</xd:li>
+                    <xd:li><xd:b>weight (number):</xd:b> The weight of this span in context.</xd:li>
+                </xd:ul>
+            </xd:li>
+        </xd:desc>
+    </xd:doc>
     <xsl:template name="returnContextsArray">
         <array xmlns="http://www.w3.org/2005/xpath-functions" key="contexts">
             
@@ -266,31 +326,36 @@
                 select="
                 if ($phrasalSearch)
                 then current-group()
-                else subsequence(current-group(), 1, $maxKwicsToHarvest)"
-            />
-            
-            <xsl:variable name="contextsCount"
-                select="count($contexts)" as="xs:integer"/>
+                else subsequence(current-group(), 1, $maxKwicsToHarvest)"/>
             
             <xsl:for-each select="$contexts">
+                <xsl:sort select="hcmc:returnWeight(.)" order="descending"/>
+                <xsl:sort select="xs:integer(@data-staticSearch-pos)" order="ascending"/>
+                
                 <xsl:variable name="properties"
-                    select="accumulator-before('properties')"/>
+                    select="accumulator-before('properties')"
+                    as="map(*)?"/>                
                 <map>
                     <string key="form">
-                        <xsl:value-of select="string(.)"/>
+                        <xsl:sequence select="string(.)"/>
                     </string>
                     <string key="weight">
-                        <xsl:value-of select="hcmc:returnWeight(.)"/>
+                        <xsl:sequence select="hcmc:returnWeight(.)"/>
                     </string>
                     <number key="pos">
-                        <xsl:value-of select="@data-staticSearch-pos"/>
+                        <xsl:sequence select="xs:integer(@data-staticSearch-pos)"/>
                     </number>
                     <string key="context">
-                        <xsl:value-of select="hcmc:returnContext(.)"/>
+                        <xsl:sequence select="hcmc:returnContext(.)"/>
                     </string>
-                    
+                    <!--Get the best fragment id if that's set-->
+                    <xsl:if test="$linkToFragmentId and @data-staticSearch-fid">
+                        <string key="fid">
+                            <xsl:value-of select="@data-staticSearch-fid"/>
+                        </string>
+                    </xsl:if>
                     <!--Now we add the custom properties-->
-                    <xsl:if test="map:size($properties) gt 0">
+                    <xsl:if test="exists($properties) and map:size($properties) gt 0">
                         <map key="prop">
                             <xsl:for-each select="map:keys($properties)">
                                 <xsl:variable name="propVal" select="map:get($properties,.)[last()]" as="xs:string"/>
@@ -298,66 +363,20 @@
                             </xsl:for-each>
                         </map>                
                     </xsl:if>
-                    <!--Get the best fragment id if that's set-->
-                    <xsl:if test="$linkToFragmentId and @data-staticSearch-fid">
-                        <string key="fid">
-                            <xsl:value-of select="@data-staticSearch-fid"/>
-                        </string>
-                    </xsl:if>
                 </map>
             </xsl:for-each>
         </array>
     </xsl:template>
     
-    
-    <xsl:accumulator name="properties" initial-value="map{}">
-        <xsl:accumulator-rule match="*[@*[matches(local-name(),'^data-ss-')]]" phase="start">
-            <xsl:variable name="dataAtts" select="@*[matches(local-name(),'^data-ss-')]" as="attribute()+"/>
-            <xsl:variable name="newMap"
-                select="map:merge($dataAtts ! map{hcmc:dataAttToProp(local-name(.)): string(.)})"
-                as="map(xs:string, xs:string)"/>           
-            <xsl:sequence select="map:merge(($value, $newMap), map{'duplicates': 'combine'})"/>
-        </xsl:accumulator-rule>
-        <xsl:accumulator-rule match="*[@*[matches(local-name(),'data-ss-')]]" phase="end">
-            <xsl:variable name="dataAtts" select="@*[matches(local-name(),'^data-ss-')]" as="attribute()+"/>
-            <xsl:variable name="dataProps" select="$dataAtts ! hcmc:dataAttToProp(local-name())"/>
-            <xsl:map>
-                <xsl:for-each select="map:keys($value)">
-                    <xsl:variable name="key" select="."/>
-                    <xsl:variable name="val" select="$value($key)"/>
-                    <xsl:choose>
-                        <xsl:when test="not($key = $dataProps)">
-                            <xsl:map-entry key="$key" select="$val"/>
-                        </xsl:when>
-                        <xsl:when test="$key = $dataProps and count($val) gt 1">
-                            <xsl:map-entry key="$key" select="$val[not(last())]"/>
-                        </xsl:when>
-                        <xsl:otherwise/>
-                    </xsl:choose>
-                </xsl:for-each>
-            </xsl:map>
-        </xsl:accumulator-rule>
-    </xsl:accumulator>
+
     
     <xd:doc>
-        <xd:desc>Accumulator for weight: when entering an element, add the weight to the sequence,
-        and remove it when you leave.</xd:desc>
+        <xd:desc><xd:ref name="hcmc:dataAttToProp">hcmc:dataAttToProp</xd:ref> converts the
+        a special staticSearch custom attribute (data-ss-*) and converts it to property name (i.e.
+        a camel cased version).</xd:desc>
+        <xd:param name="dataAtt">The local name of the attribute to process (i.e. data-ss-title, data-ss-my-value).</xd:param>
+        <xd:return>The camel cased key for the property (title, myValue).</xd:return>
     </xd:doc>
-    <xsl:accumulator name="weight" initial-value="1" as="xs:integer+">
-        <xsl:accumulator-rule match="*[@data-staticSearch-weight]" 
-            select="($value, xs:integer(@data-staticSearch-weight))" 
-            phase="start"/>
-        <xsl:accumulator-rule match="*[@data-staticSearch-weight]" 
-            select="$value[position() lt last()]" phase="end"/>
-    </xsl:accumulator>
-     
-    
-    <xsl:accumulator name="context" initial-value="()">
-        <xsl:accumulator-rule match="*[@data-staticSearch-context]" select="$value, ." phase="start"/>
-        <xsl:accumulator-rule match="*[@data-staticSearch-context]" select="$value[not(last())]" phase="end"/>
-    </xsl:accumulator>
-    
-    
     <xsl:function name="hcmc:dataAttToProp" as="xs:string" new-each-time="no">
         <xsl:param name="dataAtt" as="xs:string"/>
         <xsl:variable name="suffix" select="substring-after($dataAtt,'data-ss-')" as="xs:string"/>
@@ -425,124 +444,135 @@
     </xd:doc>
     <xsl:function name="hcmc:returnContext" as="xs:string">
         <xsl:param name="span" as="element(span)"/>
-
-        <!--The string term: String joining is overly cautious here.-->
+        
         <xsl:variable name="thisTerm"
-            select="string-join($span/descendant::text(),'')"
+            select="string($span)"
             as="xs:string"/>
-
+        
         <!--The first ancestor that has been signaled as an ancestor-->
         <xsl:variable name="contextAncestor"
-            select="$span/ancestor::*[@data-staticSearch-context='true'][1]"
-            as="element()?"/>
-
-        <!--If there's no context ancestor, then something's wrong-->
-        <xsl:if test="empty($contextAncestor)">
-            <xsl:message terminate="yes">THIS SPAN CAUSED A PROBLEM! <xsl:copy-of select="$span"/> / <xsl:value-of select="$span/ancestor::html/@id"/></xsl:message>
-        </xsl:if>
-
-        <!--Note that the below approaches to pre and fol nodes cannot be done using
-            the simpler $span/preceding::text()[ancestor::*[@data-staticSearch-context='true'][1] is $contextAncestor]
-            as it causes some error in Saxon (9.8.) TinyTreeImpl.-->
-
-        <!--These are all of the descendant text nodes of the ancestor node, which:
-            1) Precede this span element
-            2) Is not contained within this span element
-            3) And who does not have a different context ancestor
-            -->
-
+            select="$span/accumulator-before('context')[last()]"
+            as="element()"/>
+        
+        <!--Get all of the descendant text nodes for that ancestor-->
+        <xsl:variable name="thisContextNodes" select="hcmc:getContextNodes($contextAncestor)" as="node()*"/>
+        
+        <!--Find all of the nodes that precede this span for this context in document order-->
         <xsl:variable name="preNodes"
-            select="$contextAncestor/descendant::text()[. &lt;&lt; $span and not(ancestor::*[. is $span]) and ancestor::*[@data-staticSearch-context='true'][1][. is $contextAncestor]]" as="xs:string*"/>
-
-
-        <!--These are all of the descendant text nodes of the ancestor node, which:
-            1) Follow this span element
-            2) Is not contained within this span element
-            3) And who does not have a different context ancestor
-            -->
-        <xsl:variable name="folNodes"
-            select="$contextAncestor/descendant::text()[. &gt;&gt; $span and not(ancestor::*[. is $span])][ancestor::*[@data-staticSearch-context='true'][1][. is $contextAncestor]]" as="xs:string*"/>
-
-        <!--The preceding text joined together-->
-        <xsl:variable name="startString"
-            select="string-join($preNodes,'')" as="xs:string?"/>
-
-        <!--The following string joined together-->
-        <xsl:variable name="endString"
-            select="string-join($folNodes,'')" as="xs:string?"/>
-
-        <!--The start string split on whitespace to be counted and
-            reconstituted below-->
-        <xsl:variable name="startTokens" select="tokenize($startString, '\s+')" as="xs:string*"/>
-
-        <!--Count of how many tokens there are in the start sequence-->
-        <xsl:variable name="startTokensCount" select="count($startTokens)" as="xs:integer"/>
-
-        <!--The trailing string split on whitespace to be counted and
-            reconstituted below-->
-        <xsl:variable name="endTokens" select="tokenize($endString,'\s+')" as="xs:string*"/>
-
-
-        <!--Count of how many tokens there are in the end sequence-->
-        <xsl:variable name="endTokensCount" select="count($endTokens)" as="xs:integer"/>
-
-        <!--Re-add the beginning space if there was one to begin with-->
-        <xsl:variable name="preSpace" 
-            select=" if (matches($startString,'\s+$'))  then ' ' else ()"
-            as="xs:string?"/>
+            select="$thisContextNodes[. &lt;&lt; $span]" as="node()*"/>
         
-        <!--Re-add the trailing space if there was one to begin with-->
-        <xsl:variable name="endSpace" 
-            select="if (matches($endString,'^\s+')) then ' ' else ()"
-            as="xs:string?"/>
+        <!--All the text nodes that follow the node (and aren't included in the term,
+            which are all of the nodes except the preceding nodes-->
         
-        
-        <!--The starting snippet: if there are fewer than $totalKwicLength/2 words, then just leave the string
-            otherwise, trim to the $totalKwicLength/2 limit-->
-        <xsl:variable name="startSnippet" select="
+        <xsl:variable name="folNodes" 
+            select="$thisContextNodes[not(ancestor::span[. is $span])] except $preNodes" as="node()*"/>
 
-            (:If the number of start tokens is less than half the kwicLimit:)
-            if ($startTokensCount lt $kwicLengthHalf)
+        <!--The start and end snippets-->
+        <xsl:variable name="startSnippet" as="xs:string?" select="hcmc:returnSnippet($preNodes,true())"/>
+        <xsl:variable name="endSnippet" as="xs:string?" select="hcmc:returnSnippet($folNodes, false())"/>
 
-            (: Then just return the start string :)
-            then normalize-space($startString)
-
-            (:Otherwise, concatenate the sequence:)
-            else
-            $kwicTruncateString || hcmc:joinSubseq($startTokens, $startTokensCount - $kwicLengthHalf, $startTokensCount)"
-            as="xs:string?"/>
-
-
-
-        <!--The ending snippet: if there are fewer than $kwicLengthHalf words, then just leave the string,
-            otherwise, trim to the $kwicLengthHalf limit-->
-        <xsl:variable name="endSnippet" select="
-
-            (: if the number of words is less than the kwic length:)
-            if ($endTokensCount lt $kwicLengthHalf)
-
-            (: Then just return the end string:)
-            then normalize-space($endString)
-
-            (: Otherwise, get as many words as we can and concatenate an ellipses:)
-            else hcmc:joinSubseq($endTokens, 1, $kwicLengthHalf) || $kwicTruncateString"
-            as="xs:string"/>
-        
-        
-
-        <!--Now, concatenate the start snippet, the term, and the end snippet
-            and then normalize the spaces (to eliminate \n etc)-->
 
         <!--Note that we output the serialized version of the <mark> element for simplicities sake;
-            it will be escaped in the JSON output anyway and the Javascript is able to handle the
-            escaped version of the mark element.-->
-        <xsl:value-of
-            select="
-            $startSnippet || $preSpace || '&lt;mark&gt;' || $thisTerm || '&lt;/mark&gt;' || $endSpace || $endSnippet
-            => replace('\s+\n+\t+',' ')
-            => normalize-space()"/>
-        
+              it will be escaped in the JSON output anyway and the Javascript is able to handle the
+              escaped version of the mark element.-->
+        <xsl:sequence
+            select="$startSnippet || '&lt;mark&gt;' || $thisTerm || '&lt;/mark&gt;' || $endSnippet"/>
     </xsl:function>
+    
+    
+    <xd:doc>
+        <xd:desc><xd:ref name="hcmc:returnSnippet">hcmc:returnSnippet</xd:ref> takes a sequence of nodes and constructs
+        the surrounding text content by iterating through the nodes and concatenating their text; once the string is 
+        long enough (or once the process has exhausted the sequence of nodes), then the function breaks out of the loop
+        and returns the string.</xd:desc>
+    </xd:doc>
+    <xsl:function name="hcmc:returnSnippet" as="xs:string?">
+        <xsl:param name="nodes" as="node()*"/>
+        <xsl:param name="startSnippet" as="xs:boolean"/>
+        <xsl:variable name="nodeCount" select="count($nodes)" as="xs:integer*"/>
+        <xsl:variable name="intSeq" select="if ($startSnippet) then reverse(1 to $nodeCount) else (1 to $nodeCount)" as="xs:integer*"/>
+        
+        <!--Iterate through the nodes: 
+            if we're in the start snippet we want to go from the end to the beginning-->
+        <xsl:iterate select="$intSeq">
+            <xsl:param name="stringSoFar" as="xs:string?"/>
+            <xsl:param name="tokenCount" select="0" as="xs:integer"/>
+            <!--If the iteration completes, then just return the full string-->
+            <xsl:on-completion>
+                <xsl:sequence select="$stringSoFar"/>
+            </xsl:on-completion>
+            <xsl:variable name="n" select="." as="xs:integer"/>
+            <!--Retrieve the text node at this point-->
+            <xsl:variable name="thisNode" select="$nodes[$n]" as="node()"/>
+            <!--Normalize and determine the word count of the text-->
+            <xsl:variable name="thisText" select="replace(string-join($thisNode),'\s+', ' ')" as="xs:string"/>
+            <xsl:variable name="tokens" select="tokenize($thisText)" as="xs:string*"/>
+            <xsl:variable name="currTokenCount" select="count($tokens)" as="xs:integer"/>
+            <xsl:variable name="fullTokenCount" select="$tokenCount + $currTokenCount" as="xs:integer"/>
+            
+            <xsl:choose>
+                <!--If the number of preceding tokens plus the number of current tokens is 
+                    less than half of the kwicLimit, then continue on, passing 
+                    the new token count and the new string-->
+                <xsl:when test="$fullTokenCount lt $kwicLengthHalf + 1">
+                    <xsl:next-iteration>
+                        <xsl:with-param name="tokenCount" select="$fullTokenCount"/>
+                        
+                        <!--If we're processing the startSnippet, prepend the current text;
+                            otherwise, append the current text-->
+                        <xsl:with-param name="stringSoFar" 
+                            select="if ($startSnippet)
+                                    then ($thisText || $stringSoFar) 
+                                    else ($stringSoFar || $thisText)"/>
+                    </xsl:next-iteration>
+                </xsl:when>
+                <!--Otherwise, if the number is great than the limit, we want to break out of the loop-->
+                <xsl:otherwise>
+                    <!--Figure out how many tokens we need to snag from the current text-->
+                    <xsl:variable name="tokenDiff" select="1 + $kwicLengthHalf - $tokenCount"/>
+                    <xsl:variable name="resultString" as="xs:string">
+                        
+                        <!--Fork depending on context-->
+                        <xsl:choose>
+                            <xsl:when test="$startSnippet">
+                                <!--We need to see if there's a space before the token we care about:
+                                    (there often is, but that is removed when we tokenized above) -->
+                                <xsl:variable name="endSpace" 
+                                    select="if (matches($thisText,'\s$')) then ' ' else ()"/>
+                                
+                                <!--Get all of the tokens that we want from the string by:
+                                    * Reverse the current tokens,
+                                    * Getting the subset of tokens we need to hit the limit
+                                    * And then reversing that sequence of tokens again.
+                                -->
+                                <xsl:variable name="newTokens" 
+                                    select="reverse(subsequence(reverse($tokens), 1, $tokenDiff))"/>
+                                
+                                <!--Return the string: we know we have to add the truncation string here too-->
+                                <xsl:sequence 
+                                    select="$kwicTruncateString || string-join($newTokens,' ') || $endSpace || $stringSoFar "/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <!--Otherwise, we're going left to right, which is simpler
+                                    to handle in English-->
+                                <xsl:variable name="startSpace" 
+                                    select="if (matches($thisText,'^\s')) then ' ' else ()"
+                                    as="xs:string?"/>
+                                <xsl:variable name="newTokens" 
+                                    select="subsequence($tokens, 1, $tokenDiff)" 
+                                    as="xs:string*"/>
+                                <xsl:sequence
+                                    select="$stringSoFar || $startSpace || string-join($newTokens,' ') || $kwicTruncateString"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:variable>
+                    <!--Now break out of the loop-->
+                   <xsl:break select="$resultString"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:iterate>
+    </xsl:function>
+    
 
     <xd:doc>
         <xd:desc><xd:ref name="hcmc:returnWeight" type="function">hcmc:returnWeight</xd:ref> returns the
@@ -560,26 +590,18 @@
         <xsl:param name="span"/>
         <xsl:sequence select="$span/accumulator-before('weight')[last()]"/>
     </xsl:function>
-
-
+    
     <xd:doc>
-        <xd:desc><xd:ref name="hcmc:joinSubseq" type="function">hcmc:joinSubseq</xd:ref> is a simple utility function
-        for joining sequences of strings with spaces.</xd:desc>
-        <xd:param name="seq">The sequence from which to derive the subset.
-            Example: ("A", "Bob ", "fourteen", "Fred Bloggs")</xd:param>
-        <xd:param name="start">An integer that denotes the start of the subsequence.
-            Example: 2</xd:param>
-        <xd:param name="end">An integer that denotes the end of the subsequence.
-            Example: 4</xd:param>
-        <xd:return>A string joined version of the sequence from sequence[start] to sequence [end].
-            Example:  "Bob fourteen Fred Bloggs"</xd:return>
+        <xd:desc><xd:ref name="hcmc:returnContextNodes">hcmc:returnContextNodes</xd:ref> returns all of the descendant text nodes
+        for a context item; since context items can nest, however, this function checks to make sure that every nodes'
+        context ancestor is the desired context. Note that this function is cached, since it's called many times.</xd:desc>
+        <xd:param name="contextEl">The context element.</xd:param>
     </xd:doc>
-    <xsl:function name="hcmc:joinSubseq" as="xs:string">
-        <xsl:param name="seq" as="item()+"/>
-        <xsl:param name="start" as="xs:integer"/>
-        <xsl:param name="end" as="xs:integer"/>
-        <xsl:value-of select="normalize-space(string-join(subsequence($seq, $start, $end),' '))"/>
+    <xsl:function name="hcmc:getContextNodes" as="node()*" new-each-time="no">
+        <xsl:param name="contextEl" as="element()"/>
+        <xsl:sequence select="$contextEl/descendant::text()[accumulator-before('context')[last()][. is $contextEl]]"/>
     </xsl:function>
+
     
     <xd:doc>
         <xd:desc><xd:ref name="hcmc:getTotalTermsInDoc" type="function">hcmc:getTotalTermsInDoc</xd:ref> counts up all of the
@@ -592,10 +614,8 @@
         <xsl:param name="docUri" as="xs:string"/>
         <xsl:variable name="thisDoc" select="$tokenizedDocs[document-uri(.) = $docUri]" as="document-node()"/>
         <xsl:variable name="thisDocSpans" select="$thisDoc//span[@data-staticSearch-stem]" as="element(span)*"/>
-        
         <!--We tokenize these since there can be multiple stems for a given span-->
         <xsl:variable name="thisDocStems" select="for $span in $thisDocSpans return tokenize($span/@data-staticSearch-stem,'\s+')" as="xs:string+"/>
-        
         <xsl:variable name="uniqueStems" select="distinct-values($thisDocStems)" as="xs:string+"/>
         <xsl:sequence select="count($uniqueStems)"/>
     </xsl:function>
@@ -793,7 +813,7 @@
                     </xsl:for-each>
                 </map>
             </xsl:variable>
-            <xsl:value-of select="xml-to-json($map, map{'indent': $indentJSON})"/>
+            <xsl:sequence select="xml-to-json($map, map{'indent': $indentJSON})"/>
         </xsl:result-document>
     </xsl:template>
     
