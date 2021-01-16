@@ -1529,7 +1529,7 @@ if (this.discardedTerms.length > 0){
                   if (phraseRegex.test(unmarkedContext)){
   //We have a candidate document for inclusion, and a candidate context.
                     let c = unmarkedContext.replace(phraseRegex, '<mark>' + '$&' + '</mark>');
-                    currContexts.push({form: str, context: c, weight: 2, fid: cntxt.fid ? cntxt.fid : ''});
+                    currContexts.push({form: str, context: c, weight: 2, fid: cntxt.fid ? cntxt.fid : '', prop: cntxt.prop ? cntxt.prop : {}});
                   }
                 }
   //If we've found contexts, we know we have a document to add to the results.
@@ -2161,6 +2161,15 @@ class SSResultSet{
               a2.setAttribute('href', value.docUri + '#' + fid + tf);
               a2.setAttribute('class', 'fidLink');
               li2.appendChild(a2);
+            }
+            //Now look for any custom properties that have been passed through
+            //from the source document's custom attributes, and if any are 
+            //present, generate attributes for them.
+            if (value.contexts[i].hasOwnProperty('prop')){
+              let props = Object.entries(value.contexts[i].prop);
+              for (const [key, value] of props){
+                li2.setAttribute('data-ss-' + key, value);
+              }
             }
             ul2.appendChild(li2);
           }
