@@ -74,9 +74,10 @@
   * @property ss.captions
   * @type {Array}
   * @description ss.captions is the an array of languages (default contains
-  * only en), each of which has some caption properties. Extend
+  * only en and fr), each of which has some caption properties. Extend
   * by adding new languages or replace if necessary.
   */
+  //English
   ss.captions = [];
   ss.captions['en'] = {};
   ss.captions['en'].strSearching         = 'Searching...';
@@ -89,7 +90,18 @@
   ss.captions['en'].strScore             = 'Score: ';
   ss.captions['en'].strSearchTooBroad    = 'Your search is too broad. Include more letters in every term.';
   ss.captions['en'].strDiscardedTerms    = 'Not searched (too common or too short): ';
-
+  //French
+  ss.captions['fr'] = {};
+  ss.captions['fr'].strSearching         = 'Recherche en cours...';
+  ss.captions['fr'].strDocumentsFound    = 'Documents localisés: ';
+  ss.captions['fr'][PHRASE]              = 'Phrase exacte: ';
+  ss.captions['fr'][MUST_CONTAIN]        = 'Doit contenir: ';
+  ss.captions['fr'][MUST_NOT_CONTAIN]    = 'Ne doit pas contenir: ';
+  ss.captions['fr'][MAY_CONTAIN]         = 'Peut contenir: ';
+  ss.captions['fr'][WILDCARD]            = 'Caractère générique: ';
+  ss.captions['fr'].strScore             = 'Score: ';
+  ss.captions['fr'].strSearchTooBroad    = 'Votre recherche est trop large. Inclure plus de lettres dans chaque terme.';
+  ss.captions['fr'].strDiscardedTerms    = 'Recherche inaboutie (termes trop fréquents ou trop brefs): ';
 
 /**
   * @property ss.stopwords
@@ -333,8 +345,13 @@ class StaticSearch{
       //Captions
       this.captions = ss.captions; //Default; override this if you wish by setting the property after instantiation.
       this.captionLang  = document.getElementsByTagName('html')[0].getAttribute('lang') || 'en'; //Document language.
-      this.captionSet   = this.captions[this.captionLang]; //Pointer to the caption object we're going to use.
-
+      if (this.captions[this.captionLang]){
+        this.captionSet   = this.captions[this.captionLang]; //Pointer to the caption object we're going to use.
+      }
+      else{
+        this.captionSet   = this.captions['en'];
+      }
+      
       //Default set of stopwords
       this.stopwords = ss.stopwords; //temporary default.
 
