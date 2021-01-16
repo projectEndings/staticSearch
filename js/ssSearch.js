@@ -2169,6 +2169,11 @@ class SSResultSet{
               let props = Object.entries(value.contexts[i].prop);
               for (const [key, value] of props){
                 li2.setAttribute('data-ss-' + key, value);
+                if (key == 'img'){
+                  let ctxImg = document.createElement('img');
+                  ctxImg.setAttribute('src', value);
+                  li2.insertBefore(ctxImg, li2.firstChild);
+                }
               }
             }
             ul2.appendChild(li2);
