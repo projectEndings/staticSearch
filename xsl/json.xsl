@@ -420,7 +420,7 @@
                         <xsl:sequence select="hcmc:returnWeight(.)"/>
                     </string>
                     <number key="pos">
-                        <xsl:sequence select="@data-staticSearch-pos"/>
+                        <xsl:sequence select="xs:integer(@data-staticSearch-pos)"/>
                     </number>
                     <string key="context">
                         <xsl:sequence select="hcmc:returnContext(.)"/>
