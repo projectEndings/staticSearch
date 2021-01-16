@@ -449,26 +449,14 @@
     
     <xd:doc>
         <xd:desc><xd:ref name="hcmc:dataAttToProp">hcmc:dataAttToProp</xd:ref> converts the
-        a special staticSearch custom attribute (data-ss-*) and converts it to property name (i.e.
-        a camel cased version).</xd:desc>
+        a special staticSearch custom attribute (data-ss-*) and converts it to property name.</xd:desc>
         <xd:param name="dataAtt">The local name of the attribute to process (i.e. data-ss-title, data-ss-my-value).</xd:param>
-        <xd:return>The camelCase key for the property (title, myValue).</xd:return>
+        <xd:return>The key for the property (title, my-value).</xd:return>
     </xd:doc>
     <xsl:function name="hcmc:dataAttToProp" as="xs:string" new-each-time="no">
         <xsl:param name="dataAtt" as="xs:string"/>
         <xsl:variable name="suffix" select="substring-after($dataAtt,'data-ss-')" as="xs:string"/>
-        <xsl:value-of>
-            <!--Split the string on hyphen + notHyphen -->
-            <xsl:analyze-string select="$suffix" regex="-([^-])">
-                <!--Anything following a hyphen, capitalize-->
-                <xsl:matching-substring>
-                    <xsl:value-of select="upper-case(regex-group(1))"/>
-                </xsl:matching-substring>
-                <xsl:non-matching-substring>
-                    <xsl:value-of select="."/>
-                </xsl:non-matching-substring> 
-            </xsl:analyze-string>
-        </xsl:value-of>
+        <xsl:sequence select="$suffix"/>
     </xsl:function>
     
     
