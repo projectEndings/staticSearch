@@ -2149,7 +2149,9 @@ class SSResultSet{
           for (let i=0; i<Math.min(value.contexts.length, this.maxKwicsToShow); i++){
             //Output the KWIC.
             let li2 = document.createElement('li');
-            li2.innerHTML = value.contexts[i].context;
+            let sp = document.createElement('span');
+            sp.innerHTML = value.contexts[i].context;
+            li2.appendChild(sp);
             //Create a text fragment identifier (see https://wicg.github.io/scroll-to-text-fragment/)
             let cleanContext = value.contexts[i].context.replace(/<\/?mark>/g, '').replace(this.reKwicTruncateStr, '');
             let tf = ((this.scrollToTextFragment) && (cleanContext.length > 1))? encodeURI(':~:text=' + cleanContext) : '';
