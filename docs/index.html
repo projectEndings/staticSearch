@@ -86,6 +86,47 @@
             min-width: 3em;
             min-height: 3em;
         }
+        div#ssResults>ul>li{
+        padding: 0.5em 0.25em;
+        }
+        
+        /* Alternate bg colour. */
+        div#ssResults>ul>li:nth-child(2n) {
+            background-color: rgb(240, 240, 240);
+            transition: background-color .5s;
+            border-top: 1px solid rgb(230, 230, 230);
+            border-bottom: 1px solid rgb(230, 230, 230);
+        }
+        /* Larger document titles */
+        div#ssResults>ul>li>div>a{
+            font-size: 1.2em;
+        }
+        
+        /* No list markers for kwics */
+        div#ssResults>ul>li>div>ul.kwic{
+            list-style-type: none;
+        }
+        /* kwics laid out with flex */
+        div#ssResults>ul>li>div>ul.kwic>li{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 0.5em;
+            border-top: solid 1pt lightgray;
+            padding: 0.2em;
+        }
+        
+        div#ssResults>ul>li>div>ul.kwic>li>span{
+            display: block;
+        }
+        
+        /* Larger kwic link. */
+        div#ssResults>ul>li>div>ul.kwic>li>a{
+            font-size: 2.0em;
+            line-height: 0.50;
+        }
+        
         a.fidLink{
             text-decoration: none;
         }
@@ -307,6 +348,14 @@ function showByMod() {
                      
                      
                      <li class="toc"><span class="headingNumber"> 6.7 </span><a href="howDoIUseIt.html#searchBuildProcess" class="toc toc_1" title="Running the search build process">Running the search build process</a></li>
+                     
+                     
+                     <li class="toc"><span class="headingNumber"> 6.8 </span><a href="howDoIUseIt.html#advancedFeatures" class="toc toc_1" title="Advanced features">Advanced features</a><ul class="toc">
+                           
+                           
+                           <li class="toc"><span class="headingNumber">6.8.1 </span><a href="howDoIUseIt.html#customAttributes" class="toc toc_2" title="Custom attributes">Custom attributes</a></li>
+                           </ul>
+                        </li>
                      </ul>
                   </li>
                
@@ -460,12 +509,12 @@ function showByMod() {
          <div id="staticSearch"><script src="search/ssStemmer.js"></script><script src="search/ssSearch.js"></script><script>
                 var Sch;
                 window.addEventListener('load', function(){Sch = new StaticSearch();});
-            </script><form accept-charset="UTF-8" id="ssForm" data-allowphrasal="yes" data-allowwildcards="yes" data-scrolltotextfragment="no" data-maxkwicstoshow="10" onsubmit="return false;" data-versionstring="_e672367" data-ssfolder="search" data-kwictruncatestring="..."><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><span class="clearButton"><button id="ssClear">Clear</button></span><div class="ssDescFilters">
+            </script><form accept-charset="UTF-8" id="ssForm" data-allowphrasal="yes" data-allowwildcards="yes" data-scrolltotextfragment="no" data-maxkwicstoshow="10" onsubmit="return false;" data-versionstring="_35d3fd9" data-ssfolder="search" data-kwictruncatestring="..."><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><span class="clearButton"><button id="ssClear">Clear</button></span><div class="ssDescFilters">
                   <fieldset class="ssFieldset" title="Level" id="ssDesc1">
                      <legend>Level</legend>
                      <ul class="ssDescCheckboxList">
-                        <li><input type="checkbox" title="Level" value="Advanced" id="ssDesc1_3" class="staticSearch.desc"/><label for="ssDesc1_3">Advanced</label></li>
-                        <li><input type="checkbox" title="Level" value="Basic" id="ssDesc1_1" class="staticSearch.desc"/><label for="ssDesc1_1">Basic</label></li>
+                        <li><input type="checkbox" title="Level" value="Advanced" id="ssDesc1_1" class="staticSearch.desc"/><label for="ssDesc1_1">Advanced</label></li>
+                        <li><input type="checkbox" title="Level" value="Basic" id="ssDesc1_3" class="staticSearch.desc"/><label for="ssDesc1_3">Basic</label></li>
                         <li><input type="checkbox" title="Level" value="Intermediate" id="ssDesc1_2" class="staticSearch.desc"/><label for="ssDesc1_2">Intermediate</label></li>
                      </ul>
                   </fieldset>
@@ -544,7 +593,7 @@ function showByMod() {
             <!--
 	  Generated from index.xml using XSLT stylesheets version 7.50.1
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2021-01-10T00:45:58Z.
+	       on 2021-01-19T23:15:51Z.
 	       SAXON HE 10.0.
 		 --></address>
          </div>
