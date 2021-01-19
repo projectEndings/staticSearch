@@ -2164,6 +2164,11 @@ class SSResultSet{
               a2.setAttribute('class', 'fidLink');
               li2.appendChild(a2);
             }
+            else{
+              let sp2 = document.createElement('span');
+              sp2.appendChild(document.createTextNode('\u00A0'));
+              li2.appendChild(sp2);
+            }
             //Now look for any custom properties that have been passed through
             //from the source document's custom attributes, and if any are 
             //present, generate attributes for them.

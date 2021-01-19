@@ -175,6 +175,47 @@
             min-width: 3em;
             min-height: 3em;
         }
+        div#ssResults>ul>li{
+        padding: 0.5em 0.25em;
+        }
+        
+        /* Alternate bg colour. */
+        div#ssResults>ul>li:nth-child(2n) {
+            background-color: rgb(240, 240, 240);
+            transition: background-color .5s;
+            border-top: 1px solid rgb(230, 230, 230);
+            border-bottom: 1px solid rgb(230, 230, 230);
+        }
+        /* Larger document titles */
+        div#ssResults>ul>li>div>a{
+            font-size: 1.2em;
+        }
+        
+        /* No list markers for kwics */
+        div#ssResults>ul>li>div>ul.kwic{
+            list-style-type: none;
+        }
+        /* kwics laid out with flex */
+        div#ssResults>ul>li>div>ul.kwic>li{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 0.5em;
+            border-top: solid 1pt lightgray;
+            padding: 0.2em;
+        }
+        
+        div#ssResults>ul>li>div>ul.kwic>li>span{
+            display: block;
+        }
+        
+        /* Larger kwic link. */
+        div#ssResults>ul>li>div>ul.kwic>li>a{
+            font-size: 2.0em;
+            line-height: 0.50;
+        }
+        
         a.fidLink{
             text-decoration: none;
         }

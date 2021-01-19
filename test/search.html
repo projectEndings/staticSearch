@@ -120,6 +120,47 @@
             min-width: 3em;
             min-height: 3em;
         }
+        div#ssResults>ul>li{
+        padding: 0.5em 0.25em;
+        }
+        
+        /* Alternate bg colour. */
+        div#ssResults>ul>li:nth-child(2n) {
+            background-color: rgb(240, 240, 240);
+            transition: background-color .5s;
+            border-top: 1px solid rgb(230, 230, 230);
+            border-bottom: 1px solid rgb(230, 230, 230);
+        }
+        /* Larger document titles */
+        div#ssResults>ul>li>div>a{
+            font-size: 1.2em;
+        }
+        
+        /* No list markers for kwics */
+        div#ssResults>ul>li>div>ul.kwic{
+            list-style-type: none;
+        }
+        /* kwics laid out with flex */
+        div#ssResults>ul>li>div>ul.kwic>li{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 0.5em;
+            border-top: solid 1pt lightgray;
+            padding: 0.2em;
+        }
+        
+        div#ssResults>ul>li>div>ul.kwic>li>span{
+            display: block;
+        }
+        
+        /* Larger kwic link. */
+        div#ssResults>ul>li>div>ul.kwic>li>a{
+            font-size: 2.0em;
+            line-height: 0.50;
+        }
+        
         a.fidLink{
             text-decoration: none;
         }
@@ -162,27 +203,27 @@
       <div id="staticSearch"><script src="ssTest/ssStemmer.js"></script><script src="ssTest/ssSearch.js"></script><script>
                 var Sch;
                 window.addEventListener('load', function(){Sch = new StaticSearch();});
-            </script><form accept-charset="UTF-8" id="ssForm" data-allowphrasal="yes" data-allowwildcards="yes" data-scrolltotextfragment="yes" data-maxkwicstoshow="3" onsubmit="return false;" data-versionstring="_d6e0ae3" data-ssfolder="ssTest" data-kwictruncatestring="..."><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><span class="clearButton"><button id="ssClear">Clear</button></span><div class="ssDescFilters">
+            </script><form accept-charset="UTF-8" id="ssForm" data-allowphrasal="yes" data-allowwildcards="yes" data-scrolltotextfragment="yes" data-maxkwicstoshow="3" onsubmit="return false;" data-versionstring="_35d3fd9" data-ssfolder="ssTest" data-kwictruncatestring="..."><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><span class="clearButton"><button id="ssClear">Clear</button></span><div class="ssDescFilters">
                <fieldset class="ssFieldset" title="Document type" id="ssDesc1">
                   <legend>Document type</legend>
                   <ul class="ssDescCheckboxList">
                      <li><input type="checkbox" title="Document type" value="Article extracts" id="ssDesc1_4" class="staticSearch.desc"/><label for="ssDesc1_4">Article extracts</label></li>
-                     <li><input type="checkbox" title="Document type" value="Documents with tables" id="ssDesc1_1" class="staticSearch.desc"/><label for="ssDesc1_1">Documents with tables</label></li>
-                     <li><input type="checkbox" title="Document type" value="Poems" id="ssDesc1_3" class="staticSearch.desc"/><label for="ssDesc1_3">Poems</label></li>
-                     <li><input type="checkbox" title="Document type" value="Site info files" id="ssDesc1_2" class="staticSearch.desc"/><label for="ssDesc1_2">Site info files</label></li>
+                     <li><input type="checkbox" title="Document type" value="Documents with tables" id="ssDesc1_3" class="staticSearch.desc"/><label for="ssDesc1_3">Documents with tables</label></li>
+                     <li><input type="checkbox" title="Document type" value="Poems" id="ssDesc1_2" class="staticSearch.desc"/><label for="ssDesc1_2">Poems</label></li>
+                     <li><input type="checkbox" title="Document type" value="Site info files" id="ssDesc1_1" class="staticSearch.desc"/><label for="ssDesc1_1">Site info files</label></li>
                   </ul>
                </fieldset>
                <fieldset class="ssFieldset" title="Random numeric value" id="ssDesc2">
                   <legend>Random numeric value</legend>
                   <ul class="ssDescCheckboxList">
-                     <li><input type="checkbox" title="Random numeric value" value="1" id="ssDesc2_3" class="staticSearch.desc"/><label for="ssDesc2_3">1</label></li>
+                     <li><input type="checkbox" title="Random numeric value" value="1" id="ssDesc2_1" class="staticSearch.desc"/><label for="ssDesc2_1">1</label></li>
                      <li><input type="checkbox" title="Random numeric value" value="2" id="ssDesc2_5" class="staticSearch.desc"/><label for="ssDesc2_5">2</label></li>
-                     <li><input type="checkbox" title="Random numeric value" value="3" id="ssDesc2_2" class="staticSearch.desc"/><label for="ssDesc2_2">3</label></li>
-                     <li><input type="checkbox" title="Random numeric value" value="4" id="ssDesc2_4" class="staticSearch.desc"/><label for="ssDesc2_4">4</label></li>
+                     <li><input type="checkbox" title="Random numeric value" value="3" id="ssDesc2_3" class="staticSearch.desc"/><label for="ssDesc2_3">3</label></li>
+                     <li><input type="checkbox" title="Random numeric value" value="4" id="ssDesc2_2" class="staticSearch.desc"/><label for="ssDesc2_2">4</label></li>
                      <li><input type="checkbox" title="Random numeric value" value="11" id="ssDesc2_7" class="staticSearch.desc"/><label for="ssDesc2_7">11</label></li>
-                     <li><input type="checkbox" title="Random numeric value" value="21" id="ssDesc2_1" class="staticSearch.desc"/><label for="ssDesc2_1">21</label></li>
-                     <li><input type="checkbox" title="Random numeric value" value="31" id="ssDesc2_8" class="staticSearch.desc"/><label for="ssDesc2_8">31</label></li>
-                     <li><input type="checkbox" title="Random numeric value" value="41" id="ssDesc2_6" class="staticSearch.desc"/><label for="ssDesc2_6">41</label></li>
+                     <li><input type="checkbox" title="Random numeric value" value="21" id="ssDesc2_8" class="staticSearch.desc"/><label for="ssDesc2_8">21</label></li>
+                     <li><input type="checkbox" title="Random numeric value" value="31" id="ssDesc2_6" class="staticSearch.desc"/><label for="ssDesc2_6">31</label></li>
+                     <li><input type="checkbox" title="Random numeric value" value="41" id="ssDesc2_4" class="staticSearch.desc"/><label for="ssDesc2_4">41</label></li>
                   </ul>
                </fieldset>
             </div>
