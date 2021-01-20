@@ -181,11 +181,48 @@
       <xd:param name="token">Input token string</xd:param>
       <xd:result>The stemmed version of the token.</xd:result>
     </xd:doc>
-    <xsl:function name="ss:stem" as="xs:string" new-each-time="no">
+    <xsl:function name="ss:stem" as="xs:string">
       <xsl:param name="token" as="xs:string"/>
-      <!-- TODO, of course. -->
-      <xsl:variable name="step1" as="xs:string" select="ss:step1($token)"/>
-      <xsl:sequence select="$step1"/>
+      <xsl:variable name="rvr1r2" as="item()+" select="ss:getRVR1R2($token)"/>
+      <!-- Step 1 is split into two phases because we need to 
+           note the effect of the last couple of actions. -->
+      
+      <xsl:variable name="step1First" as="xs:string">
+        <xsl:sequence select="ss:step1k(
+          ss:step1j(
+          ss:step1i(
+          ss:step1h(
+          ss:step1g(
+          ss:step1f(
+          ss:step1e(
+          ss:step1d(
+          ss:step1c(
+          ss:step1b(
+          ss:step1a($token, $rvr1r2[6]), 
+          $rvr1r2[6]), 
+          $rvr1r2[6]),
+          $rvr1r2[6]),
+          $rvr1r2[6]),
+          $rvr1r2),
+          $rvr1r2[6]),
+          $rvr1r2[6]),
+          $rvr1r2[5]),
+          $rvr1r2),
+          $rvr1r2[5])"/>
+      </xsl:variable>
+      <xsl:variable name="step1Second" as="xs:string">
+        <xsl:sequence select="ss:step1m(
+          ss:step1l($step1First, $rvr1r2[4]),
+          $rvr1r2[4])"/>
+      </xsl:variable>
+      <xsl:variable as="xs:boolean" name="step1MadeChange" select="$token ne $step1Second"/>
+      <xsl:variable as="xs:boolean" name="foundMent" select="$step1First ne $step1Second"/>
+      
+      
+      
+      
+      <xsl:sequence select="$step1Second"/>
+      
     </xsl:function>
     
     <xd:doc scope="component">
@@ -565,6 +602,7 @@
     <xd:doc>
       <xd:desc><xd:ref name="ss:step1">ss:step1</xd:ref> combines all
       the substeps which are part of the step1 process.</xd:desc>
+      <xd:desc>NOTE: THIS IS ONLY A TEST FUNCTION. REMOVE WHEN ALL IS WORKING.</xd:desc>
       <xd:param name="token">Input token string</xd:param>
       <xd:result>The treated version of the token.</xd:result>
     </xd:doc>
@@ -598,6 +636,8 @@
                                      $rvr1r2[4]),
                                      $rvr1r2[4])"/>
     </xsl:function>
+    
+    
     
     
     <!--**************************************************************
