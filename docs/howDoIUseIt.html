@@ -169,6 +169,12 @@ function showByMod() {
                      <li class="toc"><span class="headingNumber"> 6.6 </span><a class="toc toc_1" href="#searchPage" title="Creating a search page">Creating a search page</a></li>
                      
                      <li class="toc"><span class="headingNumber"> 6.7 </span><a class="toc toc_1" href="#searchBuildProcess" title="Running the search build process">Running the search build process</a></li>
+                     
+                     <li class="toc"><span class="headingNumber"> 6.8 </span><a class="toc toc_1" href="#advancedFeatures" title="Advanced features">Advanced features</a><ul class="toc">
+                           
+                           <li class="toc"><span class="headingNumber">6.8.1 </span><a class="toc toc_2" href="#customAttributes" title="Custom attributes">Custom attributes</a></li>
+                           </ul>
+                        </li>
                      </ul>
                   </li>
                
@@ -888,6 +894,47 @@ function showByMod() {
                you can test your own search in the same ways suggested above.</p>
             </div>
          
+         <div class="teidiv1" id="advancedFeatures">
+            
+            <h3><span class="headingNumber">6.8 </span><span class="head">Advanced features</span></h3>
+            
+            <div class="teidiv2" id="customAttributes">
+               
+               <h3><span class="headingNumber">6.8.1 </span><span class="head">Custom attributes</span></h3>
+               
+               <p>As described in <a class="link_ptr" href="#paramsOptional" title="Optional parameters"><span class="headingNumber">6.5.1.2 </span>Optional parameters</a>, if you set the <a href="schemaSpec.html#TEI.linkToFragmentId" class="link_ref" title="&lt;linkToFragmentId&gt;">&lt;linkToFragmentId&gt;</a> parameter to <span class="ident">true</span>, the search index will link each keyword-in-context extract with the closest element
+                  that has an <span class="att">id</span>, so that each keyword-in-context string in a search result will point directly to
+                  a specific page fragment. You can also add your own attributes to any element in your
+                  document in order to have those attributes appear on the keyword-in-context (KWIC)
+                  result string (which is in the form of an HTML <span class="gi">&lt;li&gt;</span> element).</p>
+               
+               <div class="p">Imagine that some of the paragraphs in your documents are special in some way. You
+                  could add an attribute whose name begins with <span class="ident">data-ss-</span> to each of those paragraphs, like this: 
+                  
+                  <div id="index.xml-egXML-d38e894" class="pre egXML_valid"><span class="element">&lt;p <span class="attribute">data-ss-type</span>="<span class="attributevalue">special</span>"&gt;</span>This paragraph is special for some reason or other...<span class="element">&lt;/p&gt;</span></div> When the staticSearch indexer creates KWIC extracts, it automatically harvests any
+                  attribute whose name begins with <span class="ident">data-ss-</span> from the containing element or its ancestors, and adds them to the keyword-in-context
+                  record in the index. Then when that KWIC string is displayed as the result of a search,
+                  the attribute will be added to the HTML <span class="gi">&lt;li&gt;</span> element on the page: 
+                  
+                  <div id="index.xml-egXML-d38e902" class="pre egXML_valid"><span class="element">&lt;li <span class="attribute">data-ss-type</span>="<span class="attributevalue">special</span>"&gt;</span>[KWIC with marked search hit, link, etc.]<span class="element">&lt;/li&gt;</span></div> This means that you can add your own CSS or JavaScript to make that KWIC appear distinct
+                  from other KWICs which come from non-special paragraphs.</div>
+               
+               <p>You can add as many custom attributes as you like (although bear in mind that they
+                  increase the size of the index JSON files slightly).</p>
+               
+               <div class="p">One specific custom attribute has built-in handling that you may find useful. If you
+                  add the attribute <span class="att">data-ss-img</span> with a value that points to an image, that image will be displayed to the left of
+                  the KWIC string. For example, if you do this: 
+                  
+                  <div id="index.xml-egXML-d38e912" class="pre egXML_valid"><span class="element">&lt;p <span class="attribute">data-ss-img</span>="<span class="attributevalue">images/elephant.png</span>"&gt;</span>This paragraph is all about elephants...<span class="element">&lt;/p&gt;</span></div> then any KWIC results from that paragraph will show the <span class="ident">elephant.png</span> image to the left of the KWIC text. This can be especially useful if your site contains
+                  large documents which are broken into sections, and those sections can be helpfully
+                  represented by images; the search results will be easier for the user to understand
+                  by virtue of the associated images. Image URLs should be relative to the location
+                  of the search page, not the original source document, since the images will be displayed
+                  on the search page.</div>
+               </div>
+            </div>
+         
          
          
          
@@ -912,7 +959,7 @@ function showByMod() {
             <!--
 	  Generated from index.xml using XSLT stylesheets version 7.50.1
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2021-01-10T00:45:58Z.
+	       on 2021-01-19T23:15:51Z.
 	       SAXON HE 10.0.
 		 --></address>
          </div>

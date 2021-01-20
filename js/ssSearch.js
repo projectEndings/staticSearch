@@ -1529,7 +1529,7 @@ if (this.discardedTerms.length > 0){
                   if (phraseRegex.test(unmarkedContext)){
   //We have a candidate document for inclusion, and a candidate context.
                     let c = unmarkedContext.replace(phraseRegex, '<mark>' + '$&' + '</mark>');
-                    currContexts.push({form: str, context: c, weight: 2, fid: cntxt.fid ? cntxt.fid : ''});
+                    currContexts.push({form: str, context: c, weight: 2, fid: cntxt.fid ? cntxt.fid : '', prop: cntxt.prop ? cntxt.prop : {}});
                   }
                 }
   //If we've found contexts, we know we have a document to add to the results.
@@ -2149,7 +2149,9 @@ class SSResultSet{
           for (let i=0; i<Math.min(value.contexts.length, this.maxKwicsToShow); i++){
             //Output the KWIC.
             let li2 = document.createElement('li');
-            li2.innerHTML = value.contexts[i].context;
+            let sp = document.createElement('span');
+            sp.innerHTML = value.contexts[i].context;
+            li2.appendChild(sp);
             //Create a text fragment identifier (see https://wicg.github.io/scroll-to-text-fragment/)
             let cleanContext = value.contexts[i].context.replace(/<\/?mark>/g, '').replace(this.reKwicTruncateStr, '');
             let tf = ((this.scrollToTextFragment) && (cleanContext.length > 1))? encodeURI(':~:text=' + cleanContext) : '';
@@ -2161,6 +2163,25 @@ class SSResultSet{
               a2.setAttribute('href', value.docUri + '#' + fid + tf);
               a2.setAttribute('class', 'fidLink');
               li2.appendChild(a2);
+            }
+            else{
+              let sp2 = document.createElement('span');
+              sp2.appendChild(document.createTextNode('\u00A0'));
+              li2.appendChild(sp2);
+            }
+            //Now look for any custom properties that have been passed through
+            //from the source document's custom attributes, and if any are 
+            //present, generate attributes for them.
+            if (value.contexts[i].hasOwnProperty('prop')){
+              let props = Object.entries(value.contexts[i].prop);
+              for (const [key, value] of props){
+                li2.setAttribute('data-ss-' + key, value);
+                if (key == 'img'){
+                  let ctxImg = document.createElement('img');
+                  ctxImg.setAttribute('src', value);
+                  li2.insertBefore(ctxImg, li2.firstChild);
+                }
+              }
             }
             ul2.appendChild(li2);
           }

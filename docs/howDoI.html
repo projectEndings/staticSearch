@@ -167,6 +167,12 @@ function showByMod() {
                      <li class="toc"><span class="headingNumber"> 6.6 </span><a href="howDoIUseIt.html#searchPage" class="toc toc_1" title="Creating a search page">Creating a search page</a></li>
                      
                      <li class="toc"><span class="headingNumber"> 6.7 </span><a href="howDoIUseIt.html#searchBuildProcess" class="toc toc_1" title="Running the search build process">Running the search build process</a></li>
+                     
+                     <li class="toc"><span class="headingNumber"> 6.8 </span><a href="howDoIUseIt.html#advancedFeatures" class="toc toc_1" title="Advanced features">Advanced features</a><ul class="toc">
+                           
+                           <li class="toc"><span class="headingNumber">6.8.1 </span><a href="howDoIUseIt.html#customAttributes" class="toc toc_2" title="Custom attributes">Custom attributes</a></li>
+                           </ul>
+                        </li>
                      </ul>
                   </li>
                
@@ -296,7 +302,7 @@ function showByMod() {
                   
                   <td>Any element with a weight of 0 is ignored completely by the indexer, so add a <a href="schemaSpec.html#TEI.rule" class="link_ref" title="&lt;rule&gt;">&lt;rule&gt;</a> for the element. So to ignore all elements with the class <span class="val">ignoreThisElement</span>, you could do something like: 
                      
-                     <div id="index.xml-egXML-d38e926" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>"<br/> <span class="attribute">match</span>="<span class="attributevalue">div[contains-token(@class,'ignoreThisElement')</span>"/&gt;</span></div>
+                     <div id="index.xml-egXML-d38e973" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>"<br/> <span class="attribute">match</span>="<span class="attributevalue">div[contains-token(@class,'ignoreThisElement')</span>"/&gt;</span></div>
                      </td>
                   </tr>
                
@@ -314,7 +320,7 @@ function showByMod() {
                   <td>Here, you'll want to use the <a href="schemaSpec.html#TEI.exclude" class="link_ref" title="&lt;exclude&gt;">&lt;exclude&gt;</a> function, which excludes the element from indexing, but doesn't remove it from the
                      document itself. So, if you wanted to exclude all keyboard entry items (<span class="gi">&lt;xh:kbd&gt;</span>), but still have them in the KWIC, you could do something like: 
                      
-                     <div id="index.xml-egXML-d38e952" class="pre egXML_valid"><span class="element">&lt;exclude <span class="attribute">match</span>="<span class="attributevalue">kbd</span>"<br/> <span class="attribute">type</span>="<span class="attributevalue">index</span>"/&gt;</span></div>
+                     <div id="index.xml-egXML-d38e999" class="pre egXML_valid"><span class="element">&lt;exclude <span class="attribute">match</span>="<span class="attributevalue">kbd</span>"<br/> <span class="attribute">type</span>="<span class="attributevalue">index</span>"/&gt;</span></div>
                      </td>
                   </tr>
                
@@ -324,7 +330,7 @@ function showByMod() {
                   
                   <td>Switch <a href="schemaSpec.html#TEI.verbose" class="link_ref" title="&lt;verbose&gt;">&lt;verbose&gt;</a> to true in the configuration file: 
                      
-                     <div id="index.xml-egXML-d38e961" class="pre egXML_valid"><span class="element">&lt;config xmlns="http://hcmc.uvic.ca/ns/staticSearch"&gt;</span><br/> <span class="element">&lt;params&gt;</span><br/>  <br/><span class="comment">&lt;!--....--&gt;</span><br/>  <span class="element">&lt;verbose&gt;</span>true<span class="element">&lt;/verbose&gt;</span><br/><span class="comment">&lt;!--....--&gt;</span><br/> <span class="element">&lt;/params&gt;</span><br/><span class="comment">&lt;!--Rules, etc--&gt;</span><br/><span class="element">&lt;/config&gt;</span></div>
+                     <div id="index.xml-egXML-d38e1008" class="pre egXML_valid"><span class="element">&lt;config xmlns="http://hcmc.uvic.ca/ns/staticSearch"&gt;</span><br/> <span class="element">&lt;params&gt;</span><br/>  <br/><span class="comment">&lt;!--....--&gt;</span><br/>  <span class="element">&lt;verbose&gt;</span>true<span class="element">&lt;/verbose&gt;</span><br/><span class="comment">&lt;!--....--&gt;</span><br/> <span class="element">&lt;/params&gt;</span><br/><span class="comment">&lt;!--Rules, etc--&gt;</span><br/><span class="element">&lt;/config&gt;</span></div>
                      </td>
                   </tr>
                
@@ -362,7 +368,7 @@ function showByMod() {
             <!--
 	  Generated from index.xml using XSLT stylesheets version 7.50.1
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2021-01-10T00:45:58Z.
+	       on 2021-01-19T23:15:51Z.
 	       SAXON HE 10.0.
 		 --></address>
          </div>

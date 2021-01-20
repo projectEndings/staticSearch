@@ -403,10 +403,10 @@
     
     
     <xd:doc>
-        <xd:desc>Template to retain all elements that have a declared language or have a declared id,
-        since we may need those elements in other contexts.</xd:desc>
+        <xd:desc>Template to retain all elements that have a declared language, a declared id, or a
+            special data-ss- attribute since we may need those elements in other contexts.</xd:desc>
     </xd:doc>
-    <xsl:template match="*[@lang or @xml:lang or @id][ancestor::body]" mode="clean">
+    <xsl:template match="*[@lang or @xml:lang or @id or @*[matches(local-name(),'^data-ss-')]][ancestor::body]" mode="clean">
         <xsl:copy>
             <xsl:apply-templates select="@*|node()" mode="#current"/>
         </xsl:copy>
@@ -465,7 +465,7 @@
             <xsl:when test="local-name()=('id','lang')">
                 <xsl:copy-of select="."/>
             </xsl:when>
-            <xsl:when test="starts-with(local-name(),'data-staticSearch')">
+            <xsl:when test="matches(local-name(),'^data-(staticSearch|ss)-')">
                 <xsl:copy-of select="."/>
             </xsl:when>
             <xsl:otherwise/>
@@ -770,13 +770,27 @@
     <xd:doc>
         <xd:desc>Template to match all ancestor ids</xd:desc>
     </xd:doc>
-    
     <xsl:template match="*[@id][ancestor::body]" mode="enumerate">
         <xsl:copy>
             <xsl:apply-templates select="@*|node()" mode="#current">
                 <xsl:with-param name="id" select="string(@id)" tunnel="yes"/>
             </xsl:apply-templates>
         </xsl:copy>
+    </xsl:template>
+    
+    
+    <xd:doc>
+        <xd:desc>Template to determine whether or not we can remove the @data-staticSearch-context from this
+        element: if this element has other contexts declared, then we check to see if this element
+        has any spans that need this context; if not, then we can delete the attribute since its superfluous.</xd:desc>
+    </xd:doc>
+    <xsl:template match="*[@data-staticSearch-context][descendant::*[@data-staticSearch-context]]/@data-staticSearch-context" mode="enumerate">
+        <xsl:variable name="parent" select="parent::*" as="element()"/>
+        <xsl:variable name="spans" select="$parent/descendant::span[@data-staticSearch-stem]" as="element(span)*"/>
+        <!--If some span uses this element as its context ancestor, then we retain the attribute-->
+        <xsl:if test="some $span in $spans satisfies $span/ancestor::*[@data-staticSearch-context][1][. is $parent]">
+            <xsl:sequence select="."/>
+        </xsl:if>
     </xsl:template>
     
     
