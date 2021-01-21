@@ -86,150 +86,6 @@
         from this XSLT to the file to be used as the staticSearch logo.</xd:desc>
     </xd:doc>
     <xsl:variable name="svgLogoFile" as="xs:string" select="'../images/logo_01.svg'"/>
-
-    <xd:doc>
-        <xd:desc><xd:ref name="css" type="parameter">$css</xd:ref> is a pre-populated
-        parameter containing the CSS code that applies to the search form components.
-        It is provided as a parameter so that it can be overridden if required.</xd:desc>
-    </xd:doc>
-    <xsl:param name="css" as="xs:string">
-        form#ssForm{
-            display: flex;
-            flex-direction: column;
-        }
-        span.ssQueryAndButton{
-            display: flex;
-            flex-direction: row;
-            margin: 0.25em auto;
-            width: 100%;
-        }
-        input#ssQuery{
-            flex: 1;
-        }
-        div.ssDescFilters, div.ssDateFilters, div.ssNumFilters, div.ssBoolFilters{
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-        }
-        div.ssDescFilters fieldset, div.ssDateFilters fieldset, div.ssNumFilters fieldset, div.ssBoolFilters fieldset{
-            margin: 0.25em auto;
-            padding: 0.25em;
-            /* Chromium bug means flex doesn't work in fieldsets. Curses. :-( */
-            flex-grow: 1;
-            display: flex;
-            flex-wrap: wrap;
-        }
-        ul.ssDescCheckboxList{
-            list-style-type: none;
-            max-height: 8em;
-            overflow-y: auto;
-            min-width: 90%;
-        }
-        ul.ssDescCheckboxList li{
-            display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
-            align-items: flex-start;
-        }
-        div.ssDateFilters fieldset.ssFieldset span, div.ssNumFilters fieldset.ssFieldset span, div.ssBoolFilters fieldset.ssFieldset span{
-            padding: 0.5em 1em;
-        }
-        fieldset.ssFieldset > span {
-            background-color: #ddd;
-            border: solid 1px #aaa;
-            margin: 0.2em;
-        }
-        div.ssNumFilters input[type="number"], div.ssDateFilters input[type="text"]{
-            padding: 0.5em;
-        }
-        div#ssSearching{
-            background-color: #000000;
-            color: #ffffff;
-            font-size: 1.5rem;
-            padding: 1rem;
-            border-radius: 0.25rem 0.25rem;
-            position: fixed;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            display: none;
-        }
-        div#ssResults{
-          min-height: 50vh;
-        }
-        div#ssResults>ul>li{
-            display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
-            margin-top: 0.75em;
-        }
-        div#ssResults>ul>li>a{
-            flex-grow: 0;
-        }
-        div#ssResults>ul>li>div{
-          flex-grow: 1;
-        }
-        div#ssResults>ul>li>a>img{
-            max-width: 10em;
-            margin-right: 1em;
-            min-width: 3em;
-            min-height: 3em;
-        }
-        div#ssResults>ul>li{
-        padding: 0.5em 0.25em;
-        }
-        
-        /* Alternate bg colour. */
-        div#ssResults>ul>li:nth-child(2n) {
-            background-color: rgb(240, 240, 240);
-            transition: background-color .5s;
-            border-top: 1px solid rgb(230, 230, 230);
-            border-bottom: 1px solid rgb(230, 230, 230);
-        }
-        /* Larger document titles */
-        div#ssResults>ul>li>div>a{
-            font-size: 1.2em;
-        }
-        
-        /* No list markers for kwics */
-        div#ssResults>ul>li>div>ul.kwic{
-            list-style-type: none;
-        }
-        /* kwics laid out with flex */
-        div#ssResults>ul>li>div>ul.kwic>li{
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 0.5em;
-            border-top: solid 1pt lightgray;
-            padding: 0.2em;
-        }
-        
-        div#ssResults>ul>li>div>ul.kwic>li>span{
-            display: block;
-        }
-        
-        /* Larger kwic link. */
-        div#ssResults>ul>li>div>ul.kwic>li>a{
-            font-size: 2.0em;
-            line-height: 0.50;
-        }
-        
-        a.fidLink{
-            text-decoration: none;
-        }
-        div#ssPoweredBy{
-            font-size: 0.75rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0.5rem;
-        }
-        div#ssPoweredBy>* {
-            margin: 0;
-        }
-    </xsl:param>
     
     <xsl:variable name="dateRegex" select="'^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$'" as="xs:string"/>
 
@@ -256,16 +112,17 @@
     </xsl:template>
 
     <xd:doc>
-        <xd:desc>This  template replaces an existing style element with the id ssCss
-            with another one containing the code in the <xd:ref name="css">$css</xd:ref>
-            parameter.</xd:desc>
+        <xd:desc>This  template replaces an existing style element with the id ssCss (old approach)
+            or a link element with the same id (2020-01-21 onward)
+            with a link element pointing to the CSS file.</xd:desc>
     </xd:doc>
-    <xsl:template match="style[@id='ssCss']">
-        <style id="ssCss">
+    <xsl:template match="style[@id='ssCss'] | link[@id='ssCss']">
+        <link rel="stylesheet" href="{$outputFolder}/ssSearch.css" id="ssCss"/>
+        <!--<style id="ssCss">
             <xsl:comment>
                 <xsl:value-of select="$css" disable-output-escaping="yes"/>
             </xsl:comment>
-        </style>
+        </style>-->
     </xsl:template>
 
     <xd:doc>
@@ -274,14 +131,10 @@
             the <xd:ref name="css">$css</xd:ref> parameter. We place it first in the head element
             so that any subsequent style element provided by the user can override it.</xd:desc>
     </xd:doc>
-    <xsl:template match="head[not(style[@id='ssCss'])]">
+    <xsl:template match="head[not(*[@id='ssCss'])]">
         <xsl:copy>
             <xsl:apply-templates select="@*"/>
-            <style id="ssCss">
-                <xsl:comment>
-                    <xsl:value-of select="$css" disable-output-escaping="yes"/>
-                </xsl:comment>
-            </style>
+            <link rel="stylesheet" href="{$outputFolder}/ssSearch.css" id="ssCss"/>
             <xsl:apply-templates select="node()"/>
         </xsl:copy>
     </xsl:template>
