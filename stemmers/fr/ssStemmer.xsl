@@ -44,6 +44,12 @@
     </xd:doc>
     <xsl:variable name="nonVowel">[^aeiouyâàëéêèïîôûù]</xsl:variable>
     
+    <xd:doc>
+      <xd:desc>The <xd:ref name="nonVowel">neitherVowelNorH</xd:ref> variable is 
+        a character class of characters which are not vowels or H (used in step 2a).</xd:desc>
+    </xd:doc>
+    <xsl:variable name="neitherVowelNorH">[^aeiouyâàëéêèïîôûùH]</xsl:variable>
+    
     <xd:doc scope="component">
       <xd:desc><xd:ref name="RVExceptRex">RVExceptRex</xd:ref> is a regular expression
         which returns returns RV when applied to a token which fits the exception pattern.
@@ -166,6 +172,38 @@
       '(' || $nonVowel || ')(issements?)$'
       "/>
     
+    <xd:doc>
+      <xd:desc><xd:ref name="reStep2a" as="xs:string">reStep2a</xd:ref>
+        is a regex for a set of suffixes that are deleted if in RV and preceded
+        by a character which is neither a vowel nor H.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="reStep2a" as="xs:string" select="
+      '(' || $neitherVowelNorH || '(issaIent)|(issantes)|(iraIent)|(issante)|(issants)|(issions)|(irions)|(issais)|(issait)|(issant)|(issent)|(issiez)|(issons)|(irais)|(irait)|(irent)|(iriez)|(irons)|(iront)|(isses)|(issez)|(îmes)|(îtes)|(irai)|(iras)|(irez)|(isse)|(ies)|(ira)|(ît)|(ie)|(ir)|(is)|(it)|(i))$'
+      "/>
+    
+    <xd:doc>
+      <xd:desc><xd:ref name="reStep2b1" as="xs:string">reStep2b1</xd:ref>
+        is a regex for a set of suffixes that are deleted if in RV.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="reStep2b1" as="xs:string"
+      select="'((eraIent)|(erions)|(èrent)|(erais)|(erait)|(eriez)|(erons)|(eront)|(eras)|(erez)|(erai)|(iez)|(era)|(ées)|(ez)|(er)|(ée)|(és)|(é))$'"/>
+    
+    <xd:doc>
+      <xd:desc><xd:ref name="reStep2b2" as="xs:string">reStep2b2</xd:ref>
+        is a regex for a set of suffixes that are deleted if in RV; a preceding
+        e should also be deleted if in RV, but that is handled in the function.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="reStep2b2" as="xs:string"
+      select="'((assions)|(assiez)|(assent)|(asses)|(antes)|(aIent)|(asse)|(ante)|(ants)|(âtes)|(âmes)|(ais)|(ait)|(ant)|(ât)|(ai)|(as)|(a))$'"/>
+    
+    <xd:doc>
+      <xd:desc><xd:ref name="reStep4a" as="xs:string">reStep4a</xd:ref>
+        is a regex for deleting s in certain circumstances.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="reStep4a" as="xs:string" 
+      select="'((Hi)|[^aiouès])s$'"/>
+
+    
     
     <!--**************************************************************
        *                                                            * 
@@ -218,10 +256,49 @@
       <xsl:variable as="xs:boolean" name="step1MadeChange" select="$token ne $step1Second"/>
       <xsl:variable as="xs:boolean" name="foundMent" select="$step1First ne $step1Second"/>
       
+      <xsl:variable as="xs:boolean" name="doStep2a" select="not($step1MadeChange) or $foundMent"/>
+      
+      <xsl:variable as="xs:string" name="step2First" select="
+        if ($doStep2a) then ss:step2a($step1Second, $rvr1r2[4]) else $step1Second"/>
+      
+      <xsl:variable as="xs:boolean" name="step2aMadeChange" select="$step1Second ne $step2First"/>
+      
+      <xsl:variable as="xs:boolean" name="doStep2b" select="$doStep2a and not($step2aMadeChange)"/>
+      
+      <xsl:variable as="xs:string" name="step2Second" select="if ($doStep2b) then ss:step2b($step2First, $rvr1r2) else $step2First"/>
+      
+      <xsl:variable as="xs:boolean" name="step2bMadeChange" select="$step2First ne $step2Second"/>
+      
+      <!--  If the last step to be obeyed — either step 1, 2a or 2b — altered the word, do step 3  -->
+      <xsl:variable as="xs:boolean" name="doStep3" 
+        select="if ($doStep2b and $step2bMadeChange) then true()
+                else
+                  if (not($doStep2b) and ($doStep2a and $step2aMadeChange)) then true()
+                  else
+                    if ($step1MadeChange) then true()
+                    else
+                      false()"/>
+      
+      <xsl:variable as="xs:string" name="step3" select="if ($doStep3) then 
+        replace(replace($step2Second, 'Y$', 'i'), 'ç$', 'c') 
+                              else $step2Second"/>
+      
+      <xsl:variable as="xs:boolean" name="step3MadeChange" select="$step2Second ne $step3"/>
+      
+      <xsl:variable as="xs:string" name="step4" select="if (not($doStep3)) then ss:step4($step3, $rvr1r2) else $step3"/>
+      
+      <!-- Step 5, always done: undouble. -->
+      <xsl:variable as="xs:string" name="step5" select="if (matches($step4, '((enn)|(onn)|(ett)|(ell)|(eill))$')) then replace($step4, '.$', '') else $step4"/>
+      
+      <!-- Step 6, always done: unaccent. -->
+      <xsl:variable as="xs:string" name="step6" select="replace($step5, '[éè](' || $nonVowel || '+)$', 'e$1')"/>
+      
+      <!-- Post-flight normalization. -->
+      <xsl:variable as="xs:string" name="post1" select="translate($step6, 'IUY', 'iuy')"/>
+      <xsl:variable as="xs:string" name="post2" select="translate(replace(replace($post1, 'He', 'ë'), 'Hi', 'ï'), 'H', '')"/>
       
       
-      
-      <xsl:sequence select="$step1Second"/>
+      <xsl:sequence select="$post2"/>
       
     </xsl:function>
     
@@ -598,6 +675,90 @@
       <xsl:sequence select="if (($rep ne $token) and ((string-length($rep) - 1) ge $RV)) then $rep else $token"/>
     </xsl:function>
     
+    <xd:doc>
+      <xd:desc><xd:ref name="ss:step2a">ss:step2a</xd:ref> is the first part of
+        step 2, removing any of a long list of suffixes beginning with i,
+        if preceded by a char which is neither a vowel nor H, in RV.</xd:desc>
+      <xd:param name="token">Input token string</xd:param>
+      <xd:param name="RV">Offset of the RV region in the token</xd:param>
+      <xd:result>The treated version of the token.</xd:result>
+    </xd:doc>
+    <xsl:function name="ss:step2a" as="xs:string">
+      <xsl:param name="token" as="xs:string"/>
+      <xsl:param name="RV" as="xs:integer"/>
+      <xsl:variable name="rep" select="replace($token, $reStep2a, '$1')"/>
+      <xsl:sequence select="if (($rep ne $token) and ((string-length($rep) - 1) ge $RV)) then $rep else $token"/>
+    </xsl:function>
+    
+    <xd:doc>
+      <xd:desc><xd:ref name="ss:step2b">ss:step2b</xd:ref> is the second part of
+        step 2, removing any of a long list of suffixes beginning with i in
+        various configurations.</xd:desc>
+      <xd:param name="token">Input token string</xd:param>
+      <xd:param name="rvr1r2">The complete sequence of items and offsets
+        calculated for the word.</xd:param>
+      <xd:result>The treated version of the token.</xd:result>
+    </xd:doc>
+    <xsl:function name="ss:step2b" as="xs:string">
+      <xsl:param name="token" as="xs:string"/>
+      <xsl:param name="rvr1r2" as="item()+"/>
+      <xsl:variable as="xs:string" name="rep1" select="replace($token, 'ions$', '')"/>
+      <xsl:choose>
+        <xsl:when test="($rep1 ne $token) and (string-length($rep1) ge $rvr1r2[4]) and (string-length($rep1) ge $rvr1r2[6])">
+          <xsl:sequence select="$rep1"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:variable as="xs:string" name="rep2" select="replace($token, $reStep2b1, '')"/>
+          <xsl:choose>
+            <xsl:when test="($rep2 ne $token) and (string-length($rep2) ge $rvr1r2[4])">
+              <xsl:sequence select="$rep2"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:variable as="xs:string" name="rep3" select="replace($token, $reStep2b2, '')"/>
+              <xsl:choose>
+                <xsl:when test="($rep3 ne $token) and (string-length($rep3) ge $rvr1r2[4])">
+                  <xsl:sequence select="if (matches($rep3, 'e$') and string-length($rep3) gt $rvr1r2[4]) then replace($rep3, 'e$', '') else $rep3"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:sequence select="$token"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:function>
+    
+    <xd:doc>
+      <xd:desc><xd:ref name="ss:step4">ss:step4</xd:ref> is a short 
+      sequence of replacements done if step3 did not run.</xd:desc>
+      <xd:param name="token">Input token string</xd:param>
+      <xd:param name="rvr1r2">The complete sequence of items and offsets
+        calculated for the word.</xd:param>
+      <xd:result>The treated version of the token.</xd:result>
+    </xd:doc>
+    <xsl:function name="ss:step4" as="xs:string">
+      <xsl:param name="token" as="xs:string"/>
+      <xsl:param name="rvr1r2" as="item()+"/>
+      <!-- If the word ends s, not preceded by a, i (unless itself preceded by H), o, u, è or s, delete it. -->
+      <xsl:variable name="rep1" as="xs:string" select="replace($token, '([st])ion$', '$1')"/>
+      <xsl:variable name="rep1Len" as="xs:integer" select="string-length($rep1)"/>
+      <xsl:variable name="step4a" select="if (($token ne $rep1) and 
+        ($rep1Len ge $rvr1r2[6]) and ($rep1Len gt $rvr1r2[4])) 
+        then $rep1 else $token"/>
+      <xsl:variable name="rep2" as="xs:string" select="replace($step4a, '(([Ii]ère)|([Ii]er))$', 'i')"/>
+      <xsl:variable name="step4b" as="xs:string" select="if (($step4a ne $rep2) and ((string-length($rep2)-1) ge $rvr1r2[4])) then $rep2 else $rep1"/>
+      <xsl:sequence select="if (ends-with($step4b, 'e') and string-length($step4b) gt $rvr1r2[4]) then replace($step4b, 'e$', '') else $step4b"/>
+    </xsl:function>
+    
+    <!--
+    <xd:doc>
+      <xd:desc><xd:ref name="reStep4b" as="xs:string">reStep4b</xd:ref>
+        is a regex for deleting ion when preceded by s or t, if in
+        R2 and in RV, where the s or t must be in RV.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="reStep4b" as="xs:string" 
+      select="'([st])ion$'"/>-->
     
     <xd:doc>
       <xd:desc><xd:ref name="ss:step1">ss:step1</xd:ref> combines all
