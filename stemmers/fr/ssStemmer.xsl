@@ -45,7 +45,7 @@
     <xsl:variable name="nonVowel">[^aeiouyâàëéêèïîôûù]</xsl:variable>
     
     <xd:doc>
-      <xd:desc>The <xd:ref name="nonVowel">neitherVowelNorH</xd:ref> variable is 
+      <xd:desc>The <xd:ref name="neitherVowelNorH">neitherVowelNorH</xd:ref> variable is 
         a character class of characters which are not vowels or H (used in step 2a).</xd:desc>
     </xd:doc>
     <xsl:variable name="neitherVowelNorH">[^aeiouyâàëéêèïîôûùH]</xsl:variable>
@@ -211,15 +211,21 @@
         by a character which is neither a vowel nor H.</xd:desc>
     </xd:doc>
     <xsl:variable name="reStep2a" as="xs:string" select="
-      '(' || $neitherVowelNorH || '(issaIent)|(issantes)|(iraIent)|(issante)|(issants)|(issions)|(irions)|(issais)|(issait)|(issant)|(issent)|(issiez)|(issons)|(irais)|(irait)|(irent)|(iriez)|(irons)|(iront)|(isses)|(issez)|(îmes)|(îtes)|(irai)|(iras)|(irez)|(isse)|(ies)|(ira)|(ît)|(ie)|(ir)|(is)|(it)|(i))$'
+      '(' || $neitherVowelNorH ||  ')((issaIent)|(issantes)|(iraIent)|(issante)|(issants)|(issions)|(irions)|(issais)|(issait)|(issant)|(issent)|(issiez)|(issons)|(irais)|(irait)|(irent)|(iriez)|(irons)|(iront)|(isses)|(issez)|(îmes)|(îtes)|(irai)|(iras)|(irez)|(isse)|(ies)|(ira)|(ît)|(ie)|(ir)|(is)|(it)|(i))$'
       "/>
+    
+    <xd:doc>
+      <xd:desc><xd:ref name="reStep2b" as="xs:string">reStep2b</xd:ref> is the 
+      initial long regex for matching in step 2b, before breaking down the 
+      matches to treat them differently.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="reStep2b" as="xs:string" select="'.+?((eraIent)|(erions)|(assent)|(assiez)|(èrent)|(erais)|(erait)|(eriez)|(erons)|(eront)|(aIent)|(antes)|(asses)|(ions)|(erai)|(eras)|(erez)|(âmes)|(âtes)|(ante)|(ants)|(asse)|(ées)|(era)|(iez)|(ais)|(ait)|(ant)|(ée)|(és)|(er)|(ez)|(ât)|(ai)|(as)|(é)|(a))$'"/>
     
     <xd:doc>
       <xd:desc><xd:ref name="reStep2b1" as="xs:string">reStep2b1</xd:ref>
         is a regex for a set of suffixes that are deleted if in RV.</xd:desc>
     </xd:doc>
-    <xsl:variable name="reStep2b1" as="xs:string"
-      select="'((eraIent)|(erions)|(èrent)|(erais)|(erait)|(eriez)|(erons)|(eront)|(eras)|(erez)|(erai)|(iez)|(era)|(ées)|(ez)|(er)|(ée)|(és)|(é))$'"/>
+    <xsl:variable name="reStep2b1" as="xs:string"      select="'((eraIent)|(erions)|(èrent)|(erais)|(erait)|(eriez)|(erons)|(eront)|(eras)|(erez)|(erai)|(iez)|(era)|(ées)|(ez)|(er)|(ée)|(és)|(é))$'"/>
     
     <xd:doc>
       <xd:desc><xd:ref name="reStep2b2" as="xs:string">reStep2b2</xd:ref>
@@ -307,6 +313,7 @@
       
       <xsl:message>$rvr1r2: <xsl:value-of select="string-join($rvr1r2, ', ')"/></xsl:message>
       <xsl:message>$step1Result: <xsl:value-of select="string-join($step1Result, ', ')"/></xsl:message>
+      <xsl:message>$step1MadeChange: <xsl:value-of select="$step1MadeChange"/></xsl:message>
       <xsl:message>$foundMent: <xsl:value-of select="$foundMent"/></xsl:message>
       
       <xsl:sequence select="$post2"/>
@@ -828,7 +835,8 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
-      <xsl:sequence select="($result, ($token eq $result), (matches($longestMatch, '^([ae]mment)|(ments?)$')))"/>
+      <!--<xsl:message><xsl:sequence select="'$token: ' || $token || ', $result: ' || $result"/></xsl:message>-->
+      <xsl:sequence select="($result, ($token ne $result), (matches($longestMatch, '^([ae]mment)|(ments?)$')))"/>
     </xsl:function>
     
     
