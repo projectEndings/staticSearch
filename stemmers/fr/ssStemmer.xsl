@@ -81,6 +81,14 @@
     <xsl:variable name="R1R2Rex" as="xs:string" select="concat('^.*?', $vowel, $nonVowel, '(.*)$')"/>
     
     <xd:doc>
+      <xd:desc><xd:ref name="reStep1">reStep1</xd:ref> is the single 
+      massive regex matching all suffixes handled in step 1. Initial is 
+      non-greedy to ensure longest suffix match succeeds, since we need
+      to act on the longest possible match.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="reStep1" as="xs:string" select="'.+?((issements)|(issement)|(atrices)|(atrice)|(ateurs)|(ations)|(logies)|(usions)|(utions)|(ements)|(amment)|(emment)|(ments)|(ances)|(iqUes)|(ismes)|(ables)|(istes)|(ateur)|(ation)|(logie)|(usion)|(ution)|(ences)|(ement)|(euses)|(ance)|(iqUe)|(isme)|(able)|(iste)|(ence)|(ités)|(ives)|(eaux)|(euse)|(ment)|(eux)|(ité)|(ive)|(ifs)|(aux)|(if))$'"/>
+    
+    <xd:doc>
       <xd:desc><xd:ref name="reStep1a">reStep1a</xd:ref>
       is a sequence of suffixes that must be deleted if they lie entirely within
       R2. The longest found should be deleted, so they are in descending 
@@ -155,6 +163,14 @@
       "/>
     
     <xd:doc>
+      <xd:desc><xd:ref name="reStep1i" as="xs:string">reStep1i</xd:ref>
+        is a simple regex for two suffixes, eaux and aux.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="reStep1i" as="xs:string" select="
+      'aux?$'
+      "/>
+    
+    <xd:doc>
       <xd:desc><xd:ref name="reStep1j" as="xs:string">reStep1j</xd:ref>
         is a regex for two suffixes that are deleted or replaced 
         depending on context.</xd:desc>
@@ -169,7 +185,24 @@
         by a non-vowel.</xd:desc>
     </xd:doc>
     <xsl:variable name="reStep1k" as="xs:string" select="
-      '(' || $nonVowel || ')(issements?)$'
+      '(issements?)$'
+      "/>
+    
+    <xd:doc>
+      <xd:desc><xd:ref name="reStep1l" as="xs:string">reStep1l</xd:ref>
+        is a regex for two suffixes that are replaced if in RV.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="reStep1l" as="xs:string" select="
+      '[ae]mment$'
+      "/>
+    
+    <xd:doc>
+      <xd:desc><xd:ref name="reStep1m" as="xs:string">reStep1m</xd:ref>
+        is a regex for two suffixes that are deleted if preceded
+        by a vowel in RV.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="reStep1m" as="xs:string" select="
+      'ments?$'
       "/>
     
     <xd:doc>
@@ -225,43 +258,18 @@
       <!-- Step 1 is split into two phases because we need to 
            note the effect of the last couple of actions. -->
       
-      <xsl:variable name="step1First" as="xs:string">
-        <xsl:sequence select="ss:step1k(
-          ss:step1j(
-          ss:step1i(
-          ss:step1h(
-          ss:step1g(
-          ss:step1f(
-          ss:step1e(
-          ss:step1d(
-          ss:step1c(
-          ss:step1b(
-          ss:step1a($token, $rvr1r2[6]), 
-          $rvr1r2[6]), 
-          $rvr1r2[6]),
-          $rvr1r2[6]),
-          $rvr1r2[6]),
-          $rvr1r2),
-          $rvr1r2[6]),
-          $rvr1r2[6]),
-          $rvr1r2[5]),
-          $rvr1r2),
-          $rvr1r2[5])"/>
-      </xsl:variable>
-      <xsl:variable name="step1Second" as="xs:string">
-        <xsl:sequence select="ss:step1m(
-          ss:step1l($step1First, $rvr1r2[4]),
-          $rvr1r2[4])"/>
-      </xsl:variable>
-      <xsl:variable as="xs:boolean" name="step1MadeChange" select="$token ne $step1Second"/>
-      <xsl:variable as="xs:boolean" name="foundMent" select="$step1First ne $step1Second"/>
+      <xsl:variable name="step1Result" select="ss:step1($token, $rvr1r2)"/>
+      
+      <xsl:variable as="xs:boolean" name="step1MadeChange" select="$step1Result[2]"/>
+      
+      <xsl:variable as="xs:boolean" name="foundMent" select="$step1Result[3]"/>
       
       <xsl:variable as="xs:boolean" name="doStep2a" select="not($step1MadeChange) or $foundMent"/>
       
       <xsl:variable as="xs:string" name="step2First" select="
-        if ($doStep2a) then ss:step2a($step1Second, $rvr1r2[4]) else $step1Second"/>
+        if ($doStep2a) then ss:step2a($step1Result[1], $rvr1r2[4]) else $step1Result[1]"/>
       
-      <xsl:variable as="xs:boolean" name="step2aMadeChange" select="$step1Second ne $step2First"/>
+      <xsl:variable as="xs:boolean" name="step2aMadeChange" select="$step1Result[1] ne $step2First"/>
       
       <xsl:variable as="xs:boolean" name="doStep2b" select="$doStep2a and not($step2aMadeChange)"/>
       
@@ -297,6 +305,9 @@
       <xsl:variable as="xs:string" name="post1" select="translate($step6, 'IUY', 'iuy')"/>
       <xsl:variable as="xs:string" name="post2" select="translate(replace(replace($post1, 'He', 'ë'), 'Hi', 'ï'), 'H', '')"/>
       
+      <xsl:message>$rvr1r2: <xsl:value-of select="string-join($rvr1r2, ', ')"/></xsl:message>
+      <xsl:message>$step1Result: <xsl:value-of select="string-join($step1Result, ', ')"/></xsl:message>
+      <xsl:message>$foundMent: <xsl:value-of select="$foundMent"/></xsl:message>
       
       <xsl:sequence select="$post2"/>
       
@@ -640,7 +651,7 @@
     <xsl:function name="ss:step1k" as="xs:string">
       <xsl:param name="token" as="xs:string"/>
       <xsl:param name="R1" as="xs:integer"/>
-      <xsl:variable name="rep" select="replace($token, $reStep1k, '$1')"/>
+      <xsl:variable name="rep" select="replace($token, '(' || $nonVowel || ')' || $reStep1k, '$1')"/>
       <xsl:sequence select="if (($rep ne $token) and (string-length($rep) ge $R1)) then $rep else $token"/>
     </xsl:function>
     
@@ -750,55 +761,75 @@
       <xsl:variable name="step4b" as="xs:string" select="if (($step4a ne $rep2) and ((string-length($rep2)-1) ge $rvr1r2[4])) then $rep2 else $rep1"/>
       <xsl:sequence select="if (ends-with($step4b, 'e') and string-length($step4b) gt $rvr1r2[4]) then replace($step4b, 'e$', '') else $step4b"/>
     </xsl:function>
-    
-    <!--
-    <xd:doc>
-      <xd:desc><xd:ref name="reStep4b" as="xs:string">reStep4b</xd:ref>
-        is a regex for deleting ion when preceded by s or t, if in
-        R2 and in RV, where the s or t must be in RV.</xd:desc>
-    </xd:doc>
-    <xsl:variable name="reStep4b" as="xs:string" 
-      select="'([st])ion$'"/>-->
-    
+
     <xd:doc>
       <xd:desc><xd:ref name="ss:step1">ss:step1</xd:ref> combines all
-      the substeps which are part of the step1 process.</xd:desc>
-      <xd:desc>NOTE: THIS IS ONLY A TEST FUNCTION. REMOVE WHEN ALL IS WORKING.</xd:desc>
+        the substeps which are part of the step1 process It has to
+        be a monolithic process, unfortunately.</xd:desc>
       <xd:param name="token">Input token string</xd:param>
-      <xd:result>The treated version of the token.</xd:result>
+      <xd:param name="rvr1r2">The complete sequence of items and offsets
+        calculated for the word.</xd:param>
+      <xd:result>A sequence consisting of the treated version of the token, a boolean
+        for whether it was changed or not, and a boolean for whether one of amment, 
+        emment, ment, or ments was found.</xd:result>
     </xd:doc>
-    <xsl:function name="ss:step1" as="xs:string">
+    <xsl:function name="ss:step1" as="item()+">
       <xsl:param name="token" as="xs:string"/>
-      <xsl:variable name="rvr1r2" as="item()+" select="ss:getRVR1R2($token)"/>
-      <xsl:sequence select="
-                           ss:step1m(
-                           ss:step1l(
-                           ss:step1k(
-                           ss:step1j(
-                           ss:step1i(
-                           ss:step1h(
-                           ss:step1g(
-                           ss:step1f(
-                           ss:step1e(
-                           ss:step1d(
-                           ss:step1c(
-                           ss:step1b(
-                           ss:step1a($token, $rvr1r2[6]), 
-                                     $rvr1r2[6]), 
-                                     $rvr1r2[6]),
-                                     $rvr1r2[6]),
-                                     $rvr1r2[6]),
-                                     $rvr1r2),
-                                     $rvr1r2[6]),
-                                     $rvr1r2[6]),
-                                     $rvr1r2[5]),
-                                     $rvr1r2),
-                                     $rvr1r2[5]),
-                                     $rvr1r2[4]),
-                                     $rvr1r2[4])"/>
+      <xsl:param name="rvr1r2" as="item()+"/>
+      <xsl:variable as="xs:string" name="longestMatch" select="replace($token, $reStep1, '$1')"/>
+      <xsl:variable name="result" as="xs:string">
+        <xsl:choose>
+          <xsl:when test="$token ne $longestMatch">
+            <!-- We have hopefully matched the longest item here. -->
+            <xsl:choose>
+              <xsl:when test="matches($longestMatch, '^' || $reStep1a)">
+                <xsl:sequence select="ss:step1a($token, $rvr1r2[6])"/>
+              </xsl:when>
+              <xsl:when test="matches($longestMatch, '^' || $reStep1b)">
+                <xsl:sequence select="ss:step1b($token, $rvr1r2[6])"/>
+              </xsl:when>
+              <xsl:when test="matches($longestMatch, '^' || $reStep1c)">
+                <xsl:sequence select="ss:step1c($token, $rvr1r2[6])"/>
+              </xsl:when>
+              <xsl:when test="matches($longestMatch, '^' || $reStep1d)">
+                <xsl:sequence select="ss:step1d($token, $rvr1r2[6])"/>
+              </xsl:when>
+              <xsl:when test="matches($longestMatch, '^' || $reStep1e)">
+                <xsl:sequence select="ss:step1e($token, $rvr1r2[6])"/>
+              </xsl:when>
+              <xsl:when test="matches($longestMatch, '^' || $reStep1f)">
+                <xsl:sequence select="ss:step1f($token, $rvr1r2)"/>
+              </xsl:when>
+              <xsl:when test="matches($longestMatch, '^' || $reStep1g)">
+                <xsl:sequence select="ss:step1g($token, $rvr1r2[6])"/>
+              </xsl:when>
+              <xsl:when test="matches($longestMatch, '^' || $reStep1h)">
+                <xsl:sequence select="ss:step1h($token, $rvr1r2[6])"/>
+              </xsl:when>
+              <xsl:when test="matches($longestMatch, '^' || $reStep1i)">
+                <xsl:sequence select="ss:step1i($token, $rvr1r2[5])"/>
+              </xsl:when>
+              <xsl:when test="matches($longestMatch, '^' || $reStep1j)">
+                <xsl:sequence select="ss:step1j($token, $rvr1r2)"/>
+              </xsl:when>
+              <xsl:when test="matches($longestMatch, '^' || $reStep1k)">
+                <xsl:sequence select="ss:step1k($token, $rvr1r2[5])"/>
+              </xsl:when>
+              <xsl:when test="matches($longestMatch, '^' || $reStep1l)">
+                <xsl:sequence select="ss:step1l($token, $rvr1r2[4])"/>
+              </xsl:when>
+              <xsl:when test="matches($longestMatch, '^' || $reStep1m)">
+                <xsl:sequence select="ss:step1m($token, $rvr1r2[4])"/>
+              </xsl:when>
+            </xsl:choose>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:sequence select="$token"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:sequence select="($result, ($token eq $result), (matches($longestMatch, '^([ae]mment)|(ments?)$')))"/>
     </xsl:function>
-    
-    
     
     
     <!--**************************************************************
