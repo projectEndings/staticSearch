@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><html xmlns="http://www.w3.org/1999/xhtml">
    <head>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-      <title>Test Report for /home/mholmes/WorkData/endings/staticSearch/stemmers/fr/ssStemmer.xsl (passed: 45 / pending: 0 / failed: 1 / total: 46)</title>
+      <title>Test Report for /home/mholmes/WorkData/endings/staticSearch/stemmers/fr/ssStemmer.xsl (passed: 46 / pending: 0 / failed: 0 / total: 46)</title>
       <style type="text/css">/****************************************************************************/
 /*  File:       test-report.css                                             */
 /*  Author:     Jeni Tennison                                               */
@@ -511,7 +511,7 @@ span.scenario-totals {float: right; text-align: right}
       <h1>Test Report</h1>
       <p>Stylesheet: <a href="file:/home/mholmes/WorkData/endings/staticSearch/stemmers/fr/ssStemmer.xsl">/home/mholmes/WorkData/endings/staticSearch/stemmers/fr/ssStemmer.xsl</a></p>
       <p>XSpec: <a href="file:/home/mholmes/WorkData/endings/staticSearch/stemmers/fr/ssStemmer.xspec">/home/mholmes/WorkData/endings/staticSearch/stemmers/fr/ssStemmer.xspec</a></p>
-      <p>Tested: 22 January 2021 at 13:55</p>
+      <p>Tested: 22 January 2021 at 14:49</p>
       <h2>Contents</h2>
       <table class="xspec">
          <colgroup>
@@ -524,9 +524,9 @@ span.scenario-totals {float: right; text-align: right}
          <thead>
             <tr>
                <th></th>
-               <th class="totals">passed: 45</th>
+               <th class="totals">passed: 46</th>
                <th class="totals">pending: 0</th>
-               <th class="totals">failed: 1</th>
+               <th class="totals">failed: 0</th>
                <th class="totals">total: 46</th>
             </tr>
          </thead>
@@ -636,11 +636,11 @@ span.scenario-totals {float: right; text-align: right}
                <th class="totals">0</th>
                <th class="totals">2</th>
             </tr>
-            <tr class="failed">
+            <tr class="successful">
                <th><a href="#top_scenario16">Test function ss:stem, the core function</a></th>
-               <th class="totals">0</th>
-               <th class="totals">0</th>
                <th class="totals">1</th>
+               <th class="totals">0</th>
+               <th class="totals">0</th>
                <th class="totals">1</th>
             </tr>
          </tbody>
@@ -1231,58 +1231,23 @@ span.scenario-totals {float: right; text-align: right}
          </table>
       </div>
       <div id="top_scenario16">
-         <h2 class="failed">Test function ss:stem, the core function<span class="scenario-totals">passed: 0 / pending: 0 / failed: 1 / total: 1</span></h2>
+         <h2 class="successful">Test function ss:stem, the core function<span class="scenario-totals">passed: 1 / pending: 0 / failed: 0 / total: 1</span></h2>
          <table class="xspec" id="table_scenario16">
             <colgroup>
                <col style="width:75%" />
                <col style="width:25%" />
             </colgroup>
             <tbody>
-               <tr class="failed">
+               <tr class="successful">
                   <th>Test function ss:stem, the core function</th>
-                  <th>passed: 0 / pending: 0 / failed: 1 / total: 1</th>
+                  <th>passed: 1 / pending: 0 / failed: 0 / total: 1</th>
                </tr>
-               <tr class="failed">
-                  <td><a href="#scenario16-expect1">Result from running built-in tests.</a></td>
-                  <td>Failure</td>
+               <tr class="successful">
+                  <td>Result from running built-in tests.</td>
+                  <td>Success</td>
                </tr>
             </tbody>
          </table>
-         <div id="scenario16">
-            <h3>Test function ss:stem, the core function</h3>
-            <div id="scenario16-expect1" class="xTestReport">
-               <h4 class="xTestReportTitle">Result from running built-in tests.</h4>
-               <div class="xTestReportHint"><a href="https://github.com/xspec/xspec/wiki/Understanding-Test-Results" target="_blank" title="What does this report mean?">❔</a></div>
-               <table class="xspecResult">
-                  <thead>
-                     <tr>
-                        <th>Result</th>
-                        <th>Expected Result</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <tr>
-                        <td>
-                           <p>XPath <code class="diff">/*</code> from:</p>
-                           <pre>&lt;<span class="diff">pseudo-atomic-value</span> xmlns:ss="http://hcmc.uvic.ca/ns/ssStemmer"&gt;<span class="diff">xs:boolean('false')</span>&lt;/pseudo-atomic-value&gt;
-&lt;<span class="diff">pseudo-document-node</span> xmlns:ss="http://hcmc.uvic.ca/ns/ssStemmer"&gt;<span class="diff">
- 
-              Failed test with input: risquiez
- 
-              at position 17492
- 
-              Result should be: risqu.
- 
-              Result was risqui</span>&lt;/pseudo-document-node&gt;</pre>
-                        </td>
-                        <td>
-                           <pre>xs:boolean('true'), ''</pre>
-                        </td>
-                     </tr>
-                  </tbody>
-               </table>
-            </div>
-         </div>
       </div>
    </body>
 </html>
