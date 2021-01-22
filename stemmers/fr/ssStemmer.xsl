@@ -868,7 +868,7 @@
         </xsl:choose>
       </xsl:variable>
       <!--<xsl:message><xsl:sequence select="'$token: ' || $token || ', $result: ' || $result"/></xsl:message>-->
-      <xsl:sequence select="($result, ($token ne $result), (matches($longestMatch, '^([ae]mment)|(ments?)$')))"/>
+      <xsl:sequence select="($result, ($token ne $result), (matches($longestMatch, '^(([ae]mment)|(ments?))$')))"/>
     </xsl:function>
     
     
