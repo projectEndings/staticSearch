@@ -95,7 +95,7 @@
       order of size in the form of a regular expression.</xd:desc>
     </xd:doc>
     <xsl:variable name="reStep1a" as="xs:string" select="
-      '(ances?)|(iqUes?)|(ismes?)|(ables?)|(istes?)|(eux)$'
+      '((ances?)|(iqUes?)|(ismes?)|(ables?)|(istes?)|(eux))$'
       "/>
     
     <xd:doc>
@@ -363,6 +363,9 @@
       <xsl:param name="token" as="xs:string"/>
       <xsl:param name="R2" as="xs:integer"/>
       <xsl:variable as="xs:string" name="rep" select="replace($token, $reStep1a, '')"/>
+      
+      <xsl:message select="'step1a $rep: ' || $rep"/>
+      
       <xsl:sequence select=" if ($rep ne $token and string-length($rep) ge $R2) 
                              then $rep else $token"/>
     </xsl:function>
@@ -694,8 +697,11 @@
         '(' || $neitherVowelNorH ||  ')((issaIent)|(issantes)|(iraIent)|(issante)|(issants)|(issions)|(irions)|(issais)|(issait)|(issant)|(issent)|(issiez)|(issons)|(irais)|(irait)|(irent)|(iriez)|(irons)|(iront)|(isses)|(issez)|(îmes)|(îtes)|(irai)|(iras)|(irez)|(isse)|(ies)|(ira)|(ît)|(ie)|(ir)|(is)|(it)|(i))$'
         "/>
       
-      <xsl:variable name="rep" select="replace($currRV, $reStep2a, '$2')"/>
-      <xsl:sequence select="if ($rep ne $currRV) then replace($token, $rep || '$', $rep) else $token"/>
+      <xsl:variable name="rep" select="replace($currRV, $reStep2a, '$1')"/>
+      <xsl:message select="'Step2a $rep: ' || $rep"/>
+      
+      <xsl:sequence select="if ($rep ne $currRV) then replace($token, $currRV || '$', $rep) else $token"/>
+      
     </xsl:function>
     
     <xd:doc>
@@ -729,10 +735,8 @@
       
       <xsl:variable as="xs:string" name="longestMatch" select="replace($currRV, $reStep2b, '$1')"/>
       
-      <xsl:message select="'$token: ' || $token || ' currRV: ' || $currRV || ' longestMatch: ' || $longestMatch"/>
+      <xsl:message select="'Step 2b: $token: ' || $token || ' currRV: ' || $currRV || ' longestMatch: ' || $longestMatch"/>
       
-      <xsl:choose>
-        <xsl:when test="$currRV ne $longestMatch">
           <xsl:variable name="result" as="xs:string">
             <xsl:choose>
               <xsl:when test="$longestMatch eq 'ions'">
@@ -762,11 +766,6 @@
             </xsl:choose>
           </xsl:variable>
           <xsl:sequence select="$result"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:sequence select="$token"/>
-        </xsl:otherwise>
-      </xsl:choose>
     </xsl:function>
     
     <xd:doc>
