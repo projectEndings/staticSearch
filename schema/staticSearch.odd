@@ -123,6 +123,29 @@
         </list>
       </div>
       
+      <div xml:id="searchPageCaptions">
+        <head>Search page captions</head>
+        <list>
+          <item>Level: Intermediate</item>
+          <item>Last Updated: <date when="2021-01-24">24 January 2021</date></item>
+        </list>
+        <p>Various captions (<q>Searching...</q>, <q>Documents found</q>, <q>Score</q> 
+          and so on) are shown during operations in the search page. These captions are
+          currently configured in the JavaScript file <ident>ssSearch.js</ident> in the form of
+          a JavaScript array which has both English and French captions. The caption 
+          language is selected based on the <att>lang</att> attribute on the root 
+          <gi>html</gi> element of the search page; if there are no captions configured 
+          for the language in the <att>lang</att> attribute, the default English captions
+          are used.
+        </p>
+        <p>If your search page is in a language other than English and French, please 
+        contribute to the project by providing captions in that language so that we can
+        increase the number of languages supported by the project. When the number of 
+        available language caption sets becomes significant, we will abstract them from
+        the core JavaScript library and store them in a separate location, inserting them
+        into the page at build time instead.</p>
+      </div>
+      
       <div xml:id="howDoIGetIt">
         <head>How do I get it?</head>
         <list>

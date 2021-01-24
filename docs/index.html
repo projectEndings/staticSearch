@@ -3,143 +3,7 @@
    
    <head>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-      <style id="ssCss"><!--
-        form#ssForm{
-            display: flex;
-            flex-direction: column;
-        }
-        span.ssQueryAndButton{
-            display: flex;
-            flex-direction: row;
-            margin: 0.25em auto;
-            width: 100%;
-        }
-        input#ssQuery{
-            flex: 1;
-        }
-        div.ssDescFilters, div.ssDateFilters, div.ssNumFilters, div.ssBoolFilters{
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-        }
-        div.ssDescFilters fieldset, div.ssDateFilters fieldset, div.ssNumFilters fieldset, div.ssBoolFilters fieldset{
-            margin: 0.25em auto;
-            padding: 0.25em;
-            /* Chromium bug means flex doesn't work in fieldsets. Curses. :-( */
-            flex-grow: 1;
-            display: flex;
-            flex-wrap: wrap;
-        }
-        ul.ssDescCheckboxList{
-            list-style-type: none;
-            max-height: 8em;
-            overflow-y: auto;
-            min-width: 90%;
-        }
-        ul.ssDescCheckboxList li{
-            display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
-            align-items: flex-start;
-        }
-        div.ssDateFilters fieldset.ssFieldset span, div.ssNumFilters fieldset.ssFieldset span, div.ssBoolFilters fieldset.ssFieldset span{
-            padding: 0.5em 1em;
-        }
-        fieldset.ssFieldset > span {
-            background-color: #ddd;
-            border: solid 1px #aaa;
-            margin: 0.2em;
-        }
-        div.ssNumFilters input[type="number"], div.ssDateFilters input[type="text"]{
-            padding: 0.5em;
-        }
-        div#ssSearching{
-            background-color: #000000;
-            color: #ffffff;
-            font-size: 1.5rem;
-            padding: 1rem;
-            border-radius: 0.25rem 0.25rem;
-            position: fixed;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            display: none;
-        }
-        div#ssResults{
-          min-height: 50vh;
-        }
-        div#ssResults>ul>li{
-            display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
-            margin-top: 0.75em;
-        }
-        div#ssResults>ul>li>a{
-            flex-grow: 0;
-        }
-        div#ssResults>ul>li>div{
-          flex-grow: 1;
-        }
-        div#ssResults>ul>li>a>img{
-            max-width: 10em;
-            margin-right: 1em;
-            min-width: 3em;
-            min-height: 3em;
-        }
-        div#ssResults>ul>li{
-        padding: 0.5em 0.25em;
-        }
-        
-        /* Alternate bg colour. */
-        div#ssResults>ul>li:nth-child(2n) {
-            background-color: rgb(240, 240, 240);
-            transition: background-color .5s;
-            border-top: 1px solid rgb(230, 230, 230);
-            border-bottom: 1px solid rgb(230, 230, 230);
-        }
-        /* Larger document titles */
-        div#ssResults>ul>li>div>a{
-            font-size: 1.2em;
-        }
-        
-        /* No list markers for kwics */
-        div#ssResults>ul>li>div>ul.kwic{
-            list-style-type: none;
-        }
-        /* kwics laid out with flex */
-        div#ssResults>ul>li>div>ul.kwic>li{
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 0.5em;
-            border-top: solid 1pt lightgray;
-            padding: 0.2em;
-        }
-        
-        div#ssResults>ul>li>div>ul.kwic>li>span{
-            display: block;
-        }
-        
-        /* Larger kwic link. */
-        div#ssResults>ul>li>div>ul.kwic>li>a{
-            font-size: 2.0em;
-            line-height: 0.50;
-        }
-        
-        a.fidLink{
-            text-decoration: none;
-        }
-        div#ssPoweredBy{
-            font-size: 0.75rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        div#ssPoweredBy>* {
-            margin: 0;
-        }
-    --></style>
+      <link rel="stylesheet" href="search/ssSearch.css" id="ssCss"/>
       
       
       <!--THIS FILE IS GENERATED FROM AN XML MASTER. DO NOT EDIT (5)-->
@@ -282,107 +146,110 @@ function showByMod() {
                <li class="toc"><span class="headingNumber"> 4 </span><a href="searchFacetFeatures.html" class="toc toc_0" title="Search facet features">Search facet features</a></li>
                
                
-               <li class="toc"><span class="headingNumber"> 5 </span><a href="howDoIGetIt.html" class="toc toc_0" title="How do I get it">How do I get it?</a></li>
+               <li class="toc"><span class="headingNumber"> 5 </span><a href="searchPageCaptions.html" class="toc toc_0" title="Search page captions">Search page captions</a></li>
                
                
-               <li class="toc"><span class="headingNumber"> 6 </span><a href="howDoIUseIt.html" class="toc toc_0" title="How do I use it">How do I use it?</a><ul class="toc">
+               <li class="toc"><span class="headingNumber"> 6 </span><a href="howDoIGetIt.html" class="toc toc_0" title="How do I get it">How do I get it?</a></li>
+               
+               
+               <li class="toc"><span class="headingNumber"> 7 </span><a href="howDoIUseIt.html" class="toc toc_0" title="How do I use it">How do I use it?</a><ul class="toc">
                      
                      
-                     <li class="toc"><span class="headingNumber"> 6.1 </span><a href="howDoIUseIt.html#index.xml-body.1_div.6_div.1" class="toc toc_1">Configuring your site: search filters</a><ul class="toc">
+                     <li class="toc"><span class="headingNumber"> 7.1 </span><a href="howDoIUseIt.html#index.xml-body.1_div.7_div.1" class="toc toc_1">Configuring your site: search filters</a><ul class="toc">
                            
                            
-                           <li class="toc"><span class="headingNumber">6.1.1 </span><a href="howDoIUseIt.html#descFilters" class="toc toc_2" title="Description filters">Description filters</a><ul class="toc">
+                           <li class="toc"><span class="headingNumber">7.1.1 </span><a href="howDoIUseIt.html#descFilters" class="toc toc_2" title="Description filters">Description filters</a><ul class="toc">
                                  
                                  
-                                 <li class="toc"><span class="headingNumber">6.1.1.1 </span><a href="howDoIUseIt.html#descFilterSorting" class="toc toc_3" title="Sort order for description filters">Sort order for description filters</a></li>
+                                 <li class="toc"><span class="headingNumber">7.1.1.1 </span><a href="howDoIUseIt.html#descFilterSorting" class="toc toc_3" title="Sort order for description filters">Sort order for description filters</a></li>
                                  </ul>
                               </li>
                            
                            
-                           <li class="toc"><span class="headingNumber">6.1.2 </span><a href="howDoIUseIt.html#dateFilters" class="toc toc_2" title="Date filters">Date filters</a></li>
+                           <li class="toc"><span class="headingNumber">7.1.2 </span><a href="howDoIUseIt.html#dateFilters" class="toc toc_2" title="Date filters">Date filters</a></li>
                            
                            
-                           <li class="toc"><span class="headingNumber">6.1.3 </span><a href="howDoIUseIt.html#numFilters" class="toc toc_2" title="Number filters">Number filters</a></li>
+                           <li class="toc"><span class="headingNumber">7.1.3 </span><a href="howDoIUseIt.html#numFilters" class="toc toc_2" title="Number filters">Number filters</a></li>
                            
                            
-                           <li class="toc"><span class="headingNumber">6.1.4 </span><a href="howDoIUseIt.html#boolFilters" class="toc toc_2" title="Boolean filters">Boolean filters</a></li>
+                           <li class="toc"><span class="headingNumber">7.1.4 </span><a href="howDoIUseIt.html#boolFilters" class="toc toc_2" title="Boolean filters">Boolean filters</a></li>
                            </ul>
                         </li>
                      
                      
-                     <li class="toc"><span class="headingNumber"> 6.2 </span><a href="howDoIUseIt.html#configuringDocTitles" class="toc toc_1" title="Configuring your site document titles">Configuring your site: document titles</a></li>
+                     <li class="toc"><span class="headingNumber"> 7.2 </span><a href="howDoIUseIt.html#configuringDocTitles" class="toc toc_1" title="Configuring your site document titles">Configuring your site: document titles</a></li>
                      
                      
-                     <li class="toc"><span class="headingNumber"> 6.3 </span><a href="howDoIUseIt.html#configuringDocSortKey" class="toc toc_1" title="Configuring your site document sort keys">Configuring your site: document sort keys</a></li>
+                     <li class="toc"><span class="headingNumber"> 7.3 </span><a href="howDoIUseIt.html#configuringDocSortKey" class="toc toc_1" title="Configuring your site document sort keys">Configuring your site: document sort keys</a></li>
                      
                      
-                     <li class="toc"><span class="headingNumber"> 6.4 </span><a href="howDoIUseIt.html#configuringDocThumbnails" class="toc toc_1" title="Configuring your site document thumbnails">Configuring your site: document thumbnails</a></li>
+                     <li class="toc"><span class="headingNumber"> 7.4 </span><a href="howDoIUseIt.html#configuringDocThumbnails" class="toc toc_1" title="Configuring your site document thumbnails">Configuring your site: document thumbnails</a></li>
                      
                      
-                     <li class="toc"><span class="headingNumber"> 6.5 </span><a href="howDoIUseIt.html#creatingConfigFile" class="toc toc_1" title="Creating a configuration file">Creating a configuration file</a><ul class="toc">
+                     <li class="toc"><span class="headingNumber"> 7.5 </span><a href="howDoIUseIt.html#creatingConfigFile" class="toc toc_1" title="Creating a configuration file">Creating a configuration file</a><ul class="toc">
                            
                            
-                           <li class="toc"><span class="headingNumber">6.5.1 </span><a href="howDoIUseIt.html#specifyingParameters" class="toc toc_2" title="Specifying parameters">Specifying parameters</a><ul class="toc">
+                           <li class="toc"><span class="headingNumber">7.5.1 </span><a href="howDoIUseIt.html#specifyingParameters" class="toc toc_2" title="Specifying parameters">Specifying parameters</a><ul class="toc">
                                  
                                  
-                                 <li class="toc"><span class="headingNumber">6.5.1.1 </span><a href="howDoIUseIt.html#paramsRequired" class="toc toc_3" title="Required parameters">Required parameters</a></li>
+                                 <li class="toc"><span class="headingNumber">7.5.1.1 </span><a href="howDoIUseIt.html#paramsRequired" class="toc toc_3" title="Required parameters">Required parameters</a></li>
                                  
                                  
-                                 <li class="toc"><span class="headingNumber">6.5.1.2 </span><a href="howDoIUseIt.html#paramsOptional" class="toc toc_3" title="Optional parameters">Optional parameters</a></li>
+                                 <li class="toc"><span class="headingNumber">7.5.1.2 </span><a href="howDoIUseIt.html#paramsOptional" class="toc toc_3" title="Optional parameters">Optional parameters</a></li>
                                  </ul>
                               </li>
                            
                            
-                           <li class="toc"><span class="headingNumber">6.5.2 </span><a href="howDoIUseIt.html#specifyingRules" class="toc toc_2" title="Specifying rules (optional)">Specifying rules (optional)</a></li>
+                           <li class="toc"><span class="headingNumber">7.5.2 </span><a href="howDoIUseIt.html#specifyingRules" class="toc toc_2" title="Specifying rules (optional)">Specifying rules (optional)</a></li>
                            
                            
-                           <li class="toc"><span class="headingNumber">6.5.3 </span><a href="howDoIUseIt.html#specifyingContexts" class="toc toc_2" title="Specifying contexts (optional)">Specifying contexts (optional)</a></li>
+                           <li class="toc"><span class="headingNumber">7.5.3 </span><a href="howDoIUseIt.html#specifyingContexts" class="toc toc_2" title="Specifying contexts (optional)">Specifying contexts (optional)</a></li>
                            
                            
-                           <li class="toc"><span class="headingNumber">6.5.4 </span><a href="howDoIUseIt.html#specifyingExclusions" class="toc toc_2" title="Specifying exclusions (optional)">Specifying exclusions (optional)</a></li>
+                           <li class="toc"><span class="headingNumber">7.5.4 </span><a href="howDoIUseIt.html#specifyingExclusions" class="toc toc_2" title="Specifying exclusions (optional)">Specifying exclusions (optional)</a></li>
                            </ul>
                         </li>
                      
                      
-                     <li class="toc"><span class="headingNumber"> 6.6 </span><a href="howDoIUseIt.html#searchPage" class="toc toc_1" title="Creating a search page">Creating a search page</a></li>
+                     <li class="toc"><span class="headingNumber"> 7.6 </span><a href="howDoIUseIt.html#searchPage" class="toc toc_1" title="Creating a search page">Creating a search page</a></li>
                      
                      
-                     <li class="toc"><span class="headingNumber"> 6.7 </span><a href="howDoIUseIt.html#searchBuildProcess" class="toc toc_1" title="Running the search build process">Running the search build process</a></li>
+                     <li class="toc"><span class="headingNumber"> 7.7 </span><a href="howDoIUseIt.html#searchBuildProcess" class="toc toc_1" title="Running the search build process">Running the search build process</a></li>
                      
                      
-                     <li class="toc"><span class="headingNumber"> 6.8 </span><a href="howDoIUseIt.html#advancedFeatures" class="toc toc_1" title="Advanced features">Advanced features</a><ul class="toc">
+                     <li class="toc"><span class="headingNumber"> 7.8 </span><a href="howDoIUseIt.html#advancedFeatures" class="toc toc_1" title="Advanced features">Advanced features</a><ul class="toc">
                            
                            
-                           <li class="toc"><span class="headingNumber">6.8.1 </span><a href="howDoIUseIt.html#customAttributes" class="toc toc_2" title="Custom attributes">Custom attributes</a></li>
+                           <li class="toc"><span class="headingNumber">7.8.1 </span><a href="howDoIUseIt.html#customAttributes" class="toc toc_2" title="Custom attributes">Custom attributes</a></li>
                            </ul>
                         </li>
                      </ul>
                   </li>
                
                
-               <li class="toc"><span class="headingNumber"> 7 </span><a href="howDoesItWork.html" class="toc toc_0" title="How does it work">How does it work?</a><ul class="toc">
+               <li class="toc"><span class="headingNumber"> 8 </span><a href="howDoesItWork.html" class="toc toc_0" title="How does it work">How does it work?</a><ul class="toc">
                      
                      
-                     <li class="toc"><span class="headingNumber"> 7.1 </span><a href="howDoesItWork.html#buildingTheIndex" class="toc toc_1" title="Building the index">Building the index</a></li>
+                     <li class="toc"><span class="headingNumber"> 8.1 </span><a href="howDoesItWork.html#buildingTheIndex" class="toc toc_1" title="Building the index">Building the index</a></li>
                      
                      
-                     <li class="toc"><span class="headingNumber"> 7.2 </span><a href="howDoesItWork.html#theSearchPage" class="toc toc_1" title="The search page">The search page</a></li>
+                     <li class="toc"><span class="headingNumber"> 8.2 </span><a href="howDoesItWork.html#theSearchPage" class="toc toc_1" title="The search page">The search page</a></li>
                      </ul>
                   </li>
                
                
-               <li class="toc"><span class="headingNumber"> 8 </span><a href="howDoI.html" class="toc toc_0" title="How do I...">How do I...</a></li>
+               <li class="toc"><span class="headingNumber"> 9 </span><a href="howDoI.html" class="toc toc_0" title="How do I...">How do I...</a></li>
                
                
-               <li class="toc"><span class="headingNumber"> 9 </span><a href="newSinceVersion1.html" class="toc toc_0" title="Whats new since version 1.0">What's new since version 1.0?</a><ul class="toc">
+               <li class="toc"><span class="headingNumber">10 </span><a href="newSinceVersion1.html" class="toc toc_0" title="Whats new since version 1.0">What's new since version 1.0?</a><ul class="toc">
                      
                      
-                     <li class="toc"><span class="headingNumber"> 9.1 </span><a href="newSinceVersion1.html#index.xml-body.1_div.9_div.1" class="toc toc_1">Changes in version 1.1</a></li>
+                     <li class="toc"><span class="headingNumber">10.1 </span><a href="newSinceVersion1.html#index.xml-body.1_div.10_div.1" class="toc toc_1">Changes in version 1.1</a></li>
                      </ul>
                   </li>
                
                
-               <li class="toc"><span class="headingNumber">10 </span><a href="projectsUsingSS.html" class="toc toc_0" title="Projects using staticSearch">Projects using staticSearch</a></li>
+               <li class="toc"><span class="headingNumber">11 </span><a href="projectsUsingSS.html" class="toc toc_0" title="Projects using staticSearch">Projects using staticSearch</a></li>
                </ul>
             
             
@@ -509,19 +376,19 @@ function showByMod() {
          <div id="staticSearch"><script src="search/ssStemmer.js"></script><script src="search/ssSearch.js"></script><script>
                 var Sch;
                 window.addEventListener('load', function(){Sch = new StaticSearch();});
-            </script><form accept-charset="UTF-8" id="ssForm" data-allowphrasal="yes" data-allowwildcards="yes" data-scrolltotextfragment="no" data-maxkwicstoshow="10" onsubmit="return false;" data-versionstring="_35d3fd9" data-ssfolder="search" data-kwictruncatestring="..."><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><span class="clearButton"><button id="ssClear">Clear</button></span><div class="ssDescFilters">
+            </script><form accept-charset="UTF-8" id="ssForm" data-allowphrasal="yes" data-allowwildcards="yes" data-scrolltotextfragment="no" data-maxkwicstoshow="10" onsubmit="return false;" data-versionstring="_4acad91" data-ssfolder="search" data-kwictruncatestring="..."><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><span class="clearButton"><button id="ssClear">Clear</button></span><div class="ssDescFilters">
                   <fieldset class="ssFieldset" title="Level" id="ssDesc1">
                      <legend>Level</legend>
                      <ul class="ssDescCheckboxList">
-                        <li><input type="checkbox" title="Level" value="Advanced" id="ssDesc1_1" class="staticSearch.desc"/><label for="ssDesc1_1">Advanced</label></li>
-                        <li><input type="checkbox" title="Level" value="Basic" id="ssDesc1_3" class="staticSearch.desc"/><label for="ssDesc1_3">Basic</label></li>
+                        <li><input type="checkbox" title="Level" value="Advanced" id="ssDesc1_3" class="staticSearch.desc"/><label for="ssDesc1_3">Advanced</label></li>
+                        <li><input type="checkbox" title="Level" value="Basic" id="ssDesc1_1" class="staticSearch.desc"/><label for="ssDesc1_1">Basic</label></li>
                         <li><input type="checkbox" title="Level" value="Intermediate" id="ssDesc1_2" class="staticSearch.desc"/><label for="ssDesc1_2">Intermediate</label></li>
                      </ul>
                   </fieldset>
                </div>
                <div class="ssDateFilters">
                   <fieldset class="ssFieldset" title="Date Updated" id="ssDate1">
-                     <legend>Date Updated</legend><span><label for="ssDate1_from">From: </label><input type="text" placeholder="2020-01-13" title="Date Updated" id="ssDate1_from" onchange="this.reportValidity()" class="staticSearch.date" maxlength="10" pattern="^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$"/></span><span><label for="ssDate1_to">To: </label><input type="text" placeholder="2021-01-06" title="Date Updated" id="ssDate1_to" onchange="this.reportValidity()" class="staticSearch.date" maxlength="10" pattern="^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$"/></span></fieldset>
+                     <legend>Date Updated</legend><span><label for="ssDate1_from">From: </label><input type="text" placeholder="2020-01-13" title="Date Updated" id="ssDate1_from" onchange="this.reportValidity()" class="staticSearch.date" maxlength="10" pattern="^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$"/></span><span><label for="ssDate1_to">To: </label><input type="text" placeholder="2021-01-24" title="Date Updated" id="ssDate1_to" onchange="this.reportValidity()" class="staticSearch.date" maxlength="10" pattern="^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$"/></span></fieldset>
                </div><span class="postFilterSearchBtn"><button id="ssDoSearch2">Search</button></span></form>
             <div id="ssSearching">Searching...</div>
             <div id="ssResults"></div>
@@ -593,7 +460,7 @@ function showByMod() {
             <!--
 	  Generated from index.xml using XSLT stylesheets version 7.50.1
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2021-01-19T23:15:51Z.
+	       on 2021-01-24T23:56:16Z.
 	       SAXON HE 10.0.
 		 --></address>
          </div>
