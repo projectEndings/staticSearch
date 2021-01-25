@@ -35,12 +35,23 @@
 
 class SSStemmer {
   constructor() {
+    
+    /* Some regexes are defined at the object
+       property level because they're used in 
+       multiple contexts. */
+
     // A character class of vowels
     this.vowel = '[aeiouyâàëéêèïîôûù]';
     this.reVowel = new RegExp(this.vowel);
+
     //A character class of non-vowels
     this.nonVowel = '[^aeiouyâàëéêèïîôûù]';
     this.reNonVowel = new RegExp(this.nonVowel);
+
+    //A character class of neither vowel nor H.
+    this.neitherVowelNorH = '[^aeiouyâàëéêèïîôûùH]';
+    this.reNeitherVowelNorH = new RegExp(this.neitherVowelNorH);
+
     //A regex which returns RV, defined as 
     //"If the word begins with two vowels, 
     //the region after the third letter, otherwise 
@@ -57,10 +68,16 @@ class SSStemmer {
     // there is no such non-vowel".
     //It also returns R2 when applied to R1.
     this.reR1R2 = new RegExp('^.*?' + this.vowel + this.nonVowel + '(.*)$');
-
+    
+    /* reStep1 is the single 
+      massive regex matching all suffixes handled in step 1. Initial is 
+      non-greedy to ensure longest suffix match succeeds, since we need
+      to act on the longest possible match.*/
+    this.reStep1 = /.+?((issements)|(issement)|(atrices)|(atrice)|(ateurs)|(ations)|(logies)|(usions)|(utions)|(ements)|(amment)|(emment)|(ments)|(ances)|(iqUes)|(ismes)|(ables)|(istes)|(ateur)|(ation)|(logie)|(usion)|(ution)|(ences)|(ement)|(euses)|(ance)|(iqUe)|(isme)|(able)|(iste)|(ence)|(ités)|(ives)|(eaux)|(euse)|(ment)|(eux)|(ité)|(ive)|(ifs)|(aux)|(if))$/;
+    
     //reStep1a is a regular expression for suffixes to be deleted if they
     //are in R2.
-    this.reStep1a = /(ances?)|(iqUes?)|(ismes?)|(ables?)|(istes?)|(eux)$/;
+    this.reStep1a = /((ances?)|(iqUes?)|(ismes?)|(ables?)|(istes?)|(eux))$/;
     //reStep1b is a regex for suffixes to be deleted if in R2, or replaced
     //with iqU if they are preceded by ic and not in R2.
     this.reStep1b = /((atrices?)|(ateurs?)|(ations?))$/;
@@ -76,14 +93,25 @@ class SSStemmer {
     this.reStep1g = /ités?$/;
     //reStep1h: suffixes to be deleted if in R2, and preceding bits handled. 
     this.reStep1h = /i((f)|(ve))s?$/;
-    //Step 1i is too simple to need a regex.
+    //reStep1i handles two suffixes ending in x.
+    this.reStep1i = /((eaux)|(aux))?$/;
     //reStep1j: two suffixes to be deleted or replaced depending on context.
     this.reStep1j = /euses?$/;
     //reStep1k: two suffixes to be deleted if in R1 and preceded by a non-vowel.
     this.reStep1k = new RegExp('(' + this.nonVowel + ')(issements?)$');
     //reStep1m: ments? to be removed if preceded by a vowel in RV.
     this.reStep1m = new RegExp('(' + this.vowel + ')(ments?)$');
-    
+    //reStep2a: long regex for various suffixes beginning with i.
+    this.reStep2a = new RegExp('(' + this.neitherVowelNorH + ')((issaIent)|(issantes)|(iraIent)|(issante)|(issants)|(issions)|(irions)|(issais)|(issait)|(issant)|(issent)|(issiez)|(issons)|(irais)|(irait)|(irent)|(iriez)|(irons)|(iront)|(isses)|(issez)|(îmes)|(îtes)|(irai)|(iras)|(irez)|(isse)|(ies)|(ira)|(ît)|(ie)|(ir)|(is)|(it)|(i))$');
+    //reStep2b matches the complete set of suffixes for step 2b, finding the longest.
+    this.reStep2b = /.*?((eraIent)|(erions)|(assent)|(assiez)|(èrent)|(erais)|(erait)|(eriez)|(erons)|(eront)|(aIent)|(antes)|(asses)|(ions)|(erai)|(eras)|(erez)|(âmes)|(âtes)|(ante)|(ants)|(asse)|(ées)|(era)|(iez)|(ais)|(ait)|(ant)|(ée)|(és)|(er)|(ez)|(ât)|(ai)|(as)|(é)|(a))$/;
+    //reStep2b1 matches suffixes to be deleted if in RV; note anchors for testing against longest match.
+    this.reStep2b1 = /^((eraIent)|(erions)|(èrent)|(erais)|(erait)|(eriez)|(erons)|(eront)|(eras)|(erez)|(erai)|(iez)|(era)|(ées)|(ez)|(er)|(ée)|(és)|(é))$/;
+    //reStep2b2 matches suffixes to be deleted in RV, and if a preceding e is also in RV, it should be deleted.
+    //Note anchors for testing against longest match.
+    this.reStep2b2 = /^((assions)|(assiez)|(assent)|(asses)|(antes)|(aIent)|(asse)|(ante)|(ants)|(âtes)|(âmes)|(ais)|(ait)|(ant)|(ât)|(ai)|(as)|(a))$/;
+    //reStep4a is for deletion of s in certain circumstances.
+    this.reStep4a = /((Hi)|[^aiouès])s$/;
 
   }
   /**
@@ -95,7 +123,8 @@ class SSStemmer {
   stem(token) {
     if (token.length < 3) {
         return token;
-    } else {
+    } 
+    else {
 
     }
   }
@@ -107,13 +136,13 @@ class SSStemmer {
    * @return {String}       the result of the replacement operations
    */
   preflight(token) {
-      return token.replace(new RegExp('(' + this.vowel + ')i(' + this.vowel + ')'), '$1I$2')
-          .replace(new RegExp('(' + this.vowel + ')u(' + this.vowel + ')'), '$1U$2')
+      return token.replace(new RegExp('y(' + this.vowel + ')'), 'Y$1')
           .replace(new RegExp('(' + this.vowel + ')y'), '$1Y')
-          .replace(new RegExp('y(' + this.vowel + ')'), 'Y$1')
+          .replace(new RegExp('(' + this.vowel + ')u(' + this.vowel + ')'), '$1U$2')
           .replace('qu', 'qU')
-          .replace('ï', 'Hi')
-          .replace('ë', 'He');
+          .replace(new RegExp('(' + this.vowel + ')i(' + this.vowel + ')'), '$1I$2')
+          .replace('ë', 'He')
+          .replace('ï', 'Hi');
   }
 
   /**
@@ -339,7 +368,7 @@ class SSStemmer {
     }
     else{
       let rep = token.replace(/aux$/, 'al');
-      return ((rep !== token) && ((rep.length - 3) >= r1of))? rep : token;
+      return ((rep !== token) && ((rep.length - 2) >= r1of))? rep : token;
     }
   }
   /**
@@ -387,5 +416,47 @@ class SSStemmer {
   step1m(token, rvof){
     let rep = token.replace(this.reStep1m, '$1');
     return ((rep !== token) && ((rep.length - 1) >= rvof))? rep : token;
+  }
+  /**
+   * step2a removes any of a long list of suffixes beginning with i if 
+   * preceded by a char with is neither vowel nor H, in RV. The test 
+   * is carried out in RV.
+   * @param  {String} token the input token
+   * @param  {Object} rvr1r2  the complete RVR1R2 object.
+   * @return {String}       the result of the replacement operations
+   */
+  step2a(token, rvr1r2){
+    let rep = rvr1r2.rv.replace(reStep2a, '$1');
+    return (rep !== rvr1r2.rv)? token.replace(new RegExp(rvr1r2.rv + '$'), rep) : token;
+  }
+  /**
+   * step2b removes any of a long list of suffixes beginning with 
+   * vowels in various configurations. reStep2b is the initial long
+   * regex for matching all suffixes; reStep2b1 then handles suffixes
+   * to be deleted if in RV, and reStep2b a set to be deleted if in RV
+   * but where if there is a preceding e also in RV, it should be deleted.
+   * @param  {String} token the input token
+   * @param  {Object} rvr1r2  the complete RVR1R2 object.
+   * @return {String}       the result of the replacement operations
+   */
+  step2b(token, rvr1r2){
+    let longestMatch = rvr1r2.rv.replace(reStep2b, '$1');
+    if (longestMatch == 'ions'){
+      let rep = token.replace('ions$', '');
+      return ((rep !== token) && (rep.length >= rvr1r2.rvof) && (rep.length >= rvr1r2.r2of))? rep : token;
+    }
+    if (longestMatch.match(reStep2b1) !== null){
+      return token.replace(new RegExp(longestMatch + '$'), '');
+    }
+    if (longestMatch.match(reStep2b2) !== null){
+      let rep = token.replace(new RegExp(longestMatch + '$'), '');
+      if (!rep.match(/e$/)){
+        return rep;
+      }
+      if (rep.match(/e$/)){
+        return ((rep.length - 1) >= rvr1r2.rvof)? rep.replace(/e$/, '') : rep;
+      }
+    }
+    return token;
   }
 }

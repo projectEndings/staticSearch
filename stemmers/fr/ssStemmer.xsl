@@ -528,7 +528,7 @@
             </xsl:when>
             <!-- if preceded by iv, delete if in R2 -->
             <xsl:when test="matches($rep, 'iv$')">
-              <xsl:sequence select="if (($repLen - 2) ge $R2) then replace($rep, 'ic$', '') else $rep"/>
+              <xsl:sequence select="if (($repLen - 2) ge $R2) then replace($rep, 'iv$', '') else $rep"/>
             </xsl:when>
             <xsl:otherwise>
               <xsl:sequence select="$rep"/>
@@ -702,7 +702,7 @@
     
     <xd:doc>
       <xd:desc><xd:ref name="ss:step2b">ss:step2b</xd:ref> is the second part of
-        step 2, removing any of a long list of suffixes beginning with i in
+        step 2, removing any of a long list of suffixes beginning with vowels in
         various configurations.</xd:desc>
       <xd:desc><xd:ref name="reStep2b" as="xs:string">reStep2b</xd:ref> is the 
         initial long regex for matching in step 2b, before breaking down the 
