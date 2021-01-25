@@ -318,12 +318,16 @@
         <description>
             target: copyFiles
             
-            This target copies the necessary Javascript files from the staticSearch directory (i.e. this directory)
-            and places them in the project's static search directory.
+            This target copies the necessary Javascript and CSS files from 
+            the staticSearch directory (i.e. this directory) and places 
+            them in the project's static search directory.
         </description>
         <copy todir="${staticSearchDir}/">
             <fileset dir="${basedir}/js">
                 <include name="ss**.js"/>
+            </fileset>
+            <fileset dir="${basedir}/css">
+                <include name="ss**.css"/>
             </fileset>
         </copy>
         <copy todir="${staticSearchDir}/">

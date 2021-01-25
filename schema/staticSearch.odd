@@ -123,6 +123,29 @@
         </list>
       </div>
       
+      <div xml:id="searchPageCaptions">
+        <head>Search page captions</head>
+        <list>
+          <item>Level: Intermediate</item>
+          <item>Last Updated: <date when="2021-01-24">24 January 2021</date></item>
+        </list>
+        <p>Various captions (<q>Searching...</q>, <q>Documents found</q>, <q>Score</q> 
+          and so on) are shown during operations in the search page. These captions are
+          currently configured in the JavaScript file <ident>ssSearch.js</ident> in the form of
+          a JavaScript array which has both English and French captions. The caption 
+          language is selected based on the <att>lang</att> attribute on the root 
+          <gi>html</gi> element of the search page; if there are no captions configured 
+          for the language in the <att>lang</att> attribute, the default English captions
+          are used.
+        </p>
+        <p>If your search page is in a language other than English and French, please 
+        contribute to the project by providing captions in that language so that we can
+        increase the number of languages supported by the project. When the number of 
+        available language caption sets becomes significant, we will abstract them from
+        the core JavaScript library and store them in a separate location, inserting them
+        into the page at build time instead.</p>
+      </div>
+      
       <div xml:id="howDoIGetIt">
         <head>How do I get it?</head>
         <list>
@@ -818,6 +841,69 @@
             <p>The same process should run, and if it's successful, you should have a modified <ident>search.html</ident> page
             as well as a lot of index files in JSON format in your site HTML folder. Now you can test your own 
             search in the same ways suggested above.</p>
+            
+          </div>
+          
+          <div xml:id="advancedFeatures">
+            <head>Advanced features</head>
+            
+            <div xml:id="customAttributes">
+              
+              <head>Custom attributes</head>
+              
+              <p>As described in <ptr target="#paramsOptional"/>, if you set the 
+                <gi>linkToFragmentId</gi> parameter to <ident>true</ident>, the 
+                search index will link each keyword-in-context extract with the 
+                closest element that has an <att>id</att>, so that each keyword-in-context
+              string in a search result will point directly to a specific page fragment.
+              You can also add your own attributes to any element in your document in 
+              order to have those attributes appear on the keyword-in-context (KWIC) result
+              string (which is in the form of an HTML <gi>li</gi> element).</p>
+              
+              <p>Imagine that some of the paragraphs in your documents are special
+              in some way. You could add an attribute whose name begins with <ident>data-ss-</ident>
+              to each of those paragraphs, like this:
+                <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                  <p data-ss-type="special">This paragraph is special for some reason or other...</p>
+                </egXML>
+                
+                When the staticSearch indexer creates KWIC extracts, it automatically
+                harvests any attribute whose name begins with <ident>data-ss-</ident> from 
+                the containing element or its ancestors, and adds them to the keyword-in-context
+                record in the index. Then when that KWIC string is displayed as
+                the result of a search, the attribute will be added to the HTML <gi>li</gi>
+                element on the page:
+                
+                <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                  <li data-ss-type="special">[KWIC with marked search hit, link, etc.]</li>
+                </egXML>
+                
+                This means that you can add your own CSS or JavaScript to make that KWIC appear
+                distinct from other KWICs which come from non-special paragraphs.
+              </p>
+              
+              <p>You can add as many custom attributes as you like (although bear in mind that 
+              they increase the size of the index JSON files slightly).</p>
+              
+              <p>One specific custom attribute has built-in handling that you may find useful.
+              If you add the attribute <att>data-ss-img</att> with a value that points to 
+              an image, that image will be displayed to the left of the KWIC string. For example,
+              if you do this:
+                <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                  <p data-ss-img="images/elephant.png">This paragraph is all about elephants...</p>
+                </egXML>
+                
+                then any KWIC results from that paragraph will show the <ident>elephant.png</ident>
+                image to the left of the KWIC text. This can be especially useful if your site 
+                contains large documents which are broken into sections, and those sections can be 
+                helpfully represented by images; the search results will be easier for the user
+                to understand by virtue of the associated images. Image URLs should be relative
+                to the location of the search page, not the original source document, since the
+                images will be displayed on the search page.
+              </p>
+              
+            </div>
+            
             
           </div>
           

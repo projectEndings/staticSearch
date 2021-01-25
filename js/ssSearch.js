@@ -74,9 +74,10 @@
   * @property ss.captions
   * @type {Array}
   * @description ss.captions is the an array of languages (default contains
-  * only en), each of which has some caption properties. Extend
+  * only en and fr), each of which has some caption properties. Extend
   * by adding new languages or replace if necessary.
   */
+  //English
   ss.captions = [];
   ss.captions['en'] = {};
   ss.captions['en'].strSearching         = 'Searching...';
@@ -89,7 +90,18 @@
   ss.captions['en'].strScore             = 'Score: ';
   ss.captions['en'].strSearchTooBroad    = 'Your search is too broad. Include more letters in every term.';
   ss.captions['en'].strDiscardedTerms    = 'Not searched (too common or too short): ';
-
+  //French
+  ss.captions['fr'] = {};
+  ss.captions['fr'].strSearching         = 'Recherche en cours...';
+  ss.captions['fr'].strDocumentsFound    = 'Documents localisés: ';
+  ss.captions['fr'][PHRASE]              = 'Phrase exacte: ';
+  ss.captions['fr'][MUST_CONTAIN]        = 'Doit contenir: ';
+  ss.captions['fr'][MUST_NOT_CONTAIN]    = 'Ne doit pas contenir: ';
+  ss.captions['fr'][MAY_CONTAIN]         = 'Peut contenir: ';
+  ss.captions['fr'][WILDCARD]            = 'Caractère générique: ';
+  ss.captions['fr'].strScore             = 'Score: ';
+  ss.captions['fr'].strSearchTooBroad    = 'Votre recherche est trop large. Inclure plus de lettres dans chaque terme.';
+  ss.captions['fr'].strDiscardedTerms    = 'Recherche inaboutie (termes trop fréquents ou trop brefs): ';
 
 /**
   * @property ss.stopwords
@@ -333,8 +345,13 @@ class StaticSearch{
       //Captions
       this.captions = ss.captions; //Default; override this if you wish by setting the property after instantiation.
       this.captionLang  = document.getElementsByTagName('html')[0].getAttribute('lang') || 'en'; //Document language.
-      this.captionSet   = this.captions[this.captionLang]; //Pointer to the caption object we're going to use.
-
+      if (this.captions[this.captionLang]){
+        this.captionSet   = this.captions[this.captionLang]; //Pointer to the caption object we're going to use.
+      }
+      else{
+        this.captionSet   = this.captions['en'];
+      }
+      
       //Default set of stopwords
       this.stopwords = ss.stopwords; //temporary default.
 
@@ -1512,7 +1529,7 @@ if (this.discardedTerms.length > 0){
                   if (phraseRegex.test(unmarkedContext)){
   //We have a candidate document for inclusion, and a candidate context.
                     let c = unmarkedContext.replace(phraseRegex, '<mark>' + '$&' + '</mark>');
-                    currContexts.push({form: str, context: c, weight: 2, fid: cntxt.fid ? cntxt.fid : ''});
+                    currContexts.push({form: str, context: c, weight: 2, fid: cntxt.fid ? cntxt.fid : '', prop: cntxt.prop ? cntxt.prop : {}});
                   }
                 }
   //If we've found contexts, we know we have a document to add to the results.
@@ -2132,7 +2149,9 @@ class SSResultSet{
           for (let i=0; i<Math.min(value.contexts.length, this.maxKwicsToShow); i++){
             //Output the KWIC.
             let li2 = document.createElement('li');
-            li2.innerHTML = value.contexts[i].context;
+            let sp = document.createElement('span');
+            sp.innerHTML = value.contexts[i].context;
+            li2.appendChild(sp);
             //Create a text fragment identifier (see https://wicg.github.io/scroll-to-text-fragment/)
             let cleanContext = value.contexts[i].context.replace(/<\/?mark>/g, '').replace(this.reKwicTruncateStr, '');
             let tf = ((this.scrollToTextFragment) && (cleanContext.length > 1))? encodeURI(':~:text=' + cleanContext) : '';
@@ -2144,6 +2163,25 @@ class SSResultSet{
               a2.setAttribute('href', value.docUri + '#' + fid + tf);
               a2.setAttribute('class', 'fidLink');
               li2.appendChild(a2);
+            }
+            else{
+              let sp2 = document.createElement('span');
+              sp2.appendChild(document.createTextNode('\u00A0'));
+              li2.appendChild(sp2);
+            }
+            //Now look for any custom properties that have been passed through
+            //from the source document's custom attributes, and if any are 
+            //present, generate attributes for them.
+            if (value.contexts[i].hasOwnProperty('prop')){
+              let props = Object.entries(value.contexts[i].prop);
+              for (const [key, value] of props){
+                li2.setAttribute('data-ss-' + key, value);
+                if (key == 'img'){
+                  let ctxImg = document.createElement('img');
+                  ctxImg.setAttribute('src', value);
+                  li2.insertBefore(ctxImg, li2.firstChild);
+                }
+              }
             }
             ul2.appendChild(li2);
           }
