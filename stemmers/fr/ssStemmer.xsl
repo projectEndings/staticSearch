@@ -266,8 +266,6 @@
         replace(replace($step2Second, 'Y$', 'i'), 'ç$', 'c') 
                               else $step2Second"/>
       
-      <xsl:variable as="xs:boolean" name="step3MadeChange" select="$step2Second ne $step3"/>
-      
       <xsl:variable as="xs:string" name="step4" select="if (not($doStep3)) then ss:step4($step3, $rvr1r2) else $step3"/>
       
       <!-- Step 5, always done: undouble. -->

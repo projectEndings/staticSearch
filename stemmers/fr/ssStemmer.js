@@ -99,6 +99,8 @@ class SSStemmer {
     this.reStep1j = /euses?$/;
     //reStep1k: two suffixes to be deleted if in R1 and preceded by a non-vowel.
     this.reStep1k = new RegExp('(' + this.nonVowel + ')(issements?)$');
+    //reStep1l: ment endings.
+    this.reStep1l = new RegExp('[ae]mment$');
     //reStep1m: ments? to be removed if preceded by a vowel in RV.
     this.reStep1m = new RegExp('(' + this.vowel + ')(ments?)$');
     //reStep2a: long regex for various suffixes beginning with i.
@@ -112,7 +114,10 @@ class SSStemmer {
     this.reStep2b2 = /^((assions)|(assiez)|(assent)|(asses)|(antes)|(aIent)|(asse)|(ante)|(ants)|(âtes)|(âmes)|(ais)|(ait)|(ant)|(ât)|(ai)|(as)|(a))$/;
     //reStep4a is for deletion of s in certain circumstances.
     this.reStep4a = /((Hi)|[^aiouès])s$/;
-
+    //reStep5 is for undoubling.
+    this.reStep5 = /((enn)|(onn)|(ett)|(ell)|(eill))$/;
+    //reStep6 is for unaccenting.
+    this.reStep6 = new RegExp('[éè](' + this.nonVowel + '+)$');
   }
   /**
    * stem is the core function that takes a single token and returns
@@ -121,12 +126,28 @@ class SSStemmer {
    * @return {String}       the stemmed token
    */
   stem(token) {
-    if (token.length < 3) {
-        return token;
-    } 
-    else {
-
-    }
+    let preProc = this.preflight(token);
+    let rvr1r2 = this.getRVR1R2(preProc);
+    let step1Result = this.step1(preProc, rvr1r2);
+    let doStep2a = (!(step1Result.step1MadeChange) || step1Result.foundMent);
+    let step2First = (doStep2a)? this.step2a(step1Result.result, rvr1r2) : step1Result.result;
+    let step2aMadeChange = (step1Result.result !== step2First);
+    let doStep2b = (doStep2a && !(step2aMadeChange));
+    let step2Second = (doStep2b)? this.step2b(step2First, rvr1r2) : step2First;
+    let step2bMadeChange = (step2First !== step2Second);
+    let doStep3 = (doStep2b && step2bMadeChange)? true :
+        (!(doStep2b) && (doStep2a && step2aMadeChange))? true : 
+        (step1Result.step1MadeChange)? true : false;
+    let step3Res = (doStep3)? step2Second.replace(/Y$/, 'i').replace(/ç$/, 'c') : step2Second;
+    let step4Res = (!(doStep3))? this.step4(step3Res, rvr1r2) : step3Res;
+    /* Step 5, always done: undouble. */
+    let step5Res = (step4Res.match(this.reStep5))? step4Res.replace(/.$/, '') : step4Res;
+    /* Step 6, always done, unaccent. */
+    let step6Res = step5Res.replace(this.reStep6, 'e$1');
+    /* Post-flight normalization. */
+    let post1 = step6Res.replace(/I/, 'i').replace(/U/, 'u').replace(/Y/, 'y');
+    let post2 = post1.replace(/He/, 'ë').replace(/Hi/, 'ï').replace(/H/, '');
+    return post2;
   }
 
   /**
@@ -139,10 +160,10 @@ class SSStemmer {
       return token.replace(new RegExp('y(' + this.vowel + ')'), 'Y$1')
           .replace(new RegExp('(' + this.vowel + ')y'), '$1Y')
           .replace(new RegExp('(' + this.vowel + ')u(' + this.vowel + ')'), '$1U$2')
-          .replace('qu', 'qU')
+          .replace(/qu/, 'qU')
           .replace(new RegExp('(' + this.vowel + ')i(' + this.vowel + ')'), '$1I$2')
-          .replace('ë', 'He')
-          .replace('ï', 'Hi');
+          .replace(/ë/, 'He')
+          .replace(/ï/, 'Hi');
   }
 
   /**
@@ -183,6 +204,16 @@ class SSStemmer {
     let R2 = (R2Candidate == R1)? '' : R2Candidate;
     let R2Index = (R2Candidate == R1)? token.length : (token.length - R2.length);
     return {rv: RV, r1: R1, r2: R2, rvof: RVIndex, r1of: R1Index, r2of: R2Index}
+  }
+
+  /**
+   * anchorRegExp simply adds a leading start anchor to an 
+   * existing regex, required functionality in step1.
+   * @param {RegExp} re the input RegExp object 
+   * @return {RegExp}       the resulting RegExp with leading start anchor.
+   */
+  anchorRegExp(re){
+    return new RegExp('^' + re.source);
   }
 
   /**
@@ -426,7 +457,7 @@ class SSStemmer {
    * @return {String}       the result of the replacement operations
    */
   step2a(token, rvr1r2){
-    let rep = rvr1r2.rv.replace(reStep2a, '$1');
+    let rep = rvr1r2.rv.replace(this.reStep2a, '$1');
     return (rep !== rvr1r2.rv)? token.replace(new RegExp(rvr1r2.rv + '$'), rep) : token;
   }
   /**
@@ -440,15 +471,15 @@ class SSStemmer {
    * @return {String}       the result of the replacement operations
    */
   step2b(token, rvr1r2){
-    let longestMatch = rvr1r2.rv.replace(reStep2b, '$1');
+    let longestMatch = rvr1r2.rv.replace(this.reStep2b, '$1');
     if (longestMatch == 'ions'){
-      let rep = token.replace('ions$', '');
+      let rep = token.replace(/ions$/, '');
       return ((rep !== token) && (rep.length >= rvr1r2.rvof) && (rep.length >= rvr1r2.r2of))? rep : token;
     }
-    if (longestMatch.match(reStep2b1) !== null){
+    if (longestMatch.match(this.reStep2b1) !== null){
       return token.replace(new RegExp(longestMatch + '$'), '');
     }
-    if (longestMatch.match(reStep2b2) !== null){
+    if (longestMatch.match(this.reStep2b2) !== null){
       let rep = token.replace(new RegExp(longestMatch + '$'), '');
       if (!rep.match(/e$/)){
         return rep;
@@ -459,4 +490,107 @@ class SSStemmer {
     }
     return token;
   }
+  /**
+   * step4 is a short sequence of replacesments done if step2 did not run.
+   * @param  {String} token the input token
+   * @param  {Object} rvr1r2  the complete RVR1R2 object.
+   * @return {String}       the result of the replacement operations
+   */
+  step4(token, rvr1r2){
+    //If the word ends s, not preceded by a, i (unless itself preceded by H), o, u, è or s, delete it.
+    let rep1 = token.replace(this.reStep4a, '$1');
+    
+    //Next, some -ion stuff.
+    let rep2 = rep1.replace(/([st])ion$/, '$1');
+    let rep2Len = rep2.length;
+    
+    let step4a = ((token !== rep2) && (rep2Len >= rvr1r2.r2of) && (rep2Len >= rvr1r2.rvof))? rep2 : rep1;
+    
+    let rep3 = step4a.replace(/(([Ii]ère)|([Ii]er))$/, 'i');
+    
+    let step4b = ((step4a !== rep3) && ((rep3.length - 1) >= rvr1r2.rvof))? rep3 : step4a;
+    
+    return ((step4b.match(/e$/)) && (step4b.length >= rvr1r2.rvof))? step4b.replace(/e$/, '') : step4b;
+  }
+  
+  /**
+   * step1 combines all the step1a, step1b etc. steps in a way that 
+   * depends on what the longest suffix match is.  
+   * @param  {String} token the input token
+   * @param  {Object} rvr1r2  the complete RVR1R2 object.
+   * @return {Object} An object containing of the treated version of the token, a boolean
+   *         for whether it was changed or not, and a boolean for whether one of amment, 
+   *         emment, ment, or ments was found
+   */
+  step1(token, rvr1r2){
+    let longestMatch = token.replace(this.reStep1, '$1');
+    let result = token;
+    if (longestMatch.match(this.anchorRegExp(this.reStep1a))){
+      result = this.step1a(token, rvr1r2.r2of);
+    } 
+    else {
+      if (longestMatch.match(this.anchorRegExp(this.reStep1b))){
+        result = this.step1b(token, rvr1r2.r2of);
+      }
+      else{
+        if (longestMatch.match(this.anchorRegExp(this.reStep1c))){
+          result = this.step1c(token, rvr1r2.r2of);
+        }
+        else{
+          if (longestMatch.match(this.anchorRegExp(this.reStep1d))){
+            result = this.step1d(token, rvr1r2.r2of);
+          }
+          else{
+            if (longestMatch.match(this.anchorRegExp(this.reStep1e))){
+              result = this.step1e(token, rvr1r2.r2of);
+            }
+            else{
+              if (longestMatch.match(this.anchorRegExp(this.reStep1f))){
+                result = this.step1f(token, rvr1r2);
+              }
+              else{
+                if (longestMatch.match(this.anchorRegExp(this.reStep1g))){
+                  result = this.step1g(token, rvr1r2.r2of);
+                }
+                else{
+                  if (longestMatch.match(this.anchorRegExp(this.reStep1h))){
+                    result = this.step1h(token, rvr1r2.r2of);
+                  }
+                  else{
+                    if (longestMatch.match(this.anchorRegExp(this.reStep1i))){
+                      result = this.step1i(token, rvr1r2.r1of);
+                    }
+                    else{
+                      if (longestMatch.match(this.anchorRegExp(this.reStep1j))){
+                        result = this.step1j(token, rvr1r2);
+                      }
+                      else{
+                        if (longestMatch.match(this.anchorRegExp(this.reStep1k))){
+                          result = this.step1k(token, rvr1r2.r1of);
+                        }
+                        else{
+                          if (longestMatch.match(this.anchorRegExp(this.reStep1l))){
+                            result = this.step1l(token, rvr1r2.rvof);
+                          }
+                          else{
+                            if (longestMatch.match(this.anchorRegExp(this.reStep1m))){
+                              result = this.step1m(token, rvr1r2.rvof);
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return {result: result, 
+            step1MadeChange: (token !== result), 
+            foundMent: (longestMatch.match(/^(([ae]mment)|(ments?))$/))};
+  }
+  
 }

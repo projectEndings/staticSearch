@@ -203,11 +203,11 @@ function runTests(){
   for (var i=0; i<stemData.length; i++){
     var result = ssStemmer.stem(stemData[i][0]);
     showTestLog('stem', stemData[i][0], stemData[i][1], result);
-  }
+  }*/
   for (var i=0; i<testData.voc.length; i++){
     var result = ssStemmer.stem(testData.voc[i]);
     showTestLog('stem', testData.voc[i], testData.output[i], result);
-  }*/
+  }
 }
 
 function showLog(msg, msgType){
