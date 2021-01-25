@@ -149,7 +149,7 @@ class SSStemmer {
     let post2 = post1.replace(/He/, 'ë').replace(/Hi/, 'ï').replace(/H/, '');
     
     //Debugging:
-    if (token == 'angles'){
+    if (token == 'abrutissement'){
       console.dir(rvr1r2);
       console.log('preProc: ' + preProc);
       console.dir(step1Result);
@@ -441,7 +441,7 @@ class SSStemmer {
    * @return {String}       the result of the replacement operations
    */
   step1k(token, r1of){
-    let rep = token.replace(this.reStep1k, '$1');
+    let rep = token.replace(new RegExp('(' + this.nonVowel + ')' + this.reStep1k.source), '$1');
     return ((rep !== token) && (rep.length >= r1of))? rep : token;
   }
   /**
