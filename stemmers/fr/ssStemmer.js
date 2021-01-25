@@ -100,7 +100,7 @@ class SSStemmer {
     //reStep1k: two suffixes to be deleted if in R1 and preceded by a non-vowel.
     this.reStep1k = /(issements?)$/;
     //reStep1l: ment endings.
-    this.reStep1l = /[ae]mment$/;
+    this.reStep1l = /([ae])mment$/;
     //reStep1m: ments? to be removed if preceded by a vowel in RV.
     this.reStep1m = /(ments?)$/;
     //reStep2a: long regex for various suffixes beginning with i.
@@ -147,6 +147,22 @@ class SSStemmer {
     /* Post-flight normalization. */
     let post1 = step6Res.replace(/I/, 'i').replace(/U/, 'u').replace(/Y/, 'y');
     let post2 = post1.replace(/He/, 'ë').replace(/Hi/, 'ï').replace(/H/, '');
+    
+    //Debugging:
+    if (token == 'abondamment'){
+      console.dir(rvr1r2);
+      console.log('preProc: ' + preProc);
+      console.dir(step1Result);
+      console.log('step2First: ' + step2First);
+      console.log('step2Second: ' + step2Second);
+      console.log('step3Res: ' + step3Res);
+      console.log('step4Res: ' + step4Res);
+      console.log('step5Res: ' + step5Res);
+      console.log('step6Res: ' + step6Res);
+      console.log('post1: ' + post1);
+      console.log('post2: ' + post2);
+    }
+    
     return post2;
   }
 
@@ -435,7 +451,7 @@ class SSStemmer {
    * @return {String}       the result of the replacement operations
    */
   step1l(token, rvof){
-    let rep = token.replace(new RegExp('(' + this.nonVowel + ')' + this.reStep1l.source), '$1nt');
+    let rep = token.replace(this.reStep1l, '$1nt');
     return ((rep !== token) && ((rep.length - 3) >= rvof))? rep : token;
   }
   /**
@@ -590,7 +606,7 @@ class SSStemmer {
     }
     return {result: result, 
             step1MadeChange: (token !== result), 
-            foundMent: (longestMatch.match(/^(([ae]mment)|(ments?))$/))};
+            foundMent: (longestMatch.match(/^(([ae]mment)|(ments?))$/) !== null)};
   }
   
 }
