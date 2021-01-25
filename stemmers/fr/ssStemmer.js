@@ -149,7 +149,7 @@ class SSStemmer {
     let post2 = post1.replace(/He/, 'ë').replace(/Hi/, 'ï').replace(/H/, '');
     
     //Debugging:
-    if (token == 'abondamment'){
+    if (token == 'angles'){
       console.dir(rvr1r2);
       console.log('preProc: ' + preProc);
       console.dir(step1Result);
@@ -526,7 +526,7 @@ class SSStemmer {
     
     let step4b = ((step4a !== rep3) && ((rep3.length - 1) >= rvr1r2.rvof))? rep3 : step4a;
     
-    return ((step4b.match(/e$/)) && (step4b.length >= rvr1r2.rvof))? step4b.replace(/e$/, '') : step4b;
+    return ((step4b.match(/e$/) !== null) && (step4b.length > rvr1r2.rvof))? step4b.replace(/e$/, '') : step4b;
   }
   
   /**
