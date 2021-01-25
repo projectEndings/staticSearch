@@ -98,11 +98,11 @@ class SSStemmer {
     //reStep1j: two suffixes to be deleted or replaced depending on context.
     this.reStep1j = /euses?$/;
     //reStep1k: two suffixes to be deleted if in R1 and preceded by a non-vowel.
-    this.reStep1k = new RegExp('(' + this.nonVowel + ')(issements?)$');
+    this.reStep1k = /(issements?)$/;
     //reStep1l: ment endings.
-    this.reStep1l = new RegExp('[ae]mment$');
+    this.reStep1l = /[ae]mment$/;
     //reStep1m: ments? to be removed if preceded by a vowel in RV.
-    this.reStep1m = new RegExp('(' + this.vowel + ')(ments?)$');
+    this.reStep1m = /(ments?)$/;
     //reStep2a: long regex for various suffixes beginning with i.
     this.reStep2a = new RegExp('(' + this.neitherVowelNorH + ')((issaIent)|(issantes)|(iraIent)|(issante)|(issants)|(issions)|(irions)|(issais)|(issait)|(issant)|(issent)|(issiez)|(issons)|(irais)|(irait)|(irent)|(iriez)|(irons)|(iront)|(isses)|(issez)|(îmes)|(îtes)|(irai)|(iras)|(irez)|(isse)|(ies)|(ira)|(ît)|(ie)|(ir)|(is)|(it)|(i))$');
     //reStep2b matches the complete set of suffixes for step 2b, finding the longest.
@@ -435,7 +435,7 @@ class SSStemmer {
    * @return {String}       the result of the replacement operations
    */
   step1l(token, rvof){
-    let rep = token.replace(/([ae])mment$/, '$1nt');
+    let rep = token.replace(new RegExp('(' + this.nonVowel + ')' + this.reStep1l.source), '$1nt');
     return ((rep !== token) && ((rep.length - 3) >= rvof))? rep : token;
   }
   /**
@@ -445,7 +445,7 @@ class SSStemmer {
    * @return {String}       the result of the replacement operations
    */
   step1m(token, rvof){
-    let rep = token.replace(this.reStep1m, '$1');
+    let rep = token.replace(new RegExp('(' + this.vowel + ')' + this.reStep1m.source), '$1');
     return ((rep !== token) && ((rep.length - 1) >= rvof))? rep : token;
   }
   /**
