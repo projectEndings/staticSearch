@@ -149,12 +149,15 @@ class SSStemmer {
     let post2 = post1.replace(/He/, 'ë').replace(/Hi/, 'ï').replace(/H/, '');
     
     //Debugging:
-    if (token == 'abrutissement'){
+    if (token == 'abondamment'){
       console.dir(rvr1r2);
       console.log('preProc: ' + preProc);
       console.dir(step1Result);
+      console.log('doStep2a: ' + doStep2a);
       console.log('step2First: ' + step2First);
+      console.log('doStep2b: ' + doStep2b);
       console.log('step2Second: ' + step2Second);
+      console.log('this.step2b(step2First, rvr1r2) = ' + this.step2b(step2First, rvr1r2));
       console.log('step3Res: ' + step3Res);
       console.log('step4Res: ' + step4Res);
       console.log('step5Res: ' + step5Res);
@@ -489,22 +492,34 @@ class SSStemmer {
   step2b(token, rvr1r2){
     let longestMatch = rvr1r2.rv.replace(this.reStep2b, '$1');
     if (longestMatch == 'ions'){
-      let rep = token.replace(/ions$/, '');
-      return ((rep !== token) && (rep.length >= rvr1r2.rvof) && (rep.length >= rvr1r2.r2of))? rep : token;
+      let rep1 = token.replace(/ions$/, '');
+      return ((rep1 !== token) && (rep1.length >= rvr1r2.rvof) && (rep1.length >= rvr1r2.r2of))? rep1 : token;
     }
-    if (longestMatch.match(this.reStep2b1) !== null){
-      return token.replace(new RegExp(longestMatch + '$'), '');
-    }
-    if (longestMatch.match(this.reStep2b2) !== null){
-      let rep = token.replace(new RegExp(longestMatch + '$'), '');
-      if (!rep.match(/e$/)){
-        return rep;
+    else{
+      if (longestMatch.match(this.reStep2b1) !== null){
+        return token.replace(new RegExp(longestMatch + '$'), '');
       }
-      if (rep.match(/e$/)){
-        return ((rep.length - 1) >= rvr1r2.rvof)? rep.replace(/e$/, '') : rep;
+      else{
+        if (longestMatch.match(this.reStep2b2) !== null){
+          let rep2 = token.replace(new RegExp(longestMatch + '$'), '');
+          if (rep2.match(/e$/) == null){
+            return rep2;
+          }
+          else{
+            if (rep2.match(/e$/) !== null){
+              return ((rep2.length - 1) >= rvr1r2.rvof)? rep2.replace(/e$/, '') : rep2;
+            }
+            else{
+              return token;
+            }
+          }
+        }
+        else{
+          return token;
+        }
       }
     }
-    return token;
+    
   }
   /**
    * step4 is a short sequence of replacesments done if step2 did not run.
