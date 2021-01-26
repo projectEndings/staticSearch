@@ -149,7 +149,7 @@ class SSStemmer {
     let post2 = post1.replace(/He/g, 'ë').replace(/Hi/g, 'ï').replace(/H/g, '');
     
     //Debugging:
-    if (token == 'bivouaquaient'){
+    if (token == 'assentiment'){
       console.dir(rvr1r2);
       console.log('preProc: ' + preProc);
       console.dir(step1Result);
@@ -478,7 +478,7 @@ class SSStemmer {
   step2a(token, rvr1r2){
     let currRv = token.substring(rvr1r2.rvof);
     let rep = currRv.replace(this.reStep2a, '$1');
-    return (rep !== rvr1r2.rv)? token.replace(new RegExp(rvr1r2.rv + '$'), rep) : token;
+    return (rep !== currRv)? token.replace(new RegExp(currRv + '$'), rep) : token;
   }
   /**
    * step2b removes any of a long list of suffixes beginning with 
