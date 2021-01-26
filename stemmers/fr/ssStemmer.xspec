@@ -45,9 +45,22 @@
       </x:call>
       <x:expect label="ï becomes Hi" select="'aHieux'"/>
     </x:scenario>
+    <x:scenario label="égoïsme to égoHisme">
+      <x:call function="ss:preflight">
+        <x:param name="token" select="'égoïsme'"/>
+      </x:call>
+      <x:expect label="ï becomes Hi" select="'égoHisme'"/>
+    </x:scenario>
   </x:scenario>
   
   <x:scenario label="Test function ss:getRVR1R2">
+    <x:scenario label="Testing ss:getRVR1R2: preflighted égoïsme = égoHisme">
+      <x:call function="ss:getRVR1R2">
+        <x:param name="token" select="'égoHisme'"/>
+      </x:call>
+      <x:expect label="Result from 'égoHisme'" select="('Hisme', 'oHisme', 'isme', 3, 2, 4)"/>
+    </x:scenario>
+    
     <x:scenario label="Testing ss:getRVR1R2: word beginning with two vowels">
       <x:call function="ss:getRVR1R2">
         <x:param name="token" select="'aimer'"/>
@@ -112,6 +125,13 @@
         <x:param name="R2" select="ss:getRVR1R2(ss:preflight('surréalisme'))[6]"></x:param>
       </x:call>
       <x:expect label="Result of step1a from 'surréalisme'" select="'surréal'"/>
+    </x:scenario>
+    <x:scenario label="Testing ss:step1a: 'égoïsme'">
+      <x:call function="ss:step1a">
+        <x:param name="token" select="'égoïsme'"/>
+        <x:param name="R2" select="ss:getRVR1R2(ss:preflight('égoïsme'))[6]"></x:param>
+      </x:call>
+      <x:expect label="Result of step1a from 'égoïsme'" select="'égo'"/>
     </x:scenario>
   </x:scenario>
   

@@ -149,7 +149,7 @@ class SSStemmer {
     let post2 = post1.replace(/He/g, 'ë').replace(/Hi/g, 'ï').replace(/H/g, '');
     
     //Debugging:
-    if (token == 'foncièrement'){
+    if (token == 'égoïsme'){
       console.dir(rvr1r2);
       console.log('preProc: ' + preProc);
       console.dir(step1Result);

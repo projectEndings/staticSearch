@@ -358,7 +358,7 @@
       <xsl:param name="R2" as="xs:integer"/>
       <xsl:variable as="xs:string" name="rep" select="replace($token, $reStep1a, '')"/>
       
-      <!--<xsl:message select="'step1a $rep: ' || $rep"/>-->
+      <xsl:message select="'step1a $rep: ' || $rep || ' R2: ' || $R2"/>
       
       <xsl:sequence select=" if ($rep ne $token and string-length($rep) ge $R2) 
                              then $rep else $token"/>
