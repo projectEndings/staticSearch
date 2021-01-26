@@ -145,11 +145,11 @@ class SSStemmer {
     /* Step 6, always done, unaccent. */
     let step6Res = step5Res.replace(this.reStep6, 'e$1');
     /* Post-flight normalization. */
-    let post1 = step6Res.replace(/I/, 'i').replace(/U/, 'u').replace(/Y/, 'y');
-    let post2 = post1.replace(/He/, 'ë').replace(/Hi/, 'ï').replace(/H/, '');
+    let post1 = step6Res.replace(/I/g, 'i').replace(/U/g, 'u').replace(/Y/g, 'y');
+    let post2 = post1.replace(/He/g, 'ë').replace(/Hi/g, 'ï').replace(/H/g, '');
     
     //Debugging:
-    if (token == 'abondamment'){
+    if (token == 'bivouaquaient'){
       console.dir(rvr1r2);
       console.log('preProc: ' + preProc);
       console.dir(step1Result);
@@ -476,7 +476,8 @@ class SSStemmer {
    * @return {String}       the result of the replacement operations
    */
   step2a(token, rvr1r2){
-    let rep = rvr1r2.rv.replace(this.reStep2a, '$1');
+    let currRv = token.substring(rvr1r2.rvof);
+    let rep = currRv.replace(this.reStep2a, '$1');
     return (rep !== rvr1r2.rv)? token.replace(new RegExp(rvr1r2.rv + '$'), rep) : token;
   }
   /**
