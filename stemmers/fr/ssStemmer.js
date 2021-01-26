@@ -158,13 +158,13 @@ class SSStemmer {
    * @return {String}       the result of the replacement operations
    */
   preflight(token) {
-      return token.replace(new RegExp('y(' + this.vowel + ')'), 'Y$1')
-          .replace(new RegExp('(' + this.vowel + ')y'), '$1Y')
-          .replace(new RegExp('(' + this.vowel + ')u(' + this.vowel + ')'), '$1U$2')
-          .replace(/qu/, 'qU')
+      return token.replace(new RegExp('y(' + this.vowel + ')', 'g'), 'Y$1')
+          .replace(new RegExp('(' + this.vowel + ')y', 'g'), '$1Y')
+          .replace(new RegExp('(' + this.vowel + ')u(' + this.vowel + ')', 'g'), '$1U$2')
+          .replace(/qu/g, 'qU')
           .replace(new RegExp('(' + this.vowel + ')i(' + this.vowel + ')', 'g'), '$1I$2')
-          .replace(/ë/, 'He')
-          .replace(/ï/, 'Hi');
+          .replace(/ë/g, 'He')
+          .replace(/ï/g, 'Hi');
   }
 
   /**
