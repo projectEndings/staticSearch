@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8"/>
+        <title>French Stemmer Test Suite</title>
+        <script src="ssStemmer.js"></script>
+        <script src="ssStemmerTest.js"></script>
+
+        <style>
+            span#errorCount{
+                display: inline-block;
+                border: solid 1px red;
+                padding: 0.5em;
+                font-size: 120%;
+                text-align: center;
+                color: red;
+            }
+            li{
+                margin-top: 0.5em;
+            }
+            li.ok{
+                background-color: #ffffff;
+            }
+            li.broken{
+                background-color: #ffcccc;
+            }
+            input#showOnlyErrors:checked ~ ul>li.ok{
+              display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Test suite for JavaScript Implementation of Snowball French Stemmer</h1>
+        <div>
+            <h2>Stem from test data</h2>
+            <input id="word" type="text" placeholder="word"/>
+            <button onclick="getCorrectStemmedForm()">Correct stem</button>
+            <button onclick="getCurrentStemmedForm()">Current result</button>
+            <p id="stemmedForm"></p>
+        </div>
+        <div>
+          <h2>Test log</h2>
+          <p>Errors: <span id="errorCount">0</span></p>
+          <input id="showOnlyErrors" type="checkbox" checked="checked"/>
+            <label for="showOnlyErrors">Show only errors</label>
+          <ul id="log">
+             <li class="ok">Starting tests...</li>
+          </ul>
+        </div>
+    </body>
+</html>
