@@ -148,24 +148,6 @@ class SSStemmer {
     let post1 = step6Res.replace(/I/g, 'i').replace(/U/g, 'u').replace(/Y/g, 'y');
     let post2 = post1.replace(/He/g, 'ë').replace(/Hi/g, 'ï').replace(/H/g, '');
     
-    //Debugging:
-    if (token == 'égoïsme'){
-      console.dir(rvr1r2);
-      console.log('preProc: ' + preProc);
-      console.dir(step1Result);
-      console.log('doStep2a: ' + doStep2a);
-      console.log('step2First: ' + step2First);
-      console.log('doStep2b: ' + doStep2b);
-      console.log('step2Second: ' + step2Second);
-      console.log('this.step2b(step2First, rvr1r2) = ' + this.step2b(step2First, rvr1r2));
-      console.log('step3Res: ' + step3Res);
-      console.log('step4Res: ' + step4Res);
-      console.log('step5Res: ' + step5Res);
-      console.log('step6Res: ' + step6Res);
-      console.log('post1: ' + post1);
-      console.log('post2: ' + post2);
-    }
-    
     return post2;
   }
 
@@ -180,7 +162,7 @@ class SSStemmer {
           .replace(new RegExp('(' + this.vowel + ')y'), '$1Y')
           .replace(new RegExp('(' + this.vowel + ')u(' + this.vowel + ')'), '$1U$2')
           .replace(/qu/, 'qU')
-          .replace(new RegExp('(' + this.vowel + ')i(' + this.vowel + ')'), '$1I$2')
+          .replace(new RegExp('(' + this.vowel + ')i(' + this.vowel + ')', 'g'), '$1I$2')
           .replace(/ë/, 'He')
           .replace(/ï/, 'Hi');
   }
