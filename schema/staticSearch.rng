@@ -5,7 +5,7 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2021-01-24T23:56:08Z. 2019-2021.
+Schema generated from ODD source 2021-01-26T23:29:52Z. 2019-2021.
 TEI Edition: Version 4.1.0. Last updated on
 	19th August 2020, revision b414ba550
 TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
@@ -207,7 +207,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The name of a folder inside the staticSearch /stemmers/ folder, 
               in which the JavaScript and XSLT implementations
             of stemmers can be found. If left blank, then the staticSearch default English 
-            stemmer will be used (stemmers/en).) </a:documentation>
+            stemmer will be used (en).) </a:documentation>
          <data type="NCName"/>
       </element>
    </define>

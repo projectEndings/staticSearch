@@ -73,13 +73,15 @@
           <head>Text search features</head>
           <list>
             <item>Level: Intermediate</item>
-            <item>Last Updated: <date when="2020-07-03">3 July 2020</date></item>
+            <item>Last Updated: <date when="2021-01-26">26 January 2021</date></item>
           </list>
           <p>The Generator supports the following features:</p>
           <list>
             <item>Stemming of terms (so searching for <q>wait</q> will also
             retrieve <q>waiting</q>, <q>waits</q>, <q>waited</q> etc.). Our default stemmer
-            is the English Porter 2 stemmer, but if you have documents in another language, you can create
+            is the English Porter 2 stemmer, but there is also a French stemmer, as well as 
+            an <soCalled>identity</soCalled> stemmer (which makes no changes) and a diacritic-stripping
+              stemmer. If you have documents in another language, you can create
             and plug in <ref target="#stemmerFolder">your own stemmer</ref>.</item>
             <item>Boolean search operators. Adding <code>+</code> (plus) before a word means that
             search results <emph>must contain</emph> that word, and adding a <code>-</code> (minus) means
@@ -444,12 +446,14 @@
                     of a folder that is inside the <ident>/stemmers/</ident> folder in
                     the staticSearch repository structure.
                     
-                    <p>The staticSearch project currently has only one real stemmer,
-                      an implementation of the Porter 2 algorithm for modern English. That 
-                      appears in <ident>/stemmers/en/</ident>, so the default value for
-                      this parameter is <val>en</val>. We will
+                    <p>The staticSearch project currently has only two real stemmers:
+                      an implementation of the Porter 2 algorithm for modern English, and
+                      an implementation of the French snowball stemmer. These 
+                      appear in <ident>/stemmers/en/</ident> and <ident>/stemmers/fr/</ident>, 
+                      folders. The default value for this parameter is <val>en</val>; to 
+                      use the French stemmer, use <val>fr</val>. We will
                       be adding more stemmers as the project develops. However, if your 
-                      document collection is not English, you have a couple of options, one 
+                      document collection is not English or French, you have a couple of options, one 
                       hard and one easy.
                       
                       <list>
@@ -1317,7 +1321,7 @@
             <gloss>The name of a folder inside the staticSearch <code>/stemmers/</code> folder, 
               in which the JavaScript and XSLT implementations
             of stemmers can be found. If left blank, then the staticSearch default English 
-            stemmer will be used (<code>stemmers/en</code>).</gloss>
+            stemmer will be used (<code>en</code>).</gloss>
             <content>
               <dataRef name="NCName"/>
             </content>
