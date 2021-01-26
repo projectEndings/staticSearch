@@ -149,7 +149,7 @@ class SSStemmer {
     let post2 = post1.replace(/He/g, 'ë').replace(/Hi/g, 'ï').replace(/H/g, '');
     
     //Debugging:
-    if (token == 'assentiment'){
+    if (token == 'foncièrement'){
       console.dir(rvr1r2);
       console.log('preProc: ' + preProc);
       console.dir(step1Result);
@@ -338,7 +338,7 @@ class SSStemmer {
       }
       //if preceded by ièr or Ièr, replace by i if in RV.
       if ((rep.match(/[iI]èr$/)) && ((repLen - 3) >= rvr1r2.rvof)){
-        return rep.replace(/[iI]èr$/, '');
+        return rep.replace(/[iI]èr$/, 'i');
       }
       else{
         return rep;
