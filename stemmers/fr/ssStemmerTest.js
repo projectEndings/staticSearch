@@ -76,6 +76,7 @@ function runTests(){
   showLog('Retrieved test file ' + testData.title, 'ok');
   showLog('Test data has ' + testData.voc.length + ' input vocabulary items, and ' + testData.output.length + ' output items.', 'ok');
   ssStemmer = new(SSStemmer);
+  /* 
   for (var i=0; i<preflightData.length; i++){
     let result = ssStemmer.preflight(preflightData[i][0]);
     showTestLog('preflight', preflightData[i][0], preflightData[i][1], result);
@@ -85,7 +86,7 @@ function runTests(){
     let jsonResult = JSON.stringify(result);
     let jsonExpected = JSON.stringify(RVR1R2Data[i][1]);
     showTestLog('getRVR1R2', RVR1R2Data[i][0], jsonExpected, jsonResult);
-  }
+  } */
   /* 
   for (var i=0; i<step1aData.length; i++){
     let RVR1R2 = ssStemmer.getRVR1R2(step1aData[i][0]);
@@ -230,8 +231,13 @@ function showTestLog(func, input, expected, result){
   }
 }
 
+function getCurrentStemmedForm(){
+  let word = document.getElementById('word').value;
+  let ssStemmer = new SSStemmer();
+  document.getElementById('stemmedForm').innerHTML = ssStemmer.stem(word);
+}
 
-function getStemmedForm(){
+function getCorrectStemmedForm(){
   let word = document.getElementById('word').value;
   let pos = testData.voc.indexOf(word);
   if (pos > -1){

@@ -490,7 +490,8 @@ class SSStemmer {
    * @return {String}       the result of the replacement operations
    */
   step2b(token, rvr1r2){
-    let longestMatch = rvr1r2.rv.replace(this.reStep2b, '$1');
+    let currRv = token.substring(rvr1r2.rvof);
+    let longestMatch = currRv.replace(this.reStep2b, '$1');
     if (longestMatch == 'ions'){
       let rep1 = token.replace(/ions$/, '');
       return ((rep1 !== token) && (rep1.length >= rvr1r2.rvof) && (rep1.length >= rvr1r2.r2of))? rep1 : token;

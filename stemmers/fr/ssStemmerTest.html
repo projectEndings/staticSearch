@@ -32,6 +32,13 @@
     <body>
         <h1>Test suite for JavaScript Implementation of Snowball French Stemmer</h1>
         <div>
+            <h2>Stem from test data</h2>
+            <input id="word" type="text" placeholder="word"/>
+            <button onclick="getCorrectStemmedForm()">Correct stem</button>
+            <button onclick="getCurrentStemmedForm()">Current result</button>
+            <p id="stemmedForm"></p>
+        </div>
+        <div>
           <h2>Test log</h2>
           <p>Errors: <span id="errorCount">0</span></p>
           <input id="showOnlyErrors" type="checkbox" checked="checked"/>
@@ -39,12 +46,6 @@
           <ul id="log">
              <li class="ok">Starting tests...</li>
           </ul>
-        </div>
-        <div>
-            <h2>Stem from test data</h2>
-            <input id="word" type="text" placeholder="word"/>
-            <button onclick="getStemmedForm()">Stem</button>
-            <p id="stemmedForm"></p>
         </div>
     </body>
 </html>
