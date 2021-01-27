@@ -1025,7 +1025,7 @@
         <xsl:param name="doc" as="element(html)"/>
         <xsl:variable name="defaultTitle" select="normalize-space(string-join($doc//head/title[1]/descendant::text(),''))" as="xs:string?"/>
         <xsl:variable name="configuredDocTitle" 
-            select="$doc/head/meta[@name='docTitle'][contains-token(@class,'staticSearch.docTitle')]"
+            select="$doc/head/meta[@name='docTitle'][contains-token(@class,'staticSearch.docTitle')][not(@data-staticSearch-exclude)]"
             as="element(meta)*"/>
         <xsl:choose>
             <xsl:when test="exists($configuredDocTitle)">
@@ -1055,10 +1055,10 @@
     </xd:doc>
     <xsl:function name="hcmc:getDocThumbnail" as="element(j:string)?">
         <xsl:param name="doc" as="element(html)"/>
-        <xsl:variable name="docImage" select="$doc/head/meta[@name='docImage'][contains-token(@class,'staticSearch.docImage')]" 
+        <xsl:variable name="docImage" select="$doc/head/meta[@name='docImage'][contains-token(@class,'staticSearch.docImage')][not(@data-staticSearch-exclude)]" 
             as="element(meta)*"/>
         <xsl:variable name="docSortKey" 
-            select="$doc/head/meta[@name='docSortKey'][contains-token(@class,'staticSearch.docSortKey')]" 
+            select="$doc/head/meta[@name='docSortKey'][contains-token(@class,'staticSearch.docSortKey')][not(@data-staticSearch-exclude)]" 
             as="element(meta)*"/>
         <xsl:choose>
             <xsl:when test="exists($docImage)">
@@ -1081,11 +1081,12 @@
     <xsl:function name="hcmc:getDocSortKey" as="element(j:string)?">
         <xsl:param name="doc" as="element(html)"/>
         <xsl:variable name="docSortKey" 
-            select="$doc/head/meta[@name='docSortKey'][contains-token(@class,'staticSearch.docSortKey')]" 
+            select="$doc/head/meta[@name='docSortKey'][contains-token(@class,'staticSearch.docSortKey')][not(@data-staticSearch-exclude)]" 
             as="element(meta)*"/>
         <xsl:if test="exists($docSortKey)">
             <j:string><xsl:value-of select="$docSortKey[1]/@content"/></j:string>
         </xsl:if>
     </xsl:function>
+    
     
 </xsl:stylesheet>

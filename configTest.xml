@@ -35,4 +35,9 @@
         <context match="div[@class='l']" label="poetic lines"/>
         <context match="span[@class='note']" label="notes"/>
     </contexts>
+    
+    <excludes>
+        <exclude match="meta[contains-token(@class,'excludedMeta')]" type="filter"/>
+    </excludes>
+    
 </config>
