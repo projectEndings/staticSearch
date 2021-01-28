@@ -190,7 +190,9 @@ function showByMod() {
                
                <li class="toc"><span class="headingNumber">10 </span><a href="newSinceVersion1.html" class="toc toc_0" title="Whats new since version 1.0">What's new since version 1.0?</a><ul class="toc">
                      
-                     <li class="toc"><span class="headingNumber">10.1 </span><a href="newSinceVersion1.html#index.xml-body.1_div.10_div.1" class="toc toc_1">Changes in version 1.1</a></li>
+                     <li class="toc"><span class="headingNumber">10.1 </span><a href="newSinceVersion1.html#newIn1.2" class="toc toc_1" title="Changes in version 1.2">Changes in version 1.2</a></li>
+                     
+                     <li class="toc"><span class="headingNumber">10.2 </span><a href="newSinceVersion1.html#newIn1.1" class="toc toc_1" title="Changes in version 1.1">Changes in version 1.1</a></li>
                      </ul>
                   </li>
                
@@ -381,7 +383,13 @@ element config { <a class="link_ref" href="#TEI.params" title="&lt;params&gt;">p
                      <tr>
                         
                         <td colspan="2" class="wovenodd-col2"><span class="label">&lt;context&gt; </span>(<span>A context definition, providing a match attribute that identifies the context, allowing
-                              keyword-in-context fragments to be bounded by a specific context.</span>)</td>
+                              keyword-in-context fragments to be bounded by a specific context.</span>) <span>When the indexer is extracting keyword-in-context strings for each word, it uses a
+                              common-sense approach based on common element definitions, so that for example when
+                              it reaches the end of a paragraph, it will not continue into the next paragraph to
+                              get more context words. You may have special runs of text in your document collection
+                              which do not appear to be bounding contexts, but actually are; for example, you may
+                              have span elements with <span class="att">class</span>=<span class="val">note</span> which appear in the middle of sentences but are not actually part of them. Use <a class="link_ref" href="#TEI.context" title="&lt;context&gt;">&lt;context&gt;</a> elements to identify these special contexts so that the indexer knows the right boundaries
+                              from which to retrieve its keyword-in-context strings.</span></td>
                         </tr>
                      
                      <tr>
@@ -765,7 +773,11 @@ element dictionaryFile { xsd:anyURI }</pre>
                      <tr>
                         
                         <td colspan="2" class="wovenodd-col2"><span class="label">&lt;exclude&gt; </span>(<span>An exclusion definition, which excludes either documents or filters as defined by
-                              an XPath in match.</span>)</td>
+                              an XPath in match.</span>) <span>Exclude elements can be used to identify documents or parts of documents to be completely
+                              omitted from indexing (for example, footer elements or banner headings are commonly
+                              ignored). Another usage is common if you have multiple search engines/pages configured
+                              for your site, each with its own special features; in this case, you may want one
+                              specific search index/page to ignore filter controls (HTML <span class="gi">&lt;meta&gt;</span> elements, as described in <a href="searchFacetFeatures.html" class="link_ptr" title="Search facet features"><span class="headingNumber">4 </span>Search facet features</a>) which are provided to support other search pages.</span></td>
                         </tr>
                      
                      <tr>
@@ -1786,7 +1798,10 @@ element recurse { xsd:boolean }</pre>
                      <tr>
                         
                         <td colspan="2" class="wovenodd-col2"><span class="label">&lt;rule&gt; </span>(<span>A rule that specifies a document path as XPath in match, and provides weighting for
-                              search terms found in that context.</span>)</td>
+                              search terms found in that context.</span>) <span>The rule element is used to identify nodes in the XHTML document collection which
+                              should be treated in a special manner when indexed; either they might be ignored (if
+                              <span class="att">weight</span>=<span class="val">0</span>), or any words found in them might be given greater weight than words in normal contexts
+                              <span class="att">weight</span>&gt;<span class="val">1</span>. Words appearing in headings or titles, for example, might be weighted more heavily.</span></td>
                         </tr>
                      
                      <tr>
@@ -2192,7 +2207,8 @@ element scrollToTextFragment { xsd:boolean }</pre>
                      <tr>
                         
                         <td colspan="2" class="wovenodd-col2"><span class="label">&lt;searchFile&gt; </span>(<span>The search file (aka page) that will be the primary access point for the staticSearch.
-                              Note that this page must be at the root of the collection directory.</span>)</td>
+                              Note that this page must be at the root of the collection directory.</span>) <span>The search page is a regular HTML page which forms part of your site. The only important
+                              characteristic it must have is a <span class="gi">&lt;div&gt;</span> element with <span class="att">id</span>=<span class="val">staticSearch</span>, whose contents will be rewritten by the staticSearch build process. See <a href="howDoIUseIt.html#searchPage" class="link_ptr" title="Creating a search page"><span class="headingNumber">7.6 </span>Creating a search page</a>.</span></td>
                         </tr>
                      
                      <tr>
@@ -2964,7 +2980,7 @@ element wildcardSearch { xsd:boolean }</pre>
             <!--
 	  Generated from index.xml using XSLT stylesheets version 7.50.1
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2021-01-26T23:30:04Z.
+	       on 2021-01-28T00:18:49Z.
 	       SAXON HE 10.0.
 		 --></address>
          </div>

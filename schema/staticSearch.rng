@@ -5,7 +5,7 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2021-01-26T23:29:52Z. 2019-2021.
+Schema generated from ODD source 2021-01-28T00:18:37Z. 2019-2021.
 TEI Edition: Version 4.1.0. Last updated on
 	19th August 2020, revision b414ba550
 TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
@@ -102,7 +102,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
    <define name="rule">
       <element name="rule" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(A rule that specifies a document path as XPath in match, and provides weighting for search
-              terms found in that context.) </a:documentation>
+              terms found in that context.) The rule element is used to identify nodes in the XHTML document collection which should be treated in a special manner when indexed; either they might be ignored (if <code xmlns="http://www.w3.org/1999/xhtml">@weight</code>=0), or any words found in them might be given greater weight than words in normal contexts <code xmlns="http://www.w3.org/1999/xhtml">@weight</code>&gt;1. Words appearing in headings or titles, for example, might be weighted more heavily.</a:documentation>
          <empty/>
          <ref name="att.match.attributes"/>
          <attribute name="weight">
@@ -126,7 +126,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
    <define name="context">
       <element name="context" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(A context definition, providing a match attribute that identifies the context,
-              allowing keyword-in-context fragments to be bounded by a specific context.) </a:documentation>
+              allowing keyword-in-context fragments to be bounded by a specific context.) When the indexer is extracting keyword-in-context strings for each word, it uses a common-sense approach based on common element definitions, so that for example when it reaches the end of a paragraph, it will not continue into the next paragraph to get more context words. You may have special runs of text in your document collection which do not appear to be bounding contexts, but actually are; for example, you may have span elements with <code xmlns="http://www.w3.org/1999/xhtml">@class</code>=note which appear in the middle of sentences but are not actually part of them. Use <code xmlns="http://www.w3.org/1999/xhtml">&lt;context&gt;</code> elements to identify these special contexts so that the indexer knows the right boundaries from which to retrieve its keyword-in-context strings.</a:documentation>
          <empty/>
          <ref name="att.match.attributes"/>
          <ref name="att.labelled.attributes"/>
@@ -150,7 +150,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
    </define>
    <define name="exclude">
       <element name="exclude" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(An exclusion definition, which excludes either documents or filters as defined by an XPath in match.) </a:documentation>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(An exclusion definition, which excludes either documents or filters as defined by an XPath in match.) Exclude elements can be used to identify documents or parts of documents to be completely omitted from indexing (for example, footer elements or banner headings are commonly ignored). Another usage is common if you have multiple search engines/pages configured for your site, each with its own special features; in this case, you may want one specific search index/page to ignore filter controls (HTML <code xmlns="http://www.w3.org/1999/xhtml">&lt;meta&gt;</code> elements, as described in ) which are provided to support other search pages.</a:documentation>
          <empty/>
          <ref name="att.match.attributes"/>
          <attribute name="type">
@@ -189,7 +189,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
    <define name="searchFile">
       <element name="searchFile" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The search file (aka page) that will be the primary access point for the staticSearch. Note
-            that this page must be at the root of the collection directory.) </a:documentation>
+            that this page must be at the root of the collection directory.) The search page is a regular HTML page which forms part of your site. The only important characteristic it must have is a <code xmlns="http://www.w3.org/1999/xhtml">&lt;div&gt;</code> element with <code xmlns="http://www.w3.org/1999/xhtml">@id</code>=staticSearch, whose contents will be rewritten by the staticSearch build process. See .</a:documentation>
          <data type="anyURI"/>
       </element>
    </define>

@@ -1035,7 +1035,20 @@
           <item>Level: Intermediate</item>
           <item>Last Updated: <date when="2021-01-06">6 January 2021</date></item>
         </list>
-        <div>
+        <div xml:id="newIn1.2">
+          <head>Changes in version 1.2</head>
+          <p>New features and enhancements:</p>
+          <list>
+            <item>A French stemmer is now available, as well as a caption set for French search pages.</item>
+            <item>Images can now be configured for specific parts of a document, as well 
+            as for the whole document, for display alongside KWICs in results. This is
+            part of a new extension mechanism using <ref target="#customAttributes">custom attributes</ref>.</item>
+            <item>The CSS for the search page by the indexing process is now more easily 
+            accessible in a separate file <ident>css/ssSearch.css</ident>, which is linked
+              into the search page at build time.</item>
+          </list>
+        </div>
+        <div xml:id="newIn1.1">
           <head>Changes in version 1.1</head>
           <p>New features and enhancements:</p>
           <list>
@@ -1115,20 +1128,20 @@
             <cell><ref target="https://dvpp.uvic.ca/search.html">Search</ref> (multiple searches with individual pages)</cell>
             <cell><ref target="https://hcmc.uvic.ca/svn/dvpp/">SVN</ref> (multiple configuration files)</cell>
           </row>
-          <!--<row>
-            <cell>Le mariage sous L'Ancien Régime (forthcoming)</cell>
-            <cell/>
-            <cell/>
-            <cell/>
-          </row>
           <row>
+            <cell><ref target="https://mariage.uvic.ca/">Le mariage sous L'Ancien Régime</ref></cell>
+            <cell><ref target="https://mariage.uvic.ca/recherche.html">Recherche</ref></cell>
+            <cell><ref target="https://hcmc.uvic.ca/svn/mariage/static/config_staticSearch.xml">SVN</ref></cell>
+          </row>
+          <!--<row>
             <cell>Landscapes of Injustice (forthcoming)</cell>
-            <cell/>
             <cell/>
             <cell/>
           </row>
           <row>
             <cell>Linked Early Modern Drama Online (forthcoming)</cell>
+            <cell/>
+            <cell/>
           </row>-->
         </table>
       </div>
@@ -1196,6 +1209,11 @@
           <elementSpec ident="rule" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
             <gloss>A rule that specifies a document path as XPath in <att>match</att>, and provides weighting for search
               terms found in that context.</gloss>
+            <desc>The rule element is used to identify nodes in the XHTML document collection which should be
+            treated in a special manner when indexed; either they might be ignored (if <att>weight</att>=<val>0</val>),
+            or any words found in them might be given greater weight than words in normal contexts 
+              <att>weight</att>&gt;<val>1</val>. Words appearing in headings or titles, for example, might
+            be weighted more heavily.</desc>
             <classes>
               <memberOf key="att.match"/>
             </classes>
@@ -1225,6 +1243,14 @@
           <elementSpec ident="context" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
             <gloss>A context definition, providing a <att>match</att> attribute that identifies the context,
               allowing keyword-in-context fragments to be bounded by a specific context.</gloss>
+            <desc>When the indexer is extracting keyword-in-context strings for each word, it uses a common-sense
+              approach based on common element definitions, so that for example when it reaches the end of a paragraph,
+              it will not continue into the next paragraph to get more context words. You may have special runs of 
+            text in your document collection which do not appear to be bounding contexts, but actually are; for 
+            example, you may have span elements with <att>class</att>=<val>note</val> which appear in the middle
+            of sentences but are not actually part of them. Use <gi>context</gi> elements to identify these 
+            special contexts so that the indexer knows the right boundaries from which to retrieve its 
+            keyword-in-context strings.</desc>
             <classes>
               <memberOf key="att.match"/>
               <memberOf key="att.labelled"/>
@@ -1251,6 +1277,11 @@
           
           <elementSpec ident="exclude" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
             <gloss>An exclusion definition, which excludes either documents or filters as defined by an XPath in <att>match</att>.</gloss>
+            <desc>Exclude elements can be used to identify documents or parts of documents to be completely omitted from 
+            indexing (for example, footer elements or banner headings are commonly ignored). Another usage is common if
+            you have multiple search engines/pages configured for your site, each with its own special features; in this
+            case, you may want one specific search index/page to ignore filter controls (HTML <gi>meta</gi> elements, as 
+            described in <ptr target="#searchFacetFeatures"/>) which are provided to support other search pages.</desc>
             <classes>
               <memberOf key="att.match"/>
             </classes>
@@ -1302,6 +1333,10 @@
           <elementSpec ident="searchFile" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>The search file (aka page) that will be the primary access point for the staticSearch. Note
             that this page <emph>must</emph> be at the root of the collection directory.</gloss>
+            <desc>The search page is a regular HTML page which forms part of your site. The only 
+            important characteristic it must have is a <gi>div</gi> element with 
+              <att>id</att>=<val>staticSearch</val>, whose contents will be rewritten by 
+            the staticSearch build process. See <ptr target="#searchPage"/>.</desc>
             <content>
               <dataRef name="anyURI"/>
             </content>
