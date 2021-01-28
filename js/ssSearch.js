@@ -2154,13 +2154,17 @@ class SSResultSet{
             li2.appendChild(sp);
             //Create a text fragment identifier (see https://wicg.github.io/scroll-to-text-fragment/)
             let cleanContext = value.contexts[i].context.replace(/<\/?mark>/g, '').replace(this.reKwicTruncateStr, '');
-            let tf = ((this.scrollToTextFragment) && (cleanContext.length > 1))? encodeURI(':~:text=' + cleanContext) : '';
+            let tf = ((this.scrollToTextFragment) && (cleanContext.length > 1))? encodeURIComponent(':~:text=' + cleanContext) : '';
+            //Create a query string containing the marked text so that downstream JS can 
+            //do its own highlighting on the target page.
+            let cleanMark = value.contexts[i].context.replace(/.*<mark>([^<]+)<\/mark>.+/, '$1');
+            let queryString = '?ssMark=' + encodeURIComponent(cleanMark);
             //If we have a fragment id, output that.
             if (((value.contexts[i].hasOwnProperty('fid'))&&(value.contexts[i].fid !== ''))||(tf !== '')){
               let fid = value.contexts[i].hasOwnProperty('fid')? value.contexts[i].fid : '';
               let a2 = document.createElement('a');
               a2.appendChild(document.createTextNode('\u21ac'));
-              a2.setAttribute('href', value.docUri + '#' + fid + tf);
+              a2.setAttribute('href', value.docUri + queryString + '#' + fid + tf);
               a2.setAttribute('class', 'fidLink');
               li2.appendChild(a2);
             }
