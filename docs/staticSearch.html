@@ -1251,7 +1251,11 @@ element createContexts { xsd:boolean }</pre>
                      <table class="wovenodd">
                         <tr>
                            <td colspan="2" class="wovenodd-col2"><span class="label">&lt;dictionaryFile&gt; </span>(<span>The location of a dictionary file (one word per line) which will be used to check
-                                 tokens when indexing.</span>)</td>
+                                 tokens when indexing.</span>) <span>The indexing process checks each word as it builds the index, and keeps a record of
+                                 all words which are not found in the configured dictionary. This can be very useful;
+                                 all words listed are either foreign (not part of the language of the dictionary) or
+                                 perhaps misspelled (in which case they may not be correctly stemmed and index, and
+                                 should be corrected).</span></td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
@@ -1721,7 +1725,10 @@ element maxKwicsToShow { xsd:nonNegativeInteger }</pre>
                      <table class="wovenodd">
                         <tr>
                            <td colspan="2" class="wovenodd-col2"><span class="label">&lt;outputFolder&gt; </span>(<span>The name of the output folder into which the index data and JavaScript will be placed
-                                 in the site search. This should conform with the XML Name specification.</span>)</td>
+                                 in the site search. This should conform with the XML Name specification.</span>) <span>When the staticSearch build process creates its output, many files need to be added
+                                 to the website for which an index is being created. For convenience, all of these
+                                 files are stored in a single folder. This element is used to specify the name of that
+                                 folder.</span></td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
@@ -2348,7 +2355,12 @@ element stemmerFolder { xsd:NCName }</pre>
                                  indexing). These are typically words too common to be worth searching for, but every
                                  site will also have some specific terms which are used so widely across the site that
                                  they should be suppressed to control the index size. The list should be in plain text
-                                 with one word per line.</span>)</td>
+                                 with one word per line.</span>) <span>There are common stopwords files for most languages available on the Web, but it is
+                                 probably a good idea to take one of these and customize it for your project, since
+                                 there will be words in the website which are so common that it makes no sense to index
+                                 them, but they are not ordinary stopwords. For example, in a Website dedicated to
+                                 the work of John Keats, the name <span class="mentioned">keats</span> should probably be added to the stopwords file, since almost every page will include
+                                 it, and searching for it will be pointless.</span></td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
@@ -2566,7 +2578,11 @@ element versionFile { xsd:anyURI }</pre>
                         <tr>
                            <td colspan="2" class="wovenodd-col2"><span class="label">&lt;wildcardSearch&gt; </span>(<span>Whether or not to support wildcard searches. Note that wildcard searches are more
                                  effective when phrasal searching is also turned on, because the contexts available
-                                 for phrasal searches are also used to provide wildcard results.</span>)</td>
+                                 for phrasal searches are also used to provide wildcard results.</span>) <span>Wildcard searching can coexist with stemmed searching, but it is especially useful
+                                 when stemming is not available, either because there is no available stemmer for the
+                                 language of the site, or because the site contains multiple languages. Unless your
+                                 site is particularly large, we recommend turning on wildcard searching, and therefore
+                                 also phrasal searching (<a class="link_ref" href="#TEI.phrasalSearch" title="&lt;phrasalSearch&gt;">&lt;phrasalSearch&gt;</a>).</span></td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
@@ -2721,7 +2737,7 @@ element wildcardSearch { xsd:boolean }</pre>
             <!--
 	  Generated from index.xml using XSLT stylesheets version 7.50.1
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2021-01-28T00:18:49Z.
+	       on 2021-01-28T18:57:54Z.
 	       SAXON HE 10.0.
 		 --></address>
       </div>

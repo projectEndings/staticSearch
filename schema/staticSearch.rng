@@ -5,7 +5,7 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2021-01-28T00:18:37Z. 2019-2021.
+Schema generated from ODD source 2021-01-28T18:57:41Z. 2019-2021.
 TEI Edition: Version 4.1.0. Last updated on
 	19th August 2020, revision b414ba550
 TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
@@ -302,7 +302,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
       <element name="wildcardSearch" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Whether or not to support wildcard searches. Note that wildcard searches are
             more effective when phrasal searching is also turned on, because the contexts 
-            available for phrasal searches are also used to provide wildcard results.) </a:documentation>
+            available for phrasal searches are also used to provide wildcard results.) Wildcard searching can coexist with stemmed searching, but it is especially useful when stemming is not available, either because there is no available stemmer for the language of the site, or because the site contains multiple languages. Unless your site is particularly large, we recommend turning on wildcard searching, and therefore also phrasal searching (<code xmlns="http://www.w3.org/1999/xhtml">&lt;phrasalSearch&gt;</code>).</a:documentation>
          <data type="boolean"/>
       </element>
    </define>
@@ -318,14 +318,14 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
             when indexing). These are typically words too common to be worth searching for, but 
             every site will also have some specific terms which are used so widely across the site
             that they should be suppressed to control the index size. The list should be in plain text
-            with one word per line.) </a:documentation>
+            with one word per line.) There are common stopwords files for most languages available on the Web, but it is probably a good idea to take one of these and customize it for your project, since there will be words in the website which are so common that it makes no sense to index them, but they are not ordinary stopwords. For example, in a Website dedicated to the work of John Keats, the name keats should probably be added to the stopwords file, since almost every page will include it, and searching for it will be pointless.</a:documentation>
          <data type="anyURI"/>
       </element>
    </define>
    <define name="dictionaryFile">
       <element name="dictionaryFile" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The location of a dictionary file (one word per line) which will be used to check
-            tokens when indexing.) </a:documentation>
+            tokens when indexing.) The indexing process checks each word as it builds the index, and keeps a record of all words which are not found in the configured dictionary. This can be very useful; all words listed are either foreign (not part of the language of the dictionary) or perhaps misspelled (in which case they may not be correctly stemmed and index, and should be corrected).</a:documentation>
          <data type="anyURI"/>
       </element>
    </define>
@@ -333,7 +333,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
       <element name="outputFolder" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The name of the output folder into which the index data and JavaScript will 
               be placed in the site search. This should conform with the 
-              XML Name specification.) </a:documentation>
+              XML Name specification.) When the staticSearch build process creates its output, many files need to be added to the website for which an index is being created. For convenience, all of these files are stored in a single folder. This element is used to specify the name of that folder.</a:documentation>
          <data type="NCName"/>
       </element>
    </define>
