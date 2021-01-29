@@ -43,10 +43,36 @@ function ssHighlightOnLoad(){
   let encStr = sp.get('ssMark');
   if (encStr !== ''){
     let str = decodeURIComponent(encStr);
-    let re = new RegExp('(' + str.replace(/\s+/g, '\\s+') + ')', 'g');
-    let ctx = (document.location.hash != '')? document.getElementById(document.location.hash.substring(1)) : document.body;
-    ctx.innerHTML = ctx.innerHTML.replace(re, '<mark>$1</mark>');
-    let m = document.querySelector('mark');
+      let re = new RegExp('(' + str.replace(/\s+/g, '\\s+') + ')', 'g');
+      let ctx = (document.location.hash != '')? document.getElementById(document.location.hash.substring(1)) : document.body;
+      
+      function walkNodes(el){
+        let children = el.childNodes;
+        for (let i=children.length-1; i>=0; i--){
+          let n = children[i];
+          if ((n.nodeType == Node.TEXT_NODE)&&(n.textContent.match(re) !== null)){
+            let f = document.createDocumentFragment();
+            let t = n.textContent.replace(re, '@@@$1@@@');
+            for (let bit of t.split('@@@')){
+              if (bit.match(re) !== null){
+                let mark = document.createElement('mark');
+                mark.appendChild(document.createTextNode(bit));
+                f.appendChild(mark);
+              }
+              else{
+                f.appendChild(document.createTextNode(bit));
+              }
+            }
+            n.parentNode.replaceChild(f, n);
+          }
+          else{
+            if (n.nodeType == Node.ELEMENT_NODE){
+              walkNodes(n);
+            }
+          }
+        }
+      }
+      walkNodes(ctx);
     if (m !== null){
       m.scrollIntoView({block: 'center'});
     }
