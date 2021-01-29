@@ -7,6 +7,15 @@
   *
   * Free to anyone for any purpose, but
   * acknowledgement would be appreciated.
+  * 
+  * This file is provided as an example of how a project
+  * might implement support for highlighting search hits
+  * in a target page by including some simple JS in all
+  * pages on the site. It can most likely be used as-is
+  * in your project, but if your pages already have a lot
+  * of code that runs on page load, this may interfere 
+  * with it, so may have to be customized and integrated
+  * with your existing code.
   */
 
  /** WARNING:
@@ -37,6 +46,10 @@ function ssHighlightOnLoad(){
     let re = new RegExp('(' + str.replace(/\s+/g, '\\s+') + ')', 'g');
     let ctx = (document.location.hash != '')? document.getElementById(document.location.hash.substring(1)) : document.body;
     ctx.innerHTML = ctx.innerHTML.replace(re, '<mark>$1</mark>');
+    let m = document.querySelector('mark');
+    if (m !== null){
+      document.querySelector('mark').scrollIntoView({block: 'center'});
+    }
   }
 }
 
