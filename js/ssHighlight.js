@@ -48,7 +48,7 @@ function ssHighlightOnLoad(){
     ctx.innerHTML = ctx.innerHTML.replace(re, '<mark>$1</mark>');
     let m = document.querySelector('mark');
     if (m !== null){
-      document.querySelector('mark').scrollIntoView({block: 'center'});
+      m.scrollIntoView({block: 'center'});
     }
   }
 }

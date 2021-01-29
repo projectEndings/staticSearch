@@ -126,6 +126,7 @@ function showByMod() {
                   <li class="toc"><span class="headingNumber"> 7.7 </span><a class="toc toc_1" href="#searchBuildProcess" title="Running the search build process">Running the search build process</a></li>
                   <li class="toc"><span class="headingNumber"> 7.8 </span><a class="toc toc_1" href="#advancedFeatures" title="Advanced features">Advanced features</a><ul class="toc">
                         <li class="toc"><span class="headingNumber">7.8.1 </span><a class="toc toc_2" href="#customAttributes" title="Custom attributes">Custom attributes</a></li>
+                        <li class="toc"><span class="headingNumber">7.8.2 </span><a class="toc toc_2" href="#highlightTargetPage" title="Highlighting search hits on target pages">Highlighting search hits on target pages</a></li>
                      </ul>
                   </li>
                </ul>
@@ -585,7 +586,8 @@ function showByMod() {
                            are in steady development, so that if necessary it can be turned off, our the staticSearch
                            implementation can be updated to take account of changes. For sites intended to remain
                            unchanged or archived for any length of time, this feature should be left turned off.
-                           It is off by default.</li>
+                           It is off by default. A more reliable alternative is probably to use JavaScript to
+                           <a class="link_ref" href="#highlightTargetPage" title="Highlighting search hits on target pages">highlight hits on the target page</a>.</li>
                         <li class="item"><a class="link_ref" href="#TEI.verbose" title="&lt;verbose&gt;">&lt;verbose&gt;</a> is a boolean which turns on/off detailed output messages during the indexing process.
                            You might set this to true if something is not working as expected and you need to
                            do some debugging.</li>
@@ -617,8 +619,8 @@ function showByMod() {
                   <div class="p">The <a class="link_ref" href="#TEI.rules" title="&lt;rules&gt;">&lt;rules&gt;</a> elements specifies a list of conditions (using the <a class="link_ref" href="#TEI.rule" title="&lt;rule&gt;">&lt;rule&gt;</a> element) that tell the parser, using XPath statements in the <span class="att">match</span> attribute, specific weights to assign to particular parts of each document. For instance,
                      if you wanted all heading elements (<span class="gi">&lt;h1&gt;</span>, <span class="gi">&lt;h2&gt;</span>, etc) in documents to be given a greater weight and thus receive a higher score in
                      the results, you can do so using a rule like so: 
-                     <div id="index.xml-egXML-d38e614" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">2</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">h1 | h2 | h3 | h4 | h5 | h6</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> Since we're using XPath 3.0 and XSLT 3.0, this can also be simplified to: 
-                     <div id="index.xml-egXML-d38e618" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">2</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">*[matches(local-name(),'^h\d+$')]</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> (It is worth noting, however, the above example is unnecessary: all heading elements
+                     <div id="index.xml-egXML-d38e617" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">2</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">h1 | h2 | h3 | h4 | h5 | h6</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> Since we're using XPath 3.0 and XSLT 3.0, this can also be simplified to: 
+                     <div id="index.xml-egXML-d38e621" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">2</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">*[matches(local-name(),'^h\d+$')]</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> (It is worth noting, however, the above example is unnecessary: all heading elements
                      are given a weight of 2 by default, which is the only preconfigured weight in staticSearch.)</div>
                   <p>The value of the <span class="att">match</span> attribute is transformed in a XSLT template match attribute, and thus must follow
                      the same rules (i.e. no complex rules like <code>p/ancestor::div</code>). See the <a class="link_ref" href="https://www.w3.org/TR/xslt-30/#dt-pattern">W3C XSLT Specification</a> for further details on allowable pattern rules.</p>
@@ -627,8 +629,8 @@ function showByMod() {
                      index its contents on every page. These elements can be ignored simply by using a
                      <a class="link_ref" href="#TEI.rule" title="&lt;rule&gt;">&lt;rule&gt;</a> and setting its weight to 0. For instance, if you want to remove the header and the
                      footer from the search indexing process, you could write something like: 
-                     <div id="index.xml-egXML-d38e637" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>" <span class="attribute">match</span>="<span class="attributevalue">footer | header</span>"/&gt;</span></div> Or if you want to remove XHTML anchor tags (<span class="gi">&lt;a&gt;</span>) whose text is identical to the URL specified in its <span class="att">href</span>, you could do something like: 
-                     <div id="index.xml-egXML-d38e645" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>" <span class="attribute">match</span>="<span class="attributevalue">a[@href=./text()]</span>"/&gt;</span></div>
+                     <div id="index.xml-egXML-d38e640" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>" <span class="attribute">match</span>="<span class="attributevalue">footer | header</span>"/&gt;</span></div> Or if you want to remove XHTML anchor tags (<span class="gi">&lt;a&gt;</span>) whose text is identical to the URL specified in its <span class="att">href</span>, you could do something like: 
+                     <div id="index.xml-egXML-d38e648" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>" <span class="attribute">match</span>="<span class="attributevalue">a[@href=./text()]</span>"/&gt;</span></div>
                   </div>
                   <p>Note that the indexer does not tokenize any content in the <span class="gi">&lt;head&gt;</span> of the document (but as noted above, metadata can be configured into filters) and
                      that all elements in the <span class="gi">&lt;body&gt;</span> of a document are considered tokenizable. However, common elements that you might
@@ -644,22 +646,22 @@ function showByMod() {
                   <div class="p">When the staticSearch creates the keywords-in-contexts (the "kwic" or "snippets")
                      for each token, it does so by looking for the nearest block-level element that it
                      can use as its context. Take, for instance, this unordered list: 
-                     <div id="index.xml-egXML-d38e664" class="pre egXML_valid"><span class="element">&lt;ul&gt;</span><br/> <span class="element">&lt;li&gt;</span>Keyword-in-context search results. This is also configurable, since including contexts<br/>   increases the size of the index.<span class="element">&lt;/li&gt;</span><br/> <span class="element">&lt;li&gt;</span>Search filtering using any metadata you like, allowing users to limit their search
+                     <div id="index.xml-egXML-d38e667" class="pre egXML_valid"><span class="element">&lt;ul&gt;</span><br/> <span class="element">&lt;li&gt;</span>Keyword-in-context search results. This is also configurable, since including contexts<br/>   increases the size of the index.<span class="element">&lt;/li&gt;</span><br/> <span class="element">&lt;li&gt;</span>Search filtering using any metadata you like, allowing users to limit their search
                         to specific<br/>   document types.<span class="element">&lt;/li&gt;</span><br/><span class="element">&lt;/ul&gt;</span></div> Each <span class="gi">&lt;li&gt;</span> elements is, by default, a <span class="term">context</span> element, meaning that the snippet generated for each token will not extend beyond
                      the <span class="gi">&lt;li&gt;</span> element boundaries; in this case, if the <span class="gi">&lt;li&gt;</span> was not a context attribute, the term <span class="q">‘search’</span> would produce a context that looks something like: 
                      <pre class="pre_eg">"...the size of the index.<span style="font-weight:bold;">Search</span> filtering using any metadata you like,..."</pre>
                   </div>
                   <div class="p">Using the <a class="link_ref" href="#TEI.contexts" title="&lt;contexts&gt;">&lt;contexts&gt;</a> element, you can control what elements operate as contexts. For instance, say a page
                      contained a marginal note, encoded as a <span class="gi">&lt;span&gt;</span> in your document beside its point of attachment:<span id="Note1_return"><a class="notelink" title="This example taken from Thomas S. Kuhn, The Structure of Scientific Revolutions (50th anniversary edition), University of Chicago Press, 2012: p. 191." href="#Note1"><sup>1</sup></a></span> 
-                     <div id="index.xml-egXML-d38e700" class="pre egXML_valid"><span class="element">&lt;p&gt;</span>About that program I shall have nothing to say here,<span class="element">&lt;span <span class="attribute">class</span>="<span class="attributevalue">sidenote</span>"&gt;</span>Some information on this subject can be found in "Second Thoughts"<span class="element">&lt;/span&gt;</span> [...]<br/><span class="element">&lt;/p&gt;</span></div> Using CSS, the footnote might be alongside the text of the document in margin, or
+                     <div id="index.xml-egXML-d38e703" class="pre egXML_valid"><span class="element">&lt;p&gt;</span>About that program I shall have nothing to say here,<span class="element">&lt;span <span class="attribute">class</span>="<span class="attributevalue">sidenote</span>"&gt;</span>Some information on this subject can be found in "Second Thoughts"<span class="element">&lt;/span&gt;</span> [...]<br/><span class="element">&lt;/p&gt;</span></div> Using CSS, the footnote might be alongside the text of the document in margin, or
                      made into a clickable object using Javascript. However, since the tokenizer is unaware
                      of any server-side processing, it understands the <span class="gi">&lt;span&gt;</span> as an inline element and assumes the <span class="gi">&lt;p&gt;</span> constitutes the context of the element. A search for <span class="q">‘information’</span> might then return: 
                      <pre class="pre_eg">"...nothing to say here,Some <span style="font-weight:bold;">information</span> on this subject can be found...</pre> To tell the tokenizer that the <span class="gi">&lt;span&gt;</span> constitutes the context block for any of its token, use the <a class="link_ref" href="#TEI.context" title="&lt;context&gt;">&lt;context&gt;</a> element with an <span class="att">match</span> pattern: 
-                     <div id="index.xml-egXML-d38e729" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">match</span>="<span class="attributevalue">span[contains-token(@class,'sidenote')]</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
+                     <div id="index.xml-egXML-d38e732" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">match</span>="<span class="attributevalue">span[contains-token(@class,'sidenote')]</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
                   </div>
                   <div class="p">You can also configure it the other way: if a <span class="gi">&lt;div&gt;</span>, which is by default a context block, should not be understood as a context block,
                      then you can tell the parser to not consider it as such using <span class="att">context</span> set to false: 
-                     <div id="index.xml-egXML-d38e739" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">match</span>="<span class="attributevalue">div</span>" <span class="attribute">context</span>="<span class="attributevalue">false</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
+                     <div id="index.xml-egXML-d38e742" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">match</span>="<span class="attributevalue">div</span>" <span class="attribute">context</span>="<span class="attributevalue">false</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
                   </div>
                   <p>The default contexts elements are: </p>
                   <ul>
@@ -689,12 +691,12 @@ function showByMod() {
                      contexts and rules. For example, imagine that you are creating a special search page
                      that focuses only on the text describing images or figures in your documents. You
                      might do it like this: 
-                     <div id="index.xml-egXML-d38e788" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">match</span>="<span class="attributevalue">text()[not(ancestor::div[@class='figure']or ancestor::title)]</span>"<br/>  <span class="attribute">weight</span>="<span class="attributevalue">0</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> This specifies that all text nodes which are not part of the document title or descendants
+                     <div id="index.xml-egXML-d38e791" class="pre egXML_valid"><span class="element">&lt;rules&gt;</span><br/> <span class="element">&lt;rule <span class="attribute">match</span>="<span class="attributevalue">text()[not(ancestor::div[@class='figure']or ancestor::title)]</span>"<br/>  <span class="attribute">weight</span>="<span class="attributevalue">0</span>"/&gt;</span><br/><span class="element">&lt;/rules&gt;</span></div> This specifies that all text nodes which are not part of the document title or descendants
                      of <span class="tag">&lt;div class="figure"&gt;</span> should be ignored (<span class="att">weight</span>=<span class="val">0</span>), so only your target nodes will be indexed.</div>
                   <p>However, it's also likely that you will want to exclude certain features or documents
                      from a specialized search page, and this is done using the <a class="link_ref" href="#TEI.excludes" title="&lt;excludes&gt;">&lt;excludes&gt;</a> section and its child <a class="link_ref" href="#TEI.exclude" title="&lt;exclude&gt;">&lt;exclude&gt;</a> elements.</p>
                   <div class="p">Here is an example: 
-                     <div id="index.xml-egXML-d38e811" class="pre egXML_valid"><span class="element">&lt;excludes&gt;</span><br/><span class="comment">&lt;!-- We only index files which have illustrations in them. --&gt;</span><br/> <span class="element">&lt;exclude <span class="attribute">type</span>="<span class="attributevalue">index</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">html[not(descendant::meta[@name='Has illustration(s)'][@content='true'])]</span>"/&gt;</span><br/><span class="comment">&lt;!-- We ignore the document type filter, 
+                     <div id="index.xml-egXML-d38e814" class="pre egXML_valid"><span class="element">&lt;excludes&gt;</span><br/><span class="comment">&lt;!-- We only index files which have illustrations in them. --&gt;</span><br/> <span class="element">&lt;exclude <span class="attribute">type</span>="<span class="attributevalue">index</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">html[not(descendant::meta[@name='Has illustration(s)'][@content='true'])]</span>"/&gt;</span><br/><span class="comment">&lt;!-- We ignore the document type filter, 
                            because we are only indexing one type 
                            of document anyway. --&gt;</span><br/> <span class="element">&lt;exclude <span class="attribute">type</span>="<span class="attributevalue">filter</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">meta[@name='Document type']</span>"/&gt;</span><br/><span class="comment">&lt;!-- We exclude the filter that specifies 
                            these documents because it's pointless. --&gt;</span><br/> <span class="element">&lt;exclude <span class="attribute">type</span>="<span class="attributevalue">filter</span>"<br/>  <span class="attribute">match</span>="<span class="attributevalue">meta[@name='Has illustration(s)']</span>"/&gt;</span><br/><span class="element">&lt;/excludes&gt;</span></div> Here we use <span class="tag">&lt;exclude type="index"/&gt;</span> to specify that all documents which do not contain <span class="tag">&lt;meta name="Has illustration(s)" content="true"/&gt;&gt;</span> should be ignored. Then we use two <span class="tag">&lt;exclude type="filter"/&gt;</span> tags to specify first that the <span class="ident">Document type</span> filter should be ignored (i.e. it should not appear on the search page), and second,
@@ -711,11 +713,11 @@ function showByMod() {
                   also be well-formed XML, so it can be processed), containing all the site components
                   you need, and then the search build process will insert all the necessary components
                   into that file. The only requirement is that the page contains one <span class="gi">&lt;div&gt;</span> element with the correct <span class="att">id</span> attribute: 
-                  <div id="index.xml-egXML-d38e844" class="pre egXML_valid"><span class="element">&lt;div <span class="attribute">id</span>="<span class="attributevalue">staticSearch</span>"&gt;</span> <br/> [...content will be supplied by the build process...]<br/><span class="element">&lt;/div&gt;</span></div> This <span class="gi">&lt;div&gt;</span> will be empty initially. The build process will find insert the search controls,
+                  <div id="index.xml-egXML-d38e847" class="pre egXML_valid"><span class="element">&lt;div <span class="attribute">id</span>="<span class="attributevalue">staticSearch</span>"&gt;</span> <br/> [...content will be supplied by the build process...]<br/><span class="element">&lt;/div&gt;</span></div> This <span class="gi">&lt;div&gt;</span> will be empty initially. The build process will find insert the search controls,
                   scripts and results <span class="gi">&lt;div&gt;</span> into this container. Then whenever you rebuild the search for your site, the contents
                   will be replaced. There is no need to make sure it's empty every time.</div>
                <div class="p">The search process will also add a CSS <span class="gi">&lt;style&gt;</span> element to the <span class="gi">&lt;head&gt;</span> of the document: 
-                  <div id="index.xml-egXML-d38e858" class="pre egXML_valid"><span class="element">&lt;style <span class="attribute">id</span>="<span class="attributevalue">ssCss</span>"&gt;</span> [...styles for search controls...]<br/><span class="element">&lt;/style&gt;</span></div> You can customize this CSS by providing your own CSS that overrides it, using <span class="gi">&lt;style&gt;</span>, or <span class="gi">&lt;link&gt;</span>, placed after it in the <span class="gi">&lt;head&gt;</span> element, or by replacing the inserted CSS after the build process.</div>
+                  <div id="index.xml-egXML-d38e861" class="pre egXML_valid"><span class="element">&lt;style <span class="attribute">id</span>="<span class="attributevalue">ssCss</span>"&gt;</span> [...styles for search controls...]<br/><span class="element">&lt;/style&gt;</span></div> You can customize this CSS by providing your own CSS that overrides it, using <span class="gi">&lt;style&gt;</span>, or <span class="gi">&lt;link&gt;</span>, placed after it in the <span class="gi">&lt;head&gt;</span> element, or by replacing the inserted CSS after the build process.</div>
                <p>Note that once your file has been processed and all this content has been added, you
                   can process it again at any time; there is no need to start every time with a clean,
                   empty version of the search page.</p>
@@ -758,23 +760,46 @@ function showByMod() {
                      result string (which is in the form of an HTML <span class="gi">&lt;li&gt;</span> element).</p>
                   <div class="p">Imagine that some of the paragraphs in your documents are special in some way. You
                      could add an attribute whose name begins with <span class="ident">data-ss-</span> to each of those paragraphs, like this: 
-                     <div id="index.xml-egXML-d38e930" class="pre egXML_valid"><span class="element">&lt;p <span class="attribute">data-ss-type</span>="<span class="attributevalue">special</span>"&gt;</span>This paragraph is special for some reason or other...<span class="element">&lt;/p&gt;</span></div> When the staticSearch indexer creates KWIC extracts, it automatically harvests any
+                     <div id="index.xml-egXML-d38e933" class="pre egXML_valid"><span class="element">&lt;p <span class="attribute">data-ss-type</span>="<span class="attributevalue">special</span>"&gt;</span>This paragraph is special for some reason or other...<span class="element">&lt;/p&gt;</span></div> When the staticSearch indexer creates KWIC extracts, it automatically harvests any
                      attribute whose name begins with <span class="ident">data-ss-</span> from the containing element or its ancestors, and adds them to the keyword-in-context
                      record in the index. Then when that KWIC string is displayed as the result of a search,
                      the attribute will be added to the HTML <span class="gi">&lt;li&gt;</span> element on the page: 
-                     <div id="index.xml-egXML-d38e938" class="pre egXML_valid"><span class="element">&lt;li <span class="attribute">data-ss-type</span>="<span class="attributevalue">special</span>"&gt;</span>[KWIC with marked search hit, link, etc.]<span class="element">&lt;/li&gt;</span></div> This means that you can add your own CSS or JavaScript to make that KWIC appear distinct
+                     <div id="index.xml-egXML-d38e941" class="pre egXML_valid"><span class="element">&lt;li <span class="attribute">data-ss-type</span>="<span class="attributevalue">special</span>"&gt;</span>[KWIC with marked search hit, link, etc.]<span class="element">&lt;/li&gt;</span></div> This means that you can add your own CSS or JavaScript to make that KWIC appear distinct
                      from other KWICs which come from non-special paragraphs.</div>
                   <p>You can add as many custom attributes as you like (although bear in mind that they
                      increase the size of the index JSON files slightly).</p>
                   <div class="p">One specific custom attribute has built-in handling that you may find useful. If you
                      add the attribute <span class="att">data-ss-img</span> with a value that points to an image, that image will be displayed to the left of
                      the KWIC string. For example, if you do this: 
-                     <div id="index.xml-egXML-d38e948" class="pre egXML_valid"><span class="element">&lt;p <span class="attribute">data-ss-img</span>="<span class="attributevalue">images/elephant.png</span>"&gt;</span>This paragraph is all about elephants...<span class="element">&lt;/p&gt;</span></div> then any KWIC results from that paragraph will show the <span class="ident">elephant.png</span> image to the left of the KWIC text. This can be especially useful if your site contains
+                     <div id="index.xml-egXML-d38e951" class="pre egXML_valid"><span class="element">&lt;p <span class="attribute">data-ss-img</span>="<span class="attributevalue">images/elephant.png</span>"&gt;</span>This paragraph is all about elephants...<span class="element">&lt;/p&gt;</span></div> then any KWIC results from that paragraph will show the <span class="ident">elephant.png</span> image to the left of the KWIC text. This can be especially useful if your site contains
                      large documents which are broken into sections, and those sections can be helpfully
                      represented by images; the search results will be easier for the user to understand
                      by virtue of the associated images. Image URLs should be relative to the location
                      of the search page, not the original source document, since the images will be displayed
                      on the search page.</div>
+               </div>
+               <div class="teidiv2" id="highlightTargetPage">
+                  <h3><span class="headingNumber">7.8.2 </span><span class="head">Highlighting search hits on target pages</span></h3>
+                  <p>When you use a conventional search engine which is based on a backend database and
+                     configured for a specific dynamic website, it is not unusual to find that when you
+                     follow a link to a search hit on a target page, the hit will be highlighted on that
+                     page, because the backend database is able to pre-process it. With staticSearch, that's
+                     not straightforward, because there is no ‘engine’ that is preprocessing your HTML
+                     pages. However, if this is important to you, there is a workaround that you can use.
+                     Since staticSearch does not modify your web pages, though, the implementation has
+                     to be done by you.</p>
+                  <p>By default, when you turn on <a class="link_ref" href="#TEI.linkToFragmentId" title="&lt;linkToFragmentId&gt;">&lt;linkToFragmentId&gt;</a> in the configuration, each keyword-in-context result that shows on the search page
+                     will have its own specific link to the fragment of the document which contains the
+                     hit. Those links are also provided with a search string, like this: <code>https://example.com/egPage.html?ssMark=elephant#animals</code> This link points to the section of the document which has <span class="att">id</span>=<span class="val">animals</span>, but it also says <span class="q">‘the hit text is the word <span class="mentioned">elephant</span>.’</span> Some JavaScript that runs on the target page, <span class="ident">egPage.html</span> (which you control) will be able to parse the value of the query parameter <span class="ident">ssMark</span> in order to find the hit text, and highlight it in some way.</p>
+                  <p>Obviously you can implement this any way you like (or just ignore it), but we also
+                     supply a small demonstration JavaScript library which implements this functionality,
+                     called <span class="ident">ssHighlight.js</span>. This JS file is included into the staticSearch output folder (see <a class="link_ref" href="#TEI.outputFolder" title="&lt;outputFolder&gt;">&lt;outputFolder&gt;</a>) by default, and if you include it into the header of your own pages, it will probably
+                     do the highlighting without further intervention. If, however, you have lots of existing
+                     JavaScript that runs when the page loads, there may be some interference between this
+                     library and your own code, so you may have to make some adjustments to the code.</p>
+                  <p>Note that another alternative is to use the <a class="link_ref" href="#TEI.scrollToTextFragment" title="&lt;scrollToTextFragment&gt;">&lt;scrollToTextFragment&gt;</a> feature; this does not require any special JavaScript, but at the time of writing
+                     it is supported only on some Chromium-based browsers and is non-standard and somewhat
+                     unreliable.</p>
                </div>
             </div>
          </section>
@@ -846,7 +871,7 @@ function showByMod() {
                   <tr>
                      <td>How do I get staticSearch to ignore large chunks of my document?</td>
                      <td>Any element with a weight of 0 is ignored completely by the indexer, so add a <a class="link_ref" href="#TEI.rule" title="&lt;rule&gt;">&lt;rule&gt;</a> for the element. So to ignore all elements with the class <span class="val">ignoreThisElement</span>, you could do something like: 
-                        <div id="index.xml-egXML-d38e1009" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>"<br/> <span class="attribute">match</span>="<span class="attributevalue">div[contains-token(@class,'ignoreThisElement')</span>"/&gt;</span></div>
+                        <div id="index.xml-egXML-d38e1053" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>"<br/> <span class="attribute">match</span>="<span class="attributevalue">div[contains-token(@class,'ignoreThisElement')</span>"/&gt;</span></div>
                      </td>
                   </tr>
                   <tr>
@@ -857,13 +882,13 @@ function showByMod() {
                      <td>How do I get staticSearch to ignore an element, but retain its text in the KWIC?</td>
                      <td>Here, you'll want to use the <a class="link_ref" href="#TEI.exclude" title="&lt;exclude&gt;">&lt;exclude&gt;</a> function, which excludes the element from indexing, but doesn't remove it from the
                         document itself. So, if you wanted to exclude all keyboard entry items (<span class="gi">&lt;xh:kbd&gt;</span>), but still have them in the KWIC, you could do something like: 
-                        <div id="index.xml-egXML-d38e1035" class="pre egXML_valid"><span class="element">&lt;exclude <span class="attribute">match</span>="<span class="attributevalue">kbd</span>"<br/> <span class="attribute">type</span>="<span class="attributevalue">index</span>"/&gt;</span></div>
+                        <div id="index.xml-egXML-d38e1079" class="pre egXML_valid"><span class="element">&lt;exclude <span class="attribute">match</span>="<span class="attributevalue">kbd</span>"<br/> <span class="attribute">type</span>="<span class="attributevalue">index</span>"/&gt;</span></div>
                      </td>
                   </tr>
                   <tr>
                      <td>How can I get staticSearch to show debugging messages?</td>
                      <td>Switch <a class="link_ref" href="#TEI.verbose" title="&lt;verbose&gt;">&lt;verbose&gt;</a> to true in the configuration file: 
-                        <div id="index.xml-egXML-d38e1044" class="pre egXML_valid"><span class="element">&lt;config xmlns="http://hcmc.uvic.ca/ns/staticSearch"&gt;</span><br/> <span class="element">&lt;params&gt;</span><br/>  <br/><span class="comment">&lt;!--....--&gt;</span><br/>  <span class="element">&lt;verbose&gt;</span>true<span class="element">&lt;/verbose&gt;</span><br/><span class="comment">&lt;!--....--&gt;</span><br/> <span class="element">&lt;/params&gt;</span><br/><span class="comment">&lt;!--Rules, etc--&gt;</span><br/><span class="element">&lt;/config&gt;</span></div>
+                        <div id="index.xml-egXML-d38e1088" class="pre egXML_valid"><span class="element">&lt;config xmlns="http://hcmc.uvic.ca/ns/staticSearch"&gt;</span><br/> <span class="element">&lt;params&gt;</span><br/>  <br/><span class="comment">&lt;!--....--&gt;</span><br/>  <span class="element">&lt;verbose&gt;</span>true<span class="element">&lt;/verbose&gt;</span><br/><span class="comment">&lt;!--....--&gt;</span><br/> <span class="element">&lt;/params&gt;</span><br/><span class="comment">&lt;!--Rules, etc--&gt;</span><br/><span class="element">&lt;/config&gt;</span></div>
                      </td>
                   </tr>
                   <tr>
@@ -872,6 +897,13 @@ function showByMod() {
                      <td>The best way to do this is to ensure that <a class="link_ref" href="#TEI.linkToFragmentId" title="&lt;linkToFragmentId&gt;">&lt;linkToFragmentId&gt;</a> is set to the <span class="val">true</span> and that the input HTML contains ids at whatever level you think is most helpful.
                         For instance, if possible, you could give each <span class="gi">&lt;xhtml:p&gt;</span> element an <span class="att">id</span>, which would mean that each KWIC could be linked to the right paragraph in the input
                         document.</td>
+                  </tr>
+                  <tr>
+                     <td>How can I get staticSearch to highlight the found text in a target document?</td>
+                     <td>There are two approaches to this: you could implement a JavaScript solution as explained
+                        in <a class="link_ref" href="#highlightTargetPage" title="Highlighting search hits on target pages">Highlighting search hits on target pages</a>, or you could turn on the <span class="gi">&lt;scrollToFragmentId&gt;</span> experimental feature supported by some Chromium-based browsers. The former requires
+                        some modification to your site pages to add some JavaScript, while the latter is non-standard
+                        and not really reliable or consistent.</td>
                   </tr>
                </table>
             </div>
@@ -894,6 +926,9 @@ function showByMod() {
                      mechanism using <a class="link_ref" href="#customAttributes" title="Custom attributes">custom attributes</a>.</li>
                   <li class="item">The CSS for the search page by the indexing process is now more easily accessible
                      in a separate file <span class="ident">css/ssSearch.css</span>, which is linked into the search page at build time.</li>
+                  <li class="item">Links to target documents from keyword-in-context results now include a search string
+                     parameter that specifies the hit text, so that JavaScript running in the target page
+                     can highlight the search hit(s) and scroll to them. See <a class="link_ref" href="#highlightTargetPage" title="Highlighting search hits on target pages">Highlighting search hits on target pages</a> for more information.</li>
                </ul>
             </div>
             <div class="teidiv1" id="newIn1.1">
@@ -2737,7 +2772,7 @@ element wildcardSearch { xsd:boolean }</pre>
             <!--
 	  Generated from index.xml using XSLT stylesheets version 7.50.1
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2021-01-28T18:57:54Z.
+	       on 2021-01-29T21:36:16Z.
 	       SAXON HE 10.0.
 		 --></address>
       </div>
