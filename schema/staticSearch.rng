@@ -5,7 +5,7 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2021-01-29T21:36:04Z. 2019-2021.
+Schema generated from ODD source 2021-01-31T22:56:37Z. 2019-2021.
 TEI Edition: Version 4.1.0. Last updated on
 	19th August 2020, revision b414ba550
 TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
@@ -86,6 +86,9 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
             </optional>
             <optional>
                <ref name="outputFolder"/>
+            </optional>
+            <optional>
+               <ref name="resultsPerPage"/>
             </optional>
          </interleave>
       </element>
@@ -304,6 +307,14 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
             more effective when phrasal searching is also turned on, because the contexts 
             available for phrasal searches are also used to provide wildcard results.) Wildcard searching can coexist with stemmed searching, but it is especially useful when stemming is not available, either because there is no available stemmer for the language of the site, or because the site contains multiple languages. Unless your site is particularly large, we recommend turning on wildcard searching, and therefore also phrasal searching (<code xmlns="http://www.w3.org/1999/xhtml">&lt;phrasalSearch&gt;</code>).</a:documentation>
          <data type="boolean"/>
+      </element>
+   </define>
+   <define name="resultsPerPage">
+      <element name="resultsPerPage" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The maximum number of document results to be displayed per page. All results
+            are displayed by default; setting resultsPerPage to a positive integer creates a Show More/Show All
+            widget at the bottom of the batch of results.) </a:documentation>
+         <data type="nonNegativeInteger"/>
       </element>
    </define>
    <define name="verbose">
