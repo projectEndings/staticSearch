@@ -368,8 +368,10 @@
                                             <label for="{$filterId}"><xsl:value-of select="$filterName"/>: </label>
                                             <select id="{$filterId}" title="{$filterName}" class="staticSearch.bool">
                                                 <option value="">?</option>
-                                                <option value="true">true</option>
-                                                <option value="false">false</option>
+                                                <!-- Check mark = true -->
+                                                <option value="true">&#x2714;</option>
+                                                <!-- Cross = false -->
+                                                <option value="false">&#x2718;</option>
                                             </select>
                                         </span>
                                     </xsl:for-each>
