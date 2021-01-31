@@ -455,6 +455,12 @@
                 <xso:param name="scrollToTextFragment" select="false()"/>
             </xsl:if>
             
+            <!--Add resultsPerPage: default to 0-->
+            <xsl:if test="not($configDoc//params/resultsPerPage)">
+                <xso:param name="resultsPerPage" select="0"/>
+            </xsl:if>
+            
+            
             <!-- Finally, add the parsed-out version string from the versionFile. -->
             <xso:param name="versionString"><xsl:value-of select="if (($versionDocUri != '') and (unparsed-text-available($versionDocUri))) then concat('_', replace(normalize-space(unparsed-text($versionDocUri)), '\s+', '_')) else ''"/></xso:param>
             
@@ -628,13 +634,6 @@
         </xso:template>
     </xsl:template>
     
-
-    
-    
-
- 
- 
- 
  
     <!--**************************************************************
        *                                                            * 
