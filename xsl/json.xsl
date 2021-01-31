@@ -1018,14 +1018,21 @@
         <xd:desc><xd:ref name="hcmc:getDocTitle" type="function">hcmc:getDocTitle</xd:ref> is a simple function to retrieve 
                 the document title, which we may have to construct if there's nothing usable.</xd:desc>
         <xd:param name="doc">The input document, which must be an HTML element.</xd:param>
-        <xd:result>A string title, derived either from the document's actual title (preferable) or the document's @id if all else fails.</xd:result>
+        <xd:result>A string title, derived from the document's actual title, a configured document title,
+            or the document's @id if all else fails.</xd:result>
     </xd:doc>
     <xsl:function name="hcmc:getDocTitle" as="xs:string">
         <xsl:param name="doc" as="element(html)"/>
         <xsl:variable name="defaultTitle" select="normalize-space(string-join($doc//head/title[1]/descendant::text(),''))" as="xs:string?"/>
+        <xsl:variable name="docTitle" 
+            select="$doc/head/meta[@name='docTitle'][contains-token(@class,'staticSearch.docTitle')][not(@data-staticSearch-exclude)]"
+            as="element(meta)*"/>
         <xsl:choose>
-            <xsl:when test="$doc/head/meta[@name='docTitle'][@class='staticSearch.docTitle']">
-                <xsl:value-of select="normalize-space($doc/head/meta[@name='docTitle'][@class='staticSearch.docTitle'][1]/@content)"/>
+            <xsl:when test="exists($docTitle)">
+                <xsl:if test="count($docTitle) gt 1">
+                    <xsl:message>WARNING: Multiple docTitles declared in <xsl:value-of select="$doc/@data-staticSearch-relativeUri"/>. Using <xsl:value-of select="$docTitle[1]/@content"/></xsl:message>
+                </xsl:if>
+                <xsl:value-of select="normalize-space($docTitle[1]/@content)"/>
             </xsl:when>
             <xsl:when test="string-length($defaultTitle) gt 0">
                 <xsl:value-of select="$defaultTitle"/>
@@ -1051,11 +1058,19 @@
     </xd:doc>
     <xsl:function name="hcmc:getDocThumbnail" as="element(j:string)?">
         <xsl:param name="doc" as="element(html)"/>
+        <xsl:variable name="docImage" select="$doc/head/meta[@name='docImage'][contains-token(@class,'staticSearch.docImage')][not(@data-staticSearch-exclude)]" 
+            as="element(meta)*"/>
+        <xsl:variable name="docSortKey" 
+            select="$doc/head/meta[@name='docSortKey'][contains-token(@class,'staticSearch.docSortKey')][not(@data-staticSearch-exclude)]" 
+            as="element(meta)*"/>
         <xsl:choose>
-            <xsl:when test="$doc/head/meta[@name='docImage'][@class='staticSearch.docImage']">
-                <j:string><xsl:value-of select="$doc/head/meta[@name='docImage'][@class='staticSearch.docImage'][1]/@content"/></j:string>
+            <xsl:when test="exists($docImage)">
+                <xsl:if test="count($docImage) gt 1">
+                    <xsl:message>WARNING: Multiple docImages declared in <xsl:value-of select="$doc/@data-staticSearch-relativeUri"/>. Using <xsl:value-of select="$docImage[1]/@content"/></xsl:message>
+                </xsl:if>
+                <j:string><xsl:value-of select="$docImage[1]/@content"/></j:string>
             </xsl:when>
-            <xsl:when test="$doc/head/meta[@name='docSortKey'][@class='staticSearch.docSortKey']">
+            <xsl:when test="exists($docSortKey)">
                 <j:string></j:string>
             </xsl:when>
         </xsl:choose>
@@ -1065,15 +1080,22 @@
         <xd:desc><xd:ref name="hcmc:getDocSortKey" type="function">hcmc:getDocSortKey</xd:ref> 
             generates a j:string element containing a string read
             from the meta[@name='ssDocSortKey'] element if there
-            is one, or the empty sequence if not..</xd:desc>
+            is one, or the empty sequence if not.</xd:desc>
         <xd:param name="doc">The input document, which must be an HTML element.</xd:param>
         <xd:result>A j:string element, if there is a configured sort key, or the empty sequence.</xd:result>
     </xd:doc>
     <xsl:function name="hcmc:getDocSortKey" as="element(j:string)?">
         <xsl:param name="doc" as="element(html)"/>
-        <xsl:if test="$doc/head/meta[@name='docSortKey'][@class='staticSearch.docSortKey']">
-            <j:string><xsl:value-of select="$doc/head/meta[@name='docSortKey'][@class='staticSearch.docSortKey'][1]/@content"/></j:string>
+        <xsl:variable name="docSortKey" 
+            select="$doc/head/meta[@name='docSortKey'][contains-token(@class,'staticSearch.docSortKey')][not(@data-staticSearch-exclude)]" 
+            as="element(meta)*"/>
+        <xsl:if test="exists($docSortKey)">
+            <xsl:if test="count($docSortKey) gt 1">
+                <xsl:message>WARNING: Multiple docSortKeys declared in <xsl:value-of select="$doc/@data-staticSearch-relativeUri"/>. Using <xsl:value-of select="$docSortKey[1]/@content"/></xsl:message>
+            </xsl:if>
+            <j:string><xsl:value-of select="$docSortKey[1]/@content"/></j:string>
         </xsl:if>
     </xsl:function>
+    
     
 </xsl:stylesheet>
