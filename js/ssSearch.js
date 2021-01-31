@@ -90,6 +90,8 @@
   ss.captions['en'].strScore             = 'Score: ';
   ss.captions['en'].strSearchTooBroad    = 'Your search is too broad. Include more letters in every term.';
   ss.captions['en'].strDiscardedTerms    = 'Not searched (too common or too short): ';
+  ss.captions['en'].strShowMore          = 'Show more';
+  ss.captions['en'].strShowAll           = 'Show all';
   //French
   ss.captions['fr'] = {};
   ss.captions['fr'].strSearching         = 'Recherche en cours...';
@@ -102,7 +104,8 @@
   ss.captions['fr'].strScore             = 'Score: ';
   ss.captions['fr'].strSearchTooBroad    = 'Votre recherche est trop large. Inclure plus de lettres dans chaque terme.';
   ss.captions['fr'].strDiscardedTerms    = 'Recherche inaboutie (termes trop fréquents ou trop brefs): ';
-
+  ss.captions['fr'].strShowMore          = 'Montrez plus';
+  ss.captions['fr'].strShowAll           = 'Montrez tout';
 /**
   * @property ss.stopwords
   * @type {Array}
