@@ -173,6 +173,8 @@ function showByMod() {
                      <li class="toc"><span class="headingNumber"> 7.8 </span><a href="howDoIUseIt.html#advancedFeatures" class="toc toc_1" title="Advanced features">Advanced features</a><ul class="toc">
                            
                            <li class="toc"><span class="headingNumber">7.8.1 </span><a href="howDoIUseIt.html#customAttributes" class="toc toc_2" title="Custom attributes">Custom attributes</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">7.8.2 </span><a href="howDoIUseIt.html#highlightTargetPage" class="toc toc_2" title="Highlighting search hits on target pages">Highlighting search hits on target pages</a></li>
                            </ul>
                         </li>
                      </ul>
@@ -190,7 +192,9 @@ function showByMod() {
                
                <li class="toc"><span class="headingNumber">10 </span><a href="newSinceVersion1.html" class="toc toc_0" title="Whats new since version 1.0">What's new since version 1.0?</a><ul class="toc">
                      
-                     <li class="toc"><span class="headingNumber">10.1 </span><a href="newSinceVersion1.html#index.xml-body.1_div.10_div.1" class="toc toc_1">Changes in version 1.1</a></li>
+                     <li class="toc"><span class="headingNumber">10.1 </span><a href="newSinceVersion1.html#newIn1.2" class="toc toc_1" title="Changes in version 1.2">Changes in version 1.2</a></li>
+                     
+                     <li class="toc"><span class="headingNumber">10.2 </span><a href="newSinceVersion1.html#newIn1.1" class="toc toc_1" title="Changes in version 1.1">Changes in version 1.1</a></li>
                      </ul>
                   </li>
                
@@ -381,7 +385,13 @@ element config { <a class="link_ref" href="#TEI.params" title="&lt;params&gt;">p
                      <tr>
                         
                         <td colspan="2" class="wovenodd-col2"><span class="label">&lt;context&gt; </span>(<span>A context definition, providing a match attribute that identifies the context, allowing
-                              keyword-in-context fragments to be bounded by a specific context.</span>)</td>
+                              keyword-in-context fragments to be bounded by a specific context.</span>) <span>When the indexer is extracting keyword-in-context strings for each word, it uses a
+                              common-sense approach based on common element definitions, so that for example when
+                              it reaches the end of a paragraph, it will not continue into the next paragraph to
+                              get more context words. You may have special runs of text in your document collection
+                              which do not appear to be bounding contexts, but actually are; for example, you may
+                              have span elements with <span class="att">class</span>=<span class="val">note</span> which appear in the middle of sentences but are not actually part of them. Use <a class="link_ref" href="#TEI.context" title="&lt;context&gt;">&lt;context&gt;</a> elements to identify these special contexts so that the indexer knows the right boundaries
+                              from which to retrieve its keyword-in-context strings.</span></td>
                         </tr>
                      
                      <tr>
@@ -680,7 +690,11 @@ element createContexts { xsd:boolean }</pre>
                      <tr>
                         
                         <td colspan="2" class="wovenodd-col2"><span class="label">&lt;dictionaryFile&gt; </span>(<span>The location of a dictionary file (one word per line) which will be used to check
-                              tokens when indexing.</span>)</td>
+                              tokens when indexing.</span>) <span>The indexing process checks each word as it builds the index, and keeps a record of
+                              all words which are not found in the configured dictionary. This can be very useful;
+                              all words listed are either foreign (not part of the language of the dictionary) or
+                              perhaps misspelled (in which case they may not be correctly stemmed and index, and
+                              should be corrected).</span></td>
                         </tr>
                      
                      <tr>
@@ -765,7 +779,11 @@ element dictionaryFile { xsd:anyURI }</pre>
                      <tr>
                         
                         <td colspan="2" class="wovenodd-col2"><span class="label">&lt;exclude&gt; </span>(<span>An exclusion definition, which excludes either documents or filters as defined by
-                              an XPath in match.</span>)</td>
+                              an XPath in match.</span>) <span>Exclude elements can be used to identify documents or parts of documents to be completely
+                              omitted from indexing (for example, footer elements or banner headings are commonly
+                              ignored). Another usage is common if you have multiple search engines/pages configured
+                              for your site, each with its own special features; in this case, you may want one
+                              specific search index/page to ignore filter controls (HTML <span class="gi">&lt;meta&gt;</span> elements, as described in <a href="searchFacetFeatures.html" class="link_ptr" title="Search facet features"><span class="headingNumber">4 </span>Search facet features</a>) which are provided to support other search pages.</span></td>
                         </tr>
                      
                      <tr>
@@ -1411,7 +1429,10 @@ element maxKwicsToShow { xsd:nonNegativeInteger }</pre>
                      <tr>
                         
                         <td colspan="2" class="wovenodd-col2"><span class="label">&lt;outputFolder&gt; </span>(<span>The name of the output folder into which the index data and JavaScript will be placed
-                              in the site search. This should conform with the XML Name specification.</span>)</td>
+                              in the site search. This should conform with the XML Name specification.</span>) <span>When the staticSearch build process creates its output, many files need to be added
+                              to the website for which an index is being created. For convenience, all of these
+                              files are stored in a single folder. This element is used to specify the name of that
+                              folder.</span></td>
                         </tr>
                      
                      <tr>
@@ -1786,7 +1807,10 @@ element recurse { xsd:boolean }</pre>
                      <tr>
                         
                         <td colspan="2" class="wovenodd-col2"><span class="label">&lt;rule&gt; </span>(<span>A rule that specifies a document path as XPath in match, and provides weighting for
-                              search terms found in that context.</span>)</td>
+                              search terms found in that context.</span>) <span>The rule element is used to identify nodes in the XHTML document collection which
+                              should be treated in a special manner when indexed; either they might be ignored (if
+                              <span class="att">weight</span>=<span class="val">0</span>), or any words found in them might be given greater weight than words in normal contexts
+                              <span class="att">weight</span>&gt;<span class="val">1</span>. Words appearing in headings or titles, for example, might be weighted more heavily.</span></td>
                         </tr>
                      
                      <tr>
@@ -2192,7 +2216,8 @@ element scrollToTextFragment { xsd:boolean }</pre>
                      <tr>
                         
                         <td colspan="2" class="wovenodd-col2"><span class="label">&lt;searchFile&gt; </span>(<span>The search file (aka page) that will be the primary access point for the staticSearch.
-                              Note that this page must be at the root of the collection directory.</span>)</td>
+                              Note that this page must be at the root of the collection directory.</span>) <span>The search page is a regular HTML page which forms part of your site. The only important
+                              characteristic it must have is a <span class="gi">&lt;div&gt;</span> element with <span class="att">id</span>=<span class="val">staticSearch</span>, whose contents will be rewritten by the staticSearch build process. See <a href="howDoIUseIt.html#searchPage" class="link_ptr" title="Creating a search page"><span class="headingNumber">7.6 </span>Creating a search page</a>.</span></td>
                         </tr>
                      
                      <tr>
@@ -2366,7 +2391,12 @@ element stemmerFolder { xsd:NCName }</pre>
                               indexing). These are typically words too common to be worth searching for, but every
                               site will also have some specific terms which are used so widely across the site that
                               they should be suppressed to control the index size. The list should be in plain text
-                              with one word per line.</span>)</td>
+                              with one word per line.</span>) <span>There are common stopwords files for most languages available on the Web, but it is
+                              probably a good idea to take one of these and customize it for your project, since
+                              there will be words in the website which are so common that it makes no sense to index
+                              them, but they are not ordinary stopwords. For example, in a Website dedicated to
+                              the work of John Keats, the name <span class="mentioned">keats</span> should probably be added to the stopwords file, since almost every page will include
+                              it, and searching for it will be pointless.</span></td>
                         </tr>
                      
                      <tr>
@@ -2708,7 +2738,11 @@ element versionFile { xsd:anyURI }</pre>
                         
                         <td colspan="2" class="wovenodd-col2"><span class="label">&lt;wildcardSearch&gt; </span>(<span>Whether or not to support wildcard searches. Note that wildcard searches are more
                               effective when phrasal searching is also turned on, because the contexts available
-                              for phrasal searches are also used to provide wildcard results.</span>)</td>
+                              for phrasal searches are also used to provide wildcard results.</span>) <span>Wildcard searching can coexist with stemmed searching, but it is especially useful
+                              when stemming is not available, either because there is no available stemmer for the
+                              language of the site, or because the site contains multiple languages. Unless your
+                              site is particularly large, we recommend turning on wildcard searching, and therefore
+                              also phrasal searching (<a class="link_ref" href="#TEI.phrasalSearch" title="&lt;phrasalSearch&gt;">&lt;phrasalSearch&gt;</a>).</span></td>
                         </tr>
                      
                      <tr>
@@ -2964,7 +2998,7 @@ element wildcardSearch { xsd:boolean }</pre>
             <!--
 	  Generated from index.xml using XSLT stylesheets version 7.50.1
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2021-01-26T23:30:04Z.
+	       on 2021-01-29T21:36:16Z.
 	       SAXON HE 10.0.
 		 --></address>
          </div>

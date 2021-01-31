@@ -173,6 +173,8 @@ function showByMod() {
                      <li class="toc"><span class="headingNumber"> 7.8 </span><a href="howDoIUseIt.html#advancedFeatures" class="toc toc_1" title="Advanced features">Advanced features</a><ul class="toc">
                            
                            <li class="toc"><span class="headingNumber">7.8.1 </span><a href="howDoIUseIt.html#customAttributes" class="toc toc_2" title="Custom attributes">Custom attributes</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">7.8.2 </span><a href="howDoIUseIt.html#highlightTargetPage" class="toc toc_2" title="Highlighting search hits on target pages">Highlighting search hits on target pages</a></li>
                            </ul>
                         </li>
                      </ul>
@@ -190,7 +192,9 @@ function showByMod() {
                
                <li class="toc"><span class="headingNumber">10 </span><a href="newSinceVersion1.html" class="toc toc_0" title="Whats new since version 1.0">What's new since version 1.0?</a><ul class="toc">
                      
-                     <li class="toc"><span class="headingNumber">10.1 </span><a href="newSinceVersion1.html#index.xml-body.1_div.10_div.1" class="toc toc_1">Changes in version 1.1</a></li>
+                     <li class="toc"><span class="headingNumber">10.1 </span><a href="newSinceVersion1.html#newIn1.2" class="toc toc_1" title="Changes in version 1.2">Changes in version 1.2</a></li>
+                     
+                     <li class="toc"><span class="headingNumber">10.2 </span><a href="newSinceVersion1.html#newIn1.1" class="toc toc_1" title="Changes in version 1.1">Changes in version 1.1</a></li>
                      </ul>
                   </li>
                
@@ -305,7 +309,7 @@ function showByMod() {
                   
                   <td>Any element with a weight of 0 is ignored completely by the indexer, so add a <a href="schemaSpec.html#TEI.rule" class="link_ref" title="&lt;rule&gt;">&lt;rule&gt;</a> for the element. So to ignore all elements with the class <span class="val">ignoreThisElement</span>, you could do something like: 
                      
-                     <div id="index.xml-egXML-d38e1009" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>"<br/> <span class="attribute">match</span>="<span class="attributevalue">div[contains-token(@class,'ignoreThisElement')</span>"/&gt;</span></div>
+                     <div id="index.xml-egXML-d38e1053" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>"<br/> <span class="attribute">match</span>="<span class="attributevalue">div[contains-token(@class,'ignoreThisElement')</span>"/&gt;</span></div>
                      </td>
                   </tr>
                
@@ -323,7 +327,7 @@ function showByMod() {
                   <td>Here, you'll want to use the <a href="schemaSpec.html#TEI.exclude" class="link_ref" title="&lt;exclude&gt;">&lt;exclude&gt;</a> function, which excludes the element from indexing, but doesn't remove it from the
                      document itself. So, if you wanted to exclude all keyboard entry items (<span class="gi">&lt;xh:kbd&gt;</span>), but still have them in the KWIC, you could do something like: 
                      
-                     <div id="index.xml-egXML-d38e1035" class="pre egXML_valid"><span class="element">&lt;exclude <span class="attribute">match</span>="<span class="attributevalue">kbd</span>"<br/> <span class="attribute">type</span>="<span class="attributevalue">index</span>"/&gt;</span></div>
+                     <div id="index.xml-egXML-d38e1079" class="pre egXML_valid"><span class="element">&lt;exclude <span class="attribute">match</span>="<span class="attributevalue">kbd</span>"<br/> <span class="attribute">type</span>="<span class="attributevalue">index</span>"/&gt;</span></div>
                      </td>
                   </tr>
                
@@ -333,7 +337,7 @@ function showByMod() {
                   
                   <td>Switch <a href="schemaSpec.html#TEI.verbose" class="link_ref" title="&lt;verbose&gt;">&lt;verbose&gt;</a> to true in the configuration file: 
                      
-                     <div id="index.xml-egXML-d38e1044" class="pre egXML_valid"><span class="element">&lt;config xmlns="http://hcmc.uvic.ca/ns/staticSearch"&gt;</span><br/> <span class="element">&lt;params&gt;</span><br/>  <br/><span class="comment">&lt;!--....--&gt;</span><br/>  <span class="element">&lt;verbose&gt;</span>true<span class="element">&lt;/verbose&gt;</span><br/><span class="comment">&lt;!--....--&gt;</span><br/> <span class="element">&lt;/params&gt;</span><br/><span class="comment">&lt;!--Rules, etc--&gt;</span><br/><span class="element">&lt;/config&gt;</span></div>
+                     <div id="index.xml-egXML-d38e1088" class="pre egXML_valid"><span class="element">&lt;config xmlns="http://hcmc.uvic.ca/ns/staticSearch"&gt;</span><br/> <span class="element">&lt;params&gt;</span><br/>  <br/><span class="comment">&lt;!--....--&gt;</span><br/>  <span class="element">&lt;verbose&gt;</span>true<span class="element">&lt;/verbose&gt;</span><br/><span class="comment">&lt;!--....--&gt;</span><br/> <span class="element">&lt;/params&gt;</span><br/><span class="comment">&lt;!--Rules, etc--&gt;</span><br/><span class="element">&lt;/config&gt;</span></div>
                      </td>
                   </tr>
                
@@ -345,6 +349,16 @@ function showByMod() {
                   <td>The best way to do this is to ensure that <a href="schemaSpec.html#TEI.linkToFragmentId" class="link_ref" title="&lt;linkToFragmentId&gt;">&lt;linkToFragmentId&gt;</a> is set to the <span class="val">true</span> and that the input HTML contains ids at whatever level you think is most helpful.
                      For instance, if possible, you could give each <span class="gi">&lt;xhtml:p&gt;</span> element an <span class="att">id</span>, which would mean that each KWIC could be linked to the right paragraph in the input
                      document.</td>
+                  </tr>
+               
+               <tr>
+                  
+                  <td>How can I get staticSearch to highlight the found text in a target document?</td>
+                  
+                  <td>There are two approaches to this: you could implement a JavaScript solution as explained
+                     in <a href="howDoIUseIt.html#highlightTargetPage" class="link_ref" title="Highlighting search hits on target pages">Highlighting search hits on target pages</a>, or you could turn on the <span class="gi">&lt;scrollToFragmentId&gt;</span> experimental feature supported by some Chromium-based browsers. The former requires
+                     some modification to your site pages to add some JavaScript, while the latter is non-standard
+                     and not really reliable or consistent.</td>
                   </tr>
                </table>
             </div>
@@ -371,7 +385,7 @@ function showByMod() {
             <!--
 	  Generated from index.xml using XSLT stylesheets version 7.50.1
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2021-01-26T23:30:04Z.
+	       on 2021-01-29T21:36:16Z.
 	       SAXON HE 10.0.
 		 --></address>
          </div>
