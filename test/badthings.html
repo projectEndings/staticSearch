@@ -13,7 +13,14 @@
         <!--This has multiple docImages, but one is excluded-->
         <meta name="docImage" class="staticSearch.docImage excludedMeta" content="images/booze.png"/>
         <meta name="docImage" class="staticSearch.docImage" content="images/lookout.svg"/>
-    
+        
+        <!--docTitle meta with no @class, which should raise a warning -->
+        <meta name="docTitle" content="Bad Document Title"/>
+        
+        <!--Multiple docSortKeys-->
+        <meta name="docSortKey" class="staticSearch.docSortKey" content="aaa"/>
+        <meta name="docSortKey" class="staticSearch.docSortKey" content="zzz"/>
+        
         <!-- This exists to test the situation where there are documents for
              one side of the boolean but not for others. -->
         <meta name="Is a document" class="staticSearch.bool" content="true" />

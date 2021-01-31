@@ -103,29 +103,34 @@
     <xsl:variable name="allApos" select="($allSingleApos, $allDoubleApos)" as="xs:string+"/>
     
     
-     <xd:desc>
-         <xd:doc>Regex to match words that are numeric with a decimal</xd:doc>
-     </xd:desc>
+     <xd:doc>
+         <xd:desc>Regex to match words that are numeric with a decimal</xd:desc>
+     </xd:doc>
     <xsl:variable name="numericWithDecimal">[<xsl:value-of select="string-join($allApos,'')"/>\d]+([\.,]?\d+)</xsl:variable>
     
-    <xd:desc>
-        <xd:doc>Regex to match alphanumeric words</xd:doc>
-    </xd:desc>
+    <xd:doc>
+        <xd:desc>Regex to match alphanumeric words</xd:desc>
+    </xd:doc>
     <xsl:variable name="alphanumeric">[\p{L}<xsl:value-of select="string-join($allApos,'')"/>]+</xsl:variable>
     
-    <xd:desc>
-        <xd:doc>Regex to match hyphenated words</xd:doc>
-    </xd:desc>
+    <xd:doc>
+        <xd:desc>Regex to match hyphenated words</xd:desc>
+    </xd:doc>
     <xsl:variable name="hyphenatedWord">(<xsl:value-of select="$alphanumeric"/>-<xsl:value-of select="$alphanumeric"/>(-<xsl:value-of select="$alphanumeric"/>)*)</xsl:variable>
     
     
-    <xd:desc>
-        <xd:doc>All of the above word regexes, strung together to match all
-        possible words.</xd:doc>
-    </xd:desc>
+    <xd:doc>
+        <xd:desc>All of the above word regexes, strung together to match all
+        possible words.</xd:desc>
+    </xd:doc>
     <xsl:variable name="tokenRegex">(<xsl:value-of select="string-join(($numericWithDecimal,$hyphenatedWord,$alphanumeric),'|')"/>)</xsl:variable>
     
-
+    
+    <xd:doc>
+        <xd:desc>Special document metadata classes that must have a name and class match</xd:desc>
+    </xd:doc>
+    <xsl:variable name="docMetas" select="('docTitle', 'docSortKey','docImage')" as="xs:string+"/>
+    
     <!--TODO: Consider harmonizing these into a single variable or map-->
     
     <xd:doc>
@@ -471,6 +476,32 @@
             <xsl:otherwise/>
         </xsl:choose>
     </xsl:template>
+    
+    <xd:doc>
+        <xd:desc>Checks docImage, docTitle, and docSortKey metas to make sure that they have matching values. </xd:desc>
+    </xd:doc>
+    <xsl:template match="meta[@name or @class][not(@data-staticSearch-exclude)]" mode="contextualize">
+        <xsl:variable name="currMeta" select="."/>
+        <!--Process the meta no matter what-->
+        <xsl:copy>
+            <xsl:apply-templates select="@*|node()" mode="#current"/>
+        </xsl:copy>
+        <!--But check to see if it's a candidate for checking--> 
+        <xsl:if test="($currMeta/@name = $docMetas) or (some $meta in $docMetas satisfies matches($currMeta/@class, $meta))">
+            <!--Iterate through them all in case there's a name/class mixup (i.e. docTitle with class staticSearch.docSortKey or something)-->
+            <xsl:for-each select="$docMetas">
+                <xsl:variable name="thisDocMeta" select="." as="xs:string"/>
+                <xsl:variable name="thisDocMetaClass" select="'staticSearch.' || $thisDocMeta" as="xs:string"/>
+                <xsl:variable name="hasName" select="exists($currMeta[@name = $thisDocMeta])" as="xs:boolean"/>
+                <xsl:variable name="hasClass" select="exists($currMeta[contains-token(@class, $thisDocMetaClass)])" as="xs:boolean"/>
+                <!--Has the name or a class, but not both, raise a warning.-->
+                <xsl:if test="($hasName or $hasClass) and not($hasName and $hasClass)">
+                    <xsl:message>WARNING: Bad meta tag in <xsl:value-of select="$currMeta/ancestor::html/@data-staticSearch-relativeUri"/> (<xsl:value-of select="'name: ' || $currMeta/@name || '; class=' || $currMeta/@class"/>). All <xsl:value-of select="$thisDocMeta"/> meta tags must have matching @name="<xsl:value-of select="$thisDocMeta"/>" and @class="<xsl:value-of select="$thisDocMetaClass"/>".</xsl:message>
+                </xsl:if>
+            </xsl:for-each>
+        </xsl:if>
+    </xsl:template>
+    
 
 
     <!--**************************************************************

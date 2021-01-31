@@ -1024,12 +1024,15 @@
     <xsl:function name="hcmc:getDocTitle" as="xs:string">
         <xsl:param name="doc" as="element(html)"/>
         <xsl:variable name="defaultTitle" select="normalize-space(string-join($doc//head/title[1]/descendant::text(),''))" as="xs:string?"/>
-        <xsl:variable name="configuredDocTitle" 
+        <xsl:variable name="docTitle" 
             select="$doc/head/meta[@name='docTitle'][contains-token(@class,'staticSearch.docTitle')][not(@data-staticSearch-exclude)]"
             as="element(meta)*"/>
         <xsl:choose>
-            <xsl:when test="exists($configuredDocTitle)">
-                <xsl:value-of select="normalize-space($configuredDocTitle[1]/@content)"/>
+            <xsl:when test="exists($docTitle)">
+                <xsl:if test="count($docTitle) gt 1">
+                    <xsl:message>WARNING: Multiple docTitles declared in <xsl:value-of select="$doc/@data-staticSearch-relativeUri"/>. Using <xsl:value-of select="$docTitle[1]/@content"/></xsl:message>
+                </xsl:if>
+                <xsl:value-of select="normalize-space($docTitle[1]/@content)"/>
             </xsl:when>
             <xsl:when test="string-length($defaultTitle) gt 0">
                 <xsl:value-of select="$defaultTitle"/>
@@ -1062,6 +1065,9 @@
             as="element(meta)*"/>
         <xsl:choose>
             <xsl:when test="exists($docImage)">
+                <xsl:if test="count($docImage) gt 1">
+                    <xsl:message>WARNING: Multiple docImages declared in <xsl:value-of select="$doc/@data-staticSearch-relativeUri"/>. Using <xsl:value-of select="$docImage[1]/@content"/></xsl:message>
+                </xsl:if>
                 <j:string><xsl:value-of select="$docImage[1]/@content"/></j:string>
             </xsl:when>
             <xsl:when test="exists($docSortKey)">
@@ -1084,6 +1090,9 @@
             select="$doc/head/meta[@name='docSortKey'][contains-token(@class,'staticSearch.docSortKey')][not(@data-staticSearch-exclude)]" 
             as="element(meta)*"/>
         <xsl:if test="exists($docSortKey)">
+            <xsl:if test="count($docSortKey) gt 1">
+                <xsl:message>WARNING: Multiple docSortKeys declared in <xsl:value-of select="$doc/@data-staticSearch-relativeUri"/>. Using <xsl:value-of select="$docSortKey[1]/@content"/></xsl:message>
+            </xsl:if>
             <j:string><xsl:value-of select="$docSortKey[1]/@content"/></j:string>
         </xsl:if>
     </xsl:function>
