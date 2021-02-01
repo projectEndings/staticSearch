@@ -112,6 +112,10 @@ div#ssResults > div#ssPagination{
     margin-bottom:2rem;
 }
 
+div#ssResults > div#ssPagination > button{
+    margin: 0 .5rem;
+}
+
 
 
 /* Alternate bg colour. */
