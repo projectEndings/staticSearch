@@ -379,10 +379,17 @@ class StaticSearch{
       //which means all
       this.resultsPerPage = this.getConfigInt('resultsPerPage', 0);
 
-      // We need to be able to target items for pagination,
-      // so we add the selector here
+      // If we're paginating the results, we may need some
+      // other properties
       if (this.resultsPerPage > 0){
-        this.resultsItemSelector = `:scope > ul > li`;
+        // The selector for the result items (we define it here since it's conceivable that the
+        // results may be structured differently)
+        this.resultItemsSelector = `:scope > ul > li`;
+        // Current page is 0
+        this.currPage = 0;
+        // And some null variables that are used iff the results are paginated
+        this.currItem = null;
+        this.resultItems = null;
       }
 
       //How many keyword in context strings should be included
@@ -1496,7 +1503,9 @@ if (this.discardedTerms.length > 0){
         if (this.resultSet.getSize() < 1){
           this.reportNoResults(true);
         }
-        this.paginateResults();
+        if (this.resultsPerPage > 0 && this.resultsPerPage < this.resultSet.getSize()){
+          this.paginateResults();
+        }
         this.searchFinishedHook(2);
         this.searchingDiv.style.display = 'none';
         document.body.style.cursor = 'default';
@@ -1749,7 +1758,9 @@ if (this.discardedTerms.length > 0){
       if (this.resultSet.getSize() < 1){
         this.reportNoResults(true);
       }
-      this.paginateResults();
+      if (this.resultsPerPage > 0 && this.resultsPerPage < this.resultSet.getSize()){
+        this.paginateResults();
+      }
       this.searchFinishedHook(4);
       this.searchingDiv.style.display = 'none';
       document.body.style.cursor = 'default';
@@ -1772,15 +1783,14 @@ if (this.discardedTerms.length > 0){
    * checks whether or not it needs to add anything to the page, and, if it does,
    * then adds the Show More / Show All buttons to the bottom of the results div
    * and adds some functionality to the buttons.
+   * @return {Boolean} true if necessary; false if unnecessary
    */
   paginateResults() {
-    if (this.resultsPerPage > 0 && this.resultsPerPage < this.resultSet.getSize()){
-      // Set the current page to 0, since the following call to showMoreResults() will up it
-      this.currPage = 0;
+    try{
       // Get the list of all result items using the configured selector; we do this here
       // in case ResultsAsHTML is modified in such a way that it invalidates the default
       // selector
-      this.resultItems = this.resultsDiv.querySelectorAll(this.resultsItemSelector);
+      this.resultItems = this.resultsDiv.querySelectorAll(this.resultItemsSelector);
 
       // Construct all of the widgets (using the longhand createElement method, since
       // we have to hook event listeners to the buttons)
@@ -1802,6 +1812,10 @@ if (this.discardedTerms.length > 0){
       // And add the pagination functions to the respective buttons
       this.showMoreBtn.addEventListener('click', this.showMoreResults.bind(this));
       this.showAllBtn.addEventListener('click', this.showAllResults.bind(this));
+      return true;
+    } catch(e) {
+      console.log('ERROR ' + e.message);
+      return false;
     }
   }
 
@@ -1810,10 +1824,18 @@ if (this.discardedTerms.length > 0){
    * @description Method to show all of the results (i.e. removing the hidden item's
    * class that instructs all of its siblings to hide) and hide the pagination
    * widget.
+   * @return {Boolean} true if successful, false if not.
    */
   showAllResults(){
-    this.currItem.classList.remove('ssPaginationEnd');
-    this.paginationBtnDiv.style.display = "none";
+    try{
+      this.currItem.classList.remove('ssPaginationEnd');
+      this.paginationBtnDiv.style.display = "none";
+      return true;
+    } catch(e) {
+      console.log('ERROR ' + e.message);
+      return false;
+    }
+
   }
 
   /**
@@ -1822,19 +1844,26 @@ if (this.discardedTerms.length > 0){
    * and the number of results to show. If we're on the last page, then the
    * "Show More" is simply a proxy for showAll; otherwise, it shifts the
    * hidden class from the last item to the next one in the sequence.
+   * @return {Boolean} true if successful, false if not.
    */
   showMoreResults(){
-    this.currPage++;
-    let nextItemNum = (this.currPage * this.resultsPerPage) - 1;
-    if (this.currItem){
-      this.currItem.classList.remove('ssPaginationEnd');
+    try{
+      this.currPage++;
+      let nextItemNum = (this.currPage * this.resultsPerPage) - 1;
+      if (this.currItem !== null){
+        this.currItem.classList.remove('ssPaginationEnd');
+      }
+      if (nextItemNum >= this.resultSet.getSize()){
+        this.showAllResults();
+        return true;
+      }
+      this.currItem = this.resultItems[nextItemNum];
+      this.currItem.classList.add('ssPaginationEnd');
+      return true;
+    } catch(e){
+        console.log('ERROR ' + e.message);
+        return false;
     }
-    if (nextItemNum >= this.resultSet.getSize()){
-      this.showAllResults();
-      return;
-    }
-    this.currItem = this.resultItems[nextItemNum];
-    this.currItem.classList.add('ssPaginationEnd');
   }
 
 
