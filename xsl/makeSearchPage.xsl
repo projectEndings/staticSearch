@@ -430,7 +430,7 @@
     <xsl:function name="hcmc:normalizeDateString" as="xs:date?">
         <xsl:param name="dateString" as="xs:string"/>
         <xsl:param name="earliest" as="xs:boolean"/>
-        <xsl:message>Processing date <xsl:value-of select="$dateString"/></xsl:message>
+        <!--<xsl:message>Processing date <xsl:value-of select="$dateString"/></xsl:message>-->
         <xsl:choose>
             <xsl:when test="matches($dateString, '^\d\d\d\d$')">
                 <xsl:choose>
