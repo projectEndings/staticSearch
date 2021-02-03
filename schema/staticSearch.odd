@@ -663,7 +663,7 @@
               
               <eg>"...nothing to say here,Some <hi style="font-weight:bold;">information</hi> on this subject can be found...</eg>
               
-              To tell the tokenizer that the <gi>span</gi> constitutes the context block for any of its token, use the <gi>context</gi> element with an <att>match</att> pattern:
+              To tell the tokenizer that the <gi>span</gi> constitutes the context block for any of its tokens, use the <gi>context</gi> element with an <att>match</att> pattern:
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
                 <contexts>
                   <context match="span[contains-token(@class,'sidenote')]"/>
