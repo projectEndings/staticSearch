@@ -12,7 +12,7 @@
 /* These rulesets control the display of the 
  * search form elements and search results on 
  * the search page. */
-  
+
 form#ssForm{
     display: flex;
     flex-direction: column;
@@ -97,6 +97,26 @@ div#ssResults>ul>li>a>img{
 div#ssResults>ul>li{
 padding: 0.5em 0.25em;
 }
+
+
+/* Pagination trigger to hide all following items */
+div#ssResults>ul>li.ssPaginationEnd ~ li{
+    display:none;
+}
+
+/* Special pagination controls */
+
+div#ssResults > div#ssPagination{
+    text-align:center;
+    margin-top:1rem;
+    margin-bottom:2rem;
+}
+
+div#ssResults > div#ssPagination > button{
+    margin: 0 .5rem;
+}
+
+
 
 /* Alternate bg colour. */
 div#ssResults>ul>li:nth-child(2n) {

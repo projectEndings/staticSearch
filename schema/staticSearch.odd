@@ -1251,6 +1251,7 @@
                 <elementRef key="replacementsFile" minOccurs="0"/>
                 <elementRef key="indentJSON" minOccurs="0"/>
                 <elementRef key="outputFolder" minOccurs="0"/>
+                <elementRef key="resultsPerPage" minOccurs="0"/>
               </sequence>
             </content>
           </elementSpec>
@@ -1476,6 +1477,7 @@
             </content>
           </elementSpec>
           
+          
           <elementSpec ident="maxKwicsToHarvest" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>This controls the maximum number of keyword-in-context extracts that will be
               stored for each term. If <gi>phrasalSearch</gi> is set to true, this parameter is
@@ -1534,6 +1536,15 @@
             and therefore also phrasal searching (<gi>phrasalSearch</gi>).</desc>
             <content>
               <dataRef name="boolean"/>
+            </content>
+          </elementSpec>
+          
+          <elementSpec ident="resultsPerPage" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>The maximum number of document results to be displayed per <soCalled>page</soCalled>. All results
+            are displayed by default; setting <gi>resultsPerPage</gi> to a positive integer creates a <soCalled>Show More/Show All</soCalled>
+            widget at the bottom of the batch of results.</gloss>
+            <content>
+              <dataRef name="nonNegativeInteger"/>
             </content>
           </elementSpec>
           

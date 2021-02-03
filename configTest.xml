@@ -9,6 +9,7 @@
         <phrasalSearch>true</phrasalSearch>
         <wildcardSearch>true</wildcardSearch>
         <createContexts>true</createContexts>
+        <resultsPerPage>5</resultsPerPage>
         <!--NOTE: If phrasalSearch is set to TRUE, then
         maxContexts prop will be ignored-->
         <maxKwicsToHarvest>3</maxKwicsToHarvest>

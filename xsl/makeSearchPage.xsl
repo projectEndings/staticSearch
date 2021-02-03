@@ -175,6 +175,7 @@
                 data-allowwildcards="{if ($wildcardSearch) then 'yes' else 'no'}"
                 data-scrolltotextfragment="{if ($scrollToTextFragment) then 'yes' else 'no'}"
                 data-maxkwicstoshow="{if ($maxKwicsToShow) then $maxKwicsToShow else 10}"
+                data-resultsperpage="{$resultsPerPage}"
                 onsubmit="return false;"
                 data-versionstring="{$versionString}"
                 data-ssfolder="{$outputFolder}"

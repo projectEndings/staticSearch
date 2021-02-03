@@ -375,9 +375,22 @@ class StaticSearch{
       //in human-readable form?
       this.showSearchReport = false;
 
-      //How many results should be shown per page? Default 10.
-      //Default. NOT USED, AND PROBABLY POINTLESS.
-      this.resultsPerPage = this.getConfigInt('resultsPerPage', 10);
+      //How many results should be shown per page? Default to 0,
+      //which means all
+      this.resultsPerPage = this.getConfigInt('resultsPerPage', 0);
+
+      // If we're paginating the results, we may need some
+      // other properties
+      if (this.resultsPerPage > 0){
+        // The selector for the result items (we define it here since it's conceivable that the
+        // results may be structured differently)
+        this.resultItemsSelector = `:scope > ul > li`;
+        // Current page is 0
+        this.currPage = 0;
+        // And some null variables that are used iff the results are paginated
+        this.currItem = null;
+        this.resultItems = null;
+      }
 
       //How many keyword in context strings should be included
       //in search results? Default 10.
@@ -1397,6 +1410,7 @@ class StaticSearch{
     }
   }
 
+
 /**
   * @function StaticSearch~reportNoResults
   * @description Reports that no results have been found.
@@ -1460,6 +1474,7 @@ if (this.discardedTerms.length > 0){
 
 //Easy ones first: #4
       if ((this.terms.length < 1)&&(this.docsMatchingFilters.size < 1)){
+
         this.clearResultsDiv();
         if (pDiscarded !== null){
           this.resultsDiv.appendChild(pDiscarded);
@@ -1476,6 +1491,7 @@ if (this.discardedTerms.length > 0){
       if ((this.terms.length < 1)&&(this.docsMatchingFilters.size > 0)){
         this.resultSet.addArray([...this.docsMatchingFilters]);
         this.resultSet.sortByScoreDesc();
+
         this.clearResultsDiv();
         if (pDiscarded !== null){
           this.resultsDiv.appendChild(pDiscarded);
@@ -1486,6 +1502,9 @@ if (this.discardedTerms.length > 0){
         this.resultsDiv.appendChild(this.resultSet.resultsAsHtml(this.captionSet.strScore));
         if (this.resultSet.getSize() < 1){
           this.reportNoResults(true);
+        }
+        if (this.resultsPerPage > 0 && this.resultsPerPage < this.resultSet.getSize()){
+          this.paginateResults();
         }
         this.searchFinishedHook(2);
         this.searchingDiv.style.display = 'none';
@@ -1739,6 +1758,9 @@ if (this.discardedTerms.length > 0){
       if (this.resultSet.getSize() < 1){
         this.reportNoResults(true);
       }
+      if (this.resultsPerPage > 0 && this.resultsPerPage < this.resultSet.getSize()){
+        this.paginateResults();
+      }
       this.searchFinishedHook(4);
       this.searchingDiv.style.display = 'none';
       document.body.style.cursor = 'default';
@@ -1752,6 +1774,98 @@ if (this.discardedTerms.length > 0){
       return false;
     }
   }
+
+
+  /**
+   * @function StaticSearch~paginateResults
+   * @description This method adds pagination controls to the results and adds
+   * a number of properties to the StaticSearch object to handle pagination. It first
+   * checks whether or not it needs to add anything to the page, and, if it does,
+   * then adds the Show More / Show All buttons to the bottom of the results div
+   * and adds some functionality to the buttons.
+   * @return {Boolean} true if necessary; false if unnecessary
+   */
+  paginateResults() {
+    try{
+      // Get the list of all result items using the configured selector; we do this here
+      // in case ResultsAsHTML is modified in such a way that it invalidates the default
+      // selector
+      this.resultItems = this.resultsDiv.querySelectorAll(this.resultItemsSelector);
+
+      // Construct all of the widgets (using the longhand createElement method, since
+      // we have to hook event listeners to the buttons)
+      this.paginationBtnDiv = document.createElement('div');
+      this.paginationBtnDiv.setAttribute('id', 'ssPagination');
+      this.showMoreBtn = document.createElement('button');
+      this.showMoreBtn.setAttribute('id', 'ssShowMore');
+      this.showMoreBtn.innerHTML = this.captionSet.strShowMore;
+      this.showAllBtn = document.createElement('button');
+      this.showAllBtn.setAttribute('id', 'ssShowAll');
+      this.showAllBtn.innerHTML = this.captionSet.strShowAll;
+      this.paginationBtnDiv.appendChild(this.showMoreBtn);
+      this.paginationBtnDiv.appendChild(this.showAllBtn);
+      this.resultsDiv.appendChild(this.paginationBtnDiv);
+
+      // Now start the pagination
+      this.showMoreResults();
+
+      // And add the pagination functions to the respective buttons
+      this.showMoreBtn.addEventListener('click', this.showMoreResults.bind(this));
+      this.showAllBtn.addEventListener('click', this.showAllResults.bind(this));
+      return true;
+    } catch(e) {
+      console.log('ERROR ' + e.message);
+      return false;
+    }
+  }
+
+  /**
+   * @function StaticSearch~showAllResults
+   * @description Method to show all of the results (i.e. removing the hidden item's
+   * class that instructs all of its siblings to hide) and hide the pagination
+   * widget.
+   * @return {Boolean} true if successful, false if not.
+   */
+  showAllResults(){
+    try{
+      this.currItem.classList.remove('ssPaginationEnd');
+      this.paginationBtnDiv.style.display = "none";
+      return true;
+    } catch(e) {
+      console.log('ERROR ' + e.message);
+      return false;
+    }
+
+  }
+
+  /**
+   * @function StaticSearch~showMoreResults
+   * @description Method to show more results based off of the current page
+   * and the number of results to show. If we're on the last page, then the
+   * "Show More" is simply a proxy for showAll; otherwise, it shifts the
+   * hidden class from the last item to the next one in the sequence.
+   * @return {Boolean} true if successful, false if not.
+   */
+  showMoreResults(){
+    try{
+      this.currPage++;
+      let nextItemNum = (this.currPage * this.resultsPerPage) - 1;
+      if (this.currItem !== null){
+        this.currItem.classList.remove('ssPaginationEnd');
+      }
+      if (nextItemNum >= this.resultSet.getSize()){
+        this.showAllResults();
+        return true;
+      }
+      this.currItem = this.resultItems[nextItemNum];
+      this.currItem.classList.add('ssPaginationEnd');
+      return true;
+    } catch(e){
+        console.log('ERROR ' + e.message);
+        return false;
+    }
+  }
+
 
   /** @function StaticSearch~phraseToRegex
    *  @description This method takes a phrase and converts it
