@@ -1494,7 +1494,9 @@ element excludes { <a class="link_ref" href="#TEI.exclude" title="&lt;exclude&gt
                      <table class="wovenodd">
                         <tr>
                            <td colspan="2" class="wovenodd-col2"><span class="label">&lt;indentJSON&gt; </span>(<span>Whether or not to indent code in the JSON index files. Indenting increases the file
-                                 size, but it can be useful if you need to read the files for debugging purposes.</span>)</td>
+                                 size, but it can be useful if you need to read the files for debugging purposes.</span>) <span>Normally, the JSON index files will only be processed by JavaScript, so there is no
+                                 need to indent them, but if you are debugging or investigating how the code works,
+                                 you may find it useful to generate them in a more human-readable layout.</span></td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
@@ -1548,7 +1550,9 @@ element indentJSON { xsd:boolean }</pre>
                      <table class="wovenodd">
                         <tr>
                            <td colspan="2" class="wovenodd-col2"><span class="label">&lt;kwicTruncateString&gt; </span>(<span>The string that will be used to signal ellipsis at the beginning and end of a keyword-in-context
-                                 extract. Conventionally three periods, or an ellipsis character.</span>)</td>
+                                 extract. Conventionally three periods, or an ellipsis character.</span>) <span>The only reason you might need to specify a value for this parameter is if the language
+                                 of your search page conventionally uses a different ellipsis character. Japanese,
+                                 for example, uses the 3-dot-leader character.</span></td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
@@ -1910,7 +1914,11 @@ element params {  }</pre>
                         <tr>
                            <td colspan="2" class="wovenodd-col2"><span class="label">&lt;phrasalSearch&gt; </span>(<span>Whether or not to support phrasal searches. If this is true, then the maxContexts
                                  setting will be ignored, because all contexts are required to properly support phrasal
-                                 search.</span>)</td>
+                                 search.</span>) <span>Phrasal search functionality enables your users to search for specific phrases by
+                                 surrounding them with quotation marks, as in many search engines. Turning this on
+                                 will make the index larger, because all contexts must be stored, but once the index
+                                 is built, it has very little impact on the speed of searches, so we would recommend
+                                 turning this on.</span></td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
@@ -2018,7 +2026,14 @@ element recurse { xsd:boolean }</pre>
                         <tr>
                            <td colspan="2" class="wovenodd-col2"><span class="label">&lt;resultsPerPage&gt; </span>(<span>The maximum number of document results to be displayed per page. All results are displayed
                                  by default; setting resultsPerPage to a positive integer creates a Show More/Show
-                                 All widget at the bottom of the batch of results.</span>)</td>
+                                 All widget at the bottom of the batch of results.</span>) <span>For most sites, where the number of results is likely to be in the low thousands,
+                                 it's perfectly practical to show all the results at once, because the staticSearch
+                                 processor is so fast. However, if you have tens of thousands of documents, and it's
+                                 possible that users will do (for example) filter-only searches that retrieve a large
+                                 proportion of them, you can constrain the number of results which are shown initially
+                                 using this setting. All the results are still generated and output to the page, but
+                                 since most of them are hidden until the ‘Show More’ or ‘Show All’ button is clicked,
+                                 the browser will render them much more quickly.</span></td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
@@ -2560,7 +2575,9 @@ element totalKwicLength { xsd:nonNegativeInteger }</pre>
                   <div class="table">
                      <table class="wovenodd">
                         <tr>
-                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;verbose&gt; </span>(<span>Turns on more detailed reporting during the indexing process.</span>)</td>
+                           <td colspan="2" class="wovenodd-col2"><span class="label">&lt;verbose&gt; </span>(<span>Turns on more detailed reporting during the indexing process.</span>) <span>The staticSearch build process can be lengthy, and if something goes wrong it can
+                                 be difficult to figure out where the problem was. If you're having build problems,
+                                 turn on verbose messages in the configuration file to help with debugging.</span></td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
@@ -2830,7 +2847,7 @@ element wildcardSearch { xsd:boolean }</pre>
             <!--
 	  Generated from index.xml using XSLT stylesheets version 7.50.1
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2021-02-03T21:36:24Z.
+	       on 2021-02-04T00:10:40Z.
 	       SAXON HE 10.0.
 		 --></address>
       </div>

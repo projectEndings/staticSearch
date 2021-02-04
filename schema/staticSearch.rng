@@ -5,7 +5,7 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2021-02-03T21:36:08Z. 2019-2021.
+Schema generated from ODD source 2021-02-04T00:10:26Z. 2019-2021.
 TEI Edition: Version 4.1.0. Last updated on
 	19th August 2020, revision b414ba550
 TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
@@ -282,7 +282,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
       <element name="kwicTruncateString" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The string that will be used to signal ellipsis at the beginning and end of a
               keyword-in-context extract. Conventionally three periods, or an ellipsis
-              character.) </a:documentation>
+              character.) The only reason you might need to specify a value for this parameter is if the language of your search page conventionally uses a different ellipsis character. Japanese, for example, uses the 3-dot-leader character.</a:documentation>
          <text/>
       </element>
    </define>
@@ -290,14 +290,14 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
       <element name="indentJSON" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Whether or not to indent code in the JSON index files. Indenting increases the
               file size, but it can be useful if you need to read the files for debugging
-              purposes.) </a:documentation>
+              purposes.) Normally, the JSON index files will only be processed by JavaScript, so there is no need to indent them, but if you are debugging or investigating how the code works, you may find it useful to generate them in a more human-readable layout.</a:documentation>
          <data type="boolean"/>
       </element>
    </define>
    <define name="phrasalSearch">
       <element name="phrasalSearch" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Whether or not to support phrasal searches. If this is true, then the maxContexts
-            setting will be ignored, because all contexts are required to properly support phrasal search.) </a:documentation>
+            setting will be ignored, because all contexts are required to properly support phrasal search.) Phrasal search functionality enables your users to search for specific phrases by surrounding them with quotation marks, as in many search engines. Turning this on will make the index larger, because all contexts must be stored, but once the index is built, it has very little impact on the speed of searches, so we would recommend turning this on.</a:documentation>
          <data type="boolean"/>
       </element>
    </define>
@@ -313,13 +313,13 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
       <element name="resultsPerPage" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The maximum number of document results to be displayed per page. All results
             are displayed by default; setting resultsPerPage to a positive integer creates a Show More/Show All
-            widget at the bottom of the batch of results.) </a:documentation>
+            widget at the bottom of the batch of results.) For most sites, where the number of results is likely to be in the low thousands, it's perfectly practical to show all the results at once, because the staticSearch processor is so fast. However, if you have tens of thousands of documents, and it's possible that users will do (for example) filter-only searches that retrieve a large proportion of them, you can constrain the number of results which are shown initially using this setting. All the results are still generated and output to the page, but since most of them are hidden until the Show More or Show All button is clicked, the browser will render them much more quickly.</a:documentation>
          <data type="nonNegativeInteger"/>
       </element>
    </define>
    <define name="verbose">
       <element name="verbose" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Turns on more detailed reporting during the indexing process.) </a:documentation>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Turns on more detailed reporting during the indexing process.) The staticSearch build process can be lengthy, and if something goes wrong it can be difficult to figure out where the problem was. If you're having build problems, turn on verbose messages in the configuration file to help with debugging.</a:documentation>
          <data type="boolean"/>
       </element>
    </define>

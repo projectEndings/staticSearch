@@ -1501,6 +1501,9 @@
             <gloss>The string that will be used to signal ellipsis at the beginning and end of a
               keyword-in-context extract. Conventionally three periods, or an ellipsis
               character.</gloss>
+            <desc>The only reason you might need to specify a value for this parameter is
+            if the language of your search page conventionally uses a different ellipsis
+            character. Japanese, for example, uses the 3-dot-leader character.</desc>
             <content>
               <textNode/>
             </content>
@@ -1510,6 +1513,10 @@
             <gloss>Whether or not to indent code in the JSON index files. Indenting increases the
               file size, but it can be useful if you need to read the files for debugging
               purposes.</gloss>
+            <desc>Normally, the JSON index files will only be processed by JavaScript, so
+            there is no need to indent them, but if you are debugging or investigating how
+            the code works, you may find it useful to generate them in a more human-readable
+            layout.</desc>
             <content>
               <dataRef name="boolean"/>
             </content>
@@ -1519,6 +1526,11 @@
           <elementSpec ident="phrasalSearch" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>Whether or not to support phrasal searches. If this is true, then the <gi>maxContexts</gi>
             setting will be ignored, because all contexts are required to properly support phrasal search.</gloss>
+            <desc>Phrasal search functionality enables your users to search for specific phrases
+            by surrounding them with quotation marks, as in many search engines. Turning this on 
+            will make the index larger, because all contexts must be stored, but once the index
+            is built, it has very little impact on the speed of searches, so we would recommend
+            turning this on.</desc>
             <content>
               <dataRef name="boolean"/>
             </content>
@@ -1543,6 +1555,15 @@
             <gloss>The maximum number of document results to be displayed per <soCalled>page</soCalled>. All results
             are displayed by default; setting <gi>resultsPerPage</gi> to a positive integer creates a <soCalled>Show More/Show All</soCalled>
             widget at the bottom of the batch of results.</gloss>
+            <desc>For most sites, where the number of results is likely to be in the low thousands,
+            it's perfectly practical to show all the results at once, because the staticSearch
+            processor is so fast. However, if you have tens of thousands of documents, and it's
+            possible that users will do (for example) filter-only searches that retrieve a
+            large proportion of them, you can constrain the number of results which are shown
+            initially using this setting. All the results are still generated and output to 
+            the page, but since most of them are hidden until the <soCalled>Show More</soCalled> 
+              or <soCalled>Show All</soCalled> button is clicked, the browser will render them
+            much more quickly.</desc>
             <content>
               <dataRef name="nonNegativeInteger"/>
             </content>
@@ -1550,6 +1571,10 @@
           
           <elementSpec ident="verbose" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>Turns on more detailed reporting during the indexing process.</gloss>
+            <desc>The staticSearch build process can be lengthy, and if something goes
+            wrong it can be difficult to figure out where the problem was. If you're
+            having build problems, turn on verbose messages in the configuration file 
+            to help with debugging.</desc>
             <content>
               <dataRef name="boolean"/>
             </content>
