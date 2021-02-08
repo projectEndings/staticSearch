@@ -1020,6 +1020,9 @@
             target page can highlight the search hit(s) and scroll to them. See 
               <ref target="#highlightTargetPage">Highlighting search hits on target pages</ref>
             for more information.</item>
+            <item>Documentation has been significantly improved with additional explanatory
+            remarks for many elements, and the staticSearch build of the documentation now
+            includes hit highlighting (the feature described above).</item>
           </list>
         </div>
         <div xml:id="newIn1.1">
