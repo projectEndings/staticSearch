@@ -387,13 +387,7 @@ element config { <a class="link_ref" href="#TEI.params" title="&lt;params&gt;">p
                      <tr>
                         
                         <td colspan="2" class="wovenodd-col2"><span class="label">&lt;context&gt; </span>(<span>A context definition, providing a match attribute that identifies the context, allowing
-                              keyword-in-context fragments to be bounded by a specific context.</span>) <span>When the indexer is extracting keyword-in-context strings for each word, it uses a
-                              common-sense approach based on common element definitions, so that for example when
-                              it reaches the end of a paragraph, it will not continue into the next paragraph to
-                              get more context words. You may have special runs of text in your document collection
-                              which do not appear to be bounding contexts, but actually are; for example, you may
-                              have span elements with <span class="att">class</span>=<span class="val">note</span> which appear in the middle of sentences but are not actually part of them. Use <a class="link_ref" href="#TEI.context" title="&lt;context&gt;">&lt;context&gt;</a> elements to identify these special contexts so that the indexer knows the right boundaries
-                              from which to retrieve its keyword-in-context strings.</span></td>
+                              keyword-in-context fragments to be bounded by a specific context.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -473,6 +467,22 @@ element config { <a class="link_ref" href="#TEI.params" title="&lt;params&gt;">p
                         <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
                         
                         <td class="wovenodd-col2"><span lang="en">Empty element</span></td>
+                        </tr>
+                     
+                     <tr>
+                        
+                        <td class="wovenodd-col1"><span lang="en" class="label">Note</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <p>When the indexer is extracting keyword-in-context strings for each word, it uses a
+                              common-sense approach based on common element definitions, so that for example when
+                              it reaches the end of a paragraph, it will not continue into the next paragraph to
+                              get more context words. You may have special runs of text in your document collection
+                              which do not appear to be bounding contexts, but actually are; for example, you may
+                              have span elements with <span class="att">class</span>=<span class="val">note</span> which appear in the middle of sentences but are not actually part of them. Use <a class="link_ref" href="#TEI.context" title="&lt;context&gt;">&lt;context&gt;</a> elements to identify these special contexts so that the indexer knows the right boundaries
+                              from which to retrieve its keyword-in-context strings.</p>
+                           </td>
                         </tr>
                      
                      <tr>
@@ -605,9 +615,7 @@ element contexts { <a class="link_ref" href="#TEI.context" title="&lt;context&gt
                      
                      <tr>
                         
-                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;createContexts&gt; </span>(<span>Whether to include keyword-in-context extracts in the index. This increases the size
-                              of the index considerably, but it allows for more user-friendly search results, as
-                              well as phrasal searches.</span>)</td>
+                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;createContexts&gt; </span>(<span>Whether to include keyword-in-context extracts in the index.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -655,6 +663,20 @@ element contexts { <a class="link_ref" href="#TEI.context" title="&lt;context&gt
                      
                      <tr>
                         
+                        <td class="wovenodd-col1"><span lang="en" class="label">Note</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <p><a class="link_ref" href="#TEI.createContexts" title="&lt;createContexts&gt;">&lt;createContexts&gt;</a> is a boolean parameter that specifies whether you want the indexer to store keyword-in-context
+                              extracts for each of the hits in a document. This increases the size of the index,
+                              but of course it makes for much more user-friendly search results; instead of seeing
+                              just a score for each document found, the user will see a series of short text string
+                              with the search keyword(s) highlighted.</p>
+                           </td>
+                        </tr>
+                     
+                     <tr>
+                        
                         <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                         
                         <td class="wovenodd-col2">
@@ -692,11 +714,7 @@ element createContexts { xsd:boolean }</pre>
                      <tr>
                         
                         <td colspan="2" class="wovenodd-col2"><span class="label">&lt;dictionaryFile&gt; </span>(<span>The location of a dictionary file (one word per line) which will be used to check
-                              tokens when indexing.</span>) <span>The indexing process checks each word as it builds the index, and keeps a record of
-                              all words which are not found in the configured dictionary. This can be very useful;
-                              all words listed are either foreign (not part of the language of the dictionary) or
-                              perhaps misspelled (in which case they may not be correctly stemmed and index, and
-                              should be corrected).</span></td>
+                              tokens when indexing.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -744,6 +762,20 @@ element createContexts { xsd:boolean }</pre>
                      
                      <tr>
                         
+                        <td class="wovenodd-col1"><span lang="en" class="label">Note</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <p>The indexing process checks each word as it builds the index, and keeps a record of
+                              all words which are not found in the configured dictionary. This can be very useful;
+                              all words listed are either foreign (not part of the language of the dictionary) or
+                              perhaps misspelled (in which case they may not be correctly stemmed and index, and
+                              should be corrected).</p>
+                           </td>
+                        </tr>
+                     
+                     <tr>
+                        
                         <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                         
                         <td class="wovenodd-col2">
@@ -781,11 +813,7 @@ element dictionaryFile { xsd:anyURI }</pre>
                      <tr>
                         
                         <td colspan="2" class="wovenodd-col2"><span class="label">&lt;exclude&gt; </span>(<span>An exclusion definition, which excludes either documents or filters as defined by
-                              an XPath in match.</span>) <span>Exclude elements can be used to identify documents or parts of documents to be completely
-                              omitted from indexing (for example, footer elements or banner headings are commonly
-                              ignored). Another usage is common if you have multiple search engines/pages configured
-                              for your site, each with its own special features; in this case, you may want one
-                              specific search index/page to ignore filter controls (HTML <span class="gi">&lt;meta&gt;</span> elements, as described in <a href="searchFacetFeatures.html" class="link_ptr" title="Search facet features"><span class="headingNumber">4 </span>Search facet features</a>) which are provided to support other search pages.</span></td>
+                              an XPath in match.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -879,6 +907,20 @@ element dictionaryFile { xsd:anyURI }</pre>
                         <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
                         
                         <td class="wovenodd-col2"><span lang="en">Empty element</span></td>
+                        </tr>
+                     
+                     <tr>
+                        
+                        <td class="wovenodd-col1"><span lang="en" class="label">Note</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <p>Exclude elements can be used to identify documents or parts of documents to be completely
+                              omitted from indexing (for example, footer elements or banner headings are commonly
+                              ignored). Another usage is common if you have multiple search engines/pages configured
+                              for your site, each with its own special features; in this case, you may want one
+                              specific search index/page to ignore filter controls (HTML <span class="gi">&lt;meta&gt;</span> elements, as described in <a href="searchFacetFeatures.html" class="link_ptr" title="Search facet features"><span class="headingNumber">4 </span>Search facet features</a>) which are provided to support other search pages.</p>
+                           </td>
                         </tr>
                      
                      <tr>
@@ -1011,9 +1053,7 @@ element excludes { <a class="link_ref" href="#TEI.exclude" title="&lt;exclude&gt
                      <tr>
                         
                         <td colspan="2" class="wovenodd-col2"><span class="label">&lt;indentJSON&gt; </span>(<span>Whether or not to indent code in the JSON index files. Indenting increases the file
-                              size, but it can be useful if you need to read the files for debugging purposes.</span>) <span>Normally, the JSON index files will only be processed by JavaScript, so there is no
-                              need to indent them, but if you are debugging or investigating how the code works,
-                              you may find it useful to generate them in a more human-readable layout.</span></td>
+                              size, but it can be useful if you need to read the files for debugging purposes.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -1061,6 +1101,18 @@ element excludes { <a class="link_ref" href="#TEI.exclude" title="&lt;exclude&gt
                      
                      <tr>
                         
+                        <td class="wovenodd-col1"><span lang="en" class="label">Note</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <p>Normally, the JSON index files will only be processed by JavaScript, so there is no
+                              need to indent them, but if you are debugging or investigating how the code works,
+                              you may find it useful to generate them in a more human-readable layout.</p>
+                           </td>
+                        </tr>
+                     
+                     <tr>
+                        
                         <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                         
                         <td class="wovenodd-col2">
@@ -1098,9 +1150,7 @@ element indentJSON { xsd:boolean }</pre>
                      <tr>
                         
                         <td colspan="2" class="wovenodd-col2"><span class="label">&lt;kwicTruncateString&gt; </span>(<span>The string that will be used to signal ellipsis at the beginning and end of a keyword-in-context
-                              extract. Conventionally three periods, or an ellipsis character.</span>) <span>The only reason you might need to specify a value for this parameter is if the language
-                              of your search page conventionally uses a different ellipsis character. Japanese,
-                              for example, uses the 3-dot-leader character.</span></td>
+                              extract. Conventionally three periods, or an ellipsis character.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -1138,6 +1188,18 @@ element indentJSON { xsd:boolean }</pre>
                         <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
                         
                         <td class="wovenodd-col2"><span lang="en">Character data only</span></td>
+                        </tr>
+                     
+                     <tr>
+                        
+                        <td class="wovenodd-col1"><span lang="en" class="label">Note</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <p>The only reason you might need to specify a value for this parameter is if the language
+                              of your search page conventionally uses a different ellipsis character. Japanese,
+                              for example, uses the 3-dot-leader character.</p>
+                           </td>
                         </tr>
                      
                      <tr>
@@ -1227,6 +1289,23 @@ element kwicTruncateString { text }</pre>
                      
                      <tr>
                         
+                        <td class="wovenodd-col1"><span lang="en" class="label">Note</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <p><a class="link_ref" href="#TEI.linkToFragmentId" title="&lt;linkToFragmentId&gt;">&lt;linkToFragmentId&gt;</a> is a boolean parameter that specifies whether you want the search engine to link
+                              each keyword-in-context extract with the closest element that has an <span class="att">id</span>. If the element has an ancestor with an <span class="att">id</span>, then the indexer will associate that keyword-in-context extract with that <span class="att">id</span>; if there are no suitable ancestor elements that have an <span class="att">id</span>, then the extract is associated with first preceding element with an <span class="att">id</span>.</p>
+                           
+                           <p>We strongly recommend that you ensure your target documents have id attributes for
+                              any significant divisions so that this parameter can be used effectively. With lots
+                              of ids throughout your documents, and this parameter turned on, each keyword-in-context
+                              in the results page will be linked directly to the section of the document in which
+                              the hit appears, making the search results much more useful.</p>
+                           </td>
+                        </tr>
+                     
+                     <tr>
+                        
                         <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                         
                         <td class="wovenodd-col2">
@@ -1264,8 +1343,7 @@ element linkToFragmentId { xsd:boolean }</pre>
                      <tr>
                         
                         <td colspan="2" class="wovenodd-col2"><span class="label">&lt;maxKwicsToHarvest&gt; </span>(<span>This controls the maximum number of keyword-in-context extracts that will be stored
-                              for each term. If phrasalSearch is set to true, this parameter is ignored, because
-                              phrasal searches will only work properly if all contexts are stored.</span>)</td>
+                              for each term in a document.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -1308,6 +1386,25 @@ element linkToFragmentId { xsd:boolean }</pre>
                               
                               <div class="specChild">XSD nonNegativeInteger</div>
                               </div>
+                           </td>
+                        </tr>
+                     
+                     <tr>
+                        
+                        <td class="wovenodd-col1"><span lang="en" class="label">Note</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <p><a class="link_ref" href="#TEI.maxKwicsToHarvest" title="&lt;maxKwicsToHarvest&gt;">&lt;maxKwicsToHarvest&gt;</a> (an integer) controls the number of keyword-in-context extracts that will be harvested
+                              from the data for each term in a document. For example, if a user searches for the
+                              word <span class="q">‘elephant’</span>, and it occurs 27 times in a document, but the <a class="link_ref" href="#TEI.maxKwicsToHarvest" title="&lt;maxKwicsToHarvest&gt;">&lt;maxKwicsToHarvest&gt;</a> value is set to 5, then only the first five of these keyword-in-context strings will
+                              be stored in the index. (This does not affect the score of the document in the search
+                              results, of course.) If you set this to a low number, the size of the JSON files will
+                              be constrained, but of course the user will only be able to see the KWICs that have
+                              been harvested in their search results.</p>
+                           
+                           <p>If <a class="link_ref" href="#TEI.phrasalSearch" title="&lt;phrasalSearch&gt;">&lt;phrasalSearch&gt;</a> is set to true, the <a class="link_ref" href="#TEI.maxKwicsToHarvest" title="&lt;maxKwicsToHarvest&gt;">&lt;maxKwicsToHarvest&gt;</a> setting is ignored, because phrasal searches will only work properly if all contexts
+                              are stored.</p>
                            </td>
                         </tr>
                      
@@ -1398,6 +1495,19 @@ element maxKwicsToHarvest { xsd:nonNegativeInteger }</pre>
                      
                      <tr>
                         
+                        <td class="wovenodd-col1"><span lang="en" class="label">Note</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <p>A user may search for multiple common words, so hundreds of hits could be found in
+                              a single document. If the keyword-in-context strings for all these hits are shown
+                              on the results page, it would be too long and too difficult to navigate. This setting
+                              controls how many of those hits you want to show for each document in the result set.</p>
+                           </td>
+                        </tr>
+                     
+                     <tr>
+                        
                         <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                         
                         <td class="wovenodd-col2">
@@ -1435,10 +1545,7 @@ element maxKwicsToShow { xsd:nonNegativeInteger }</pre>
                      <tr>
                         
                         <td colspan="2" class="wovenodd-col2"><span class="label">&lt;outputFolder&gt; </span>(<span>The name of the output folder into which the index data and JavaScript will be placed
-                              in the site search. This should conform with the XML Name specification.</span>) <span>When the staticSearch build process creates its output, many files need to be added
-                              to the website for which an index is being created. For convenience, all of these
-                              files are stored in a single folder. This element is used to specify the name of that
-                              folder.</span></td>
+                              in the site search. This should conform with the XML Name specification.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -1481,6 +1588,19 @@ element maxKwicsToShow { xsd:nonNegativeInteger }</pre>
                               
                               <div class="specChild">XSD NCName</div>
                               </div>
+                           </td>
+                        </tr>
+                     
+                     <tr>
+                        
+                        <td class="wovenodd-col1"><span lang="en" class="label">Note</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <p>When the staticSearch build process creates its output, many files need to be added
+                              to the website for which an index is being created. For convenience, all of these
+                              files are stored in a single folder. This element is used to specify the name of that
+                              folder.</p>
                            </td>
                         </tr>
                      
@@ -1608,8 +1728,6 @@ element outputFolder { xsd:NCName }</pre>
   minOccurs="0"/&gt;
  &lt;elementRef key="dictionaryFile"
   minOccurs="0"/&gt;
- &lt;elementRef key="replacementsFile"
-  minOccurs="0"/&gt;
  &lt;elementRef key="indentJSON" minOccurs="0"/&gt;
  &lt;elementRef key="outputFolder"
   minOccurs="0"/&gt;
@@ -1646,11 +1764,7 @@ element params {  }</pre>
                         
                         <td colspan="2" class="wovenodd-col2"><span class="label">&lt;phrasalSearch&gt; </span>(<span>Whether or not to support phrasal searches. If this is true, then the maxContexts
                               setting will be ignored, because all contexts are required to properly support phrasal
-                              search.</span>) <span>Phrasal search functionality enables your users to search for specific phrases by
-                              surrounding them with quotation marks, as in many search engines. Turning this on
-                              will make the index larger, because all contexts must be stored, but once the index
-                              is built, it has very little impact on the speed of searches, so we would recommend
-                              turning this on.</span></td>
+                              search.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -1693,6 +1807,25 @@ element params {  }</pre>
                               
                               <div class="specChild">XSD boolean</div>
                               </div>
+                           </td>
+                        </tr>
+                     
+                     <tr>
+                        
+                        <td class="wovenodd-col1"><span lang="en" class="label">Note</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <p>Phrasal search functionality enables your users to search for specific phrases by
+                              surrounding them with quotation marks, as in many search engines. In order to support
+                              this kind of search, we store contexts for all hits for each token in each document,
+                              so turning this on will make the index larger, because all contexts must be stored.
+                              However, once the index is built, it has very little impact on the speed of searches,
+                              so we would recommend turning this on. The default value is true. </p>
+                           
+                           <p>However, if your site is very large and your user base is unlikely to use phrasal
+                              searching, it may not be worth the additional build time and increased index size.
+                              </p>
                            </td>
                         </tr>
                      
@@ -1820,14 +1953,7 @@ element recurse { xsd:boolean }</pre>
                         
                         <td colspan="2" class="wovenodd-col2"><span class="label">&lt;resultsPerPage&gt; </span>(<span>The maximum number of document results to be displayed per page. All results are displayed
                               by default; setting resultsPerPage to a positive integer creates a Show More/Show
-                              All widget at the bottom of the batch of results.</span>) <span>For most sites, where the number of results is likely to be in the low thousands,
-                              it's perfectly practical to show all the results at once, because the staticSearch
-                              processor is so fast. However, if you have tens of thousands of documents, and it's
-                              possible that users will do (for example) filter-only searches that retrieve a large
-                              proportion of them, you can constrain the number of results which are shown initially
-                              using this setting. All the results are still generated and output to the page, but
-                              since most of them are hidden until the ‘Show More’ or ‘Show All’ button is clicked,
-                              the browser will render them much more quickly.</span></td>
+                              All widget at the bottom of the batch of results.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -1875,6 +2001,23 @@ element recurse { xsd:boolean }</pre>
                      
                      <tr>
                         
+                        <td class="wovenodd-col1"><span lang="en" class="label">Note</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <p>For most sites, where the number of results is likely to be in the low thousands,
+                              it's perfectly practical to show all the results at once, because the staticSearch
+                              processor is so fast. However, if you have tens of thousands of documents, and it's
+                              possible that users will do (for example) filter-only searches that retrieve a large
+                              proportion of them, you can constrain the number of results which are shown initially
+                              using this setting. All the results are still generated and output to the page, but
+                              since most of them are hidden until the ‘Show More’ or ‘Show All’ button is clicked,
+                              the browser will render them much more quickly.</p>
+                           </td>
+                        </tr>
+                     
+                     <tr>
+                        
                         <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                         
                         <td class="wovenodd-col2">
@@ -1912,10 +2055,7 @@ element resultsPerPage { xsd:nonNegativeInteger }</pre>
                      <tr>
                         
                         <td colspan="2" class="wovenodd-col2"><span class="label">&lt;rule&gt; </span>(<span>A rule that specifies a document path as XPath in match, and provides weighting for
-                              search terms found in that context.</span>) <span>The rule element is used to identify nodes in the XHTML document collection which
-                              should be treated in a special manner when indexed; either they might be ignored (if
-                              <span class="att">weight</span>=<span class="val">0</span>), or any words found in them might be given greater weight than words in normal contexts
-                              <span class="att">weight</span>&gt;<span class="val">1</span>. Words appearing in headings or titles, for example, might be weighted more heavily.</span></td>
+                              search terms found in that context.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -1997,6 +2137,19 @@ element resultsPerPage { xsd:nonNegativeInteger }</pre>
                         <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
                         
                         <td class="wovenodd-col2"><span lang="en">Empty element</span></td>
+                        </tr>
+                     
+                     <tr>
+                        
+                        <td class="wovenodd-col1"><span lang="en" class="label">Note</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <p>The rule element is used to identify nodes in the XHTML document collection which
+                              should be treated in a special manner when indexed; either they might be ignored (if
+                              <span class="att">weight</span>=<span class="val">0</span>), or any words found in them might be given greater weight than words in normal contexts
+                              <span class="att">weight</span>&gt;<span class="val">1</span>. Words appearing in headings or titles, for example, might be weighted more heavily.</p>
+                           </td>
                         </tr>
                      
                      <tr>
@@ -2165,6 +2318,34 @@ element rules { <a class="link_ref" href="#TEI.rule" title="&lt;rule&gt;">rule</
                      
                      <tr>
                         
+                        <td class="wovenodd-col1"><span lang="en" class="label">Note</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <p><a class="link_ref" href="#TEI.scoringAlgorithm" title="&lt;scoringAlgorithm&gt;">&lt;scoringAlgorithm&gt;</a> is an optional element that specifies which scoring algorithm to use when calculating
+                              the score of a term and thus the order in which the results from a search are sorted.
+                              There are currently two options: </p>
+                           
+                           <ul>
+                              
+                              <li class="item"><span class="val">raw</span>: This is the default option (and so does not need to be set explicitly). The raw
+                                 score is simply the sum of all instances of a term (optionally multipled by a configured
+                                 weight via the <a class="link_ref" href="#TEI.rule" title="&lt;rule&gt;">&lt;rule&gt;</a>/<span class="att">weight</span> <a href="howDoIUseIt.html#specifyingRules" class="link_ref" title="Specifying rules (optional)">configuration</a>) in a document. This will usually provide good results for most document collections.</li>
+                              
+                              <li class="item"><span class="val">tf-idf</span>: The tf-idf algorithm (term frequency-inverse document frequency) computes the mathematical
+                                 relevance of a term within a document relative to the rest of the document collection.
+                                 The staticSearch implementation of tf-idf basically follows the textbook definition
+                                 of tf-idf: tf-idf = ($instancesOfTerm / $totalTermsInDoc) * log( $allDocumentsCount
+                                 / $docsWithThisTermCount ) This is fairly crude compared to other search engines,
+                                 like <a class="link_ref" href="https://lucene.apache.org/core/3_5_0/scoring.html">Lucene</a>, but it may provide useful results for document collections of varying lengths or
+                                 in instances where the raw score may be insufficient or misleading. There are a number
+                                 of resources on tf-idf scoring, including: <a class="link_ref" href="https://en.wikipedia.org/wiki/Tf%E2%80%93idf">Wikipedia</a> and Christopher D. Manning, Prabhakar Raghavan and Hinrich Schütze, <a class="link_ref" href="https://nlp.stanford.edu/IR-book/html/htmledition/tf-idf-weighting-1.html">Introduction to Information Retrieval</a>, Cambridge University Press. 2008.</li>
+                              </ul>
+                           </td>
+                        </tr>
+                     
+                     <tr>
+                        
                         <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                         
                         <td class="wovenodd-col2">
@@ -2284,6 +2465,29 @@ element scoringAlgorithm { "raw" | "tf-idf" }</pre>Legal values are:
                      
                      <tr>
                         
+                        <td class="wovenodd-col1"><span lang="en" class="label">Note</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <p>Google has proposed a browser feature called <a class="link_ref" href="https://wicg.github.io/scroll-to-text-fragment/">Text Fragments</a>, which would support a special kind of link that targets a specific string of text
+                              inside a page. When clicking on such a link, the browser would scroll to, and then
+                              highlight, the target text. This has been implemented in Chrome-based browsers (Chrome,
+                              Chromium and Edge) at the time of writing, but other browser producers are sceptical
+                              with regard to the specification and worried about possible security implications.
+                              The specification is subject to radical change. <a class="link_ref" href="#TEI.scrollToTextFragment" title="&lt;scrollToTextFragment&gt;">&lt;scrollToTextFragment&gt;</a> is a boolean parameter that specifies whether you want to turn on this feature for
+                              browsers that support it. It depends on the availability of keyword-in-context strings,
+                              so <a class="link_ref" href="#TEI.createContexts" title="&lt;createContexts&gt;">&lt;createContexts&gt;</a> must also be turned on to make it work. The feature is automatically suppressed for
+                              browsers which do not support it. We recommend only using this feature on sites which
+                              are in steady development, so that if necessary it can be turned off, our the staticSearch
+                              implementation can be updated to take account of changes. For sites intended to remain
+                              unchanged or archived for any length of time, this feature should be left turned off.
+                              It is off by default. A more reliable alternative is probably to use JavaScript to
+                              <a href="howDoIUseIt.html#highlightTargetPage" class="link_ref" title="Highlighting search hits on target pages">highlight hits on the target page</a>.</p>
+                           </td>
+                        </tr>
+                     
+                     <tr>
+                        
                         <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                         
                         <td class="wovenodd-col2">
@@ -2321,8 +2525,7 @@ element scrollToTextFragment { xsd:boolean }</pre>
                      <tr>
                         
                         <td colspan="2" class="wovenodd-col2"><span class="label">&lt;searchFile&gt; </span>(<span>The search file (aka page) that will be the primary access point for the staticSearch.
-                              Note that this page must be at the root of the collection directory.</span>) <span>The search page is a regular HTML page which forms part of your site. The only important
-                              characteristic it must have is a <span class="gi">&lt;div&gt;</span> element with <span class="att">id</span>=<span class="val">staticSearch</span>, whose contents will be rewritten by the staticSearch build process. See <a href="howDoIUseIt.html#searchPage" class="link_ptr" title="Creating a search page"><span class="headingNumber">7.6 </span>Creating a search page</a>.</span></td>
+                              Note that this page must be at the root of the collection directory.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -2365,6 +2568,17 @@ element scrollToTextFragment { xsd:boolean }</pre>
                               
                               <div class="specChild">XSD anyURI</div>
                               </div>
+                           </td>
+                        </tr>
+                     
+                     <tr>
+                        
+                        <td class="wovenodd-col1"><span lang="en" class="label">Note</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <p>The search page is a regular HTML page which forms part of your site. The only important
+                              characteristic it must have is a <span class="gi">&lt;div&gt;</span> element with <span class="att">id</span>=<span class="val">staticSearch</span>, whose contents will be rewritten by the staticSearch build process. See <a href="howDoIUseIt.html#searchPage" class="link_ptr" title="Creating a search page"><span class="headingNumber">7.6 </span>Creating a search page</a>.</p>
                            </td>
                         </tr>
                      
@@ -2456,6 +2670,44 @@ element searchFile { xsd:anyURI }</pre>
                      
                      <tr>
                         
+                        <td class="wovenodd-col1"><span lang="en" class="label">Note</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <p>The staticSearch project currently has only two real stemmers: an implementation of
+                              the Porter 2 algorithm for modern English, and an implementation of the French snowball
+                              stemmer. These appear in <span class="ident">/stemmers/en/</span> and <span class="ident">/stemmers/fr/</span>, folders. The default value for this parameter is <span class="val">en</span>; to use the French stemmer, use <span class="val">fr</span>. We will be adding more stemmers as the project develops. However, if your document
+                              collection is not English or French, you have a couple of options, one hard and one
+                              easy. </p>
+                           
+                           <ul>
+                              
+                              <li class="item"><em>Hard option</em>: implement your own stemmers. You will need to write two implementations of the stemmer
+                                 algorithm, one in XSLT (which must be named <span class="ident">ssStemmer.xsl</span>) and one in JavaScript (<span class="ident">ssStemmer.js</span>), and confirm that they both generate the same results. The XSLT stemmer is used
+                                 in the generation of the index files at build time, and the JavaScript version is
+                                 used to stem the user's input in the search page. You can look at the existing implementations
+                                 in the <span class="ident">/stemmers/en/</span> folder to see how the stemmers need to be constructed. Place your stemmers in a folder
+                                 called <span class="ident">/stemmers/[yourlang]/</span>, and specify <span class="val">yourlang</span> in the configuration file.</li>
+                              
+                              <li class="item"><em>Easy option</em>: Use the <span class="ident">identity stemmer</span> (which is equivalent to turning off stemming completely), and make sure wildcard
+                                 searching is turned on. Then your users can search using wildcards instead of having
+                                 their search terms automatically stemmed. To do this, specify the value <span class="val">identity</span> in your configuration file.</li>
+                              </ul>
+                           
+                           <p> Another alternative is the <span class="ident">stripDiacritics</span> stemmer. Like the <span class="ident">identity stemmer</span>, this is not really a stemmer at all; what it does is to strip out all combining
+                              diacritics from tokens. This is a useful approach if you document collection contains
+                              texts with accents and diacritics, but your users may be unfamiliar with the use of
+                              diacritics and will want to search just with plain unaccented characters. For example,
+                              if a text contains the word <span class="mentioned">élève</span>, but you would like searchers to be able to find the word simply by typing the ascii
+                              string <span class="mentioned">eleve</span>, then this is a good option. Combined with wildcards, it can provide a very flexible
+                              and user-friendly search engine in the absence of a sophisticated stemmer, or for
+                              cases where there are mixed languages so a single stemmer will not do. To use this
+                              option, specify the value <span class="val">stripDiacritics</span> in your configuration file.</p>
+                           </td>
+                        </tr>
+                     
+                     <tr>
+                        
                         <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                         
                         <td class="wovenodd-col2">
@@ -2496,12 +2748,7 @@ element stemmerFolder { xsd:NCName }</pre>
                               indexing). These are typically words too common to be worth searching for, but every
                               site will also have some specific terms which are used so widely across the site that
                               they should be suppressed to control the index size. The list should be in plain text
-                              with one word per line.</span>) <span>There are common stopwords files for most languages available on the Web, but it is
-                              probably a good idea to take one of these and customize it for your project, since
-                              there will be words in the website which are so common that it makes no sense to index
-                              them, but they are not ordinary stopwords. For example, in a Website dedicated to
-                              the work of John Keats, the name <span class="mentioned">keats</span> should probably be added to the stopwords file, since almost every page will include
-                              it, and searching for it will be pointless.</span></td>
+                              with one word per line.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -2549,6 +2796,21 @@ element stemmerFolder { xsd:NCName }</pre>
                      
                      <tr>
                         
+                        <td class="wovenodd-col1"><span lang="en" class="label">Note</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <p>There are common stopwords files for most languages available on the Web, but it is
+                              probably a good idea to take one of these and customize it for your project, since
+                              there will be words in the website which are so common that it makes no sense to index
+                              them, but they are not ordinary stopwords. For example, in a Website dedicated to
+                              the work of John Keats, the name <span class="mentioned">keats</span> should probably be added to the stopwords file, since almost every page will include
+                              it, and searching for it will be pointless.</p>
+                           </td>
+                        </tr>
+                     
+                     <tr>
+                        
                         <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                         
                         <td class="wovenodd-col2">
@@ -2585,8 +2847,8 @@ element stopwordsFile { xsd:anyURI }</pre>
                      
                      <tr>
                         
-                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;totalKwicLength&gt; </span>(<span>If createContexts is set to true, then this parameter controls how long the contexts
-                              will be.</span>)</td>
+                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;totalKwicLength&gt; </span>(<span>If createContexts is set to true, then this parameter controls how long the harvested
+                              keyword-in-context strings will be.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -2634,6 +2896,18 @@ element stopwordsFile { xsd:anyURI }</pre>
                      
                      <tr>
                         
+                        <td class="wovenodd-col1"><span lang="en" class="label">Note</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <p>Obviously, the longer the keyword-in-context strings are, the larger the individual
+                              index files will be, but the more useful the KWICs will be for users looking at the
+                              search results.</p>
+                           </td>
+                        </tr>
+                     
+                     <tr>
+                        
                         <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                         
                         <td class="wovenodd-col2">
@@ -2670,9 +2944,7 @@ element totalKwicLength { xsd:nonNegativeInteger }</pre>
                      
                      <tr>
                         
-                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;verbose&gt; </span>(<span>Turns on more detailed reporting during the indexing process.</span>) <span>The staticSearch build process can be lengthy, and if something goes wrong it can
-                              be difficult to figure out where the problem was. If you're having build problems,
-                              turn on verbose messages in the configuration file to help with debugging.</span></td>
+                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;verbose&gt; </span>(<span>Turns on more detailed reporting during the indexing process.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -2715,6 +2987,18 @@ element totalKwicLength { xsd:nonNegativeInteger }</pre>
                               
                               <div class="specChild">XSD boolean</div>
                               </div>
+                           </td>
+                        </tr>
+                     
+                     <tr>
+                        
+                        <td class="wovenodd-col1"><span lang="en" class="label">Note</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <p>The staticSearch build process can be lengthy, and if something goes wrong it can
+                              be difficult to figure out where the problem was. If you're having build problems,
+                              turn on verbose messages in the configuration file to help with debugging.</p>
                            </td>
                         </tr>
                      
@@ -2807,6 +3091,25 @@ element verbose { xsd:boolean }</pre>
                      
                      <tr>
                         
+                        <td class="wovenodd-col1"><span lang="en" class="label">Note</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <p><a class="link_ref" href="#TEI.versionFile" title="&lt;versionFile&gt;">&lt;versionFile&gt;</a> enables you to specify the path to a plain-text file containing a simple version
+                              number for the project. This might take the form of a software-release-style version
+                              number such as <span class="val">1.5</span>, or it might be a Subversion revision number or a Git commit id. It should not contain
+                              any spaces or punctuation. If you provide a version file, the version string will
+                              be used as part of the filenames for all the JSON resources created for the search.
+                              This is useful because it allows the browser to cache such resources when users repeatedly
+                              visit the search page, but if the project is rebuilt with a new version, those cached
+                              files will not be used because the new version will have different filenames. The
+                              path specified is relative to the location of the configuration file (or absolute,
+                              if you wish).</p>
+                           </td>
+                        </tr>
+                     
+                     <tr>
+                        
                         <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                         
                         <td class="wovenodd-col2">
@@ -2845,11 +3148,7 @@ element versionFile { xsd:anyURI }</pre>
                         
                         <td colspan="2" class="wovenodd-col2"><span class="label">&lt;wildcardSearch&gt; </span>(<span>Whether or not to support wildcard searches. Note that wildcard searches are more
                               effective when phrasal searching is also turned on, because the contexts available
-                              for phrasal searches are also used to provide wildcard results.</span>) <span>Wildcard searching can coexist with stemmed searching, but it is especially useful
-                              when stemming is not available, either because there is no available stemmer for the
-                              language of the site, or because the site contains multiple languages. Unless your
-                              site is particularly large, we recommend turning on wildcard searching, and therefore
-                              also phrasal searching (<a class="link_ref" href="#TEI.phrasalSearch" title="&lt;phrasalSearch&gt;">&lt;phrasalSearch&gt;</a>).</span></td>
+                              for phrasal searches are also used to provide wildcard results.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -2892,6 +3191,20 @@ element versionFile { xsd:anyURI }</pre>
                               
                               <div class="specChild">XSD boolean</div>
                               </div>
+                           </td>
+                        </tr>
+                     
+                     <tr>
+                        
+                        <td class="wovenodd-col1"><span lang="en" class="label">Note</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <p>Wildcard searching can coexist with stemmed searching, but it is especially useful
+                              when stemming is not available, either because there is no available stemmer for the
+                              language of the site, or because the site contains multiple languages. Unless your
+                              site is particularly large, we recommend turning on wildcard searching, and therefore
+                              also phrasal searching (<a class="link_ref" href="#TEI.phrasalSearch" title="&lt;phrasalSearch&gt;">&lt;phrasalSearch&gt;</a>).</p>
                            </td>
                         </tr>
                      
@@ -3105,7 +3418,7 @@ element wildcardSearch { xsd:boolean }</pre>
             <!--
 	  Generated from index.xml using XSLT stylesheets version 7.50.1
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2021-02-04T00:10:40Z.
+	       on 2021-02-08T19:41:58Z.
 	       SAXON HE 10.0.
 		 --></address>
          </div>

@@ -348,6 +348,13 @@ div.moduleSpec{
 span.moduleSpecHead{
     font-style: italic;
 }
+ul.specList{
+    position: relative;
+    left: -2em;
+    padding: 0.5em;
+    background-color: #e0e0e0;
+    width: calc(100% + 2em);
+}
 ul.specList li{
     list-style: none;
 }

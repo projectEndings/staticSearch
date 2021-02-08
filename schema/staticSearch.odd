@@ -365,11 +365,12 @@
             and what search features you would like to include. The configuration file conforms to a schema which is
             documented here.</p>
             <p>There are three main sections of the configuration file:
-              <list>
-                <item><gi>params</gi></item>
-                <item><gi>rules</gi></item>
-                <item><gi>contexts</gi></item>
-              </list>
+              <specList>
+                <specDesc key="params"/>
+                <specDesc key="rules"/>
+                <specDesc key="contexts"/>
+              </specList>
+              
               Only the <gi>params</gi> element is necessary, but, as we discuss shortly, we highly suggest taking advantage of the <gi>rules</gi>
               and <gi>contexts</gi> for the best results.
             </p>
@@ -380,10 +381,10 @@
               <div xml:id="paramsRequired">
                 <head>Required parameters</head>
                 <p>The <gi>params</gi> element has two required elements for determining the resource collection that you wish to index:
-                  <list>
-                    <item><gi>searchFile</gi></item>
-                    <item><gi>recurse</gi></item>
-                  </list>
+                  <specList>
+                    <specDesc key="searchFile"/>
+                    <specDesc key="recurse"/>
+                  </specList>
                 </p>
                 <p>The <gi>searchFile</gi> element is a relative URI (resolved, like all URIs specified in the config file, against the configuration file location) that points
                   directly to the search page that will be the primary access point for the search. Since the search file must be at the root of the directory that you wish to index
@@ -420,147 +421,58 @@
               <div xml:id="paramsOptional">
                 <head>Optional parameters</head>
                 <p>The following parameters are optional, but most projects will want to specify 
-                some of them:</p>
+                some of them:
+                <!-- Keep these in separate specLists so that the relevant remarks come
+                     directly after each one. -->
+                
+                  <specList>
+                    <specDesc key="versionFile"/>
+                  </specList>
+                  
+                  <specList>
+                    <specDesc key="phrasalSearch"/>
+                  </specList>
+                  
+                  <specList>
+                    <specDesc key="stemmerFolder"/>
+                  </specList>
+                  
+                  <specList>
+                    <specDesc key="scoringAlgorithm"/>
+                  </specList>
+                  
+                  <specList>
+                    <specDesc key="createContexts"/>
+                  </specList>
+                  
+                  <specList>
+                    <specDesc key="maxKwicsToHarvest"/>
+                  </specList>
+                  
+                  <specList>
+                    <specDesc key="maxKwicsToShow"/>
+                  </specList>
+                  
+                  <specList>
+                    <specDesc key="totalKwicLength"/>
+                  </specList>
+                  
+                  <specList>
+                    <specDesc key="kwicTruncateString"/>
+                  </specList>
+                  
+                  <specList>
+                    <specDesc key="linkToFragmentId"/>
+                  </specList>
+                  
+                  <specList>
+                    <specDesc key="scrollToTextFragment"/>
+                  </specList>
+                  
+                </p>
+                
                 <list>
-                  <item><gi>versionFile</gi> enables you to specify the path to a plain-text file
-                  containing a simple version number for the project. This might take the form of 
-                  a software-release-style version number such as <val>1.5</val>, or it might be
-                  a Subversion revision number or a Git commit id. It should not contain any 
-                  spaces or punctuation. If you provide a version file, the version string will
-                  be used as part of the filenames for all the JSON resources created for the 
-                  search. This is useful because it allows the browser to cache such resources 
-                  when users repeatedly visit the search page, but if the project is rebuilt with 
-                  a new version, those cached files will not be used because the new version will
-                  have different filenames. The path specified is relative to the location of the
-                  configuration file (or absolute, if you wish).</item>
                   
-                  <item><gi>phrasalSearch</gi> is a boolean parameter which specifies whether you 
-                  want your search engine to support phrasal searches (quoted strings). Obviously this
-                  is a useful feature, but it is also costly in terms of the size of JSON token files; 
-                  in order to support this kind of search, we store contexts for all hits for each token
-                  in each document, so if your site is very large, and your user base is unlikely to 
-                  use phrasal searching, it may not be worth the overhead. The default value is true.</item>
-                  
-                  <item xml:id="stemmerFolder">
-                    <gi>stemmerFolder</gi> is a string parameter specifying the name
-                    of a folder that is inside the <ident>/stemmers/</ident> folder in
-                    the staticSearch repository structure.
-                    
-                    <p>The staticSearch project currently has only two real stemmers:
-                      an implementation of the Porter 2 algorithm for modern English, and
-                      an implementation of the French snowball stemmer. These 
-                      appear in <ident>/stemmers/en/</ident> and <ident>/stemmers/fr/</ident>, 
-                      folders. The default value for this parameter is <val>en</val>; to 
-                      use the French stemmer, use <val>fr</val>. We will
-                      be adding more stemmers as the project develops. However, if your 
-                      document collection is not English or French, you have a couple of options, one 
-                      hard and one easy.
-                      
-                      <list>
-                        <item><emph>Hard option</emph>: implement your own stemmers. You will need to
-                          write two implementations of the stemmer algorithm, one in XSLT (which 
-                          must be named <ident>ssStemmer.xsl</ident>) and one in JavaScript
-                          (<ident>ssStemmer.js</ident>), and confirm that they both generate the
-                          same results. The XSLT stemmer is used in the generation of the 
-                          index files at build time, and the JavaScript version is used to 
-                          stem the user's input in the search page. You can look at the 
-                          existing implementations in the <ident>/stemmers/en/</ident> folder
-                          to see how the stemmers need to be constructed. Place your stemmers
-                          in a folder called <ident>/stemmers/[yourlang]/</ident>, and 
-                          specify <val>yourlang</val> in the configuration file.
-                        </item>
-                        <item><emph>Easy option</emph>: Use the <ident>identity stemmer</ident>
-                          (which is equivalent to turning off stemming completely), and 
-                          make sure wildcard searching is turned on. Then your users can 
-                          search using wildcards instead of having their search terms 
-                          automatically stemmed. To do this, specify the value <val>identity</val>
-                          in your configuration file.
-                        </item>
-                      </list>
-                      Another alternative is the <ident>stripDiacritics</ident> stemmer. Like the
-                      <ident>identity stemmer</ident>, this is not really a stemmer at all; 
-                      what it does is to 
-                      strip out all combining diacritics from tokens. This is a useful approach
-                      if you document collection contains texts with accents and diacritics, but 
-                      your users may be unfamiliar with the use of diacritics and will want to
-                      search just with plain unaccented characters. For example, if a text contains
-                      the word <mentioned>élève</mentioned>, but you would like searchers to be able to
-                      find the word simply by typing the ascii string <mentioned>eleve</mentioned>, then this
-                      is a good option. Combined with wildcards, it can provide a very flexible and
-                      user-friendly search engine in the absence of a sophisticated stemmer, or for
-                      cases where there are mixed languages so a single stemmer will not do. To 
-                      use this option, specify the value <val>stripDiacritics</val>
-                      in your configuration file.
-                    </p>
-                  </item>
-                  <item><gi>scoringAlgorithm</gi> is an optional element that specifies which 
-                    scoring algorithm to use when calculating the score of a term and thus the order
-                    in which the results from a search are sorted. There are currently two options:
-                  <list>
-                    <item><val>raw</val>: This is the default option (and so does not need 
-                      to be set explicitly). The raw score is simply the sum of all instances of a term 
-                      (optionally multipled by a configured weight via the
-                      <gi>rule</gi>/<att>weight</att> <ref target="#specifyingRules">configuration</ref>) in a document. This will usually provide good
-                      results for most document collections.</item>
-                    <item><val>tf-idf</val>: The tf-idf algorithm (term frequency-inverse document frequency)
-                      computes the mathematical relevance of a term within a document relative to the rest
-                      of the document collection. The staticSearch implementation of tf-idf basically follows the textbook definition of tf-idf:
-                      <formula style="display:block;">
-                        tf-idf = ($instancesOfTerm / $totalTermsInDoc) * log( $allDocumentsCount / $docsWithThisTermCount )
-                      </formula>
-                      This is fairly crude compared to other search engines, like <ref target="https://lucene.apache.org/core/3_5_0/scoring.html">Lucene</ref>, but it may provide useful results
-                    for document collections of varying lengths or in instances where the raw score may be
-                    insufficient or misleading. There are a number of resources on tf-idf
-                    scoring, including: <ref target="https://en.wikipedia.org/wiki/Tf%E2%80%93idf">Wikipedia</ref> and Christopher D. Manning, Prabhakar Raghavan and Hinrich Schütze, <ref target="https://nlp.stanford.edu/IR-book/html/htmledition/tf-idf-weighting-1.html">Introduction to Information Retrieval</ref>, Cambridge University Press. 2008.</item>
-                  </list>
-                  </item>
-                  <item><gi>createContexts</gi> is a boolean parameter that specifies whether you 
-                  want the indexer to store keyword-in-context extracts for each of the hits in a
-                  document. This increases the size of the index, but of course it makes for much 
-                  more user-friendly search results.</item>
-                  
-                  <item><gi>maxKwicsToHarvest</gi> controls the number of keyword-in-context extracts
-                  that will be harvested from the data for each term in a document. If you set this to
-                  a low number, the size of the JSON files will be constrained, but of course the 
-                  user will only be able to see the KWICs that have been harvested in their search results.</item>
-                  
-                  <item><gi>maxKwicsToShow</gi> controls the number of keyword-in-context extracts
-                    that will be shown in the search results for each hit document. </item>
-                  
-                  <item><gi>totalKwicLength</gi> is an integer specifying how long a keyword-in-context
-                  string should be. Obviously, the higher this number is, the larger the individual index
-                  files will be, but the more useful the KWICs will be for users looking at the search results.</item>
-                  
-                  <item><gi>kwicTruncateString</gi> is a string containing the character you would like
-                  to use at the beginning and/or the end of a kwic which is not a full sentence. An 
-                  ellipsis character is the default.</item>
-                  
-                  <item><gi>linkToFragmentId</gi> is a boolean parameter that specifies whether you want
-                    the search engine to link each keyword-in-context extract with the closest element that 
-                    has an <att>id</att>. If the element has an ancestor with an <att>id</att>, then the indexer will associate
-                    that keyword-in-context extract with that <att>id</att>; if there are no suitable ancestor elements that have
-                    an <att>id</att>, then the extract is associated with first preceding element with an <att>id</att>.
-               </item>
-                  
-                  <item><gi>scrollToTextFragment</gi> (WARNING: experimental feature). 
-                    Google has proposed a browser feature called <ref target="https://wicg.github.io/scroll-to-text-fragment/">Text Fragments</ref>, which would support 
-                    a special kind of link that targets a specific string of text inside a page.
-                    When clicking on such a link, the browser would scroll to, and then highlight,
-                    the target text. This has been implemented in Chrome-based browsers (Chrome, 
-                    Chromium and Edge) at the time of writing, but other browser producers are sceptical
-                    with regard to the specification and worried about possible security implications.
-                    The specification is subject to radical change. <gi>scrollToTextFragment</gi> is a 
-                    boolean parameter that specifies whether you want to turn on this feature for 
-                    browsers that support it. It depends on the availability of keyword-in-context 
-                    strings, so <gi>createContexts</gi> must also be turned on to make it work. The
-                    feature is automatically suppressed for browsers which do not support it. We recommend 
-                    only using this feature on sites which are in steady development, so that if 
-                    necessary it can be turned off, our the staticSearch implementation can be 
-                    updated to take account of changes. For sites intended to remain unchanged or
-                    archived for any length of time, this feature should be left turned off. It is
-                    off by default. A more reliable alternative is probably to use JavaScript to 
-                    <ref target="#highlightTargetPage">highlight hits on the target page</ref>.
-                  </item>
                   
                   
                   <item><gi>verbose</gi> is a boolean which turns on/off detailed output messages
@@ -1248,7 +1160,6 @@
                 <elementRef key="verbose" minOccurs="0"/>
                 <elementRef key="stopwordsFile" minOccurs="0"/>
                 <elementRef key="dictionaryFile" minOccurs="0"/>
-                <elementRef key="replacementsFile" minOccurs="0"/>
                 <elementRef key="indentJSON" minOccurs="0"/>
                 <elementRef key="outputFolder" minOccurs="0"/>
                 <elementRef key="resultsPerPage" minOccurs="0"/>
@@ -1267,11 +1178,6 @@
           <elementSpec ident="rule" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
             <gloss>A rule that specifies a document path as XPath in <att>match</att>, and provides weighting for search
               terms found in that context.</gloss>
-            <desc>The rule element is used to identify nodes in the XHTML document collection which should be
-            treated in a special manner when indexed; either they might be ignored (if <att>weight</att>=<val>0</val>),
-            or any words found in them might be given greater weight than words in normal contexts 
-              <att>weight</att>&gt;<val>1</val>. Words appearing in headings or titles, for example, might
-            be weighted more heavily.</desc>
             <classes>
               <memberOf key="att.match"/>
             </classes>
@@ -1288,6 +1194,13 @@
                 </datatype>
               </attDef>
             </attList>
+            <remarks>
+              <p>The rule element is used to identify nodes in the XHTML document collection which should be
+            treated in a special manner when indexed; either they might be ignored (if <att>weight</att>=<val>0</val>),
+            or any words found in them might be given greater weight than words in normal contexts 
+              <att>weight</att>&gt;<val>1</val>. Words appearing in headings or titles, for example, might
+            be weighted more heavily.</p>
+            </remarks>
           </elementSpec>
 
           <elementSpec ident="contexts" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
@@ -1301,14 +1214,6 @@
           <elementSpec ident="context" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
             <gloss>A context definition, providing a <att>match</att> attribute that identifies the context,
               allowing keyword-in-context fragments to be bounded by a specific context.</gloss>
-            <desc>When the indexer is extracting keyword-in-context strings for each word, it uses a common-sense
-              approach based on common element definitions, so that for example when it reaches the end of a paragraph,
-              it will not continue into the next paragraph to get more context words. You may have special runs of 
-            text in your document collection which do not appear to be bounding contexts, but actually are; for 
-            example, you may have span elements with <att>class</att>=<val>note</val> which appear in the middle
-            of sentences but are not actually part of them. Use <gi>context</gi> elements to identify these 
-            special contexts so that the indexer knows the right boundaries from which to retrieve its 
-            keyword-in-context strings.</desc>
             <classes>
               <memberOf key="att.match"/>
               <memberOf key="att.labelled"/>
@@ -1323,6 +1228,16 @@
                 </datatype>
                </attDef>
             </attList>
+            <remarks>
+              <p>When the indexer is extracting keyword-in-context strings for each word, it uses a common-sense
+              approach based on common element definitions, so that for example when it reaches the end of a paragraph,
+              it will not continue into the next paragraph to get more context words. You may have special runs of 
+            text in your document collection which do not appear to be bounding contexts, but actually are; for 
+            example, you may have span elements with <att>class</att>=<val>note</val> which appear in the middle
+            of sentences but are not actually part of them. Use <gi>context</gi> elements to identify these 
+            special contexts so that the indexer knows the right boundaries from which to retrieve its 
+            keyword-in-context strings.</p>
+            </remarks>
           </elementSpec>
           
           <elementSpec ident="excludes" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
@@ -1335,11 +1250,6 @@
           
           <elementSpec ident="exclude" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
             <gloss>An exclusion definition, which excludes either documents or filters as defined by an XPath in <att>match</att>.</gloss>
-            <desc>Exclude elements can be used to identify documents or parts of documents to be completely omitted from 
-            indexing (for example, footer elements or banner headings are commonly ignored). Another usage is common if
-            you have multiple search engines/pages configured for your site, each with its own special features; in this
-            case, you may want one specific search index/page to ignore filter controls (HTML <gi>meta</gi> elements, as 
-            described in <ptr target="#searchFacetFeatures"/>) which are provided to support other search pages.</desc>
             <classes>
               <memberOf key="att.match"/>
             </classes>
@@ -1360,6 +1270,13 @@
                 </valList>
               </attDef>
             </attList>
+            <remarks>
+              <p>Exclude elements can be used to identify documents or parts of documents to be completely omitted from 
+            indexing (for example, footer elements or banner headings are commonly ignored). Another usage is common if
+            you have multiple search engines/pages configured for your site, each with its own special features; in this
+            case, you may want one specific search index/page to ignore filter controls (HTML <gi>meta</gi> elements, as 
+            described in <ptr target="#searchFacetFeatures"/>) which are provided to support other search pages.</p>
+            </remarks>
           </elementSpec>
 
           <classSpec ident="att.match" module="ss" type="atts">
@@ -1391,13 +1308,15 @@
           <elementSpec ident="searchFile" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>The search file (aka page) that will be the primary access point for the staticSearch. Note
             that this page <emph>must</emph> be at the root of the collection directory.</gloss>
-            <desc>The search page is a regular HTML page which forms part of your site. The only 
-            important characteristic it must have is a <gi>div</gi> element with 
-              <att>id</att>=<val>staticSearch</val>, whose contents will be rewritten by 
-            the staticSearch build process. See <ptr target="#searchPage"/>.</desc>
             <content>
               <dataRef name="anyURI"/>
             </content>
+            <remarks>
+              <p>The search page is a regular HTML page which forms part of your site. The only 
+            important characteristic it must have is a <gi>div</gi> element with 
+              <att>id</att>=<val>staticSearch</val>, whose contents will be rewritten by 
+            the staticSearch build process. See <ptr target="#searchPage"/>.</p>
+            </remarks>
           </elementSpec>
           
           <elementSpec ident="versionFile" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
@@ -1408,6 +1327,19 @@
             <content>
               <dataRef name="anyURI"/>
             </content>
+            <remarks>
+              <p><gi>versionFile</gi> enables you to specify the path to a plain-text file
+                containing a simple version number for the project. This might take the form of 
+                a software-release-style version number such as <val>1.5</val>, or it might be
+                a Subversion revision number or a Git commit id. It should not contain any 
+                spaces or punctuation. If you provide a version file, the version string will
+                be used as part of the filenames for all the JSON resources created for the 
+                search. This is useful because it allows the browser to cache such resources 
+                when users repeatedly visit the search page, but if the project is rebuilt with 
+                a new version, those cached files will not be used because the new version will
+                have different filenames. The path specified is relative to the location of the
+                configuration file (or absolute, if you wish).</p>
+            </remarks>
           </elementSpec>
           
           <elementSpec ident="stemmerFolder" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
@@ -1418,6 +1350,54 @@
             <content>
               <dataRef name="NCName"/>
             </content>
+            <remarks>
+              <p>The staticSearch project currently has only two real stemmers:
+                an implementation of the Porter 2 algorithm for modern English, and
+                an implementation of the French snowball stemmer. These 
+                appear in <ident>/stemmers/en/</ident> and <ident>/stemmers/fr/</ident>, 
+                folders. The default value for this parameter is <val>en</val>; to 
+                use the French stemmer, use <val>fr</val>. We will
+                be adding more stemmers as the project develops. However, if your 
+                document collection is not English or French, you have a couple of options, one 
+                hard and one easy.
+                
+                <list>
+                  <item><emph>Hard option</emph>: implement your own stemmers. You will need to
+                    write two implementations of the stemmer algorithm, one in XSLT (which 
+                    must be named <ident>ssStemmer.xsl</ident>) and one in JavaScript
+                    (<ident>ssStemmer.js</ident>), and confirm that they both generate the
+                    same results. The XSLT stemmer is used in the generation of the 
+                    index files at build time, and the JavaScript version is used to 
+                    stem the user's input in the search page. You can look at the 
+                    existing implementations in the <ident>/stemmers/en/</ident> folder
+                    to see how the stemmers need to be constructed. Place your stemmers
+                    in a folder called <ident>/stemmers/[yourlang]/</ident>, and 
+                    specify <val>yourlang</val> in the configuration file.
+                  </item>
+                  <item><emph>Easy option</emph>: Use the <ident>identity stemmer</ident>
+                    (which is equivalent to turning off stemming completely), and 
+                    make sure wildcard searching is turned on. Then your users can 
+                    search using wildcards instead of having their search terms 
+                    automatically stemmed. To do this, specify the value <val>identity</val>
+                    in your configuration file.
+                  </item>
+                </list>
+                Another alternative is the <ident>stripDiacritics</ident> stemmer. Like the
+                <ident>identity stemmer</ident>, this is not really a stemmer at all; 
+                what it does is to 
+                strip out all combining diacritics from tokens. This is a useful approach
+                if you document collection contains texts with accents and diacritics, but 
+                your users may be unfamiliar with the use of diacritics and will want to
+                search just with plain unaccented characters. For example, if a text contains
+                the word <mentioned>élève</mentioned>, but you would like searchers to be able to
+                find the word simply by typing the ascii string <mentioned>eleve</mentioned>, then this
+                is a good option. Combined with wildcards, it can provide a very flexible and
+                user-friendly search engine in the absence of a sophisticated stemmer, or for
+                cases where there are mixed languages so a single stemmer will not do. To 
+                use this option, specify the value <val>stripDiacritics</val>
+                in your configuration file.
+              </p>
+            </remarks>
           </elementSpec>
           
           <elementSpec ident="scoringAlgorithm" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
@@ -1434,6 +1414,33 @@
                 </valItem>
               </valList>
             </content>
+            <remarks>
+              <p>
+              <gi>scoringAlgorithm</gi> is an optional element that specifies which 
+              scoring algorithm to use when calculating the score of a term and thus the order
+              in which the results from a search are sorted. There are currently two options:
+              <list>
+                <item><val>raw</val>: This is the default option (and so does not need 
+                  to be set explicitly). The raw score is simply the sum of all instances of a term 
+                  (optionally multipled by a configured weight via the
+                  <gi>rule</gi>/<att>weight</att> <ref target="#specifyingRules">configuration</ref>) in a document. This will usually provide good
+                  results for most document collections.</item>
+                <item><val>tf-idf</val>: The tf-idf algorithm (term frequency-inverse document frequency)
+                  computes the mathematical relevance of a term within a document relative to the rest
+                  of the document collection. The staticSearch implementation of tf-idf basically follows the textbook definition of tf-idf:
+                  <formula style="display:block;">
+                    tf-idf = ($instancesOfTerm / $totalTermsInDoc) * log( $allDocumentsCount / $docsWithThisTermCount )
+                  </formula>
+                  This is fairly crude compared to other search engines, like 
+                  <ref target="https://lucene.apache.org/core/3_5_0/scoring.html">Lucene</ref>, but it may provide useful results
+                  for document collections of varying lengths or in instances where the raw score may be
+                  insufficient or misleading. There are a number of resources on tf-idf
+                  scoring, including: <ref target="https://en.wikipedia.org/wiki/Tf%E2%80%93idf">Wikipedia</ref> and 
+                  Christopher D. Manning, Prabhakar Raghavan and Hinrich Schütze, <ref target="https://nlp.stanford.edu/IR-book/html/htmledition/tf-idf-weighting-1.html">Introduction 
+                    to Information Retrieval</ref>, Cambridge University Press. 2008.</item>
+              </list>
+              </p>
+            </remarks>
           </elementSpec>
           
           <elementSpec ident="recurse" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
@@ -1445,12 +1452,20 @@
           </elementSpec>
       
           <elementSpec ident="createContexts" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
-            <gloss>Whether to include keyword-in-context extracts in the index. This increases the
-              size of the index considerably, but it allows for more user-friendly search results,
-              as well as phrasal searches.</gloss>
+            <gloss>Whether to include keyword-in-context extracts in the index.</gloss>
             <content>
               <dataRef name="boolean"/>
             </content>
+            <remarks>
+              <p>
+                <gi>createContexts</gi> is a boolean parameter that specifies whether you 
+                want the indexer to store keyword-in-context extracts for each of the hits in a
+                document. This increases the size of the index, but of course it makes for much 
+                more user-friendly search results; instead of seeing just a score for each 
+                document found, the user will see a series of short text string with the 
+                search keyword(s) highlighted.
+              </p>
+            </remarks>
           </elementSpec>
           
           <elementSpec ident="linkToFragmentId" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
@@ -1458,6 +1473,17 @@
             <content>
               <dataRef name="boolean"/>
             </content>
+            <remarks>
+              <p><gi>linkToFragmentId</gi> is a boolean parameter that specifies whether you want
+                the search engine to link each keyword-in-context extract with the closest element that 
+                has an <att>id</att>. If the element has an ancestor with an <att>id</att>, then the indexer will associate
+                that keyword-in-context extract with that <att>id</att>; if there are no suitable ancestor elements that have
+                an <att>id</att>, then the extract is associated with first preceding element with an <att>id</att>.</p>
+              <p>We strongly recommend that you ensure your target documents have id attributes for any significant divisions
+              so that this parameter can be used effectively. With lots of ids throughout your documents, and this parameter
+              turned on, each keyword-in-context in the results page will be linked directly to the section of the 
+              document in which the hit appears, making the search results much more useful.</p>
+            </remarks>
           </elementSpec>
           
           <elementSpec ident="scrollToTextFragment" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
@@ -1467,25 +1493,61 @@
             <content>
               <dataRef name="boolean"/>
             </content>
+            <remarks>
+              <p>Google has proposed a browser feature called 
+                <ref target="https://wicg.github.io/scroll-to-text-fragment/">Text Fragments</ref>, which would support 
+                a special kind of link that targets a specific string of text inside a page.
+                When clicking on such a link, the browser would scroll to, and then highlight,
+                the target text. This has been implemented in Chrome-based browsers (Chrome, 
+                Chromium and Edge) at the time of writing, but other browser producers are sceptical
+                with regard to the specification and worried about possible security implications.
+                The specification is subject to radical change. <gi>scrollToTextFragment</gi> is a 
+                boolean parameter that specifies whether you want to turn on this feature for 
+                browsers that support it. It depends on the availability of keyword-in-context 
+                strings, so <gi>createContexts</gi> must also be turned on to make it work. The
+                feature is automatically suppressed for browsers which do not support it. We recommend 
+                only using this feature on sites which are in steady development, so that if 
+                necessary it can be turned off, our the staticSearch implementation can be 
+                updated to take account of changes. For sites intended to remain unchanged or
+                archived for any length of time, this feature should be left turned off. It is
+                off by default. A more reliable alternative is probably to use JavaScript to 
+                <ref target="#highlightTargetPage">highlight hits on the target page</ref>.</p>
+            </remarks>
           </elementSpec>
           
           <elementSpec ident="totalKwicLength" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>If <gi>createContexts</gi> is set to true, then this parameter controls how long
-              the contexts will be.</gloss>
+              the harvested keyword-in-context strings will be.</gloss>
             <content>
               <dataRef name="nonNegativeInteger"/>
             </content>
+            <remarks>
+              <p>Obviously, the longer the keyword-in-context strings are, the larger the individual index
+                files will be, but the more useful the KWICs will be for users looking at the search results.</p>
+            </remarks>
           </elementSpec>
           
           
           <elementSpec ident="maxKwicsToHarvest" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>This controls the maximum number of keyword-in-context extracts that will be
-              stored for each term. If <gi>phrasalSearch</gi> is set to true, this parameter is
-              ignored, because phrasal searches will only work properly if all contexts are
-              stored.</gloss>
+              stored for each term in a document.</gloss>
             <content>
               <dataRef name="nonNegativeInteger"/>
             </content>
+            <remarks>
+              <p><gi>maxKwicsToHarvest</gi> (an integer) controls the number of keyword-in-context extracts
+                that will be harvested from the data for each term in a document. For example, if a user
+                searches for the word <q>elephant</q>, and it occurs 27 times in a document, but the 
+                <gi>maxKwicsToHarvest</gi> value is set to 5, then only the first five of these 
+                keyword-in-context strings will be stored in the index. (This does not affect the 
+                score of the document in the search results, of course.) If you set this to
+                a low number, the size of the JSON files will be constrained, but of course the 
+                user will only be able to see the KWICs that have been harvested in their search results.</p>
+              <p></p>
+              <p>If <gi>phrasalSearch</gi> is set to true, the <gi>maxKwicsToHarvest</gi> setting is
+                ignored, because phrasal searches will only work properly if all contexts are
+                stored.</p>
+            </remarks>
           </elementSpec>
           
           <elementSpec ident="maxKwicsToShow" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
@@ -1494,6 +1556,12 @@
             <content>
               <dataRef name="nonNegativeInteger"/>
             </content>
+            <remarks>
+              <p>A user may search for multiple common words, so hundreds of hits could be found in 
+              a single document. If the keyword-in-context strings for all these hits are shown on
+              the results page, it would be too long and too difficult to navigate. This setting 
+              controls how many of those hits you want to show for each document in the result set.</p>
+            </remarks>
           </elementSpec>
 
           <elementSpec ident="kwicTruncateString" module="ss"
@@ -1501,39 +1569,51 @@
             <gloss>The string that will be used to signal ellipsis at the beginning and end of a
               keyword-in-context extract. Conventionally three periods, or an ellipsis
               character.</gloss>
-            <desc>The only reason you might need to specify a value for this parameter is
-            if the language of your search page conventionally uses a different ellipsis
-            character. Japanese, for example, uses the 3-dot-leader character.</desc>
             <content>
               <textNode/>
             </content>
+            <remarks>
+              <p>The only reason you might need to specify a value for this parameter is
+            if the language of your search page conventionally uses a different ellipsis
+            character. Japanese, for example, uses the 3-dot-leader character.</p>
+            </remarks>
           </elementSpec>
 
           <elementSpec ident="indentJSON" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>Whether or not to indent code in the JSON index files. Indenting increases the
               file size, but it can be useful if you need to read the files for debugging
               purposes.</gloss>
-            <desc>Normally, the JSON index files will only be processed by JavaScript, so
-            there is no need to indent them, but if you are debugging or investigating how
-            the code works, you may find it useful to generate them in a more human-readable
-            layout.</desc>
             <content>
               <dataRef name="boolean"/>
             </content>
+            <remarks>
+              <p>Normally, the JSON index files will only be processed by JavaScript, so
+            there is no need to indent them, but if you are debugging or investigating how
+            the code works, you may find it useful to generate them in a more human-readable
+            layout.</p>
+            </remarks>
           </elementSpec>
           
           
           <elementSpec ident="phrasalSearch" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>Whether or not to support phrasal searches. If this is true, then the <gi>maxContexts</gi>
             setting will be ignored, because all contexts are required to properly support phrasal search.</gloss>
-            <desc>Phrasal search functionality enables your users to search for specific phrases
-            by surrounding them with quotation marks, as in many search engines. Turning this on 
-            will make the index larger, because all contexts must be stored, but once the index
-            is built, it has very little impact on the speed of searches, so we would recommend
-            turning this on.</desc>
             <content>
               <dataRef name="boolean"/>
             </content>
+            <remarks>
+              <p>Phrasal search functionality enables your users to search for specific phrases
+                by surrounding them with quotation marks, as in many search engines. In order 
+                to support this kind of search, we store contexts for all hits for each token
+                in each document, so turning this on will make the index larger, because all 
+                contexts must be stored. However, once the index is built, it has very little 
+                impact on the speed of searches, so we would recommend turning this on. The 
+                default value is true.
+              </p>
+              <p>However, if your site is very large and your user base is unlikely to 
+                use phrasal searching, it may not be worth the additional build time and
+                increased index size. </p>
+            </remarks>
           </elementSpec>
           
           
@@ -1541,21 +1621,27 @@
             <gloss>Whether or not to support wildcard searches. Note that wildcard searches are
             more effective when phrasal searching is also turned on, because the contexts 
             available for phrasal searches are also used to provide wildcard results.</gloss>
-            <desc>Wildcard searching can coexist with stemmed searching, but it is especially 
-            useful when stemming is not available, either because there is no available stemmer
-            for the language of the site, or because the site contains multiple languages.
-            Unless your site is particularly large, we recommend turning on wildcard searching,
-            and therefore also phrasal searching (<gi>phrasalSearch</gi>).</desc>
             <content>
               <dataRef name="boolean"/>
             </content>
+            <remarks>
+              <p>Wildcard searching can coexist with stemmed searching, but it is especially 
+            useful when stemming is not available, either because there is no available stemmer
+            for the language of the site, or because the site contains multiple languages.
+            Unless your site is particularly large, we recommend turning on wildcard searching,
+            and therefore also phrasal searching (<gi>phrasalSearch</gi>).</p>
+            </remarks>
           </elementSpec>
           
           <elementSpec ident="resultsPerPage" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>The maximum number of document results to be displayed per <soCalled>page</soCalled>. All results
             are displayed by default; setting <gi>resultsPerPage</gi> to a positive integer creates a <soCalled>Show More/Show All</soCalled>
             widget at the bottom of the batch of results.</gloss>
-            <desc>For most sites, where the number of results is likely to be in the low thousands,
+            <content>
+              <dataRef name="nonNegativeInteger"/>
+            </content>
+            <remarks>
+              <p>For most sites, where the number of results is likely to be in the low thousands,
             it's perfectly practical to show all the results at once, because the staticSearch
             processor is so fast. However, if you have tens of thousands of documents, and it's
             possible that users will do (for example) filter-only searches that retrieve a
@@ -1563,21 +1649,21 @@
             initially using this setting. All the results are still generated and output to 
             the page, but since most of them are hidden until the <soCalled>Show More</soCalled> 
               or <soCalled>Show All</soCalled> button is clicked, the browser will render them
-            much more quickly.</desc>
-            <content>
-              <dataRef name="nonNegativeInteger"/>
-            </content>
+            much more quickly.</p>
+            </remarks>
           </elementSpec>
           
           <elementSpec ident="verbose" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>Turns on more detailed reporting during the indexing process.</gloss>
-            <desc>The staticSearch build process can be lengthy, and if something goes
-            wrong it can be difficult to figure out where the problem was. If you're
-            having build problems, turn on verbose messages in the configuration file 
-            to help with debugging.</desc>
             <content>
               <dataRef name="boolean"/>
             </content>
+            <remarks>
+              <p>The staticSearch build process can be lengthy, and if something goes
+            wrong it can be difficult to figure out where the problem was. If you're
+            having build problems, turn on verbose messages in the configuration file 
+            to help with debugging.</p>
+            </remarks>
           </elementSpec>
           <elementSpec ident="stopwordsFile" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>The location of a text file containing a list of stopwords (words to be ignored
@@ -1585,40 +1671,46 @@
             every site will also have some specific terms which are used so widely across the site
             that they should be suppressed to control the index size. The list should be in plain text
             with one word per line.</gloss>
-            <desc>There are common stopwords files for most languages available on the Web, but 
+            <content>
+              <dataRef name="anyURI"/>
+            </content>
+            <remarks>
+              <p>There are common stopwords files for most languages available on the Web, but 
             it is probably a good idea to take one of these and customize it for your project, since
             there will be words in the website which are so common that it makes no sense to index
             them, but they are not ordinary stopwords. For example, in a Website dedicated to the
             work of John Keats, the name <mentioned>keats</mentioned> should probably be added
             to the stopwords file, since almost every page will include it, and searching for it
-            will be pointless.</desc>
-            <content>
-              <dataRef name="anyURI"/>
-            </content>
+            will be pointless.</p>
+            </remarks>
           </elementSpec>
           <elementSpec ident="dictionaryFile" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>The location of a dictionary file (one word per line) which will be used to check
             tokens when indexing.</gloss>
-            <desc>The indexing process checks each word as it builds the index, and keeps a record
-            of all words which are not found in the configured dictionary. This can be very useful; all
-            words listed are either foreign (not part of the language of the dictionary) or perhaps 
-            misspelled (in which case they may not be correctly stemmed and index, and should be 
-            corrected).</desc>
             <content>
               <dataRef name="anyURI"/>
             </content>
+            <remarks>
+              <p>The indexing process checks each word as it builds the index, and keeps a record
+            of all words which are not found in the configured dictionary. This can be very useful; all
+            words listed are either foreign (not part of the language of the dictionary) or perhaps 
+            misspelled (in which case they may not be correctly stemmed and index, and should be 
+            corrected).</p>
+            </remarks>
           </elementSpec>
           <elementSpec ident="outputFolder" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>The name of the output folder into which the index data and JavaScript will 
               be placed in the site search. This should conform with the 
               <ref target="https://www.w3.org/TR/REC-xml/#dt-name">XML Name</ref> specification.</gloss>
-            <desc>When the staticSearch build process creates its output, many files need to be 
-            added to the website for which an index is being created. For convenience, all of 
-            these files are stored in a single folder. This element is used to specify the 
-            name of that folder.</desc>
             <content>
               <dataRef name="NCName"/>
             </content>
+            <remarks>
+              <p>When the staticSearch build process creates its output, many files need to be 
+            added to the website for which an index is being created. For convenience, all of 
+            these files are stored in a single folder. This element is used to specify the 
+            name of that folder.</p>
+            </remarks>
           </elementSpec>
         </schemaSpec>
       </div>

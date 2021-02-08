@@ -40,6 +40,19 @@
       <xsl:apply-templates/>
     </rng:interleave>
   </xsl:template>
-     
+  
+  <xd:doc>
+    <xd:desc>This template simply imports any remarks content from 
+    an elementSpec into any context where the element is cited using
+    a specDesc.</xd:desc>
+  </xd:doc>
+  <xsl:template match="specList">
+    <xsl:next-match/>
+    <xsl:for-each select="child::specDesc">
+      <xsl:variable name="elName" select="@key"/>
+      <xsl:copy-of select="//elementSpec[@ident=$elName]/remarks/node()"/>
+    </xsl:for-each>
+  </xsl:template>
+  
   
 </xsl:stylesheet>
