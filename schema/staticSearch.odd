@@ -371,8 +371,10 @@
                 <specDesc key="contexts"/>
               </specList>
               
-              Only the <gi>params</gi> element is necessary, but, as we discuss shortly, we highly suggest taking advantage of the <gi>rules</gi>
-              and <gi>contexts</gi> for the best results.
+              Only the <gi>params</gi> element is necessary, but, as we discuss shortly, 
+              we highly suggest taking advantage of the <gi>rules</gi>
+              (see <ptr target="#specifyingRules"/>) 
+              and <gi>contexts</gi> (<ptr target="#specifyingContexts"/>) for the best results.
             </p>
             
             
@@ -469,53 +471,38 @@
                     <specDesc key="scrollToTextFragment"/>
                   </specList>
                   
+                  <specList>
+                    <specDesc key="verbose"/>
+                  </specList>
+                  
+                  <specList>
+                    <specDesc key="stopwordsFile"/>
+                  </specList>
+                  
+                  <specList>
+                    <specDesc key="dictionaryFile"/>
+                  </specList>
+                  
+                  <specList>
+                    <specDesc key="indentJSON"/>
+                  </specList>
+                  
+                  <specList>
+                    <specDesc key="outputFolder"/>
+                  </specList>
+                  
                 </p>
-                
-                <list>
-                  
-                  
-                  
-                  <item><gi>verbose</gi> is a boolean which turns on/off detailed output messages
-                  during the indexing process. You might set this to true if something is not working 
-                  as expected and you need to do some debugging.</item>
-                  
-                  <item><gi>stopwordsFile</gi> is a string parameter containing the relative path
-                  (from the config file) to a text file containing a list of stopwords that you want to
-                  use for your site. A stopword is a word that will not be indexed, because it is too
-                  common (<mentioned>the</mentioned>, <mentioned>a</mentioned>, <mentioned>you</mentioned>
-                    and so on). The project has a built-in set of common stopwords for English, which 
-                  we recommend you start from; you'll find it in <ident>xsl/english_stopwords.txt</ident>.
-                  If your site is all about a person, a place or some other entity, then you might add 
-                  their name to the stopwords list, because it will presumably appear on almost 
-                  every page and it makes no sense to search for it. One way to find such terms is
-                  to generate your index, then search for the largest JSON index files that are 
-                  generated, to see if they might be too common to be useful as search terms.</item>
-                  
-                  <item><gi>dictionaryFile</gi> is the relative path to a file containing an English dictionary
-                  (assuming your site is in English). This is used to check words during the indexing process,
-                  and a report generated at the end will list all the terms in the site which do not appear 
-                  in the dictionary. This is a useful way to find typos in your site. Again, there is a default 
-                  dictionary in <ident>xsl/english_words.txt</ident> which you might copy and adapt.</item>
-                  
-                  <item><gi>indentJSON</gi> is a boolean parameter which controls whether the JSON
-                  files generated for the index are indented or not. Indenting makes the files easier for a human
-                  to read, if you need to understand them or debug them, but obviously it adds to their file 
-                  size. </item>
-                  
-                  <item><gi>outputFolder</gi> is the name of a folder into which you would like to place
-                  the JavaScript and JSON index files your site search. The default is <val>staticSearch</val>,
-                  but if you would prefer something else, you can specify it here. You may also use this element 
-                  if you are defining two different searches within the same site, so that their files are kept in 
-                  different locations. The value must conform with
-                  the <ref target="https://www.w3.org/TR/REC-xml/#dt-name">XML Name</ref> specification.</item>
-                  
-                </list>
-                
                 
               </div>
             </div>
           <div xml:id="specifyingRules">
             <head>Specifying rules (optional)</head>
+            <p>
+            <specList>
+              <specDesc key="rules"/>
+              <specDesc key="rule" atts="match weight"/>
+            </specList>
+            </p>
             <p>The <gi>rules</gi> elements specifies a list of conditions (using the <gi>rule</gi> element) that tell the parser, using XPath statements in the <att>match</att> attribute, specific weights to assign to particular parts of each document. For instance, if you wanted all heading elements (<gi>h1</gi>, <gi>h2</gi>, etc) in documents to be given a greater weight and thus receive a higher score in the results, you can do so using a rule like so:
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
                 <rules>
@@ -552,7 +539,18 @@
           </div>
           <div xml:id="specifyingContexts">
             <head>Specifying contexts (optional)</head>
-            <p>When the staticSearch creates the keywords-in-contexts (the "kwic" or "snippets") for each token, it does so by looking for the nearest block-level element that it can use as its context. Take, for instance, this unordered list:
+            
+            <p>
+              <specList>
+                <specDesc key="contexts"/>
+                <specDesc key="context" atts="match"/>
+              </specList>
+            </p>
+            
+            <p>When the staticSearch creates the keywords-in-context strings 
+              (the "kwic" or "snippets") for each token, it does so by looking for 
+              the nearest block-level element that it can use as its context. Take, 
+              for instance, this unordered list:
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
                 <ul>
                   <li>Keyword-in-context search results. This is also configurable, since including contexts
@@ -611,6 +609,13 @@
           </div>
             <div xml:id="specifyingExclusions">
               <head>Specifying exclusions (optional)</head>
+              
+              <p>
+                <specList>
+                  <specDesc key="excludes"/>
+                  <specDesc key="exclude" atts="type match"/>
+                </specList>
+              </p>
               
               <p>A complex site may have two or more search pages targetting
               specific types of document or content, each of which may need 
@@ -1168,7 +1173,7 @@
           </elementSpec>
 
           <elementSpec ident="rules" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
-            <gloss>The set of rules, expressed as XPath in <att>match</att>, that control weighting of search terms
+            <gloss>The set of rules that control weighting of search terms
               found in specific contexts.</gloss>
             <content>
               <elementRef key="rule" minOccurs="1" maxOccurs="unbounded"/>
@@ -1176,7 +1181,8 @@
           </elementSpec>
           
           <elementSpec ident="rule" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
-            <gloss>A rule that specifies a document path as XPath in <att>match</att>, and provides weighting for search
+            <gloss>A rule that specifies a document path as XPath in the 
+              <att>match</att> attribute, and provides weighting for search
               terms found in that context.</gloss>
             <classes>
               <memberOf key="att.match"/>
@@ -1199,12 +1205,12 @@
             treated in a special manner when indexed; either they might be ignored (if <att>weight</att>=<val>0</val>),
             or any words found in them might be given greater weight than words in normal contexts 
               <att>weight</att>&gt;<val>1</val>. Words appearing in headings or titles, for example, might
-            be weighted more heavily.</p>
+            be weighted more heavily, while navigation menus, banners or footers might be ignored completely.</p>
             </remarks>
           </elementSpec>
 
           <elementSpec ident="contexts" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
-            <gloss>The set of contexts, expressed as XPath in <att>match</att>, that controls the identification of
+            <gloss>The set of <gi>context</gi> elements that identify
             contexts for keyword-in-context fragments.</gloss>
             <content>
               <elementRef key="context" minOccurs="1" maxOccurs="unbounded"/>
@@ -1241,15 +1247,16 @@
           </elementSpec>
           
           <elementSpec ident="excludes" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
-            <gloss>The set of exclusions, expressed as XPath in <att>match</att>, that control the subset of documents
-            for a particular search.</gloss>
+            <gloss>The set of exclusions, expressed as <gi>exclude</gi> elements, that control the subset of documents
+            or filters used for a particular search.</gloss>
             <content>
               <elementRef key="exclude" minOccurs="1" maxOccurs="unbounded"/>
             </content>
           </elementSpec>
           
           <elementSpec ident="exclude" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
-            <gloss>An exclusion definition, which excludes either documents or filters as defined by an XPath in <att>match</att>.</gloss>
+            <gloss>An exclusion definition, which excludes either documents or filters 
+              as defined by an XPath in the <att>match</att> attribute.</gloss>
             <classes>
               <memberOf key="att.match"/>
             </classes>
@@ -1662,30 +1669,33 @@
               <p>The staticSearch build process can be lengthy, and if something goes
             wrong it can be difficult to figure out where the problem was. If you're
             having build problems, turn on verbose messages in the configuration file 
-            to help with debugging.</p>
+            to help with debugging, and you'll see a lot more output at the command line.</p>
             </remarks>
           </elementSpec>
           <elementSpec ident="stopwordsFile" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
-            <gloss>The location of a text file containing a list of stopwords (words to be ignored
-            when indexing). These are typically words too common to be worth searching for, but 
-            every site will also have some specific terms which are used so widely across the site
-            that they should be suppressed to control the index size. The list should be in plain text
-            with one word per line.</gloss>
+            <gloss>The relative path (from the config file) to a text file containing a list of 
+              stopwords (words to be ignored when indexing). </gloss>
             <content>
               <dataRef name="anyURI"/>
             </content>
             <remarks>
-              <p>There are common stopwords files for most languages available on the Web, but 
-            it is probably a good idea to take one of these and customize it for your project, since
-            there will be words in the website which are so common that it makes no sense to index
-            them, but they are not ordinary stopwords. For example, in a Website dedicated to the
-            work of John Keats, the name <mentioned>keats</mentioned> should probably be added
-            to the stopwords file, since almost every page will include it, and searching for it
-            will be pointless.</p>
+              <p>A stopword is a word that will not be indexed, because it is too
+                common (<mentioned>the</mentioned>, <mentioned>a</mentioned>, <mentioned>you</mentioned>
+                and so on). There are common stopwords files for most languages available on the Web, but 
+                it is probably a good idea to take one of these and customize it for your project, since
+                there will be words in the website which are so common that it makes no sense to index
+                them, but they are not ordinary stopwords. For example, in a Website dedicated to the
+                work of John Keats, the name <mentioned>keats</mentioned> should probably be added
+                to the stopwords file, since almost every page will include it, and searching for it
+                will be pointless. The project has a built-in set of common stopwords for English, which 
+                you'll find in <ident>xsl/english_stopwords.txt</ident>. One way to find appropriate stopwords
+                for your site is to generate your index, then search for the largest JSON index files that are 
+                generated, to see if they might be too common to be useful as search terms.</p>
+              <p></p>
             </remarks>
           </elementSpec>
           <elementSpec ident="dictionaryFile" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
-            <gloss>The location of a dictionary file (one word per line) which will be used to check
+            <gloss>The relative path (from the config file) to a dictionary file (one word per line) which will be used to check
             tokens when indexing.</gloss>
             <content>
               <dataRef name="anyURI"/>
@@ -1695,7 +1705,9 @@
             of all words which are not found in the configured dictionary. This can be very useful; all
             words listed are either foreign (not part of the language of the dictionary) or perhaps 
             misspelled (in which case they may not be correctly stemmed and index, and should be 
-            corrected).</p>
+            corrected). There is a default  dictionary in <ident>xsl/english_words.txt</ident> which 
+                you might copy and adapt if you're working in English; lots of dictionaries for other
+                languages are available on the Web.</p>
             </remarks>
           </elementSpec>
           <elementSpec ident="outputFolder" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
@@ -1709,7 +1721,10 @@
               <p>When the staticSearch build process creates its output, many files need to be 
             added to the website for which an index is being created. For convenience, all of 
             these files are stored in a single folder. This element is used to specify the 
-            name of that folder.</p>
+            name of that folder. The default is <val>staticSearch</val>,
+                but if you would prefer something else, you can specify it here. You may also use this element 
+                if you are defining two different searches within the same site, so that their files are kept in 
+                different locations. </p>
             </remarks>
           </elementSpec>
         </schemaSpec>

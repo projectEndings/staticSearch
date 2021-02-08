@@ -529,8 +529,7 @@ element context
                      
                      <tr>
                         
-                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;contexts&gt; </span>(<span>The set of contexts, expressed as XPath in match, that controls the identification
-                              of contexts for keyword-in-context fragments.</span>)</td>
+                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;contexts&gt; </span>(<span>The set of context elements that identify contexts for keyword-in-context fragments.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -713,8 +712,8 @@ element createContexts { xsd:boolean }</pre>
                      
                      <tr>
                         
-                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;dictionaryFile&gt; </span>(<span>The location of a dictionary file (one word per line) which will be used to check
-                              tokens when indexing.</span>)</td>
+                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;dictionaryFile&gt; </span>(<span>The relative path (from the config file) to a dictionary file (one word per line)
+                              which will be used to check tokens when indexing.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -770,7 +769,8 @@ element createContexts { xsd:boolean }</pre>
                               all words which are not found in the configured dictionary. This can be very useful;
                               all words listed are either foreign (not part of the language of the dictionary) or
                               perhaps misspelled (in which case they may not be correctly stemmed and index, and
-                              should be corrected).</p>
+                              should be corrected). There is a default dictionary in <span class="ident">xsl/english_words.txt</span> which you might copy and adapt if you're working in English; lots of dictionaries
+                              for other languages are available on the Web.</p>
                            </td>
                         </tr>
                      
@@ -813,7 +813,7 @@ element dictionaryFile { xsd:anyURI }</pre>
                      <tr>
                         
                         <td colspan="2" class="wovenodd-col2"><span class="label">&lt;exclude&gt; </span>(<span>An exclusion definition, which excludes either documents or filters as defined by
-                              an XPath in match.</span>)</td>
+                              an XPath in the match attribute.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -966,8 +966,8 @@ element exclude
                      
                      <tr>
                         
-                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;excludes&gt; </span>(<span>The set of exclusions, expressed as XPath in match, that control the subset of documents
-                              for a particular search.</span>)</td>
+                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;excludes&gt; </span>(<span>The set of exclusions, expressed as exclude elements, that control the subset of documents
+                              or filters used for a particular search.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -1600,7 +1600,9 @@ element maxKwicsToShow { xsd:nonNegativeInteger }</pre>
                            <p>When the staticSearch build process creates its output, many files need to be added
                               to the website for which an index is being created. For convenience, all of these
                               files are stored in a single folder. This element is used to specify the name of that
-                              folder.</p>
+                              folder. The default is <span class="val">staticSearch</span>, but if you would prefer something else, you can specify it here. You may also use
+                              this element if you are defining two different searches within the same site, so that
+                              their files are kept in different locations.</p>
                            </td>
                         </tr>
                      
@@ -2054,8 +2056,8 @@ element resultsPerPage { xsd:nonNegativeInteger }</pre>
                      
                      <tr>
                         
-                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;rule&gt; </span>(<span>A rule that specifies a document path as XPath in match, and provides weighting for
-                              search terms found in that context.</span>)</td>
+                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;rule&gt; </span>(<span>A rule that specifies a document path as XPath in the match attribute, and provides
+                              weighting for search terms found in that context.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -2148,7 +2150,8 @@ element resultsPerPage { xsd:nonNegativeInteger }</pre>
                            <p>The rule element is used to identify nodes in the XHTML document collection which
                               should be treated in a special manner when indexed; either they might be ignored (if
                               <span class="att">weight</span>=<span class="val">0</span>), or any words found in them might be given greater weight than words in normal contexts
-                              <span class="att">weight</span>&gt;<span class="val">1</span>. Words appearing in headings or titles, for example, might be weighted more heavily.</p>
+                              <span class="att">weight</span>&gt;<span class="val">1</span>. Words appearing in headings or titles, for example, might be weighted more heavily,
+                              while navigation menus, banners or footers might be ignored completely.</p>
                            </td>
                         </tr>
                      
@@ -2190,8 +2193,7 @@ element rule { <a class="link_ref" href="#TEI.att.match" title="att.match">att.m
                      
                      <tr>
                         
-                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;rules&gt; </span>(<span>The set of rules, expressed as XPath in match, that control weighting of search terms
-                              found in specific contexts.</span>)</td>
+                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;rules&gt; </span>(<span>The set of rules that control weighting of search terms found in specific contexts.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -2744,11 +2746,8 @@ element stemmerFolder { xsd:NCName }</pre>
                      
                      <tr>
                         
-                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;stopwordsFile&gt; </span>(<span>The location of a text file containing a list of stopwords (words to be ignored when
-                              indexing). These are typically words too common to be worth searching for, but every
-                              site will also have some specific terms which are used so widely across the site that
-                              they should be suppressed to control the index size. The list should be in plain text
-                              with one word per line.</span>)</td>
+                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;stopwordsFile&gt; </span>(<span>The relative path (from the config file) to a text file containing a list of stopwords
+                              (words to be ignored when indexing). </span>)</td>
                         </tr>
                      
                      <tr>
@@ -2800,12 +2799,15 @@ element stemmerFolder { xsd:NCName }</pre>
                         
                         <td class="wovenodd-col2">
                            
-                           <p>There are common stopwords files for most languages available on the Web, but it is
-                              probably a good idea to take one of these and customize it for your project, since
-                              there will be words in the website which are so common that it makes no sense to index
-                              them, but they are not ordinary stopwords. For example, in a Website dedicated to
-                              the work of John Keats, the name <span class="mentioned">keats</span> should probably be added to the stopwords file, since almost every page will include
-                              it, and searching for it will be pointless.</p>
+                           <p>A stopword is a word that will not be indexed, because it is too common (<span class="mentioned">the</span>, <span class="mentioned">a</span>, <span class="mentioned">you</span> and so on). There are common stopwords files for most languages available on the
+                              Web, but it is probably a good idea to take one of these and customize it for your
+                              project, since there will be words in the website which are so common that it makes
+                              no sense to index them, but they are not ordinary stopwords. For example, in a Website
+                              dedicated to the work of John Keats, the name <span class="mentioned">keats</span> should probably be added to the stopwords file, since almost every page will include
+                              it, and searching for it will be pointless. The project has a built-in set of common
+                              stopwords for English, which you'll find in <span class="ident">xsl/english_stopwords.txt</span>. One way to find appropriate stopwords for your site is to generate your index, then
+                              search for the largest JSON index files that are generated, to see if they might be
+                              too common to be useful as search terms.</p>
                            </td>
                         </tr>
                      
@@ -2998,7 +3000,8 @@ element totalKwicLength { xsd:nonNegativeInteger }</pre>
                            
                            <p>The staticSearch build process can be lengthy, and if something goes wrong it can
                               be difficult to figure out where the problem was. If you're having build problems,
-                              turn on verbose messages in the configuration file to help with debugging.</p>
+                              turn on verbose messages in the configuration file to help with debugging, and you'll
+                              see a lot more output at the command line.</p>
                            </td>
                         </tr>
                      
@@ -3418,7 +3421,7 @@ element wildcardSearch { xsd:boolean }</pre>
             <!--
 	  Generated from index.xml using XSLT stylesheets version 7.50.1
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2021-02-08T19:41:58Z.
+	       on 2021-02-08T20:22:30Z.
 	       SAXON HE 10.0.
 		 --></address>
          </div>
