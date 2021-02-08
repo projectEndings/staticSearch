@@ -234,6 +234,7 @@
             <property name="config" value="config_documentation.xml"/>
             <property name="headless" value="true"/>
         </ant>
+        <copy file="${basedir}/js/ssHighlight.js" todir="${documentation.dir}"/>
     </target>
     
     

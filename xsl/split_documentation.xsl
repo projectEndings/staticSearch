@@ -145,7 +145,8 @@
                 <meta name="Date Updated" class="staticSearch.date" content="{hcmc:getDate($info/li/span[@class='date']/text())}"/>
                 <meta name="Level" class="staticSearch.desc" content="{$info/li[not(span)]/normalize-space(replace(text(),'Level\s*:\s*',''))}"/>
             </xsl:if>
-     
+<!--           Add the ssHighlight JS. -->
+            <script src="ssHighlight.js"><!-- Gives us highlighting in target pages. --></script>
         </xsl:copy>
     </xsl:template>
     
