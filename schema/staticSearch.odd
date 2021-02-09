@@ -816,7 +816,7 @@
               </p>
               
               <p>You can add as many custom attributes as you like (although bear in mind that 
-              they increase the size of the index JSON files slightly).</p>
+              they increase the size of the index JSON files slightly and may add to the build time).</p>
               
               <p>One specific custom attribute has built-in handling that you may find useful.
               If you add the attribute <att>data-ss-img</att> with a value that points to 
@@ -1320,6 +1320,9 @@
                 <datatype>
                   <dataRef name="string"/>
                 </datatype>
+                <remarks>
+                  <p>Note that setting a <att>label</att> currently has no effect.</p>
+                </remarks>
               </attDef>
             </attList>
           </classSpec>
@@ -1420,7 +1423,7 @@
           </elementSpec>
           
           <elementSpec ident="scoringAlgorithm" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
-            <gloss>Which scoring algorithm to use. Default is "raw" (i.e. weighted counts)</gloss>
+            <gloss>The scoring algorithm to use for ranking keyword results. Default is "raw" (i.e. weighted counts)</gloss>
             <content>
               <valList type="closed">
                 <valItem ident="raw">
@@ -1624,11 +1627,11 @@
             </content>
             <remarks>
               <p>Phrasal search functionality enables your users to search for specific phrases
-                by surrounding them with quotation marks, as in many search engines. In order 
-                to support this kind of search, we store contexts for all hits for each token
-                in each document, so turning this on will make the index larger, because all 
-                contexts must be stored. However, once the index is built, it has very little 
-                impact on the speed of searches, so we would recommend turning this on. The 
+                by surrounding them with quotation marks (<code>"</code>), as in many search engines. In order 
+                to support this kind of search, <gi>createContexts</gi> must also be set to true as we store contexts for all 
+                hits for each token in each document. Turning this on will make the index larger, because all 
+                contexts must be stored, but once the index is built, it has very little 
+                impact on the speed of searches, so we recommend turning this on. The 
                 default value is true.</p>
               <p>However, if your site is very large and your user base is unlikely to 
                 use phrasal searching, it may not be worth the additional build time and
@@ -1717,8 +1720,10 @@
             </content>
             <remarks>
               <p>The indexing process checks each word as it builds the index, and keeps a record
-            of all words which are not found in the configured dictionary. This can be very useful; all
-            words listed are either foreign (not part of the language of the dictionary) or perhaps 
+            of all words which are not found in the configured dictionary. Though this does not have
+            any direct effect in the indexing process, all words not found in the dictionary are listed
+            in the staticSearch report (see <ptr target="#theStaticSearchReport"/>). This can be very useful: 
+                all words listed are either foreign (not part of the language of the dictionary) or perhaps 
             misspelled (in which case they may not be correctly stemmed and index, and should be 
             corrected). There is a default  dictionary in <ident>xsl/english_words.txt</ident> which 
                 you might copy and adapt if you're working in English; lots of dictionaries for other
