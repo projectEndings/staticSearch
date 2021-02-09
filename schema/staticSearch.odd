@@ -1544,7 +1544,7 @@
             <remarks>
               <p>Obviously, the longer the keyword-in-context strings are, the larger the individual index
                 files will be, but the more useful the KWICs will be for users looking at the search results.
-              Note that the phrasal searching relies on the KWICs and thus longer KWICs allows for longer
+              Note that the phrasal searching relies on the KWICs and thus longer KWICs allow for longer
               phrasal searches.</p>
             </remarks>
           </elementSpec>
