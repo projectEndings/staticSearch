@@ -1037,6 +1037,15 @@
             remarks for many elements, and the staticSearch build of the documentation now
             includes hit highlighting (the feature described above).</item>
           </list>
+          <p>Bug fixes:</p>
+          <list>
+            <item>The encoding structure for docImage, docSortKey, and docTitle has been constrained such that each doc* <gi>meta</gi> must include both a 
+              <att>name</att> and <att>class</att> value:
+              <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                <meta name="docTitle" class="staticSearch.docTitle" content="My custom document title"/>
+              </egXML>
+            </item>
+          </list>
         </div>
         <div xml:id="newIn1.1">
           <head>Changes in version 1.1</head>
