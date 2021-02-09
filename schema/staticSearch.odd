@@ -1373,7 +1373,7 @@
               <p>The staticSearch project currently has only two real stemmers:
                 an implementation of the Porter 2 algorithm for modern English, and
                 an implementation of the French Snowball stemmer. These 
-                appear in the <ident>/stemmers/en/</ident> and <ident>/stemmers/fr/</ident>, 
+                appear in the <ident>/stemmers/en/</ident> and <ident>/stemmers/fr/</ident> 
                 folders. The default value for this parameter is <val>en</val>; to 
                 use the French stemmer, use <val>fr</val>. We will
                 be adding more stemmers as the project develops. However, if your 
