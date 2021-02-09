@@ -1013,7 +1013,7 @@
         <head>What's new since version 1.0?</head>
         <list>
           <item>Level: Intermediate</item>
-          <item>Last Updated: <date when="2021-01-06">6 January 2021</date></item>
+          <item>Last Updated: <date when="2021-02-08">8 February 2021</date></item>
         </list>
         <div xml:id="newIn1.2">
           <head>Changes in version 1.2</head>
@@ -1031,6 +1031,8 @@
             target page can highlight the search hit(s) and scroll to them. See 
               <ref target="#highlightTargetPage">Highlighting search hits on target pages</ref>
             for more information.</item>
+            <item>Results can now optionally be viewed in batches by setting the new <gi>resultsPerPage</gi> configuration
+            option.</item>
             <item>Documentation has been significantly improved with additional explanatory
             remarks for many elements, and the staticSearch build of the documentation now
             includes hit highlighting (the feature described above).</item>
