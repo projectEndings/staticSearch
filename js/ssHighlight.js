@@ -41,7 +41,7 @@
 function ssHighlightOnLoad(){
   let sp = new URLSearchParams(document.location.search.substring(1));
   let encStr = sp.get('ssMark');
-  if (encStr !== ''){
+  if ((encStr !== '')&&(encStr !== null)){
     let str = decodeURIComponent(encStr);
     let re = new RegExp('(' + str.replace(/\s+/g, '\\s+') + ')', 'g');
     let ctx = (document.location.hash != '')? document.getElementById(document.location.hash.substring(1)) : document.body;
