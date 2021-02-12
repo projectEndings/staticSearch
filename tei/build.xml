@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." name="ssTeiGuidelines" default="all"
+  xmlns:if="ant:if"
+  xmlns:unless="ant:unless">
+  
+  <!-- 
+        **********************************************************
+        *  Ant file for building a static search engine for the  *
+        *  TEI Guidelines, based on the latest build of the      *
+        *  Guidelines main branch from the main TEI Jenkins      *
+        *  server.                                               *
+        *                                                        *
+        **********************************************************
+    -->
+  
+  
+  <!--****************************************************************
+     *                                                              *
+     *                       Task Definitions                       *
+     *                                                              *
+     ****************************************************************-->
+  
+  <!--  We need ant contrib. -->
+  <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+  
+  
+  <!--****************************************************************
+     *                                                              *
+     *                           Properties                         *
+     *                                                              *
+     ****************************************************************-->
+  
+  <!-- Saxon of course. -->
+  <property name="saxon" value="${basedir}/../lib/saxon-he-10.jar"/>
+  
+  <!-- Place to get the TEI Guidelines build from. This is currently
+    a release package, but it could also be a Jenkins build from another
+    branch if required. -->
+  <property name="glinesUrl" value="https://github.com/TEIC/TEI/releases/download/P5_Release_4.1.0/tei-4.1.0.zip"/>
+  
+  <!-- Source folder location. -->
+  <property name="sourceFolder" value="${basedir}/source"/>
+  
+  <!-- Output folder location. -->
+  <property name="outputFolder" value="${basedir}/output"/>
+  
+  <!-- Source files in folder. -->
+  <fileset id="sourceHtml" dir="${sourceFolder}" includes="**/*.html"/>
+  
+  <target name="clean">
+    <description>
+      TARGET clean
+      Removes previous build products and recreates the 
+      relevant folders.
+    </description>
+    <echo message="Cleaning up any previous builds..."/>
+    <delete dir="${sourceFolder}"/>
+    <mkdir dir="${sourceFolder}"/>
+    <delete dir="${outputFolder}"/>
+    <mkdir dir="${outputFolder}"/>
+  </target>
+  
+  <target name="getGuidelines">
+    <description>
+      TARGET getGuidelines
+      This downloads the latest build of the TEI 
+      Guidelines and unzips it.
+    </description>
+    <!--<echo message="Downloading Guidelines package..."/>
+    <get src="${glinesUrl}" retries="4" dest="${basedir}/guidelines.zip" usetimestamp="true"/>
+    <echo message="Unzipping Guidelines package..."/>
+    <unzip src="${basedir}/guidelines.zip" dest="${buildFolder}"/>-->
+    <echo message="Copying to output location..."/>
+    <copy todir="${outputFolder}">
+      <fileset dir="${sourceFolder}/doc/tei-p5-doc" includes="**/*"/>
+    </copy>
+  </target>
+  
+  <target name="preprocessGuidelines">
+    <description>
+      TARGET preprocessGuidelines
+      This target runs XSLT transformations on the 
+      Guidelines pages to add a number of metadata
+      elements to assist with building staticSearch
+      filters.
+    </description>
+    <echo message="Preprocessing Guidelines pages..."/>
+    <!--First clean up the awfulness from the Guidelines HTML. -->
+    <echo message="Fixing horrible broken HTML..."/>
+    <replaceregexp match="&lt;!DOCTYPE html" replace="">
+      <fileset refid="sourceHtml"/>
+    </replaceregexp>
+    <replaceregexp match="SYSTEM .about:legacy-compat.&gt;" replace="">
+      <fileset refid="sourceHtml"/>
+    </replaceregexp>
+    
+    <java classpath="${saxon}" classname="net.sf.saxon.Transform" 
+          failonerror="true" fork="true">
+      <arg value="-xsl:${basedir}/xsl/preprocess.xsl"/>
+      <arg value="-s:${basedir}/xsl/preprocess.xsl"/>
+      <arg line="basedir=${basedir}"/>
+      <arg value="--suppressXsltNamespaceCheck:on"/>
+      <jvmarg value="-Xmx2048m"/>
+    </java>
+    
+  </target>
+  
+  <target name="all">
+    <description>
+      TARGET all
+      Does the complete download, process and build
+      work to create a searchable TEI Guidelines.
+    </description>
+  </target>
+  
+</project>
