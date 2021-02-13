@@ -1,0 +1,49 @@
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+      
+      <!-- 
+             This is the style element that is inserted by the static search 
+             build process. It will be replaced every time you build the search. 
+             To override it, you can add your own style element AFTER this
+             one.
+      -->
+      
+      <title>TEI Guidelines staticSearch page</title>
+      
+      </head>
+   
+   
+   <body>
+      
+      
+      <h1>TEI Guidelines staticSearch page</h1>
+      
+      
+      <p>This search engine supports stemming for English, 
+         but not for other languages appearing in the Guidelines. 
+         However, the search also supports wildcards
+         ("*" means any number of characters, while "?" means a single character), 
+         so you can search for partial matches in any language. The wildcard support 
+         includes character classes, so you can use wildcards to account for 
+         spelling idiosyncracies by searching for (e.g.) <em>analy[zs]e</em> to find
+         both <em>analyse</em> and <em>analyze</em>. The search also supports boolean 
+         (plus and minus) prefixes, so you can find (for example) all pages which contain
+         "analyse" but not "analyze" by searching for <em>+analyse -analyze</em>.
+         Finally, you can search for exact phrases using quotation marks: "a digitized
+         text" will find only that phrase. </p>
+      
+      <!-- 
+             This is the div into which the JavaScript and page components required for the
+             search are inserted during the build process. The contents of this div are replaced
+            every time you run a search build.
+      -->
+      
+      
+      <div id="staticSearch">
+         
+      </div>
+      
+      
+      </body>
+   </html>

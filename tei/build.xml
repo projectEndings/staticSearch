@@ -66,14 +66,32 @@
       This downloads the latest build of the TEI 
       Guidelines and unzips it.
     </description>
-    <!--<echo message="Downloading Guidelines package..."/>
+    <echo message="Downloading Guidelines package..."/>
     <get src="${glinesUrl}" retries="4" dest="${basedir}/guidelines.zip" usetimestamp="true"/>
     <echo message="Unzipping Guidelines package..."/>
-    <unzip src="${basedir}/guidelines.zip" dest="${buildFolder}"/>-->
+    <unzip src="${basedir}/guidelines.zip" dest="${buildFolder}"/>
     <echo message="Copying to output location..."/>
     <copy todir="${outputFolder}">
       <fileset dir="${sourceFolder}/doc/tei-p5-doc" includes="**/*"/>
     </copy>
+    <copy todir="${outputFolder}/js" file="${basedir}/../js/ssHighlight.js"/>
+    <copy todir="${outputFolder}" file="${basedir}/search.html"/>
+  </target>
+  
+  <target name="unborkGuidelines">
+    <description>
+      TARGET unborkGuidelines
+      This target fixes some egregiousness in the
+      HTML encoding of the Guidelines pages.
+    </description>
+    <!--First clean up the awfulness from the Guidelines HTML. -->
+    <echo message="Fixing horrible broken HTML..."/>
+    <replaceregexp match="&lt;!DOCTYPE html" replace="">
+      <fileset refid="sourceHtml"/>
+    </replaceregexp>
+    <replaceregexp match="SYSTEM .about:legacy-compat.&gt;" replace="">
+      <fileset refid="sourceHtml"/>
+    </replaceregexp>
   </target>
   
   <target name="preprocessGuidelines">
@@ -85,15 +103,6 @@
       filters.
     </description>
     <echo message="Preprocessing Guidelines pages..."/>
-    <!--First clean up the awfulness from the Guidelines HTML. -->
-    <echo message="Fixing horrible broken HTML..."/>
-    <replaceregexp match="&lt;!DOCTYPE html" replace="">
-      <fileset refid="sourceHtml"/>
-    </replaceregexp>
-    <replaceregexp match="SYSTEM .about:legacy-compat.&gt;" replace="">
-      <fileset refid="sourceHtml"/>
-    </replaceregexp>
-    
     <java classpath="${saxon}" classname="net.sf.saxon.Transform" 
           failonerror="true" fork="true">
       <arg value="-xsl:${basedir}/xsl/preprocess.xsl"/>
@@ -102,10 +111,22 @@
       <arg value="--suppressXsltNamespaceCheck:on"/>
       <jvmarg value="-Xmx2048m"/>
     </java>
-    
   </target>
   
-  <target name="all">
+  <target name="buildStaticSearch">
+    <description>
+      TARGET buildStaticSearch
+      This copies the search page into the output locations
+      and then invokes the build process.
+    </description>
+    <copy file="${basedir}/search.html" todir="${outputFolder}"/>
+    <ant antfile="${basedir}/../build.xml" inheritall="false">
+      <property name="config" value="tei/config_tei.xml"/>
+      <property name="headless" value="true"/>
+    </ant>
+  </target>
+  
+  <target name="all" depends="clean, getGuidelines, unborkGuidelines, preprocessGuidelines, buildStaticSearch">
     <description>
       TARGET all
       Does the complete download, process and build

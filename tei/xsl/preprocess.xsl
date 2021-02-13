@@ -23,8 +23,9 @@
     <xd:desc>Whatever the form of the Guidelines pages, output 
     plain old XHTML5.</xd:desc>
   </xd:doc>
-  <xsl:output method="xhtml" html-version="5" omit-xml-declaration="true"
-    encoding="UTF-8" normalization-form="NFC" exclude-result-prefixes="#all"/>
+  <xsl:output method="xhtml" html-version="5.0" omit-xml-declaration="true"
+    encoding="UTF-8" normalization-form="NFC" exclude-result-prefixes="#all"
+    include-content-type="no"/>
   
   <xd:doc>
     <xd:desc>This is essentially an identity transform.</xd:desc>
@@ -49,12 +50,104 @@
       <xsl:variable name="sourcePath" as="xs:string" select="document-uri(.)"/>
       <xsl:variable name="outputPath" as="xs:string" select="replace($sourcePath, '/tei/source/doc/tei-p5-doc', '/tei/output')"/>
       <xsl:message>Processing <xsl:value-of select="$sourcePath"/> to <xsl:value-of select="$outputPath"/></xsl:message>
-      <xsl:result-document href="${$outputPath}">
-        <xsl:apply-templates/>
+      
+      <xsl:variable name="docUri" as="xs:string" select="document-uri(.)"/>
+      
+      <xsl:variable name="docName" as="xs:string" select="tokenize($docUri, '/')[last()]"/>
+      
+      <xsl:variable name="lang" as="xs:string" select="if (starts-with($docName, 'readme')) then 'en' else replace($docUri, '^.+/source/doc/tei-p5-doc/([a-z][a-z])/html/.+\.html$', '$1')"/>
+      
+      <xsl:variable name="climbTree" as="xs:string" select="if (starts-with($docName, 'readme')) then '../' else '../../'"/>
+      
+      <xsl:result-document href="{$outputPath}">
+        <xsl:apply-templates>
+          <xsl:with-param name="docUri" as="xs:string" select="$docUri" tunnel="yes"/>
+          <xsl:with-param name="docName" as="xs:string" select="$docName" tunnel="yes"/>
+          <xsl:with-param name="lang" as="xs:string" select="$lang" tunnel="yes"/>
+          <xsl:with-param name="climbTree" as="xs:string" select="$climbTree" tunnel="yes"/>
+        </xsl:apply-templates>
       </xsl:result-document>
     </xsl:for-each>
   </xsl:template>
   
+  <xd:doc>
+    <xd:desc>For the head element, we need to add a bunch of
+    meta elements based on what type of file this is, and link
+    in the highlight lib.</xd:desc>
+    
+    <xd:param name="docUri" as="xs:string" tunnel="yes">Uri of the host document.</xd:param>
+    <xd:param name="docName" as="xs:string" tunnel="yes">Filename of the host document.</xd:param>
+    <xd:param name="lang" as="xs:string" tunnel="yes">Determined language of the host document.</xd:param>
+    <xd:param name="climbTree" as="xs:string" tunnel="yes">Prefix to append to paths when making links, based on nesting depth of host document.</xd:param>
+  </xd:doc>
+  <xsl:template match="head">
+    <xsl:param name="docUri" as="xs:string" tunnel="yes"/>
+    <xsl:param name="docName" as="xs:string" tunnel="yes"/>
+    <xsl:param name="lang" as="xs:string" tunnel="yes"/>
+    <xsl:param name="climbTree" as="xs:string" tunnel="yes"/>
+    <xsl:copy>
+      <xsl:apply-templates mode="#current"/>
+      <script src="{$climbTree || 'js/ssHighlight.js'}"><xsl:comment>Script to highlight search hits.</xsl:comment></script> 
+      
+      <meta name="Language"
+        class="staticSearch.desc" content="{$lang}"/>
+      <xsl:choose>
+        <xsl:when test="matches($docName, '^examples-')">
+          <meta name="Page type"
+            class="staticSearch.desc" content="Examples"/>
+        </xsl:when>
+        <xsl:when test="matches($docName, '^ref-')">
+          <meta name="Page type"
+            class="staticSearch.desc" content="Specifications"/>
+        </xsl:when>
+        <xsl:when test="matches($docName, '^readme-')">
+          <meta name="Page type"
+            class="staticSearch.desc" content="Readme"/>
+        </xsl:when>
+        <xsl:when test="matches(child::title[1], '^[iv]+\.\s')">
+          <meta name="Page type"
+            class="staticSearch.desc" content="Front matter"/>
+        </xsl:when>
+        <xsl:when test="matches(child::title[1], '^\d+\.?\s')">
+          <meta name="Page type"
+            class="staticSearch.desc" content="Chapters"/>
+        </xsl:when>
+        <xsl:when test="matches(child::title[1], '^((Appendix)|(Anhang)|(Apéndice)|(Appendice)|(Annexe)|(付録)|(부록)|(附錄))\s+[A-Z]')">
+          <meta name="Page type"
+            class="staticSearch.desc" content="Back matter"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <meta name="Page type"
+            class="staticSearch.desc" content="Other pages"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:copy>
+  </xsl:template>
+  
+  <xd:doc>
+    <xd:desc>Insert a search box as on the original site.</xd:desc>
+    <xd:param name="climbTree" as="xs:string" tunnel="yes">Prefix to append to paths when making links, based on nesting depth of host document.</xd:param>
+  </xd:doc>
+  <xsl:template match="div[@id='container']">
+    <xsl:param name="climbTree" as="xs:string" tunnel="yes"/>
+    <xsl:next-match/>
+    <div id="searchbox" style="float:left;">
+      <form action="{$climbTree}search.html" method="get">
+        <fieldset>
+          <input style="color:#225588;" value="" maxlength="255" size="20" name="q" type="text"/>&#160;
+            <input style="font-size:100%; font-weight:bold;    color:#FFFFFF; background-color:#225588; height: 2em;" value="Search" type="submit"/>
+        </fieldset>
+      </form>
+    </div>
+  </xsl:template>
+  
+  <xd:doc>
+    <xd:desc>Fix another invalidity. 
+      <!-- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> -->
+    shouldn't be there. XSLT will add the correct meta tag anyway.</xd:desc>
+  </xd:doc>
+  <xsl:template match="meta[matches(@content, 'charset=UTF-8', 'i')]"/>
+    
   
   
 </xsl:stylesheet>

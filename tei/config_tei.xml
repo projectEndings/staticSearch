@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://hcmc.uvic.ca/ns/staticSearch">
+    <params>
+        <searchFile>output/search.html</searchFile>
+        <versionFile>output/VERSION</versionFile>
+        <recurse>true<!--Need to set recurse to true for the test--></recurse>
+        <linkToFragmentId>true</linkToFragmentId>
+        <scrollToTextFragment>false</scrollToTextFragment>
+        <phrasalSearch>true</phrasalSearch>
+        <wildcardSearch>true</wildcardSearch>
+        <createContexts>true</createContexts>
+        <!--NOTE: If phrasalSearch is set to TRUE, then
+        maxContexts prop will be ignored-->
+        <maxKwicsToHarvest>10</maxKwicsToHarvest>
+        <maxKwicsToShow>10</maxKwicsToShow>
+        <totalKwicLength>15</totalKwicLength>
+        <kwicTruncateString>...</kwicTruncateString>
+        <verbose>false</verbose>
+        <stopwordsFile>../test/test_stopwords.txt</stopwordsFile>
+        <dictionaryFile>../xsl/english_words.txt</dictionaryFile>
+        <indentJSON>true</indentJSON>
+        <outputFolder>staticSearch</outputFolder>
+    </params>
+    
+    <rules>
+        <rule weight="2"
+            match="h1 | h2"/>
+        <rule weight="0"
+            match="div[@id='container']"/>
+        <rule weight="0"
+            match="div[@class='mainhead']"/>
+        <rule weight="0"
+            match="div[@class='miniTOC']"/>
+        <rule weight="0"
+            match="div[@class='stdfooter']"/>
+        <rule weight="0"
+            match="script | style"/>
+    </rules>
+    
+    <!--<contexts>
+        <context match="div[@class='l']" label="poetic lines"/>
+        <context match="span[@class='note']" label="notes"/>
+    </contexts>-->
+    
+    <!--<excludes>
+        <exclude match="meta[contains-token(@class,'excludedMeta')]" type="filter"/>
+    </excludes>-->
+    
+</config>
