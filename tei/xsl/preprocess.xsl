@@ -148,6 +148,18 @@
   </xsl:template>
   
   <xd:doc>
+    <xd:desc>Spec pages often don't have id attributes in key locations,
+    so let's add them.</xd:desc>
+  </xd:doc>
+  <xsl:template match="div[contains(@class, 'main-content')][not(@id)]">
+    <xsl:copy>
+      <xsl:apply-templates select="@*"/>
+      <xsl:attribute name="id" select="generate-id()"/>
+      <xsl:apply-templates select="node()"/>
+    </xsl:copy>
+  </xsl:template>
+  
+  <xd:doc>
     <xd:desc>This applies only to our search page, and just puts the
     correct build info into it.</xd:desc>
   </xd:doc>
