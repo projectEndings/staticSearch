@@ -70,9 +70,23 @@
     <get src="${glinesUrl}" retries="4" dest="${basedir}/guidelines.zip" usetimestamp="true"/>
     <echo message="Unzipping Guidelines package..."/>
     <unzip src="${basedir}/guidelines.zip" dest="${sourceFolder}"/>
-    <echo message="Copying to output location..."/>
+  </target>
+  
+  <target name="deployEuroGuidelines">
+    <description>
+      TARGET deployEuroGuidelines
+      This copies the indexable parts of the downloaded
+      Guidelines (the European languages that we can 
+      tokenize) to the output folder ready for indexing,
+      along with the search page and a JS folder.
+    </description>
+    <echo message="Copying indexable language Guidelines to output location..."/>
     <copy todir="${outputFolder}">
-      <fileset dir="${sourceFolder}/doc/tei-p5-doc" includes="**/*"/>
+      <fileset dir="${sourceFolder}/doc/tei-p5-doc">
+        <exclude name="ja/**/*"/>
+        <exclude name="ko/**/*"/>
+        <exclude name="zh*/**/*"/>
+      </fileset>
     </copy>
     <copy todir="${outputFolder}/js" file="${basedir}/../js/ssHighlight.js"/>
     <copy todir="${outputFolder}" file="${basedir}/search.html"/>
@@ -125,7 +139,26 @@
     </ant>
   </target>
   
-  <target name="all" depends="clean, getGuidelines, unborkGuidelines, preprocessGuidelines, buildStaticSearch">
+  <target name="copyOtherGuidelines">
+    <description>
+      TARGET copyOtherGuidelines
+      After the indexing of European guidelines pages
+      has been completed and the staticSearch set up,
+      we copy the remaining content (language that can't
+      be tokenized/indexed) into the output folder so that
+      they can at least be read.
+    </description>
+    <echo message="Copying remaining Guidelines to output location..."/>
+    <copy todir="${outputFolder}">
+      <fileset dir="${sourceFolder}/doc/tei-p5-doc">
+        <include name="ja/**/*"/>
+        <include name="ko/**/*"/>
+        <include name="zh*/**/*"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="all" depends="clean, getGuidelines, deployEuroGuidelines, unborkGuidelines, preprocessGuidelines, buildStaticSearch, copyOtherGuidelines">
     <description>
       TARGET all
       Does the complete download, process and build

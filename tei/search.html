@@ -37,9 +37,9 @@
       
       <div class="onecol" style="margin: 2em auto; max-width: 50rem;">
       
-      <p>This search engine supports stemming for English, 
-         but not for other languages appearing in the Guidelines. 
-         However, the search also supports wildcards
+      <p>This search engine allows you to search for content in five
+         languages (all the tokenizable language content in the Guidelines)<a href="#note1">[1]</a>,
+         so it does not attempt to use stemming. However, the search supports wildcards
          ("*" means any number of characters, while "?" means a single character), 
          so you can search for partial matches in any language. The wildcard support 
          includes character classes, so you can use wildcards to account for 
@@ -68,5 +68,13 @@
       <script>
          window.addEventListener('load', function(){ document.querySelector('input[value="en"]').checked = 'checked';});
       </script>
+      
+      <p id="note1">The staticSearch system has stemmers for both English and French,
+      but not (yet) for other European languages. It cannot tokenize or stem CJK languages
+      which have no spaces between words, so sadly we can't support searching in those
+      languages. However, if you can find the content you're looking for in one of the
+      other languages, you can use the language links to move to the corresponding page
+      in Japanese, Chinese or Korean.</p>
+      
       </body>
    </html>
