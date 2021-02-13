@@ -43,6 +43,12 @@
   <xsl:variable name="inputFiles" as="document-node()*" select="collection($basedir || '/source/doc/tei-p5-doc/?select=*.html;recurse=yes')"/>
   
   <xd:doc>
+    <xd:desc>We need the build information from one of the files for our
+    search page.</xd:desc>
+  </xd:doc>
+  <xsl:variable name="buildInfo" as="xs:string" select="$inputFiles//div[@class='mainhead'][1]/p[1]/text()"/>
+  
+  <xd:doc>
     <xd:desc>Root element match kicks off the process.</xd:desc>
   </xd:doc>
   <xsl:template match="/">
@@ -139,6 +145,17 @@
         </fieldset>
       </form>
     </div>
+  </xsl:template>
+  
+  <xd:doc>
+    <xd:desc>This applies only to our search page, and just puts the
+    correct build info into it.</xd:desc>
+  </xd:doc>
+  <xsl:template match="p[@id='ssBuildInfo']">
+    <xsl:copy>
+      <xsl:apply-templates select="@*"/>
+      <xsl:value-of select="normalize-space($buildInfo)"/>
+    </xsl:copy>
   </xsl:template>
   
   <xd:doc>

@@ -102,6 +102,7 @@
       elements to assist with building staticSearch
       filters.
     </description>
+    <copy file="${basedir}/search.html" todir="${outputFolder}"/>
     <echo message="Preprocessing Guidelines pages..."/>
     <java classpath="${saxon}" classname="net.sf.saxon.Transform" 
           failonerror="true" fork="true">
@@ -116,10 +117,8 @@
   <target name="buildStaticSearch">
     <description>
       TARGET buildStaticSearch
-      This copies the search page into the output locations
-      and then invokes the build process.
+      This invokes the search build process.
     </description>
-    <copy file="${basedir}/search.html" todir="${outputFolder}"/>
     <ant antfile="${basedir}/../build.xml" inheritall="false">
       <property name="config" value="tei/config_tei.xml"/>
       <property name="headless" value="true"/>
