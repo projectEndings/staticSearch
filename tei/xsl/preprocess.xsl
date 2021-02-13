@@ -55,7 +55,7 @@
       
       <xsl:variable name="docName" as="xs:string" select="tokenize($docUri, '/')[last()]"/>
       
-      <xsl:variable name="lang" as="xs:string" select="if (starts-with($docName, 'readme')) then 'en' else replace($docUri, '^.+/source/doc/tei-p5-doc/([a-z][a-z])/html/.+\.html$', '$1')"/>
+      <xsl:variable name="lang" as="xs:string" select="if (starts-with($docName, 'readme')) then 'en' else replace($docUri, '^.+/source/doc/tei-p5-doc/([a-z][a-z](-[A-Z][A-Z])?)/html/.+\.html$', '$1')"/>
       
       <xsl:variable name="climbTree" as="xs:string" select="if (starts-with($docName, 'readme')) then '../' else '../../'"/>
       

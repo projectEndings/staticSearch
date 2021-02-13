@@ -69,7 +69,7 @@
     <echo message="Downloading Guidelines package..."/>
     <get src="${glinesUrl}" retries="4" dest="${basedir}/guidelines.zip" usetimestamp="true"/>
     <echo message="Unzipping Guidelines package..."/>
-    <unzip src="${basedir}/guidelines.zip" dest="${buildFolder}"/>
+    <unzip src="${basedir}/guidelines.zip" dest="${sourceFolder}"/>
     <echo message="Copying to output location..."/>
     <copy todir="${outputFolder}">
       <fileset dir="${sourceFolder}/doc/tei-p5-doc" includes="**/*"/>
