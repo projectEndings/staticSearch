@@ -35,7 +35,7 @@
       
          </div>
       
-      <div class="onecol" style="margin: 2em 10%;">
+      <div class="onecol" style="margin: 2em auto; max-width: 50rem;">
       
       <p>This search engine supports stemming for English, 
          but not for other languages appearing in the Guidelines. 
@@ -64,6 +64,9 @@
       
       
       </div>
-      
+      <!-- Select English by default. -->
+      <script>
+         window.addEventListener('load', function(){ document.querySelector('input[value="en"]').checked = 'checked';});
+      </script>
       </body>
    </html>
