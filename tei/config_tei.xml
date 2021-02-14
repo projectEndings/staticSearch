@@ -39,6 +39,9 @@
             match="nav"/>
         <rule weight="0"
             match="script | style"/>
+        <!-- We don't try to index the CJK examples etc. -->
+        <rule weight="0"
+            match="*[@xml:lang = ('js', 'ko', 'zh-TW', 'zh')]"/>
     </rules>
     
     <!--<contexts>
