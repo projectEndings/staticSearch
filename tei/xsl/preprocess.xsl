@@ -53,26 +53,28 @@
   </xd:doc>
   <xsl:template match="/">
     <xsl:for-each select="$inputFiles">
-      <xsl:variable name="sourcePath" as="xs:string" select="document-uri(.)"/>
-      <xsl:variable name="outputPath" as="xs:string" select="replace($sourcePath, '/tei/source/doc/tei-p5-doc', '/tei/output')"/>
-      <xsl:message>Processing <xsl:value-of select="$sourcePath"/> to <xsl:value-of select="$outputPath"/></xsl:message>
-      
-      <xsl:variable name="docUri" as="xs:string" select="document-uri(.)"/>
-      
-      <xsl:variable name="docName" as="xs:string" select="tokenize($docUri, '/')[last()]"/>
-      
-      <xsl:variable name="lang" as="xs:string" select="if (starts-with($docName, 'readme')) then 'en' else replace($docUri, '^.+/source/doc/tei-p5-doc/([a-z][a-z](-[A-Z][A-Z])?)/html/.+\.html$', '$1')"/>
-      
-      <xsl:variable name="climbTree" as="xs:string" select="if (starts-with($docName, 'readme')) then '../' else '../../'"/>
-      
-      <xsl:result-document href="{$outputPath}">
-        <xsl:apply-templates>
-          <xsl:with-param name="docUri" as="xs:string" select="$docUri" tunnel="yes"/>
-          <xsl:with-param name="docName" as="xs:string" select="$docName" tunnel="yes"/>
-          <xsl:with-param name="lang" as="xs:string" select="$lang" tunnel="yes"/>
-          <xsl:with-param name="climbTree" as="xs:string" select="$climbTree" tunnel="yes"/>
-        </xsl:apply-templates>
-      </xsl:result-document>
+      <xsl:if test="matches(document-uri(.), 'tei-p5-doc/((en)|(fr)|(es)|(de)|(it))/')">
+        <xsl:variable name="sourcePath" as="xs:string" select="document-uri(.)"/>
+        <xsl:variable name="outputPath" as="xs:string" select="replace($sourcePath, '/tei/source/doc/tei-p5-doc', '/tei/output')"/>
+        <xsl:message>Processing <xsl:value-of select="$sourcePath"/> to <xsl:value-of select="$outputPath"/></xsl:message>
+        
+        <xsl:variable name="docUri" as="xs:string" select="document-uri(.)"/>
+        
+        <xsl:variable name="docName" as="xs:string" select="tokenize($docUri, '/')[last()]"/>
+        
+        <xsl:variable name="lang" as="xs:string" select="if (starts-with($docName, 'readme')) then 'en' else replace($docUri, '^.+/source/doc/tei-p5-doc/([a-z][a-z](-[A-Z][A-Z])?)/html/.+\.html$', '$1')"/>
+        
+        <xsl:variable name="climbTree" as="xs:string" select="if (starts-with($docName, 'readme')) then '../' else '../../'"/>
+        
+        <xsl:result-document href="{$outputPath}">
+          <xsl:apply-templates>
+            <xsl:with-param name="docUri" as="xs:string" select="$docUri" tunnel="yes"/>
+            <xsl:with-param name="docName" as="xs:string" select="$docName" tunnel="yes"/>
+            <xsl:with-param name="lang" as="xs:string" select="$lang" tunnel="yes"/>
+            <xsl:with-param name="climbTree" as="xs:string" select="$climbTree" tunnel="yes"/>
+          </xsl:apply-templates>
+        </xsl:result-document>
+      </xsl:if>
     </xsl:for-each>
   </xsl:template>
   
