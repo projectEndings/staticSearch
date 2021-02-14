@@ -139,7 +139,6 @@ div#ssResults>ul>li>div>ul.kwic>li{
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
     margin-top: 0.5em;
     border-top: solid 1pt lightgray;
     padding: 0.2em;
@@ -147,10 +146,18 @@ div#ssResults>ul>li>div>ul.kwic>li{
 div#ssResults>ul>li>div>ul.kwic>li>span{
     display: block;
 }
-/* Larger kwic link. */
+
+/* Give fragment image a right margin */
+
+div#ssResults li[data-ss-img] > img{
+    margin-right:1em;
+}
+
+/* Larger and right aligned kwic link. */
 div#ssResults>ul>li>div>ul.kwic>li>a{
     font-size: 2.0em;
     line-height: 0.50;
+    margin-left:auto;
 }
 a.fidLink{
     text-decoration: none;
