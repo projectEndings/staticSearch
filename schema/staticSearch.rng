@@ -5,7 +5,7 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2021-02-08T20:31:51Z. 2019-2021.
+Schema generated from ODD source 2021-02-14T04:22:45Z. 2019-2021.
 TEI Edition: Version 4.1.0. Last updated on
 	19th August 2020, revision b414ba550
 TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
@@ -89,6 +89,9 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
             </optional>
             <optional>
                <ref name="resultsPerPage"/>
+            </optional>
+            <optional>
+               <ref name="resultsLimit"/>
             </optional>
          </interleave>
       </element>
@@ -201,8 +204,8 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
    <define name="versionFile">
       <element name="versionFile" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The relative path to a text file containing a single version identifier (such as 
-              1.5, 123456, or  06ad419). This will be used to create
-            unique filenames for JSON resources, so that when a site is updated, so that the browser
+              1.5, 123456, or 06ad419). This will be used to create
+            unique filenames for JSON resources, so that the browser
             will not use cached versions of older index files.) </a:documentation>
          <data type="anyURI"/>
       </element>
@@ -212,13 +215,13 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The name of a folder inside the staticSearch /stemmers/ folder, 
               in which the JavaScript and XSLT implementations
             of stemmers can be found. If left blank, then the staticSearch default English 
-            stemmer will be used (en).) </a:documentation>
+            stemmer (en) will be used.) </a:documentation>
          <data type="NCName"/>
       </element>
    </define>
    <define name="scoringAlgorithm">
       <element name="scoringAlgorithm" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Which scoring algorithm to use. Default is "raw" (i.e. weighted counts)) </a:documentation>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The scoring algorithm to use for ranking keyword results. Default is "raw" (i.e. weighted counts)) </a:documentation>
          <choice>
             <value>raw</value>
             <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Default: Calculate the score based off of the weighted number of 
@@ -257,8 +260,8 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
    </define>
    <define name="totalKwicLength">
       <element name="totalKwicLength" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(If createContexts is set to true, then this parameter controls how long
-              the harvested keyword-in-context strings will be.) </a:documentation>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(If createContexts is set to true, then this parameter controls the length (in words) of
+              the harvested keyword-in-context string.) </a:documentation>
          <data type="nonNegativeInteger"/>
       </element>
    </define>
@@ -280,7 +283,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
       <element name="kwicTruncateString" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The string that will be used to signal ellipsis at the beginning and end of a
               keyword-in-context extract. Conventionally three periods, or an ellipsis
-              character.) </a:documentation>
+              character (which is the default value).) </a:documentation>
          <text/>
       </element>
    </define>
@@ -310,8 +313,17 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.1.0/
    <define name="resultsPerPage">
       <element name="resultsPerPage" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The maximum number of document results to be displayed per page. All results
-            are displayed by default; setting resultsPerPage to a positive integer creates a Show More/Show All
-            widget at the bottom of the batch of results.) </a:documentation>
+            are displayed by default; setting resultsPerPage to a positive integer creates a 
+              Show More/Show All widget at the bottom of the batch of results.) </a:documentation>
+         <data type="nonNegativeInteger"/>
+      </element>
+   </define>
+   <define name="resultsLimit">
+      <element name="resultsLimit" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The maximum number of results that can be returned for any search before returning an error; if the number
+              of documents in a result set exceeds this number, then staticSearch will not render the results and will provide a message
+              saying that the search returned too many results. This is usually set to 2000 by default, but you may want to have a higher or lower limit,
+            depending on the specific structure of your project.  ) </a:documentation>
          <data type="nonNegativeInteger"/>
       </element>
    </define>

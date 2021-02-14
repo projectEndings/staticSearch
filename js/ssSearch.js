@@ -92,6 +92,7 @@
   ss.captions['en'].strDiscardedTerms    = 'Not searched (too common or too short): ';
   ss.captions['en'].strShowMore          = 'Show more';
   ss.captions['en'].strShowAll           = 'Show all';
+  ss.captions['en'].strTooManyResults    = 'Your search returned too many results. Include more filters or more search terms.'
   //French
   ss.captions['fr'] = {};
   ss.captions['fr'].strSearching         = 'Recherche en cours...';
@@ -106,6 +107,8 @@
   ss.captions['fr'].strDiscardedTerms    = 'Recherche inaboutie (termes trop fréquents ou trop brefs): ';
   ss.captions['fr'].strShowMore          = 'Montrez plus';
   ss.captions['fr'].strShowAll           = 'Montrez tout';
+  //TODO: Add ss.captions['fr'].strTooManyResults
+
 /**
   * @property ss.stopwords
   * @type {Array}
@@ -300,6 +303,9 @@ class StaticSearch{
       //Limit to the weight of JSON that will be downloaded for a 
       //single wildcard term. NOT CURRENTLY USED. Default 1MB.
       this.downloadLimit = this.getConfigInt('downloadLimit', 1000000);
+
+      //Limit the number of results that can be rendered for any given search
+      this.resultsLimit = this.getConfigInt('resultslimit', 2000);
 
       //A flag for easier debugging.
       this.debug = false;
@@ -1427,7 +1433,29 @@ class StaticSearch{
     console.log('No results. Try simpler search? ' + trySimplerSearch);
   }
 
-/**
+  /**
+   * @function StaticSearch~reportTooManyResults
+   * @description Reports, both in the results and the console,
+   *              that the number of results found exceed
+   *              the configured limit (StaticSearch.resultsLimit)
+   *              and cannot be displayed.
+   * @return {Boolean} true if successful, false if not
+   */
+  reportTooManyResults() {
+    try {
+      console.log(`Found ${this.resultSet.getSize()} results, which exceeds the ${this.resultsLimit} maximum.`);
+      let pTooManyResults = document.createElement('p');
+      pTooManyResults.append(this.captionSet.strTooManyResults);
+      this.resultsDiv.appendChild(pTooManyResults);
+      return true;
+    } catch (e) {
+      console.log('ERROR: ' + e);
+      return false;
+    }
+  }
+
+
+  /**
   * @function StaticSearch~processResults
   * @description When we are satisfied that all relevant search data
   *              has been retrieved and added to the index, this
@@ -1499,12 +1527,19 @@ if (this.discardedTerms.length > 0){
         let pFound = document.createElement('p');
         pFound.append(this.captionSet.strDocumentsFound + this.resultSet.getSize());
         this.resultsDiv.appendChild(pFound);
-        this.resultsDiv.appendChild(this.resultSet.resultsAsHtml(this.captionSet.strScore));
+        //Switch depending on the result size:
+        //Report that there are no results
         if (this.resultSet.getSize() < 1){
           this.reportNoResults(true);
-        }
-        if (this.resultsPerPage > 0 && this.resultsPerPage < this.resultSet.getSize()){
-          this.paginateResults();
+          // Else if the number of results is greater than the limit.
+        } else if (this.resultSet.getSize() > this.resultsLimit){
+            this.reportTooManyResults();
+        } else {
+          // Otherwise, render the results, optionally paginated.
+          this.resultsDiv.appendChild(this.resultSet.resultsAsHtml(this.captionSet.strScore));
+          if (this.resultsPerPage > 0 && this.resultsPerPage < this.resultSet.getSize()){
+            this.paginateResults();
+          }
         }
         this.searchFinishedHook(2);
         this.searchingDiv.style.display = 'none';
@@ -1754,12 +1789,19 @@ if (this.discardedTerms.length > 0){
       let pFound = document.createElement('p');
       pFound.append(this.captionSet.strDocumentsFound + this.resultSet.getSize());
       this.resultsDiv.appendChild(pFound);
-      this.resultsDiv.appendChild(this.resultSet.resultsAsHtml(this.captionSet.strScore));
+      //Switch depending on the result size:
+      //Report that there are no results
       if (this.resultSet.getSize() < 1){
         this.reportNoResults(true);
-      }
-      if (this.resultsPerPage > 0 && this.resultsPerPage < this.resultSet.getSize()){
-        this.paginateResults();
+        // Else if the number of results is greater than the limit.
+      } else if (this.resultSet.getSize() > this.resultsLimit){
+        this.reportTooManyResults();
+      } else {
+        // Otherwise, render the results, optionally paginated.
+        this.resultsDiv.appendChild(this.resultSet.resultsAsHtml(this.captionSet.strScore));
+        if (this.resultsPerPage > 0 && this.resultsPerPage < this.resultSet.getSize()){
+          this.paginateResults();
+        }
       }
       this.searchFinishedHook(4);
       this.searchingDiv.style.display = 'none';
