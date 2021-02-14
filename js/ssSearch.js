@@ -1532,7 +1532,7 @@ if (this.discardedTerms.length > 0){
         if (this.resultSet.getSize() < 1){
           this.reportNoResults(true);
           // Else if the number of results is greater than the limit.
-        } else if (this.resultSet.getSize() >= this.resultsLimit){
+        } else if (this.resultSet.getSize() > this.resultsLimit){
             this.reportTooManyResults();
         } else {
           // Otherwise, render the results, optionally paginated.
@@ -1794,7 +1794,7 @@ if (this.discardedTerms.length > 0){
       if (this.resultSet.getSize() < 1){
         this.reportNoResults(true);
         // Else if the number of results is greater than the limit.
-      } else if (this.resultSet.getSize() >= this.resultsLimit){
+      } else if (this.resultSet.getSize() > this.resultsLimit){
         this.reportTooManyResults();
       } else {
         // Otherwise, render the results, optionally paginated.
