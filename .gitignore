@@ -1,6 +1,7 @@
 # Files from schema build. #
 *.lite.odd
 *.processedodd
+*_patched.odd
 
 # OS generated files #
 ######################

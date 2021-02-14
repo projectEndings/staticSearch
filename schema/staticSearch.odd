@@ -472,6 +472,10 @@
                   </specList>
                   
                   <specList>
+                    <specDesc key="resultsPerPage"/>
+                  </specList>
+                  
+                  <specList>
                     <specDesc key="verbose"/>
                   </specList>
                   
@@ -1193,6 +1197,7 @@
                 <elementRef key="indentJSON" minOccurs="0"/>
                 <elementRef key="outputFolder" minOccurs="0"/>
                 <elementRef key="resultsPerPage" minOccurs="0"/>
+                <elementRef key="resultsLimit" minOccurs="0"/>
               </sequence>
             </content>
           </elementSpec>
@@ -1684,6 +1689,22 @@
             the page, but since most of them are hidden until the <soCalled>Show More</soCalled> 
               or <soCalled>Show All</soCalled> button is clicked, the browser will render them
             much more quickly.</p>
+            </remarks>
+          </elementSpec>
+          
+          <elementSpec ident="resultsLimit" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>The maximum number of results that can be returned for any search before returning an error; if the number
+              of documents in a result set exceeds this number, then staticSearch will not render the results and will provide a message
+              saying that the search returned too many results. This is usually set to 2000 by default, but you may want to have a higher or lower limit,
+            depending on the specific structure of your project.  </gloss>
+            <content>
+              <dataRef name="nonNegativeInteger"/>
+            </content>
+            <remarks>
+              <p>This configuration option is meant to prevent errors for sites where a given set of filters or search terms
+              can return a set of document that can cause a browser's rendering engine to fail. For smaller collections, it's unlikely
+              that this limit would ever be reached, but setting a limit may be helpful for large document collections, projects that want to constrain the number
+              of possible results, or projects with memory-intensive or complex rendering.</p>
             </remarks>
           </elementSpec>
           

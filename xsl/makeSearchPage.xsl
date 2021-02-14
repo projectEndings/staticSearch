@@ -180,6 +180,7 @@
                 data-versionstring="{$versionString}"
                 data-ssfolder="{$outputFolder}"
                 data-kwictruncatestring="{$kwicTruncateString}"
+                data-resultslimit="{$resultsLimit}"
                 >
                 
                 <!--Standard inputs-->
