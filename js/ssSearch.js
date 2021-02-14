@@ -1789,11 +1789,15 @@ if (this.discardedTerms.length > 0){
       let pFound = document.createElement('p');
       pFound.append(this.captionSet.strDocumentsFound + this.resultSet.getSize());
       this.resultsDiv.appendChild(pFound);
+      //Switch depending on the result size:
+      //Report that there are no results
       if (this.resultSet.getSize() < 1){
         this.reportNoResults(true);
+        // Else if the number of results is greater than the limit.
       } else if (this.resultSet.getSize() >= this.resultsLimit){
         this.reportTooManyResults();
       } else {
+        // Otherwise, render the results, optionally paginated.
         this.resultsDiv.appendChild(this.resultSet.resultsAsHtml(this.captionSet.strScore));
         if (this.resultsPerPage > 0 && this.resultsPerPage < this.resultSet.getSize()){
           this.paginateResults();
