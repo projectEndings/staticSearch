@@ -1,7 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<TEI xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:svg="http://www.w3.org/2000/svg"
-  xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns="http://www.tei-c.org/ns/1.0"
-  xmlns:sch="http://purl.oclc.org/dsdl/schematron">
+<?xml version="1.0" encoding="UTF-8"?><TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:sch="http://purl.oclc.org/dsdl/schematron" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xi="http://www.w3.org/2001/XInclude">
   <teiHeader>
     <fileDesc>
       <titleStmt>
@@ -193,7 +190,7 @@
               Here is a simple example:
               
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
-                <meta name="Document type" class="staticSearch.desc" content="Poems" />
+                <meta name="Document type" class="staticSearch.desc" content="Poems"/>
               </egXML>
               
               This specifies that there is to be a descriptive search filter called <q>Document type</q>, and one of the
@@ -201,7 +198,7 @@
               type might be:
               
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
-                <meta name="Document type" class="staticSearch.desc" content="Short stories" />
+                <meta name="Document type" class="staticSearch.desc" content="Short stories"/>
               </egXML>
               
               If the Generator finds such meta tags when it is indexing, it will create a set of filter controls
@@ -221,8 +218,8 @@
                 each label. Here is are a couple of examples:
                 
                   <egXML xmlns="http://www.tei-c.org/ns/Examples">
-                    <meta name="Archival series" class="staticSearch.desc" data-ssfiltersortkey="305_02" content="305 2" />
-                    <meta name="Archival series" class="staticSearch.desc" data-ssfiltersortkey="305_10" content="305 10" />
+                    <meta name="Archival series" class="staticSearch.desc" data-ssfiltersortkey="305_02" content="305 2"/>
+                    <meta name="Archival series" class="staticSearch.desc" data-ssfiltersortkey="305_10" content="305 10"/>
                   </egXML>
                   
                   In this case, the first item will sort in the filter list before the second item based on the sort 
@@ -241,7 +238,7 @@
             documents has items from different dates, you can add a <gi>meta</gi> tag like this:
             
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
-                <meta name="Date of publication" class="staticSearch.date" content="1895-01-05" />
+                <meta name="Date of publication" class="staticSearch.date" content="1895-01-05"/>
               </egXML>
               
               The date may take any of the following forms:
@@ -271,7 +268,7 @@
             people to filter documents in the search results based on their word-count:
             
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
-                <meta name="Word-count" class="staticSearch.num" content="2193" />
+                <meta name="Word-count" class="staticSearch.num" content="2193"/>
               </egXML>
               
               Users would then be able to set a minimum and/or maximum word-count when
@@ -287,7 +284,7 @@
             to your documents:
             
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
-                <meta name="Peer-reviewed" class="staticSearch.bool" content="true" />
+                <meta name="Peer-reviewed" class="staticSearch.bool" content="true"/>
               </egXML>
             
             </p>
@@ -305,7 +302,7 @@
             you can override the document title value by providing another meta tag, like this:
             
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
-                <meta name="docTitle" class="staticSearch.docTitle" content="What I did in my holidays" />
+                <meta name="docTitle" class="staticSearch.docTitle" content="What I did in my holidays"/>
               </egXML>
             
             </p>
@@ -332,7 +329,7 @@
               which can be used to sort the list of hits. This is an 
               example:
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
-                <meta name="docSortKey" class="staticSearch.docSortKey" content="d_1854-01-02" />
+                <meta name="docSortKey" class="staticSearch.docSortKey" content="d_1854-01-02"/>
               </egXML>
             </p>
           </div>
@@ -346,7 +343,7 @@
             instance). Whatever the reason, you can supply a link to a thumbnail image like this:
             
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
-                <meta name="docImage" class="staticSearch.docImage" content="images/thisPage.jpg" />
+                <meta name="docImage" class="staticSearch.docImage" content="images/thisPage.jpg"/>
               </egXML>
             
             The <att>content</att> attribute value should either be the path to an image relative to the 
@@ -387,6 +384,11 @@
                     <specDesc key="searchFile"/>
                     <specDesc key="recurse"/>
                   </specList>
+              <p>The search page is a regular HTML page which forms part of your site. The only 
+            important characteristic it must have is a <gi>div</gi> element with 
+              <att>id</att>=<val>staticSearch</val>, whose contents will be rewritten by 
+            the staticSearch build process. See <ptr target="#searchPage"/>.</p>
+            
                 </p>
                 <p>The <gi>searchFile</gi> element is a relative URI (resolved, like all URIs specified in the config file, against the configuration file location) that points
                   directly to the search page that will be the primary access point for the search. Since the search file must be at the root of the directory that you wish to index
@@ -430,70 +432,284 @@
                   <specList>
                     <specDesc key="versionFile"/>
                   </specList>
+              <p><gi>versionFile</gi> enables you to specify the path to a plain-text file
+                containing a simple version number for the project. This might take the form of 
+                a software-release-style version number such as <val>1.5</val>, or it might be
+                a Subversion revision number or a Git commit hash. It should not contain any 
+                spaces or punctuation. If you provide a version file, the version string will
+                be used as part of the filenames for all the JSON resources created for the 
+                search. This is useful because it allows the browser to cache such resources 
+                when users repeatedly visit the search page, but if the project is rebuilt with 
+                a new version, those cached files will not be used because the new version will
+                have different filenames. The path specified is relative to the location of the
+                configuration file (or absolute, if you wish).</p>
+            
                   
                   <specList>
                     <specDesc key="phrasalSearch"/>
                   </specList>
+              <p>Phrasal search functionality enables your users to search for specific phrases
+                by surrounding them with quotation marks (<code>"</code>), as in many search engines. In order 
+                to support this kind of search, <gi>createContexts</gi> must also be set to true as we store contexts for all 
+                hits for each token in each document. Turning this on will make the index larger, because all 
+                contexts must be stored, but once the index is built, it has very little 
+                impact on the speed of searches, so we recommend turning this on. The 
+                default value is true.</p>
+              <p>However, if your site is very large and your user base is unlikely to 
+                use phrasal searching, it may not be worth the additional build time and
+                increased index size.</p>
+            
                   
                   <specList>
                     <specDesc key="stemmerFolder"/>
                   </specList>
+              <p>The staticSearch project currently has only two real stemmers:
+                an implementation of the Porter 2 algorithm for modern English, and
+                an implementation of the French Snowball stemmer. These 
+                appear in the <ident>/stemmers/en/</ident> and <ident>/stemmers/fr/</ident> 
+                folders. The default value for this parameter is <val>en</val>; to 
+                use the French stemmer, use <val>fr</val>. We will
+                be adding more stemmers as the project develops. However, if your 
+                document collection is not English or French, you have a couple of options, one 
+                hard and one easy.
+                
+                <list>
+                  <item><emph>Hard option</emph>: implement your own stemmers. You will need to
+                    write two implementations of the stemmer algorithm, one in XSLT (which 
+                    must be named <ident>ssStemmer.xsl</ident>) and one in JavaScript
+                    (<ident>ssStemmer.js</ident>), and confirm that they both generate the
+                    same results. The XSLT stemmer is used in the generation of the 
+                    index files at build time, and the JavaScript version is used to 
+                    stem the user's input in the search page. You can look at the 
+                    existing implementations in the <ident>/stemmers/en/</ident> folder
+                    to see how the stemmers need to be constructed. Place your stemmers
+                    in a folder called <ident>/stemmers/[yourlang]/</ident>, and 
+                    specify <val>yourlang</val> in the configuration file.
+                  </item>
+                  <item><emph>Easy option</emph>: Use the <ident>identity stemmer</ident>
+                    (which is equivalent to turning off stemming completely), and 
+                    make sure wildcard searching is turned on. Then your users can 
+                    search using wildcards instead of having their search terms 
+                    automatically stemmed. To do this, specify the value <val>identity</val>
+                    in your configuration file.
+                  </item>
+                </list>
+                Another alternative is the <ident>stripDiacritics</ident> stemmer. Like the
+                <ident>identity stemmer</ident>, this is not really a stemmer at all; 
+                what it does is to 
+                strip out all combining diacritics from tokens. This is a useful approach
+                if you document collection contains texts with accents and diacritics, but 
+                your users may be unfamiliar with the use of diacritics and will want to
+                search just with plain unaccented characters. For example, if a text contains
+                the word <mentioned>élève</mentioned>, but you would like searchers to be able to
+                find the word simply by typing the ascii string <mentioned>eleve</mentioned>, then this
+                is a good option. Combined with wildcards, it can provide a very flexible and
+                user-friendly search engine in the absence of a sophisticated stemmer, or for
+                cases where there are mixed languages so a single stemmer will not do. To 
+                use this option, specify the value <val>stripDiacritics</val>
+                in your configuration file.
+              </p>
+            
                   
                   <specList>
                     <specDesc key="scoringAlgorithm"/>
                   </specList>
+              <p>
+              <gi>scoringAlgorithm</gi> is an optional element that specifies which 
+              scoring algorithm to use when calculating the score of a term and thus the order
+              in which the results from a search are sorted. There are currently two options:
+              <list>
+                <item><val>raw</val>: This is the default option (and so does not need 
+                  to be set explicitly). The raw score is simply the sum of all instances of a term 
+                  (optionally multipled by a configured weight via the
+                  <gi>rule</gi>/<att>weight</att> <ref target="#specifyingRules">configuration</ref>) in a document. This will usually provide good
+                  results for most document collections.</item>
+                <item><val>tf-idf</val>: The tf-idf algorithm (term frequency-inverse document frequency)
+                  computes the mathematical relevance of a term within a document relative to the rest
+                  of the document collection. The staticSearch implementation of tf-idf basically follows the textbook definition of tf-idf:
+                  <formula style="display:block;">
+                    tf-idf = ($instancesOfTerm / $totalTermsInDoc) * log( $allDocumentsCount / $docsWithThisTermCount )
+                  </formula>
+                  This is fairly crude compared to other search engines, like 
+                  <ref target="https://lucene.apache.org/core/3_5_0/scoring.html">Lucene</ref>, but it may provide useful results
+                  for document collections of varying lengths or in instances where the raw score may be
+                  insufficient or misleading. There are a number of resources on tf-idf
+                  scoring, including: <ref target="https://en.wikipedia.org/wiki/Tf%E2%80%93idf">Wikipedia</ref> and 
+                  Christopher D. Manning, Prabhakar Raghavan and Hinrich Schütze, <ref target="https://nlp.stanford.edu/IR-book/html/htmledition/tf-idf-weighting-1.html">Introduction 
+                    to Information Retrieval</ref>, Cambridge University Press. 2008.</item>
+              </list>
+              </p>
+            
                   
                   <specList>
                     <specDesc key="createContexts"/>
                   </specList>
+              <p>
+                <gi>createContexts</gi> is a boolean parameter that specifies whether you 
+                want the indexer to store keyword-in-context extracts for each of the hits in a
+                document. This increases the size of the index, but of course it makes for much 
+                more user-friendly search results; instead of seeing just a score for each 
+                document found, the user will see a series of short text strings with the 
+                search keyword(s) highlighted.
+              </p>
+              <p>Note that contexts are necessary for phrasal searching or wildcard searching.</p>
+            
                   
                   <specList>
                     <specDesc key="maxKwicsToHarvest"/>
                   </specList>
+              <p><gi>maxKwicsToHarvest</gi> controls the number of keyword-in-context extracts
+                that will be harvested from the data for each term in a document. For example, if a user
+                searches for the word <q>elephant</q>, and it occurs 27 times in a document, but the 
+                <gi>maxKwicsToHarvest</gi> value is set to 5, then only the first five (sorted in document order) of these 
+                keyword-in-context strings will be stored in the index. (This does not affect the 
+                score of the document in the search results, of course.) If you set this to
+                a low number, the size of the JSON files will be constrained, but of course the 
+                user will only be able to see the KWICs that have been harvested in their search results.</p>
+              <p>If <gi>phrasalSearch</gi> is set to true, the <gi>maxKwicsToHarvest</gi> setting is
+                ignored, because phrasal searches will only work properly if all contexts are
+                stored.</p>
+            
                   
                   <specList>
                     <specDesc key="maxKwicsToShow"/>
                   </specList>
+              <p>A user may search for multiple common words, so hundreds of hits could be found in 
+              a single document. If the keyword-in-context strings for all these hits are shown on
+              the results page, it would be too long and too difficult to navigate. This setting 
+              controls how many of those hits you want to show for each document in the result set.</p>
+            
                   
                   <specList>
                     <specDesc key="totalKwicLength"/>
                   </specList>
+              <p>Obviously, the longer the keyword-in-context strings are, the larger the individual index
+                files will be, but the more useful the KWICs will be for users looking at the search results.
+              Note that the phrasal searching relies on the KWICs and thus longer KWICs allow for longer
+              phrasal searches.</p>
+            
                   
                   <specList>
                     <specDesc key="kwicTruncateString"/>
                   </specList>
+              <p>The only reason you might need to specify a value for this parameter is
+            if the language of your search page conventionally uses a different ellipsis
+            character. Japanese, for example, uses the 3-dot-leader character.</p>
+            
                   
                   <specList>
                     <specDesc key="linkToFragmentId"/>
                   </specList>
+              <p><gi>linkToFragmentId</gi> is a boolean parameter that specifies whether you want
+                the search engine to link each keyword-in-context extract with the closest element that 
+                has an <att>id</att>. If the element has an ancestor with an <att>id</att>, then the indexer will associate
+                that keyword-in-context extract with that <att>id</att>; if there are no suitable ancestor elements that have
+                an <att>id</att>, then the extract is associated with first preceding element with an <att>id</att>.</p>
+              <p>We strongly recommend that you ensure your target documents have id attributes for any significant divisions
+              so that this parameter can be used effectively. With lots of ids throughout your documents, and this parameter
+              turned on, each keyword-in-context in the results page will be linked directly to the section of the 
+              document in which the hit appears, making the search results much more useful.</p>
+            
                   
                   <specList>
                     <specDesc key="scrollToTextFragment"/>
                   </specList>
+              <p>Google has proposed a browser feature called 
+                <ref target="https://wicg.github.io/scroll-to-text-fragment/">Text Fragments</ref>, which would support 
+                a special kind of link that targets a specific string of text inside a page.
+                When clicking on such a link, the browser would scroll to, and then highlight,
+                the target text. This has been implemented in Chrome-based browsers (Chrome, 
+                Chromium and Edge) at the time of writing, but other browser producers are sceptical
+                with regard to the specification and worried about possible security implications.
+                The specification is subject to radical change. <gi>scrollToTextFragment</gi> is a 
+                boolean parameter that specifies whether you want to turn on this feature for 
+                browsers that support it. It depends on the availability of keyword-in-context 
+                strings, so <gi>createContexts</gi> must also be turned on to make it work. The
+                feature is automatically suppressed for browsers which do not support it. We recommend 
+                only using this feature on sites which are in steady development, so that if 
+                necessary it can be turned off, our the staticSearch implementation can be 
+                updated to take account of changes. For sites intended to remain unchanged or
+                archived for any length of time, this feature should be left turned off. It is
+                off by default. A more reliable alternative is probably to use JavaScript to 
+                <ref target="#highlightTargetPage">highlight hits on the target page</ref>.</p>
+            
                   
                   <specList>
                     <specDesc key="resultsPerPage"/>
                   </specList>
+              <p>For most sites, where the number of results is likely to be in the low thousands,
+            it's perfectly practical to show all the results at once, because the staticSearch
+            processor is so fast. However, if you have tens of thousands of documents, and it's
+            possible that users will do (for example) filter-only searches that retrieve a
+            large proportion of them, you can constrain the number of results which are shown
+            initially using this setting. All the results are still generated and output to 
+            the page, but since most of them are hidden until the <soCalled>Show More</soCalled> 
+              or <soCalled>Show All</soCalled> button is clicked, the browser will render them
+            much more quickly.</p>
+            
                   
                   <specList>
                     <specDesc key="verbose"/>
                   </specList>
+              <p>The staticSearch build process can be lengthy, and if something goes
+            wrong it can be difficult to figure out where the problem was. If you're
+            having build problems, turn on verbose messages in the configuration file 
+            to help with debugging, and you'll see a lot more output at the command line.</p>
+            
                   
                   <specList>
                     <specDesc key="stopwordsFile"/>
                   </specList>
+              <p>A stopword is a word that will not be indexed, because it is too
+                common (<mentioned>the</mentioned>, <mentioned>a</mentioned>, <mentioned>you</mentioned>
+                and so on). There are common stopwords files for most languages available on the Web, but 
+                it is probably a good idea to take one of these and customize it for your project, since
+                there will be words in the website which are so common that it makes no sense to index
+                them, but they are not ordinary stopwords. For example, in a Website dedicated to the
+                work of John Keats, the name <mentioned>keats</mentioned> should probably be added
+                to the stopwords file, since almost every page will include it, and searching for it
+                will be pointless. The project has a built-in set of common stopwords for English, which 
+                you'll find in <ident>xsl/english_stopwords.txt</ident>. One way to find appropriate stopwords
+                for your site is to generate your index, then search for the largest JSON index files that are 
+                generated, to see if they might be too common to be useful as search terms. You can also use the
+                <title>Word Frequency</title> table in the generated staticSearch report (see <ptr target="#theStaticSearchReport"/>).</p>
+              <p/>
+            
                   
                   <specList>
                     <specDesc key="dictionaryFile"/>
                   </specList>
+              <p>The indexing process checks each word as it builds the index, and keeps a record
+            of all words which are not found in the configured dictionary. Though this does not have
+            any direct effect in the indexing process, all words not found in the dictionary are listed
+            in the staticSearch report (see <ptr target="#theStaticSearchReport"/>). This can be very useful: 
+                all words listed are either foreign (not part of the language of the dictionary) or perhaps 
+            misspelled (in which case they may not be correctly stemmed and index, and should be 
+            corrected). There is a default  dictionary in <ident>xsl/english_words.txt</ident> which 
+                you might copy and adapt if you're working in English; lots of dictionaries for other
+                languages are available on the Web.</p>
+            
                   
                   <specList>
                     <specDesc key="indentJSON"/>
                   </specList>
+              <p>Normally, the JSON index files will only be processed by JavaScript, so
+            there is no need to indent them, but if you are debugging or investigating how
+            the code works, you may find it useful to generate them in a more human-readable
+            layout.</p>
+            
                   
                   <specList>
                     <specDesc key="outputFolder"/>
                   </specList>
+              <p>When the staticSearch build process creates its output, many files need to be 
+            added to the website for which an index is being created. For convenience, all of 
+            these files are stored in a single folder. This element is used to specify the 
+            name of that folder. The default is <val>staticSearch</val>,
+                but if you would prefer something else, you can specify it here. You may also use this element 
+                if you are defining two different searches within the same site, so that their files are kept in 
+                different locations.</p>
+            
                   
                 </p>
                 
@@ -506,6 +722,12 @@
               <specDesc key="rules"/>
               <specDesc key="rule" atts="match weight"/>
             </specList>
+              <p>The rule element is used to identify nodes in the XHTML document collection which should be
+            treated in a special manner when indexed; either they might be ignored (if <att>weight</att>=<val>0</val>),
+            or any words found in them might be given greater weight than words in normal contexts 
+              <att>weight</att>&gt;<val>1</val>. Words appearing in headings or titles, for example, might
+            be weighted more heavily, while navigation menus, banners, or footers might be ignored completely.</p>
+            
             </p>
             <p>The <gi>rules</gi> elements specifies a list of conditions (using the <gi>rule</gi> element) that tell the parser, using XPath statements in the <att>match</att> attribute, specific weights to assign to particular parts of each document. For instance, if you wanted all heading elements (<gi>h1</gi>, <gi>h2</gi>, etc) in documents to be given a greater weight and thus receive a higher score in the results, you can do so using a rule like so:
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
@@ -549,6 +771,15 @@
                 <specDesc key="contexts"/>
                 <specDesc key="context" atts="match"/>
               </specList>
+              <p>When the indexer is extracting keyword-in-context strings for each word, it uses a common-sense
+              approach based on common element definitions, so that for example when it reaches the end of a paragraph,
+              it will not continue into the next paragraph to get more context words. You may have special runs of 
+            text in your document collection which do not appear to be bounding contexts, but actually are; for 
+            example, you may have span elements with <att>class</att>=<val>note</val> that appear in the middle
+            of sentences but are not actually part of them. Use <gi>context</gi> elements to identify these 
+            special contexts so that the indexer knows the right boundaries from which to retrieve its 
+            keyword-in-context strings.</p>
+            
             </p>
             
             <p>When the staticSearch creates the keywords-in-context strings 
@@ -619,6 +850,10 @@
                   <specDesc key="excludes"/>
                   <specDesc key="exclude" atts="type match"/>
                 </specList>
+              <p><gi>exclude</gi> can be used to identify documents or parts of documents that are to be omitted from 
+              indexing, but, unlike setting <gi>weight</gi> to zero, should be retained during the indexing process. This is helpful in cases where the text itself should be ignored by the indexer, but should still appear in KWICs. Another common use is for multiple search engines/pages that each have their own special features; in this case, you may want one specific search index/page to ignore filter controls (HTML <gi>meta</gi> elements, as 
+            described in <ptr target="#searchFacetFeatures"/>) which are provided to support other search pages.</p>
+            
               </p>
               
               <p>A complex site may have two or more search pages targetting
@@ -656,8 +891,7 @@
                 <egXML xmlns="http://www.tei-c.org/ns/Examples">
                   <excludes>
                     <!-- We only index files which have illustrations in them. -->
-                    <exclude type="index" 
-                      match="html[not(descendant::meta[@name='Has illustration(s)'][@content='true'])]"/>
+                    <exclude type="index" match="html[not(descendant::meta[@name='Has illustration(s)'][@content='true'])]"/>
                     
                     <!-- We ignore the document type filter, 
                          because we are only indexing one type 
@@ -671,7 +905,7 @@
                 </egXML>
               
               Here we use <tag>exclude type="index"/</tag> to specify that all documents which do not contain 
-                <tag>meta name="Has illustration(s)" content="true"/></tag>
+                <tag>meta name="Has illustration(s)" content="true"/&gt;</tag>
                 should be ignored. Then we use two <tag>exclude type="filter"/</tag> tags to 
                 specify first that the <ident>Document type</ident> filter should be
                 ignored (i.e. it should not appear on the search page), and second, that the 
@@ -1155,8 +1389,7 @@
       <div xml:id="schemaSpec">
         <head>Schema specification and tag documentation</head>
         
-        <schemaSpec ident="staticSearch" start="config" ns="http://hcmc.uvic.ca/ns/staticSearch"
-          defaultExceptions="http://hcmc.uvic.ca/ns/staticSearch">
+        <schemaSpec ident="staticSearch" start="config" ns="http://hcmc.uvic.ca/ns/staticSearch" defaultExceptions="http://hcmc.uvic.ca/ns/staticSearch">
 
           <moduleSpec ident="ss">
             <desc>Module for all of the staticSearch elements.</desc>
@@ -1176,7 +1409,7 @@
             <gloss>Element containing most of the settings which enable the Generator to
             find the target website content and process it appropriately.</gloss>
             <content>
-              <sequence preserveOrder="false">
+              <rng:interleave xmlns:rng="http://relaxng.org/ns/structure/1.0">
                 <elementRef key="searchFile"/>
                 <elementRef key="versionFile" minOccurs="0"/>
                 <elementRef key="stemmerFolder" minOccurs="0"/>
@@ -1198,7 +1431,7 @@
                 <elementRef key="outputFolder" minOccurs="0"/>
                 <elementRef key="resultsPerPage" minOccurs="0"/>
                 <elementRef key="resultsLimit" minOccurs="0"/>
-              </sequence>
+              </rng:interleave>
             </content>
           </elementSpec>
 
@@ -1604,8 +1837,7 @@
             </remarks>
           </elementSpec>
 
-          <elementSpec ident="kwicTruncateString" module="ss"
-            ns="http://hcmc.uvic.ca/ns/staticSearch">
+          <elementSpec ident="kwicTruncateString" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>The string that will be used to signal ellipsis at the beginning and end of a
               keyword-in-context extract. Conventionally three periods, or an ellipsis
               character (which is the default value).</gloss>
@@ -1741,7 +1973,7 @@
                 for your site is to generate your index, then search for the largest JSON index files that are 
                 generated, to see if they might be too common to be useful as search terms. You can also use the
                 <title>Word Frequency</title> table in the generated staticSearch report (see <ptr target="#theStaticSearchReport"/>).</p>
-              <p></p>
+              <p/>
             </remarks>
           </elementSpec>
           <elementSpec ident="dictionaryFile" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
