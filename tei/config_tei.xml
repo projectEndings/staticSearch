@@ -40,6 +40,10 @@
             match="nav"/>
         <rule weight="0"
             match="script | style"/>
+        <rule weight="0"
+            match="span[matches(@class, '((pilcrow)|(bookmarkLink))')]"/>
+        <rule weight="0"
+            match="a[matches(@href, '^examples-')]"/>
         <!-- We don't try to index the CJK examples etc. -->
         <rule weight="0"
             match="*[@lang = ('js', 'ko', 'zh-TW', 'zh')]"/>
