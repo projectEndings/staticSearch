@@ -831,19 +831,31 @@
     </xd:doc>
     <xsl:template match="span[@data-staticSearch-stem]" mode="enumerate">
         <xsl:param name="id" as="xs:string?" tunnel="yes"/>
-        <!--Get the fragment id: if there's a tunneled id parameter, then we want to use that,
-                since it is from the stem's ancestor; if there isn't, then we use the nearest preceding id.-->
-        <xsl:variable name="fragmentId"
+        <!--
+            MDH 2021-02-17: Per issue 130, this behaviour has changed.
+            We should not use a preceding id, because this borks the
+            hit-highlighting functionality. The accumulator can also 
+            presumably be removed, it it's still in place.
+            Old comment:
+            Get the fragment id: if there's a tunneled id parameter, then we want to use 
+            that, since it is from the stem's ancestor; if there isn't, then we use the
+            nearest preceding id.-->
+        <!--<xsl:variable name="fragmentId"
             select="if ($id) then $id else accumulator-before('fragment-id')" 
-            as="xs:string?"/>
+            as="xs:string?"/>-->
         <xsl:copy>
             <xsl:attribute name="data-staticSearch-pos" select="accumulator-before('stem-position')"/>
-            <xsl:if test="exists($fragmentId)">
+            <!--<xsl:if test="exists($fragmentId)">
                 <xsl:if test="$verbose">
                     <xsl:message>Found fragment id: <xsl:value-of select="$fragmentId"/> (method: <xsl:value-of select="if ($fragmentId = $id) then 'ancestor' else 'accumulator'"/>)</xsl:message>
+                </xsl:if>-->
+            <xsl:if test="$id">
+                <xsl:attribute name="data-staticSearch-fid" select="$id"/>
+                <xsl:if test="$verbose">
+                    <xsl:message>Found fragment id: <xsl:value-of select="$id"/></xsl:message>
                 </xsl:if>
-                <xsl:attribute name="data-staticSearch-fid" select="$fragmentId"/>
             </xsl:if>
+            <!--</xsl:if>-->
             <xsl:apply-templates select="@*|node()" mode="#current"/>
         </xsl:copy>
     </xsl:template>
