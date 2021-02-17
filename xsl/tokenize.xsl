@@ -792,10 +792,10 @@
         <xd:desc>Accumulator that keeps track of the last processed id, which is helpful in instances where something
             may not have an ancestor id.</xd:desc>
     </xd:doc>
-    <xsl:accumulator name="fragment-id" initial-value="()">
+    <!--<xsl:accumulator name="fragment-id" initial-value="()">
         <xsl:accumulator-rule match="*[@id][ancestor::body]"
             select="string(@id)"/>
-    </xsl:accumulator>
+    </xsl:accumulator>-->
     
     
     <xd:doc>
