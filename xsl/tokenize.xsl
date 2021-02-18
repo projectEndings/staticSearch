@@ -789,16 +789,6 @@
     </xsl:accumulator>
     
     <xd:doc>
-        <xd:desc>Accumulator that keeps track of the last processed id, which is helpful in instances where something
-            may not have an ancestor id.</xd:desc>
-    </xd:doc>
-    <xsl:accumulator name="fragment-id" initial-value="()">
-        <xsl:accumulator-rule match="*[@id][ancestor::body]"
-            select="string(@id)"/>
-    </xsl:accumulator>
-    
-    
-    <xd:doc>
         <xd:desc>Template to match all ancestor ids</xd:desc>
     </xd:doc>
     <xsl:template match="*[@id][ancestor::body]" mode="enumerate">
@@ -826,23 +816,20 @@
     
     
     <xd:doc>
-        <xd:desc>Match all of the generated spans and add a position to the element so that we
-        can simply determine their order in later processes.</xd:desc>
+        <xd:desc>Match all of the generated spans and add a position to 
+            the element so that we can simply determine their order in 
+            later processes.
+        </xd:desc>
     </xd:doc>
     <xsl:template match="span[@data-staticSearch-stem]" mode="enumerate">
         <xsl:param name="id" as="xs:string?" tunnel="yes"/>
-        <!--Get the fragment id: if there's a tunneled id parameter, then we want to use that,
-                since it is from the stem's ancestor; if there isn't, then we use the nearest preceding id.-->
-        <xsl:variable name="fragmentId"
-            select="if ($id) then $id else accumulator-before('fragment-id')" 
-            as="xs:string?"/>
         <xsl:copy>
             <xsl:attribute name="data-staticSearch-pos" select="accumulator-before('stem-position')"/>
-            <xsl:if test="exists($fragmentId)">
+            <xsl:if test="$id">
+                <xsl:attribute name="data-staticSearch-fid" select="$id"/>
                 <xsl:if test="$verbose">
-                    <xsl:message>Found fragment id: <xsl:value-of select="$fragmentId"/> (method: <xsl:value-of select="if ($fragmentId = $id) then 'ancestor' else 'accumulator'"/>)</xsl:message>
+                    <xsl:message>Found fragment id: <xsl:value-of select="$id"/></xsl:message>
                 </xsl:if>
-                <xsl:attribute name="data-staticSearch-fid" select="$fragmentId"/>
             </xsl:if>
             <xsl:apply-templates select="@*|node()" mode="#current"/>
         </xsl:copy>
