@@ -56,6 +56,7 @@ function ssHighlightOnLoad(){
           for (let bit of t.split('@@@')){
             if (bit.match(re) !== null){
               let mark = document.createElement('mark');
+              mark.setAttribute('data-function', 'ssHit');
               mark.appendChild(document.createTextNode(bit));
               f.appendChild(mark);
             }
@@ -73,7 +74,7 @@ function ssHighlightOnLoad(){
       }
     }
     walkNodes(ctx);
-    let m = document.querySelector('mark');
+    let m = document.querySelector('mark[data-function="ssHit"]');
     if (m !== null){
       m.scrollIntoView({block: 'center'});
     }
