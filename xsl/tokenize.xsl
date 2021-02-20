@@ -14,18 +14,38 @@
             <xd:p><xd:b>Created on:</xd:b> June 26, 2019</xd:p>
             <xd:p><xd:b>Authors:</xd:b> Joey Takeda and Martin Holmes</xd:p>
             <xd:p>This transformation takes the collection of documents specified in the configuration
-            file and creates the temporary tokenized and stemmed output HTML files to create the JSON indexes.</xd:p>
-            <xd:p>Broadly, the process works by running each document through a variety of templates (explained below) that add and subtract information in order to create a document that contains all of the necessary information for the creation of the JSON indexes. These modified documents are then output into a temporary directory (which is removed at the end of the ANT build).</xd:p>
-            <xd:p>The templates/passes are described below. Note, however, that since many of these templates contain rules that are contingent on the configuration options, the templates for clean, weigh, and contextualize are primarily default templates that are usually overriden or supplemented by the implementer.</xd:p>
-            <xd:ul>
+                file and creates the temporary tokenized and stemmed output HTML files to create the
+                JSON indexes.</xd:p>
+            <xd:p>Each document is run through a chain of templates to create a version of each HTML
+                document that contains all of the necessary information for the creation of the JSON
+                indexes. These modified documents are then output into a temporary directory (removed at
+                the end of the ANT build).</xd:p>
+            <xd:p>The templates/passes are described below. Since many of these templates contain rules
+                that are contingent on the configuration options, the clean, weigh, and contextualize
+                templates are primarily default templates that are usually overriden or supplemented by
+                rules specified in the config file.</xd:p>
+            <xd:ol>
                 <xd:li>
-                    <xd:b>exclude</xd:b>: Determines whether or not the document  has any exclusions or if the document itself is excluded. Note that the document is only passed through the exclusion templates if exclusions have been defined in the configuration file.</xd:li>
-                <xd:li><xd:b>clean</xd:b>: Removes unnecessary tagging (spans, et cetera) in order to reduce the file size if possible and adds staticSearch specific attributes for later processing.</xd:li>
-                <xd:li><xd:b>weigh</xd:b>: Adds @data-ss-weight attributes to the elements specified in the configuration file. This allows for higher weighting of terms found in particular contexts.</xd:li>
-                <xd:li><xd:b>contextualize</xd:b>: Adds @data-ss-context to the elements specified in the configuration file so that KWICS, if generated in the JSON file, are properly bounded by their containing elements.</xd:li>
-                <xd:li><xd:b>tokenize</xd:b>: Tokenizes the file on word boundaries, wraps each word in a span element, and adds a @data-ss-stem for that term. This is the bulk of the process.</xd:li>
-                <xd:li><xd:b>enumerate</xd:b>: A final pass on the tokenized document, which adds a position for each stem. This helps with ordering results.</xd:li>
-            </xd:ul>
+                    <xd:b>exclude</xd:b>: Determines whether or not the document has any exclusions or
+                    if the document itself is excluded. Note that the document is only passed through
+                    the exclusion templates if exclusions have been defined in the configuration
+                    file.</xd:li>
+                <xd:li><xd:b>clean</xd:b>: Removes unnecessary tagging (spans, et cetera) in order to
+                    reduce the file size if possible and adds staticSearch specific attributes for later
+                    processing.</xd:li>
+                <xd:li><xd:b>weigh</xd:b>: Adds @data-staticSearch-weight attributes to the elements
+                    specified in the configuration file. This allows for higher weighting of terms found
+                    in particular contexts.</xd:li>
+                <xd:li><xd:b>contextualize</xd:b>: Adds @data-staticSearch-context to the elements
+                    specified in the configuration file so that KWICS, if generated in the JSON file,
+                    are properly bounded by their containing elements.</xd:li>
+                <xd:li><xd:b>tokenize</xd:b>: Tokenizes the file on word boundaries, wraps each word in
+                    a span element, and adds a @data-ss-stem for that term. This is the bulk of the
+                    process.</xd:li>
+                <xd:li><xd:b>enumerate</xd:b>: A final pass on the tokenized document, which adds a
+                    position for each stem and any other document-specific information necessary for the
+                    JSON step.</xd:li>
+            </xd:ol>
         </xd:desc>
     </xd:doc>
 
@@ -36,8 +56,9 @@
        **************************************************************-->    
     
     <xd:doc>
-        <xd:desc>Include the configuration file, which is generated via <xd:a href="create_config_xsl.xsl">create_config_xsl.xsl</xd:a>. Note that the stemmer XSLT is included
-        in the config.</xd:desc>
+        <xd:desc>Include the configuration file, which is generated 
+            via <xd:a href="create_config_xsl.xsl">create_config_xsl.xsl</xd:a>.
+            The stemmer XSLT is included in the config.</xd:desc>
     </xd:doc>
     <xsl:include href="config.xsl"/>
     
@@ -61,7 +82,6 @@
     <xsl:output indent="no" method="xml"/>
     
     
-    
     <!--**************************************************************
        *                                                            *
        *                         Variables                          *
@@ -72,35 +92,6 @@
         <xd:desc>A simple regex to match (x)?htm(l)? document URIs.</xd:desc>
     </xd:doc>
     <xsl:variable name="docRegex">(.+)(\..?htm.?$)</xsl:variable>
-    
-    <xd:doc>
-        <xd:desc>Various apostrophes for use in regexes.</xd:desc>
-    </xd:doc>
-    <xsl:variable name="curlyAposOpen">‘</xsl:variable>
-    <xsl:variable name="curlyAposClose">’</xsl:variable>
-    <xsl:variable name="straightSingleApos">'</xsl:variable>
-    <xsl:variable name="curlyDoubleAposOpen">“</xsl:variable>
-    <xsl:variable name="curlyDoubleAposClose">”</xsl:variable>
-    <xsl:variable name="straightDoubleApos">"</xsl:variable>
-    
-    <xsl:variable name="allSingleApos" 
-        select="($straightSingleApos, $curlyAposOpen, $curlyAposClose)"
-        as="xs:string+"/>
-    
-    <xsl:variable name="allSingleAposCharClassRex" 
-        select="'[' || string-join($allSingleApos) || ']'" 
-        as="xs:string"/>
-    
-    <xsl:variable name="allDoubleApos" 
-        select="($curlyDoubleAposClose, $curlyDoubleAposOpen, $straightDoubleApos)" 
-        as="xs:string+"/>
-    
-    <xsl:variable name="allDoubleAposCharClassRex"
-        select="'[' || string-join($allDoubleApos) || ']'"
-        as="xs:string"/>
-    
-    
-    <xsl:variable name="allApos" select="($allSingleApos, $allDoubleApos)" as="xs:string+"/>
     
     
      <xd:doc>
@@ -673,12 +664,6 @@
             <xsl:message>hcmc:getStem: $containsDigit: <xsl:value-of select="$containsDigit"/></xsl:message>
         </xsl:if>
         
-        <!--Check whether or not the word is in the dictionary-->
-        <xsl:variable name="inDictionary" select="exists(key('w',$lcWord, $dictionaryFileXml))" as="xs:boolean"/>
-        <xsl:if test="$verbose">
-            <xsl:message>hcmc:getStem: $inDictionary: <xsl:value-of select="$inDictionary"/></xsl:message>
-        </xsl:if>
-        
         <!--Check whether or not the word is hyphenated-->
         <xsl:variable name="hyphenated" select="matches($word,'[A-Za-z]-[A-Za-z]')" as="xs:boolean"/>
         <xsl:if test="$verbose">
@@ -739,24 +724,7 @@
     
     
     
-    <xd:doc>
-        <xd:desc><xd:ref name="hcmc:cleanWordForStemming">hcmc:cleanWordForStemming</xd:ref> takes the input word
-            and tidies it up to make it more amenable for the stemming process.</xd:desc>
-        <xd:param name="word">The input word</xd:param>
-        <xd:return>A cleaned version of the word.</xd:return>
-    </xd:doc>
-    <xsl:function name="hcmc:cleanWordForStemming" as="xs:string">
-        <xsl:param name="word" as="xs:string"/>
-        
-        <xsl:value-of select="
-            replace($word, $allDoubleAposCharClassRex, '') (: Remove all quotation marks :)
-            => replace($allSingleAposCharClassRex, $straightSingleApos) (: Normalize all apostrophes to straight :)
-            => replace('\.$','') (: Remove trailing period :)
-            => replace('^' || $straightSingleApos, '') (: Remove leading apostrope :)
-            => replace($straightSingleApos || '$', '') (: Remove trailing apostrophe :)
-            => translate('ſ','s') (: Normalize long-s to regular s :)
-            "/>
-    </xsl:function>
+  
     
     <xd:doc>
         <xd:desc><xd:ref name="hcmc:shouldIndex">hcmc:shouldIndex</xd:ref> returns a boolean value 
@@ -789,7 +757,8 @@
     </xsl:accumulator>
     
     <xd:doc>
-        <xd:desc>Template to match all ancestor ids</xd:desc>
+        <xd:desc>Template to match all elements with ids, which then pass its id value to
+            its descendants.</xd:desc>
     </xd:doc>
     <xsl:template match="*[@id][ancestor::body]" mode="enumerate">
         <xsl:copy>
@@ -814,12 +783,13 @@
         </xsl:if>
     </xsl:template>
     
-    
     <xd:doc>
         <xd:desc>Match all of the generated spans and add a position to 
             the element so that we can simply determine their order in 
             later processes.
         </xd:desc>
+        <xd:param name="id">Tunnelled parameter that contains the nearest 
+            ancestor fragment id, if it exists.</xd:param>
     </xd:doc>
     <xsl:template match="span[@data-staticSearch-stem]" mode="enumerate">
         <xsl:param name="id" as="xs:string?" tunnel="yes"/>

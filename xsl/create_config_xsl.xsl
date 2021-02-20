@@ -320,7 +320,7 @@
                 <!--First, create the global variables and parameters-->
                 <xsl:call-template name="createGlobals" exclude-result-prefixes="#all"/>
                 
-                <!--Now create the DICTIONARY xml files-->
+                <!--Now create the dictionary XML files-->
                 <xsl:call-template name="createDictionaryXML" exclude-result-prefixes="#all"/>
                 
                 
@@ -514,7 +514,10 @@
         </xso:template>
     </xsl:template>
 
-    
+    <xd:doc>
+        <xd:desc>Template to create an XML representation of the dictionary file 
+        and an associated key.</xd:desc>
+    </xd:doc>
     <xsl:template name="createDictionaryXML" exclude-result-prefixes="xs xd tei">
         <xsl:for-each select="($configDoc//stopwordsFile, $configDoc//dictionaryFile)">
             <xsl:variable name="path" select="resolve-uri(text(),$configUri)"/>
