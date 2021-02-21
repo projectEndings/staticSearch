@@ -1132,7 +1132,7 @@ function showByMod() {
                      can highlight the search hit(s) and scroll to them. See <a class="link_ref" href="#highlightTargetPage" title="Highlighting search hits on target pages">Highlighting search hits on target pages</a> for more information.</li>
                   <li class="item">Results can now optionally be viewed in batches by setting the new <a class="link_ref" href="#TEI.resultsPerPage" title="&lt;resultsPerPage&gt;">&lt;resultsPerPage&gt;</a> configuration option.</li>
                   <li class="item">The minimum length of a word to be indexed is now configurable, so in unusual circumstances
-                     you can now enable searching for 1- or 2-letter words.</li>
+                     you can now enable searching for 1- or 2-letter words using the <a class="link_ref" href="#TEI.minWordLength" title="&lt;minWordLength&gt;">&lt;minWordLength&gt;</a> parameter.</li>
                   <li class="item">Documentation has been significantly improved with additional explanatory remarks
                      for many elements, and the staticSearch build of the documentation now includes hit
                      highlighting (the feature described above).</li>
@@ -1141,7 +1141,7 @@ function showByMod() {
                <ul>
                   <li class="item">The encoding structure for docImage, docSortKey, and docTitle has been constrained
                      such that each doc* <span class="gi">&lt;meta&gt;</span> must include both a <span class="att">name</span> and <span class="att">class</span> value: 
-                     <div id="index.xml-egXML-d38e1605" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">docTitle</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.docTitle</span>" <span class="attribute">content</span>="<span class="attributevalue">My custom document title</span>"/&gt;</span></div>
+                     <div id="index.xml-egXML-d38e1609" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">docTitle</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.docTitle</span>" <span class="attribute">content</span>="<span class="attributevalue">My custom document title</span>"/&gt;</span></div>
                   </li>
                </ul>
             </div>
@@ -3422,7 +3422,7 @@ element wildcardSearch { xsd:boolean }</pre>
             <!--
 	  Generated from index.xml using XSLT stylesheets version 7.50.1
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2021-02-21T01:13:05Z.
+	       on 2021-02-21T01:15:41Z.
 	       SAXON HE 10.0.
 		 --></address>
       </div>
