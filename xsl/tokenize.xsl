@@ -761,14 +761,14 @@
     <xd:doc>
         <xd:desc><xd:ref name="hcmc:shouldIndex">hcmc:shouldIndex</xd:ref> returns a boolean value 
             regarding whether or not the word should be indexed. Currently the two conditions are:
-            * The word must be longer than 2 letters
+            * The word must be longer than the configured minimum word length (default 3)
             * The word must not be a stopword</xd:desc>
         <xd:param name="lcWord">A lower-cased word.</xd:param>
         <xd:return>A boolean value.</xd:return>
     </xd:doc>
     <xsl:function name="hcmc:shouldIndex" as="xs:boolean">
         <xsl:param name="lcWord" as="xs:string"/>
-        <xsl:sequence select="string-length($lcWord) gt 2 and not(key('w', $lcWord, $stopwordsFileXml))"/>
+        <xsl:sequence select="string-length($lcWord) ge xs:integer($minWordLength) and not(key('w', $lcWord, $stopwordsFileXml))"/>
     </xsl:function>
 
 

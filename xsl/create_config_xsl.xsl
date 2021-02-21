@@ -450,6 +450,11 @@
                 <xso:param name="linkToFragmentId" select="true()"/>
             </xsl:if>
             
+            <!--Specify the minimum length of items to index; we default to 3. -->
+            <xsl:if test="not($configDoc//params/minWordLength)">
+                <xso:param name="minWordLength" select="3"/>
+            </xsl:if>
+            
             <!--Turn on experimental scroll-to-text feature: default false.-->
             <xsl:if test="not($configDoc//params/scrollToTextFragment)">
                 <xso:param name="scrollToTextFragment" select="false()"/>
