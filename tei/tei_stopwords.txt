@@ -35,7 +35,6 @@ this
 that
 these
 those
-am
 is
 are
 was
@@ -56,7 +55,6 @@ an
 the
 and
 but
-if
 or
 because
 as
@@ -488,7 +486,6 @@ essendo
 esser
 essere
 essi
-ex
 fa
 faccia
 facciamo
@@ -921,7 +918,6 @@ vostre
 vostri
 vostro
 è
-ab
 aber
 ach
 acht
@@ -940,7 +936,6 @@ alles
 allgemeinen
 als
 also
-am
 an
 ander
 andere
@@ -1788,7 +1783,6 @@ esté
 estéis
 estén
 estés
-ex
 excepto
 existe
 existen
