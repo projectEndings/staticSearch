@@ -1041,6 +1041,8 @@
             for more information.</item>
             <item>Results can now optionally be viewed in batches by setting the new <gi>resultsPerPage</gi> configuration
             option.</item>
+            <item>The minimum length of a word to be indexed is now configurable, so in 
+            unusual circumstances you can now enable searching for 1- or 2-letter words.</item>
             <item>Documentation has been significantly improved with additional explanatory
             remarks for many elements, and the staticSearch build of the documentation now
             includes hit highlighting (the feature described above).</item>
