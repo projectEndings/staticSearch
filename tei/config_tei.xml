@@ -4,6 +4,7 @@
         <searchFile>output/search.html</searchFile>
         <versionFile>output/VERSION</versionFile>
         <recurse>true<!--Need to set recurse to true for the test--></recurse>
+        <minWordLength>2</minWordLength>
         <linkToFragmentId>true</linkToFragmentId>
         <scrollToTextFragment>false</scrollToTextFragment>
         <phrasalSearch>true</phrasalSearch>

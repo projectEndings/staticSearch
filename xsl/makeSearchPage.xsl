@@ -173,6 +173,7 @@
             <form accept-charset="UTF-8" id="ssForm"
                 data-allowphrasal="{if ($phrasalSearch) then 'yes' else 'no'}"
                 data-allowwildcards="{if ($wildcardSearch) then 'yes' else 'no'}"
+                data-minwordlength="{if ($minWordLength) then $minWordLength else '3'}"
                 data-scrolltotextfragment="{if ($scrollToTextFragment) then 'yes' else 'no'}"
                 data-maxkwicstoshow="{if ($maxKwicsToShow) then $maxKwicsToShow else 10}"
                 data-resultsperpage="{$resultsPerPage}"

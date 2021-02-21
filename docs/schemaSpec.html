@@ -126,7 +126,7 @@ function showByMod() {
                
                <li class="toc"><span class="headingNumber"> 7 </span><a href="howDoIUseIt.html" class="toc toc_0" title="How do I use it">How do I use it?</a><ul class="toc">
                      
-                     <li class="toc"><span class="headingNumber"> 7.1 </span><a href="howDoIUseIt.html#index.xml-body.1_div.7_div.1" class="toc toc_1">Configuring your site: search filters</a><ul class="toc">
+                     <li class="toc"><span class="headingNumber"> 7.1 </span><a href="howDoIUseIt.html#filters" class="toc toc_1" title="Configuring your site search filters">Configuring your site: search filters</a><ul class="toc">
                            
                            <li class="toc"><span class="headingNumber">7.1.1 </span><a href="howDoIUseIt.html#descFilters" class="toc toc_2" title="Description filters">Description filters</a><ul class="toc">
                                  
@@ -170,11 +170,13 @@ function showByMod() {
                      
                      <li class="toc"><span class="headingNumber"> 7.7 </span><a href="howDoIUseIt.html#searchBuildProcess" class="toc toc_1" title="Running the search build process">Running the search build process</a></li>
                      
-                     <li class="toc"><span class="headingNumber"> 7.8 </span><a href="howDoIUseIt.html#advancedFeatures" class="toc toc_1" title="Advanced features">Advanced features</a><ul class="toc">
+                     <li class="toc"><span class="headingNumber"> 7.8 </span><a href="howDoIUseIt.html#theStaticSearchReport" class="toc toc_1" title="Generated report">Generated report</a></li>
+                     
+                     <li class="toc"><span class="headingNumber"> 7.9 </span><a href="howDoIUseIt.html#advancedFeatures" class="toc toc_1" title="Advanced features">Advanced features</a><ul class="toc">
                            
-                           <li class="toc"><span class="headingNumber">7.8.1 </span><a href="howDoIUseIt.html#customAttributes" class="toc toc_2" title="Custom attributes">Custom attributes</a></li>
+                           <li class="toc"><span class="headingNumber">7.9.1 </span><a href="howDoIUseIt.html#customAttributes" class="toc toc_2" title="Custom attributes">Custom attributes</a></li>
                            
-                           <li class="toc"><span class="headingNumber">7.8.2 </span><a href="howDoIUseIt.html#highlightTargetPage" class="toc toc_2" title="Highlighting search hits on target pages">Highlighting search hits on target pages</a></li>
+                           <li class="toc"><span class="headingNumber">7.9.2 </span><a href="howDoIUseIt.html#highlightTargetPage" class="toc toc_2" title="Highlighting search hits on target pages">Highlighting search hits on target pages</a></li>
                            </ul>
                         </li>
                      </ul>
@@ -231,37 +233,41 @@ function showByMod() {
                            
                            <li class="toc"><span class="headingNumber">Appendix A.1.12 </span><a class="toc toc_2" href="#TEI.maxKwicsToShow" title="&lt;maxKwicsToShow&gt;">&lt;maxKwicsToShow&gt;</a></li>
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.13 </span><a class="toc toc_2" href="#TEI.outputFolder" title="&lt;outputFolder&gt;">&lt;outputFolder&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.13 </span><a class="toc toc_2" href="#TEI.minWordLength" title="&lt;minWordLength&gt;">&lt;minWordLength&gt;</a></li>
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.14 </span><a class="toc toc_2" href="#TEI.params" title="&lt;params&gt;">&lt;params&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.14 </span><a class="toc toc_2" href="#TEI.outputFolder" title="&lt;outputFolder&gt;">&lt;outputFolder&gt;</a></li>
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.15 </span><a class="toc toc_2" href="#TEI.phrasalSearch" title="&lt;phrasalSearch&gt;">&lt;phrasalSearch&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.15 </span><a class="toc toc_2" href="#TEI.params" title="&lt;params&gt;">&lt;params&gt;</a></li>
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.16 </span><a class="toc toc_2" href="#TEI.recurse" title="&lt;recurse&gt;">&lt;recurse&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.16 </span><a class="toc toc_2" href="#TEI.phrasalSearch" title="&lt;phrasalSearch&gt;">&lt;phrasalSearch&gt;</a></li>
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.17 </span><a class="toc toc_2" href="#TEI.resultsPerPage" title="&lt;resultsPerPage&gt;">&lt;resultsPerPage&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.17 </span><a class="toc toc_2" href="#TEI.recurse" title="&lt;recurse&gt;">&lt;recurse&gt;</a></li>
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.18 </span><a class="toc toc_2" href="#TEI.rule" title="&lt;rule&gt;">&lt;rule&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.18 </span><a class="toc toc_2" href="#TEI.resultsLimit" title="&lt;resultsLimit&gt;">&lt;resultsLimit&gt;</a></li>
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.19 </span><a class="toc toc_2" href="#TEI.rules" title="&lt;rules&gt;">&lt;rules&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.19 </span><a class="toc toc_2" href="#TEI.resultsPerPage" title="&lt;resultsPerPage&gt;">&lt;resultsPerPage&gt;</a></li>
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.20 </span><a class="toc toc_2" href="#TEI.scoringAlgorithm" title="&lt;scoringAlgorithm&gt;">&lt;scoringAlgorithm&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.20 </span><a class="toc toc_2" href="#TEI.rule" title="&lt;rule&gt;">&lt;rule&gt;</a></li>
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.21 </span><a class="toc toc_2" href="#TEI.scrollToTextFragment" title="&lt;scrollToTextFragment&gt;">&lt;scrollToTextFragment&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.21 </span><a class="toc toc_2" href="#TEI.rules" title="&lt;rules&gt;">&lt;rules&gt;</a></li>
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.22 </span><a class="toc toc_2" href="#TEI.searchFile" title="&lt;searchFile&gt;">&lt;searchFile&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.22 </span><a class="toc toc_2" href="#TEI.scoringAlgorithm" title="&lt;scoringAlgorithm&gt;">&lt;scoringAlgorithm&gt;</a></li>
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.23 </span><a class="toc toc_2" href="#TEI.stemmerFolder" title="&lt;stemmerFolder&gt;">&lt;stemmerFolder&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.23 </span><a class="toc toc_2" href="#TEI.scrollToTextFragment" title="&lt;scrollToTextFragment&gt;">&lt;scrollToTextFragment&gt;</a></li>
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.24 </span><a class="toc toc_2" href="#TEI.stopwordsFile" title="&lt;stopwordsFile&gt;">&lt;stopwordsFile&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.24 </span><a class="toc toc_2" href="#TEI.searchFile" title="&lt;searchFile&gt;">&lt;searchFile&gt;</a></li>
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.25 </span><a class="toc toc_2" href="#TEI.totalKwicLength" title="&lt;totalKwicLength&gt;">&lt;totalKwicLength&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.25 </span><a class="toc toc_2" href="#TEI.stemmerFolder" title="&lt;stemmerFolder&gt;">&lt;stemmerFolder&gt;</a></li>
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.26 </span><a class="toc toc_2" href="#TEI.verbose" title="&lt;verbose&gt;">&lt;verbose&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.26 </span><a class="toc toc_2" href="#TEI.stopwordsFile" title="&lt;stopwordsFile&gt;">&lt;stopwordsFile&gt;</a></li>
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.27 </span><a class="toc toc_2" href="#TEI.versionFile" title="&lt;versionFile&gt;">&lt;versionFile&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.27 </span><a class="toc toc_2" href="#TEI.totalKwicLength" title="&lt;totalKwicLength&gt;">&lt;totalKwicLength&gt;</a></li>
                            
-                           <li class="toc"><span class="headingNumber">Appendix A.1.28 </span><a class="toc toc_2" href="#TEI.wildcardSearch" title="&lt;wildcardSearch&gt;">&lt;wildcardSearch&gt;</a></li>
+                           <li class="toc"><span class="headingNumber">Appendix A.1.28 </span><a class="toc toc_2" href="#TEI.verbose" title="&lt;verbose&gt;">&lt;verbose&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.29 </span><a class="toc toc_2" href="#TEI.versionFile" title="&lt;versionFile&gt;">&lt;versionFile&gt;</a></li>
+                           
+                           <li class="toc"><span class="headingNumber">Appendix A.1.30 </span><a class="toc toc_2" href="#TEI.wildcardSearch" title="&lt;wildcardSearch&gt;">&lt;wildcardSearch&gt;</a></li>
                            </ul>
                         </li>
                      
@@ -480,7 +486,7 @@ element config { <a class="link_ref" href="#TEI.params" title="&lt;params&gt;">p
                               it reaches the end of a paragraph, it will not continue into the next paragraph to
                               get more context words. You may have special runs of text in your document collection
                               which do not appear to be bounding contexts, but actually are; for example, you may
-                              have span elements with <span class="att">class</span>=<span class="val">note</span> which appear in the middle of sentences but are not actually part of them. Use <a class="link_ref" href="#TEI.context" title="&lt;context&gt;">&lt;context&gt;</a> elements to identify these special contexts so that the indexer knows the right boundaries
+                              have span elements with <span class="att">class</span>=<span class="val">note</span> that appear in the middle of sentences but are not actually part of them. Use <a class="link_ref" href="#TEI.context" title="&lt;context&gt;">&lt;context&gt;</a> elements to identify these special contexts so that the indexer knows the right boundaries
                               from which to retrieve its keyword-in-context strings.</p>
                            </td>
                         </tr>
@@ -669,8 +675,10 @@ element contexts { <a class="link_ref" href="#TEI.context" title="&lt;context&gt
                            <p><a class="link_ref" href="#TEI.createContexts" title="&lt;createContexts&gt;">&lt;createContexts&gt;</a> is a boolean parameter that specifies whether you want the indexer to store keyword-in-context
                               extracts for each of the hits in a document. This increases the size of the index,
                               but of course it makes for much more user-friendly search results; instead of seeing
-                              just a score for each document found, the user will see a series of short text string
+                              just a score for each document found, the user will see a series of short text strings
                               with the search keyword(s) highlighted.</p>
+                           
+                           <p>Note that contexts are necessary for phrasal searching or wildcard searching.</p>
                            </td>
                         </tr>
                      
@@ -766,10 +774,11 @@ element createContexts { xsd:boolean }</pre>
                         <td class="wovenodd-col2">
                            
                            <p>The indexing process checks each word as it builds the index, and keeps a record of
-                              all words which are not found in the configured dictionary. This can be very useful;
-                              all words listed are either foreign (not part of the language of the dictionary) or
-                              perhaps misspelled (in which case they may not be correctly stemmed and index, and
-                              should be corrected). There is a default dictionary in <span class="ident">xsl/english_words.txt</span> which you might copy and adapt if you're working in English; lots of dictionaries
+                              all words which are not found in the configured dictionary. Though this does not have
+                              any direct effect in the indexing process, all words not found in the dictionary are
+                              listed in the staticSearch report (see <a href="howDoIUseIt.html#theStaticSearchReport" class="link_ptr" title="Generated report"><span class="headingNumber">7.8 </span>Generated report</a>). This can be very useful: all words listed are either foreign (not part of the language
+                              of the dictionary) or perhaps misspelled (in which case they may not be correctly
+                              stemmed and index, and should be corrected). There is a default dictionary in <span class="ident">xsl/english_words.txt</span> which you might copy and adapt if you're working in English; lots of dictionaries
                               for other languages are available on the Web.</p>
                            </td>
                         </tr>
@@ -915,11 +924,12 @@ element dictionaryFile { xsd:anyURI }</pre>
                         
                         <td class="wovenodd-col2">
                            
-                           <p>Exclude elements can be used to identify documents or parts of documents to be completely
-                              omitted from indexing (for example, footer elements or banner headings are commonly
-                              ignored). Another usage is common if you have multiple search engines/pages configured
-                              for your site, each with its own special features; in this case, you may want one
-                              specific search index/page to ignore filter controls (HTML <span class="gi">&lt;meta&gt;</span> elements, as described in <a href="searchFacetFeatures.html" class="link_ptr" title="Search facet features"><span class="headingNumber">4 </span>Search facet features</a>) which are provided to support other search pages.</p>
+                           <p><a class="link_ref" href="#TEI.exclude" title="&lt;exclude&gt;">&lt;exclude&gt;</a> can be used to identify documents or parts of documents that are to be omitted from
+                              indexing, but, unlike setting <span class="gi">&lt;weight&gt;</span> to zero, should be retained during the indexing process. This is helpful in cases
+                              where the text itself should be ignored by the indexer, but should still appear in
+                              KWICs. Another common use is for multiple search engines/pages that each have their
+                              own special features; in this case, you may want one specific search index/page to
+                              ignore filter controls (HTML <span class="gi">&lt;meta&gt;</span> elements, as described in <a href="searchFacetFeatures.html" class="link_ptr" title="Search facet features"><span class="headingNumber">4 </span>Search facet features</a>) which are provided to support other search pages.</p>
                            </td>
                         </tr>
                      
@@ -1150,7 +1160,8 @@ element indentJSON { xsd:boolean }</pre>
                      <tr>
                         
                         <td colspan="2" class="wovenodd-col2"><span class="label">&lt;kwicTruncateString&gt; </span>(<span>The string that will be used to signal ellipsis at the beginning and end of a keyword-in-context
-                              extract. Conventionally three periods, or an ellipsis character.</span>)</td>
+                              extract. Conventionally three periods, or an ellipsis character (which is the default
+                              value).</span>)</td>
                         </tr>
                      
                      <tr>
@@ -1395,13 +1406,12 @@ element linkToFragmentId { xsd:boolean }</pre>
                         
                         <td class="wovenodd-col2">
                            
-                           <p><a class="link_ref" href="#TEI.maxKwicsToHarvest" title="&lt;maxKwicsToHarvest&gt;">&lt;maxKwicsToHarvest&gt;</a> (an integer) controls the number of keyword-in-context extracts that will be harvested
-                              from the data for each term in a document. For example, if a user searches for the
-                              word <span class="q">‘elephant’</span>, and it occurs 27 times in a document, but the <a class="link_ref" href="#TEI.maxKwicsToHarvest" title="&lt;maxKwicsToHarvest&gt;">&lt;maxKwicsToHarvest&gt;</a> value is set to 5, then only the first five of these keyword-in-context strings will
-                              be stored in the index. (This does not affect the score of the document in the search
-                              results, of course.) If you set this to a low number, the size of the JSON files will
-                              be constrained, but of course the user will only be able to see the KWICs that have
-                              been harvested in their search results.</p>
+                           <p><a class="link_ref" href="#TEI.maxKwicsToHarvest" title="&lt;maxKwicsToHarvest&gt;">&lt;maxKwicsToHarvest&gt;</a> controls the number of keyword-in-context extracts that will be harvested from the
+                              data for each term in a document. For example, if a user searches for the word <span class="q">‘elephant’</span>, and it occurs 27 times in a document, but the <a class="link_ref" href="#TEI.maxKwicsToHarvest" title="&lt;maxKwicsToHarvest&gt;">&lt;maxKwicsToHarvest&gt;</a> value is set to 5, then only the first five (sorted in document order) of these keyword-in-context
+                              strings will be stored in the index. (This does not affect the score of the document
+                              in the search results, of course.) If you set this to a low number, the size of the
+                              JSON files will be constrained, but of course the user will only be able to see the
+                              KWICs that have been harvested in their search results.</p>
                            
                            <p>If <a class="link_ref" href="#TEI.phrasalSearch" title="&lt;phrasalSearch&gt;">&lt;phrasalSearch&gt;</a> is set to true, the <a class="link_ref" href="#TEI.maxKwicsToHarvest" title="&lt;maxKwicsToHarvest&gt;">&lt;maxKwicsToHarvest&gt;</a> setting is ignored, because phrasal searches will only work properly if all contexts
                               are stored.</p>
@@ -1534,9 +1544,108 @@ element maxKwicsToShow { xsd:nonNegativeInteger }</pre>
                   </div>
                </div>
             
+            <div class="refdoc" id="TEI.minWordLength">
+               
+               <h3><span class="headingNumber">Appendix A.1.13 </span><span class="head">&lt;minWordLength&gt;</span></h3>
+               
+               <div class="table">
+                  
+                  <table class="wovenodd">
+                     
+                     <tr>
+                        
+                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;minWordLength&gt; </span>(<span>The minimum length of a term to be indexed. Default is 3 characters.</span>)</td>
+                        </tr>
+                     
+                     <tr>
+                        
+                        <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
+                        
+                        <td class="wovenodd-col2">http://hcmc.uvic.ca/ns/staticSearch</td>
+                        </tr>
+                     
+                     <tr>
+                        
+                        <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                        
+                        <td class="wovenodd-col2">ss — <span class="current">Schema specification and tag documentation</span></td>
+                        </tr>
+                     
+                     <tr>
+                        
+                        <td class="wovenodd-col1"><span lang="en" class="label">Contained by</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <div class="parent">
+                              
+                              <div class="specChildren">
+                                 
+                                 <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.params" title="&lt;params&gt;">params</a></span></div>
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                     
+                     <tr>
+                        
+                        <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <div class="specChildren">
+                              
+                              <div class="specChild">XSD nonNegativeInteger</div>
+                              </div>
+                           </td>
+                        </tr>
+                     
+                     <tr>
+                        
+                        <td class="wovenodd-col1"><span lang="en" class="label">Note</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <p><a class="link_ref" href="#TEI.minWordLength" title="&lt;minWordLength&gt;">&lt;minWordLength&gt;</a> specifies the minimum length in characters of a sequence of text that will be considered
+                              to be a word worth indexing. The default is 3, on the basis that in most European
+                              languages, words of one or two letters are typically not worth indexing, being articles,
+                              prepositions and so on. If you set this to a lower limit for reasons specific to your
+                              project, you should ensure that your stopword list excludes any very common words
+                              that would otherwise make the indexing process lengthy and increase the index size.</p>
+                           </td>
+                        </tr>
+                     
+                     <tr>
+                        
+                        <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <pre class="pre_eg cdata">
+&lt;content&gt;
+ &lt;dataRef name="nonNegativeInteger"/&gt;
+&lt;/content&gt;
+    </pre>
+                           </td>
+                        </tr>
+                     
+                     <tr>
+                        
+                        <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <pre class="pre_eg cdata">
+element minWordLength { xsd:nonNegativeInteger }</pre>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+            
             <div class="refdoc" id="TEI.outputFolder">
                
-               <h3><span class="headingNumber">Appendix A.1.13 </span><span class="head">&lt;outputFolder&gt;</span></h3>
+               <h3><span class="headingNumber">Appendix A.1.14 </span><span class="head">&lt;outputFolder&gt;</span></h3>
                
                <div class="table">
                   
@@ -1636,7 +1745,7 @@ element outputFolder { xsd:NCName }</pre>
             
             <div class="refdoc" id="TEI.params">
                
-               <h3><span class="headingNumber">Appendix A.1.14 </span><span class="head">&lt;params&gt;</span></h3>
+               <h3><span class="headingNumber">Appendix A.1.15 </span><span class="head">&lt;params&gt;</span></h3>
                
                <div class="table">
                   
@@ -1686,7 +1795,7 @@ element outputFolder { xsd:NCName }</pre>
                            
                            <div class="specChildren">
                               
-                              <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.createContexts" title="&lt;createContexts&gt;">createContexts</a> <a class="link_odd_elementSpec" href="#TEI.dictionaryFile" title="&lt;dictionaryFile&gt;">dictionaryFile</a> <a class="link_odd_elementSpec" href="#TEI.indentJSON" title="&lt;indentJSON&gt;">indentJSON</a> <a class="link_odd_elementSpec" href="#TEI.kwicTruncateString" title="&lt;kwicTruncateString&gt;">kwicTruncateString</a> <a class="link_odd_elementSpec" href="#TEI.linkToFragmentId" title="&lt;linkToFragmentId&gt;">linkToFragmentId</a> <a class="link_odd_elementSpec" href="#TEI.maxKwicsToHarvest" title="&lt;maxKwicsToHarvest&gt;">maxKwicsToHarvest</a> <a class="link_odd_elementSpec" href="#TEI.maxKwicsToShow" title="&lt;maxKwicsToShow&gt;">maxKwicsToShow</a> <a class="link_odd_elementSpec" href="#TEI.outputFolder" title="&lt;outputFolder&gt;">outputFolder</a> <a class="link_odd_elementSpec" href="#TEI.phrasalSearch" title="&lt;phrasalSearch&gt;">phrasalSearch</a> <a class="link_odd_elementSpec" href="#TEI.recurse" title="&lt;recurse&gt;">recurse</a> <a class="link_odd_elementSpec" href="#TEI.resultsPerPage" title="&lt;resultsPerPage&gt;">resultsPerPage</a> <a class="link_odd_elementSpec" href="#TEI.scoringAlgorithm" title="&lt;scoringAlgorithm&gt;">scoringAlgorithm</a> <a class="link_odd_elementSpec" href="#TEI.scrollToTextFragment" title="&lt;scrollToTextFragment&gt;">scrollToTextFragment</a> <a class="link_odd_elementSpec" href="#TEI.searchFile" title="&lt;searchFile&gt;">searchFile</a> <a class="link_odd_elementSpec" href="#TEI.stemmerFolder" title="&lt;stemmerFolder&gt;">stemmerFolder</a> <a class="link_odd_elementSpec" href="#TEI.stopwordsFile" title="&lt;stopwordsFile&gt;">stopwordsFile</a> <a class="link_odd_elementSpec" href="#TEI.totalKwicLength" title="&lt;totalKwicLength&gt;">totalKwicLength</a> <a class="link_odd_elementSpec" href="#TEI.verbose" title="&lt;verbose&gt;">verbose</a> <a class="link_odd_elementSpec" href="#TEI.versionFile" title="&lt;versionFile&gt;">versionFile</a> <a class="link_odd_elementSpec" href="#TEI.wildcardSearch" title="&lt;wildcardSearch&gt;">wildcardSearch</a></span></div>
+                              <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.createContexts" title="&lt;createContexts&gt;">createContexts</a> <a class="link_odd_elementSpec" href="#TEI.dictionaryFile" title="&lt;dictionaryFile&gt;">dictionaryFile</a> <a class="link_odd_elementSpec" href="#TEI.indentJSON" title="&lt;indentJSON&gt;">indentJSON</a> <a class="link_odd_elementSpec" href="#TEI.kwicTruncateString" title="&lt;kwicTruncateString&gt;">kwicTruncateString</a> <a class="link_odd_elementSpec" href="#TEI.linkToFragmentId" title="&lt;linkToFragmentId&gt;">linkToFragmentId</a> <a class="link_odd_elementSpec" href="#TEI.maxKwicsToHarvest" title="&lt;maxKwicsToHarvest&gt;">maxKwicsToHarvest</a> <a class="link_odd_elementSpec" href="#TEI.maxKwicsToShow" title="&lt;maxKwicsToShow&gt;">maxKwicsToShow</a> <a class="link_odd_elementSpec" href="#TEI.minWordLength" title="&lt;minWordLength&gt;">minWordLength</a> <a class="link_odd_elementSpec" href="#TEI.outputFolder" title="&lt;outputFolder&gt;">outputFolder</a> <a class="link_odd_elementSpec" href="#TEI.phrasalSearch" title="&lt;phrasalSearch&gt;">phrasalSearch</a> <a class="link_odd_elementSpec" href="#TEI.recurse" title="&lt;recurse&gt;">recurse</a> <a class="link_odd_elementSpec" href="#TEI.resultsLimit" title="&lt;resultsLimit&gt;">resultsLimit</a> <a class="link_odd_elementSpec" href="#TEI.resultsPerPage" title="&lt;resultsPerPage&gt;">resultsPerPage</a> <a class="link_odd_elementSpec" href="#TEI.scoringAlgorithm" title="&lt;scoringAlgorithm&gt;">scoringAlgorithm</a> <a class="link_odd_elementSpec" href="#TEI.scrollToTextFragment" title="&lt;scrollToTextFragment&gt;">scrollToTextFragment</a> <a class="link_odd_elementSpec" href="#TEI.searchFile" title="&lt;searchFile&gt;">searchFile</a> <a class="link_odd_elementSpec" href="#TEI.stemmerFolder" title="&lt;stemmerFolder&gt;">stemmerFolder</a> <a class="link_odd_elementSpec" href="#TEI.stopwordsFile" title="&lt;stopwordsFile&gt;">stopwordsFile</a> <a class="link_odd_elementSpec" href="#TEI.totalKwicLength" title="&lt;totalKwicLength&gt;">totalKwicLength</a> <a class="link_odd_elementSpec" href="#TEI.verbose" title="&lt;verbose&gt;">verbose</a> <a class="link_odd_elementSpec" href="#TEI.versionFile" title="&lt;versionFile&gt;">versionFile</a> <a class="link_odd_elementSpec" href="#TEI.wildcardSearch" title="&lt;wildcardSearch&gt;">wildcardSearch</a></span></div>
                               </div>
                            </td>
                         </tr>
@@ -1706,6 +1815,8 @@ element outputFolder { xsd:NCName }</pre>
   minOccurs="0"/&gt;
  &lt;elementRef key="recurse"/&gt;
  &lt;elementRef key="linkToFragmentId"
+  minOccurs="0"/&gt;
+ &lt;elementRef key="minWordLength"
   minOccurs="0"/&gt;
  &lt;elementRef key="scrollToTextFragment"
   minOccurs="0"/&gt;
@@ -1735,6 +1846,8 @@ element outputFolder { xsd:NCName }</pre>
   minOccurs="0"/&gt;
  &lt;elementRef key="resultsPerPage"
   minOccurs="0"/&gt;
+ &lt;elementRef key="resultsLimit"
+  minOccurs="0"/&gt;
 &lt;/content&gt;
     </pre>
                            </td>
@@ -1756,7 +1869,7 @@ element params {  }</pre>
             
             <div class="refdoc" id="TEI.phrasalSearch">
                
-               <h3><span class="headingNumber">Appendix A.1.15 </span><span class="head">&lt;phrasalSearch&gt;</span></h3>
+               <h3><span class="headingNumber">Appendix A.1.16 </span><span class="head">&lt;phrasalSearch&gt;</span></h3>
                
                <div class="table">
                   
@@ -1819,15 +1932,13 @@ element params {  }</pre>
                         <td class="wovenodd-col2">
                            
                            <p>Phrasal search functionality enables your users to search for specific phrases by
-                              surrounding them with quotation marks, as in many search engines. In order to support
-                              this kind of search, we store contexts for all hits for each token in each document,
-                              so turning this on will make the index larger, because all contexts must be stored.
-                              However, once the index is built, it has very little impact on the speed of searches,
-                              so we would recommend turning this on. The default value is true. </p>
+                              surrounding them with quotation marks (<code>"</code>), as in many search engines. In order to support this kind of search, <a class="link_ref" href="#TEI.createContexts" title="&lt;createContexts&gt;">&lt;createContexts&gt;</a> must also be set to true as we store contexts for all hits for each token in each
+                              document. Turning this on will make the index larger, because all contexts must be
+                              stored, but once the index is built, it has very little impact on the speed of searches,
+                              so we recommend turning this on. The default value is true.</p>
                            
                            <p>However, if your site is very large and your user base is unlikely to use phrasal
-                              searching, it may not be worth the additional build time and increased index size.
-                              </p>
+                              searching, it may not be worth the additional build time and increased index size.</p>
                            </td>
                         </tr>
                      
@@ -1861,7 +1972,7 @@ element phrasalSearch { xsd:boolean }</pre>
             
             <div class="refdoc" id="TEI.recurse">
                
-               <h3><span class="headingNumber">Appendix A.1.16 </span><span class="head">&lt;recurse&gt;</span></h3>
+               <h3><span class="headingNumber">Appendix A.1.17 </span><span class="head">&lt;recurse&gt;</span></h3>
                
                <div class="table">
                   
@@ -1943,9 +2054,112 @@ element recurse { xsd:boolean }</pre>
                   </div>
                </div>
             
+            <div class="refdoc" id="TEI.resultsLimit">
+               
+               <h3><span class="headingNumber">Appendix A.1.18 </span><span class="head">&lt;resultsLimit&gt;</span></h3>
+               
+               <div class="table">
+                  
+                  <table class="wovenodd">
+                     
+                     <tr>
+                        
+                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;resultsLimit&gt; </span>(<span>The maximum number of results that can be returned for any search before returning
+                              an error; if the number of documents in a result set exceeds this number, then staticSearch
+                              will not render the results and will provide a message saying that the search returned
+                              too many results. This is usually set to 2000 by default, but you may want to have
+                              a higher or lower limit, depending on the specific structure of your project. </span>)</td>
+                        </tr>
+                     
+                     <tr>
+                        
+                        <td class="wovenodd-col1"><span lang="en" class="label">Namespace</span></td>
+                        
+                        <td class="wovenodd-col2">http://hcmc.uvic.ca/ns/staticSearch</td>
+                        </tr>
+                     
+                     <tr>
+                        
+                        <td class="wovenodd-col1"><span lang="en" class="label">Module</span></td>
+                        
+                        <td class="wovenodd-col2">ss — <span class="current">Schema specification and tag documentation</span></td>
+                        </tr>
+                     
+                     <tr>
+                        
+                        <td class="wovenodd-col1"><span lang="en" class="label">Contained by</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <div class="parent">
+                              
+                              <div class="specChildren">
+                                 
+                                 <div class="specChild"><span class="specChildModule">ss: </span><span class="specChildElements"><a class="link_odd_elementSpec" href="#TEI.params" title="&lt;params&gt;">params</a></span></div>
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                     
+                     <tr>
+                        
+                        <td class="wovenodd-col1"><span lang="en" class="label">May contain</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <div class="specChildren">
+                              
+                              <div class="specChild">XSD nonNegativeInteger</div>
+                              </div>
+                           </td>
+                        </tr>
+                     
+                     <tr>
+                        
+                        <td class="wovenodd-col1"><span lang="en" class="label">Note</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <p>This configuration option is meant to prevent errors for sites where a given set of
+                              filters or search terms can return a set of document that can cause a browser's rendering
+                              engine to fail. For smaller collections, it's unlikely that this limit would ever
+                              be reached, but setting a limit may be helpful for large document collections, projects
+                              that want to constrain the number of possible results, or projects with memory-intensive
+                              or complex rendering.</p>
+                           </td>
+                        </tr>
+                     
+                     <tr>
+                        
+                        <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <pre class="pre_eg cdata">
+&lt;content&gt;
+ &lt;dataRef name="nonNegativeInteger"/&gt;
+&lt;/content&gt;
+    </pre>
+                           </td>
+                        </tr>
+                     
+                     <tr>
+                        
+                        <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
+                        
+                        <td class="wovenodd-col2">
+                           
+                           <pre class="pre_eg cdata">
+element resultsLimit { xsd:nonNegativeInteger }</pre>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </div>
+            
             <div class="refdoc" id="TEI.resultsPerPage">
                
-               <h3><span class="headingNumber">Appendix A.1.17 </span><span class="head">&lt;resultsPerPage&gt;</span></h3>
+               <h3><span class="headingNumber">Appendix A.1.19 </span><span class="head">&lt;resultsPerPage&gt;</span></h3>
                
                <div class="table">
                   
@@ -2048,7 +2262,7 @@ element resultsPerPage { xsd:nonNegativeInteger }</pre>
             
             <div class="refdoc" id="TEI.rule">
                
-               <h3><span class="headingNumber">Appendix A.1.18 </span><span class="head">&lt;rule&gt;</span></h3>
+               <h3><span class="headingNumber">Appendix A.1.20 </span><span class="head">&lt;rule&gt;</span></h3>
                
                <div class="table">
                   
@@ -2151,7 +2365,7 @@ element resultsPerPage { xsd:nonNegativeInteger }</pre>
                               should be treated in a special manner when indexed; either they might be ignored (if
                               <span class="att">weight</span>=<span class="val">0</span>), or any words found in them might be given greater weight than words in normal contexts
                               <span class="att">weight</span>&gt;<span class="val">1</span>. Words appearing in headings or titles, for example, might be weighted more heavily,
-                              while navigation menus, banners or footers might be ignored completely.</p>
+                              while navigation menus, banners, or footers might be ignored completely.</p>
                            </td>
                         </tr>
                      
@@ -2185,7 +2399,7 @@ element rule { <a class="link_ref" href="#TEI.att.match" title="att.match">att.m
             
             <div class="refdoc" id="TEI.rules">
                
-               <h3><span class="headingNumber">Appendix A.1.19 </span><span class="head">&lt;rules&gt;</span></h3>
+               <h3><span class="headingNumber">Appendix A.1.21 </span><span class="head">&lt;rules&gt;</span></h3>
                
                <div class="table">
                   
@@ -2270,7 +2484,7 @@ element rules { <a class="link_ref" href="#TEI.rule" title="&lt;rule&gt;">rule</
             
             <div class="refdoc" id="TEI.scoringAlgorithm">
                
-               <h3><span class="headingNumber">Appendix A.1.20 </span><span class="head">&lt;scoringAlgorithm&gt;</span></h3>
+               <h3><span class="headingNumber">Appendix A.1.22 </span><span class="head">&lt;scoringAlgorithm&gt;</span></h3>
                
                <div class="table">
                   
@@ -2278,7 +2492,8 @@ element rules { <a class="link_ref" href="#TEI.rule" title="&lt;rule&gt;">rule</
                      
                      <tr>
                         
-                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;scoringAlgorithm&gt; </span>(<span>Which scoring algorithm to use. Default is "raw" (i.e. weighted counts)</span>)</td>
+                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;scoringAlgorithm&gt; </span>(<span>The scoring algorithm to use for ranking keyword results. Default is "raw" (i.e. weighted
+                              counts)</span>)</td>
                         </tr>
                      
                      <tr>
@@ -2409,7 +2624,7 @@ element scoringAlgorithm { "raw" | "tf-idf" }</pre>Legal values are:
             
             <div class="refdoc" id="TEI.scrollToTextFragment">
                
-               <h3><span class="headingNumber">Appendix A.1.21 </span><span class="head">&lt;scrollToTextFragment&gt;</span></h3>
+               <h3><span class="headingNumber">Appendix A.1.23 </span><span class="head">&lt;scrollToTextFragment&gt;</span></h3>
                
                <div class="table">
                   
@@ -2518,7 +2733,7 @@ element scrollToTextFragment { xsd:boolean }</pre>
             
             <div class="refdoc" id="TEI.searchFile">
                
-               <h3><span class="headingNumber">Appendix A.1.22 </span><span class="head">&lt;searchFile&gt;</span></h3>
+               <h3><span class="headingNumber">Appendix A.1.24 </span><span class="head">&lt;searchFile&gt;</span></h3>
                
                <div class="table">
                   
@@ -2614,7 +2829,7 @@ element searchFile { xsd:anyURI }</pre>
             
             <div class="refdoc" id="TEI.stemmerFolder">
                
-               <h3><span class="headingNumber">Appendix A.1.23 </span><span class="head">&lt;stemmerFolder&gt;</span></h3>
+               <h3><span class="headingNumber">Appendix A.1.25 </span><span class="head">&lt;stemmerFolder&gt;</span></h3>
                
                <div class="table">
                   
@@ -2624,7 +2839,7 @@ element searchFile { xsd:anyURI }</pre>
                         
                         <td colspan="2" class="wovenodd-col2"><span class="label">&lt;stemmerFolder&gt; </span>(<span>The name of a folder inside the staticSearch /stemmers/ folder, in which the JavaScript
                               and XSLT implementations of stemmers can be found. If left blank, then the staticSearch
-                              default English stemmer will be used (en).</span>)</td>
+                              default English stemmer (en) will be used.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -2677,8 +2892,8 @@ element searchFile { xsd:anyURI }</pre>
                         <td class="wovenodd-col2">
                            
                            <p>The staticSearch project currently has only two real stemmers: an implementation of
-                              the Porter 2 algorithm for modern English, and an implementation of the French snowball
-                              stemmer. These appear in <span class="ident">/stemmers/en/</span> and <span class="ident">/stemmers/fr/</span>, folders. The default value for this parameter is <span class="val">en</span>; to use the French stemmer, use <span class="val">fr</span>. We will be adding more stemmers as the project develops. However, if your document
+                              the Porter 2 algorithm for modern English, and an implementation of the French Snowball
+                              stemmer. These appear in the <span class="ident">/stemmers/en/</span> and <span class="ident">/stemmers/fr/</span> folders. The default value for this parameter is <span class="val">en</span>; to use the French stemmer, use <span class="val">fr</span>. We will be adding more stemmers as the project develops. However, if your document
                               collection is not English or French, you have a couple of options, one hard and one
                               easy. </p>
                            
@@ -2738,7 +2953,7 @@ element stemmerFolder { xsd:NCName }</pre>
             
             <div class="refdoc" id="TEI.stopwordsFile">
                
-               <h3><span class="headingNumber">Appendix A.1.24 </span><span class="head">&lt;stopwordsFile&gt;</span></h3>
+               <h3><span class="headingNumber">Appendix A.1.26 </span><span class="head">&lt;stopwordsFile&gt;</span></h3>
                
                <div class="table">
                   
@@ -2807,7 +3022,7 @@ element stemmerFolder { xsd:NCName }</pre>
                               it, and searching for it will be pointless. The project has a built-in set of common
                               stopwords for English, which you'll find in <span class="ident">xsl/english_stopwords.txt</span>. One way to find appropriate stopwords for your site is to generate your index, then
                               search for the largest JSON index files that are generated, to see if they might be
-                              too common to be useful as search terms.</p>
+                              too common to be useful as search terms. You can also use the <span class="titlem">Word Frequency</span> table in the generated staticSearch report (see <a href="howDoIUseIt.html#theStaticSearchReport" class="link_ptr" title="Generated report"><span class="headingNumber">7.8 </span>Generated report</a>).</p>
                            </td>
                         </tr>
                      
@@ -2841,7 +3056,7 @@ element stopwordsFile { xsd:anyURI }</pre>
             
             <div class="refdoc" id="TEI.totalKwicLength">
                
-               <h3><span class="headingNumber">Appendix A.1.25 </span><span class="head">&lt;totalKwicLength&gt;</span></h3>
+               <h3><span class="headingNumber">Appendix A.1.27 </span><span class="head">&lt;totalKwicLength&gt;</span></h3>
                
                <div class="table">
                   
@@ -2849,8 +3064,8 @@ element stopwordsFile { xsd:anyURI }</pre>
                      
                      <tr>
                         
-                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;totalKwicLength&gt; </span>(<span>If createContexts is set to true, then this parameter controls how long the harvested
-                              keyword-in-context strings will be.</span>)</td>
+                        <td colspan="2" class="wovenodd-col2"><span class="label">&lt;totalKwicLength&gt; </span>(<span>If createContexts is set to true, then this parameter controls the length (in words)
+                              of the harvested keyword-in-context string.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -2904,7 +3119,8 @@ element stopwordsFile { xsd:anyURI }</pre>
                            
                            <p>Obviously, the longer the keyword-in-context strings are, the larger the individual
                               index files will be, but the more useful the KWICs will be for users looking at the
-                              search results.</p>
+                              search results. Note that the phrasal searching relies on the KWICs and thus longer
+                              KWICs allow for longer phrasal searches.</p>
                            </td>
                         </tr>
                      
@@ -2938,7 +3154,7 @@ element totalKwicLength { xsd:nonNegativeInteger }</pre>
             
             <div class="refdoc" id="TEI.verbose">
                
-               <h3><span class="headingNumber">Appendix A.1.26 </span><span class="head">&lt;verbose&gt;</span></h3>
+               <h3><span class="headingNumber">Appendix A.1.28 </span><span class="head">&lt;verbose&gt;</span></h3>
                
                <div class="table">
                   
@@ -3035,7 +3251,7 @@ element verbose { xsd:boolean }</pre>
             
             <div class="refdoc" id="TEI.versionFile">
                
-               <h3><span class="headingNumber">Appendix A.1.27 </span><span class="head">&lt;versionFile&gt;</span></h3>
+               <h3><span class="headingNumber">Appendix A.1.29 </span><span class="head">&lt;versionFile&gt;</span></h3>
                
                <div class="table">
                   
@@ -3045,8 +3261,7 @@ element verbose { xsd:boolean }</pre>
                         
                         <td colspan="2" class="wovenodd-col2"><span class="label">&lt;versionFile&gt; </span>(<span>The relative path to a text file containing a single version identifier (such as 1.5,
                               123456, or 06ad419). This will be used to create unique filenames for JSON resources,
-                              so that when a site is updated, so that the browser will not use cached versions of
-                              older index files.</span>)</td>
+                              so that the browser will not use cached versions of older index files.</span>)</td>
                         </tr>
                      
                      <tr>
@@ -3100,9 +3315,9 @@ element verbose { xsd:boolean }</pre>
                            
                            <p><a class="link_ref" href="#TEI.versionFile" title="&lt;versionFile&gt;">&lt;versionFile&gt;</a> enables you to specify the path to a plain-text file containing a simple version
                               number for the project. This might take the form of a software-release-style version
-                              number such as <span class="val">1.5</span>, or it might be a Subversion revision number or a Git commit id. It should not contain
-                              any spaces or punctuation. If you provide a version file, the version string will
-                              be used as part of the filenames for all the JSON resources created for the search.
+                              number such as <span class="val">1.5</span>, or it might be a Subversion revision number or a Git commit hash. It should not
+                              contain any spaces or punctuation. If you provide a version file, the version string
+                              will be used as part of the filenames for all the JSON resources created for the search.
                               This is useful because it allows the browser to cache such resources when users repeatedly
                               visit the search page, but if the project is rebuilt with a new version, those cached
                               files will not be used because the new version will have different filenames. The
@@ -3141,7 +3356,7 @@ element versionFile { xsd:anyURI }</pre>
             
             <div class="refdoc" id="TEI.wildcardSearch">
                
-               <h3><span class="headingNumber">Appendix A.1.28 </span><span class="head">&lt;wildcardSearch&gt;</span></h3>
+               <h3><span class="headingNumber">Appendix A.1.30 </span><span class="head">&lt;wildcardSearch&gt;</span></h3>
                
                <div class="table">
                   
@@ -3305,6 +3520,16 @@ element wildcardSearch { xsd:boolean }</pre>
                                                 
                                                 <td class="odd_value"><a class="link_ref" href="https://www.w3.org/TR/xmlschema-2/#string">string</a></td>
                                                 </tr>
+                                             
+                                             <tr>
+                                                
+                                                <td class="wovenodd-col1"><span lang="en" class="label">Note</span></td>
+                                                
+                                                <td class="wovenodd-col2">
+                                                   
+                                                   <p>Note that setting a <span class="att">label</span> currently has no effect.</p>
+                                                   </td>
+                                                </tr>
                                              </table>
                                           </div>
                                        </td>
@@ -3421,7 +3646,7 @@ element wildcardSearch { xsd:boolean }</pre>
             <!--
 	  Generated from index.xml using XSLT stylesheets version 7.50.1
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2021-02-08T20:32:01Z.
+	       on 2021-02-21T01:15:41Z.
 	       SAXON HE 10.0.
 		 --></address>
          </div>
