@@ -665,7 +665,7 @@
         </xsl:if>
         
         <!--Check whether or not the word is hyphenated-->
-        <xsl:variable name="hyphenated" select="matches($word,'[A-Za-z]-[A-Za-z]')" as="xs:boolean"/>
+        <xsl:variable name="hyphenated" select="matches($cleanedWord,'[A-Za-z]-[A-Za-z]')" as="xs:boolean"/>
         <xsl:if test="$verbose">
             <xsl:message>hcmc:getStem: hyphenated: <xsl:value-of select="$hyphenated"/></xsl:message>
         </xsl:if>
