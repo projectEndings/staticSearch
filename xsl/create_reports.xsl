@@ -77,6 +77,12 @@
     </xd:doc>
     <xsl:variable name="spans" select="$tokenizedDocs//span[@data-staticSearch-stem]"/>
     
+    <xd:doc>
+        <xd:desc><xd:ref name="filterFiles" type="variable">$filterFiles</xd:ref> are all of the filters
+        for staticSearch, which are only retrieved if the $hasFilters parameter has been set to true.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="filterFiles" select="if ($hasFilters = 'true') then
+        uri-collection(concat($outDir,'/filters/?select=*.json')) else ()"/>
     
     <!--*************************************************************
        *                                                            *
@@ -159,8 +165,25 @@
         
         <xsl:variable name="docsWithoutIds" select="$tokenizedDocs//html[not(@id)]"/>
         <xsl:variable name="docsWithoutLang" select="$tokenizedDocs//html[not(@lang)]"/>
-        <xsl:variable name="badNumericFilters" select="$tokenizedDocs//meta[contains-token(@class,'staticSearch.num')][not(@content castable as xs:decimal)]"/>
+        <xsl:variable name="badNumericFilters"
+            select="$tokenizedDocs//meta[contains-token(@class,'staticSearch.num')][not(@content castable as xs:decimal)]"/>
         <xsl:variable name="docsWithoutFragmentIds" select="$tokenizedDocs//body[not(descendant::*[@id])]"/>
+        
+        <xsl:variable name="oneSidedBooleanFilters" as="element(li)*">
+            <xsl:if test="$hasFilters = 'true'">
+                <xsl:for-each select="$filterFiles[matches(.,'/ssBool\d+[^/]+\.json$')]">
+                    <xsl:variable name="thisJDoc" select="json-to-xml(unparsed-text(.))"/>
+    
+                    <xsl:variable name="fid" select="$thisJDoc//j:string[@key='filterId']/string(.)" as="xs:string"/>
+                    <xsl:variable name="fName" select="$thisJDoc//j:string[@key='filterName']/string(.)" as="xs:string"/>
+                    <xsl:variable name="trueVal" select="$thisJDoc//j:string[@key='value'][string(.) = 'true']" as="element(j:string)*"/>
+                    <xsl:variable name="falseVal" select="$thisJDoc//j:string[@key='value'][string(.) = 'false']" as="element(j:string)*"/>
+                    <xsl:if test="not(exists($trueVal) and exists($falseVal))">
+                        <li><xsl:value-of select="$fid"/> ("<xsl:value-of select="$fName"/>") contains only <xsl:value-of select="($trueVal,$falseVal)[1]/string(.)"/> values.</li>
+                    </xsl:if>
+                </xsl:for-each>
+            </xsl:if>
+        </xsl:variable>
         
         <section>
             <h2>Diagnostics</h2>
@@ -216,6 +239,19 @@
                     </xsl:otherwise>
                 </xsl:choose>
             </details>
+            <details>
+                <summary>One-sided Boolean Filters (<xsl:value-of select="count($oneSidedBooleanFilters)"/>)</summary>
+                <xsl:choose>
+                    <xsl:when test="count($oneSidedBooleanFilters) = 0">
+                        <p>None found!</p>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <ul>
+                            <xsl:sequence select="$oneSidedBooleanFilters"/>
+                        </ul>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </details>
             
             <xsl:if test="$linkToFragmentId">
                 <details>
@@ -242,8 +278,7 @@
         <xsl:message>Generating report on search filters...</xsl:message>
         <section>
             <h2>Search Filters</h2>
-            <xsl:variable name="filterFiles" select="if ($hasFilters = 'true') then
-                uri-collection(concat($outDir,'/filters/?select=*.json')) else ()"/>
+
             <xsl:choose>
                 <xsl:when test="count($filterFiles) gt 0">
                     <details>
