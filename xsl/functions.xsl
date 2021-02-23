@@ -17,6 +17,48 @@
     </xd:desc>
   </xd:doc>
   
+  <!--**************************************************************
+       *                                                            *
+       *                         Variables                          *
+       *                                                            *
+       **************************************************************-->  
+  
+  <xd:doc>
+    <xd:desc>Various apostrophes for use in regexes across the processes.</xd:desc>
+  </xd:doc>
+  <xsl:variable name="curlyAposOpen">‘</xsl:variable>
+  <xsl:variable name="curlyAposClose">’</xsl:variable>
+  <xsl:variable name="straightSingleApos">'</xsl:variable>
+  <xsl:variable name="curlyDoubleAposOpen">“</xsl:variable>
+  <xsl:variable name="curlyDoubleAposClose">”</xsl:variable>
+  <xsl:variable name="straightDoubleApos">"</xsl:variable>
+  
+  <xsl:variable name="allSingleApos" 
+    select="($straightSingleApos, $curlyAposOpen, $curlyAposClose)"
+    as="xs:string+"/>
+  
+  <xsl:variable name="allSingleAposCharClassRex" 
+    select="'[' || string-join($allSingleApos) || ']'" 
+    as="xs:string"/>
+  
+  <xsl:variable name="allDoubleApos" 
+    select="($curlyDoubleAposClose, $curlyDoubleAposOpen, $straightDoubleApos)" 
+    as="xs:string+"/>
+  
+  <xsl:variable name="allDoubleAposCharClassRex"
+    select="'[' || string-join($allDoubleApos) || ']'"
+    as="xs:string"/>
+  
+  
+  <xsl:variable name="allApos" select="($allSingleApos, $allDoubleApos)" as="xs:string+"/>
+  
+  
+  <!--**************************************************************
+       *                                                           *
+       *                         Functions                         *
+       *                                                           *
+       *************************************************************-->  
+  
   <xd:doc>
     <xd:desc><xd:ref name="hcmc:makeNCName" type="function">hcmc:makeNCName</xd:ref>
     is designed to generate a valid NCName that can be used as an identifier from
@@ -70,7 +112,7 @@
     <xd:param name="node">The node to check.</xd:param>
     <xd:return>A boolean for whether or not the word is foreign.</xd:return>
   </xd:doc>
-  <xsl:function name="hcmc:isForeign" as="xs:boolean">
+  <xsl:function name="hcmc:isForeign" new-each-time="no" as="xs:boolean">
     <xsl:param name="node" as="node()"/>
     
     <!--Get the root HTML element-->
@@ -103,6 +145,27 @@
       </xsl:otherwise>
     </xsl:choose>            
   </xsl:function>
+  
+  
+  <xd:doc>
+    <xd:desc><xd:ref name="hcmc:cleanWordForStemming">hcmc:cleanWordForStemming</xd:ref> takes the input word
+      and tidies it up to make it more amenable for the stemming process.</xd:desc>
+    <xd:param name="word">The input word</xd:param>
+    <xd:return>A cleaned version of the word.</xd:return>
+  </xd:doc>
+  <xsl:function name="hcmc:cleanWordForStemming" as="xs:string">
+    <xsl:param name="word" as="xs:string"/>
+    <xsl:value-of select="
+      replace($word, $allDoubleAposCharClassRex, '') (: Remove all quotation marks :)
+      => replace($allSingleAposCharClassRex, $straightSingleApos) (: Normalize all apostrophes to straight :)
+      => replace('\.$','') (: Remove trailing period :)
+      => replace('^' || $straightSingleApos, '') (: Remove leading apostrope :)
+      => replace($straightSingleApos || '$', '') (: Remove trailing apostrophe :)
+      => translate('ſ','s') (: Normalize long-s to regular s :)
+      "/>
+  </xsl:function>
+  
+  
   
 
 </xsl:stylesheet>

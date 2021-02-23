@@ -345,6 +345,8 @@
         </description>
         <echo message="Cleaning temporary directory..."/>
         <delete dir="${staticSearchDir}/temp"/>
+        <!--Added 2021-02-19: Remove the dictionary files-->
+        <delete dir="${staticSearchDir}/dicts"/>
     </target>
     
     
