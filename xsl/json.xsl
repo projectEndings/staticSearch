@@ -561,7 +561,7 @@
     <xsl:param name="inStr" as="xs:string?"/>
     <xsl:choose>
       <xsl:when test="$inStr">
-        <xsl:sequence select="replace($inStr,'&gt;', '&amp;gt;') => replace('&lt;', '&amp;lt;')"/>
+        <xsl:sequence select="replace($inStr, '&amp;', '&amp;amp;') => replace('&gt;', '&amp;gt;') => replace('&lt;', '&amp;lt;')"/>
       </xsl:when>
       <xsl:otherwise><xsl:sequence select="()"/></xsl:otherwise>
     </xsl:choose>
