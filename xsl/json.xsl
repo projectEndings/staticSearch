@@ -547,9 +547,26 @@
             version of the mark element around it (the kwicTruncateString is added by the returnSnippet
             function)-->
         <xsl:sequence
-            select="$startSnippet || '&lt;mark&gt;' || $thisTerm || '&lt;/mark&gt;' || $endSnippet"/>
+          select="hcmc:sanitizeForJson($startSnippet) || '&lt;mark&gt;' || $thisTerm || '&lt;/mark&gt;' || hcmc:sanitizeForJson($endSnippet)"/>
     </xsl:function>
-    
+  
+  <xd:doc>
+    <xd:desc><xd:ref name="hcmc:sanitizeForJson">hcmc:sanitizeForJson</xd:ref> takes a string
+    input and escapes angle brackets so that actual tags cannot inadvertently find their way
+    into search result KWICs.</xd:desc>
+    <xd:param name="inStr" as="xs:string?">The string to escape</xd:param>
+    <xd:return>The escaped string</xd:return>
+  </xd:doc>
+  <xsl:function name="hcmc:sanitizeForJson" as="xs:string?">
+    <xsl:param name="inStr" as="xs:string?"/>
+    <xsl:choose>
+      <xsl:when test="$inStr">
+        <xsl:sequence select="replace($inStr, '&amp;', '&amp;amp;') => replace('&gt;', '&amp;gt;') => replace('&lt;', '&amp;lt;')"/>
+      </xsl:when>
+      <xsl:otherwise><xsl:sequence select="()"/></xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
+  
     
     <xd:doc>
         <xd:desc><xd:ref name="hcmc:returnSnippet">hcmc:returnSnippet</xd:ref> takes a sequence of nodes and constructs
