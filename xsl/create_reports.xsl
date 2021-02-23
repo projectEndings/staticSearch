@@ -128,7 +128,7 @@
                                 border: solid 1pt gray;
                                 border-collapse: collapse;
                             }
-                            td{
+                            td, th{
                                 border: solid 1pt gray;
                                 padding: 0.25em;
                             }
@@ -484,7 +484,7 @@
                 (we process those a bit differently) -->
             <xsl:variable name="outermostStems" select="outermost($stemsToCheck)" as="element(span)*"/>
             
-            <xsl:variable name="wordsNotInDictionaryMap" as="map(xs:string, xs:integer)">
+            <xsl:variable name="wordsNotInDictionaryMap" as="map(xs:string, element(span)*)">
                 <xsl:map>
                     <!--Group by whether or not it has descendant spans-->
                     <xsl:for-each-group select="$outermostStems" group-by="exists(child::span[@data-staticSearch-stem])">
@@ -512,7 +512,7 @@
                                         select="every $cw in $cleanedWords satisfies not(hcmc:isInDictionary($cw))" as="xs:boolean"/>
                                     
                                     <xsl:if test="$allTermsNotInDictionary">
-                                        <xsl:map-entry key="$term" select="count(current-group())"/>
+                                        <xsl:map-entry key="$term" select="current-group()"/>
                                     </xsl:if>
                                 </xsl:for-each-group>
                             </xsl:when>
@@ -521,7 +521,7 @@
                                 <xsl:for-each-group select="current-group()" group-by="hcmc:cleanWordForStemming(lower-case(string(.)))">
                                     <xsl:variable name="word" select="current-grouping-key()" as="xs:string"/>
                                     <xsl:if test="not(hcmc:isInDictionary($word))">
-                                        <xsl:map-entry key="$word" select="count(current-group())"/>
+                                        <xsl:map-entry key="$word" select="current-group()"/>
                                     </xsl:if>
                                 </xsl:for-each-group>
                             </xsl:otherwise>
@@ -545,15 +545,24 @@
                             <thead>
                                 <tr>
                                     <th>Word</th>
+                                    <th>Forms</th>
                                     <th>Instances</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <xsl:for-each select="map:keys($wordsNotInDictionaryMap)">
-                                    <xsl:sort select="$wordsNotInDictionaryMap(.)" order="descending"/>
+                                    <xsl:sort select="count($wordsNotInDictionaryMap(.))" order="descending"/>
                                     <tr>
                                         <td><xsl:value-of select="."/></td>
-                                        <td><xsl:value-of select="$wordsNotInDictionaryMap(.)"/></td>
+                                        <td>
+                                            <ul>
+                                                <xsl:for-each-group select="$wordsNotInDictionaryMap(.)" group-by="string(.)">
+                                                    <xsl:sort select="count(current-group())" order="descending"/>
+                                                    <li><xsl:value-of select="current-grouping-key()"/></li>
+                                                </xsl:for-each-group>
+                                            </ul>
+                                        </td>
+                                        <td><xsl:value-of select="count($wordsNotInDictionaryMap(.))"/></td>
                                     </tr>
                                 </xsl:for-each>     
                             </tbody>
@@ -588,28 +597,59 @@
         <section>
             <h2>Foreign Words</h2>
             
-            <xsl:variable name="foreignWords" as="xs:string*">
-                <xsl:for-each-group select="$spans" group-by="hcmc:isForeign(.)">
-                     <xsl:if test="current-grouping-key()">
-                         <xsl:for-each-group select="current-group()" group-by="string(.)">
-                             <xsl:sequence select="current-group()"/>
-                         </xsl:for-each-group>
-                     </xsl:if>
-                </xsl:for-each-group>
+            <!--Make a map of foreign words to their spans for easier calculation below-->
+            <xsl:variable name="foreignWords" as="map(xs:string, element(span)*)">
+                <xsl:map>
+                    <xsl:for-each-group select="$spans[hcmc:isForeign(.)]" group-by="string(.)">
+                        <xsl:map-entry key="current-grouping-key()" select="current-group()"/>
+                    </xsl:for-each-group>
+                </xsl:map>
             </xsl:variable>
-            
             <details>
-                <summary>Total foreign words: <xsl:value-of select="count($foreignWords)"/></summary>
-                <xsl:if test="not(empty($foreignWords))">
-                    <ul>
-                        <xsl:for-each select="$foreignWords">
-                            <xsl:sort/>
-                            <li>
-                                <xsl:value-of select="string(.)"/>
-                            </li>
-                        </xsl:for-each>
-                    </ul>
-                </xsl:if>
+                <summary>Total foreign words: <xsl:value-of select="map:size($foreignWords)"/></summary>
+                <xsl:choose>
+                    <xsl:when test="map:size($foreignWords) gt 0">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Word</th>
+                                    <th>Instances</th>
+                                    <th>Declared Languages</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!--Iterate through the map keys to get all of the words-->
+                                <xsl:for-each select="map:keys($foreignWords)">
+                                    <xsl:sort select="count($foreignWords(.))" order="descending"/>
+                                    <xsl:variable name="spans" select="$foreignWords(.)" as="element(span)*"/>
+                                    
+                                    <!--Get all of the distinct languages for that word across documents (i.e.
+                                        there could be words that are understood as foreign but have been declared with
+                                        two different langs-->
+                                    <xsl:variable name="langs" as="xs:string*">
+                                        <xsl:for-each select="$spans">
+                                            <xsl:variable name="declaredLang"
+                                                select="ancestor-or-self::*[@lang or @xml:lang][1]/(@lang, @xml:lang)[1]" as="xs:string?"/>
+                                            <xsl:sequence select="if (exists($declaredLang)) then $declaredLang else string('NULL')"/>
+                                        </xsl:for-each>
+                                    </xsl:variable>
+                                    
+                                    <!--Now output the row-->
+                                    <tr>
+                                        <td><xsl:value-of select="."/></td>
+                                        <td><xsl:value-of select="count($spans)"/></td>
+                                        <td>
+                                            <xsl:value-of select="string-join(distinct-values($langs),', ')"/>
+                                        </td>
+                                    </tr>
+                                </xsl:for-each>
+                            </tbody>
+                        </table>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <p>None found.</p>
+                    </xsl:otherwise>
+                </xsl:choose>
             </details>
         </section>           
          
