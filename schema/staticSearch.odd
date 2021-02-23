@@ -448,6 +448,10 @@
                   </specList>
                   
                   <specList>
+                    <specDesc key="minWordLength"/>
+                  </specList>
+                  
+                  <specList>
                     <specDesc key="maxKwicsToHarvest"/>
                   </specList>
                   
@@ -1037,6 +1041,9 @@
             for more information.</item>
             <item>Results can now optionally be viewed in batches by setting the new <gi>resultsPerPage</gi> configuration
             option.</item>
+            <item>The minimum length of a word to be indexed is now configurable, so in 
+            unusual circumstances you can now enable searching for 1- or 2-letter words
+            using the <gi>minWordLength</gi> parameter.</item>
             <item>Documentation has been significantly improved with additional explanatory
             remarks for many elements, and the staticSearch build of the documentation now
             includes hit highlighting (the feature described above).</item>
@@ -1182,6 +1189,7 @@
                 <elementRef key="stemmerFolder" minOccurs="0"/>
                 <elementRef key="recurse"/>
                 <elementRef key="linkToFragmentId" minOccurs="0"/>
+                <elementRef key="minWordLength" minOccurs="0"/>
                 <elementRef key="scrollToTextFragment" minOccurs="0"/>
                 <elementRef key="scoringAlgorithm" minOccurs="0"/>
                 <elementRef key="phrasalSearch" minOccurs="0"/>
@@ -1504,6 +1512,24 @@
                 search keyword(s) highlighted.
               </p>
               <p>Note that contexts are necessary for phrasal searching or wildcard searching.</p>
+            </remarks>
+          </elementSpec>
+          
+          <elementSpec ident="minWordLength" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>The minimum length of a term to be indexed. Default is 3 characters.</gloss>
+            <content>
+              <dataRef name="nonNegativeInteger"/>
+            </content>
+            <remarks>
+              <p><gi>minWordLength</gi> specifies the minimum length in 
+              characters of a sequence of text that will be considered to
+              be a word worth indexing. The default is 3, on the basis that
+              in most European languages, words of one or two letters are 
+              typically not worth indexing, being articles, prepositions
+              and so on. If you set this to a lower limit for reasons specific
+              to your project, you should ensure that your stopword list excludes
+              any very common words that would otherwise make the indexing 
+              process lengthy and increase the index size.</p>
             </remarks>
           </elementSpec>
           

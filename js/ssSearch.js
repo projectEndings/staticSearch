@@ -307,6 +307,9 @@ class StaticSearch{
       //Limit the number of results that can be rendered for any given search
       this.resultsLimit = this.getConfigInt('resultslimit', 2000);
 
+      //Configuration for minimum length of a term to be searched.
+      this.minWordLength = this.getConfigInt('minwordlength', 3);
+
       //A flag for easier debugging.
       this.debug = false;
 
@@ -334,15 +337,9 @@ class StaticSearch{
       //because they are too short or are in the stopword list.
       this.discardedTerms = [];
 
-      //An arbitrary limit on the number of literal characters
-      //that must be required in a search term before it is
-      //processed (to avoid over-broad searches). Default of 3 suits 
-      //English.
-      this.charsRequired = this.getConfigInt('charsRequired', 3);
-
       //A pattern to check the search string to ensure that it's not going
       //to retrieve a million words. 
-      this.termPattern = new RegExp('^([\\*\\?\\[\\]]*[^\\*\\?\\[\\]]){' + this.charsRequired + ',}[\\*\\?\\[\\]]*$');
+      this.termPattern = new RegExp('^([\\*\\?\\[\\]]*[^\\*\\?\\[\\]]){' + this.minWordLength + ',}[\\*\\?\\[\\]]*$');
 
       //Characters to be discarded in all but phrasal
       this.charsToDiscardPattern = /[\.,!;:@#$%”“\^&]/g;
