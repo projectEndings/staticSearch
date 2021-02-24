@@ -92,8 +92,7 @@
         <xd:desc>A simple regex to match (x)?htm(l)? document URIs.</xd:desc>
     </xd:doc>
     <xsl:variable name="docRegex">(.+)(\..?htm.?$)</xsl:variable>
-    
-    
+
      <xd:doc>
          <xd:desc>Regex to match words that are numeric with a decimal</xd:desc>
      </xd:doc>
@@ -121,58 +120,6 @@
         <xd:desc>Special document metadata classes that must have a name and class match</xd:desc>
     </xd:doc>
     <xsl:variable name="docMetas" select="('docTitle', 'docSortKey','docImage')" as="xs:string+"/>
-    
-    <!--TODO: Consider harmonizing these into a single variable or map-->
-    
-    <xd:doc>
-        <xd:desc>Map of all of the descriptive filters found in the *entire* document
-        collection. This is necessary so that each descriptive filter gets a unique id.</xd:desc>
-    </xd:doc>  
-    <xsl:variable name="descFilterMap" as="map(xs:string,xs:string)">
-        <xsl:map>
-            <xsl:for-each-group select="$docs//meta[contains-token(@class,'staticSearch.desc')]" group-by="@name">
-                <xsl:map-entry key="xs:string(current-grouping-key())" select="'ssDesc' || position()"/>
-            </xsl:for-each-group>
-        </xsl:map>
-    </xsl:variable>
-    
-    
-    <xd:doc>
-        <xd:desc>Map of all of the date filters found in the *entire* document
-            collection. This is necessary so that each date filter gets a unique id.</xd:desc>
-    </xd:doc>  
-    <xsl:variable name="dateFilterMap" as="map(xs:string,xs:string)">
-        <xsl:map>
-            <xsl:for-each-group select="$docs//meta[contains-token(@class,'staticSearch.date')]" group-by="@name">
-                <xsl:map-entry key="xs:string(current-grouping-key())" select="'ssDate' || position()"/>
-            </xsl:for-each-group>
-        </xsl:map>
-    </xsl:variable>
-    
-    <xd:doc>
-        <xd:desc>Map of all of the boolean filters found in the *entire* document
-            collection. This is necessary so that each boolean filter gets a unique id.</xd:desc>
-    </xd:doc>  
-    <xsl:variable name="boolFilterMap" as="map(xs:string,xs:string)">
-        <xsl:map>
-            <xsl:for-each-group select="$docs//meta[contains-token(@class,'staticSearch.bool')]" group-by="@name">
-                <xsl:map-entry key="xs:string(current-grouping-key())" select="'ssBool' || position()"/>
-            </xsl:for-each-group>
-        </xsl:map>
-    </xsl:variable>
-    
-    
-    <xd:doc>
-        <xd:desc>Map of all of the numeric filters found in the *entire* document
-            collection. This is necessary so that each numeric filter gets a unique id.</xd:desc>
-    </xd:doc>  
-  <xsl:variable name="numFilterMap" as="map(xs:string, xs:string)">
-      <xsl:map>
-          <xsl:for-each-group select="$docs//meta[contains-token(@class,'staticSearch.num')]" group-by="@name">
-              <xsl:map-entry key="xs:string(current-grouping-key())" select="'ssNum' || position()"/>
-          </xsl:for-each-group>
-      </xsl:map>
-  </xsl:variable>
     
     
     
@@ -492,56 +439,13 @@
             </xsl:for-each>
         </xsl:if>
     </xsl:template>
+
     
-
-
     <!--**************************************************************
        *                                                            *
        *                    Templates: tokenize                     *
        *                                                            *
        **************************************************************--> 
-    
-    
-    <!--TODO: Consider harmonizing these into a single template or a function of some sort-->
-    <xd:doc>
-        <xd:desc>Template that matches the staticSearch desc meta and assigns it an id based off of the descFilterMap.</xd:desc>
-    </xd:doc>
-    <xsl:template match="meta[contains-token(@class,'staticSearch.desc')][not(@data-staticSearch-exclude)]" mode="tokenize">
-        <xsl:copy>
-            <xsl:attribute name="data-staticSearch-filter-id" select="$descFilterMap(normalize-space(@name))"/>
-            <xsl:apply-templates select="@*|node()" mode="#current"/>
-        </xsl:copy>
-    </xsl:template>
-    
-    <xd:doc>
-        <xd:desc>Template that matches the staticSearch date meta and assigns it an id based off of the dateFilterMap.</xd:desc>
-    </xd:doc>
-    <xsl:template match="meta[contains-token(@class,'staticSearch.date')][not(@data-staticSearch-exclude)]" mode="tokenize">
-        <xsl:copy>
-            <xsl:attribute name="data-staticSearch-filter-id" select="$dateFilterMap(normalize-space(@name))"/>
-            <xsl:apply-templates select="@*|node()" mode="#current"/>
-        </xsl:copy>
-    </xsl:template>
-    
-    <xd:doc>
-        <xd:desc>Template that matches the staticSearch bool meta and assigns it an id based off of the boolFilterMap.</xd:desc>
-    </xd:doc>
-    <xsl:template match="meta[contains-token(@class,'staticSearch.bool')][not(@data-staticSearch-exclude)]" mode="tokenize">
-        <xsl:copy>
-            <xsl:attribute name="data-staticSearch-filter-id" select="$boolFilterMap(normalize-space(@name))"/>
-            <xsl:apply-templates select="@*|node()" mode="#current"/>
-        </xsl:copy>
-    </xsl:template>
-    
-    <xd:doc>
-        <xd:desc>Template that matches the staticSearch num meta and assigns it an id based off of the numFilterMap.</xd:desc>
-    </xd:doc>
-    <xsl:template match="meta[contains-token(@class,'staticSearch.num')][not(@data-staticSearch-exclude)]" mode="tokenize">
-        <xsl:copy>
-            <xsl:attribute name="data-staticSearch-filter-id" select="$numFilterMap(normalize-space(@name))"/>
-            <xsl:apply-templates select="@*|node()" mode="#current"/>
-        </xsl:copy>
-    </xsl:template>
     
     
     <xd:doc>
