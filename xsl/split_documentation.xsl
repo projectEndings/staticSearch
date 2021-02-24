@@ -291,6 +291,11 @@
                     <xsl:apply-templates select="@*[not(local-name()='href')]|node()" mode="#current"/>
                 </xsl:copy>
             </xsl:when>
+            
+            <!-- When it points to a footnote, keep it around. -->
+            <xsl:when test="contains(@class, 'notelink')">
+                <xsl:copy-of select="."/>
+            </xsl:when>
 
         </xsl:choose>
     </xsl:template>
