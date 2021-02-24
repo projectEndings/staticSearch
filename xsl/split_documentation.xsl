@@ -87,6 +87,32 @@
     <xsl:template match="div[contains-token(@class,'tei_back')]" mode="index section"/>
     
     <xd:doc>
+        <xd:desc>Suppress notes div in index mode.</xd:desc>
+    </xd:doc>
+    <xsl:template match="div[contains-token(@class,'notes')]" mode="index"/>
+    
+    <xd:doc>
+        <xd:desc>Output content from the notes div only where it's actually
+            needed in this document.</xd:desc>
+    </xd:doc>
+    <xsl:template match="div[contains-token(@class,'notes')]" mode="section">
+        <xsl:param name="section" tunnel="yes"/>
+        <xsl:variable as="xs:string*" name="currNoteLinks" select="for $a in $section//a[@class='notelink'] return substring-after($a/@href, '#')"/>
+        <xsl:if test="child::div[@class='note'][@id=$currNoteLinks]">
+            <xsl:copy>
+                <xsl:apply-templates select="@*" mode="#current"/>
+                <xsl:apply-templates select="child::div[@class='noteHeading']" mode="#current"/>
+                <xsl:apply-templates select="child::div[@class='note'][@id = $currNoteLinks]" mode="#current"/>
+            </xsl:copy>
+        </xsl:if>
+    </xsl:template>
+    
+    <xd:doc>
+        <xd:desc>Delete weird empty link in footer.</xd:desc>
+    </xd:doc>
+    <xsl:template match="a[matches(@href, 'www.example.com/?$')]" mode="index section"/>
+    
+    <xd:doc>
         <xd:desc>For all documents: Add a new CSS stylesheet for some small overrides</xd:desc>
     </xd:doc>
     <xsl:template match="link[@rel='stylesheet'][1]" mode="index section">
