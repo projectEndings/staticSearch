@@ -948,6 +948,10 @@ a.toclist: link
 }
 
 /* notes */
+div.notes>*{
+  padding: 0.25rem 1rem;
+}
+
 div.noteHeading{
     margin-top: 9pt;
     border: 0;
@@ -1353,6 +1357,13 @@ div.stdfooter{
     clear: both;
     border-top: solid black 1pt;
     border-bottom: solid black 1pt;
+    padding: 1rem;
+}
+
+div.stdfooter>*{
+  text-align: center;
+  border-style: none;
+  /*padding-top: 1rem;*/
 }
 
 div.altfigure{
