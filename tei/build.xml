@@ -36,7 +36,7 @@
   <!-- Place to get the TEI Guidelines build from. This is currently
     a release package, but it could also be a Jenkins build from another
     branch if required. -->
-  <property name="glinesUrl" value="https://github.com/TEIC/TEI/releases/download/P5_Release_4.1.0/tei-4.1.0.zip"/>
+  <property name="glinesUrl" value="https://github.com/TEIC/TEI/releases/download/P5_Release_4.2.0/tei-4.2.0.zip"/>
   
   <!-- Source folder location. -->
   <property name="sourceFolder" value="${basedir}/source"/>
