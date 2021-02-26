@@ -83,7 +83,7 @@ function showByMod() {
      }
 }
 
-	--></script><meta name="Date Updated" class="staticSearch.date" content="2020-12-18"/>
+	--></script><meta name="Date Updated" class="staticSearch.date" content="2021-02-26"/>
       <meta name="Level" class="staticSearch.desc" content="Intermediate"/><script src="ssHighlight.js"></script></head>
    
    <body class="simple" id="TOP"><!--TEI front-->
@@ -308,7 +308,7 @@ function showByMod() {
             
             <li class="item">Level: Intermediate</li>
             
-            <li class="item">Last Updated: <span class="date">18 December 2020</span></li>
+            <li class="item">Last Updated: <span class="date">26 February 2021</span></li>
             </ul>
          
          <p>First, you will have to make sure your site pages are correctly configured so that
@@ -973,7 +973,7 @@ function showByMod() {
                      to specific<br/>   document types.<span class="element">&lt;/li&gt;</span><br/><span class="element">&lt;/ul&gt;</span></div> Each <span class="gi">&lt;li&gt;</span> elements is, by default, a <span class="term">context</span> element, meaning that the snippet generated for each token will not extend beyond
                   the <span class="gi">&lt;li&gt;</span> element boundaries; in this case, if the <span class="gi">&lt;li&gt;</span> was not a context attribute, the term <span class="q">‘search’</span> would produce a context that looks something like: 
                   
-                  <pre class="pre_eg">"...the size of the index.<span style="font-weight:bold;">Search</span> filtering using any metadata you like,..."</pre>
+                  <pre id="index.xml-eg-d38e1062" class="pre_eg">"...the size of the index.<span style="font-weight:bold;">Search</span> filtering using any metadata you like,..."<a href="#index.xml-eg-d38e1062" class="anchorlink">⚓</a></pre>
                   </div>
                
                <div class="p">Using the <a href="schemaSpec.html#TEI.contexts" class="link_ref" title="&lt;contexts&gt;">&lt;contexts&gt;</a> element, you can control what elements operate as contexts. For instance, say a page
@@ -983,7 +983,7 @@ function showByMod() {
                   made into a clickable object using Javascript. However, since the tokenizer is unaware
                   of any server-side processing, it understands the <span class="gi">&lt;span&gt;</span> as an inline element and assumes the <span class="gi">&lt;p&gt;</span> constitutes the context of the element. A search for <span class="q">‘information’</span> might then return: 
                   
-                  <pre class="pre_eg">"...nothing to say here,Some <span style="font-weight:bold;">information</span> on this subject can be found...</pre> To tell the tokenizer that the <span class="gi">&lt;span&gt;</span> constitutes the context block for any of its tokens, use the <a href="schemaSpec.html#TEI.context" class="link_ref" title="&lt;context&gt;">&lt;context&gt;</a> element with an <span class="att">match</span> pattern: 
+                  <pre id="index.xml-eg-d38e1094" class="pre_eg">"...nothing to say here,Some <span style="font-weight:bold;">information</span> on this subject can be found...<a href="#index.xml-eg-d38e1094" class="anchorlink">⚓</a></pre> To tell the tokenizer that the <span class="gi">&lt;span&gt;</span> constitutes the context block for any of its tokens, use the <a href="schemaSpec.html#TEI.context" class="link_ref" title="&lt;context&gt;">&lt;context&gt;</a> element with an <span class="att">match</span> pattern: 
                   
                   <div id="index.xml-egXML-d38e1109" class="pre egXML_valid"><span class="element">&lt;contexts&gt;</span><br/> <span class="element">&lt;context <span class="attribute">match</span>="<span class="attributevalue">span[contains-token(@class,'sidenote')]</span>"/&gt;</span><br/><span class="element">&lt;/contexts&gt;</span></div>
                   </div>
@@ -1145,7 +1145,7 @@ function showByMod() {
                to do the build by doing the (very quick) build of the test materials. If you simply
                run the <span class="ident">ant</span> command, like this:</p>
             
-            <pre class="pre_eg cdata">mholmes@linuxbox:~/Documents/staticSearch$ ant</pre>
+            <pre id="index.xml-eg-d38e1316" class="pre_eg cdata">mholmes@linuxbox:~/Documents/staticSearch$ ant<a href="#index.xml-eg-d38e1316" class="anchorlink">⚓</a></pre>
             
             <p>you should see a build process proceed using the small test collection of documents,
                and at the end, a results page should open up giving you a report on what was done.
@@ -1159,7 +1159,7 @@ function showByMod() {
                you need to run the same command, but this time, tell the build process where to find
                your custom configuration file:</p>
             
-            <pre class="pre_eg cdata">ant -DconfigFile=/home/mholmes/mysite/config_staticSearch.xml</pre>
+            <pre id="index.xml-eg-d38e1329" class="pre_eg cdata">ant -DssConfigFile=/home/mholmes/mysite/config_staticSearch.xml<a href="#index.xml-eg-d38e1329" class="anchorlink">⚓</a></pre>
             
             <p>The same process should run, and if it's successful, you should have a modified <span class="ident">search.html</span> page as well as a lot of index files in JSON format in your site HTML folder. Now
                you can test your own search in the same ways suggested above.</p>
@@ -1272,9 +1272,9 @@ function showByMod() {
          
          <address>Martin Holmes and Joey Takeda. Date: 2019-2021<br/>
             <!--
-	  Generated from index.xml using XSLT stylesheets version 7.50.1
+	  Generated from index.xml using XSLT stylesheets version 7.51.0
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2021-02-24T17:09:44Z.
+	       on 2021-02-26T18:37:36Z.
 	       SAXON HE 10.0.
 		 --></address>
          </div>

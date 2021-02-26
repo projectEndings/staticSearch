@@ -167,7 +167,7 @@
           <head>How do I use it?</head>
           <list>
             <item>Level: Intermediate</item>
-            <item>Last Updated: <date when="2020-12-18">18 December 2020</date></item>
+            <item>Last Updated: <date when="2021-02-26">26 February 2021</date></item>
           </list>
           <p>First, you will have to make sure your site pages are correctly configured so that the Generator can
           parse them. Then, you will have to create a configuration file specifying what options you want to use. 
@@ -764,7 +764,7 @@
             to run the same command, but this time, tell the build process where to find your custom
             configuration file:</p>
             
-            <eg>ant -DconfigFile=/home/mholmes/mysite/config_staticSearch.xml</eg>
+            <eg>ant -DssConfigFile=/home/mholmes/mysite/config_staticSearch.xml</eg>
             
             <p>The same process should run, and if it's successful, you should have a modified <ident>search.html</ident> page
             as well as a lot of index files in JSON format in your site HTML folder. Now you can test your own 
@@ -1021,10 +1021,19 @@
         <head>What's new since version 1.0?</head>
         <list>
           <item>Level: Intermediate</item>
-          <item>Last Updated: <date when="2021-02-08">8 February 2021</date></item>
+          <item>Last Updated: <date when="2021-02-26">26 February 2021</date></item>
         </list>
         <div xml:id="newIn1.2">
           <head>Changes in version 1.2</head>
+          <p>Deprecations requiring changes to existing projects</p>
+          <list>
+            <item>The original parameters <val>config</val> and <val>configFile</val>
+            have been renamed <val>ssConfig</val> and <val>ssConfigFile</val> to 
+            minimize the chances ofd naming collisions with parameters in other 
+            build processes. IF YOU HAVE SCRIPTED A staticSearch BUILD AS PART
+            OF YOUR OWN BUILD PROCESS, YOU WILL NEED TO UPDATE THESE PARAMETER 
+            NAMES.</item>
+          </list>
           <p>New features and enhancements:</p>
           <list>
             <item>A French stemmer is now available, as well as a caption set for French search pages.</item>
