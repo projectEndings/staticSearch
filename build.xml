@@ -41,18 +41,24 @@
     <!--<property name="saxon" value="${basedir}/lib/saxon9he.jar"/>-->
     <property name="ssSaxon" value="${basedir}/lib/saxon-he-10.jar"/>
     
-    <!--The relative configuration path-->
+    <!-- DEPRECATED UNPREFIXED PROPERTY. REMOVE AFTER 1.2 RELEASE. -->
     <property name="config" value="configTest.xml"/>
     
-    <!--The full path to the configuration file. You can use either-->
+    <!--The configuration file path, relative to this build file. -->
+    <property name="ssConfig" value="${config}"/>
+  
+    <!-- DEPRECATED UNPREFIXED PROPERTY. REMOVE AFTER 1.2 RELEASE. -->
     <property name="configFile" value="${basedir}/${config}"/>
+    
+    <!--The full path to the configuration file. You can use either this or ssConfig. -->
+    <property name="ssConfigFile" value="${basedir}/${ssConfig}"/>
     
     <!--The derived name of the configuration directory based off of the configuration
         file path-->
-    <dirname property="configDir" file="${configFile}"/>
+    <dirname property="configDir" file="${ssConfigFile}"/>
     
     <!--Load the configuration file as a property file-->
-    <xmlproperty file="${configFile}" keeproot="true"/>
+    <xmlproperty file="${ssConfigFile}" keeproot="true"/>
     
     <!--Set the verbose flag to false by default; set to true to see detailed messages-->
     <property name="ssVerbose" value="false"/>
@@ -115,7 +121,7 @@
         <mkdir dir="${staticSearchDir}"/>
         <!-- If we're building the test data, we need to generate the VERSION file. -->
         <if>
-            <equals arg1="${basedir}/configTest.xml" arg2="${configFile}"/>
+            <equals arg1="${basedir}/configTest.xml" arg2="${ssConfigFile}"/>
             <then>
                 <delete file="${basedir}/test/VERSION"/>
                 <exec executable="git">
@@ -143,11 +149,11 @@
             </fileset>
         </xmlvalidate>
         
-        <echo message="Validating ${configFile} against the staticSearch schema..."/>
+        <echo message="Validating ${ssConfigFile} against the staticSearch schema..."/>
         <exec executable="java" failonerror="false">
             <arg line="-jar ${basedir}/lib/jing.jar"/>
             <arg value="${basedir}/schema/staticSearch.rng"/>
-            <arg value="${configFile}"/>
+            <arg value="${ssConfigFile}"/>
         </exec>
     </target>
     
@@ -167,7 +173,7 @@
         <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true" >
             <arg value="-xsl:${basedir}/xsl/create_config_xsl.xsl"/>
             <arg value="-s:${basedir}/xsl/create_config_xsl.xsl"/>
-            <arg value="configFile=${configFile}"/>
+            <arg value="configFile=${ssConfigFile}"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
             <arg value="verbose=${ssVerbose}"/>
         </java>
