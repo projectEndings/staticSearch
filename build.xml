@@ -45,7 +45,7 @@
     <property name="config" value="configTest.xml"/>
     
     <!--The configuration file path, relative to this build file. -->
-    <property name="ssConfig" value="${config}"/>
+    <property name="ssConfig" value="configTest.xml"/>
   
     <!-- DEPRECATED UNPREFIXED PROPERTY. REMOVE AFTER 1.2 RELEASE. -->
     <property name="configFile" value="${basedir}/${config}"/>
@@ -119,6 +119,31 @@
         <delete dir="${staticSearchDir}"/>
         <echo message="Creating new static search directory: ${staticSearchDir}"/>
         <mkdir dir="${staticSearchDir}"/>
+      
+        <!-- For version 1.2 only, we need to warn users if they're still using
+             the old config and configFile property names as parameters. -->
+        <if>
+          <and>
+            <not>
+              <equals arg1="${ssConfig}" arg2="configTest.xml"/>
+            </not>
+            <or>
+              <equals arg1="${config}" arg2="${ssConfig}"/>
+              <equals arg1="${configFile}" arg2="${ssConfigFile}"/>
+            </or>
+          </and>
+          <then>
+            <echo message="DEPRECATION WARNING: It appears that you're still"/>
+            <echo message="using the deprecated 'config' or 'configFile' "/>
+            <echo message="parameters. Please switch to using 'ssConfig' and/or "/>
+            <echo message="'ssConfigFile' instead."/>
+            <echo message=""/>
+            <input message="Press ENTER to acknowledge and continue."/>
+            
+          </then>
+          
+        </if>
+      
         <!-- If we're building the test data, we need to generate the VERSION file. -->
         <if>
             <equals arg1="${basedir}/configTest.xml" arg2="${ssConfigFile}"/>
