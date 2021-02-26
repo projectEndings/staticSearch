@@ -232,7 +232,6 @@
         <!--Now we call the staticSearch build-->
         <ant antfile="build.xml" inheritall="false">
             <property name="ssConfig" value="config_documentation.xml"/>
-            <property name="headless" value="true"/>
         </ant>
         <copy file="${basedir}/js/ssHighlight.js" todir="${documentation.dir}"/>
     </target>

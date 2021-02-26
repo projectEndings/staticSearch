@@ -134,7 +134,7 @@
       This invokes the search build process.
     </description>
     <ant antfile="${basedir}/../build.xml" inheritall="false">
-      <property name="config" value="tei/config_tei.xml"/>
+      <property name="ssConfig" value="tei/config_tei.xml"/>
       <property name="headless" value="true"/>
     </ant>
   </target>
