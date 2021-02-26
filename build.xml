@@ -39,7 +39,7 @@
     
     <!-- Saxon moved from 9 to 10 2020-03-20. -->
     <!--<property name="saxon" value="${basedir}/lib/saxon9he.jar"/>-->
-    <property name="saxon" value="${basedir}/lib/saxon-he-10.jar"/>
+    <property name="ssSaxon" value="${basedir}/lib/saxon-he-10.jar"/>
     
     <!--The relative configuration path-->
     <property name="config" value="configTest.xml"/>
@@ -164,7 +164,7 @@
             The XSLT is run on itself, but loads the configuration file as a parameter.
         </description>
         <echo message="Creating configuration file..."/>
-        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
+        <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true" >
             <arg value="-xsl:${basedir}/xsl/create_config_xsl.xsl"/>
             <arg value="-s:${basedir}/xsl/create_config_xsl.xsl"/>
             <arg value="configFile=${configFile}"/>
@@ -185,7 +185,7 @@
             the config task) to determine the input files, et cetera.
         </description>
         <echo message="Creating tokenized XHTML files..."/>
-        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true">
+        <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true">
             <arg value="-xsl:${basedir}/xsl/tokenize.xsl"/>
             <arg value="-s:${basedir}/xsl/tokenize.xsl"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
@@ -205,7 +205,7 @@
             depending on the size of the resource collection.
         </description>
         <echo message="Creating individual JSON files..."/>
-        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
+        <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true" >
             <arg value="-xsl:${basedir}/xsl/json.xsl"/>
             <arg value="-s:${basedir}/xsl/json.xsl"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
@@ -229,7 +229,7 @@
             </fileset>     
        </length>
        <echo message="Now create the tokens file..."/>
-        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true" >
+        <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true" >
             <arg value="-xsl:${basedir}/xsl/create_ssStems.xsl"/>
             <arg value="-s:${basedir}/xsl/create_ssStems.xsl"/>
             <arg value="stemLines=${stemLines}"/>
@@ -268,7 +268,7 @@
             inject into the page. It is more efficient to derive the existence of the filters directory here rather than
             in the XSLT.-->
         <available type="dir" property="hasFilters" file="${staticSearchDir}/filters" value="true"/>
-        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true">
+        <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true">
             <arg value="-xsl:${basedir}/xsl/makeSearchPage.xsl"/>
             <arg value="-s:${searchFilePath}"/>
             <arg value="-o:${tempSearchPageOutput}"/>
@@ -300,7 +300,7 @@
             inject into the page. It is more efficient to derive the existence of the filters directory here rather than
             in the XSLT.-->
         <available type="dir" property="hasFilters" file="${staticSearchDir}/filters" value="true"/>
-        <java classpath="${saxon}" classname="net.sf.saxon.Transform" failonerror="true">
+        <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true">
             <arg value="-xsl:${basedir}/xsl/create_reports.xsl"/>
             <arg value="-s:${basedir}/xsl/create_reports.xsl"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
