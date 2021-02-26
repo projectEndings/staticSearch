@@ -55,38 +55,38 @@
     <xmlproperty file="${configFile}" keeproot="true"/>
     
     <!--Set the verbose flag to false by default; set to true to see detailed messages-->
-    <property name="verbose" value="false"/>
+    <property name="ssVerbose" value="false"/>
     
     <!--The path to the search page, relative to the configuration directory-->
-    <property name="searchFilePath" location="${configDir}/${config.params.searchFile}"/>
+    <property name="ssSearchFilePath" location="${configDir}/${config.params.searchFile}"/>
     
     <!--The name of the collection dir, derived from the search file-->
-    <dirname property="collectionDirName" file="${searchFilePath}"/>
+    <dirname property="ssCollectionDirName" file="${ssSearchFilePath}"/>
     
     <!--Output folder, which is forked, depending on whether or not an output folder
         is specified in the configuration file-->
-    <property name="outputFolder" if:set="config.params.outputFolder" value="${config.params.outputFolder}"/>
-    <property name="outputFolder" unless:set="config.params.outputFolder" value="staticSearch"/>
+    <property name="ssOutputFolder" if:set="config.params.outputFolder" value="${config.params.outputFolder}"/>
+    <property name="ssOutputFolder" unless:set="config.params.outputFolder" value="staticSearch"/>
     
     <!--Stemmer folder, which is forked, depending on whether or not a stemmer folder
         is specified in the configuration file-->
-    <property name="stemmerFolder" if:set="config.params.stemmerFolder" value="${config.params.stemmerFolder}"/>
-    <property name="stemmerFolder" unless:set="config.params.stemmerFolder" value="en"/>
+    <property name="ssStemmerFolder" if:set="config.params.stemmerFolder" value="${config.params.stemmerFolder}"/>
+    <property name="ssStemmerFolder" unless:set="config.params.stemmerFolder" value="en"/>
     
     <!--The directory for all of the static search assets (JSON files, Javascripts, et cetera).
         Note that the static search directory is placed directly within the collection directory-->
-    <property name="staticSearchDir" value="${collectionDirName}/${outputFolder}/"/>
+    <property name="staticSearchDir" value="${ssCollectionDirName}/${ssOutputFolder}/"/>
     
     <!--Flag for whether or not this build is being run in a headless state or not. Default
         is that it's not-->
     <property name="headless" value="false"/>
     
     <!--The basename of the search file with suffix still attached-->
-    <basename property="searchPageBasename" file="${searchFilePath}"/>
+    <basename property="ssSearchPageBasename" file="${ssSearchFilePath}"/>
     
     <!--The temporary search page, which is constructed by appending ssTemp_ to the search base name
         and placing that file in the collectionDir-->
-    <property name="tempSearchPageOutput" value="${collectionDirName}/ssTemp_${searchPageBasename}"/>
+    <property name="tempSearchPageOutput" value="${ssCollectionDirName}/ssTemp_${ssSearchPageBasename}"/>
     
     
  <!--****************************************************************
@@ -135,10 +135,10 @@
             though, since we must assume that some people just don't care: but raise the error anyway.
         </description>
         
-        <echo message="Validating ${collectionDirName} for well-formedness"/>
+        <echo message="Validating ${ssCollectionDirName} for well-formedness"/>
         <!--@lenient='true' since we are only checking well-formedness-->
         <xmlvalidate lenient="true">
-            <fileset dir="${collectionDirName}">
+            <fileset dir="${ssCollectionDirName}">
                 <include name="**/**.*htm*"/>
             </fileset>
         </xmlvalidate>
@@ -169,7 +169,7 @@
             <arg value="-s:${basedir}/xsl/create_config_xsl.xsl"/>
             <arg value="configFile=${configFile}"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
-            <arg value="verbose=${verbose}"/>
+            <arg value="verbose=${ssVerbose}"/>
         </java>
     </target>
     
@@ -254,11 +254,11 @@
         <echo message="Creating search page..."/>
         <if taskname="copy">
             <not>
-                <available file="${searchFilePath}"/>
+                <available file="${ssSearchFilePath}"/>
             </not>
             <then>
-                <echo>WARNING: Cannot find search file at ${searchFilePath}. Created a template file from xsl/sample_search.html.</echo>
-                <copy file="xsl/sample_search.html" tofile="${searchFilePath}"/>
+                <echo>WARNING: Cannot find search file at ${ssSearchFilePath}. Created a template file from xsl/sample_search.html.</echo>
+                <copy file="xsl/sample_search.html" tofile="${ssSearchFilePath}"/>
             </then>
         </if>
         
@@ -270,15 +270,15 @@
         <available type="dir" property="hasFilters" file="${staticSearchDir}/filters" value="true"/>
         <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true">
             <arg value="-xsl:${basedir}/xsl/makeSearchPage.xsl"/>
-            <arg value="-s:${searchFilePath}"/>
+            <arg value="-s:${ssSearchFilePath}"/>
             <arg value="-o:${tempSearchPageOutput}"/>
             <arg value="hasFilters=${hasFilters}"/>
             <arg value="--suppressXsltNamespaceCheck:on"/>
             <!--<jvmarg value="-Xmx2048m"/>-->
         </java>
         
-        <echo message="Moving ${tempSearchPageOutput} to overwrite ${searchFilePath}"/>
-        <move file="${tempSearchPageOutput}" tofile="${searchFilePath}"/>
+        <echo message="Moving ${tempSearchPageOutput} to overwrite ${ssSearchFilePath}"/>
+        <move file="${tempSearchPageOutput}" tofile="${ssSearchFilePath}"/>
         
     </target>
     
@@ -331,7 +331,7 @@
             </fileset>
         </copy>
         <copy todir="${staticSearchDir}/">
-            <fileset dir="${basedir}/stemmers/${stemmerFolder}">
+            <fileset dir="${basedir}/stemmers/${ssStemmerFolder}">
                 <include name="ssStemmer.js"/>
             </fileset>
         </copy>
