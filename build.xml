@@ -35,10 +35,12 @@
      ****************************************************************-->
 
 
+  <!-- We want our own base directory in case basedir is overridden
+       by an invoking ant process. -->
+  <dirname property="ssBaseDir" file="${ant.file}"/>
 
-  <!-- Saxon moved from 9 to 10 2020-03-20. -->
-  <!--<property name="saxon" value="${basedir}/lib/saxon9he.jar"/>-->
-  <property name="ssSaxon" value="${basedir}/lib/saxon-he-10.jar"/>
+  <!-- Use the saxon in our lib folder. -->
+  <property name="ssSaxon" value="${ssBaseDir}/lib/saxon-he-10.jar"/>
 
   <!-- DEPRECATED UNPREFIXED PROPERTIES. IF SET, SHOULD ABORT THE BUILD.
          REMOVE AFTER 1.2 RELEASE. -->
@@ -49,7 +51,7 @@
   <property name="ssConfig" value="configTest.xml"/>
 
   <!--The full path to the configuration file. You can use either this or ssConfig. -->
-  <property name="ssConfigFile" value="${basedir}/${ssConfig}"/>
+  <property name="ssConfigFile" value="${ssBaseDir}/${ssConfig}"/>
 
   <!--The derived name of the configuration directory based off of the configuration
         file path-->
@@ -106,7 +108,7 @@
     <echo message="Initializing..."/>
     <echo message="Deleting old products..."/>
     <delete dir="temp"/>
-    <delete file="${basedir}/xsl/config.xsl"/>
+    <delete file="${ssBaseDir}/xsl/config.xsl"/>
     <delete file="${tempSearchPageOutput}"/>
     <delete dir="${staticSearchDir}"/>
     <echo message="Creating new static search directory: ${staticSearchDir}"/>
@@ -136,14 +138,14 @@
 
     <!-- If we're building the test data, we need to generate the VERSION file. -->
     <if>
-      <equals arg1="${basedir}/configTest.xml" arg2="${ssConfigFile}"/>
+      <equals arg1="${ssBaseDir}/configTest.xml" arg2="${ssConfigFile}"/>
       <then>
-        <delete file="${basedir}/test/VERSION"/>
+        <delete file="${ssBaseDir}/test/VERSION"/>
         <exec executable="git">
           <arg value="rev-parse"/>
           <arg value="--short"/>
           <arg value="HEAD"/>
-          <redirector output="${basedir}/test/VERSION"/>
+          <redirector output="${ssBaseDir}/test/VERSION"/>
         </exec>
       </then>
     </if>
@@ -165,8 +167,8 @@
 
     <echo message="Validating ${ssConfigFile} against the staticSearch schema..."/>
     <exec executable="java" failonerror="false">
-      <arg line="-jar ${basedir}/lib/jing.jar"/>
-      <arg value="${basedir}/schema/staticSearch.rng"/>
+      <arg line="-jar ${ssBaseDir}/lib/jing.jar"/>
+      <arg value="${ssBaseDir}/schema/staticSearch.rng"/>
       <arg value="${ssConfigFile}"/>
     </exec>
   </target>
@@ -180,8 +182,8 @@
       parameter. </description>
     <echo message="Creating configuration file..."/>
     <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true">
-      <arg value="-xsl:${basedir}/xsl/create_config_xsl.xsl"/>
-      <arg value="-s:${basedir}/xsl/create_config_xsl.xsl"/>
+      <arg value="-xsl:${ssBaseDir}/xsl/create_config_xsl.xsl"/>
+      <arg value="-s:${ssBaseDir}/xsl/create_config_xsl.xsl"/>
       <arg value="configFile=${ssConfigFile}"/>
       <arg value="--suppressXsltNamespaceCheck:on"/>
       <arg value="verbose=${ssVerbose}"/>
@@ -196,8 +198,8 @@
       XSLT module (generated in the config task) to determine the input files, et cetera. </description>
     <echo message="Creating tokenized XHTML files..."/>
     <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true">
-      <arg value="-xsl:${basedir}/xsl/tokenize.xsl"/>
-      <arg value="-s:${basedir}/xsl/tokenize.xsl"/>
+      <arg value="-xsl:${ssBaseDir}/xsl/tokenize.xsl"/>
+      <arg value="-s:${ssBaseDir}/xsl/tokenize.xsl"/>
       <arg value="--suppressXsltNamespaceCheck:on"/>
       <!--<jvmarg value="-Xmx2048m"/>-->
     </java>
@@ -211,8 +213,8 @@
       time, depending on the size of the resource collection. </description>
     <echo message="Creating individual JSON files..."/>
     <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true">
-      <arg value="-xsl:${basedir}/xsl/json.xsl"/>
-      <arg value="-s:${basedir}/xsl/json.xsl"/>
+      <arg value="-xsl:${ssBaseDir}/xsl/json.xsl"/>
+      <arg value="-s:${ssBaseDir}/xsl/json.xsl"/>
       <arg value="--suppressXsltNamespaceCheck:on"/>
     </java>
   </target>
@@ -232,8 +234,8 @@
     </length>
     <echo message="Now create the tokens file..."/>
     <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true">
-      <arg value="-xsl:${basedir}/xsl/create_ssStems.xsl"/>
-      <arg value="-s:${basedir}/xsl/create_ssStems.xsl"/>
+      <arg value="-xsl:${ssBaseDir}/xsl/create_ssStems.xsl"/>
+      <arg value="-s:${ssBaseDir}/xsl/create_ssStems.xsl"/>
       <arg value="stemLines=${stemLines}"/>
       <arg value="--suppressXsltNamespaceCheck:on"/>
     </java>
@@ -268,7 +270,7 @@
             in the XSLT.-->
     <available type="dir" property="hasFilters" file="${staticSearchDir}/filters" value="true"/>
     <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true">
-      <arg value="-xsl:${basedir}/xsl/makeSearchPage.xsl"/>
+      <arg value="-xsl:${ssBaseDir}/xsl/makeSearchPage.xsl"/>
       <arg value="-s:${ssSearchFilePath}"/>
       <arg value="-o:${tempSearchPageOutput}"/>
       <arg value="hasFilters=${hasFilters}"/>
@@ -293,13 +295,13 @@
             in the XSLT.-->
     <available type="dir" property="hasFilters" file="${staticSearchDir}/filters" value="true"/>
     <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true">
-      <arg value="-xsl:${basedir}/xsl/create_reports.xsl"/>
-      <arg value="-s:${basedir}/xsl/create_reports.xsl"/>
+      <arg value="-xsl:${ssBaseDir}/xsl/create_reports.xsl"/>
+      <arg value="-s:${ssBaseDir}/xsl/create_reports.xsl"/>
       <arg value="--suppressXsltNamespaceCheck:on"/>
       <arg value="hasFilters=${hasFilters}"/>
       <!--<jvmarg value="-Xmx2048m"/>-->
     </java>
-    <move file="${basedir}/staticSearch_report.html"
+    <move file="${ssBaseDir}/staticSearch_report.html"
       tofile="${staticSearchDir}/staticSearch_report.html"/>
     <echo message="The build process has produced the following report: "/>
     <echo message="${staticSearchDir}/staticSearch_report.html"/>
@@ -312,15 +314,15 @@
       the staticSearch directory (i.e. this directory) and places them in the project's static
       search directory. </description>
     <copy todir="${staticSearchDir}/">
-      <fileset dir="${basedir}/js">
+      <fileset dir="${ssBaseDir}/js">
         <include name="ss**.js"/>
       </fileset>
-      <fileset dir="${basedir}/css">
+      <fileset dir="${ssBaseDir}/css">
         <include name="ss**.css"/>
       </fileset>
     </copy>
     <copy todir="${staticSearchDir}/">
-      <fileset dir="${basedir}/stemmers/${ssStemmerFolder}">
+      <fileset dir="${ssBaseDir}/stemmers/${ssStemmerFolder}">
         <include name="ssStemmer.js"/>
       </fileset>
     </copy>
