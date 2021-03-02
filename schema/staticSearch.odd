@@ -1029,7 +1029,7 @@
           <list>
             <item>The original parameters <val>config</val> and <val>configFile</val>
             have been renamed <val>ssConfig</val> and <val>ssConfigFile</val> to 
-            minimize the chances ofd naming collisions with parameters in other 
+            minimize the chances of naming collisions with parameters in other 
             build processes. <emph>IF YOU HAVE SCRIPTED A staticSearch BUILD AS PART
             OF YOUR OWN BUILD PROCESS, YOU WILL NEED TO UPDATE THESE PARAMETER 
             NAMES.</emph></item>
