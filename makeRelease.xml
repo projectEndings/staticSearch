@@ -36,15 +36,16 @@
     6. Run ant -f makeRelease.xml to build the release package.
        You'll need the zip file it creates.
        
-    7. DON'T commit anything.
+    7. git commit and git push.
     
     8. Go to GitHub and draft a new release in the interface. 
        Get the release notes from the What's New page in the 
        documentation. Upload the built zip file as an asset
        for the release, then publish it.
        
-    9. git checkout dev, then increment the version number in
-       EDITION (adding "alpha") and commit/push.
+    9. git checkout dev, and git merge main to bring them into
+       sync. Then increment the version number in EDITION 
+       (adding "alpha") and commit/push.
        
     *************************************************************
   </description>
