@@ -5,7 +5,7 @@
       
       <!--THIS FILE IS GENERATED FROM AN XML MASTER. DO NOT EDIT (5)-->
       
-      <title>Static Search: ‘How do I...’</title>
+      <title>Static Search: What's new since version 1.0?</title>
       
       <meta name="author" content="Martin Holmes and Joey Takeda"/>
       
@@ -83,7 +83,8 @@ function showByMod() {
      }
 }
 
-	--></script><script src="ssHighlight.js"></script></head>
+	--></script><meta name="Date Updated" class="staticSearch.date" content="2021-03-01"/>
+      <meta name="Level" class="staticSearch.desc" content="Intermediate"/><script src="ssHighlight.js"></script></head>
    
    <body class="simple" id="TOP"><!--TEI front-->
       
@@ -190,13 +191,13 @@ function showByMod() {
                      </ul>
                   </li>
                
-               <li class="toc"><span class="headingNumber"> 9 </span><span class="current">How do I...</span></li>
+               <li class="toc"><span class="headingNumber"> 9 </span><a href="howDoI.html" class="toc toc_0" title="How do I...">How do I...</a></li>
                
-               <li class="toc"><span class="headingNumber">10 </span><a href="newSinceVersion1.html" class="toc toc_0" title="Whats new since version 1.0">What's new since version 1.0?</a><ul class="toc">
+               <li class="toc"><span class="headingNumber">10 </span><span class="current">What's new since version 1.0?</span><ul class="toc">
                      
-                     <li class="toc"><span class="headingNumber">10.1 </span><a href="newSinceVersion1.html#newIn1.2" class="toc toc_1" title="Changes in version 1.2">Changes in version 1.2</a></li>
+                     <li class="toc"><span class="headingNumber">10.1 </span><a class="toc toc_1" href="#newIn1.2" title="Changes in version 1.2">Changes in version 1.2</a></li>
                      
-                     <li class="toc"><span class="headingNumber">10.2 </span><a href="newSinceVersion1.html#newIn1.1" class="toc toc_1" title="Changes in version 1.1">Changes in version 1.1</a></li>
+                     <li class="toc"><span class="headingNumber">10.2 </span><a class="toc toc_1" href="#newIn1.1" title="Changes in version 1.1">Changes in version 1.1</a></li>
                      </ul>
                   </li>
                
@@ -285,15 +286,15 @@ function showByMod() {
       </div>
       <!--TEI body-->
       
-      <div data-section="howDoI" class="tei_body">
+      <div data-section="newSinceVersion1" class="tei_body">
          
          <nav>
             <ul>
-               <li class="prev"><a href="howDoesItWork.html"><span class="headingNumber">8 </span><span class="head">How does it work?</span></a></li>
-               <li class="next"><a href="newSinceVersion1.html"><span class="headingNumber">10 </span><span class="head">What's new since version 1.0?</span></a></li>
+               <li class="prev"><a href="howDoI.html"><span class="headingNumber">9 </span><span class="head"><span class="q">‘How do I...’</span></span></a></li>
+               <li class="next"><a href="projectsUsingSS.html"><span class="headingNumber">11 </span><span class="head">Projects using staticSearch</span></a></li>
             </ul>
          </nav>
-         <h1><span class="headingNumber">9 </span><span class="head"><span class="q">‘How do I...’</span></span></h1>
+         <h1><span class="headingNumber">10 </span><span class="head">What's new since version 1.0?</span></h1>
          
          
          
@@ -305,72 +306,121 @@ function showByMod() {
          
          
          
-         <p>Below are some of the most common things you might want to do using staticSearch:</p>
          
-         <div class="table">
+         <ul>
             
-            <table>
+            <li class="item">Level: Intermediate</li>
+            
+            <li class="item">Last Updated: <span class="date">01 March 2021</span></li>
+            </ul>
+         
+         <div class="teidiv1" id="newIn1.2">
+            
+            <h3><span class="headingNumber">10.1 </span><span class="head">Changes in version 1.2</span></h3>
+            
+            <p>Deprecations requiring changes to existing projects</p>
+            
+            <ul>
                
-               <tr>
-                  
-                  <td>How do I get staticSearch to ignore large chunks of my document?</td>
-                  
-                  <td>Any element with a weight of 0 is ignored completely by the indexer, so add a <a href="schemaSpec.html#TEI.rule" class="link_ref" title="&lt;rule&gt;">&lt;rule&gt;</a> for the element. So to ignore all elements with the class <span class="val">ignoreThisElement</span>, you could do something like: 
-                     
-                     <div id="index.xml-egXML-d38e1485" class="pre egXML_valid"><span class="element">&lt;rule <span class="attribute">weight</span>="<span class="attributevalue">0</span>"<br/> <span class="attribute">match</span>="<span class="attributevalue">div[contains-token(@class,'ignoreThisElement')</span>"/&gt;</span></div>
-                     </td>
-                  </tr>
+               <li class="item">The original parameters <span class="val">config</span> and <span class="val">configFile</span> have been renamed <span class="val">ssConfig</span> and <span class="val">ssConfigFile</span> to minimize the chances ofd naming collisions with parameters in other build processes.
+                  <em>IF YOU HAVE SCRIPTED A staticSearch BUILD AS PART OF YOUR OWN BUILD PROCESS, YOU WILL
+                     NEED TO UPDATE THESE PARAMETER NAMES.</em></li>
+               </ul>
+            
+            <p>New features and enhancements:</p>
+            
+            <ul>
                
-               <tr>
-                  
-                  <td>How do I get staticSearch to ignore small inline bits and <em>not</em> have them in the KWIC?</td>
-                  
-                  <td>As above, you can use a <a href="schemaSpec.html#TEI.rule" class="link_ref" title="&lt;rule&gt;">&lt;rule&gt;</a> with an <span class="att">weight</span>=<span class="val">0</span></td>
-                  </tr>
+               <li class="item">A French stemmer is now available, as well as a caption set for French search pages.</li>
                
-               <tr>
-                  
-                  <td>How do I get staticSearch to ignore an element, but retain its text in the KWIC?</td>
-                  
-                  <td>Here, you'll want to use the <a href="schemaSpec.html#TEI.exclude" class="link_ref" title="&lt;exclude&gt;">&lt;exclude&gt;</a> function, which excludes the element from indexing, but doesn't remove it from the
-                     document itself. So, if you wanted to exclude all keyboard entry items (<span class="gi">&lt;xh:kbd&gt;</span>), but still have them in the KWIC, you could do something like: 
-                     
-                     <div id="index.xml-egXML-d38e1511" class="pre egXML_valid"><span class="element">&lt;exclude <span class="attribute">match</span>="<span class="attributevalue">kbd</span>"<br/> <span class="attribute">type</span>="<span class="attributevalue">index</span>"/&gt;</span></div>
-                     </td>
-                  </tr>
+               <li class="item">Images can now be configured for specific parts of a document, as well as for the
+                  whole document, for display alongside KWICs in results. This is part of a new extension
+                  mechanism using <a href="howDoIUseIt.html#customAttributes" class="link_ref" title="Custom attributes">custom attributes</a>.</li>
                
-               <tr>
-                  
-                  <td>How can I get staticSearch to show debugging messages?</td>
-                  
-                  <td>Switch <a href="schemaSpec.html#TEI.verbose" class="link_ref" title="&lt;verbose&gt;">&lt;verbose&gt;</a> to true in the configuration file: 
-                     
-                     <div id="index.xml-egXML-d38e1520" class="pre egXML_valid"><span class="element">&lt;config xmlns="http://hcmc.uvic.ca/ns/staticSearch"&gt;</span><br/> <span class="element">&lt;params&gt;</span><br/>  <br/><span class="comment">&lt;!--....--&gt;</span><br/>  <span class="element">&lt;verbose&gt;</span>true<span class="element">&lt;/verbose&gt;</span><br/><span class="comment">&lt;!--....--&gt;</span><br/> <span class="element">&lt;/params&gt;</span><br/><span class="comment">&lt;!--Rules, etc--&gt;</span><br/><span class="element">&lt;/config&gt;</span></div>
-                     </td>
-                  </tr>
+               <li class="item">The CSS for the search page by the indexing process is now more easily accessible
+                  in a separate file <span class="ident">css/ssSearch.css</span>, which is linked into the search page at build time.</li>
                
-               <tr>
-                  
-                  <td>How can I get staticSearch to jump straight to a specific hit in the document from
-                     a search result?</td>
-                  
-                  <td>The best way to do this is to ensure that <a href="schemaSpec.html#TEI.linkToFragmentId" class="link_ref" title="&lt;linkToFragmentId&gt;">&lt;linkToFragmentId&gt;</a> is set to the <span class="val">true</span> and that the input HTML contains ids at whatever level you think is most helpful.
-                     For instance, if possible, you could give each <span class="gi">&lt;xhtml:p&gt;</span> element an <span class="att">id</span>, which would mean that each KWIC could be linked to the right paragraph in the input
-                     document.</td>
-                  </tr>
+               <li class="item">Links to target documents from keyword-in-context results now include a search string
+                  parameter that specifies the hit text, so that JavaScript running in the target page
+                  can highlight the search hit(s) and scroll to them. See <a href="howDoIUseIt.html#highlightTargetPage" class="link_ref" title="Highlighting search hits on target pages">Highlighting search hits on target pages</a> for more information.</li>
                
-               <tr>
+               <li class="item">Documentation has been significantly improved with additional explanatory remarks
+                  for many elements, and the staticSearch build of the documentation now includes hit
+                  highlighting (the feature described above).</li>
+               
+               <li class="item">Only ancestor ids are indexed when <a href="schemaSpec.html#TEI.linkToFragmentId" class="link_ref" title="&lt;linkToFragmentId&gt;">&lt;linkToFragmentId&gt;</a> is enabled; formerly, any preceding id value was used.</li>
+               
+               <li class="item">Results can now optionally be viewed in batches by setting the new <a href="schemaSpec.html#TEI.resultsPerPage" class="link_ref" title="&lt;resultsPerPage&gt;">&lt;resultsPerPage&gt;</a> configuration option.</li>
+               
+               <li class="item">The maximum number of results that a search can return has been set to 2000 results
+                  by default and can be changed using the new <a href="schemaSpec.html#TEI.resultsLimit" class="link_ref" title="&lt;resultsLimit&gt;">&lt;resultsLimit&gt;</a> element. If a search returns a set of results that exceeds this limit, staticSearch
+                  does not render the results and advises the user to try a more precise search.</li>
+               
+               <li class="item">The minimum length of a word to be indexed is now configurable, so in unusual circumstances
+                  you can now enable searching for 1- or 2-letter words using the <a href="schemaSpec.html#TEI.minWordLength" class="link_ref" title="&lt;minWordLength&gt;">&lt;minWordLength&gt;</a> parameter.</li>
+               
+               <li class="item">The staticSearch report is now discussed in the documentation (see <a href="howDoIUseIt.html#theStaticSearchReport" class="link_ptr" title="Generated report"><span class="headingNumber">7.8 </span>Generated report</a>) and the "Not in Dictionary" and "Foreign Words" reports have been improved.</li>
+               
+               <li class="item">The filter creation process has been rationalized such that all filter processing
+                  happens in <code>json.xsl</code>, which has also improved the build performance slightly.</li>
+               </ul>
+            
+            <p>Bug fixes:</p>
+            
+            <ul>
+               
+               <li class="item">The encoding structure for docImage, docSortKey, and docTitle has been constrained
+                  such that each doc* <span class="gi">&lt;meta&gt;</span> must include both a <span class="att">name</span> and <span class="att">class</span> value: 
                   
-                  <td>How can I get staticSearch to highlight the found text in a target document?</td>
-                  
-                  <td>There are two approaches to this: you could implement a JavaScript solution as explained
-                     in <a href="howDoIUseIt.html#highlightTargetPage" class="link_ref" title="Highlighting search hits on target pages">Highlighting search hits on target pages</a>, or you could turn on the <span class="gi">&lt;scrollToFragmentId&gt;</span> experimental feature supported by some Chromium-based browsers. The former requires
-                     some modification to your site pages to add some JavaScript, while the latter is non-standard
-                     and not really reliable or consistent.</td>
-                  </tr>
-               </table>
+                  <div id="index.xml-egXML-d38e1644" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">docTitle</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.docTitle</span>" <span class="attribute">content</span>="<span class="attributevalue">My custom document title</span>"/&gt;</span></div>
+                  </li>
+               
+               <li class="item">Temporary XML files from dictionaries are now removed during the <code>clean</code> step of the build process.</li>
+               
+               <li class="item">All HTML characters are properly escaped in context snippets.</li>
+               </ul>
             </div>
          
+         <div class="teidiv1" id="newIn1.1">
+            
+            <h3><span class="headingNumber">10.2 </span><span class="head">Changes in version 1.1</span></h3>
+            
+            <p>New features and enhancements:</p>
+            
+            <ul>
+               
+               <li class="item">Search results can now be sorted using a <a href="howDoIUseIt.html#configuringDocSortKey" class="link_ref" title="Configuring your site document sort keys">user-supplied sort key</a>. This is useful when searching only with filters (so all documents have the same
+                  relevance score) or where many results have the same relevance score.</li>
+               
+               <li class="item">Using the new <a href="schemaSpec.html#TEI.linkToFragmentId" class="link_ref" title="&lt;linkToFragmentId&gt;">&lt;linkToFragmentId&gt;</a> parameter, keyword-in-context results can now have individual links to nearest ancestor
+                  fragment id, so the searcher can go directly to the relevant section of a document.</li>
+               
+               <li class="item">The order of parameter elements in the configuration file is no longer fixed. The
+                  schema now allows elements to appear in any order.</li>
+               
+               <li class="item">We have added a new <a href="howDoI.html" class="link_ref" title="How do I...">How Do I...</a> section in the documentation.</li>
+               
+               <li class="item">Phrasal searches are now case-sensitive, meaning that you can use a ‘phrasal search’
+                  to search for proper names, by putting quotation marks around them and making the
+                  first letter upper-case.</li>
+               
+               <li class="item">Indexing is faster and the size of the index is smaller because we have eliminated
+                  the upper-case index.</li>
+               </ul>
+            
+            <p>Bug fixes:</p>
+            
+            <ul>
+               
+               <li class="item">URL containing empty search query string caused unwanted page scroll.</li>
+               
+               <li class="item">The build process would fail to open the search report when running under very recent
+                  versions of Java.</li>
+               
+               <li class="item">Punctuation is no longer stripped from phrasal searches, so searching for longer phrases
+                  including punctuation should be more successful.</li>
+               </ul>
+            </div>
          
          
          </div>

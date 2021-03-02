@@ -1021,7 +1021,7 @@
         <head>What's new since version 1.0?</head>
         <list>
           <item>Level: Intermediate</item>
-          <item>Last Updated: <date when="2021-02-26">26 February 2021</date></item>
+          <item>Last Updated: <date when="2021-03-01">01 March 2021</date></item>
         </list>
         <div xml:id="newIn1.2">
           <head>Changes in version 1.2</head>
@@ -1030,9 +1030,9 @@
             <item>The original parameters <val>config</val> and <val>configFile</val>
             have been renamed <val>ssConfig</val> and <val>ssConfigFile</val> to 
             minimize the chances ofd naming collisions with parameters in other 
-            build processes. IF YOU HAVE SCRIPTED A staticSearch BUILD AS PART
+            build processes. <emph>IF YOU HAVE SCRIPTED A staticSearch BUILD AS PART
             OF YOUR OWN BUILD PROCESS, YOU WILL NEED TO UPDATE THESE PARAMETER 
-            NAMES.</item>
+            NAMES.</emph></item>
           </list>
           <p>New features and enhancements:</p>
           <list>
@@ -1048,14 +1048,26 @@
             target page can highlight the search hit(s) and scroll to them. See 
               <ref target="#highlightTargetPage">Highlighting search hits on target pages</ref>
             for more information.</item>
+            <item>Documentation has been significantly improved with additional explanatory
+              remarks for many elements, and the staticSearch build of the documentation now
+              includes hit highlighting (the feature described above).</item>
+            <item>Only ancestor ids are indexed when <gi>linkToFragmentId</gi> is enabled; formerly, any preceding
+            id value was used.</item>
             <item>Results can now optionally be viewed in batches by setting the new <gi>resultsPerPage</gi> configuration
             option.</item>
+            <item>The maximum number of results that a search can return has been set to 2000 results
+              by default and can be changed using the new <gi>resultsLimit</gi> element. If a search 
+              returns a set of results that exceeds this limit, staticSearch does not render the results
+              and advises the user to try a more precise search.
+            </item>
             <item>The minimum length of a word to be indexed is now configurable, so in 
             unusual circumstances you can now enable searching for 1- or 2-letter words
             using the <gi>minWordLength</gi> parameter.</item>
-            <item>Documentation has been significantly improved with additional explanatory
-            remarks for many elements, and the staticSearch build of the documentation now
-            includes hit highlighting (the feature described above).</item>
+            <item>The staticSearch report is now discussed in the documentation (see <ptr target="#theStaticSearchReport"/>) and the "Not in Dictionary" and "Foreign Words" reports have been
+            improved.</item>
+            <item>The filter creation process has been rationalized such that all filter processing happens
+            in <code>json.xsl</code>, which has also improved the build performance slightly.</item>
+            
           </list>
           <p>Bug fixes:</p>
           <list>
@@ -1065,6 +1077,9 @@
                 <meta name="docTitle" class="staticSearch.docTitle" content="My custom document title"/>
               </egXML>
             </item>
+            <item>Temporary XML files from dictionaries are now removed during the <code>clean</code> step
+            of the build process.</item>
+            <item>All HTML characters are properly escaped in context snippets.</item>
           </list>
         </div>
         <div xml:id="newIn1.1">
