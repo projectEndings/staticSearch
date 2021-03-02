@@ -27,6 +27,7 @@
   <!-- Files we need to include from the js folder. -->
   <fileset id="js" dir="${basedir}">
     <include name="js/ssSearch.js"/>
+    <include name="js/ssHighlight.js"/>
   </fileset>
   
   <!-- Files we need to include from the stemmers folder. -->
