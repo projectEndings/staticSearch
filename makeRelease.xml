@@ -31,7 +31,7 @@
        for the release. Commit and push the change.
        
     5. git checkout main, then git merge dev with an appropriate
-       message.
+       message. Then git push.
        
     6. Run ant -f makeRelease.xml to build the release package.
        You'll need the zip file it creates.
