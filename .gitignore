@@ -21,3 +21,20 @@ ssTemp_*
 
 # Generated configuration file #
 config.xsl
+
+#Files generated during build process:
+#We exclude any JS or HTML files in the docs
+#folder...
+
+/docs/*.js
+/docs/*.html
+
+#...but we re-include the single-file 
+#documentation.
+
+!/docs/staticSearch.html
+
+#Avoid including any generates zip distros.
+/staticSearch*.zip
+
+
