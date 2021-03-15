@@ -575,6 +575,16 @@
             <xso:if test="$verbose">
                 <xso:message>Template #clean: Deleting <xso:value-of select="local-name(.)"/></xso:message>
             </xso:if>
+          <xso:if test="local-name() = 'html'">
+            <xso:message terminate="yes">
+*********************************************
+ERROR: You have specified a weight of 0 for 
+an html element, which will create an empty 
+output file and generate an error during 
+tokenization.
+*********************************************
+            </xso:message>
+          </xso:if>
         </xso:template>
     </xsl:template>
     
