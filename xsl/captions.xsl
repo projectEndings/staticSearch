@@ -25,7 +25,10 @@
             },
         'fr': 
             map{
-                'ssDoSearch': 'Chercher'
+                'ssDoSearch': 'Chercher',
+                'ssSearching': 'En cours...',
+                'ssClear': 'Effacer',
+                'ssPoweredBy': 'Réalisé par'
             }
         }"/>
     
