@@ -30,6 +30,11 @@
         for more details.</xd:desc>
     </xd:doc>
     <xsl:include href="config.xsl"/>
+    
+    <xd:doc>
+        <xd:desc>Include the captions set and the associated function.</xd:desc>
+    </xd:doc>
+    <xsl:include href="captions.xsl"/>
 
     <!--**************************************************************
        *                                                            *
@@ -147,7 +152,24 @@
         in the header of document.</xd:desc>
     </xd:doc>
     <xsl:template match="div[@id='staticSearch']">
-
+        
+        <!--Get the language we should be using for retrieving captions, defaulting to 'en'
+            if no language is specified-->
+        <xsl:variable name="captionLang" as="xs:string">
+            <xsl:variable name="declaredLang" select="string(ancestor-or-self::*[@xml:lang or @lang][1]/(@xml:lang, @lang)[1])" as="xs:string?"/>
+            <xsl:choose>
+                <xsl:when test="exists($declaredLang)">
+                    <xsl:sequence select="$declaredLang"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:if test="$verbose">
+                        <xsl:message>WARNING: No language declared for div/@id='staticSearch' to determine captions. Using 'en' by default.</xsl:message>
+                    </xsl:if>
+                    <xsl:sequence select="'en'"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        
         <!--First, copy out the div-->
         <xsl:copy>
 
@@ -191,7 +213,7 @@
                     <!--<xsl:variable name="validationPattern" as="xs:string">\s*(.*([^\*\?\[\]\s]+[^\s]*){3})+\s*</xsl:variable>
                     <input type="text" id="ssQuery" pattern="{$validationPattern}"/>-->
                     <input type="text" id="ssQuery"/>
-                    <button id="ssDoSearch">Search</button>
+                    <button id="ssDoSearch"><xsl:sequence select="hcmc:getCaption('ssDoSearch', $captionLang)"/></button>
                 </span>
                 
                 <xsl:if test="not(empty($filterJSONURIs))">
@@ -201,7 +223,11 @@
                     <xsl:variable name="numFilters" select="$filterJSONURIs[matches(.,'ssNum\d+.*\.json')]"/>
                     
                     <!--If there are filters, then add a clear button-->
-                    <span class="clearButton"><button id="ssClear">Clear</button></span>
+                    <span class="clearButton">
+                        <button id="ssClear">
+                            <xsl:sequence select="hcmc:getCaption('ssClear', $captionLang)"/>
+                        </button>
+                    </span>
                     <!--First, handle the desc filters-->
                     <xsl:if test="not(empty($descFilters))">
                         <div class="ssDescFilters">
@@ -387,7 +413,9 @@
                         </div>
                     </xsl:if>
                     <span class="postFilterSearchBtn">
-                        <button id="ssDoSearch2">Search</button>
+                        <button id="ssDoSearch2">
+                            <xsl:sequence select="hcmc:getCaption('ssDoSearch', $captionLang)"/>
+                        </button>
                     </span>
                
                 </xsl:if>
@@ -395,7 +423,9 @@
             </form>
             
             <!-- Popup message to show that search is being done. -->
-            <div id="ssSearching">Searching...</div>
+            <div id="ssSearching">
+                <xsl:sequence select="hcmc:getCaption('ssSearching', $captionLang)"/>
+            </div>
 
             <!--And now create the results div in the document-->
             <div id="ssResults">
@@ -405,7 +435,9 @@
             <!-- Finally, we add our logo and powered-by message. -->
             <div id="ssPoweredBy">
                 
-                <p>Powered by</p> <a href="https://github.com/projectEndings/staticSearch"><xsl:apply-templates select="doc($svgLogoFile)" mode="svgLogo"/></a>
+                <p>
+                    <xsl:sequence select="hcmc:getCaption('ssPoweredBy', $captionLang)"/>
+                </p> <a href="https://github.com/projectEndings/staticSearch"><xsl:apply-templates select="doc($svgLogoFile)" mode="svgLogo"/></a>
             </div>
         </xsl:copy>
     </xsl:template>
