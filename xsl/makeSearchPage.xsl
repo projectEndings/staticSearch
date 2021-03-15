@@ -92,7 +92,17 @@
     </xd:doc>
     <xsl:variable name="svgLogoFile" as="xs:string" select="'../images/logo_01.svg'"/>
     
+    <xd:doc>
+      <xd:desc><xd:ref name="dateRegex">dateRegex</xd:ref> is used for date matching/recognition
+        when creating date filters.</xd:desc>
+    </xd:doc>
     <xsl:variable name="dateRegex" select="'^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$'" as="xs:string"/>
+  
+    <xd:doc>
+      <xd:desc><xd:ref name="pageLang">pageLang</xd:ref> is the language of the search page (if specified)
+      or "en" if not. This is used for sorting filter items.</xd:desc>
+    </xd:doc>
+  <xsl:variable name="pageLang" as="xs:string" select="if (/html/@*:lang) then /html/@*:lang[1] else 'en'"/>
 
     <!--**************************************************************
        *                                                            *
@@ -257,7 +267,8 @@
                                                 <xsl:choose>
                                                     <xsl:when test="$notNumeric">
                                                         <xsl:for-each select="$jsonDoc//map:map[@key]">
-                                                            <xsl:sort select="replace(map:string[@key='sortKey'], '^((the)|(a)|(an))\s+', '', 'i')"/>
+                                                          <!-- Note: the article-stripping here is crude and limited to a couple of languages. For anything important, users should provide a sort key. -->
+                                                            <xsl:sort select="replace(map:string[@key='sortKey'], '^((the)|(a)|(an)|(l[ea]s?)|(de[nrs]?)|([ie]l)|(un[oe]?))\s+', '', 'i')" lang="{$pageLang}"/>
                                                             <xsl:sequence select="."/>
                                                         </xsl:for-each>
                                                     </xsl:when>
@@ -288,7 +299,7 @@
                                 </xsl:for-each>
                             </xsl:variable>
                             <xsl:for-each select="$fieldsets">
-                                <xsl:sort select="normalize-space(lower-case(legend))"/>
+                                <xsl:sort select="normalize-space(lower-case(legend))" lang="{$pageLang}"/>
                                 <xsl:sequence select="."/>
                             </xsl:for-each>
                         </div>
@@ -331,7 +342,7 @@
                                 </xsl:for-each>
                             </xsl:variable>
                             <xsl:for-each select="$fieldsets">
-                                <xsl:sort select="normalize-space(lower-case(legend))"/>
+                              <xsl:sort select="normalize-space(lower-case(legend))" lang="{$pageLang}"/>
                                 <xsl:sequence select="."/>
                             </xsl:for-each>
                         </div>
@@ -374,7 +385,7 @@
                                 </xsl:for-each>
                             </xsl:variable>
                             <xsl:for-each select="$fieldsets">
-                                <xsl:sort select="normalize-space(lower-case(legend))"/>
+                              <xsl:sort select="normalize-space(lower-case(legend))" lang="{$pageLang}"/>
                                 <xsl:sequence select="."/>
                             </xsl:for-each>
                         </div>
@@ -406,7 +417,7 @@
                                     </xsl:for-each>
                                 </xsl:variable>
                                 <xsl:for-each select="$spans">
-                                    <xsl:sort select="normalize-space(lower-case(label))"/>
+                                  <xsl:sort select="normalize-space(lower-case(label))" lang="{$pageLang}"/>
                                     <xsl:sequence select="."/>
                                 </xsl:for-each>
                             </fieldset>
