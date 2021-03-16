@@ -151,7 +151,7 @@
   */
 class StaticSearch{
 /** 
-  * @constructor
+  * constructor
   * @description The constructor has no paramaters since it
   *              reads everything it requires from the host
   *              HTML page. 
@@ -1110,35 +1110,6 @@ class StaticSearch{
         console.log('ERROR: ' + e.message);
         return false;
       }
-      try{
-        let sp = document.querySelector('#searchReport');
-        if (sp){sp.parentNode.removeChild(sp);}
-        let arrOutput = [];
-        let i, d, p, t;
-        for (i=0; i<this.terms.length; i++){
-          if (!arrOutput[this.terms[i].type]){
-            arrOutput[this.terms[i].type] = {type: this.terms[i].type, terms: []};
-          }
-          arrOutput[this.terms[i].type].terms.push('"' + this.terms[i].str + '"');
-        }
-        arrOutput.sort(function(a, b){return a.type - b.type;})
-
-        d = document.createElement('div');
-        d.setAttribute('id', 'searchReport');
-
-        arrOutput.forEach((obj)=>{
-          p = document.createElement('p');
-          t = document.createTextNode(this.captionSet[obj.type] + obj.terms.join(', '));
-          p.appendChild(t);
-          d.appendChild(p);
-        });
-        this.resultsDiv.insertBefore(d, this.resultsDiv.firstChild);
-        return true;
-      }
-      catch(e){
-        console.log('ERROR: ' + e.message);
-        return false;
-      }
     }
     return true;
   }
@@ -1592,7 +1563,7 @@ if (this.discardedTerms.length > 0){
   //an entry for the document.
                   self.resultSet.set(inst.docUri, {docUri: inst.docUri,
                     docTitle: inst.docTitle,
-                    score: inst.score,
+                    //score: inst.score, //See below: which is right? TODO.
                     contexts: currContexts,
                     score: currContexts.length});
                 }
@@ -1989,7 +1960,7 @@ if (this.discardedTerms.length > 0){
   */
 class SSResultSet{
 /** 
-  * @constructor
+  * constructor
   * @description The constructor is typically called from the host
   *              StaticSearch instance, and it passes only the 
   *              information required by the result set object.
@@ -2446,7 +2417,7 @@ class SSResultSet{
   */
   class XSet extends Set{
 /** 
-  * @constructor
+  * constructor
   * @description The constructor receives a single optional parameter
   *              which if present is used by the ancestor Set object
   *              constructor.
