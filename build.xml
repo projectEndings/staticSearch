@@ -46,6 +46,9 @@
   <property name="ssClosure" value="${ssBaseDir}/lib/closure-compiler.jar"/>
   <taskdef name="jscomp" classname="com.google.javascript.jscomp.ant.CompileTask" classpath="${ssClosure}"/>
   
+  <!-- Normally we suppress warnings, but we may turn them ("verbose") on for testing. -->
+  <property name="ssClosureWarning" value="quiet"/>
+  
 
   <!-- DEPRECATED UNPREFIXED PROPERTIES. IF SET, SHOULD ABORT THE BUILD.
          REMOVE AFTER 1.2 RELEASE. -->
@@ -300,6 +303,23 @@
     <move file="${tempSearchPageOutput}" tofile="${ssSearchFilePath}"/>
 
   </target>
+  
+  <target name="makeDebugSearchPage">
+    <description>
+      TARGET: makeDebugSearchPage
+      This copies the newly-produced search page to a new file
+      and then replaces the link to ssSearch.js with one to 
+      ssSearch-debug.js, for better testing.
+    </description>
+    <propertyregex property="ssDebugSearchPage" 
+                   input="${ssSearchFilePath}"
+                   regexp="(\.[a-zA-Z]+)$"
+                   replace="-debug\1"
+                   global="false"/>
+    <echo message="Creating debug search page: ${ssDebugSearchPage}"/>
+    <copy file="${ssSearchFilePath}" tofile="${ssDebugSearchPage}"/>
+    <replace file="${ssDebugSearchPage}" token="ssSearch.js" value="ssSearch-debug.js"/>
+  </target>
 
   <target name="report">
     <description>
@@ -340,6 +360,7 @@
       <fileset dir="${ssBaseDir}/js">
         <include name="ssSearch.js"/>
         <include name="ssSearch-debug.js"/>
+        <include name="ssHighlight.js"/>
       </fileset>
       <fileset dir="${ssBaseDir}/css">
         <include name="ss**.css"/>
@@ -362,6 +383,9 @@
     <delete dir="${staticSearchDir}/temp"/>
     <!--Added 2021-02-19: Remove the dictionary files-->
     <delete dir="${staticSearchDir}/dicts"/>
+    <!--Added 2021-03-17: Remove the JS build files. -->
+    <delete file="${ssBaseDir}/js/ssSearch.js"/>
+    <delete file="${ssBaseDir}/js/ssSearch-debug.js"/>
   </target>
 
   <target name="buildJS">
@@ -385,7 +409,7 @@
       </fileset>
     </concat>
     <!-- Note that we're currently suppressing warnings when compiling. -->
-    <jscomp compilationLevel="simple" warning="quiet" debug="false" output="${ssBaseDir}/js/ssSearch.js">
+    <jscomp compilationLevel="simple" warning="${ssClosureWarning}" debug="false" output="${ssBaseDir}/js/ssSearch.js">
       <sources dir="${ssBaseDir}/js">
         <file name="ssSearch-debug.js"/>
       </sources>
@@ -401,7 +425,7 @@
   </target>
 
   <target name="allButValidate"
-    depends="init, config, tokenize, json, createStemsFile, copyFiles, makeSearchPage, report, clean">
+    depends="init, config, tokenize, json, buildJS, createStemsFile, copyFiles, makeSearchPage, report, clean">
     <description>
       TARGET: allButValidate
       Target to override validation, which is helpful in cases
@@ -410,7 +434,7 @@
   </target>
 
   <target name="test"
-    depends="init, validate, config, tokenize, json, createStemsFile, copyFiles, makeSearchPage, report">
+    depends="init, validate, config, tokenize, json, buildJS, createStemsFile, copyFiles, makeSearchPage, makeDebugSearchPage, report">
     <description>
       TARGET: test
       Target that runs the whole process, but does not clean up the
@@ -418,7 +442,7 @@
   </target>
 
   <target name="basic"
-    depends="init, validate, config, tokenize, json, createStemsFile, copyFiles, makeSearchPage, clean">
+    depends="init, validate, config, tokenize, json, buildJS, createStemsFile, copyFiles, makeSearchPage, clean">
     <description>
       TARGET: basic
       Target that runs the whole process other than the report creation.
