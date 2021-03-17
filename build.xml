@@ -111,7 +111,6 @@
   <target name="init">
     <description>
       TARGET: init
-      
       This target initializes the static search indexing process. It first
       deletes any previous results from an earlier build and then recreates the staticSearchDir,
       which is simply the parent directory of the search file specified in the config file. In the
@@ -163,11 +162,13 @@
   </target>
 
   <target name="validate">
-    <description>Task to validate that the source XHTML is well-formed XHTML. Note that this DOES
+    <description>
+      TARGET: validate
+      Task to validate that the source XHTML is well-formed XHTML. Note that this DOES
       NOT check whether or not it is valid XHTML: only that it is well-formed. This target also
       checks the config file and sees if it's invalid. We don't fail if it's invalid, though, since
-      we must assume that some people just don't care: but raise the error anyway. </description>
-
+      we must assume that some people just don't care: but raise the error anyway. 
+    </description>
     <echo message="Validating ${ssCollectionDirName} for well-formedness"/>
     <!--@lenient='true' since we are only checking well-formedness-->
     <xmlvalidate lenient="true">
@@ -242,7 +243,6 @@
       This target creates the ssStems.json file by first
       retrieving the length of all the JSONs available, and then create a JSON from that document.
       This is necessary for running wildcard searches. </description>
-
     <echo message="Creating ssStems.json file..."/>
     <echo message="First, measure the JSON files..."/>
     <length property="stemLines" mode="each">
@@ -378,7 +378,8 @@
     <description>
       TARGET: clean
       This target deletes the temporary directory, since it's no longer
-      useful. </description>
+      useful. 
+    </description>
     <echo message="Cleaning temporary directory..."/>
     <delete dir="${staticSearchDir}/temp"/>
     <!--Added 2021-02-19: Remove the dictionary files-->
@@ -438,7 +439,8 @@
     <description>
       TARGET: test
       Target that runs the whole process, but does not clean up the
-      temporary files. Useful for debugging. </description>
+      temporary files. Also creates debug/testing version of the 
+      search page. Useful for debugging. </description>
   </target>
 
   <target name="basic"
