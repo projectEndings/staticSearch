@@ -24,12 +24,6 @@
  * code with non-strict JavaScript.   
  */
 
-/* jshint strict:false */
-/* jshint esversion: 6*/
-/* jshint strict: global*/
-
-"use strict";
-
 /*  We use a class to put everything in our
  *  SSStemmer 'namespace' (= staticSearch Stemmer). */
 

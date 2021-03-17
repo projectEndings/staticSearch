@@ -333,20 +333,24 @@
       TARGET: copyFiles
       This target copies the necessary Javascript and CSS files from
       the staticSearch directory (i.e. this directory) and places them in the project's static
-      search directory. </description>
+      search directory. We copy the compiled JS file which contains everything, along with 
+      the expanded debug version, and the CSS.
+    </description>
     <copy todir="${staticSearchDir}/">
       <fileset dir="${ssBaseDir}/js">
-        <include name="ss**.js"/>
+        <include name="ssSearch.js"/>
+        <include name="ssSearch-debug.js"/>
       </fileset>
       <fileset dir="${ssBaseDir}/css">
         <include name="ss**.css"/>
       </fileset>
     </copy>
-    <copy todir="${staticSearchDir}/">
+    <!-- As of 1.3, we are compiling the stemmer into the main js file. -->
+    <!--<copy todir="${staticSearchDir}/">
       <fileset dir="${ssBaseDir}/stemmers/${ssStemmerFolder}">
         <include name="ssStemmer.js"/>
       </fileset>
-    </copy>
+    </copy>-->
   </target>
 
   <target name="clean">
@@ -376,22 +380,20 @@
         <include name="SSResultSet.js"/>
         <include name="XSet.js"/>
       </fileset>
+      <fileset dir="${ssBaseDir}/stemmers/${ssStemmerFolder}">
+        <include name="ssStemmer.js"/>
+      </fileset>
     </concat>
-    <!--<java classpath="${ssClosure}" classname="com.google.javascript.jscomp.ant.CompileTask" failonerror="true">
-      <arg value="${ssBaseDir}/js/ssSearch-debug.js"/>
-      <arg line="-\-js-output-file ${ssBaseDir}/js/ssSearch.js"/>
-    </java>-->
-    <jscomp compilationLevel="simple" warning="verbose" debug="false" output="${ssBaseDir}/js/ssSearch.js">
+    <!-- Note that we're currently suppressing warnings when compiling. -->
+    <jscomp compilationLevel="simple" warning="quiet" debug="false" output="${ssBaseDir}/js/ssSearch.js">
       <sources dir="${ssBaseDir}/js">
         <file name="ssSearch-debug.js"/>
       </sources>
     </jscomp>
   </target>
 
-
-
   <target name="all"
-    depends="init, validate, config, tokenize, json,  createStemsFile, copyFiles, makeSearchPage, report, clean">
+    depends="init, validate, config, tokenize, json, buildJS, createStemsFile, copyFiles, makeSearchPage, report, clean">
     <description>
       TARGET: all
       Default target for running the entire static search creation process.
