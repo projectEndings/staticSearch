@@ -41,6 +41,14 @@
 
   <!-- Use the saxon in our lib folder. -->
   <property name="ssSaxon" value="${ssBaseDir}/lib/saxon-he-10.jar"/>
+  
+  <!-- Use the closure compiler in our lib folder. -->
+  <property name="ssClosure" value="${ssBaseDir}/lib/closure-compiler.jar"/>
+  <taskdef name="jscomp" classname="com.google.javascript.jscomp.ant.CompileTask" classpath="${ssClosure}"/>
+  
+  <!-- Normally we suppress warnings, but we may turn them ("verbose") on for testing. -->
+  <property name="ssClosureWarning" value="quiet"/>
+  
 
   <!-- DEPRECATED UNPREFIXED PROPERTIES. IF SET, SHOULD ABORT THE BUILD.
          REMOVE AFTER 1.2 RELEASE. -->
@@ -101,7 +109,9 @@
      ****************************************************************-->
 
   <target name="init">
-    <description> target: init This target initializes the static search indexing process. It first
+    <description>
+      TARGET: init
+      This target initializes the static search indexing process. It first
       deletes any previous results from an earlier build and then recreates the staticSearchDir,
       which is simply the parent directory of the search file specified in the config file. In the
       special case of the test, this target also generates the VERSION file. </description>
@@ -152,11 +162,13 @@
   </target>
 
   <target name="validate">
-    <description>Task to validate that the source XHTML is well-formed XHTML. Note that this DOES
+    <description>
+      TARGET: validate
+      Task to validate that the source XHTML is well-formed XHTML. Note that this DOES
       NOT check whether or not it is valid XHTML: only that it is well-formed. This target also
       checks the config file and sees if it's invalid. We don't fail if it's invalid, though, since
-      we must assume that some people just don't care: but raise the error anyway. </description>
-
+      we must assume that some people just don't care: but raise the error anyway. 
+    </description>
     <echo message="Validating ${ssCollectionDirName} for well-formedness"/>
     <!--@lenient='true' since we are only checking well-formedness-->
     <xmlvalidate lenient="true">
@@ -176,7 +188,9 @@
 
 
   <target name="config">
-    <description> target: config This target creates an XSLT module from the XML configuration file,
+    <description>
+      TARGET: config
+      This target creates an XSLT module from the XML configuration file,
       and converts the various configuration options into XSLT variables, et cetera, necessary
       throughout in the pipeline. The XSLT is run on itself, but loads the configuration file as a
       parameter. </description>
@@ -192,7 +206,9 @@
 
 
   <target name="tokenize">
-    <description> target: tokenize This target runs the multi-stage tokenization process on the
+    <description>
+      TARGET: tokenize
+      This target runs the multi-stage tokenization process on the
       XHTML collection and creates a stash of tokenized and cleaned up files from which we generate
       the individual token JSONs. The XSLT is run on itself and uses the information in the config
       XSLT module (generated in the config task) to determine the input files, et cetera. </description>
@@ -206,7 +222,9 @@
   </target>
 
   <target name="json">
-    <description> target: json This target creates the individual token JSON files from the
+    <description>
+      TARGET: json
+      This target creates the individual token JSON files from the
       tokenized XHTML files created by the above tokenize task. It is run on itself and uses the
       information in the configuration XSLT module (generated in the config task) to determine input
       files, et cetera. Note that this task will likely create *a lot* of files and may take some
@@ -220,10 +238,11 @@
   </target>
 
   <target name="createStemsFile">
-    <description> target: createStemsFile This target creates the ssStems.json file by first
+    <description>
+      TARGET: createStemsFile
+      This target creates the ssStems.json file by first
       retrieving the length of all the JSONs available, and then create a JSON from that document.
       This is necessary for running wildcard searches. </description>
-
     <echo message="Creating ssStems.json file..."/>
     <echo message="First, measure the JSON files..."/>
     <length property="stemLines" mode="each">
@@ -245,7 +264,9 @@
 
 
   <target name="makeSearchPage">
-    <description> target: makeSearchPage This target creates the search page at the location
+    <description>
+      TARGET: makeSearchPage
+      This target creates the search page at the location
       specified in the configuration file. If a file already exists, then this process modifies the
       existing search page by replacing the content of div/@id='staticSearch'. If the file does not
       exist, then a generic search page is generated. This runs an XSLT on itself with an output
@@ -282,9 +303,28 @@
     <move file="${tempSearchPageOutput}" tofile="${ssSearchFilePath}"/>
 
   </target>
+  
+  <target name="makeDebugSearchPage">
+    <description>
+      TARGET: makeDebugSearchPage
+      This copies the newly-produced search page to a new file
+      and then replaces the link to ssSearch.js with one to 
+      ssSearch-debug.js, for better testing.
+    </description>
+    <propertyregex property="ssDebugSearchPage" 
+                   input="${ssSearchFilePath}"
+                   regexp="(\.[a-zA-Z]+)$"
+                   replace="-debug\1"
+                   global="false"/>
+    <echo message="Creating debug search page: ${ssDebugSearchPage}"/>
+    <copy file="${ssSearchFilePath}" tofile="${ssDebugSearchPage}"/>
+    <replace file="${ssDebugSearchPage}" token="ssSearch.js" value="ssSearch-debug.js"/>
+  </target>
 
   <target name="report">
-    <description> target: report This target creates a report page from the various products
+    <description>
+      TARGET: report
+      This target creates a report page from the various products
       generated by the static search. It is not necessary for static search to work, but it is
       *highly* recommended, since the result page contains various warnings as well as useful
       statistics that track word use, et cetera. The XSLT is run on itself and creates a result
@@ -309,59 +349,105 @@
   </target>
 
   <target name="copyFiles">
-
-    <description> target: copyFiles This target copies the necessary Javascript and CSS files from
+    <description>
+      TARGET: copyFiles
+      This target copies the necessary Javascript and CSS files from
       the staticSearch directory (i.e. this directory) and places them in the project's static
-      search directory. </description>
+      search directory. We copy the compiled JS file which contains everything, along with 
+      the expanded debug version, and the CSS.
+    </description>
     <copy todir="${staticSearchDir}/">
       <fileset dir="${ssBaseDir}/js">
-        <include name="ss**.js"/>
+        <include name="ssSearch.js"/>
+        <include name="ssSearch-debug.js"/>
+        <include name="ssHighlight.js"/>
       </fileset>
       <fileset dir="${ssBaseDir}/css">
         <include name="ss**.css"/>
       </fileset>
     </copy>
-    <copy todir="${staticSearchDir}/">
+    <!-- As of 1.3, we are compiling the stemmer into the main js file. -->
+    <!--<copy todir="${staticSearchDir}/">
       <fileset dir="${ssBaseDir}/stemmers/${ssStemmerFolder}">
         <include name="ssStemmer.js"/>
       </fileset>
-    </copy>
+    </copy>-->
   </target>
 
   <target name="clean">
-    <description> target: clean This target deletes the temporary directory, since it's no longer
-      useful. </description>
+    <description>
+      TARGET: clean
+      This target deletes the temporary directory, since it's no longer
+      useful. 
+    </description>
     <echo message="Cleaning temporary directory..."/>
     <delete dir="${staticSearchDir}/temp"/>
     <!--Added 2021-02-19: Remove the dictionary files-->
     <delete dir="${staticSearchDir}/dicts"/>
+    <!--Added 2021-03-17: Remove the JS build files. -->
+    <delete file="${ssBaseDir}/js/ssSearch.js"/>
+    <delete file="${ssBaseDir}/js/ssSearch-debug.js"/>
   </target>
 
-
-
+  <target name="buildJS">
+    <description>
+      TARGET: buildJS
+      This target concatenates the various JS modular files
+      into a single version called ssSearch-debug.js, which 
+      is uncompressed, and then calls the Closure compiler
+      to create a compressed version for production use.
+    </description>
+    <echo message="Compiling JavaScript source code..."/>
+    <concat destfile="${ssBaseDir}/js/ssSearch-debug.js" encoding="UTF-8">
+      <fileset dir="${ssBaseDir}/js">
+        <include name="ssUtilities.js"/>
+        <include name="StaticSearch.js"/>
+        <include name="SSResultSet.js"/>
+        <include name="XSet.js"/>
+      </fileset>
+      <fileset dir="${ssBaseDir}/stemmers/${ssStemmerFolder}">
+        <include name="ssStemmer.js"/>
+      </fileset>
+    </concat>
+    <!-- Note that we're currently suppressing warnings when compiling. -->
+    <jscomp compilationLevel="simple" warning="${ssClosureWarning}" debug="false" output="${ssBaseDir}/js/ssSearch.js">
+      <sources dir="${ssBaseDir}/js">
+        <file name="ssSearch-debug.js"/>
+      </sources>
+    </jscomp>
+  </target>
 
   <target name="all"
-    depends="init, validate, config, tokenize, json,  createStemsFile, copyFiles, makeSearchPage, report, clean">
-    <description> target: all Default target for running the entire static search creation process.
+    depends="init, validate, config, tokenize, json, buildJS, createStemsFile, copyFiles, makeSearchPage, report, clean">
+    <description>
+      TARGET: all
+      Default target for running the entire static search creation process.
     </description>
   </target>
 
   <target name="allButValidate"
-    depends="init, config, tokenize, json, createStemsFile, copyFiles, makeSearchPage, report, clean">
-    <description> target: allButValidate Target to override validation, which is helpful in cases
+    depends="init, config, tokenize, json, buildJS, createStemsFile, copyFiles, makeSearchPage, report, clean">
+    <description>
+      TARGET: allButValidate
+      Target to override validation, which is helpful in cases
       where the HTML output has been validated by a stricter set of validation rules (like the VNU
       validator) </description>
   </target>
 
   <target name="test"
-    depends="init, validate, config, tokenize, json, createStemsFile, copyFiles, makeSearchPage, report">
-    <description> target: test Target that runs the whole process, but does not clean up the
-      temporary files. Useful for debugging. </description>
+    depends="init, validate, config, tokenize, json, buildJS, createStemsFile, copyFiles, makeSearchPage, makeDebugSearchPage, report">
+    <description>
+      TARGET: test
+      Target that runs the whole process, but does not clean up the
+      temporary files. Also creates debug/testing version of the 
+      search page. Useful for debugging. </description>
   </target>
 
   <target name="basic"
-    depends="init, validate, config, tokenize, json, createStemsFile, copyFiles, makeSearchPage, clean">
-    <description> target: basic Target that runs the whole process other than the report creation.
+    depends="init, validate, config, tokenize, json, buildJS, createStemsFile, copyFiles, makeSearchPage, clean">
+    <description>
+      TARGET: basic
+      Target that runs the whole process other than the report creation.
     </description>
   </target>
 

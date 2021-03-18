@@ -191,9 +191,15 @@
                 <xsl:message>WARNING: Contents of div/@id='staticSearch' will be overwritten</xsl:message>
             </xsl:if>
 
-            <!--Now add the scripts to the staticSearch library-->
-            <script src="{$outputFolder}/ssStemmer.js"><!-- Don't self-close script tags. --></script>
+            <!--Now add the script for the staticSearch library-->
+
             <script src="{$outputFolder}/ssSearch.js"><!-- Don't self-close script tags. --></script>
+
+            <xsl:comment>
+              Note that if you want to debug a problem with the JavaScript, you can
+              change "ssSearch.js" to "ssSearch-debug.js" to link the uncompressed, 
+              unminified code instead.
+            </xsl:comment>
 
             <!--Special on script onload to the start up the StaticSearch-->
             <script>
