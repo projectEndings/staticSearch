@@ -37,11 +37,11 @@
                              //and no-filters-selected.
   }
 /** @function XSet~xUnion
-  * @param {XSet} xSet2 another instance of the XSet class.
+  * @param {!XSet} xSet2 another instance of the XSet class.
   * @description this computes the union of the two sets (all
   * items appearing in either set) and returns the result as
   * another XSet instance.
-  * @return {XSet} a new instance of XSet including all items
+  * @return {!XSet} a new instance of XSet including all items
   * from both sets.
   */
   xUnion(xSet2){
@@ -69,7 +69,7 @@
     return new XSet([...this].filter(x => !xSet2.has(x)));
   }
 /** @function XSet~addArray
-  * @param {Array} arr an array of values that are to be added.
+  * @param {!Array} arr an array of values that are to be added.
   * @description this is a convenience function for adding a set of
   * values in a single operation.
   */
