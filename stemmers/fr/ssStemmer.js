@@ -125,10 +125,10 @@ class SSStemmer {
     let step1Result = this.step1(preProc, rvr1r2);
     let doStep2a = (!(step1Result.step1MadeChange) || step1Result.foundMent);
     let step2First = (doStep2a)? this.step2a(step1Result.result, rvr1r2) : step1Result.result;
-    let step2aMadeChange = (step1Result.result !== step2First);
+    let step2aMadeChange = (step1Result.result != step2First);
     let doStep2b = (doStep2a && !(step2aMadeChange));
     let step2Second = (doStep2b)? this.step2b(step2First, rvr1r2) : step2First;
-    let step2bMadeChange = (step2First !== step2Second);
+    let step2bMadeChange = (step2First != step2Second);
     let doStep3 = (doStep2b && step2bMadeChange)? true :
         (!(doStep2b) && (doStep2a && step2aMadeChange))? true : 
         (step1Result.step1MadeChange)? true : false;
@@ -219,7 +219,7 @@ class SSStemmer {
    */
   step1a(token, r2of){
     let rep = token.replace(this.reStep1a, '');
-    return ((rep !== token) && (rep.length >= r2of))? rep : token;
+    return ((rep != token) && (rep.length >= r2of))? rep : token;
   }
 
   /**
@@ -232,7 +232,7 @@ class SSStemmer {
    */
   step1b(token, r2of){
     let rep = token.replace(this.reStep1b, '');
-    if ((rep !== token) && (rep.length >= r2of)){
+    if ((rep != token) && (rep.length >= r2of)){
       let icGone = rep.replace(/ic$/, '');
       if ((icGone == rep) || (icGone.length >= r2of)){
         return icGone;
@@ -253,7 +253,7 @@ class SSStemmer {
    */
   step1c(token, r2of){
     let rep = token.replace(this.reStep1c, '');
-    return ((rep !== token) && (rep.length >= r2of))? rep + 'log' : token;
+    return ((rep != token) && (rep.length >= r2of))? rep + 'log' : token;
   }
   /**
    * step1d replaces u[st]ions? with u if within R2.
@@ -263,7 +263,7 @@ class SSStemmer {
    */
   step1d(token, r2of){
     let rep = token.replace(this.reStep1d, '');
-    return ((rep !== token) && (rep.length >= r2of))? rep + 'u' : token;
+    return ((rep != token) && (rep.length >= r2of))? rep + 'u' : token;
   }
   /**
    * step1e replaces ences? with ent if within R2.
@@ -273,7 +273,7 @@ class SSStemmer {
    */
   step1e(token, r2of){
     let rep = token.replace(this.reStep1e, '');
-    return ((rep !== token) && (rep.length >= r2of))? rep + 'ent' : token;
+    return ((rep != token) && (rep.length >= r2of))? rep + 'ent' : token;
   }
   /**
    * step1f deletes ements? and replaces preceding components in various
@@ -394,7 +394,7 @@ class SSStemmer {
     }
     else{
       let rep = token.replace(/aux$/, 'al');
-      return ((rep !== token) && ((rep.length - 2) >= r1of))? rep : token;
+      return ((rep != token) && ((rep.length - 2) >= r1of))? rep : token;
     }
   }
   /**
@@ -421,7 +421,7 @@ class SSStemmer {
    */
   step1k(token, r1of){
     let rep = token.replace(new RegExp('(' + this.nonVowel + ')' + this.reStep1k.source), '$1');
-    return ((rep !== token) && (rep.length >= r1of))? rep : token;
+    return ((rep != token) && (rep.length >= r1of))? rep : token;
   }
   /**
    * step1l replaces amment with ant and emment with ent if within RV.
@@ -431,7 +431,7 @@ class SSStemmer {
    */
   step1l(token, rvof){
     let rep = token.replace(this.reStep1l, '$1nt');
-    return ((rep !== token) && ((rep.length - 3) >= rvof))? rep : token;
+    return ((rep != token) && ((rep.length - 3) >= rvof))? rep : token;
   }
   /**
    * step1m removes ments? if preceded by a vowel within RV.
@@ -441,7 +441,7 @@ class SSStemmer {
    */
   step1m(token, rvof){
     let rep = token.replace(new RegExp('(' + this.vowel + ')' + this.reStep1m.source), '$1');
-    return ((rep !== token) && ((rep.length - 1) >= rvof))? rep : token;
+    return ((rep != token) && ((rep.length - 1) >= rvof))? rep : token;
   }
   /**
    * step2a removes any of a long list of suffixes beginning with i if 
@@ -454,7 +454,7 @@ class SSStemmer {
   step2a(token, rvr1r2){
     let currRv = token.substring(rvr1r2.rvof);
     let rep = currRv.replace(this.reStep2a, '$1');
-    return (rep !== currRv)? token.replace(new RegExp(currRv + '$'), rep) : token;
+    return (rep != currRv)? token.replace(new RegExp(currRv + '$'), rep) : token;
   }
   /**
    * step2b removes any of a long list of suffixes beginning with 
@@ -471,20 +471,20 @@ class SSStemmer {
     let longestMatch = currRv.replace(this.reStep2b, '$1');
     if (longestMatch == 'ions'){
       let rep1 = token.replace(/ions$/, '');
-      return ((rep1 !== token) && (rep1.length >= rvr1r2.rvof) && (rep1.length >= rvr1r2.r2of))? rep1 : token;
+      return ((rep1 != token) && (rep1.length >= rvr1r2.rvof) && (rep1.length >= rvr1r2.r2of))? rep1 : token;
     }
     else{
-      if (longestMatch.match(this.reStep2b1) !== null){
+      if (longestMatch.match(this.reStep2b1) != null){
         return token.replace(new RegExp(longestMatch + '$'), '');
       }
       else{
-        if (longestMatch.match(this.reStep2b2) !== null){
+        if (longestMatch.match(this.reStep2b2) != null){
           let rep2 = token.replace(new RegExp(longestMatch + '$'), '');
           if (rep2.match(/e$/) == null){
             return rep2;
           }
           else{
-            if (rep2.match(/e$/) !== null){
+            if (rep2.match(/e$/) != null){
               return ((rep2.length - 1) >= rvr1r2.rvof)? rep2.replace(/e$/, '') : rep2;
             }
             else{
@@ -513,13 +513,13 @@ class SSStemmer {
     let rep2 = rep1.replace(/([st])ion$/, '$1');
     let rep2Len = rep2.length;
     
-    let step4a = ((token !== rep2) && (rep2Len >= rvr1r2.r2of) && (rep2Len >= rvr1r2.rvof))? rep2 : rep1;
+    let step4a = ((token != rep2) && (rep2Len >= rvr1r2.r2of) && (rep2Len >= rvr1r2.rvof))? rep2 : rep1;
     
     let rep3 = step4a.replace(/(([Ii]ère)|([Ii]er))$/, 'i');
     
-    let step4b = ((step4a !== rep3) && ((rep3.length - 1) >= rvr1r2.rvof))? rep3 : step4a;
+    let step4b = ((step4a != rep3) && ((rep3.length - 1) >= rvr1r2.rvof))? rep3 : step4a;
     
-    return ((step4b.match(/e$/) !== null) && (step4b.length > rvr1r2.rvof))? step4b.replace(/e$/, '') : step4b;
+    return ((step4b.match(/e$/) != null) && (step4b.length > rvr1r2.rvof))? step4b.replace(/e$/, '') : step4b;
   }
   
   /**
@@ -598,8 +598,8 @@ class SSStemmer {
       }
     }
     return {result: result, 
-            step1MadeChange: (token !== result), 
-            foundMent: (longestMatch.match(/^(([ae]mment)|(ments?))$/) !== null)};
+            step1MadeChange: (token != result), 
+            foundMent: (longestMatch.match(/^(([ae]mment)|(ments?))$/) != null)};
   }
   
 }
