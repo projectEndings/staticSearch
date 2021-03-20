@@ -389,7 +389,7 @@ class SSStemmer{
      for (var i=0; i<this.arrStep2Seq.length; i++){
        if (token.match(this.arrStep2Seq[i][0])){
          var nuked = token.replace(this.arrStep2Seq[i][1], '');
-         if (nuked !== token){
+         if (nuked != token){
            if ((nuked.length + 1) >= R1){
              result = token.replace(this.arrStep2Seq[i][1], this.arrStep2Seq[i][2]);
            }
@@ -416,7 +416,7 @@ class SSStemmer{
      for (var i=0; i<this.arrStep3Seq.length; i++){
        var offset = (this.arrStep3Seq[i][0] == 2)? R2 : R1;
        var nuked = token.replace(this.arrStep3Seq[i][1], '');
-       if (nuked !== token){
+       if (nuked != token){
          if ((nuked.length + 1) >= offset){
            result = token.replace(this.arrStep3Seq[i][1], this.arrStep3Seq[i][2]);
          }
@@ -439,7 +439,7 @@ class SSStemmer{
      var result = token;
      for (var i=0; i<this.arrStep4Seq.length; i++){
        var nuked = token.replace(this.arrStep4Seq[i][0], '');
-       if (nuked !== token){
+       if (nuked != token){
          nuked = token.replace(this.arrStep4Seq[i][1], '')
          if ((nuked.length + 1) >= R2){
            result = nuked;
