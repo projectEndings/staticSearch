@@ -256,7 +256,7 @@ class SSStemmer{
      * after the end of the word, so its offset is the word-length + 1.
      * @param  {String} token the input token
      * @param  {Number} r1of  the offset of the R1 region
-     * @return {Boolean}      true if word is short, otherwise false.
+     * @return {boolean}      true if word is short, otherwise false.
      */
      wordIsShort(token, r1of){
        var R1IsNull = (token.length < r1of);
