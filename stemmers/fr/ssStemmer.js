@@ -116,8 +116,8 @@ class SSStemmer {
   /**
    * stem is the core function that takes a single token and returns
    * its stemmed version.
-   * @param  {String} token The input token
-   * @return {String}       the stemmed token
+   * @param  {string} token The input token
+   * @return {string}       the stemmed token
    */
   stem(token) {
     let preProc = this.preflight(token);
@@ -148,8 +148,8 @@ class SSStemmer {
   /**
    * preflight does a couple of simple replacements that need to precede
    * the actual stemming process.
-   * @param  {String} token the input token
-   * @return {String}       the result of the replacement operations
+   * @param  {string} token the input token
+   * @return {string}       the result of the replacement operations
    */
   preflight(token) {
       return token.replace(new RegExp('y(' + this.vowel + ')', 'g'), 'Y$1')
@@ -165,11 +165,11 @@ class SSStemmer {
    * getRVR1R2 decomposes an input token to get the RV, R1 and R2 regions,
    * and returns the string values of those regions, along with their
    * offsets.
-   * @param  {String} token the input token
+   * @param  {string} token the input token
    * @return {Object}       an object with six members:
-   *                        rv {String} the part of the word constituting RV
-   *                        r1 {String} the part of the word constituting R1
-   *                        r2 {String} the part of the word constituting R2
+   *                        rv {string} the part of the word constituting RV
+   *                        r1 {string} the part of the word constituting R1
+   *                        r2 {string} the part of the word constituting R2
    *                        rvof {Number} the offset of the start of RV
    *                        r1of {Number} the offset of the start of R1
    *                        r2of {Number} the offset of the start of R2
@@ -213,9 +213,9 @@ class SSStemmer {
 
   /**
    * step1a deletes any of a number of suffixes if they appear within R2.
-   * @param  {String} token the input token
+   * @param  {string} token the input token
    * @param  {Number} r2of  the offset of R2 in the token.
-   * @return {String}       the result of the replacement operations
+   * @return {string}       the result of the replacement operations
    */
   step1a(token, r2of){
     let rep = token.replace(this.reStep1a, '');
@@ -226,9 +226,9 @@ class SSStemmer {
    * step1b deletes any of a number of suffixes if they appear within R2;
    * then deletes any preceding ic if it's in R2, or replaces it with iqU
    * if it's not.
-   * @param  {String} token the input token
+   * @param  {string} token the input token
    * @param  {Number} r2of  the offset of R2 in the token.
-   * @return {String}       the result of the replacement operations
+   * @return {string}       the result of the replacement operations
    */
   step1b(token, r2of){
     let rep = token.replace(this.reStep1b, '');
@@ -247,9 +247,9 @@ class SSStemmer {
   }
   /**
    * step1c replaces logie[s] with log if within R2.
-   * @param  {String} token the input token
+   * @param  {string} token the input token
    * @param  {Number} r2of  the offset of R2 in the token.
-   * @return {String}       the result of the replacement operations
+   * @return {string}       the result of the replacement operations
    */
   step1c(token, r2of){
     let rep = token.replace(this.reStep1c, '');
@@ -257,9 +257,9 @@ class SSStemmer {
   }
   /**
    * step1d replaces u[st]ions? with u if within R2.
-   * @param  {String} token the input token
+   * @param  {string} token the input token
    * @param  {Number} r2of  the offset of R2 in the token.
-   * @return {String}       the result of the replacement operations
+   * @return {string}       the result of the replacement operations
    */
   step1d(token, r2of){
     let rep = token.replace(this.reStep1d, '');
@@ -267,9 +267,9 @@ class SSStemmer {
   }
   /**
    * step1e replaces ences? with ent if within R2.
-   * @param  {String} token the input token
+   * @param  {string} token the input token
    * @param  {Number} r2of  the offset of R2 in the token.
-   * @return {String}       the result of the replacement operations
+   * @return {string}       the result of the replacement operations
    */
   step1e(token, r2of){
     let rep = token.replace(this.reStep1e, '');
@@ -278,9 +278,9 @@ class SSStemmer {
   /**
    * step1f deletes ements? and replaces preceding components in various
    * ways depending on context
-   * @param  {String} token the input token
+   * @param  {string} token the input token
    * @param  {Object} rvr1r2  the complete RVR1R2 object.
-   * @return {String}       the result of the replacement operations
+   * @return {string}       the result of the replacement operations
    */
   step1f(token, rvr1r2){
     //Delete if in RV.
@@ -326,9 +326,9 @@ class SSStemmer {
   }
   /**
    * step1g  deletes ités? if within R2 and modifies preceding bits.
-   * @param  {String} token the input token
+   * @param  {string} token the input token
    * @param  {Number} r2of  the offset of R2 in the token.
-   * @return {String}       the result of the replacement operations
+   * @return {string}       the result of the replacement operations
    */
   step1g(token, r2of){
     let rep = token.replace(this.reStep1g, '');
@@ -356,9 +356,9 @@ class SSStemmer {
   }
   /**
    * step1h  deletes i((f)|(ve))s?$ if within R2 and modifies preceding bits.
-   * @param  {String} token the input token
+   * @param  {string} token the input token
    * @param  {Number} r2of  the offset of R2 in the token.
-   * @return {String}       the result of the replacement operations
+   * @return {string}       the result of the replacement operations
    */
   step1h(token, r2of){
     let rep = token.replace(this.reStep1h, '');
@@ -384,9 +384,9 @@ class SSStemmer {
   }
   /**
    * step1i replaces eaux with eau, and aux with al if within R1.
-   * @param  {String} token the input token
+   * @param  {string} token the input token
    * @param  {Number} r1of  the offset of R1 in the token.
-   * @return {String}       the result of the replacement operations
+   * @return {string}       the result of the replacement operations
    */
   step1i(token, r1of){
     if (token.match(/eaux$/)){
@@ -399,9 +399,9 @@ class SSStemmer {
   }
   /**
    * step1j deletes euse(s) if in R2, or replaces with eux if within R1.
-   * @param  {String} token the input token
+   * @param  {string} token the input token
    * @param  {Object} rvr1r2  the complete RVR1R2 object.
-   * @return {String}       the result of the replacement operations
+   * @return {string}       the result of the replacement operations
    */
   step1j(token, rvr1r2){
     let rep = token.replace(this.reStep1j, '');
@@ -415,9 +415,9 @@ class SSStemmer {
   }
   /**
    * step1k deletes issements? if within R1 and preceded by a vowel.
-   * @param  {String} token the input token
+   * @param  {string} token the input token
    * @param  {Number} r1of  the offset of R1 in the token.
-   * @return {String}       the result of the replacement operations
+   * @return {string}       the result of the replacement operations
    */
   step1k(token, r1of){
     let rep = token.replace(new RegExp('(' + this.nonVowel + ')' + this.reStep1k.source), '$1');
@@ -425,9 +425,9 @@ class SSStemmer {
   }
   /**
    * step1l replaces amment with ant and emment with ent if within RV.
-   * @param  {String} token the input token
+   * @param  {string} token the input token
    * @param  {Number} rvof  the offset of RV in the token.
-   * @return {String}       the result of the replacement operations
+   * @return {string}       the result of the replacement operations
    */
   step1l(token, rvof){
     let rep = token.replace(this.reStep1l, '$1nt');
@@ -435,9 +435,9 @@ class SSStemmer {
   }
   /**
    * step1m removes ments? if preceded by a vowel within RV.
-   * @param  {String} token the input token
+   * @param  {string} token the input token
    * @param  {Number} rvof  the offset of RV in the token.
-   * @return {String}       the result of the replacement operations
+   * @return {string}       the result of the replacement operations
    */
   step1m(token, rvof){
     let rep = token.replace(new RegExp('(' + this.vowel + ')' + this.reStep1m.source), '$1');
@@ -447,9 +447,9 @@ class SSStemmer {
    * step2a removes any of a long list of suffixes beginning with i if 
    * preceded by a char with is neither vowel nor H, in RV. The test 
    * is carried out in RV.
-   * @param  {String} token the input token
+   * @param  {string} token the input token
    * @param  {Object} rvr1r2  the complete RVR1R2 object.
-   * @return {String}       the result of the replacement operations
+   * @return {string}       the result of the replacement operations
    */
   step2a(token, rvr1r2){
     let currRv = token.substring(rvr1r2.rvof);
@@ -462,9 +462,9 @@ class SSStemmer {
    * regex for matching all suffixes; reStep2b1 then handles suffixes
    * to be deleted if in RV, and reStep2b a set to be deleted if in RV
    * but where if there is a preceding e also in RV, it should be deleted.
-   * @param  {String} token the input token
+   * @param  {string} token the input token
    * @param  {Object} rvr1r2  the complete RVR1R2 object.
-   * @return {String}       the result of the replacement operations
+   * @return {string}       the result of the replacement operations
    */
   step2b(token, rvr1r2){
     let currRv = token.substring(rvr1r2.rvof);
@@ -501,9 +501,9 @@ class SSStemmer {
   }
   /**
    * step4 is a short sequence of replacesments done if step2 did not run.
-   * @param  {String} token the input token
+   * @param  {string} token the input token
    * @param  {Object} rvr1r2  the complete RVR1R2 object.
-   * @return {String}       the result of the replacement operations
+   * @return {string}       the result of the replacement operations
    */
   step4(token, rvr1r2){
     //If the word ends s, not preceded by a, i (unless itself preceded by H), o, u, è or s, delete it.
@@ -525,7 +525,7 @@ class SSStemmer {
   /**
    * step1 combines all the step1a, step1b etc. steps in a way that 
    * depends on what the longest suffix match is.  
-   * @param  {String} token the input token
+   * @param  {string} token the input token
    * @param  {Object} rvr1r2  the complete RVR1R2 object.
    * @return {Object} An object containing of the treated version of the token, a boolean
    *         for whether it was changed or not, and a boolean for whether one of amment, 
