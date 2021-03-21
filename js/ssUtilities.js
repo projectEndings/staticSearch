@@ -11,19 +11,6 @@
   * The code is licensed under both MPL and BSD.
   */
 
- /** WARNING:
-   * This lib has "use strict" defined. You may
-   * need to remove that if you are mixing this
-   * code with non-strict JavaScript.
-   */
-
-/* jshint strict:false */
-/* jshint esversion: 6*/
-/* jshint strict: global*/
-/* jshint browser: true */
-
-"use strict";
-
 /**
   * First some constant values for categorizing term types.
   * I would like to put these inside the class, but I can't
