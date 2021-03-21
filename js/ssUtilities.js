@@ -81,42 +81,42 @@
 
 /**
   * @property ss.captions
-  * @type {Array}
+  * @type {Map}
   * @description ss.captions is the an array of languages (default contains
   * only en and fr), each of which has some caption properties. Extend
   * by adding new languages or replace if necessary.
   */
   //English
-  ss.captions = [];
-  ss.captions['en'] = {};
-  ss.captions['en'].strSearching         = 'Searching...';
-  ss.captions['en'].strDocumentsFound    = 'Documents found: ';
-  ss.captions['en'][PHRASE]              = 'Exact phrase: ';
-  ss.captions['en'][MUST_CONTAIN]        = 'Must contain: ';
-  ss.captions['en'][MUST_NOT_CONTAIN]    = 'Must not contain: ';
-  ss.captions['en'][MAY_CONTAIN]         = 'May contain: ';
-  ss.captions['en'][WILDCARD]            = 'Wildcard term: ';
-  ss.captions['en'].strScore             = 'Score: ';
-  ss.captions['en'].strSearchTooBroad    = 'Your search is too broad. Include more letters in every term.';
-  ss.captions['en'].strDiscardedTerms    = 'Not searched (too common or too short): ';
-  ss.captions['en'].strShowMore          = 'Show more';
-  ss.captions['en'].strShowAll           = 'Show all';
-  ss.captions['en'].strTooManyResults    = 'Your search returned too many results. Include more filters or more search terms.'
+  ss.captions = new Map();
+  ss.captions.set('en', {});
+  ss.captions.get('en').strSearching         = 'Searching...';
+  ss.captions.get('en').strDocumentsFound    = 'Documents found: ';
+  ss.captions.get('en')[PHRASE]              = 'Exact phrase: ';
+  ss.captions.get('en')[MUST_CONTAIN]        = 'Must contain: ';
+  ss.captions.get('en')[MUST_NOT_CONTAIN]    = 'Must not contain: ';
+  ss.captions.get('en')[MAY_CONTAIN]         = 'May contain: ';
+  ss.captions.get('en')[WILDCARD]            = 'Wildcard term: ';
+  ss.captions.get('en').strScore             = 'Score: ';
+  ss.captions.get('en').strSearchTooBroad    = 'Your search is too broad. Include more letters in every term.';
+  ss.captions.get('en').strDiscardedTerms    = 'Not searched (too common or too short): ';
+  ss.captions.get('en').strShowMore          = 'Show more';
+  ss.captions.get('en').strShowAll           = 'Show all';
+  ss.captions.get('en').strTooManyResults    = 'Your search returned too many results. Include more filters or more search terms.'
   //French
-  ss.captions['fr'] = {};
-  ss.captions['fr'].strSearching         = 'Recherche en cours...';
-  ss.captions['fr'].strDocumentsFound    = 'Documents localisés: ';
-  ss.captions['fr'][PHRASE]              = 'Phrase exacte: ';
-  ss.captions['fr'][MUST_CONTAIN]        = 'Doit contenir: ';
-  ss.captions['fr'][MUST_NOT_CONTAIN]    = 'Ne doit pas contenir: ';
-  ss.captions['fr'][MAY_CONTAIN]         = 'Peut contenir: ';
-  ss.captions['fr'][WILDCARD]            = 'Caractère générique: ';
-  ss.captions['fr'].strScore             = 'Score: ';
-  ss.captions['fr'].strSearchTooBroad    = 'Votre recherche est trop large. Inclure plus de lettres dans chaque terme.';
-  ss.captions['fr'].strDiscardedTerms    = 'Recherche inaboutie (termes trop fréquents ou trop brefs): ';
-  ss.captions['fr'].strShowMore          = 'Montrez plus';
-  ss.captions['fr'].strShowAll           = 'Montrez tout';
-  ss.captions['fr'].strTooManyResults    = 'Votre recherche a obtenu trop de résultats. Il faut inclure plus de filtres ou plus de termes de recherche.';
+  ss.captions.set('fr', {});
+  ss.captions.get('fr').strSearching         = 'Recherche en cours...';
+  ss.captions.get('fr').strDocumentsFound    = 'Documents localisés: ';
+  ss.captions.get('fr')[PHRASE]              = 'Phrase exacte: ';
+  ss.captions.get('fr')[MUST_CONTAIN]        = 'Doit contenir: ';
+  ss.captions.get('fr')[MUST_NOT_CONTAIN]    = 'Ne doit pas contenir: ';
+  ss.captions.get('fr')[MAY_CONTAIN]         = 'Peut contenir: ';
+  ss.captions.get('fr')[WILDCARD]            = 'Caractère générique: ';
+  ss.captions.get('fr').strScore             = 'Score: ';
+  ss.captions.get('fr').strSearchTooBroad    = 'Votre recherche est trop large. Inclure plus de lettres dans chaque terme.';
+  ss.captions.get('fr').strDiscardedTerms    = 'Recherche inaboutie (termes trop fréquents ou trop brefs): ';
+  ss.captions.get('fr').strShowMore          = 'Montrez plus';
+  ss.captions.get('fr').strShowAll           = 'Montrez tout';
+  ss.captions.get('fr').strTooManyResults    = 'Votre recherche a obtenu trop de résultats. Il faut inclure plus de filtres ou plus de termes de recherche.';
 
 /**
   * @property ss.stopwords
