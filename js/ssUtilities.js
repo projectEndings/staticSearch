@@ -36,11 +36,15 @@
   *              that WILDCARD is not currently used, but will be if the 
   *              implementation of wildcards is changed.
   */
-
+  /** @type {!number} */
   const PHRASE               = 0;
+  /** @type {!number} */
   const MUST_CONTAIN         = 1;
+  /** @type {!number} */
   const MUST_NOT_CONTAIN     = 2;
+  /** @type {!number} */
   const MAY_CONTAIN          = 3;
+  /** @type {!number} */
   const WILDCARD             = 4;
 
 /**@constant arrTermTypes

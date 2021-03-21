@@ -131,6 +131,8 @@ class StaticSearch{
       this.paginationBtnDiv = null;
       this.showMoreBtn      = null;
       this.showAllBtn       = null;
+      /** @type {!Array<string>} */
+      this.normalizedQuery  = [];
       
       //An object which will be filled with a complete list of all the
       //individual stems indexed for the site. Data retrieved later by
@@ -1016,9 +1018,9 @@ class StaticSearch{
   * @description This method returns an array of indexes in the
   * StaticSearch.terms array, being the terms which match the
   * supplied term type (PHRASE, MUST_CONTAIN etc.).
-  * @param {integer} termType One of PHRASE, MUST_CONTAIN, MUST_NOT_CONTAIN,
+  * @param {!number} termType One of PHRASE, MUST_CONTAIN, MUST_NOT_CONTAIN,
                               MAY_CONTAIN.
-  * @return {Array<integer>} An array of zero or more integers.
+  * @return {!Array<number>} An array of zero or more integers.
   */
   getTermsByType(termType){
     let result = [];
@@ -1417,9 +1419,13 @@ if (this.discardedTerms.length > 0){
 //The sequence of result processing is highly dependent on the
 //query components entered by the user. First, we discover what
 //term types we have in the list.
+      /** @type {!Array<number>} */
       let phrases           = this.getTermsByType(PHRASE);
+      /** @type {!Array<number>} */
       let must_contains     = this.getTermsByType(MUST_CONTAIN);
+      /** @type {!Array<number>} */
       let must_not_contains = this.getTermsByType(MUST_NOT_CONTAIN);
+      /** @type {!Array<number>} */
       let may_contains      = this.getTermsByType(MAY_CONTAIN);
 
 //For nested functions, we need a reference to this.
@@ -1519,7 +1525,7 @@ if (this.discardedTerms.length > 0){
   *              populates the result set itself. It's doubly complicated
   *              because it must also eliminate from the existing result
   *              set any document that doesn't contain a term.
-  * @param {Array<integer>} indexes a list of indexes into the terms array.
+  * @param {!Array<number>} indexes a list of indexes into the terms array.
   *              This needs to be a parameter because the function is calls
   *              itself recursively with a reduced array.
   * @param {!boolean} runAsFilter controls which mode the process runs in.
