@@ -185,8 +185,8 @@ class SSStemmer{
   /**
    * stem is the core function that takes a single token and returns
    * its stemmed version.
-   * @param  {String} token The input token
-   * @return {String}       the stemmed token
+   * @param  {string} token The input token
+   * @return {string}       the stemmed token
    */
    stem(token){
      if (token.length < 3){
@@ -220,10 +220,10 @@ class SSStemmer{
    * getR1AndR2 decomposes an input token to get the R1 and R2 regions,
    * and returns the string values of those two regions, along with their
    * offsets.
-   * @param  {String} token The input token
+   * @param  {string} token The input token
    * @return {Object}       an object with four members:
-   *                        r1 {String} the part of the word constituting R1
-   *                        r1 {String} the part of the word constituting R2
+   *                        r1 {string} the part of the word constituting R1
+   *                        r1 {string} the part of the word constituting R2
    *                        r1of {Number} the offset of the start of R1
    *                        r2of {Number} the offset of the start of R2
    */
@@ -254,7 +254,7 @@ class SSStemmer{
      * ends in a short syllable, and if R1 is null." R1 being null
      * basically means the R1 region is empty; that means it starts
      * after the end of the word, so its offset is the word-length + 1.
-     * @param  {String} token the input token
+     * @param  {string} token the input token
      * @param  {Number} r1of  the offset of the R1 region
      * @return {boolean}      true if word is short, otherwise false.
      */
@@ -270,8 +270,8 @@ class SSStemmer{
   /**
     * preflight does a couple of simple replacements that need to precede
     * the actual stemming process.
-    * @param  {String} token the input token
-    * @return {String}       the result of the replacement operations
+    * @param  {string} token the input token
+    * @return {string}       the result of the replacement operations
     */
   preflight(token){
     return token.replace(/^'/, '').replace(/^y/, 'Y').replace(new RegExp('(' + this.vowel + ')y'), '$1Y');
@@ -279,8 +279,8 @@ class SSStemmer{
 
   /**
     * step0 trims plural/possessive type suffixes from the end.
-    * @param  {String} token the input token
-    * @return {String}       the result of the trimming operations
+    * @param  {string} token the input token
+    * @return {string}       the result of the trimming operations
     */
   step0(token){
     return token.replace(/'(s(')?)?$/, '');
@@ -288,9 +288,9 @@ class SSStemmer{
 
  /**
    * step1 performs three replacements on the end of a token (1a, 1b and 1c).
-   * @param  {String} token the input token
+   * @param  {string} token the input token
    * @param  {Number} R1    the offset of the R1 region in the token
-   * @return {String}       the result of the replacement operations
+   * @return {string}       the result of the replacement operations
    */
    step1(token, R1){
      //Some regular expressions used only in this function.
@@ -379,9 +379,9 @@ class SSStemmer{
      * input token; if a match occurs, then a) a replacement operation
      * is done ONLY IF the match is in R1, and b) the process exits
      * whether or not a replacement was done.
-     * @param  {String} token the input token
+     * @param  {string} token the input token
      * @param  {Number} R1    the offset of the R1 region in the token
-     * @return {String}       the result of the replacement operations
+     * @return {string}       the result of the replacement operations
      */
    step2(token, R1){
      //Default return if nothing happens.
@@ -405,10 +405,10 @@ class SSStemmer{
      * input token; if a match occurs, then a) a replacement operation
      * is done ONLY IF the match is in a specified region, and b) the
      * process exits whether or not a replacement was done.
-     * @param  {String} token the input token
+     * @param  {string} token the input token
      * @param  {Number} R1    the offset of the R1 region in the token
      * @param  {Number} R2    the offset of the R2 region in the token
-     * @return {String}       the result of the replacement operations
+     * @return {string}       the result of the replacement operations
      */
    step3(token, R1, R2){
      //Default return if nothing happens.
@@ -431,9 +431,9 @@ class SSStemmer{
      * input token; if a match occurs, then a) a deletion operation is
      * done ONLY IF the match is in R2, and b) the process exits whether
      * or not a replacement was done.
-     * @param  {String} token the input token
+     * @param  {string} token the input token
      * @param  {Number} R2    the offset of the R1 region in the token
-     * @return {String}       the result of the replacement operations
+     * @return {string}       the result of the replacement operations
      */
    step4(token, R2){
      var result = token;
@@ -458,10 +458,10 @@ class SSStemmer{
      * "Finally, turn any remaining Y letters in the word back into lower case. "
      *   *On mailing list, MP confirms that this means _immediately_
      * preceded by a short syllable.
-     * @param  {String} token the input token
+     * @param  {string} token the input token
      * @param  {Number} R1    the offset of the R1 region in the token
      * @param  {Number} R2    the offset of the R1 region in the token
-     * @return {String}       the result of the replacement operations
+     * @return {string}       the result of the replacement operations
      */
    step5(token, R1, R2){
      //Some regexps used only in this function.

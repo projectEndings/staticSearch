@@ -25,7 +25,7 @@
   * @description The constructor receives a single optional parameter
   *              which if present is used by the ancestor Set object
   *              constructor.
-  * @param {Iterable} iterable An optional Iterable object. If an 
+  * @param {Iterable=} iterable An optional Iterable object. If an 
   *              iterable object is passed, all of its elements will 
   *              be added to the new XSet.
   *              

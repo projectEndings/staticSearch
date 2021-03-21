@@ -25,10 +25,10 @@ class SSResultSet{
   * @description The constructor is typically called from the host
   *              StaticSearch instance, and it passes only the 
   *              information required by the result set object.
-  * @param {integer} maxKwicsToShow The maximum number of keyword-
+  * @param {number} maxKwicsToShow The maximum number of keyword-
   *              in-context strings to display for any single hit
   *              document.
-  * @param {Boolean} scrollToTextFragment Whether to construct 
+  * @param {boolean} scrollToTextFragment Whether to construct 
   *              scroll-to-text-fragment result links for individual
   *              KWICs. This depends on browser support for the 
   *              feature and user configuration to turn it on.
@@ -61,7 +61,7 @@ class SSResultSet{
 /**
   * @function SSResultSet~clear
   * @description Clears all content from the result map.
-  * @return {Boolean} true if successful, false if not.
+  * @return {boolean} true if successful, false if not.
   */
   clear(){
     try{
@@ -78,8 +78,8 @@ class SSResultSet{
   * @description Adds an array of document uris to the result set. Used when
   * only facet filters are provided, so there are no hits or document scores
   * involved.
-  * @param {Array<string>} docUris The array of document URIs to add.
-  * @return {Boolean} true if successful; false if not.
+  * @param {!Array<string>} docUris The array of document URIs to add.
+  * @return {boolean} true if successful; false if not.
   */
   addArray(docUris){
     try{
@@ -98,9 +98,9 @@ class SSResultSet{
   * @function SSResultSet~has
   * @description Provides access to the Map.prototype.has() function
   * to check whether a document is already in the result set.
-  * @param {String} docUri The URI of the document to check, which will
+  * @param {string} docUri The URI of the document to check, which will
   * be the key to the entry in the map.
-  * @return {Boolean} true if this document is in the map; false if not.
+  * @return {boolean} true if this document is in the map; false if not.
   */
   has(docUri){
     return this.mapDocs.has(docUri);
@@ -111,10 +111,10 @@ class SSResultSet{
   * to add data to the result set. This first checks whether there
   * is already an entry for this docUri, and if there is, it merges the
   * data instead; otherwise, it sets the data.
-  * @param {String} docUri The URI of the document to check, which will
+  * @param {string} docUri The URI of the document to check, which will
   * be the key to the entry in the map.
   * @param {Object} data The structured data from the query index.
-  * @return {Boolean} true if successful, false if not.
+  * @return {boolean} true if successful, false if not.
   */
   set(docUri, data){
     try{
@@ -128,6 +128,7 @@ class SSResultSet{
 //Now we need to truncate the list of kwic contexts in case it's too long.
         this.mapDocs.get(docUri).contexts = this.mapDocs.get(docUri).contexts.slice(0, this.maxKwicsToShow);
       }
+      return true;
     }
     catch(e){
       console.log('ERROR: ' + e.message);
@@ -140,10 +141,10 @@ class SSResultSet{
   * existing entry for that docUri. This involves two steps: first,
   * increment the score for the document, and second, add any keyword-
   * in-context strings from the new item.
-  * @param {String} docUri The URI of the document to check, which will
+  * @param {string} docUri The URI of the document to check, which will
   * be the key to the entry in the map.
   * @param {Object} data The structured data from the query index.
-  * @return {Boolean} true if successful, false if not.
+  * @return {boolean} true if successful, false if not.
   */
   merge(docUri, data){
     try{
@@ -173,8 +174,8 @@ class SSResultSet{
 /**
   * @function SSResultSet~delete
   * @description Deletes an existing entry from the map.
-  * @param {String} docUri The URI of the document to delete.
-  * @return {Boolean} true if the item existed and was successfully
+  * @param {string} docUri The URI of the document to delete.
+  * @return {boolean} true if the item existed and was successfully
   * deleted, false if not, or if there is an error.
   */
   delete(docUri){
@@ -191,7 +192,7 @@ class SSResultSet{
   * @function SSResultSet~deleteArray
   * @description Deletes a collection of existing entries from the map.
   * @param {Array.<String>} arrDocUris The URIs of the document to delete.
-  * @return {Boolean} true if any of the items existed and was successfully
+  * @return {boolean} true if any of the items existed and was successfully
   * deleted, false if not, or if there is an error.
   */
   deleteArray(arrDocUris){
@@ -214,7 +215,7 @@ class SSResultSet{
   * @description Deletes any entry in the list which doesn't match an item
   * in the paramter set.
   * @param {Set.<String>} acceptableDocUris The URIs of docs to retain.
-  * @return {Boolean} true if any items remain, false if not.
+  * @return {boolean} true if any items remain, false if not.
   */
   filterBySet(acceptableDocUris){
     try{
@@ -234,7 +235,7 @@ class SSResultSet{
 /**
   * @function SSResultSet~getSize
   * @description Returns the number of items in the result set.
-  * @return {integer} number of documents in the result set.
+  * @return {number} number of documents in the result set.
   */
   getSize(){
     try{
@@ -249,7 +250,7 @@ class SSResultSet{
 /**
   * @function SSResultSet~getContextCount
   * @description Returns the number of kwic contexts in the result set.
-  * @return {integer} number of kwic contexts in the result set.
+  * @return {number} number of kwic contexts in the result set.
   */
   getContextCount(){
     try{
@@ -269,7 +270,7 @@ class SSResultSet{
   * @function SSResultSet~sortByScoreDesc
   * @description Sorts the collection of documents so that the highest
   *              scoring items come at the top.
-  * @return {Boolean} true if successful, false on error.
+  * @return {boolean} true if successful, false on error.
   */
   sortByScoreDesc(){
     try{
@@ -293,7 +294,7 @@ class SSResultSet{
   *              result in the search; context strings are also included,
   *              and where a document has a defined docImage, that is also
   *              included.
-  * @param {String} strScore caption for the score assigned to a hit document.
+  * @param {string} strScore caption for the score assigned to a hit document.
   * @return {Element} an unordered list (ul) element ready for insertion into 
   *                   the host document.
   */
@@ -348,7 +349,7 @@ class SSResultSet{
           let cleanMark = value.contexts[i].context.replace(/.*<mark>([^<]+)<\/mark>.+/, '$1');
           let queryString = '?ssMark=' + encodeURIComponent(cleanMark);
           //If we have a fragment id, output that.
-          if (((value.contexts[i].hasOwnProperty('fid'))&&(value.contexts[i].fid !== ''))||(tf !== '')){
+          if (((value.contexts[i].hasOwnProperty('fid'))&&(value.contexts[i].fid != ''))||(tf != '')){
             let fid = value.contexts[i].hasOwnProperty('fid')? value.contexts[i].fid : '';
             let a2 = document.createElement('a');
             a2.appendChild(document.createTextNode('\u21ac'));
@@ -388,8 +389,8 @@ class SSResultSet{
 /** @function SSResultSet~getTitleByDocId
   * @description this function returns the title of a document based on
   *              its id.
-  * @param {String} docId the id of the document.
-  * @return {String} the title, or a placeholder if not found.
+  * @param {string} docId the id of the document.
+  * @return {string} the title, or a placeholder if not found.
   */
   getTitleByDocId(docId){
     try{
@@ -404,8 +405,8 @@ class SSResultSet{
   * @description this function returns a thumbnail image for a document
   *              based on its id. If no thumbnail is defined in the ssTitles
   *              JSON, it returns an empty string.
-  * @param {String} docId the id of the document.
-  * @return {String} the relative path to an image, or an empty string.
+  * @param {string} docId the id of the document.
+  * @return {string} the relative path to an image, or an empty string.
   */
   getThumbnailByDocId(docId){
     try{
@@ -426,8 +427,8 @@ class SSResultSet{
   *              based on its id. If no sort key is defined in the ssTitles
   *              JSON, it returns an empty string. Sort keys are used to 
   *              sequence result sets where their scores are identical.
-  * @param {String} docId the id of the document.
-  * @return {String} the sort key for this document, or an empty string.
+  * @param {string} docId the id of the document.
+  * @return {string} the sort key for this document, or an empty string.
   */
   getSortKeyByDocId(docId){
     try{

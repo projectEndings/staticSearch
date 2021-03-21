@@ -126,6 +126,11 @@ class StaticSearch{
       //Boolean filters
       this.boolFilterSelects =
            Array.from(document.querySelectorAll("select[class='staticSearch.bool']"));
+
+      //Now we have some properties that will may be used later if required.
+      this.paginationBtnDiv = null;
+      this.showMoreBtn      = null;
+      this.showAllBtn       = null;
       
       //An object which will be filled with a complete list of all the
       //individual stems indexed for the site. Data retrieved later by
@@ -157,7 +162,7 @@ class StaticSearch{
 
       //Nested convenience function for getting int values from form attributes.
       this.getConfigInt = function getConfigInt(ident, defaultVal){
-        let i = parseInt(this.ssForm.getAttribute('data-' + ident.toLowerCase()));
+        let i = parseInt(this.ssForm.getAttribute('data-' + ident.toLowerCase()), 10);
         return (isNaN(i))? defaultVal : i;
       }
 
@@ -326,7 +331,7 @@ class StaticSearch{
   *
   * @param json {json} the JSON retrieved by the AJAX request (not always
   *             actually JSON).
-  * @param path {String} the path from which it was retrieved.
+  * @param path {string} the path from which it was retrieved.
   */
   jsonRetrieved(json, path){
     if (path.match(/ssStopwords.*json$/)){
@@ -391,10 +396,10 @@ class StaticSearch{
   *              browser URL. If so, it parses it out and runs the
   *              query.
   *
-  * @param {Boolean} popping specifies whether this parse has been triggered
+  * @param {!boolean} popping specifies whether this parse has been triggered
   *                  by window.onpopstate (meaning the user is moving through
   *                  the browser history)
-  * @return {Boolean} true if a search is initiated otherwise false.
+  * @return {boolean} true if a search is initiated otherwise false.
   */
   parseUrlQueryString(popping = false){
     let searchParams = new URLSearchParams(decodeURI(document.location.search));
@@ -470,10 +475,10 @@ class StaticSearch{
   *              for retrieval of JSON files. After that, the
   *              resolution of the promises carries the process
   *              on.
-  * @param {Boolean} popping specifies whether this parse has been triggered
+  * @param {!boolean} popping specifies whether this parse has been triggered
   *                  by window.onpopstate (meaning the user is moving through
   *                  the browser history)
-  * @return {Boolean} true if a search is initiated otherwise false.
+  * @return {boolean} true if a search is initiated otherwise false.
   */
   doSearch(popping = false){
     //We start by intercepting any situation in which we may need the
@@ -531,7 +536,7 @@ class StaticSearch{
   * search string, then pushes this into the History object so that
   * all searches are bookmarkable.
   *
-  * @return {Boolean} true if successful, otherwise false.
+  * @return {boolean} true if successful, otherwise false.
   */
   setQueryString(){
     try{
@@ -588,7 +593,7 @@ class StaticSearch{
   * no search terms are found, it returns true so that filter-only
   * searches may proceed.
   *
-  * @return {Boolean} true if no errors occur, otherwise false.
+  * @return {boolean} true if no errors occur, otherwise false.
   */
   parseSearchQuery(){
     try{
@@ -687,12 +692,12 @@ class StaticSearch{
   * @description this is passed a single component from the
   * search box parser by parseSearchQuery. It constructs a
   * single item from it, and adds that to this.terms.
-  * @param {String}   strInput a string of text.
-  * @param {Boolean}  isPhrasal whether or not this is a phrasal
+  * @param {!string}   strInput a string of text.
+  * @param {!boolean}  isPhrasal whether or not this is a phrasal
   *                             search. This may be true even for
   *                             a single word, if it is to be searched
   *                             unstemmed.
-  * @return {Boolean} true if terms found, otherwise false.
+  * @return {boolean} true if terms found, otherwise false.
   */
   addSearchItem(strInput, isPhrasal){
 
@@ -785,7 +790,7 @@ class StaticSearch{
   * @description this function removes all previously-selected
   * filter control settings, and empties the search query box.
   *
-  * @return {Boolean} true on success, false on failure.
+  * @return {boolean} true on success, false on failure.
   */
   clearSearchForm(){
     try{
@@ -802,6 +807,7 @@ class StaticSearch{
       for (let sel of this.boolFilterSelects){
         sel.selectedIndex = 0;
       }
+      return true;
     }
     catch(e){
       console.log('Error attempting to clear search form: ' + e);
@@ -815,7 +821,7 @@ class StaticSearch{
   * the returned XSet and returns true, otherwise it clears the current
   * set of filters (THINK: IS THIS CORRECT BEHAVIOUR?) and returns false.
   *
-  * @return {Boolean} true on success, false on failure.
+  * @return {boolean} true on success, false on failure.
   */
   processFilters(){
     try{
@@ -966,7 +972,7 @@ class StaticSearch{
   * @description This outputs a human-readable explanation of the search
   *              that's being done, to clarify for users what they've chosen 
   *              to look for. Note that the output div is hidden by default. 
-  * @return {Boolean} true if the process succeeds, otherwise false.
+  * @return {boolean} true if the process succeeds, otherwise false.
   */
   writeSearchReport(){
     if (this.showSearchReport){
@@ -1246,9 +1252,9 @@ class StaticSearch{
   * @description This function, given an index stem and a docUri, searches
   *              to see if there is an entry in the stem's instances for
   *              that docUri.
-  * @param {String} stem the index stem to search for.
-  * @param {String} docUri the docUri to search for.
-  * @return {Boolean} true if found, false if not.
+  * @param {!string} stem the index stem to search for.
+  * @param {!string} docUri the docUri to search for.
+  * @return {boolean} true if found, false if not.
   */
   indexStemHasDoc(stem, docUri){
     let result = false;
@@ -1267,12 +1273,13 @@ class StaticSearch{
   * @function StaticSearch~clearResultsDiv
   * @description This clears out and sets up the results div, ready for
   * reporting of results.
-  * @return {Boolean} true if successful, false if not.
+  * @return {boolean} true if successful, false if not.
   */
   clearResultsDiv(){
     while (this.resultsDiv.firstChild) {
       this.resultsDiv.removeChild(this.resultsDiv.firstChild);
     }
+    return true;
   }
 
 
@@ -1282,14 +1289,15 @@ class StaticSearch{
   *              Also optionally configures and runs a
   *              simpler version of the current search, with
   *              phrases tokenized, etc.
-  * @param {Boolean} trySimplerSearch a flag to determine whether
+  * @param {!boolean} trySimplerSearch a flag to determine whether
   *              this search should be simplified and automatically
   *              run again.
-  * @return {Boolean} true if successful, false if not.
+  * @return {boolean} true if successful, false if not.
   */
   reportNoResults(trySimplerSearch){
     //TODO: NOT IMPLEMENTED YET.
     console.log('No results. Try simpler search? ' + trySimplerSearch);
+    return true;
   }
 
   /**
@@ -1298,7 +1306,7 @@ class StaticSearch{
    *              that the number of results found exceed
    *              the configured limit (StaticSearch.resultsLimit)
    *              and cannot be displayed.
-   * @return {Boolean} true if successful, false if not
+   * @return {boolean} true if successful, false if not
    */
   reportTooManyResults() {
     try {
@@ -1320,7 +1328,7 @@ class StaticSearch{
   *              has been retrieved and added to the index, this
   *              function is called to process the search and show
   *              any results found.
-  * @return {Boolean} true if there are results to show; false if not.
+  * @return {boolean} true if there are results to show; false if not.
   */
   processResults(){
     try{
@@ -1514,7 +1522,7 @@ if (this.discardedTerms.length > 0){
   * @param {Array<integer>} indexes a list of indexes into the terms array.
   *              This needs to be a parameter because the function is calls
   *              itself recursively with a reduced array.
-  * @param {Boolean} runAsFilter controls which mode the process runs in.
+  * @param {!boolean} runAsFilter controls which mode the process runs in.
   * @return true if succeeds, false if not.
   */
       function processMustContains(indexes, runAsFilter){
@@ -1575,7 +1583,7 @@ if (this.discardedTerms.length > 0){
   *              then it adds no new documents to the set, just enhances
   *              their scores. But if there are no imperative search
   *              terms, then all documents found are added to the set.
-  * @param {Boolean} addAllFound controls which mode the process runs in.
+  * @param {!boolean} addAllFound controls which mode the process runs in.
   * @return true if succeeds, false if not.
   */
       function processMayContains(addAllFound){
@@ -1684,7 +1692,7 @@ if (this.discardedTerms.length > 0){
    * checks whether or not it needs to add anything to the page, and, if it does,
    * then adds the Show More / Show All buttons to the bottom of the results div
    * and adds some functionality to the buttons.
-   * @return {Boolean} true if necessary; false if unnecessary
+   * @return {boolean} true if necessary; false if unnecessary
    */
   paginateResults() {
     try{
@@ -1714,7 +1722,8 @@ if (this.discardedTerms.length > 0){
       this.showMoreBtn.addEventListener('click', this.showMoreResults.bind(this));
       this.showAllBtn.addEventListener('click', this.showAllResults.bind(this));
       return true;
-    } catch(e) {
+    } 
+    catch(e) {
       console.log('ERROR ' + e.message);
       return false;
     }
@@ -1725,7 +1734,7 @@ if (this.discardedTerms.length > 0){
    * @description Method to show all of the results (i.e. removing the hidden item's
    * class that instructs all of its siblings to hide) and hide the pagination
    * widget.
-   * @return {Boolean} true if successful, false if not.
+   * @return {boolean} true if successful, false if not.
    */
   showAllResults(){
     try{
@@ -1745,7 +1754,7 @@ if (this.discardedTerms.length > 0){
    * and the number of results to show. If we're on the last page, then the
    * "Show More" is simply a proxy for showAll; otherwise, it shifts the
    * hidden class from the last item to the next one in the sequence.
-   * @return {Boolean} true if successful, false if not.
+   * @return {boolean} true if successful, false if not.
    */
   showMoreResults(){
     try{
@@ -1775,7 +1784,7 @@ if (this.discardedTerms.length > 0){
    *  to prevent from unintentional regular expression, then expands all
    *  apostrophes (i.e. treating U+0027, U+2018, U+2019, U+201B as equivalent) and
    *  all quotation marks.
-   * @param {String} str a string of text
+   * @param {!string} str a string of text
    * @return {RegExp|null} a regular expression, or null if one can't be constructed
    */
   phraseToRegex(str){
@@ -1815,7 +1824,7 @@ if (this.discardedTerms.length > 0){
   * a capturing group for the content between the pipes. Because of
   * the use of the pipe delimiter, a negative character class [^\\|]
   * (i.e. 'not a pipe') is used in place of a dot.
-  * @param {String}   strToken a string of text with no spaces.
+  * @param {!string}   strToken a string of text with no spaces.
   * @return {RegExp | null} a regular expression; or null if one 
   *                         cannot be constructed.
   */

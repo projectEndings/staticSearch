@@ -399,12 +399,12 @@
     </description>
     <echo message="Compiling JavaScript source code..."/>
     <concat destfile="${ssBaseDir}/js/ssSearch-debug.js" encoding="UTF-8">
-      <fileset dir="${ssBaseDir}/js">
-        <include name="ssUtilities.js"/>
-        <include name="StaticSearch.js"/>
-        <include name="SSResultSet.js"/>
-        <include name="XSet.js"/>
-      </fileset>
+      <filelist dir="${ssBaseDir}/js">
+        <file name="ssUtilities.js"/>
+        <file name="StaticSearch.js"/>
+        <file name="SSResultSet.js"/>
+        <file name="XSet.js"/>
+      </filelist>
       <fileset dir="${ssBaseDir}/stemmers/${ssStemmerFolder}">
         <include name="ssStemmer.js"/>
       </fileset>
