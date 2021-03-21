@@ -58,12 +58,15 @@
   * @constant TO_GET, GETTING, GOT, FAILED
   * @type {Number}
   * @description Constants representing states of files that may be
-  *              retrieved by AJAX.
+  *              fetched.
   */
-
+  /** @type {!number} */
   const TO_GET  = 0;
+  /** @type {!number} */
   const GETTING = 1;
+  /** @type {!number} */
   const GOT     = 2;
+  /** @type {!number} */
   const FAILED  = 3;
 
 /**
