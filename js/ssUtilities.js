@@ -120,7 +120,7 @@
 
 /**
   * @property ss.stopwords
-  * @type {Array}
+  * @type {!Array}
   * @description a simple array of stopwords. Extend
   * by adding new items or replace if necessary. If a local
   * stopwords.json file exists, that will be loaded and overwrite

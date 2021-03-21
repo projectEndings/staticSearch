@@ -257,6 +257,7 @@ class StaticSearch{
       }
       
       //Default set of stopwords
+      /** @type {!Array} this.stopwords */
       this.stopwords = ss.stopwords; //temporary default.
 
       //The collection of JSON filter files that we need to retrieve.
@@ -331,9 +332,10 @@ class StaticSearch{
   *              stores the data in the right place, and sets a flag to say
   *              that the data has been retrieved (or was not available).
   *
-  * @param json {json} the JSON retrieved by the AJAX request (not always
+  * @param {!{words: !Array, filterName: !string, filterId: !string}} json
+  *             the JSON retrieved by the AJAX request (not always
   *             actually JSON).
-  * @param path {string} the path from which it was retrieved.
+  * @param {!string} path the path from which it was retrieved.
   */
   jsonRetrieved(json, path){
     if (path.match(/ssStopwords.*json$/)){
@@ -365,7 +367,7 @@ class StaticSearch{
   *              while this is happening, a live search may be initiated
   *              which needs to get a lot of resources quickly.
   *
-  * @param jsonIndex {Number} the index of the item in the array of items
+  * @param {number} jsonIndex the index of the item in the array of items
   *               that need to be retrieved.
   */
   async getJson(jsonIndex){
@@ -374,6 +376,7 @@ class StaticSearch{
         if (this.mapJsonRetrieved.get(this.jsonToRetrieve[jsonIndex].id) != GOT){
           this.mapJsonRetrieved.set(this.jsonToRetrieve[jsonIndex].id, GETTING);
           let fch = await fetch(this.jsonToRetrieve[jsonIndex].path);
+          /** @type {!{words: !Array, filterName: !string, filterId: !string}} */
           let json = /.*\.txt$/.test(this.jsonToRetrieve[jsonIndex].path)? await fch.text() : await fch.json();
           this.jsonRetrieved(json, this.jsonToRetrieve[jsonIndex].path);
         }
