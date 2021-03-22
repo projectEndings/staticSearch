@@ -331,8 +331,8 @@ class SSResultSet{
       }
       //Now process KWIC contexts if they exist.
       if (value.contexts.length > 0){
-        //Sort these in document order.
-        value.contexts.sort(function(a, b){return a.pos - b.pos;});
+        //Sort these in document order. Suppress missing property error for compiler.
+        value.contexts.sort( /** @suppress {missingProperties} */function(a, b){return a.pos - b.pos;});
         let ul2 = document.createElement('ul');
         ul2.setAttribute('class', 'kwic');
         for (let i=0; i<Math.min(value.contexts.length, this.maxKwicsToShow); i++){

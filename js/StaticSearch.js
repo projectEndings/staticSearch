@@ -332,10 +332,13 @@ class StaticSearch{
   *              stores the data in the right place, and sets a flag to say
   *              that the data has been retrieved (or was not available).
   *
-  * @param {!{words: !Array, filterName: !string, filterId: !string}} json
+  * @param {*} json
   *             the JSON retrieved by the AJAX request (not always
   *             actually JSON).
   * @param {!string} path the path from which it was retrieved.
+  * @suppress {missingProperties} The compiler doesn't know about properties 
+  * of the json param, which could be one of several types of thing.
+  * 
   */
   jsonRetrieved(json, path){
     if (path.match(/ssStopwords.*json$/)){
@@ -349,6 +352,7 @@ class StaticSearch{
       return;
     }
     if (path.match(/ssTitles.*json$/)){
+      /** @suppress {checkTypes} Compiler is ignorant of the type of json. */
       this.resultSet.titles = new Map(Object.entries(json));
       this.mapJsonRetrieved.set('ssTitles', GOT);
       return;
@@ -376,7 +380,6 @@ class StaticSearch{
         if (this.mapJsonRetrieved.get(this.jsonToRetrieve[jsonIndex].id) != GOT){
           this.mapJsonRetrieved.set(this.jsonToRetrieve[jsonIndex].id, GETTING);
           let fch = await fetch(this.jsonToRetrieve[jsonIndex].path);
-          /** @type {!{words: !Array, filterName: !string, filterId: !string}} */
           let json = /.*\.txt$/.test(this.jsonToRetrieve[jsonIndex].path)? await fch.text() : await fch.json();
           this.jsonRetrieved(json, this.jsonToRetrieve[jsonIndex].path);
         }
@@ -484,6 +487,7 @@ class StaticSearch{
   *                  by window.onpopstate (meaning the user is moving through
   *                  the browser history)
   * @return {boolean} true if a search is initiated otherwise false.
+  * 
   */
   doSearch(popping = false){
     //We start by intercepting any situation in which we may need the
@@ -678,6 +682,7 @@ class StaticSearch{
 
       //We always want to handle the terms in order of
       //precedence, starting with phrases.
+      
       this.terms.sort(function(a, b){return a.type - b.type;});
       
       //return (this.terms.length > 0);
@@ -734,6 +739,7 @@ class StaticSearch{
     this.normalizedQuery.push('"' + strInput + '"');
 
     //We need to find the first component which is not a stopword.
+    /** @suppress {missingProperties} Compiler doesn't know about String.prototype.replaceAll(). */
       let subterms = strInput.trim().toLowerCase().split(/\s+/).map(term => term.replaceAll(this.charsToDiscardPattern,''));
       let i;
       for (i = 0; i <= subterms.length; i++){
@@ -848,6 +854,8 @@ class StaticSearch{
     * @return {XSet} an XSet object (which might be empty) with an added
     * boolean property filtersActive which specifies whether filters have
     * been configured by the user.
+    * @suppress {missingProperties} The compiler doesn't know about the 
+    * docs property.
     */
     getDocIdsForFilters(){
 
@@ -1049,6 +1057,8 @@ class StaticSearch{
   *
   * The function works with fetch and promises, and its final
   * .then() calls the processResults function.
+  * @suppress {missingProperties} The compiler doesn't know about
+  * properties such as json.filterId.
   */
   populateIndexes(){
     var i, imax, stemsToFind = [], promises = [], emptyIndex, filterSelector, filterIds;
@@ -1136,6 +1146,7 @@ class StaticSearch{
               return response.json();
             })
             .then(function(json) {
+              /** @suppress {checkTypes} The compiler doesn't know the json thing is an object with entries. */
               self.resultSet.titles = new Map(Object.entries(json));
               self.mapJsonRetrieved.set('ssTitles', GOT);
             }.bind(self))
