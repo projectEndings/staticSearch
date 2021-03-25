@@ -1200,12 +1200,12 @@
             <cell><ref target="https://mariage.uvic.ca/recherche.html">Recherche</ref></cell>
             <cell><ref target="https://hcmc.uvic.ca/svn/mariage/static/config_staticSearch.xml">SVN</ref></cell>
           </row>
-          <!--<row>
-            <cell>Landscapes of Injustice (forthcoming)</cell>
-            <cell/>
-            <cell/>
-          </row>
           <row>
+            <cell><ref target="https://loi.uvic.ca/archive/">Landscapes of Injustice</ref></cell>
+            <cell>The main page is itself a search page; this is a digital archive with multiple staticSearch interfaces.</cell>
+            <cell><ref target="https://hcmc.uvic.ca/svn/landscapes/production/">SVN</ref></cell>
+          </row>
+          <!--<row>
             <cell>Linked Early Modern Drama Online (forthcoming)</cell>
             <cell/>
             <cell/>
