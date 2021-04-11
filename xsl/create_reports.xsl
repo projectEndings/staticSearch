@@ -166,7 +166,7 @@
         <xsl:variable name="docsWithoutIds" select="$tokenizedDocs//html[not(@id)]"/>
         <xsl:variable name="docsWithoutLang" select="$tokenizedDocs//html[not(@lang)]"/>
         <xsl:variable name="badNumericFilters"
-            select="$tokenizedDocs//meta[contains-token(@class,'staticSearch.num')][not(@content castable as xs:decimal)]"/>
+            select="$tokenizedDocs//meta[contains-token(@class,'staticSearch_num')][not(@content castable as xs:decimal)]"/>
         <xsl:variable name="docsWithoutFragmentIds" select="$tokenizedDocs//body[not(descendant::*[@id])]"/>
         
         <xsl:variable name="oneSidedBooleanFilters" as="element(li)*">

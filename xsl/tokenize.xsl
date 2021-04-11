@@ -114,12 +114,7 @@
         possible words.</xd:desc>
     </xd:doc>
     <xsl:variable name="tokenRegex">(<xsl:value-of select="string-join(($numericWithDecimal,$hyphenatedWord,$alphanumeric),'|')"/>)</xsl:variable>
-    
-    
-    <xd:doc>
-        <xd:desc>Special document metadata classes that must have a name and class match</xd:desc>
-    </xd:doc>
-    <xsl:variable name="docMetas" select="('docTitle', 'docSortKey','docImage')" as="xs:string+"/>
+
     
     
     
@@ -356,6 +351,49 @@
     </xsl:template>
     
     
+    
+    <xd:doc>
+        <xd:desc>Template to check for the soon-to-be deprecated period syntax in class names; in all releases after 1.2,
+            staticSearch classes should use an underscore, not a period (i.e. staticSearch_desc).</xd:desc>
+    </xd:doc>
+    
+    <xsl:template match="meta/@class[matches(.,'(^|\s)staticSearch\.')]" mode="clean">
+        <xsl:variable name="classes" select="tokenize(.)" as="xs:string+"/>
+        <xsl:attribute name="class" separator=" ">
+            <xsl:for-each select="$classes">
+                <xsl:variable name="currClass" select="." as="xs:string"/>
+                <xsl:choose>
+                    <xsl:when test="matches(.,'^staticSearch\.')">
+                        <xsl:variable name="ssType" select="substring-after($currClass,'staticSearch.')" as="xs:string"/>
+                        <xsl:choose>
+                            <!--Check to see if it's a valid filter or document meta,
+                                in which case we (currently) transform it into the new syntax
+                                for backwards compatibility-->
+                            <xsl:when test="$ssType = ($ssFilters, $docMetas)">
+                                <xsl:variable name="classWithUnderscore" select="translate($currClass,'.','_')" as="xs:string"/>
+                                <!--CHANGE TERMINATE TO YES AND CHANGE MESSAGE TO ERROR ONCE FULLY DEPRECATED-->
+                                <xsl:message terminate="no">WARNING: the "staticSearch." syntax has been deprecated and 
+                                    will not be supported in the next version of staticSearch.
+                                    Use <xsl:value-of select="$classWithUnderscore"/> instead.
+                                </xsl:message>
+                                <!--REMOVE THE FOLLOWING LINE AFTER DEPRECATION PERIOD-->
+                                <xsl:value-of select="$classWithUnderscore"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <!--TODO: Should we error if there a class isn't properly configured?-->
+                                <xsl:value-of select="$currClass"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="$currClass"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:for-each>
+        </xsl:attribute>
+    </xsl:template>
+    
+    
     <!--**************************************************************
        *                                                            *
        *                    Templates: weigh                        *
@@ -426,10 +464,10 @@
         </xsl:copy>
         <!--But check to see if it's a candidate for checking--> 
         <xsl:if test="($currMeta/@name = $docMetas) or (some $meta in $docMetas satisfies matches($currMeta/@class, $meta))">
-            <!--Iterate through them all in case there's a name/class mixup (i.e. docTitle with class staticSearch.docSortKey or something)-->
+            <!--Iterate through them all in case there's a name/class mixup (i.e. docTitle with class staticSearch_docSortKey or something)-->
             <xsl:for-each select="$docMetas">
                 <xsl:variable name="thisDocMeta" select="." as="xs:string"/>
-                <xsl:variable name="thisDocMetaClass" select="'staticSearch.' || $thisDocMeta" as="xs:string"/>
+                <xsl:variable name="thisDocMetaClass" select="'staticSearch_' || $thisDocMeta" as="xs:string"/>
                 <xsl:variable name="hasName" select="exists($currMeta[@name = $thisDocMeta])" as="xs:boolean"/>
                 <xsl:variable name="hasClass" select="exists($currMeta[contains-token(@class, $thisDocMetaClass)])" as="xs:boolean"/>
                 <!--Has the name or a class, but not both, raise a warning.-->
@@ -449,11 +487,11 @@
     
     
     <xd:doc>
-        <xd:desc>Matches the staticSearch.docImage URL so that the URL is relative to the search file, not the containing document.</xd:desc>
+        <xd:desc>Matches the staticSearch_docImage URL so that the URL is relative to the search file, not the containing document.</xd:desc>
         <xd:param name="currDocUri">Tunnelled parameter for the current document's URI, which we need to 
             pass in as a parameter since the document has been removed from its context.</xd:param>
     </xd:doc>
-    <xsl:template match="meta[contains-token(@class,'staticSearch.docImage')]/@content[not(matches(.,'^https?'))]" mode="tokenize">
+    <xsl:template match="meta[contains-token(@class,'staticSearch_docImage')]/@content[not(matches(.,'^https?'))]" mode="tokenize">
         <xsl:param name="currDocUri" as="xs:string" tunnel="yes"/>
         <xsl:variable name="absPath" as="xs:string" select="resolve-uri(., $currDocUri)"/>
         <xsl:variable name="newRelPath" as="xs:string" select="hcmc:makeRelativeUri($searchFile, $absPath)"/>
