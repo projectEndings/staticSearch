@@ -10,6 +10,15 @@ ok /WARNING: clock of the subversion server/
 #A warning we give to users as a matter of course.
 ok /WARNING: Contents of div/@id='staticSearch' will be overwritten/
 
+#JavaScript compiler non-errors:
+ok /\[jscomp\] 0 error\(s\), 0 warning\(s\)/
+
+#Commit messages FFS
+ok /Commit message:/
+
+#Intentional errors in test files
+ok /badthings.html/
+
 error /[Ee]rror/
 warning /[Ww]arning/
 warning /WARNING/
