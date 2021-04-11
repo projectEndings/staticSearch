@@ -13,6 +13,9 @@ ok /WARNING: Contents of div/@id='staticSearch' will be overwritten/
 #JavaScript compiler non-errors:
 ok /\[jscomp\] 0 error\(s\), 0 warning\(s\)/
 
+#Commit messages FFS
+ok /Commit message:/
+
 error /[Ee]rror/
 warning /[Ww]arning/
 warning /WARNING/
