@@ -358,6 +358,8 @@
     </xd:doc>
     
     <xsl:template match="meta/@class[matches(.,'(^|\s)staticSearch\.')]" mode="clean">
+        <xsl:param name="relativeUri" tunnel="yes" as="xs:string"/>
+        <xsl:param name="searchIdentifier" tunnel="yes" as="xs:string"/>
         <xsl:variable name="classes" select="tokenize(.)" as="xs:string+"/>
         <xsl:attribute name="class" separator=" ">
             <xsl:for-each select="$classes">
@@ -372,9 +374,7 @@
                             <xsl:when test="$ssType = ($ssFilters, $docMetas)">
                                 <xsl:variable name="classWithUnderscore" select="translate($currClass,'.','_')" as="xs:string"/>
                                 <!--CHANGE TERMINATE TO YES AND CHANGE MESSAGE TO ERROR ONCE FULLY DEPRECATED-->
-                                <xsl:message terminate="no">WARNING: the "staticSearch." syntax has been deprecated and 
-                                    will not be supported in the next version of staticSearch.
-                                    Use <xsl:value-of select="$classWithUnderscore"/> instead.
+                                <xsl:message terminate="no">WARNING: Deprecated meta/@class in <xsl:value-of select="$relativeUri"/> (<xsl:value-of select="$currClass"/>). The "staticSearch." syntax has been deprecated and will not be supported in the next version of staticSearch. Use <xsl:value-of select="$classWithUnderscore"/> instead.
                                 </xsl:message>
                                 <!--REMOVE THE FOLLOWING LINE AFTER DEPRECATION PERIOD-->
                                 <xsl:value-of select="$classWithUnderscore"/>
