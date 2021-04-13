@@ -24,11 +24,11 @@
   * button#ssDoSearch            (button for invoking search)
   * div#ssSearching              (div containing message to show search is under way)
   * div#ssResults                (div in which to output the results)
-  * input[type='checkbox'].staticSearch.desc  (optional; checkbox lists for filtering based on text labels)
-  * input[type='text'].staticSearch.date      (optional; textboxes for date filters)
-  * input[type='number'].staticSearch.num      (optional; inputs for numerical filters)
-  * input[type='checkbox'].staticSearch.bool  (optional: checkboxes for boolean filters)
-  * input[type='text'].staticSearch.text  (NOT YET IMPLEMENTED: type-in search filter boxes)
+  * input[type='checkbox'].staticSearch_desc  (optional; checkbox lists for filtering based on text labels)
+  * input[type='text'].staticSearch_date      (optional; textboxes for date filters)
+  * input[type='number'].staticSearch_num      (optional; inputs for numerical filters)
+  * input[type='checkbox'].staticSearch_bool  (optional: checkboxes for boolean filters)
+  * input[type='text'].staticSearch_text  (NOT YET IMPLEMENTED: type-in search filter boxes)
   *
   * The first is mandatory, although the user is
   * not required to use it; they may choose simply
@@ -116,16 +116,16 @@ class StaticSearch{
       //Optional search filters:
       //Description label filters
       this.descFilterCheckboxes =
-           Array.from(document.querySelectorAll("input[type='checkbox'][class='staticSearch.desc']"));
+           Array.from(document.querySelectorAll("input[type='checkbox'].staticSearch_desc"));
       //Date filters
       this.dateFilterTextboxes =
-           Array.from(document.querySelectorAll("input[type='text'][class='staticSearch.date']"));
+           Array.from(document.querySelectorAll("input[type='text'].staticSearch_date"));
       //Number filters
       this.numFilterInputs =
-           Array.from(document.querySelectorAll("input[type='number'][class='staticSearch.num']"));
+           Array.from(document.querySelectorAll("input[type='number'].staticSearch_num"));
       //Boolean filters
       this.boolFilterSelects =
-           Array.from(document.querySelectorAll("select[class='staticSearch.bool']"));
+           Array.from(document.querySelectorAll("select.staticSearch_bool"));
 
       //Now we have some properties that will may be used later if required.
       this.paginationBtnDiv = null;
@@ -1079,13 +1079,13 @@ class StaticSearch{
       if (this.allJsonRetrieved === false){
         //First get a list of active filters.
 
-        for (let ctrl of document.querySelectorAll('input[type="checkbox"][class="staticSearch.desc"]:checked')){
+        for (let ctrl of document.querySelectorAll('input[type="checkbox"].staticSearch_desc:checked')){
           let filterId = ctrl.id.split('_')[0];
           if (this.mapJsonRetrieved.get(filterId) != GOT){
             filterIds.add(filterId);
           }
         }
-        for (let ctrl of document.querySelectorAll('select[class="staticSearch.bool"]')){
+        for (let ctrl of document.querySelectorAll('select.staticSearch_bool')){
           if (ctrl.selectedIndex > 0){
             let filterId = ctrl.id.split('_')[0];
             if (this.mapJsonRetrieved.get(filterId) != GOT){
@@ -1093,7 +1093,7 @@ class StaticSearch{
             }
           }
         }
-        for (let ctrl of document.querySelectorAll('input[type="text"][class="staticSearch.date"]')){
+        for (let ctrl of document.querySelectorAll('input[type="text"].staticSearch_date')){
           if (ctrl.value.length > 3){
             let filterId = ctrl.id.split('_')[0];
             if (this.mapJsonRetrieved.get(filterId) != GOT){
@@ -1101,7 +1101,7 @@ class StaticSearch{
             }
           }
         }
-        for (let ctrl of document.querySelectorAll('input[type="number"][class="staticSearch.num"]')){
+        for (let ctrl of document.querySelectorAll('input[type="number"].staticSearch_num')){
           if (ctrl.value.length > 3){
             let filterId = ctrl.id.split('_')[0];
             if (this.mapJsonRetrieved.get(filterId) != GOT){

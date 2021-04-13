@@ -296,7 +296,9 @@
                                                 <xsl:variable name="thisOptId" select="@key"/>
                                                 <xsl:variable name="thisOptName" select="map:string[@key='name']"/>
                                                 <li>
-                                                    <input type="checkbox" title="{$filterName}" value="{$thisOptName}" id="{$thisOptId}" class="staticSearch.desc"/>
+                                                    <!--REMOVE staticSearch.desc after deprecation period?-->
+                                                    <input type="checkbox" title="{$filterName}" value="{$thisOptName}" id="{$thisOptId}"
+                                                        class="staticSearch.desc staticSearch_desc"/>
                                                     <label for="{$thisOptId}"><xsl:value-of select="$thisOptName"/></label>
                                                 </li>
                                             </xsl:for-each>
@@ -337,12 +339,12 @@
                                         <legend><xsl:value-of select="$filterName"/></legend>
                                         <span>
                                             <label for="{$filterId}_from">From: </label>
-                                            <input type="text" maxlength="10" pattern="{$dateRegex}" title="{$filterName}" id="{$filterId}_from" class="staticSearch.date" placeholder="{format-date($minDate, '[Y0001]-[M01]-[D01]')}" onchange="this.reportValidity()"/>
+                                            <input type="text" maxlength="10" pattern="{$dateRegex}" title="{$filterName}" id="{$filterId}_from" class="staticSearch.date staticSearch_date" placeholder="{format-date($minDate, '[Y0001]-[M01]-[D01]')}" onchange="this.reportValidity()"/>
                                         </span>
                                         
                                         <span>
                                             <label for="{$filterId}_to">To: </label>
-                                            <input type="text" maxlength="10" pattern="{$dateRegex}" title="{$filterName}" id="{$filterId}_to" class="staticSearch.date" placeholder="{format-date($maxDate, '[Y0001]-[M01]-[D01]')}" onchange="this.reportValidity()"/>
+                                            <input type="text" maxlength="10" pattern="{$dateRegex}" title="{$filterName}" id="{$filterId}_to" class="staticSearch.date staticSearch_date" placeholder="{format-date($maxDate, '[Y0001]-[M01]-[D01]')}" onchange="this.reportValidity()"/>
                                         </span>
                                     </fieldset>
                                 </xsl:for-each>
@@ -378,14 +380,14 @@
                                             <label for="{$filterId}_from">From: </label>
                                             <input type="number" min="{$minVal}" max="{$maxVal}" placeholder="{$minVal}" step="any"
                                                 title="{$filterName}" id="{$filterId}_from" 
-                                                class="staticSearch.num"/>
+                                                class="staticSearch.num staticSearch_num"/>
                                         </span>
                                         
                                         <span>
                                             <label for="{$filterId}_to">To: </label>
                                             <input type="number" min="{$minVal}" max="{$maxVal}" placeholder="{$maxVal}" step="any"
                                                 title="{$filterName}" id="{$filterId}_to" 
-                                                class="staticSearch.num"/>
+                                                class="staticSearch.num staticSearch_num"/>
                                         </span>
                                     </fieldset>
                                 </xsl:for-each>
@@ -412,7 +414,7 @@
                                         <xsl:variable name="filterId" select="$jsonDoc//map:string[@key='filterId']"/>
                                         <span>
                                             <label for="{$filterId}"><xsl:value-of select="$filterName"/>: </label>
-                                            <select id="{$filterId}" title="{$filterName}" class="staticSearch.bool">
+                                            <select id="{$filterId}" title="{$filterName}" class="staticSearch.bool staticSearch_bool">
                                                 <option value="">?</option>
                                                 <!-- Check mark = true -->
                                                 <option value="true">&#x2714;</option>
