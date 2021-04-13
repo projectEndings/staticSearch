@@ -352,8 +352,8 @@ function showByMod() {
                   <h3><span class="headingNumber">7.1.1 </span><span class="head">Description filters</span></h3>
                   <div class="p">The description (desc) filter is a word or phrase describing or associated with the
                      document. Here is a simple example: 
-                     <div id="index.xml-egXML-d38e220" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Document type</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.desc</span>" <span class="attribute">content</span>="<span class="attributevalue">Poems</span>"/&gt;</span></div> This specifies that there is to be a descriptive search filter called <span class="q">‘Document type’</span>, and one of the types is <span class="q">‘Poems’</span>; the document containing this <span class="gi">&lt;meta&gt;</span> tag is one of the Poems. Another type might be: 
-                     <div id="index.xml-egXML-d38e229" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Document type</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.desc</span>" <span class="attribute">content</span>="<span class="attributevalue">Short stories</span>"/&gt;</span></div> If the Generator finds such meta tags when it is indexing, it will create a set of
+                     <div id="index.xml-egXML-d38e220" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Document type</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch_desc</span>" <span class="attribute">content</span>="<span class="attributevalue">Poems</span>"/&gt;</span></div> This specifies that there is to be a descriptive search filter called <span class="q">‘Document type’</span>, and one of the types is <span class="q">‘Poems’</span>; the document containing this <span class="gi">&lt;meta&gt;</span> tag is one of the Poems. Another type might be: 
+                     <div id="index.xml-egXML-d38e229" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Document type</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch_desc</span>" <span class="attribute">content</span>="<span class="attributevalue">Short stories</span>"/&gt;</span></div> If the Generator finds such meta tags when it is indexing, it will create a set of
                      filter controls on the search page, enabling the user to constrain the search to a
                      specific set of filter settings.</div>
                   <div class="teidiv3" id="descFilterSorting">
@@ -364,7 +364,7 @@ function showByMod() {
                         the strict alphabetical order of items may not be exactly what you want; you may want
                         to sort <span class="q">‘305 2’</span> before <span class="q">‘305 10’</span> for example. To deal with cases like this, in addition to the <span class="att">content</span> attribute, you can also supply a custom <span class="att">data-ssfiltersortkey</span> attribute, providing a sort key for each label. Here is are a couple of examples:
                         
-                        <div id="index.xml-egXML-d38e251" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Archival series</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.desc</span>" <span class="attribute">data-ssfiltersortkey</span>="<span class="attributevalue">305_02</span>"<br/> <span class="attribute">content</span>="<span class="attributevalue">305 2</span>"/&gt;</span><br/><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Archival series</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.desc</span>" <span class="attribute">data-ssfiltersortkey</span>="<span class="attributevalue">305_10</span>"<br/> <span class="attribute">content</span>="<span class="attributevalue">305 10</span>"/&gt;</span></div> In this case, the first item will sort in the filter list before the second item
+                        <div id="index.xml-egXML-d38e251" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Archival series</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch_desc</span>" <span class="attribute">data-ssfiltersortkey</span>="<span class="attributevalue">305_02</span>"<br/> <span class="attribute">content</span>="<span class="attributevalue">305 2</span>"/&gt;</span><br/><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Archival series</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch_desc</span>" <span class="attribute">data-ssfiltersortkey</span>="<span class="attributevalue">305_10</span>"<br/> <span class="attribute">content</span>="<span class="attributevalue">305 10</span>"/&gt;</span></div> In this case, the first item will sort in the filter list before the second item
                         based on the sort key; without it, they would sort in reverse order based on the <span class="att">content</span> attribute. Note that the <span class="att">data-ssfiltersortkey</span> attribute name is all-lower-case, to comply with the XHTML5 schema.</div>
                   </div>
                </div>
@@ -372,7 +372,7 @@ function showByMod() {
                   <h3><span class="headingNumber">7.1.2 </span><span class="head">Date filters</span></h3>
                   <div class="p">Another slightly different kind of search control is a document date. If your collection
                      of documents has items from different dates, you can add a <span class="gi">&lt;meta&gt;</span> tag like this: 
-                     <div id="index.xml-egXML-d38e267" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Date of publication</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.date</span>" <span class="attribute">content</span>="<span class="attributevalue">1895-01-05</span>"/&gt;</span></div> The date may take any of the following forms: 
+                     <div id="index.xml-egXML-d38e267" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Date of publication</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch_date</span>" <span class="attribute">content</span>="<span class="attributevalue">1895-01-05</span>"/&gt;</span></div> The date may take any of the following forms: 
                      <ul>
                         <li class="item">1895 (year only)</li>
                         <li class="item">1895-01 (year and month)</li>
@@ -391,14 +391,14 @@ function showByMod() {
                   <div class="p">You can also configure a range filter based on a numeric value (integer or decimal).
                      For example, you might want to allow people to filter documents in the search results
                      based on their word-count: 
-                     <div id="index.xml-egXML-d38e282" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Word-count</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.num</span>" <span class="attribute">content</span>="<span class="attributevalue">2193</span>"/&gt;</span></div> Users would then be able to set a minimum and/or maximum word-count when searching
+                     <div id="index.xml-egXML-d38e282" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Word-count</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch_num</span>" <span class="attribute">content</span>="<span class="attributevalue">2193</span>"/&gt;</span></div> Users would then be able to set a minimum and/or maximum word-count when searching
                      for documents.</div>
                </div>
                <div class="teidiv2" id="boolFilters">
                   <h3><span class="headingNumber">7.1.4 </span><span class="head">Boolean filters</span></h3>
                   <div class="p">A fourth filter type is the boolean (true/false) filter. To use boolean filters, add
                      meta tags like this to your documents: 
-                     <div id="index.xml-egXML-d38e289" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Peer-reviewed</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.bool</span>" <span class="attribute">content</span>="<span class="attributevalue">true</span>"/&gt;</span></div>
+                     <div id="index.xml-egXML-d38e289" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">Peer-reviewed</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch_bool</span>" <span class="attribute">content</span>="<span class="attributevalue">true</span>"/&gt;</span></div>
                   </div>
                </div>
             </div>
@@ -411,7 +411,7 @@ function showByMod() {
                   part of their document title, but it would be pointless to include this in the search
                   result links. Therefore you can override the document title value by providing another
                   meta tag, like this: 
-                  <div id="index.xml-egXML-d38e297" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">docTitle</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.docTitle</span>" <span class="attribute">content</span>="<span class="attributevalue">What I did in my holidays</span>"/&gt;</span></div>
+                  <div id="index.xml-egXML-d38e297" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">docTitle</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch_docTitle</span>" <span class="attribute">content</span>="<span class="attributevalue">What I did in my holidays</span>"/&gt;</span></div>
                </div>
             </div>
             <div class="teidiv1" id="configuringDocSortKey">
@@ -426,7 +426,7 @@ function showByMod() {
                   which documents without hit scores, or sequences of documents with the same hit score,
                   are presented. You can do this by adding a single meta tag to the document providing
                   a ‘sort key’, which can be used to sort the list of hits. This is an example: 
-                  <div id="index.xml-egXML-d38e309" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">docSortKey</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.docSortKey</span>" <span class="attribute">content</span>="<span class="attributevalue">d_1854-01-02</span>"/&gt;</span></div>
+                  <div id="index.xml-egXML-d38e309" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">docSortKey</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch_docSortKey</span>" <span class="attribute">content</span>="<span class="attributevalue">d_1854-01-02</span>"/&gt;</span></div>
                </div>
             </div>
             <div class="teidiv1" id="configuringDocThumbnails">
@@ -436,7 +436,7 @@ function showByMod() {
                   document itself is actually an image (perhaps your site is a set of pages dealing
                   with works of art, for instance). Whatever the reason, you can supply a link to a
                   thumbnail image like this: 
-                  <div id="index.xml-egXML-d38e315" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">docImage</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.docImage</span>" <span class="attribute">content</span>="<span class="attributevalue">images/thisPage.jpg</span>"/&gt;</span></div> The <span class="att">content</span> attribute value should either be the path to an image relative to the document itself
+                  <div id="index.xml-egXML-d38e315" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">docImage</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch_docImage</span>" <span class="attribute">content</span>="<span class="attributevalue">images/thisPage.jpg</span>"/&gt;</span></div> The <span class="att">content</span> attribute value should either be the path to an image relative to the document itself
                   or the URL to an external image; so in the example above, there would be a folder
                   called <span class="ident">images</span> which is a sibling of the HTML file containing the tag, and that folder would contain
                   a file called <span class="ident">thisPage.jpg</span>.</div>
@@ -1126,10 +1126,54 @@ function showByMod() {
             </header>
             <ul>
                <li class="item">Level: Intermediate</li>
-               <li class="item">Last Updated: <span class="date">21 March 2021</span></li>
+               <li class="item">Last Updated: <span class="date">12 April 2021</span></li>
             </ul>
             <div class="teidiv1" id="newIn1.3">
                <h3><span class="headingNumber">10.1 </span><span class="head">Changes in version 1.3</span></h3>
+               <p>Deprecations requiring changes to existing projects:</p>
+               <ul>
+                  <li class="item">All staticSearch classes with periods have been deprecated in favour of underscores
+                     as periods in class names conflict with the standard "." chaining selector in CSS
+                     and JavaScript. (See <a class="link_ref" href="https://github.com/projectEndings/staticSearch/issues/149">issue 149</a> for the full discussion.) <em>This affects the majority of staticSearch meta classes, which should be changed from
+                        <span class="val">staticSearch.</span> to <span class="val">staticSearch_</span>; see the full list below:</em> 
+                     <div class="table">
+                        <table>
+                           <tr class="label">
+                              <td>DEPRECATED VALUE</td>
+                              <td>REPLACE WITH</td>
+                           </tr>
+                           <tr>
+                              <td>staticSearch.desc</td>
+                              <td>staticSearch_desc</td>
+                           </tr>
+                           <tr>
+                              <td>staticSearch.bool</td>
+                              <td>staticSearch_bool</td>
+                           </tr>
+                           <tr>
+                              <td>staticSearch.num</td>
+                              <td>staticSearch_num</td>
+                           </tr>
+                           <tr>
+                              <td>staticSearch.date</td>
+                              <td>staticSearch_date</td>
+                           </tr>
+                           <tr>
+                              <td>staticSearch.docTitle</td>
+                              <td>staticSearch_docTitle</td>
+                           </tr>
+                           <tr>
+                              <td>staticSearch.docImage</td>
+                              <td>staticSearch_docImage</td>
+                           </tr>
+                           <tr>
+                              <td>staticSearch.docImage</td>
+                              <td>staticSearch_docSortKey</td>
+                           </tr>
+                        </table>
+                     </div> For version 1.3, using the deprecated period syntax will result in WARNINGs; in all
+                     subsequent versions, using the period syntax will result in build failures.</li>
+               </ul>
                <p>New features and enhancements:</p>
                <ul>
                   <li class="item">The JavaScript source code has now been split into several distinct source files,
@@ -1175,7 +1219,7 @@ function showByMod() {
                <ul>
                   <li class="item">The encoding structure for docImage, docSortKey, and docTitle has been constrained
                      such that each doc* <span class="gi">&lt;meta&gt;</span> must include both a <span class="att">name</span> and <span class="att">class</span> value: 
-                     <div id="index.xml-egXML-d38e1683" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">docTitle</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch.docTitle</span>" <span class="attribute">content</span>="<span class="attributevalue">My custom document title</span>"/&gt;</span></div>
+                     <div id="index.xml-egXML-d38e1725" class="pre egXML_valid"><span class="element">&lt;meta <span class="attribute">name</span>="<span class="attributevalue">docTitle</span>"<br/> <span class="attribute">class</span>="<span class="attributevalue">staticSearch_docTitle</span>" <span class="attribute">content</span>="<span class="attributevalue">My custom document title</span>"/&gt;</span></div>
                   </li>
                   <li class="item">Temporary XML files from dictionaries are now removed during the <code>clean</code> step of the build process.</li>
                   <li class="item">All HTML characters are properly escaped in context snippets.</li>
@@ -1318,21 +1362,21 @@ function showByMod() {
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e1903" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e1945" class="pre_eg cdata">
 &lt;content&gt;
  &lt;elementRef key="params"/&gt;
  &lt;elementRef key="rules" minOccurs="0"/&gt;
  &lt;elementRef key="contexts" minOccurs="0"/&gt;
  &lt;elementRef key="excludes" minOccurs="0"/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e1903" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e1945" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e1910" class="pre_eg">
-element config { <a class="link_ref" href="#TEI.params" title="&lt;params&gt;">params</a>, <a class="link_ref" href="#TEI.rules" title="&lt;rules&gt;">rules</a>?, <a class="link_ref" href="#TEI.contexts" title="&lt;contexts&gt;">contexts</a>?, <a class="link_ref" href="#TEI.excludes" title="&lt;excludes&gt;">excludes</a>? }<a href="#index.xml-eg-d38e1910" class="anchorlink">⚓</a></pre>
+                              <pre id="index.xml-eg-d38e1952" class="pre_eg">
+element config { <a class="link_ref" href="#TEI.params" title="&lt;params&gt;">params</a>, <a class="link_ref" href="#TEI.rules" title="&lt;rules&gt;">rules</a>?, <a class="link_ref" href="#TEI.contexts" title="&lt;contexts&gt;">contexts</a>?, <a class="link_ref" href="#TEI.excludes" title="&lt;excludes&gt;">excludes</a>? }<a href="#index.xml-eg-d38e1952" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -1409,24 +1453,24 @@ element config { <a class="link_ref" href="#TEI.params" title="&lt;params&gt;">p
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e2039" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e2081" class="pre_eg cdata">
 &lt;content&gt;
  &lt;empty/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e2039" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e2081" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e2046" class="pre_eg">
+                              <pre id="index.xml-eg-d38e2088" class="pre_eg">
 element context
 {
    <a class="link_ref" href="#TEI.att.match" title="att.match">att.match.attributes</a>,
    <a class="link_ref" href="#TEI.att.labelled" title="att.labelled">att.labelled.attributes</a>,
    attribute context { text }?,
    empty
-}<a href="#index.xml-eg-d38e2046" class="anchorlink">⚓</a></pre>
+}<a href="#index.xml-eg-d38e2088" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -1468,19 +1512,19 @@ element context
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e2111" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e2153" class="pre_eg cdata">
 &lt;content&gt;
  &lt;elementRef key="context" minOccurs="1"
   maxOccurs="unbounded"/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e2111" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e2153" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e2118" class="pre_eg">
-element contexts { <a class="link_ref" href="#TEI.context" title="&lt;context&gt;">context</a>+ }<a href="#index.xml-eg-d38e2118" class="anchorlink">⚓</a></pre>
+                              <pre id="index.xml-eg-d38e2160" class="pre_eg">
+element contexts { <a class="link_ref" href="#TEI.context" title="&lt;context&gt;">context</a>+ }<a href="#index.xml-eg-d38e2160" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -1533,18 +1577,18 @@ element contexts { <a class="link_ref" href="#TEI.context" title="&lt;context&gt
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e2187" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e2229" class="pre_eg cdata">
 &lt;content&gt;
  &lt;dataRef name="boolean"/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e2187" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e2229" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e2194" class="pre_eg cdata">
-element createContexts { xsd:boolean }<a href="#index.xml-eg-d38e2194" class="anchorlink">⚓</a></pre>
+                              <pre id="index.xml-eg-d38e2236" class="pre_eg cdata">
+element createContexts { xsd:boolean }<a href="#index.xml-eg-d38e2236" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -1599,18 +1643,18 @@ element createContexts { xsd:boolean }<a href="#index.xml-eg-d38e2194" class="an
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e2261" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e2303" class="pre_eg cdata">
 &lt;content&gt;
  &lt;dataRef name="anyURI"/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e2261" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e2303" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e2268" class="pre_eg cdata">
-element dictionaryFile { xsd:anyURI }<a href="#index.xml-eg-d38e2268" class="anchorlink">⚓</a></pre>
+                              <pre id="index.xml-eg-d38e2310" class="pre_eg cdata">
+element dictionaryFile { xsd:anyURI }<a href="#index.xml-eg-d38e2310" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -1695,23 +1739,23 @@ element dictionaryFile { xsd:anyURI }<a href="#index.xml-eg-d38e2268" class="anc
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e2389" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e2431" class="pre_eg cdata">
 &lt;content&gt;
  &lt;empty/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e2389" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e2431" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e2396" class="pre_eg">
+                              <pre id="index.xml-eg-d38e2438" class="pre_eg">
 element exclude
 {
    <a class="link_ref" href="#TEI.att.match" title="att.match">att.match.attributes</a>,
    attribute type { "index" | "filter" },
    empty
-}<a href="#index.xml-eg-d38e2396" class="anchorlink">⚓</a></pre>
+}<a href="#index.xml-eg-d38e2438" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -1754,19 +1798,19 @@ element exclude
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e2458" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e2500" class="pre_eg cdata">
 &lt;content&gt;
  &lt;elementRef key="exclude" minOccurs="1"
   maxOccurs="unbounded"/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e2458" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e2500" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e2465" class="pre_eg">
-element excludes { <a class="link_ref" href="#TEI.exclude" title="&lt;exclude&gt;">exclude</a>+ }<a href="#index.xml-eg-d38e2465" class="anchorlink">⚓</a></pre>
+                              <pre id="index.xml-eg-d38e2507" class="pre_eg">
+element excludes { <a class="link_ref" href="#TEI.exclude" title="&lt;exclude&gt;">exclude</a>+ }<a href="#index.xml-eg-d38e2507" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -1817,18 +1861,18 @@ element excludes { <a class="link_ref" href="#TEI.exclude" title="&lt;exclude&gt
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e2530" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e2572" class="pre_eg cdata">
 &lt;content&gt;
  &lt;dataRef name="boolean"/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e2530" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e2572" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e2537" class="pre_eg cdata">
-element indentJSON { xsd:boolean }<a href="#index.xml-eg-d38e2537" class="anchorlink">⚓</a></pre>
+                              <pre id="index.xml-eg-d38e2579" class="pre_eg cdata">
+element indentJSON { xsd:boolean }<a href="#index.xml-eg-d38e2579" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -1876,18 +1920,18 @@ element indentJSON { xsd:boolean }<a href="#index.xml-eg-d38e2537" class="anchor
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e2598" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e2640" class="pre_eg cdata">
 &lt;content&gt;
  &lt;textNode/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e2598" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e2640" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e2605" class="pre_eg cdata">
-element kwicTruncateString { text }<a href="#index.xml-eg-d38e2605" class="anchorlink">⚓</a></pre>
+                              <pre id="index.xml-eg-d38e2647" class="pre_eg cdata">
+element kwicTruncateString { text }<a href="#index.xml-eg-d38e2647" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -1942,18 +1986,18 @@ element kwicTruncateString { text }<a href="#index.xml-eg-d38e2605" class="ancho
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e2686" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e2728" class="pre_eg cdata">
 &lt;content&gt;
  &lt;dataRef name="boolean"/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e2686" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e2728" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e2693" class="pre_eg cdata">
-element linkToFragmentId { xsd:boolean }<a href="#index.xml-eg-d38e2693" class="anchorlink">⚓</a></pre>
+                              <pre id="index.xml-eg-d38e2735" class="pre_eg cdata">
+element linkToFragmentId { xsd:boolean }<a href="#index.xml-eg-d38e2735" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -2009,18 +2053,18 @@ element linkToFragmentId { xsd:boolean }<a href="#index.xml-eg-d38e2693" class="
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e2772" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e2814" class="pre_eg cdata">
 &lt;content&gt;
  &lt;dataRef name="nonNegativeInteger"/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e2772" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e2814" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e2779" class="pre_eg cdata">
-element maxKwicsToHarvest { xsd:nonNegativeInteger }<a href="#index.xml-eg-d38e2779" class="anchorlink">⚓</a></pre>
+                              <pre id="index.xml-eg-d38e2821" class="pre_eg cdata">
+element maxKwicsToHarvest { xsd:nonNegativeInteger }<a href="#index.xml-eg-d38e2821" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -2072,18 +2116,18 @@ element maxKwicsToHarvest { xsd:nonNegativeInteger }<a href="#index.xml-eg-d38e2
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e2841" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e2883" class="pre_eg cdata">
 &lt;content&gt;
  &lt;dataRef name="nonNegativeInteger"/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e2841" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e2883" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e2848" class="pre_eg cdata">
-element maxKwicsToShow { xsd:nonNegativeInteger }<a href="#index.xml-eg-d38e2848" class="anchorlink">⚓</a></pre>
+                              <pre id="index.xml-eg-d38e2890" class="pre_eg cdata">
+element maxKwicsToShow { xsd:nonNegativeInteger }<a href="#index.xml-eg-d38e2890" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -2136,18 +2180,18 @@ element maxKwicsToShow { xsd:nonNegativeInteger }<a href="#index.xml-eg-d38e2848
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e2913" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e2955" class="pre_eg cdata">
 &lt;content&gt;
  &lt;dataRef name="nonNegativeInteger"/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e2913" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e2955" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e2920" class="pre_eg cdata">
-element minWordLength { xsd:nonNegativeInteger }<a href="#index.xml-eg-d38e2920" class="anchorlink">⚓</a></pre>
+                              <pre id="index.xml-eg-d38e2962" class="pre_eg cdata">
+element minWordLength { xsd:nonNegativeInteger }<a href="#index.xml-eg-d38e2962" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -2201,18 +2245,18 @@ element minWordLength { xsd:nonNegativeInteger }<a href="#index.xml-eg-d38e2920"
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e2986" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e3028" class="pre_eg cdata">
 &lt;content&gt;
  &lt;dataRef name="NCName"/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e2986" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e3028" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e2993" class="pre_eg cdata">
-element outputFolder { xsd:NCName }<a href="#index.xml-eg-d38e2993" class="anchorlink">⚓</a></pre>
+                              <pre id="index.xml-eg-d38e3035" class="pre_eg cdata">
+element outputFolder { xsd:NCName }<a href="#index.xml-eg-d38e3035" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -2255,7 +2299,7 @@ element outputFolder { xsd:NCName }<a href="#index.xml-eg-d38e2993" class="ancho
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e3139" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e3181" class="pre_eg cdata">
 &lt;content&gt;
  &lt;elementRef key="searchFile"/&gt;
  &lt;elementRef key="versionFile"
@@ -2298,14 +2342,14 @@ element outputFolder { xsd:NCName }<a href="#index.xml-eg-d38e2993" class="ancho
  &lt;elementRef key="resultsLimit"
   minOccurs="0"/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e3139" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e3181" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e3146" class="pre_eg cdata">
-element params {  }<a href="#index.xml-eg-d38e3146" class="anchorlink">⚓</a></pre>
+                              <pre id="index.xml-eg-d38e3188" class="pre_eg cdata">
+element params {  }<a href="#index.xml-eg-d38e3188" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -2361,18 +2405,18 @@ element params {  }<a href="#index.xml-eg-d38e3146" class="anchorlink">⚓</a></
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e3215" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e3257" class="pre_eg cdata">
 &lt;content&gt;
  &lt;dataRef name="boolean"/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e3215" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e3257" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e3222" class="pre_eg cdata">
-element phrasalSearch { xsd:boolean }<a href="#index.xml-eg-d38e3222" class="anchorlink">⚓</a></pre>
+                              <pre id="index.xml-eg-d38e3264" class="pre_eg cdata">
+element phrasalSearch { xsd:boolean }<a href="#index.xml-eg-d38e3264" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -2414,18 +2458,18 @@ element phrasalSearch { xsd:boolean }<a href="#index.xml-eg-d38e3222" class="anc
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e3277" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e3319" class="pre_eg cdata">
 &lt;content&gt;
  &lt;dataRef name="boolean"/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e3277" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e3319" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e3284" class="pre_eg cdata">
-element recurse { xsd:boolean }<a href="#index.xml-eg-d38e3284" class="anchorlink">⚓</a></pre>
+                              <pre id="index.xml-eg-d38e3326" class="pre_eg cdata">
+element recurse { xsd:boolean }<a href="#index.xml-eg-d38e3326" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -2482,18 +2526,18 @@ element recurse { xsd:boolean }<a href="#index.xml-eg-d38e3284" class="anchorlin
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e3346" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e3388" class="pre_eg cdata">
 &lt;content&gt;
  &lt;dataRef name="nonNegativeInteger"/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e3346" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e3388" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e3353" class="pre_eg cdata">
-element resultsLimit { xsd:nonNegativeInteger }<a href="#index.xml-eg-d38e3353" class="anchorlink">⚓</a></pre>
+                              <pre id="index.xml-eg-d38e3395" class="pre_eg cdata">
+element resultsLimit { xsd:nonNegativeInteger }<a href="#index.xml-eg-d38e3395" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -2550,18 +2594,18 @@ element resultsLimit { xsd:nonNegativeInteger }<a href="#index.xml-eg-d38e3353" 
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e3420" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e3462" class="pre_eg cdata">
 &lt;content&gt;
  &lt;dataRef name="nonNegativeInteger"/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e3420" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e3462" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e3427" class="pre_eg cdata">
-element resultsPerPage { xsd:nonNegativeInteger }<a href="#index.xml-eg-d38e3427" class="anchorlink">⚓</a></pre>
+                              <pre id="index.xml-eg-d38e3469" class="pre_eg cdata">
+element resultsPerPage { xsd:nonNegativeInteger }<a href="#index.xml-eg-d38e3469" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -2638,18 +2682,18 @@ element resultsPerPage { xsd:nonNegativeInteger }<a href="#index.xml-eg-d38e3427
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e3543" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e3585" class="pre_eg cdata">
 &lt;content&gt;
  &lt;empty/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e3543" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e3585" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e3550" class="pre_eg">
-element rule { <a class="link_ref" href="#TEI.att.match" title="att.match">att.match.attributes</a>, attribute weight { text }, empty }<a href="#index.xml-eg-d38e3550" class="anchorlink">⚓</a></pre>
+                              <pre id="index.xml-eg-d38e3592" class="pre_eg">
+element rule { <a class="link_ref" href="#TEI.att.match" title="att.match">att.match.attributes</a>, attribute weight { text }, empty }<a href="#index.xml-eg-d38e3592" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -2691,19 +2735,19 @@ element rule { <a class="link_ref" href="#TEI.att.match" title="att.match">att.m
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e3612" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e3654" class="pre_eg cdata">
 &lt;content&gt;
  &lt;elementRef key="rule" minOccurs="1"
   maxOccurs="unbounded"/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e3612" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e3654" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e3619" class="pre_eg">
-element rules { <a class="link_ref" href="#TEI.rule" title="&lt;rule&gt;">rule</a>+ }<a href="#index.xml-eg-d38e3619" class="anchorlink">⚓</a></pre>
+                              <pre id="index.xml-eg-d38e3661" class="pre_eg">
+element rules { <a class="link_ref" href="#TEI.rule" title="&lt;rule&gt;">rule</a>+ }<a href="#index.xml-eg-d38e3661" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -2763,7 +2807,7 @@ element rules { <a class="link_ref" href="#TEI.rule" title="&lt;rule&gt;">rule</
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e3717" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e3759" class="pre_eg cdata">
 &lt;content&gt;
  &lt;valList type="closed"&gt;
   &lt;valItem ident="raw"&gt;
@@ -2776,7 +2820,7 @@ element rules { <a class="link_ref" href="#TEI.rule" title="&lt;rule&gt;">rule</
   &lt;/valItem&gt;
  &lt;/valList&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e3717" class="anchorlink">⚓</a></pre>Legal values are:
+    <a href="#index.xml-eg-d38e3759" class="anchorlink">⚓</a></pre>Legal values are:
                               <dl class="valList">
                                  <dt><span class="odd_label">raw</span></dt>
                                  <dd>(<span>Default: Calculate the score based off of the weighted number of instances of a term
@@ -2789,8 +2833,8 @@ element rules { <a class="link_ref" href="#TEI.rule" title="&lt;rule&gt;">rule</
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e3739" class="pre_eg cdata">
-element scoringAlgorithm { "raw" | "tf-idf" }<a href="#index.xml-eg-d38e3739" class="anchorlink">⚓</a></pre>Legal values are:
+                              <pre id="index.xml-eg-d38e3781" class="pre_eg cdata">
+element scoringAlgorithm { "raw" | "tf-idf" }<a href="#index.xml-eg-d38e3781" class="anchorlink">⚓</a></pre>Legal values are:
                               <dl class="valList">
                                  <dt><span class="odd_label">raw</span></dt>
                                  <dd>(<span>Default: Calculate the score based off of the weighted number of instances of a term
@@ -2860,18 +2904,18 @@ element scoringAlgorithm { "raw" | "tf-idf" }<a href="#index.xml-eg-d38e3739" cl
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e3829" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e3871" class="pre_eg cdata">
 &lt;content&gt;
  &lt;dataRef name="boolean"/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e3829" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e3871" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e3836" class="pre_eg cdata">
-element scrollToTextFragment { xsd:boolean }<a href="#index.xml-eg-d38e3836" class="anchorlink">⚓</a></pre>
+                              <pre id="index.xml-eg-d38e3878" class="pre_eg cdata">
+element scrollToTextFragment { xsd:boolean }<a href="#index.xml-eg-d38e3878" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -2921,18 +2965,18 @@ element scrollToTextFragment { xsd:boolean }<a href="#index.xml-eg-d38e3836" cla
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e3909" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e3951" class="pre_eg cdata">
 &lt;content&gt;
  &lt;dataRef name="anyURI"/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e3909" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e3951" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e3916" class="pre_eg cdata">
-element searchFile { xsd:anyURI }<a href="#index.xml-eg-d38e3916" class="anchorlink">⚓</a></pre>
+                              <pre id="index.xml-eg-d38e3958" class="pre_eg cdata">
+element searchFile { xsd:anyURI }<a href="#index.xml-eg-d38e3958" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -3006,18 +3050,18 @@ element searchFile { xsd:anyURI }<a href="#index.xml-eg-d38e3916" class="anchorl
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e4025" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e4067" class="pre_eg cdata">
 &lt;content&gt;
  &lt;dataRef name="NCName"/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e4025" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e4067" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e4032" class="pre_eg cdata">
-element stemmerFolder { xsd:NCName }<a href="#index.xml-eg-d38e4032" class="anchorlink">⚓</a></pre>
+                              <pre id="index.xml-eg-d38e4074" class="pre_eg cdata">
+element stemmerFolder { xsd:NCName }<a href="#index.xml-eg-d38e4074" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -3074,18 +3118,18 @@ element stemmerFolder { xsd:NCName }<a href="#index.xml-eg-d38e4032" class="anch
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e4111" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e4153" class="pre_eg cdata">
 &lt;content&gt;
  &lt;dataRef name="anyURI"/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e4111" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e4153" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e4118" class="pre_eg cdata">
-element stopwordsFile { xsd:anyURI }<a href="#index.xml-eg-d38e4118" class="anchorlink">⚓</a></pre>
+                              <pre id="index.xml-eg-d38e4160" class="pre_eg cdata">
+element stopwordsFile { xsd:anyURI }<a href="#index.xml-eg-d38e4160" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -3137,18 +3181,18 @@ element stopwordsFile { xsd:anyURI }<a href="#index.xml-eg-d38e4118" class="anch
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e4180" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e4222" class="pre_eg cdata">
 &lt;content&gt;
  &lt;dataRef name="nonNegativeInteger"/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e4180" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e4222" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e4187" class="pre_eg cdata">
-element totalKwicLength { xsd:nonNegativeInteger }<a href="#index.xml-eg-d38e4187" class="anchorlink">⚓</a></pre>
+                              <pre id="index.xml-eg-d38e4229" class="pre_eg cdata">
+element totalKwicLength { xsd:nonNegativeInteger }<a href="#index.xml-eg-d38e4229" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -3199,18 +3243,18 @@ element totalKwicLength { xsd:nonNegativeInteger }<a href="#index.xml-eg-d38e418
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e4249" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e4291" class="pre_eg cdata">
 &lt;content&gt;
  &lt;dataRef name="boolean"/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e4249" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e4291" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e4256" class="pre_eg cdata">
-element verbose { xsd:boolean }<a href="#index.xml-eg-d38e4256" class="anchorlink">⚓</a></pre>
+                              <pre id="index.xml-eg-d38e4298" class="pre_eg cdata">
+element verbose { xsd:boolean }<a href="#index.xml-eg-d38e4298" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -3269,18 +3313,18 @@ element verbose { xsd:boolean }<a href="#index.xml-eg-d38e4256" class="anchorlin
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e4324" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e4366" class="pre_eg cdata">
 &lt;content&gt;
  &lt;dataRef name="anyURI"/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e4324" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e4366" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e4331" class="pre_eg cdata">
-element versionFile { xsd:anyURI }<a href="#index.xml-eg-d38e4331" class="anchorlink">⚓</a></pre>
+                              <pre id="index.xml-eg-d38e4373" class="pre_eg cdata">
+element versionFile { xsd:anyURI }<a href="#index.xml-eg-d38e4373" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -3334,18 +3378,18 @@ element versionFile { xsd:anyURI }<a href="#index.xml-eg-d38e4331" class="anchor
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Content model</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e4397" class="pre_eg cdata">
+                              <pre id="index.xml-eg-d38e4439" class="pre_eg cdata">
 &lt;content&gt;
  &lt;dataRef name="boolean"/&gt;
 &lt;/content&gt;
-    <a href="#index.xml-eg-d38e4397" class="anchorlink">⚓</a></pre>
+    <a href="#index.xml-eg-d38e4439" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                         <tr>
                            <td class="wovenodd-col1"><span lang="en" class="label">Schema Declaration</span></td>
                            <td class="wovenodd-col2">
-                              <pre id="index.xml-eg-d38e4404" class="pre_eg cdata">
-element wildcardSearch { xsd:boolean }<a href="#index.xml-eg-d38e4404" class="anchorlink">⚓</a></pre>
+                              <pre id="index.xml-eg-d38e4446" class="pre_eg cdata">
+element wildcardSearch { xsd:boolean }<a href="#index.xml-eg-d38e4446" class="anchorlink">⚓</a></pre>
                            </td>
                         </tr>
                      </table>
@@ -3462,9 +3506,9 @@ element wildcardSearch { xsd:boolean }<a href="#index.xml-eg-d38e4404" class="an
          <div class="footer"><!--standard links to project, institution etc--><a class="plain" href="http://www.example.com/"></a> <a class="plain" href="index.html">Home</a> <a class="plain" href="#">Feedback</a> </div>
          <address>Martin Holmes and Joey Takeda. Date: 2019-2021<br/>
             <!--
-	  Generated from index.xml using XSLT stylesheets version 7.51.1
+	  Generated from index.xml using XSLT stylesheets version 7.51.2
 	       based on http://www.tei-c.org/Stylesheets/
-	       on 2021-03-25T17:40:57Z.
+	       on 2021-04-13T03:49:26Z.
 	       SAXON HE 10.0.
 		 --></address>
       </div>

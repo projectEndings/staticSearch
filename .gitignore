@@ -28,6 +28,7 @@ config.xsl
 
 /docs/*.js
 /docs/*.html
+/docs/search/*
 
 #...but we re-include the single-file 
 #documentation.
