@@ -1083,7 +1083,7 @@
                 <cell>staticSearch_docImage</cell>
               </row>
               <row>
-                <cell>staticSearch.docImage</cell>
+                <cell>staticSearch.docSortKey</cell>
                 <cell>staticSearch_docSortKey</cell>
               </row>
             </table>
