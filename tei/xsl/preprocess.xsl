@@ -98,35 +98,35 @@
       <script src="{$climbTree || 'js/ssHighlight.js'}"><xsl:comment>Script to highlight search hits.</xsl:comment></script> 
       
       <meta name="Language"
-        class="staticSearch.desc" content="{$lang}"/>
+        class="staticSearch_desc" content="{$lang}"/>
       <xsl:choose>
         <xsl:when test="matches($docName, '^examples-')">
           <meta name="Page type"
-            class="staticSearch.desc" content="Examples"/>
+            class="staticSearch_desc" content="Examples"/>
         </xsl:when>
         <xsl:when test="matches($docName, '^ref-')">
           <meta name="Page type"
-            class="staticSearch.desc" content="Specifications"/>
+            class="staticSearch_desc" content="Specifications"/>
         </xsl:when>
         <xsl:when test="matches($docName, '^readme-')">
           <meta name="Page type"
-            class="staticSearch.desc" content="Readme"/>
+            class="staticSearch_desc" content="Readme"/>
         </xsl:when>
         <xsl:when test="matches(child::title[1], '^[iv]+\.\s')">
           <meta name="Page type"
-            class="staticSearch.desc" content="Front matter"/>
+            class="staticSearch_desc" content="Front matter"/>
         </xsl:when>
         <xsl:when test="matches(child::title[1], '^\d+\.?\s')">
           <meta name="Page type"
-            class="staticSearch.desc" content="Chapters"/>
+            class="staticSearch_desc" content="Chapters"/>
         </xsl:when>
         <xsl:when test="matches(child::title[1], '^((Appendix)|(Anhang)|(Apéndice)|(Appendice)|(Annexe)|(付録)|(부록)|(附錄))\s+[A-Z]')">
           <meta name="Page type"
-            class="staticSearch.desc" content="Back matter"/>
+            class="staticSearch_desc" content="Back matter"/>
         </xsl:when>
         <xsl:otherwise>
           <meta name="Page type"
-            class="staticSearch.desc" content="Other pages"/>
+            class="staticSearch_desc" content="Other pages"/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:copy>
