@@ -77,6 +77,16 @@
     <include name="lib/*.jar"/>
   </fileset>
   
+  <!-- Files we need to include from the css folder. -->
+  <fileset id="css" dir="${basedir}">
+    <include name="css/*.css"/>
+  </fileset>
+  
+  <!-- Files we need to include from the images folder. -->
+  <fileset id="image" dir="${basedir}">
+    <include name="images/*.*"/>
+  </fileset>
+  
   <!-- Files we need to include from the schema folder. -->
   <fileset id="schema" dir="${basedir}">
     <include name="schema/**.*"/>
@@ -173,6 +183,8 @@
     <copy todir="${basedir}/dist">
       <fileset refid="docs"/>
       <fileset refid="js"/>
+      <fileset refid="css"/>
+      <fileset refid="images"/>
       <fileset refid="lib"/>
       <fileset refid="stemmers"/>
       <fileset refid="schema"/>
