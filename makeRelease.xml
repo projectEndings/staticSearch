@@ -83,7 +83,7 @@
   </fileset>
   
   <!-- Files we need to include from the images folder. -->
-  <fileset id="image" dir="${basedir}">
+  <fileset id="images" dir="${basedir}">
     <include name="images/*.*"/>
   </fileset>
   
