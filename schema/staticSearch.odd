@@ -1036,15 +1036,17 @@
       </div>
       
       
-      
       <div xml:id="newSinceVersion1">
         <head>What's new since version 1.0?</head>
         <list>
           <item>Level: Intermediate</item>
-          <item>Last Updated: <date when="2021-04-12">12 April 2021</date></item>
+          <item>Last Updated: <date when="2021-05-02">2 May 2021</date></item>
         </list>
         <div xml:id="newIn1.3">
           <head>Changes in version 1.3</head>
+          <p>Note that version 1.2 was withdrawn in favour of version 1.3, so the list below includes
+          changes from the original version 1.2 and the current 1.3.</p>
+          
           <p>Deprecations requiring changes to existing projects:</p>
           <list>
             <item>All staticSearch classes with periods have been deprecated in favour of underscores as periods in class names
@@ -1089,6 +1091,12 @@
             </table>
            For version 1.3, using the deprecated period syntax will result in WARNINGs; in all subsequent versions, using the period syntax will result in build failures.
             </item>
+            <item>The original parameters <val>config</val> and <val>configFile</val>
+              have been renamed <val>ssConfig</val> and <val>ssConfigFile</val> to 
+              minimize the chances of naming collisions with parameters in other 
+              build processes. <emph>IF YOU HAVE SCRIPTED A staticSearch BUILD AS PART
+                OF YOUR OWN BUILD PROCESS, YOU WILL NEED TO UPDATE THESE PARAMETER 
+                NAMES.</emph></item>
           </list>
           <p>New features and enhancements:</p>
           <list>
@@ -1099,54 +1107,40 @@
             more information.</item>
             <item>Support for French in captions etc. in the search page has
             been improved.</item>
-          </list>
-        </div>
-        <div xml:id="newIn1.2">
-          <head>Changes in version 1.2</head>
-          <p>Deprecations requiring changes to existing projects</p>
-          <list>
-            <item>The original parameters <val>config</val> and <val>configFile</val>
-            have been renamed <val>ssConfig</val> and <val>ssConfigFile</val> to 
-            minimize the chances of naming collisions with parameters in other 
-            build processes. <emph>IF YOU HAVE SCRIPTED A staticSearch BUILD AS PART
-            OF YOUR OWN BUILD PROCESS, YOU WILL NEED TO UPDATE THESE PARAMETER 
-            NAMES.</emph></item>
-          </list>
-          <p>New features and enhancements:</p>
-          <list>
             <item>A French stemmer is now available, as well as a caption set for French search pages.</item>
             <item>Images can now be configured for specific parts of a document, as well 
-            as for the whole document, for display alongside KWICs in results. This is
-            part of a new extension mechanism using <ref target="#customAttributes">custom attributes</ref>.</item>
+              as for the whole document, for display alongside KWICs in results. This is
+              part of a new extension mechanism using <ref target="#customAttributes">custom attributes</ref>.</item>
             <item>The CSS for the search page by the indexing process is now more easily 
-            accessible in a separate file <ident>css/ssSearch.css</ident>, which is linked
+              accessible in a separate file <ident>css/ssSearch.css</ident>, which is linked
               into the search page at build time.</item>
             <item>Links to target documents from keyword-in-context results now include a search
-            string parameter that specifies the hit text, so that JavaScript running in the 
-            target page can highlight the search hit(s) and scroll to them. See 
+              string parameter that specifies the hit text, so that JavaScript running in the 
+              target page can highlight the search hit(s) and scroll to them. See 
               <ref target="#highlightTargetPage">Highlighting search hits on target pages</ref>
-            for more information.</item>
+              for more information.</item>
             <item>Documentation has been significantly improved with additional explanatory
               remarks for many elements, and the staticSearch build of the documentation now
               includes hit highlighting (the feature described above).</item>
             <item>Only ancestor ids are indexed when <gi>linkToFragmentId</gi> is enabled; formerly, any preceding
-            id value was used.</item>
+              id value was used.</item>
             <item>Results can now optionally be viewed in batches by setting the new <gi>resultsPerPage</gi> configuration
-            option.</item>
+              option.</item>
             <item>The maximum number of results that a search can return has been set to 2000 results
               by default and can be changed using the new <gi>resultsLimit</gi> element. If a search 
               returns a set of results that exceeds this limit, staticSearch does not render the results
               and advises the user to try a more precise search.
             </item>
             <item>The minimum length of a word to be indexed is now configurable, so in 
-            unusual circumstances you can now enable searching for 1- or 2-letter words
-            using the <gi>minWordLength</gi> parameter.</item>
+              unusual circumstances you can now enable searching for 1- or 2-letter words
+              using the <gi>minWordLength</gi> parameter.</item>
             <item>The staticSearch report is now discussed in the documentation (see <ptr target="#theStaticSearchReport"/>) and the "Not in Dictionary" and "Foreign Words" reports have been
-            improved.</item>
+              improved.</item>
             <item>The filter creation process has been rationalized such that all filter processing happens
-            in <code>json.xsl</code>, which has also improved the build performance slightly.</item>
+              in <code>json.xsl</code>, which has also improved the build performance slightly.</item>
             
           </list>
+          
           <p>Bug fixes:</p>
           <list>
             <item>The encoding structure for docImage, docSortKey, and docTitle has been constrained such that each doc* <gi>meta</gi> must include both a 
@@ -1156,7 +1150,7 @@
               </egXML>
             </item>
             <item>Temporary XML files from dictionaries are now removed during the <code>clean</code> step
-            of the build process.</item>
+              of the build process.</item>
             <item>All HTML characters are properly escaped in context snippets.</item>
           </list>
         </div>
