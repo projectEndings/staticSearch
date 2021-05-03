@@ -1,5 +1,7 @@
 # BUILD PLAN (July 29, 2019)
 
+NOTE: THIS IS OBSOLETE AND NEEDS TO BE UPDATED.
+
 While the base functionality of the XSLT processing stage is now complete,
 the code itself is a bit unruly and long. I think we should split this into
 multiple modules and steps for clarity's sake, and also for good reporting
