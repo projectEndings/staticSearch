@@ -314,14 +314,7 @@
                         </div>
                     </xsl:if>
                   
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
+                  <!-- Now create feature filters. -->
                   <xsl:if test="not(empty($featFilters))">
                     <div class="ssFeatFilters">
                       <!-- We stash these in a variable so we can output them 
@@ -342,7 +335,7 @@
                             <legend><xsl:value-of select="$filterName"/></legend>
                             
                             <!--And create a simple text box for the feature.-->
-                            <input type="text" title="{$filterName}" 
+                            <input type="text" title="{$filterName}" placeholder="{hcmc:getCaption('ssStartTyping', $captionLang)}"
                               class="staticSearch.feat staticSearch_feat"/>
                             
                           </fieldset>
@@ -355,16 +348,6 @@
                     </div>
                   </xsl:if>
                   
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                    
                     <!--Now create date boxes, if necessary-->
                     
                     <xsl:if test="not(empty($dateFilters))">
