@@ -722,9 +722,8 @@
     </xd:doc>
     <xsl:template name="createFiltersJson">
         <!--Filter regex-->
-        <!--TODO: Adjust this one typeahead is implemented-->
         <xsl:variable name="filterRex"
-            select="'(^|\s+)staticSearch_(desc|num|bool|date)(\s+|$)'"
+            select="'(^|\s+)staticSearch_(desc|num|bool|date|feat)(\s+|$)'"
             as="xs:string"/>
         
         <!--Get all of the metas (that aren't meant to be excluded) from the tokenized docs-->
@@ -789,8 +788,8 @@
                         
                         <!--Now fork on filter types and call the respective functions-->
                         <xsl:choose>
-                            <xsl:when test="$thisFilterType = 'desc'">
-                                <xsl:sequence select="hcmc:createDescFilterMap($thisFilterMetas, $thisFilterId)"/>
+                            <xsl:when test="$thisFilterType = ('desc', 'feat')">
+                                <xsl:sequence select="hcmc:createDescFeatFilterMap($thisFilterMetas, $thisFilterId)"/>
                             </xsl:when>
                             <xsl:when test="$thisFilterType = 'date'">
                                 <xsl:sequence select="hcmc:createDateFilterMap($thisFilterMetas, $thisFilterId)"/>
@@ -816,11 +815,11 @@
         </xsl:for-each-group>
     </xsl:template>
     <xd:doc>
-        <xd:desc><xd:ref name="hcmc:createDescFilterMap" type="function">hcmc:createDescFilterMap</xd:ref>
-            creates the content for each ssDesc filter map by associating each unique ssDesc value with the
+        <xd:desc><xd:ref name="hcmc:createDescFeatFilterMap" type="function">hcmc:createDescFeatFilterMap</xd:ref>
+            creates the content for each ssDesc or ssFeature filter map by associating each unique ssDesc|ssFeature value with the
             set of documents to which it corresponds.</xd:desc>
-        <xd:param name="metas">All of the meta tags for a particular ssDesc filter (i.e. meta name="Document Type")</xd:param>
-        <xd:param name="filterIdPrefix">The id for that filter (ssDesc1)</xd:param>
+        <xd:param name="metas">All of the meta tags for a particular ssDesc or ssFeature filter (i.e. meta name="Document Type")</xd:param>
+        <xd:param name="filterIdPrefix">The id for that filter (ssDesc1 or ssFeature1)</xd:param>
         <xd:return>A sequence of maps for each value:
             ssDesc1_1: {
             name: 'Poem',
@@ -834,7 +833,7 @@
             }
         </xd:return>
     </xd:doc>
-    <xsl:function name="hcmc:createDescFilterMap" as="element(j:map)+">
+    <xsl:function name="hcmc:createDescFeatFilterMap" as="element(j:map)+">
         <xsl:param name="metas" as="element(meta)+"/>
         <xsl:param name="filterIdPrefix" as="xs:string"/>
         
