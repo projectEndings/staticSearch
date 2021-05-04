@@ -234,6 +234,7 @@
                 
                 <xsl:if test="not(empty($filterJSONURIs))">
                     <xsl:variable name="descFilters" select="$filterJSONURIs[matches(.,'ssDesc\d+.*\.json')]"/>
+                    <xsl:variable name="featFilters" select="$filterJSONURIs[matches(.,'ssFeat\d+.*\.json')]"/>
                     <xsl:variable name="dateFilters" select="$filterJSONURIs[matches(.,'ssDate\d+.*\.json')]"/>
                     <xsl:variable name="boolFilters" select="$filterJSONURIs[matches(.,'ssBool\d+.*\.json')]"/>
                     <xsl:variable name="numFilters" select="$filterJSONURIs[matches(.,'ssNum\d+.*\.json')]"/>
@@ -312,6 +313,57 @@
                             </xsl:for-each>
                         </div>
                     </xsl:if>
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  <xsl:if test="not(empty($featFilters))">
+                    <div class="ssFeatFilters">
+                      <!-- We stash these in a variable so we can output them 
+                                      sorted alphabetically based on their names, which we
+                                      don't know until they're created. -->
+                      <xsl:variable name="fieldsets" as="element(fieldset)*">
+                        <xsl:for-each select="$featFilters">
+                          
+                          <!--Get the document-->
+                          <xsl:variable name="jsonDoc" select="unparsed-text(.) => json-to-xml()" as="document-node()"/>
+                          
+                          <!--And its name and id -->
+                          <xsl:variable name="filterName" select="$jsonDoc//map:string[@key='filterName']"/>
+                          <xsl:variable name="filterId" select="$jsonDoc//map:string[@key='filterId']"/>
+                          
+                          <!--And now create the fieldset and legend-->
+                          <fieldset class="ssFieldset" title="{$filterName}" id="{$filterId}">
+                            <legend><xsl:value-of select="$filterName"/></legend>
+                            
+                            <!--And create a simple text box for the feature.-->
+                            <input type="text" title="{$filterName}" 
+                              class="staticSearch.feat staticSearch_feat"/>
+                            
+                          </fieldset>
+                        </xsl:for-each>
+                      </xsl:variable>
+                      <xsl:for-each select="$fieldsets">
+                        <xsl:sort select="normalize-space(lower-case(legend))" lang="{$pageLang}"/>
+                        <xsl:sequence select="."/>
+                      </xsl:for-each>
+                    </div>
+                  </xsl:if>
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
                     
                     <!--Now create date boxes, if necessary-->
                     
