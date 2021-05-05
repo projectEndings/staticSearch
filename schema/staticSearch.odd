@@ -1111,7 +1111,7 @@
             <item>Images can now be configured for specific parts of a document, as well 
               as for the whole document, for display alongside KWICs in results. This is
               part of a new extension mechanism using <ref target="#customAttributes">custom attributes</ref>.</item>
-            <item>The CSS for the search page by the indexing process is now more easily 
+            <item>The CSS for the search page inserted by the indexing process is now more easily 
               accessible in a separate file <ident>css/ssSearch.css</ident>, which is linked
               into the search page at build time.</item>
             <item>Links to target documents from keyword-in-context results now include a search
