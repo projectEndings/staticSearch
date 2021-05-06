@@ -422,6 +422,9 @@ class StaticSearch{
     if (featFilter !== null){
       try{
         let inp = featFilter.querySelector('input');
+        //Now we set up the control as a typeahead.
+        
+        //Re-enable it.
         inp.disabled = false;
       }
       catch(e){
