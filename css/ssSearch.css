@@ -26,6 +26,10 @@ span.ssQueryAndButton{
 input#ssQuery{
     flex: 1;
 }
+input.staticSearch_feat:disabled{
+  cursor: wait;
+}
+
 div.ssDescFilters, div.ssDateFilters, div.ssNumFilters, div.ssBoolFilters{
     display: flex;
     flex-direction: row;

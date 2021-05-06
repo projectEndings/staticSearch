@@ -126,6 +126,15 @@ class StaticSearch{
       //Boolean filters
       this.boolFilterSelects =
            Array.from(document.querySelectorAll("select.staticSearch_bool"));
+      //Feature filters will eventually have checkboxes, but they don't yet.
+      this.featFilterCheckboxes = [];
+      //However they do have inputs.
+      this.featFilterInputs = 
+            Array.from(document.querySelectorAll("input[type='text'].staticSearch_feat"));
+      //And we set them all to disabled initially
+      for (let ffi of this.featFilterInputs){
+        ffi.disabled = true;
+      }
 
       //Now we have some properties that will may be used later if required.
       this.paginationBtnDiv = null;
@@ -360,6 +369,9 @@ class StaticSearch{
     if (path.match(/\/filters\//)){
       this.mapFilterData.set(json.filterName, json);
       this.mapJsonRetrieved.set(json.filterId, GOT);
+      if (path.match(/ssFeat/)){
+        this.setupFeatFilter(json.filterId);
+      }
       return;
     }
   }
@@ -395,6 +407,31 @@ class StaticSearch{
     }
     else{
       this.allJsonRetrieved = true;
+    }
+  }
+
+/** @function StaticSearch~setupFeatFilter
+  * @description this function runs when the json for a specific
+  *              feature filter is retrieved; it enables the 
+  *              control and assigns functionality events to it.
+  * @param {!string} filterId the id of the filter to set up.
+  * @return {boolean} true if a filter is found and set up, else false.
+  */
+  setupFeatFilter(filterId){
+    let featFilter = document.getElementById(filterId);
+    if (featFilter !== null){
+      try{
+        let inp = featFilter.querySelector('input');
+        inp.disabled = false;
+      }
+      catch(e){
+        console.log('ERROR: failed to set up feature filter ' + filterId);
+        return false;
+      }
+    }
+    else{
+      console.log('ERROR: failed to find feature filter ' + filterId);
+      return false;
     }
   }
 
