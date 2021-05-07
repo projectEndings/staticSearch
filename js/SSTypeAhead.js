@@ -99,7 +99,6 @@
       let id = Object.entries(this.filterData)[i][0];
       let name = Object.entries(this.filterData)[i][1].name;
       if ((name.match(re))&&(this.reId.test(id))){
-        console.log(name);
         let d = document.createElement('div');
         d.setAttribute('data-val', name);
         d.setAttribute('data-id', id);
@@ -167,8 +166,19 @@
   select(e){
     let id = e.target.getAttribute('data-id');
     let val = e.target.getAttribute('data-val');
+    this.addCheckbox(id, val);
+  }
+  
+  /** @function SSTypeAhead~addCheckbox
+  * @description This creates a new checkbox + label block for 
+  *              the selected item in the menu, unless there is
+  *              already one there.
+  * @param {id} the id required for the checkbox.
+  * @param {val} the text value for the checkbox.
+  */  
+  addCheckbox(id, val){
     //Check for an existing one:
-    for (let c of this.checkboxes.querySelectorAll('span[data-val]')){
+    for (let c of this.checkboxes.querySelectorAll('input')){
       if (c.getAttribute('id') == id){
         return;
       }
@@ -180,6 +190,8 @@
     c.setAttribute('type', 'checkbox');
     c.setAttribute('checked', 'checked');
     c.setAttribute('title', this.filterName);
+    c.setAttribute('value', val);
+    c.setAttribute('class', 'staticSearch_feat');
     c.setAttribute('id', id);
     s.appendChild(c);
     let l = document.createElement('label');
@@ -192,6 +204,7 @@
     s.appendChild(b);
     this.checkboxes.appendChild(s);
   }
+  
   
   /** @function SSTypeAhead~removeCheckbox
   * @description This is called by e.g. a click on the little

@@ -605,6 +605,10 @@ class StaticSearch{
             search.push(cbx.title + '=' + cbx.value);
           }
         }
+        //Feature filter checkboxes need to be discovered first, since 
+        //they're mutable.
+        this.featFilterCheckboxes = 
+          Array.from(document.querySelectorAll("input[type='checkbox'].staticSearch_feat"));
         for (let cbx of this.featFilterCheckboxes){
           if (cbx.checked){
             search.push(cbx.title + '=' + cbx.value);
@@ -1041,6 +1045,7 @@ class StaticSearch{
   * @description This outputs a human-readable explanation of the search
   *              that's being done, to clarify for users what they've chosen 
   *              to look for. Note that the output div is hidden by default. 
+  *              NOTE: This does not yet include filter information.
   * @return {boolean} true if the process succeeds, otherwise false.
   */
   writeSearchReport(){
@@ -1054,7 +1059,6 @@ class StaticSearch{
           if (!arrOutput[this.terms[i].type]){
             arrOutput[this.terms[i].type] = {type: this.terms[i].type, terms: []};
           }
-          //arrOutput[this.terms[i].type].terms.push('"' + this.terms[i].str + '"');
           arrOutput[this.terms[i].type].terms.push(`"${this.terms[i].str}" (${this.terms[i].stem})`);
         }
         arrOutput.sort(function(a, b){return a.type - b.type;})
@@ -1135,7 +1139,7 @@ class StaticSearch{
       if (this.allJsonRetrieved === false){
         //First get a list of active filters.
 
-        for (let ctrl of document.querySelectorAll('input[type="checkbox"].staticSearch_desc:checked')){
+        for (let ctrl of document.querySelectorAll('input[type="checkbox"].staticSearch_desc:checked, input[type="checkbox"].staticSearch_feat:checked')){
           let filterId = ctrl.id.split('_')[0];
           if (this.mapJsonRetrieved.get(filterId) != GOT){
             filterIds.add(filterId);
@@ -1226,22 +1230,6 @@ class StaticSearch{
               }.bind(self));
           }
         }
-        //OLD approach
-        /*if (this.allowWildcards == true){
-          if (this.mapJsonRetrieved.get('ssStems') != GOT){
-            promises[promises.length] = fetch(self.jsonDirectory + 'ssStems' + this.versionString + '.json', this.fetchHeaders)
-              .then(function(response) {
-                return response.json();
-              })
-              .then(function(json) {
-                self.stems = new Map(Object.entries(json));
-                self.mapJsonRetrieved.set('ssStems', GOT);
-              }.bind(self))
-              .catch(function(e){
-                console.log('Error attempting to retrieve stem list: ' + e);
-              }.bind(self));
-          }
-        }*/
       }
 
       //If we do need to retrieve JSON index data, then do it
