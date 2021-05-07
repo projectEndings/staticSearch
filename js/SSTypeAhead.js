@@ -150,13 +150,19 @@
     }
     
   }
-  
+
+  /** @function SSTypeAhead~select
+  * @description This creates a new checkbox + label block for 
+  *              the selected item in the menu, unless there is
+  *              already one there.
+  * @param {Event} e the KeyboardEvent for the key pressed.
+  */     
   select(e){
     let id = e.target.getAttribute('data-id');
     let val = e.target.getAttribute('data-val');
     //Check for an existing one:
     for (let c of this.checkboxes.querySelectorAll('span[data-val]')){
-      if (c.getAttribute('data-val') == val){
+      if (c.getAttribute('id') == id){
         return;
       }
     }
@@ -179,8 +185,13 @@
     this.checkboxes.appendChild(s);
   }
   
+  /** @function SSTypeAhead~removeCheckbox
+  * @description This is called by e.g. a click on the little
+  *              button that each checkbox block has, enabling
+  *              its removal if the user doesn't want it any more.
+  * @param {Event} e the event that triggers the removal.
+  */   
   removeCheckbox(e){
     e.target.parentNode.parentNode.removeChild(e.target.parentNode);
   }
-  
 }
