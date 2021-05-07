@@ -40,6 +40,13 @@
     this.rootEl = rootEl;
     this.filterData = filterData;
     this.filterName = filterName;
+    //Because so many staticSearch filter handling is based on 
+    //the string values of items rather than ids, we create a map
+    //of values to ids.
+    this.filterMap = new Map();
+    for (let i=2; i<Object.entries(this.filterData).length; i++){
+      this.filterMap.set(Object.entries(this.filterData)[i][1].name, Object.entries(this.filterData)[i][0]);
+    }
     this.input = this.rootEl.getElementsByTagName('input')[0];
     this.input.addEventListener('input', this.suggest.bind(this));
     this.input.addEventListener('keydown', function(e){this.keyOnInput(e);}.bind(this));
@@ -141,7 +148,6 @@
   */    
   keyOnSelection(e){
     let el = e.target;
-    console.log(e.key);
     switch (e.key){
       case 'Enter': 
         this.select(e);
@@ -166,20 +172,24 @@
   select(e){
     let id = e.target.getAttribute('data-id');
     let val = e.target.getAttribute('data-val');
-    this.addCheckbox(id, val);
+    this.addCheckbox(val);
   }
   
   /** @function SSTypeAhead~addCheckbox
   * @description This creates a new checkbox + label block for 
-  *              the selected item in the menu, unless there is
-  *              already one there.
-  * @param {id} the id required for the checkbox.
-  * @param {val} the text value for the checkbox.
+  *              the selected item in the menu, or based on 
+  *              a call from outside unless there is already 
+  *              already one there, in which case we check it.
+  * @param {!string} val the text value for the checkbox.
   */  
-  addCheckbox(id, val){
+  addCheckbox(val){
+    let id = this.filterMap.get(val);
+    if (!id){return;}
     //Check for an existing one:
     for (let c of this.checkboxes.querySelectorAll('input')){
       if (c.getAttribute('id') == id){
+        //We just check it if it's already there.
+        c.checked = true;
         return;
       }
     }
@@ -205,6 +215,27 @@
     this.checkboxes.appendChild(s);
   }
   
+  /** @function SSTypeAhead~setCheckboxes
+  * @description This is provided with an Array of value strings,
+  *              and for each one, it either creates a new checkbox
+  *              or checks an existing one; then checkboxes not 
+  *              included in the array are unchecked. This allows the
+  *              external caller to set the entire status of the control
+  *              based e.g. on a URL query string.
+  * @param {!Array} arrVals the Array of string values.
+  */  
+  setCheckboxes(arrVals){
+  //First uncheck any existing items which aren't in the list.
+    for (let c of this.checkboxes.querySelectorAll('input')){
+      if (arrVals.indexOf(c.getAttribute('value')) < 0){
+        c.checked = false;
+      }
+    }
+  //Now create any new ones we need.
+    for (let val of arrVals){
+      this.addCheckbox(val);
+    }
+  }
   
   /** @function SSTypeAhead~removeCheckbox
   * @description This is called by e.g. a click on the little

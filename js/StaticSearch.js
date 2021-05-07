@@ -135,6 +135,9 @@ class StaticSearch{
       for (let ffi of this.featFilterInputs){
         ffi.disabled = true;
       }
+      //We need an array in which to store any possible feature filters that 
+      //need to be created based on settings in the URL query string.
+      this.mapFeatFilters = new Map();
 
       //Now we have some properties that will may be used later if required.
       this.paginationBtnDiv = null;
@@ -424,7 +427,7 @@ class StaticSearch{
       try{
         //Now we set up the control as a typeahead.
         let filterData = this.mapFilterData.get(filterName);
-        let newTypeAhead = new SSTypeAhead(featFilter, filterData, filterName);
+        this.mapFeatFilters.set(filterName, new SSTypeAhead(featFilter, filterData, filterName));
         //Re-enable it.
         let inp = featFilter.querySelector('input');
         inp.disabled = false;
