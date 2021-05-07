@@ -424,7 +424,7 @@ class StaticSearch{
       try{
         //Now we set up the control as a typeahead.
         let filterData = this.mapFilterData.get(filterName);
-        let newTypeAhead = new SSTypeAhead(featFilter, filterData);
+        let newTypeAhead = new SSTypeAhead(featFilter, filterData, filterName);
         //Re-enable it.
         let inp = featFilter.querySelector('input');
         inp.disabled = false;
@@ -473,6 +473,8 @@ class StaticSearch{
         cbx.checked = false;
       }
     }
+    //NOTE MDH 2021-05-07: Have to do something similar but way more clever for the ssFeat filters.
+    
     for (let txt of this.dateFilterTextboxes){
       let key = txt.getAttribute('title') + txt.id.replace(/^.+((_from)|(_to))$/, '$1');
       if ((searchParams.has(key)) && (searchParams.get(key).length > 3)){
@@ -599,6 +601,11 @@ class StaticSearch{
           search.push('q=' + q);
         }
         for (let cbx of this.descFilterCheckboxes){
+          if (cbx.checked){
+            search.push(cbx.title + '=' + cbx.value);
+          }
+        }
+        for (let cbx of this.featFilterCheckboxes){
           if (cbx.checked){
             search.push(cbx.title + '=' + cbx.value);
           }
@@ -851,6 +858,13 @@ class StaticSearch{
       for (let cbx of this.descFilterCheckboxes){
         cbx.checked = false;
       }
+      //Feature filter checkboxes need to be discovered first, since 
+      //they're mutable.
+      this.featFilterCheckboxes = 
+        Array.from(document.querySelectorAll("input[type='checkbox'].staticSearch_feat"));
+      for (let cbx of this.featFilterCheckboxes){
+        cbx.checked = false;
+      }  
       for (let txt of this.dateFilterTextboxes){
         txt.value = '';
       }
@@ -904,15 +918,15 @@ class StaticSearch{
       var xSets = [];
       var currXSet;
 
-      //Find each desc fieldset and get its descriptor.
-      let descs = document.querySelectorAll('fieldset[id ^= "ssDesc"]');
-      for (let desc of descs){
+      //Find each desc or feat fieldset and get its descriptor.
+      let filters = document.querySelectorAll('fieldset[id ^= "ssDesc"], fieldset[id ^="ssFeat"]');
+      for (let filter of filters){
         currXSet = new XSet();
-        let descName = desc.getAttribute('title');
-        let cbxs = desc.querySelectorAll('input[type="checkbox"]:checked');
-        if ((cbxs.length > 0) && (this.mapFilterData.has(descName))){
+        let filterName = filter.getAttribute('title');
+        let cbxs = filter.querySelectorAll('input[type="checkbox"]:checked');
+        if ((cbxs.length > 0) && (this.mapFilterData.has(filterName))){
           for (let cbx of cbxs){
-            currXSet.addArray(this.mapFilterData.get(descName)[cbx.id].docs);
+            currXSet.addArray(this.mapFilterData.get(filterName)[cbx.id].docs);
           }
           xSets.push(currXSet);
         }

@@ -32,11 +32,14 @@
   * @param {!Object} filterData the set of filter data retrieved 
   *              as JSON by the StaticSearch instance which is 
   *              creating this control.
+  * @param {!string} filterName the textual descriptive name of the 
+  *              filter.
   *              
   */
-  constructor(rootEl, filterData){
+  constructor(rootEl, filterData, filterName){
     this.rootEl = rootEl;
     this.filterData = filterData;
+    this.filterName = filterName;
     this.input = this.rootEl.getElementsByTagName('input')[0];
     this.input.addEventListener('input', this.suggest.bind(this));
     this.input.addEventListener('keydown', function(e){this.keyOnInput(e);}.bind(this));
@@ -176,6 +179,7 @@
     let c = document.createElement('input');
     c.setAttribute('type', 'checkbox');
     c.setAttribute('checked', 'checked');
+    c.setAttribute('title', this.filterName);
     c.setAttribute('id', id);
     s.appendChild(c);
     let l = document.createElement('label');
