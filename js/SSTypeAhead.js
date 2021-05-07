@@ -92,14 +92,16 @@
       return;
     }
     let re = new RegExp(this.input.value, 'i');
-    for (const [key, value] of Object.entries(this.filterData)){
-      if ((value.name.match(re))&&(reId.test(key))){
-        console.log(value.name);
+    for (let i=2; i<Object.entries(this.filterData).length; i++){
+      let id = Object.entries(this.filterData)[i][0];
+      let name = Object.entries(this.filterData)[i][1].name;
+      if ((name.match(re))&&(this.reId.test(id))){
+        console.log(name);
         let d = document.createElement('div');
-        d.setAttribute('data-val', value.name);
-        d.setAttribute('data-id', key);
+        d.setAttribute('data-val', name);
+        d.setAttribute('data-id', id);
         d.classList.add('select');
-        d.appendChild(document.createTextNode(value.name));
+        d.appendChild(document.createTextNode(name));
         d.setAttribute('tabindex', '0');
         d.addEventListener('click', function(e){this.select(e)}.bind(this));
         d.addEventListener('keydown', function(e){this.keyOnSelection(e);}.bind(this));

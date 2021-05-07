@@ -370,7 +370,7 @@ class StaticSearch{
       this.mapFilterData.set(json.filterName, json);
       this.mapJsonRetrieved.set(json.filterId, GOT);
       if (path.match(/ssFeat/)){
-        this.setupFeatFilter(json.filterId);
+        this.setupFeatFilter(json.filterId, json.filterName);
       }
       return;
     }
@@ -415,16 +415,18 @@ class StaticSearch{
   *              feature filter is retrieved; it enables the 
   *              control and assigns functionality events to it.
   * @param {!string} filterId the id of the filter to set up.
+  * @param {!string} filterName the string name of the filter.
   * @return {boolean} true if a filter is found and set up, else false.
   */
-  setupFeatFilter(filterId){
+  setupFeatFilter(filterId, filterName){
     let featFilter = document.getElementById(filterId);
     if (featFilter !== null){
       try{
-        let inp = featFilter.querySelector('input');
         //Now we set up the control as a typeahead.
-        
+        let filterData = this.mapFilterData.get(filterName);
+        let newTypeAhead = new SSTypeAhead(featFilter, filterData);
         //Re-enable it.
+        let inp = featFilter.querySelector('input');
         inp.disabled = false;
       }
       catch(e){
