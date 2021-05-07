@@ -177,3 +177,43 @@ div#ssPoweredBy{
 div#ssPoweredBy>* {
     margin: 0;
 }
+
+/* Styles for the SSTypeAhead control. */
+div.ssFeatFilters>fieldset.ssFieldset>menu{
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: min-content;
+    min-width: 12em;
+}
+div.ssFeatFilters>fieldset.ssFieldset>menu>div.select{
+    border: solid 1pt darkgray;
+    cursor: pointer;
+    padding: 0.25em;
+}
+div.ssFeatFilters>fieldset.ssFieldset>menu>div.select:hover, div.ssFeatFilters>fieldset.ssFieldset>menu>div.select:focus{
+    background-color: lightgray;
+}
+div.ssSuggest{
+    padding: 0.5em;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1em;
+}
+div.ssSuggest>span{
+    border: solid 1pt gray;
+    padding: 0.25em;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 0.25em;
+    align-items: center;
+}
+div.ssSuggest>span>button{
+    max-width: 1.5em;
+    padding: 0.25em;
+    text-align: center;
+}

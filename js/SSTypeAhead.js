@@ -39,7 +39,7 @@
     this.filterData = filterData;
     this.input = this.rootEl.getElementsByTagName('input')[0];
     this.input.addEventListener('input', this.suggest.bind(this));
-    this.input.addEventListener('keydown', this.keyOnInput.bind(this));
+    this.input.addEventListener('keydown', function(e){this.keyOnInput(e);}.bind(this));
     this.input.setAttribute('autocomplete', 'off');
     this.rootEl.setAttribute('tabindex', '0');
     this.rootEl.addEventListener('keydown', function(e){this.escape(e.key);}.bind(this));
@@ -103,7 +103,7 @@
         d.classList.add('select');
         d.appendChild(document.createTextNode(name));
         d.setAttribute('tabindex', '0');
-        d.addEventListener('click', function(e){this.select(e)}.bind(this));
+        d.addEventListener('click', function(e){this.select(e);}.bind(this));
         d.addEventListener('keydown', function(e){this.keyOnSelection(e);}.bind(this));
         this.menu.appendChild(d);
       }
@@ -122,35 +122,37 @@
   * @description This is called when a key is pressed on the input, and if it's
   *              the down arrow, it navigates the focus down into the suggestion
   *              list.
-  * @param {string} key the KeyboardEvent.key DOMString value for the key pressed.
+  * @param {Event} e the KeyboardEvent for the key pressed.
   */  
-  keyOnInput(key){
-    if ((key === 'ArrowDown')&&(this.menu.firstElementChild)){
+  keyOnInput(e){
+    if ((e.key === 'ArrowDown')&&(this.menu.firstElementChild)){
       this.menu.firstElementChild.focus();
+      e.preventDefault();
     }
   }
 
   /** @function SSTypeAhead~keyOnSelection
-  * @description This is called when a key is pressed on the input, and if it's
+  * @description This is called when a key is pressed on the menu, and if it's
   *              the down arrow, it navigates the focus down into the suggestion
   *              list.
   * @param {Event} e the KeyboardEvent for the key pressed.
   */    
-  keyOnSelection(key){
+  keyOnSelection(e){
     let el = e.target;
+    console.log(e.key);
     switch (e.key){
       case 'Enter': 
         this.select(e);
         break;
-      case 'UpArrow':
+      case 'ArrowUp':
         el.previousElementSibling ? el.previousElementSibling.focus() : this.input.focus();
         break;
-      case 'DownArrow':
+      case 'ArrowDown':
         el.nextElementSibling ? el.nextElementSibling.focus() : el.parentNode.firstElementChild.focus();
         break;
       default:
     }
-    
+    e.preventDefault();
   }
 
   /** @function SSTypeAhead~select
