@@ -36,53 +36,70 @@
   */
   constructor(rootEl, filterData){
     this.rootEl = rootEl;
+    this.filterData = filterData;
     this.input = this.rootEl.getElementsByTagName('input')[0];
-    this.vals = vals;
     this.input.addEventListener('input', this.suggest.bind(this));
     this.input.addEventListener('keydown', this.keyOnInput.bind(this));
     this.input.setAttribute('autocomplete', 'off');
     this.rootEl.setAttribute('tabindex', '0');
-    this.rootEl.addEventListener('keydown', function(e){this.escape(e);}.bind(this));
+    this.rootEl.addEventListener('keydown', function(e){this.escape(e.key);}.bind(this));
     this.menu = document.createElement('menu');
     this.rootEl.appendChild(this.menu);
     this.checkboxes = document.createElement('div');
     this.checkboxes.classList.add('ssSuggest');
     this.rootEl.appendChild(this.checkboxes);
     this.rootEl.addEventListener('blur', function(e){this.blurring(e);}.bind(this), true);
+    this.reId = /^ssFeat\d+_\d+$/;
   }
   
+  /** @function SSTypeAhead~clearSuggestions
+  * @description This simply empties the drop-down suggestions menu.
+  */
   clearSuggestions(){
     this.menu.innerHTML = '';
   }
   
-  clearCheckboxes(){
-    this.checkboxes.innerHTML = '';
-  }
-  
-  escape(e){
-    if (e.which === 27){
+  /** @function SSTypeAhead~escape
+  * @description This is called when a key is pressed, and it simply 
+                 clears the suggestions menu if the key is Escape.
+  * @param {string} key the KeyboardEvent.key DOMString value for the key pressed.
+  */
+  escape(key){
+    if (key === 'Escape'){
       this.clearSuggestions();
     }
   }
   
+  /** @function SSTypeAhead~blurring
+  * @description This is called when the container root element loses focus.
+  *              Its purpose is to clear the current suggestions menu when 
+  *              the user stops interacting with the control.
+  * @param {Event} e the blur event.
+  */
   blurring(e){
     if (!e.currentTarget.contains(e.relatedTarget)){
       this.clearSuggestions();
     }
   }
   
+  /** @function SSTypeAhead~populate
+  * @description This searches through the list of values for the control
+  *              and creates a suggestion menu item for each one that 
+  *              matches.
+  */
   populate(){
     if (this.input.value.length < 3){
       return;
     }
     let re = new RegExp(this.input.value, 'i');
-    for (let v of this.vals){
-      if (v.match(re)){
-        console.log(v);
+    for (const [key, value] of Object.entries(this.filterData)){
+      if ((value.name.match(re))&&(reId.test(key))){
+        console.log(value.name);
         let d = document.createElement('div');
-        d.setAttribute('data-val', v);
+        d.setAttribute('data-val', value.name);
+        d.setAttribute('data-id', key);
         d.classList.add('select');
-        d.appendChild(document.createTextNode(v));
+        d.appendChild(document.createTextNode(value.name));
         d.setAttribute('tabindex', '0');
         d.addEventListener('click', function(e){this.select(e)}.bind(this));
         d.addEventListener('keydown', function(e){this.keyOnSelection(e);}.bind(this));
@@ -91,27 +108,42 @@
     }
   }
   
+  /** @function SSTypeAhead~suggest
+  * @description This clears existing suggestions and constructs a new set.
+  */  
   suggest(){
     this.clearSuggestions();
     this.populate();
   }
   
-  keyOnInput(e){
-    if ((e.which === 40)&&(this.menu.firstElementChild)){
+  /** @function SSTypeAhead~keyOnInput
+  * @description This is called when a key is pressed on the input, and if it's
+  *              the down arrow, it navigates the focus down into the suggestion
+  *              list.
+  * @param {string} key the KeyboardEvent.key DOMString value for the key pressed.
+  */  
+  keyOnInput(key){
+    if ((key === 'ArrowDown')&&(this.menu.firstElementChild)){
       this.menu.firstElementChild.focus();
     }
   }
-  
-  keyOnSelection(e){
+
+  /** @function SSTypeAhead~keyOnSelection
+  * @description This is called when a key is pressed on the input, and if it's
+  *              the down arrow, it navigates the focus down into the suggestion
+  *              list.
+  * @param {Event} e the KeyboardEvent for the key pressed.
+  */    
+  keyOnSelection(key){
     let el = e.target;
-    switch (e.which){
-      case 13: 
+    switch (e.key){
+      case 'Enter': 
         this.select(e);
         break;
-      case 38:
+      case 'UpArrow':
         el.previousElementSibling ? el.previousElementSibling.focus() : this.input.focus();
         break;
-      case 40:
+      case 'DownArrow':
         el.nextElementSibling ? el.nextElementSibling.focus() : el.parentNode.firstElementChild.focus();
         break;
       default:
@@ -120,6 +152,7 @@
   }
   
   select(e){
+    let id = e.target.getAttribute('data-id');
     let val = e.target.getAttribute('data-val');
     //Check for an existing one:
     for (let c of this.checkboxes.querySelectorAll('span[data-val]')){
@@ -128,7 +161,6 @@
       }
     }
     //Don't have one yet, so add one.
-    let id = val.replace(/\W/g, '_');
     let s = document.createElement('span');
     s.setAttribute('data-val', val);
     let c = document.createElement('input');
