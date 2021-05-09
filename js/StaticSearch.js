@@ -454,7 +454,7 @@ class StaticSearch{
   *                  the browser history)
   * @return {boolean} true if a search is initiated otherwise false.
   */
-  parseUrlQueryString(popping = false){
+  async parseUrlQueryString(popping = false){
     let searchParams = new URLSearchParams(decodeURI(document.location.search));
     //Do we need to do a search?
     let searchToDo = false; //default
@@ -476,8 +476,24 @@ class StaticSearch{
         cbx.checked = false;
       }
     }
-    //NOTE MDH 2021-05-07: Have to do something similar but way more clever for the ssFeat filters.
-    
+    //Have to do something similar but way more clever for the ssFeat filters.
+    //For each feature filter
+    for (let inp of this.featFilterInputs){
+    //check whether it's mentioned in the search params
+      let key = inp.getAttribute('title');
+      let filterId = inp.parentNode.id;
+      if (searchParams.has(key)){
+    //if so, check whether its typeahead control has been set up yet.
+        if (!this.mapFeatFilters.has(key)){
+    //If not, await its JSON retrieval, and set it up.
+          let fch = await fetch(this.jsonDirectory + 'filters/' + filterId + this.versionString + '.json');
+          let json = await fch.json();
+          this.setupFeatFilter(json.filterId, json.filterName);
+        }
+    //Then set its checkboxes appropriately.
+        this.mapFeatFilters.get(key).setCheckboxes(searchParams.getAll(key));
+      }
+    }
     for (let txt of this.dateFilterTextboxes){
       let key = txt.getAttribute('title') + txt.id.replace(/^.+((_from)|(_to))$/, '$1');
       if ((searchParams.has(key)) && (searchParams.get(key).length > 3)){
