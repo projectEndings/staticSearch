@@ -433,7 +433,7 @@ class StaticSearch{
         inp.disabled = false;
       }
       catch(e){
-        console.log('ERROR: failed to set up feature filter ' + filterId);
+        console.log('ERROR: failed to set up feature filter ' + filterId + ': ' + e);
         return false;
       }
     }
@@ -483,11 +483,13 @@ class StaticSearch{
       let key = inp.getAttribute('title');
       let filterId = inp.parentNode.id;
       if (searchParams.has(key)){
+        searchToDo = true;
     //if so, check whether its typeahead control has been set up yet.
         if (!this.mapFeatFilters.has(key)){
     //If not, await its JSON retrieval, and set it up.
           let fch = await fetch(this.jsonDirectory + 'filters/' + filterId + this.versionString + '.json');
           let json = await fch.json();
+          this.mapFilterData.set(json.filterName, json);
           this.setupFeatFilter(json.filterId, json.filterName);
         }
     //Then set its checkboxes appropriately.
