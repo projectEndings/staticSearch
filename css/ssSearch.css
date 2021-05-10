@@ -30,12 +30,12 @@ input.staticSearch_feat:disabled{
   cursor: wait;
 }
 
-div.ssDescFilters, div.ssDateFilters, div.ssNumFilters, div.ssBoolFilters{
+div.ssDescFilters, div.ssDateFilters, div.ssNumFilters, div.ssBoolFilters, div.ssFeatFilters{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
 }
-div.ssDescFilters fieldset, div.ssDateFilters fieldset, div.ssNumFilters fieldset, div.ssBoolFilters fieldset{
+div.ssDescFilters fieldset, div.ssDateFilters fieldset, div.ssNumFilters fieldset, div.ssBoolFilters fieldset, div.ssFeatFilters fieldset{
     margin: 0.25em auto;
     padding: 0.25em;
     flex-grow: 1;
@@ -62,7 +62,7 @@ fieldset.ssFieldset > span {
     border: solid 1px #aaa;
     margin: 0.2em;
 }
-div.ssNumFilters input[type="number"], div.ssDateFilters input[type="text"]{
+div.ssNumFilters input[type="number"], div.ssDateFilters input[type="text"], div.ssFeatFilters input[type="text"]{
     padding: 0.5em;
 }
 div#ssSearching{
