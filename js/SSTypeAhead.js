@@ -90,7 +90,10 @@
   * @param {Event} e the blur event.
   */
   blurring(e){
-    if (!e.currentTarget.contains(e.relatedTarget)){
+    /*if (!e.currentTarget.contains(e.relatedTarget)){
+      this.clearSuggestions();
+    }*/
+    if ((e.relatedTarget !== this.input)&&(!this.menu.contains(e.relatedTarget))){
       this.clearSuggestions();
     }
   }
