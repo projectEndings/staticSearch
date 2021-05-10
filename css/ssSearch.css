@@ -194,7 +194,7 @@ div.ssFeatFilters>fieldset.ssFieldset>menu{
     width: min-content;
     min-width: 12em;
     max-height: 30vh;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 div.ssFeatFilters>fieldset.ssFieldset>menu>div.select{
     border: solid 1pt darkgray;
