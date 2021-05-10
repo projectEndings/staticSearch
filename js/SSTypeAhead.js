@@ -36,10 +36,11 @@
   *              filter.
   *              
   */
-  constructor(rootEl, filterData, filterName){
+  constructor(rootEl, filterData, filterName, minLength){
     this.rootEl = rootEl;
     this.filterData = filterData;
     this.filterName = filterName;
+    this.minLength = minLength;
     //Because so many staticSearch filter handling is based on 
     //the string values of items rather than ids, we create a map
     //of values to ids.
@@ -60,6 +61,8 @@
     this.rootEl.appendChild(this.checkboxes);
     this.rootEl.addEventListener('blur', function(e){this.blurring(e);}.bind(this), true);
     this.reId = /^ssFeat\d+_\d+$/;
+    //Flag to track whether we're already working.
+    this.populating = false;
   }
   
   /** @function SSTypeAhead~clearSuggestions
@@ -98,24 +101,30 @@
   *              matches.
   */
   populate(){
-    if (this.input.value.length < 3){
+    if ((this.populating)||(this.input.value.length < this.minWordLength)){
       return;
     }
-    let re = new RegExp(this.input.value, 'i');
-    for (let i=2; i<Object.entries(this.filterData).length; i++){
-      let id = Object.entries(this.filterData)[i][0];
-      let name = Object.entries(this.filterData)[i][1].name;
-      if ((name.match(re))&&(this.reId.test(id))){
-        let d = document.createElement('div');
-        d.setAttribute('data-val', name);
-        d.setAttribute('data-id', id);
-        d.classList.add('select');
-        d.appendChild(document.createTextNode(name));
-        d.setAttribute('tabindex', '0');
-        d.addEventListener('click', function(e){this.select(e);}.bind(this));
-        d.addEventListener('keydown', function(e){this.keyOnSelection(e);}.bind(this));
-        this.menu.appendChild(d);
+    this.populating = true;
+    try{
+      let re = new RegExp(this.input.value, 'i');
+      for (let i=2; i<Object.entries(this.filterData).length; i++){
+        let id = Object.entries(this.filterData)[i][0];
+        let name = Object.entries(this.filterData)[i][1].name;
+        if ((name.match(re))&&(this.reId.test(id))){
+          let d = document.createElement('div');
+          d.setAttribute('data-val', name);
+          d.setAttribute('data-id', id);
+          d.classList.add('select');
+          d.appendChild(document.createTextNode(name));
+          d.setAttribute('tabindex', '0');
+          d.addEventListener('click', function(e){this.select(e);}.bind(this));
+          d.addEventListener('keydown', function(e){this.keyOnSelection(e);}.bind(this));
+          this.menu.appendChild(d);
+        }
       }
+    }
+    finally{
+      this.populating = false;
     }
   }
   
