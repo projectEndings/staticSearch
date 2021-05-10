@@ -50,7 +50,7 @@
     }
     this.input = this.rootEl.getElementsByTagName('input')[0];
     this.input.addEventListener('input', this.suggest.bind(this));
-    this.input.addEventListener('keydown', function(e){this.keyOnInput(e);}.bind(this));
+    this.input.addEventListener('keydown', ss.debounce(function(e){this.keyOnInput(e);}.bind(this)), 500);
     this.input.setAttribute('autocomplete', 'off');
     this.rootEl.setAttribute('tabindex', '0');
     this.rootEl.addEventListener('keydown', function(e){this.escape(e.key);}.bind(this));
