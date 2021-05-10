@@ -36,11 +36,11 @@
   *              filter.
   *              
   */
-  constructor(rootEl, filterData, filterName, minLength){
+  constructor(rootEl, filterData, filterName, minWordLength){
     this.rootEl = rootEl;
     this.filterData = filterData;
     this.filterName = filterName;
-    this.minLength = minLength;
+    this.minWordLength = minWordLength;
     //Because so many staticSearch filter handling is based on 
     //the string values of items rather than ids, we create a map
     //of values to ids.
