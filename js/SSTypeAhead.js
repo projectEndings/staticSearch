@@ -59,7 +59,7 @@
     this.checkboxes = document.createElement('div');
     this.checkboxes.classList.add('ssSuggest');
     this.rootEl.appendChild(this.checkboxes);
-    this.rootEl.addEventListener('click', function(e){this.blurringRoot(e);}.bind(this), true);
+    this.rootEl.addEventListener('click', function(e){this.blurringMenu(e);}.bind(this), true);
     this.reId = /^ssFeat\d+_\d+$/;
     //Flag to track whether we're already working.
     this.populating = false;
@@ -83,14 +83,14 @@
     }
   }
   
-  /** @function SSTypeAhead~blurringRoot
+  /** @function SSTypeAhead~blurringMenu
   * @description This is called when the container root element is clicked.
   *              Its purpose is to clear the current suggestions menu when 
   *              the user stops interacting with the control. Along with the
   *              escape key, this gives the user a way to close the menu.
-  * @param {Event} e the blur event.
+  * @param {Event} e the click event.
   */
-  blurringRoot(e){
+  blurringMenu(e){
     if (e.target == e.currentTarget){
       this.clearSuggestions();
     }
