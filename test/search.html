@@ -78,7 +78,7 @@
             --><script>
                 var Sch;
                 window.addEventListener('load', function(){Sch = new StaticSearch();});
-            </script><form accept-charset="UTF-8" id="ssForm" data-allowphrasal="yes" data-allowwildcards="yes" data-minwordlength="2" data-scrolltotextfragment="no" data-maxkwicstoshow="5" data-resultsperpage="5" onsubmit="return false;" data-versionstring="_6383b16" data-ssfolder="ssTest" data-kwictruncatestring="..." data-resultslimit="2000"><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><span class="clearButton"><button id="ssClear">Clear</button></span><div class="ssDescFilters">
+            </script><form accept-charset="UTF-8" id="ssForm" data-allowphrasal="yes" data-allowwildcards="yes" data-minwordlength="2" data-scrolltotextfragment="no" data-maxkwicstoshow="5" data-resultsperpage="5" onsubmit="return false;" data-versionstring="_76e7066" data-ssfolder="ssTest" data-kwictruncatestring="..." data-resultslimit="2000"><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><span class="clearButton"><button id="ssClear">Clear</button></span><div class="ssDescFilters">
                <fieldset class="ssFieldset" title="Document type" id="ssDesc1">
                   <legend>Document type</legend>
                   <ul class="ssDescCheckboxList">
@@ -364,7 +364,12 @@
             tests.push({setup: function(){Sch.queryBox.value = '"dog"'},
                                          check: function(num){console.log('Search hook ' + num);
                                          console.log('Testing results for the one-word phrase "dog", which should find 3 instances in one file.');
-                                         checkResults({docsFound: 1, contextsFound: 3, scoreTotal: 3});}});                             
+                                         checkResults({docsFound: 1, contextsFound: 3, scoreTotal: 3});}});  
+            //Clear the search box and just test the feature filter.
+            tests.push({setup: function(){Sch.queryBox.value = ''; Sch.mapFeatFilters.get('People involved').setCheckboxes(['Rick Holmes', 'Captain Janeway']);},
+                                         check: function(num){console.log('Search hook ' + num);
+                                         console.log('Testing results for the feature filter with two names, which should find 5 documents.');
+                                         checkResults({docsFound: 5, contextsFound: 0, scoreTotal: 0});}});                           
            
 
            var startTime = null;
@@ -386,7 +391,7 @@
 
            function reportResults(msg, succeed){
              let timeSoFar = performance.now() - startTime;
-             reportDiv.innerHTML += '<p class="' + (succeed ? 'success':'failure') + '">' + msg + '. Time so far: ' + timeSoFar + '.</p>';
+             reportDiv.innerHTML = '<p class="' + (succeed ? 'success':'failure') + '">' + msg + '. Time so far: ' + timeSoFar + '.</p>' + reportDiv.innerHTML;
              if (succeed){
                Sch.clearSearchForm();
                currTestNum++;
