@@ -220,11 +220,11 @@
       the individual token JSONs. The XSLT is run on itself and uses the information in the config
       XSLT module (generated in the config task) to determine the input files, et cetera. </description>
     <echo message="Creating tokenized XHTML files..."/>
-    <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true">
+    <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
       <arg value="-xsl:${ssBaseDir}/xsl/tokenize.xsl"/>
       <arg value="-s:${ssBaseDir}/xsl/tokenize.xsl"/>
       <arg value="--suppressXsltNamespaceCheck:on"/>
-      <!--<jvmarg value="-Xmx2048m"/>-->
+      <jvmarg value="-Xmx2048m"/>
     </java>
   </target>
 
@@ -297,13 +297,13 @@
             inject into the page. It is more efficient to derive the existence of the filters directory here rather than
             in the XSLT.-->
     <available type="dir" property="hasFilters" file="${staticSearchDir}/filters" value="true"/>
-    <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true">
+    <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
       <arg value="-xsl:${ssBaseDir}/xsl/makeSearchPage.xsl"/>
       <arg value="-s:${ssSearchFilePath}"/>
       <arg value="-o:${tempSearchPageOutput}"/>
       <arg value="hasFilters=${hasFilters}"/>
       <arg value="--suppressXsltNamespaceCheck:on"/>
-      <!--<jvmarg value="-Xmx2048m"/>-->
+      <jvmarg value="-Xmx2048m"/>
     </java>
 
     <echo message="Moving ${tempSearchPageOutput} to overwrite ${ssSearchFilePath}"/>
@@ -341,12 +341,12 @@
             inject into the page. It is more efficient to derive the existence of the filters directory here rather than
             in the XSLT.-->
     <available type="dir" property="hasFilters" file="${staticSearchDir}/filters" value="true"/>
-    <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true">
+    <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
       <arg value="-xsl:${ssBaseDir}/xsl/create_reports.xsl"/>
       <arg value="-s:${ssBaseDir}/xsl/create_reports.xsl"/>
       <arg value="--suppressXsltNamespaceCheck:on"/>
       <arg value="hasFilters=${hasFilters}"/>
-      <!--<jvmarg value="-Xmx2048m"/>-->
+      <jvmarg value="-Xmx2048m"/>
     </java>
     <move file="${ssBaseDir}/staticSearch_report.html"
       tofile="${staticSearchDir}/staticSearch_report.html"/>
