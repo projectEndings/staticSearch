@@ -26,6 +26,10 @@ span.ssQueryAndButton{
 input#ssQuery{
     flex: 1;
 }
+input.staticSearch_feat:disabled{
+  cursor: wait;
+}
+
 div.ssDescFilters, div.ssDateFilters, div.ssNumFilters, div.ssBoolFilters{
     display: flex;
     flex-direction: row;
@@ -38,6 +42,12 @@ div.ssDescFilters fieldset, div.ssDateFilters fieldset, div.ssNumFilters fieldse
     display: flex;
     flex-wrap: wrap;
 }
+
+div.ssFeatFilters fieldset{
+    margin: 0.25em auto;
+    padding: 0.25em;
+}
+
 ul.ssDescCheckboxList{
     list-style-type: none;
     max-height: 8em;
@@ -58,7 +68,7 @@ fieldset.ssFieldset > span {
     border: solid 1px #aaa;
     margin: 0.2em;
 }
-div.ssNumFilters input[type="number"], div.ssDateFilters input[type="text"]{
+div.ssNumFilters input[type="number"], div.ssDateFilters input[type="text"], div.ssFeatFilters input[type="text"]{
     padding: 0.5em;
 }
 div#ssSearching{
@@ -172,4 +182,46 @@ div#ssPoweredBy{
 }
 div#ssPoweredBy>* {
     margin: 0;
+}
+
+/* Styles for the SSTypeAhead control. */
+div.ssFeatFilters>fieldset.ssFieldset>menu{
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: min-content;
+    min-width: 12em;
+    max-height: 30vh;
+    overflow-y: auto;
+}
+div.ssFeatFilters>fieldset.ssFieldset>menu>div.select{
+    border: solid 1pt darkgray;
+    cursor: pointer;
+    padding: 0.25em;
+}
+div.ssFeatFilters>fieldset.ssFieldset>menu>div.select:hover, div.ssFeatFilters>fieldset.ssFieldset>menu>div.select:focus{
+    background-color: lightgray;
+}
+div.ssSuggest{
+    padding: 0.5em;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1em;
+}
+div.ssSuggest>span{
+    border: solid 1pt gray;
+    padding: 0.25em;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 0.25em;
+    align-items: center;
+}
+div.ssSuggest>span>button{
+    max-width: 1.5em;
+    padding: 0.25em;
+    text-align: center;
 }

@@ -126,6 +126,18 @@ class StaticSearch{
       //Boolean filters
       this.boolFilterSelects =
            Array.from(document.querySelectorAll("select.staticSearch_bool"));
+      //Feature filters will eventually have checkboxes, but they don't yet.
+      this.featFilterCheckboxes = [];
+      //However they do have inputs.
+      this.featFilterInputs = 
+            Array.from(document.querySelectorAll("input[type='text'].staticSearch_feat"));
+      //And we set them all to disabled initially
+      for (let ffi of this.featFilterInputs){
+        ffi.disabled = true;
+      }
+      //We need an array in which to store any possible feature filters that 
+      //need to be created based on settings in the URL query string.
+      this.mapFeatFilters = new Map();
 
       //Now we have some properties that will may be used later if required.
       this.paginationBtnDiv = null;
@@ -360,6 +372,9 @@ class StaticSearch{
     if (path.match(/\/filters\//)){
       this.mapFilterData.set(json.filterName, json);
       this.mapJsonRetrieved.set(json.filterId, GOT);
+      if (path.match(/ssFeat/)){
+        this.setupFeatFilter(json.filterId, json.filterName);
+      }
       return;
     }
   }
@@ -398,6 +413,36 @@ class StaticSearch{
     }
   }
 
+/** @function StaticSearch~setupFeatFilter
+  * @description this function runs when the json for a specific
+  *              feature filter is retrieved; it enables the 
+  *              control and assigns functionality events to it.
+  * @param {!string} filterId the id of the filter to set up.
+  * @param {!string} filterName the string name of the filter.
+  * @return {boolean} true if a filter is found and set up, else false.
+  */
+  setupFeatFilter(filterId, filterName){
+    let featFilter = document.getElementById(filterId);
+    if (featFilter !== null){
+      try{
+        //Now we set up the control as a typeahead.
+        let filterData = this.mapFilterData.get(filterName);
+        this.mapFeatFilters.set(filterName, new SSTypeAhead(featFilter, filterData, filterName, this.minWordLength));
+        //Re-enable it.
+        let inp = featFilter.querySelector('input');
+        inp.disabled = false;
+      }
+      catch(e){
+        console.log('ERROR: failed to set up feature filter ' + filterId + ': ' + e);
+        return false;
+      }
+    }
+    else{
+      console.log('ERROR: failed to find feature filter ' + filterId);
+      return false;
+    }
+  }
+
 /** @function StaticSearch~parseUrlQueryString
   * @description this function is run after the class is instantiated
   *              to check whether there is a search string in the
@@ -409,7 +454,7 @@ class StaticSearch{
   *                  the browser history)
   * @return {boolean} true if a search is initiated otherwise false.
   */
-  parseUrlQueryString(popping = false){
+  async parseUrlQueryString(popping = false){
     let searchParams = new URLSearchParams(decodeURI(document.location.search));
     //Do we need to do a search?
     let searchToDo = false; //default
@@ -429,6 +474,26 @@ class StaticSearch{
       }
       else{
         cbx.checked = false;
+      }
+    }
+    //Have to do something similar but way more clever for the ssFeat filters.
+    //For each feature filter
+    for (let inp of this.featFilterInputs){
+    //check whether it's mentioned in the search params
+      let key = inp.getAttribute('title');
+      let filterId = inp.parentNode.id;
+      if (searchParams.has(key)){
+        searchToDo = true;
+    //if so, check whether its typeahead control has been set up yet.
+        if (!this.mapFeatFilters.has(key)){
+    //If not, await its JSON retrieval, and set it up.
+          let fch = await fetch(this.jsonDirectory + 'filters/' + filterId + this.versionString + '.json');
+          let json = await fch.json();
+          this.mapFilterData.set(json.filterName, json);
+          this.setupFeatFilter(json.filterId, json.filterName);
+        }
+    //Then set its checkboxes appropriately.
+        this.mapFeatFilters.get(key).setCheckboxes(searchParams.getAll(key));
       }
     }
     for (let txt of this.dateFilterTextboxes){
@@ -557,6 +622,15 @@ class StaticSearch{
           search.push('q=' + q);
         }
         for (let cbx of this.descFilterCheckboxes){
+          if (cbx.checked){
+            search.push(cbx.title + '=' + cbx.value);
+          }
+        }
+        //Feature filter checkboxes need to be discovered first, since 
+        //they're mutable.
+        this.featFilterCheckboxes = 
+          Array.from(document.querySelectorAll("input[type='checkbox'].staticSearch_feat"));
+        for (let cbx of this.featFilterCheckboxes){
           if (cbx.checked){
             search.push(cbx.title + '=' + cbx.value);
           }
@@ -809,6 +883,13 @@ class StaticSearch{
       for (let cbx of this.descFilterCheckboxes){
         cbx.checked = false;
       }
+      //Feature filter checkboxes need to be discovered first, since 
+      //they're mutable.
+      this.featFilterCheckboxes = 
+        Array.from(document.querySelectorAll("input[type='checkbox'].staticSearch_feat"));
+      for (let cbx of this.featFilterCheckboxes){
+        cbx.checked = false;
+      }  
       for (let txt of this.dateFilterTextboxes){
         txt.value = '';
       }
@@ -862,15 +943,15 @@ class StaticSearch{
       var xSets = [];
       var currXSet;
 
-      //Find each desc fieldset and get its descriptor.
-      let descs = document.querySelectorAll('fieldset[id ^= "ssDesc"]');
-      for (let desc of descs){
+      //Find each desc or feat fieldset and get its descriptor.
+      let filters = document.querySelectorAll('fieldset[id ^= "ssDesc"], fieldset[id ^="ssFeat"]');
+      for (let filter of filters){
         currXSet = new XSet();
-        let descName = desc.getAttribute('title');
-        let cbxs = desc.querySelectorAll('input[type="checkbox"]:checked');
-        if ((cbxs.length > 0) && (this.mapFilterData.has(descName))){
+        let filterName = filter.getAttribute('title');
+        let cbxs = filter.querySelectorAll('input[type="checkbox"]:checked');
+        if ((cbxs.length > 0) && (this.mapFilterData.has(filterName))){
           for (let cbx of cbxs){
-            currXSet.addArray(this.mapFilterData.get(descName)[cbx.id].docs);
+            currXSet.addArray(this.mapFilterData.get(filterName)[cbx.id].docs);
           }
           xSets.push(currXSet);
         }
@@ -985,6 +1066,7 @@ class StaticSearch{
   * @description This outputs a human-readable explanation of the search
   *              that's being done, to clarify for users what they've chosen 
   *              to look for. Note that the output div is hidden by default. 
+  *              NOTE: This does not yet include filter information.
   * @return {boolean} true if the process succeeds, otherwise false.
   */
   writeSearchReport(){
@@ -998,7 +1080,6 @@ class StaticSearch{
           if (!arrOutput[this.terms[i].type]){
             arrOutput[this.terms[i].type] = {type: this.terms[i].type, terms: []};
           }
-          //arrOutput[this.terms[i].type].terms.push('"' + this.terms[i].str + '"');
           arrOutput[this.terms[i].type].terms.push(`"${this.terms[i].str}" (${this.terms[i].stem})`);
         }
         arrOutput.sort(function(a, b){return a.type - b.type;})
@@ -1079,7 +1160,7 @@ class StaticSearch{
       if (this.allJsonRetrieved === false){
         //First get a list of active filters.
 
-        for (let ctrl of document.querySelectorAll('input[type="checkbox"].staticSearch_desc:checked')){
+        for (let ctrl of document.querySelectorAll('input[type="checkbox"].staticSearch_desc:checked, input[type="checkbox"].staticSearch_feat:checked')){
           let filterId = ctrl.id.split('_')[0];
           if (this.mapJsonRetrieved.get(filterId) != GOT){
             filterIds.add(filterId);
@@ -1170,22 +1251,6 @@ class StaticSearch{
               }.bind(self));
           }
         }
-        //OLD approach
-        /*if (this.allowWildcards == true){
-          if (this.mapJsonRetrieved.get('ssStems') != GOT){
-            promises[promises.length] = fetch(self.jsonDirectory + 'ssStems' + this.versionString + '.json', this.fetchHeaders)
-              .then(function(response) {
-                return response.json();
-              })
-              .then(function(json) {
-                self.stems = new Map(Object.entries(json));
-                self.mapJsonRetrieved.set('ssStems', GOT);
-              }.bind(self))
-              .catch(function(e){
-                console.log('Error attempting to retrieve stem list: ' + e);
-              }.bind(self));
-          }
-        }*/
       }
 
       //If we do need to retrieve JSON index data, then do it

@@ -115,3 +115,29 @@
   */
   ss.stopwords = new Array('i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', 'your', 'yours', 'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', 'her', 'hers', 'herself', 'it', 'its', 'itself', 'they', 'them', 'their', 'theirs', 'themselves', 'what', 'which', 'who', 'whom', 'this', 'that', 'these', 'those', 'am', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'having', 'do', 'does', 'did', 'doing', 'a', 'an', 'the', 'and', 'but', 'if', 'or', 'because', 'as', 'until', 'while', 'of', 'at', 'by', 'for', 'with', 'about', 'against', 'between', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'to', 'from', 'up', 'down', 'in', 'out', 'on', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 's', 't', 'can', 'will', 'just', 'don', 'should', 'now');
   
+  
+/**
+  * @function ss.debounce
+  * @description This is a generic debounce function borrowed from here:
+  *           https://levelup.gitconnected.com/debounce-in-javascript-improve-your-applications-performance-5b01855e086
+  *           which borrowed it from here:
+  *           https://davidwalsh.name/javascript-debounce-function
+  *           Returns a function, that, as long as it continues to be invoked, will not
+  *           be triggered. The function will be called after it stops being called for
+  *           `wait` milliseconds.
+  * @param {!function} func The function to be called after debouncing.
+  * @param {!Number} wait The number of milliseconds to wait before running the function.
+  */
+  ss.debounce = (func, wait) => {
+    let timeout;
+
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  };

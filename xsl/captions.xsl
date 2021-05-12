@@ -20,7 +20,8 @@
                 'ssDoSearch': 'Search',
                 'ssSearching': 'Searching...',
                 'ssClear': 'Clear',
-                'ssPoweredBy': 'Powered by'
+                'ssPoweredBy': 'Powered by',
+                'ssStartTyping': 'Start typing...'
             
             },
         'fr': 
@@ -28,7 +29,8 @@
                 'ssDoSearch': 'Chercher',
                 'ssSearching': 'En cours...',
                 'ssClear': 'Effacer',
-                'ssPoweredBy': 'Réalisé par'
+                'ssPoweredBy': 'Réalisé par',
+                'ssStartTyping': 'Commencez à taper...'
             }
         }"/>
     

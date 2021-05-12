@@ -406,6 +406,7 @@
         <file name="StaticSearch.js"/>
         <file name="SSResultSet.js"/>
         <file name="XSet.js"/>
+        <file name="SSTypeAhead.js"/>
       </filelist>
       <fileset dir="${ssBaseDir}/stemmers/${ssStemmerFolder}">
         <include name="ssStemmer.js"/>
