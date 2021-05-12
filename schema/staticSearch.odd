@@ -107,21 +107,34 @@
         <head>Search facet features</head>
         <list>
           <item>Level: Basic</item>
-          <item>Last Updated: <date when="2020-02-20">20 February 2020</date></item>
+          <item>Last Updated: <date when="2021-05-12">12 May 2021</date></item>
         </list>
-        <p>The Generator supports the following search facets:</p>
+        <p>The Generator supports the following search facets or filters:</p>
         <list>
           <item><term>Descriptors</term>. You might for example classify your documents as poems, 
           short stories and novels; the user can then choose to search in only poems, or poems and short stories.</item>
+          
           <item><term>Date ranges</term>. You might assign each document a date (or a date range) for its first 
-          publication and another for its last publication; then users could search for documents first published in a certain
-          date range and last published before another date.</item>
+          publication and another for its last publication; then users could search for documents first published in a
+          certain date range and last published before another date.</item>
+          
           <item><term>Number ranges</term>. Similar to date ranges, you can assign a number to
           each document and then filter the search on a subrange of those numbers. For example, 
           a collection of poems might be filtered on the number of stanzas, so users could
           find all two-stanza poems or all poems with three or more stanzas.</item>
+          
           <item><term>Booleans</term> (true/false values). You might for instance specify that some poems are 
           illustrated while others are not. The user could then limit their search only to illustrated poems.</item>
+          
+          <item><term>Features</term>. Features are similar to Descriptors, but are intended for cases where
+          there are so many possibly items that having a long list of checkboxes on the page is not practical,
+          so instead, a typeahead control is provided, allowing the user to type some characters and get
+          a list of matching items. A good use-case might be <soCalled>People mentioned</soCalled> in a
+          document collection. There might be thousands of people mentioned, and any given document might
+          mention twenty of them. The searcher can type a few letters of a person's name to see a list
+          of suggestions, and then add checkboxes for any matching people; those checkboxes will then
+          function like Descriptor checkboxes.</item>
+          
         </list>
       </div>
       
@@ -292,6 +305,41 @@
             
             </p>
             </div>
+            
+            <div xml:id="featFilters">
+              <head>Feature filters</head>
+              <p>
+                The feature (feat) filter, just like a description filter, is a word or phrase describing or 
+                associated with the document. Here is a simple example:
+                
+                <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                  <meta name="People mentioned" class="staticSearch_feat" content="Nelson Mandela" />
+                </egXML>
+                
+                This specifies that there is to be a feature search filter called <q>People mentioned</q>, and one of the
+                possible people is <q>Nelson Mandela</q>. This differs from a description filter in that the number of
+                possible people (or other feature) is expected to be large. If there are (for example) three hundred 
+                people mentioned in the document collection, then using a description filter would result in three 
+                hundred checkboxes in the search page; this is clearly impractical. Instead, for large feature sets
+                like this, the feature filter provides a text box into which the user can type some part of the 
+                feature they're searching for, and get a drop-down list of matches. Selecting a match creates a 
+                checkbox in the search page, which then functions just like a description filter. Here's another example:
+                
+                <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                  <meta name="Postcodes mentioned" class="staticSearch_feat" content="V8W 1P4" />
+                </egXML>
+                Obviously, a feature filter must be based on data that a searcher will be able to predict. Searchers
+                can also search for names or postcodes using the text search facility, of course, but names might 
+                appear in different forms in different texts, so a feature filter allows the user to find all instances
+                of a particular person using the canonical form of their name.
+              </p>
+              <p>Note that feature filters have one drawback: they slow down the initialization of the search
+              page noticeably. In order to provide the typeahead/drop-down functionality, the JSON for each 
+              feature filter will need to be retrieved as the page loads, so if you have many feature filters,
+              or particularly large ones, the user may have to wait a few seconds before the page becomes
+              fully functional.</p>
+            </div>
+            
           </div>
           
           <div xml:id="configuringDocTitles">
@@ -896,7 +944,7 @@
         <head>How does it work?</head>
         <list>
           <item>Level: Advanced</item>
-          <item>Last Updated: <date when="2021-03-21">21 March 2021</date></item>
+          <item>Last Updated: <date when="2021-05-12">12 May 2021</date></item>
         </list>
         <div xml:id="buildingTheIndex">
           <head>Building the index</head>
@@ -953,6 +1001,12 @@
          are retrieved using a <soCalled>trickle</soCalled> approach, one at a time. Then if a search is
          initiated, all the files required for that specific search can be downloaded as fast as possible
          overriding the trickle sequence for files that are needed immediately.</p>
+         
+         <p>One exception to the trickle approach is the case of Feature filters 
+           (where a user can select search facets based on a typeahead control).
+           Their JSON files be downloaded to the browser before the typeahead control can be 
+           functional, so if you have feature facets in your search, you will see an additional
+         delay before the search page is responsive.</p>
          
          <p>Once the user has been on the search page for any length of time, all ancillary files will 
          have been retrieved (assuming they weren't already cached by the browser), so the only 
@@ -1040,8 +1094,20 @@
         <head>What's new since version 1.0?</head>
         <list>
           <item>Level: Intermediate</item>
-          <item>Last Updated: <date when="2021-05-02">2 May 2021</date></item>
+          <item>Last Updated: <date when="2021-05-12">12 May 2021</date></item>
         </list>
+        <div xml:id="newIn1.4">
+          <head>Changes in version 1.4</head>
+          <p>New features and enhancements:</p>
+          <list>
+            <item>A new <ref target="#featFilters">feature filter</ref> has been added to the collection of search facets.
+            This provides an option for cases where the number of items in a description filter
+            might be so large that providing a long list of individual checkboxes for all the options
+            is not practical. Instead, the feature filter offers a method of finding and selecting 
+            items using a typeahead control.</item>
+          </list>
+        </div>
+        
         <div xml:id="newIn1.3">
           <head>Changes in version 1.3</head>
           <p>Note that version 1.2 was withdrawn in favour of version 1.3, so the list below includes
