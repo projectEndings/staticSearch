@@ -56,7 +56,7 @@
   <xd:doc>
     <xd:desc>All of the available types of filters in staticSearch.</xd:desc>
   </xd:doc>
-  <xsl:variable name="ssFilters" select="('desc','num','bool','date')" as="xs:string+"/>
+  <xsl:variable name="ssFilters" select="('desc','num','bool','date', 'feat')" as="xs:string+"/>
   
   <xd:doc>
     <xd:desc>Special document metadata classes that must have a name and class match</xd:desc>
