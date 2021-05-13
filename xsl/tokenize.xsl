@@ -13,13 +13,12 @@
         <xd:desc>
             <xd:p><xd:b>Created on:</xd:b> June 26, 2019</xd:p>
             <xd:p><xd:b>Authors:</xd:b> Joey Takeda and Martin Holmes</xd:p>
-            <xd:p>This transformation takes the collection of documents specified in the configuration
-                file and creates the temporary tokenized and stemmed output HTML files to create the
-                JSON indexes.</xd:p>
-            <xd:p>Each document is run through a chain of templates to create a version of each HTML
-                document that contains all of the necessary information for the creation of the JSON
-                indexes. These modified documents are then output into a temporary directory (removed at
-                the end of the ANT build).</xd:p>
+            <xd:p>This transformation takes as input one of the collection of documents specified in 
+                  the configuration file and creates the temporary tokenized and stemmed output HTML 
+                  files to create the JSON indexes.</xd:p>
+            <xd:p>The document is run through a chain of templates to create a version that contains 
+              all of the necessary information for the creation of the JSON indexes. These modified 
+              documents are then output into a temporary directory (removed at the end of the ANT build).</xd:p>
             <xd:p>The templates/passes are described below. Since many of these templates contain rules
                 that are contingent on the configuration options, the clean, weigh, and contextualize
                 templates are primarily default templates that are usually overriden or supplemented by
@@ -130,21 +129,21 @@
     </xd:doc>
     <xsl:template match="/">
         
-        <!--Count the documents-->
+        <!--<!-\-Count the documents-\->
         <xsl:variable name="count" select="count($docs)"/>
         
-        <!--Output message for how many documents found-->
-        <xsl:message>Found <xsl:value-of select="$count"/> documents to process...</xsl:message>
+        <!-\-Output message for how many documents found-\->
+        <xsl:message>Found <xsl:value-of select="$count"/> documents to process...</xsl:message>-->
         
         <!--Call the "echoParams" template in the config file,
             which just outputs all parameters when verbose is true-->
         <xsl:call-template name="echoParams"/>
         
         <!--Now iterate through all of the documents-->
-        <xsl:for-each select="$docs">
+        <!--<xsl:for-each select="$docs">
             
-            <!--Get the document's position in the loop-->
-            <xsl:variable name="pos" select="position()"/>
+            <!-\-Get the document's position in the loop-\->
+            <xsl:variable name="pos" select="position()"/>-->
             <!--First, get the URI-->
             <xsl:variable name="uri" select="xs:string(document-uri(.))" as="xs:string"/>
             
@@ -200,7 +199,7 @@
             <xsl:if test="if ($hasExclusions) then not($excluded//html[@data-staticSearch-exclude='true']) else true()">
                 
                 <!--Output message to the user as to where we're at in the process-->
-                <xsl:message>Tokenizing <xsl:value-of select="$uri"/> (<xsl:value-of select="$pos"/>/<xsl:value-of select="$count"/>)</xsl:message>
+                <!--<xsl:message>Tokenizing <xsl:value-of select="$uri"/> (<xsl:value-of select="$pos"/>/<xsl:value-of select="$count"/>)</xsl:message>-->
                 
                 <!--First, clean the document by passing it through the clean templates. This also
                     requires the relativeUri and searchIdentifier parameters in order to create
@@ -264,7 +263,7 @@
                     </xsl:result-document>
                 </xsl:if>
             </xsl:if>
-        </xsl:for-each>
+        <!--</xsl:for-each>-->
     </xsl:template>
     
     

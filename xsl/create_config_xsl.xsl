@@ -190,6 +190,14 @@
             process stores all of the temporary outputs; it is deleted at the end of the process (in the ANT build).</xd:desc>
     </xd:doc>
     <xsl:variable name="tempDir" select="$outDir || '/temp'"/>
+  
+    <xd:doc>
+      <xd:desc><xd:ref name="ssPatternsetFile" type="variable">$ssPatternsetFile</xd:ref> is the location for a 
+        temporary file which is used to store a patternset for the tokenization step. The patternset
+        forms the basis of a fileset identifying all the files that need to be tokenized.
+      </xd:desc>
+    </xd:doc>
+    <xsl:variable name="ssPatternsetFile" select="$tempDir || '/patternset.txt'"/>
    
     <xd:doc>
         <xd:desc><xd:ref name="recurse" type="variable">$recurse</xd:ref> is a boolean that states whether or not the 
@@ -285,6 +293,18 @@
                 <xsl:message>$<xsl:value-of select="local-name()"/>: <xsl:value-of select="."/></xsl:message>
             </xsl:for-each>
         </xsl:if>
+      
+        <!-- Create the patternset file which will be used later by the tokenizing process. -->
+        <xsl:result-document href="{$ssPatternsetFile}" method="text">
+          <xsl:choose>
+            <xsl:when test="$recurse">
+              <xsl:sequence select="'**/*.html,**/*.xhtml,**/*.htm'"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:sequence select="'*.html,*.xhtml,*.htm'"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:result-document>
         
         <!--Create the result document, which is also an XSLT document, but placed in the dummy XSO namespace-->
         <xsl:result-document href="{$ssBaseDir}/xsl/config.xsl" method="xml" encoding="UTF-8" normalization-form="NFC" indent="yes" exclude-result-prefixes="#all">
