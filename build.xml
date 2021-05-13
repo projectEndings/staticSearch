@@ -211,7 +211,7 @@
     </java>
   </target>
 
-  <target name="tokenizeOneFile">
+  <!--<target name="tokenizeOneFile">
     <description>
       TARGET tokenizeOneFile
       This target is called from the tokenize target, and it handles the tokenization of
@@ -222,10 +222,10 @@
     <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
       <arg value="-xsl:${ssBaseDir}/xsl/tokenize.xsl"/>
       <arg value="-s:${inFile}"/>
-      <arg value="--suppressXsltNamespaceCheck:on"/>
-      <!--<jvmarg value="-Xmx2048m"/>-->
+      <arg value="-\-suppressXsltNamespaceCheck:on"/>
+      <!-\-<jvmarg value="-Xmx2048m"/>-\->
     </java>
-  </target>
+  </target>-->
 
 
   <target name="tokenize">
@@ -237,19 +237,20 @@
       XSLT module (generated in the config task) to determine the input files, et cetera. </description>
     <echo message="Creating tokenized XHTML files..."/>
     <loadfile srcFile="${staticSearchDir}/temp/patternset.txt" property="ptn" failonerror="true"/>
-    <foreach target="tokenizeOneFile" param="inFile" parallel="true">
+    
+    <!--<foreach target="tokenizeOneFile" param="inFile" parallel="true">
       <path>
         <fileset id="siteFiles" dir="${ssCollectionDirName}" includes="${ptn}" excludes="**/staticSearch_report.html" casesensitive="no">
         </fileset>
       </path>
-    </foreach>
-    
-    <!--<java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
-      <arg value="-xsl:${ssBaseDir}/xsl/tokenize.xsl"/>
-      <arg value="-s:${ssBaseDir}/xsl/tokenize.xsl"/>
-      <arg value="-\-suppressXsltNamespaceCheck:on"/>
-      <jvmarg value="-Xmx2048m"/>
-    </java>-->
+    </foreach>-->
+    <echo message="pattern = ${ptn}"/>
+    <echo message="collection dir = ${ssCollectionDirName}"/>
+    <xslt
+      style="${ssBaseDir}/xsl/tokenize.xsl" classpath="${ssSaxon}" destdir="${ssOutputFolder}/temp" useimplicitfileset="false">
+      <factory name="net.sf.saxon.TransformerFactoryImpl"/>
+      <fileset id="siteFiles" dir="${ssCollectionDirName}" includesfile="${staticSearchDir}/temp/patternset.txt" excludes="**/staticSearch_report.html" casesensitive="no"></fileset>
+    </xslt>
   </target>
 
   <target name="json">

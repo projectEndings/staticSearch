@@ -298,10 +298,10 @@
         <xsl:result-document href="{$ssPatternsetFile}" method="text">
           <xsl:choose>
             <xsl:when test="$recurse">
-              <xsl:sequence select="'**/*.html,**/*.xhtml,**/*.htm'"/>
+              <xsl:sequence select="'**/*.html&#x0a;**/*.xhtml&#x0a;**/*.htm'"/>
             </xsl:when>
             <xsl:otherwise>
-              <xsl:sequence select="'*.html,*.xhtml,*.htm'"/>
+              <xsl:sequence select="'*.html&#x0a;*.xhtml&#x0a;*.htm'"/>
             </xsl:otherwise>
           </xsl:choose>
         </xsl:result-document>
