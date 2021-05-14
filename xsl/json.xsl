@@ -90,8 +90,8 @@
         <xd:desc>Accumulator to keep track of the current context node.</xd:desc>
     </xd:doc>
     <xsl:accumulator name="context" initial-value="()">
-        <xsl:accumulator-rule match="*[@data-staticSearch-context]" select="($value, .)" phase="start"/>
-        <xsl:accumulator-rule match="*[@data-staticSearch-context]" select="$value[position() lt last()]" phase="end"/>
+        <xsl:accumulator-rule match="*[@ss-ctx]" select="($value, .)" phase="start"/>
+        <xsl:accumulator-rule match="*[@ss-ctx]" select="$value[position() lt last()]" phase="end"/>
     </xsl:accumulator>-->
 
     
@@ -519,7 +519,7 @@
         
         <!--The first ancestor that has been signaled as an ancestor-->
         <xsl:variable name="contextAncestor"
-            select="$span/ancestor::*[@data-staticSearch-context][1]"
+            select="$span/ancestor::*[@ss-ctx][1]"
             as="element()"/>
         
         <!--Get all of the descendant text nodes for that ancestor-->
@@ -679,7 +679,7 @@
         <xsl:param name="contextEl" as="element()"/>
         <!--TODO: Remove if we no longer use accumulator-->
        <!-- <xsl:sequence select="$contextEl/descendant::text()[accumulator-before('context')[last()][. is $contextEl]]"/>-->
-        <xsl:sequence select="$contextEl/descendant::text()[ancestor::*[@data-staticSearch-context][1][. is $contextEl]]"/>
+        <xsl:sequence select="$contextEl/descendant::text()[ancestor::*[@ss-ctx][1][. is $contextEl]]"/>
     </xsl:function>
 
     

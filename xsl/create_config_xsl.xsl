@@ -638,13 +638,13 @@ tokenization.
     <xsl:template name="createContextRules" exclude-result-prefixes="#all">
         <xso:template match="{string-join($contexts/@match,' | ')}" priority="1" mode="contextualize">
             <xso:if test="$verbose">
-                <xso:message>Template #contextualize: Adding @data-staticSearch-context flag to <xso:value-of select="local-name(.)"/></xso:message>
+                <xso:message>Template #contextualize: Adding @ss-ctx flag to <xso:value-of select="local-name(.)"/></xso:message>
             </xso:if>
             <xso:copy>
                 <xso:apply-templates select="@*" mode="#current"/>
                 <xsl:for-each select="$contexts">
                     <xso:if test="self::{@match}">
-                        <xso:attribute name="data-staticSearch-context" select="{concat('''',hcmc:stringToBoolean(@context),'''')}"/>
+                        <xso:attribute name="ss-ctx" select="{concat('''',hcmc:stringToBoolean(@context),'''')}"/>
                     </xso:if>
                 </xsl:for-each>
                 <xso:apply-templates select="node()" mode="#current"/>

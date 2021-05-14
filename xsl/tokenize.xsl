@@ -35,7 +35,7 @@
                 <xd:li><xd:b>weigh</xd:b>: Adds @ss-wt attributes to the elements
                     specified in the configuration file. This allows for higher weighting of terms found
                     in particular contexts.</xd:li>
-                <xd:li><xd:b>contextualize</xd:b>: Adds @data-staticSearch-context to the elements
+                <xd:li><xd:b>contextualize</xd:b>: Adds @ss-ctx to the elements
                     specified in the configuration file so that KWICS, if generated in the JSON file,
                     are properly bounded by their containing elements.</xd:li>
                 <xd:li><xd:b>tokenize</xd:b>: Tokenizes the file on word boundaries, wraps each word in
@@ -427,8 +427,8 @@
     <xsl:template match="body | div | blockquote | p | li | section | article | nav | h1 | h2 | h3 | h4 | h5 | h6 | td | details | summary" mode="contextualize">
         <xsl:copy>
             <xsl:apply-templates select="@*" mode="#current"/>
-            <!--Add the data-staticSearch-context attribute-->
-            <xsl:attribute name="data-staticSearch-context" select="'true'"/>
+            <!--Add the ss-ctx attribute-->
+            <xsl:attribute name="ss-ctx" select="'true'"/>
             <xsl:apply-templates select="node()" mode="#current"/>
         </xsl:copy>
     </xsl:template>
@@ -711,15 +711,15 @@
     
     
     <xd:doc>
-        <xd:desc>Template to determine whether or not we can remove the @data-staticSearch-context from this
+        <xd:desc>Template to determine whether or not we can remove the @ss-ctx from this
         element: if this element has other contexts declared, then we check to see if this element
         has any spans that need this context; if not, then we can delete the attribute since its superfluous.</xd:desc>
     </xd:doc>
-    <xsl:template match="*[@data-staticSearch-context][descendant::*[@data-staticSearch-context]]/@data-staticSearch-context" mode="enumerate">
+    <xsl:template match="*[@ss-ctx][descendant::*[@ss-ctx]]/@ss-ctx" mode="enumerate">
         <xsl:variable name="parent" select="parent::*" as="element()"/>
         <xsl:variable name="spans" select="$parent/descendant::span[@ss-stem]" as="element(span)*"/>
         <!--If some span uses this element as its context ancestor, then we retain the attribute-->
-        <xsl:if test="some $span in $spans satisfies $span/ancestor::*[@data-staticSearch-context][1][. is $parent]">
+        <xsl:if test="some $span in $spans satisfies $span/ancestor::*[@ss-ctx][1][. is $parent]">
             <xsl:sequence select="."/>
         </xsl:if>
     </xsl:template>
