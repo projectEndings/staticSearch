@@ -335,7 +335,7 @@
         <xd:desc>Template to delete script elements in the body, since they
             will never contain information that should be indexed.</xd:desc>
     </xd:doc>
-    <xsl:template match="script | link | meta[not(contains(@class, 'staticSearch'))]" mode="clean"/>
+    <xsl:template match="script | link | meta[not(contains(@class, 'staticSearch') or matches(@content, 'charset') or @charset)]" mode="clean"/>
     
     
     <xd:doc>
