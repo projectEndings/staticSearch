@@ -254,8 +254,7 @@
     <echo message="First, measure the JSON files..."/>
     <length property="stemLines" mode="each">
       <fileset dir="${staticSearchDir}">
-        <include name="lower/**.json"/>
-        <include name="upper/**.json"/>
+        <include name="stems/**.json"/>
       </fileset>
     </length>
     <echo message="Now create the tokens file..."/>
