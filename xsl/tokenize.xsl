@@ -737,7 +737,7 @@
         <xsl:copy>
             <xsl:attribute name="ss-pos" select="accumulator-before('stem-position')"/>
             <xsl:if test="$id">
-                <xsl:attribute name="data-staticSearch-fid" select="$id"/>
+                <xsl:attribute name="ss-fid" select="$id"/>
                 <xsl:if test="$verbose">
                     <xsl:message>Found fragment id: <xsl:value-of select="$id"/></xsl:message>
                 </xsl:if>
