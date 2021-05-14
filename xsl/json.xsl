@@ -74,11 +74,11 @@
     </xd:doc>
     <xsl:accumulator name="weight" initial-value="1" as="xs:integer+">
         <xsl:accumulator-rule 
-            match="*[@data-staticSearch-weight]" 
-            select="($value, xs:integer(@data-staticSearch-weight))" 
+            match="*[@ss-wt]" 
+            select="($value, xs:integer(@ss-wt))" 
             phase="start"/>
         <xsl:accumulator-rule 
-            match="*[@data-staticSearch-weight]" 
+            match="*[@ss-wt]" 
             select="$value[position() lt last()]" 
             phase="end"/>
     </xsl:accumulator>

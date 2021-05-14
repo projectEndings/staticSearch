@@ -668,7 +668,7 @@ tokenization.
                 <xso:apply-templates select="@*" mode="#current"/>
                 <xsl:for-each select="$weightedRules[xs:integer(@weight) gt 1]">
                     <xso:if test="self::{@match}">
-                        <xso:attribute name="data-staticSearch-weight" select="{@weight}"/>
+                        <xso:attribute name="ss-wt" select="{@weight}"/>
                     </xso:if>
                 </xsl:for-each>
                 <xso:apply-templates select="node()" mode="#current"/>

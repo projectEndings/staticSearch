@@ -32,7 +32,7 @@
                 <xd:li><xd:b>clean</xd:b>: Removes unnecessary tagging (spans, et cetera) in order to
                     reduce the file size if possible and adds staticSearch specific attributes for later
                     processing.</xd:li>
-                <xd:li><xd:b>weigh</xd:b>: Adds @data-staticSearch-weight attributes to the elements
+                <xd:li><xd:b>weigh</xd:b>: Adds @ss-wt attributes to the elements
                     specified in the configuration file. This allows for higher weighting of terms found
                     in particular contexts.</xd:li>
                 <xd:li><xd:b>contextualize</xd:b>: Adds @data-staticSearch-context to the elements
@@ -407,7 +407,7 @@
     <xsl:template match="*[matches(local-name(),'^h\d$')]" mode="weigh">
         <xsl:copy>
             <xsl:apply-templates select="@*" mode="#current"/>
-            <xsl:attribute name="data-staticSearch-weight" select="2"/>
+            <xsl:attribute name="ss-wt" select="2"/>
             <xsl:apply-templates select="node()" mode="#current"/>
         </xsl:copy>
     </xsl:template>
