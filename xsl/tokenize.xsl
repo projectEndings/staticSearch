@@ -303,7 +303,6 @@
             <xsl:apply-templates select="node()" mode="#current"/>
         </xsl:copy>
     </xsl:template>
-    
 
     <xd:doc>
         <xd:desc>Basic template to strip away extraneous tags around elements that won't affect indexing in any way.
@@ -336,7 +335,7 @@
         <xd:desc>Template to delete script elements in the body, since they
             will never contain information that should be indexed.</xd:desc>
     </xd:doc>
-    <xsl:template match="script" mode="clean"/>
+    <xsl:template match="script | link | meta[not(contains(@class, 'staticSearch'))]" mode="clean"/>
     
     
     <xd:doc>
