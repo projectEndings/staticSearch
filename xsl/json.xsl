@@ -727,7 +727,7 @@
             as="xs:string"/>
         
       <xsl:variable name="ssMetas" 
-        select="$tokenizedDocs//meta[matches(@class,$filterRex)][not(ancestor-or-self::*[@data-staticSearch-exclude])]"
+        select="$tokenizedDocs//meta[matches(@class,$filterRex)][not(ancestor-or-self::*[@ss-excld])]"
         as="element(meta)*"/>
       
         
@@ -1177,7 +1177,7 @@
         <xsl:param name="doc" as="element(html)"/>
         <xsl:variable name="defaultTitle" select="normalize-space(string-join($doc//head/title[1]/descendant::text(),''))" as="xs:string?"/>
         <xsl:variable name="docTitle" 
-            select="$doc/head/meta[@name='docTitle'][contains-token(@class,'staticSearch_docTitle')][not(@data-staticSearch-exclude)]"
+            select="$doc/head/meta[@name='docTitle'][contains-token(@class,'staticSearch_docTitle')][not(@ss-excld)]"
             as="element(meta)*"/>
         <xsl:choose>
             <xsl:when test="exists($docTitle)">
@@ -1210,10 +1210,10 @@
     </xd:doc>
     <xsl:function name="hcmc:getDocThumbnail" as="element(j:string)?">
         <xsl:param name="doc" as="element(html)"/>
-        <xsl:variable name="docImage" select="$doc/head/meta[@name='docImage'][contains-token(@class,'staticSearch_docImage')][not(@data-staticSearch-exclude)]" 
+        <xsl:variable name="docImage" select="$doc/head/meta[@name='docImage'][contains-token(@class,'staticSearch_docImage')][not(@ss-excld)]" 
             as="element(meta)*"/>
         <xsl:variable name="docSortKey" 
-            select="$doc/head/meta[@name='docSortKey'][contains-token(@class,'staticSearch_docSortKey')][not(@data-staticSearch-exclude)]" 
+            select="$doc/head/meta[@name='docSortKey'][contains-token(@class,'staticSearch_docSortKey')][not(@ss-excld)]" 
             as="element(meta)*"/>
         <xsl:choose>
             <xsl:when test="exists($docImage)">
@@ -1239,7 +1239,7 @@
     <xsl:function name="hcmc:getDocSortKey" as="element(j:string)?">
         <xsl:param name="doc" as="element(html)"/>
         <xsl:variable name="docSortKey" 
-            select="$doc/head/meta[@name='docSortKey'][contains-token(@class,'staticSearch_docSortKey')][not(@data-staticSearch-exclude)]" 
+            select="$doc/head/meta[@name='docSortKey'][contains-token(@class,'staticSearch_docSortKey')][not(@ss-excld)]" 
             as="element(meta)*"/>
         <xsl:if test="exists($docSortKey)">
             <xsl:if test="count($docSortKey) gt 1">

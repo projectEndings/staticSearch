@@ -619,10 +619,10 @@ tokenization.
     <xsl:template name="createExcludeRules" exclude-result-prefixes="#all">
         <xso:template match="{string-join($excludeRules/@match, ' | ')}" priority="1" mode="exclude">
             <xso:if test="$verbose">
-                <xso:message>Template #exclude: Adding @data-staticSearch-exclude flag to <xso:value-of select="local-name(.)"/></xso:message>
+                <xso:message>Template #exclude: Adding @ss-excld flag to <xso:value-of select="local-name(.)"/></xso:message>
             </xso:if>
             <xso:copy>
-                <xso:attribute name="data-staticSearch-exclude" select="'true'"/>
+                <xso:attribute name="ss-excld" select="'true'"/>
                 <xso:apply-templates select="@*|node()" mode="#current"/>
             </xso:copy>
         </xso:template>

@@ -356,8 +356,8 @@
                 <h2>Exclusions</h2>
                 <details>
                     <summary>Documents and filters excluded from this search...</summary>
-                    <xsl:variable name="docExcludes" select="$tokenizedDocs//html[@data-staticSearch-exclude]" as="element(html)*"/>
-                    <xsl:variable name="filterExcludes" select="$tokenizedDocs//meta[@data-staticSearch-exclude]" as="element(meta)*"/>
+                    <xsl:variable name="docExcludes" select="$tokenizedDocs//html[@ss-excld]" as="element(html)*"/>
+                    <xsl:variable name="filterExcludes" select="$tokenizedDocs//meta[@ss-excld]" as="element(meta)*"/>
                     <table>
                         <tbody>
                             <tr>

@@ -196,7 +196,7 @@
             <!--Now check to see if exclusions are present in the configuration and if 
                 the html root element has been specified as an exclusion. If the document is excluded,
                 then just skip it from being indexed entirely. Otherwise, pass it through the process-->
-            <xsl:if test="if ($hasExclusions) then not($excluded//html[@data-staticSearch-exclude='true']) else true()">
+            <xsl:if test="if ($hasExclusions) then not($excluded//html[@ss-excld='true']) else true()">
                 
                 <!--Output message to the user as to where we're at in the process-->
                 <!--<xsl:message>Tokenizing <xsl:value-of select="$uri"/> (<xsl:value-of select="$pos"/>/<xsl:value-of select="$count"/>)</xsl:message>-->
@@ -455,7 +455,7 @@
     <xd:doc>
         <xd:desc>Checks docImage, docTitle, and docSortKey metas to make sure that they have matching values. </xd:desc>
     </xd:doc>
-    <xsl:template match="meta[@name or @class][not(@data-staticSearch-exclude)]" mode="contextualize">
+    <xsl:template match="meta[@name or @class][not(@ss-excld)]" mode="contextualize">
         <xsl:variable name="currMeta" select="."/>
         <!--Process the meta no matter what-->
         <xsl:copy>
@@ -506,7 +506,7 @@
           * Are not descendant of an excluded element.
          </xd:desc>
      </xd:doc>
-    <xsl:template match="text()[ancestor::body][not(matches(.,'^\s+$'))][not(ancestor::*[@data-staticSearch-exclude])]" mode="tokenize">
+    <xsl:template match="text()[ancestor::body][not(matches(.,'^\s+$'))][not(ancestor::*[@ss-excld])]" mode="tokenize">
         
         <!--Stash the current node so that we can retain its context in later steps-->
         <xsl:variable name="currNode" select="."/>
