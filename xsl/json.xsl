@@ -403,10 +403,10 @@
                 <!--Sort the contexts first by weight (highest to lowest) and then
                 by position in the document (earliest to latest)-->
                 <xsl:sort select="hcmc:returnWeight(.)" order="descending"/>
-                <xsl:sort select="xs:integer(@data-staticSearch-pos)" order="ascending"/>
+                <xsl:sort select="xs:integer(@ss-pos)" order="ascending"/>
                 
                 <xsl:if test="$verbose">
-                    <xsl:message expand-text="true">{$thisDoc/@data-staticSearch-relativeUri}: {@ss-stem} (ctx: {position()}/{$contextCount}):  pos: {@data-staticSearch-pos}</xsl:message>
+                    <xsl:message expand-text="true">{$thisDoc/@data-staticSearch-relativeUri}: {@ss-stem} (ctx: {position()}/{$contextCount}):  pos: {@ss-pos}</xsl:message>
                 </xsl:if>
                 
                 <!--Accumulated properties map, which may or may not exist -->
@@ -420,7 +420,7 @@
                         <xsl:sequence select="hcmc:returnWeight(.)"/>
                     </string>
                     <number key="pos">
-                        <xsl:sequence select="xs:integer(@data-staticSearch-pos)"/>
+                        <xsl:sequence select="xs:integer(@ss-pos)"/>
                     </number>
                     <string key="context">
                         <xsl:sequence select="hcmc:returnContext(.)"/>

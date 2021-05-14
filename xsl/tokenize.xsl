@@ -735,7 +735,7 @@
     <xsl:template match="span[@ss-stem]" mode="enumerate">
         <xsl:param name="id" as="xs:string?" tunnel="yes"/>
         <xsl:copy>
-            <xsl:attribute name="data-staticSearch-pos" select="accumulator-before('stem-position')"/>
+            <xsl:attribute name="ss-pos" select="accumulator-before('stem-position')"/>
             <xsl:if test="$id">
                 <xsl:attribute name="data-staticSearch-fid" select="$id"/>
                 <xsl:if test="$verbose">
