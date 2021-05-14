@@ -625,7 +625,7 @@
         <!--Wrap it in a span-->
                 <span>
                     <xsl:if test="not(empty($stemVal))">
-                        <xsl:attribute name="data-staticSearch-stem" select="$stemVal"/>
+                        <xsl:attribute name="ss-stem" select="$stemVal"/>
                     </xsl:if>
                     
                     <!--Fork again, in case we have a hyphenated construct-->
@@ -692,7 +692,7 @@
         in the indexing phase</xd:desc>
     </xd:doc>
     <xsl:accumulator name="stem-position" initial-value="0">
-        <xsl:accumulator-rule match="span[@data-staticSearch-stem]">
+        <xsl:accumulator-rule match="span[@ss-stem]">
             <xsl:value-of select="$value + 1"/>
         </xsl:accumulator-rule>
     </xsl:accumulator>
@@ -717,7 +717,7 @@
     </xd:doc>
     <xsl:template match="*[@data-staticSearch-context][descendant::*[@data-staticSearch-context]]/@data-staticSearch-context" mode="enumerate">
         <xsl:variable name="parent" select="parent::*" as="element()"/>
-        <xsl:variable name="spans" select="$parent/descendant::span[@data-staticSearch-stem]" as="element(span)*"/>
+        <xsl:variable name="spans" select="$parent/descendant::span[@ss-stem]" as="element(span)*"/>
         <!--If some span uses this element as its context ancestor, then we retain the attribute-->
         <xsl:if test="some $span in $spans satisfies $span/ancestor::*[@data-staticSearch-context][1][. is $parent]">
             <xsl:sequence select="."/>
@@ -732,7 +732,7 @@
         <xd:param name="id">Tunnelled parameter that contains the nearest 
             ancestor fragment id, if it exists.</xd:param>
     </xd:doc>
-    <xsl:template match="span[@data-staticSearch-stem]" mode="enumerate">
+    <xsl:template match="span[@ss-stem]" mode="enumerate">
         <xsl:param name="id" as="xs:string?" tunnel="yes"/>
         <xsl:copy>
             <xsl:attribute name="data-staticSearch-pos" select="accumulator-before('stem-position')"/>

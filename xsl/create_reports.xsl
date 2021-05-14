@@ -75,7 +75,7 @@
         search tokens in the document collection, which we need for many of the different
         reports.</xd:desc>
     </xd:doc>
-    <xsl:variable name="spans" select="$tokenizedDocs//span[@data-staticSearch-stem]"/>
+    <xsl:variable name="spans" select="$tokenizedDocs//span[@ss-stem]"/>
     
     <xd:doc>
         <xd:desc><xd:ref name="filterFiles" type="variable">$filterFiles</xd:ref> are all of the filters
@@ -339,7 +339,7 @@
                     </tr>
                     <tr>
                         <th>Total Unique Tokens (= Number of JSON files created)</th>
-                        <td><xsl:value-of select="count(distinct-values($spans/tokenize(@data-staticSearch-stem,'\s+')))"/></td>
+                        <td><xsl:value-of select="count(distinct-values($spans/tokenize(@ss-stem,'\s+')))"/></td>
                     </tr>
                 </tbody>
             </table>
@@ -422,7 +422,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <xsl:for-each-group select="$spans" group-by="tokenize(@data-staticSearch-stem,'\s+')">
+                        <xsl:for-each-group select="$spans" group-by="tokenize(@ss-stem,'\s+')">
                             <xsl:sort select="count(current-group())" order="descending"/>
                             <xsl:variable name="tokenGroup" select="current-group()"/>
                             <xsl:variable name="thisToken" select="current-grouping-key()"/>
@@ -513,7 +513,7 @@
             <h2>Words Not In Dictionary</h2>
             
             <!--Only check stems that are words-->
-            <xsl:variable name="stemsToCheck" select="$spans[not(matches(@data-staticSearch-stem,'\d'))][not(hcmc:isForeign(.))]" as="element(span)*"/>
+            <xsl:variable name="stemsToCheck" select="$spans[not(matches(@ss-stem,'\d'))][not(hcmc:isForeign(.))]" as="element(span)*"/>
             
             <!--Retrieve the outermost spans so we don't include the nested spans from hyphenated terms 
                 (we process those a bit differently) -->
@@ -522,7 +522,7 @@
             <xsl:variable name="wordsNotInDictionaryMap" as="map(xs:string, element(span)*)">
                 <xsl:map>
                     <!--Group by whether or not it has descendant spans-->
-                    <xsl:for-each-group select="$outermostStems" group-by="exists(child::span[@data-staticSearch-stem])">
+                    <xsl:for-each-group select="$outermostStems" group-by="exists(child::span[@ss-stem])">
                         <xsl:choose>
                             <!--If this thing has child stems, it's a hyphenated construct
                             and so we check each child term individually-->
@@ -536,7 +536,7 @@
                                     
                                     <!--Not in dictionary spans-->
                                     <xsl:variable name="words" 
-                                        select="for $s in $hyphenatedSpan/span[@data-staticSearch-stem] return lower-case(string($s))" 
+                                        select="for $s in $hyphenatedSpan/span[@ss-stem] return lower-case(string($s))" 
                                         as="xs:string*"/>
                                     
                                     <xsl:variable name="cleanedWords" 
