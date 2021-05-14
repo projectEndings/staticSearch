@@ -65,7 +65,7 @@
         https://www.w3.org/TR/xslt-30/#d7e48465 -->
     
     <xd:doc>
-        <xd:desc>Accumualtor to keep track of the current weight for a span; note that
+        <xd:desc>Accumulator to keep track of the current weight for a span; note that
             weights are not additive: a structure like (where W# = Weight):
             
             W2 > W3 > W1 > thisSpan
