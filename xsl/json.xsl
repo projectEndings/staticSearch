@@ -51,7 +51,7 @@
     <xd:doc>
         <xd:desc>All stems from the tokenized docs; we use this in a few places.</xd:desc>
     </xd:doc>
-    <xsl:variable name="stems" select="$tokenizedDocs//span[@data-staticSearch-stem]" as="element(span)*"/>
+    <xsl:variable name="stems" select="$tokenizedDocs//span[@ss-stem]" as="element(span)*"/>
     
     
     <!--**************************************************************
@@ -188,13 +188,13 @@
     <xd:doc>
         <xd:desc>The <xd:ref name="createStemmedTokenJson" type="template">createStemmedTokenJson</xd:ref> 
             is the meat of this process. It first groups the HTML span elements by their
-            @data-staticSearch-stem (and note this is tokenized, since @data-staticSearch-stem
+            @ss-stem (and note this is tokenized, since @ss-stem
             can contain more than one stem) and then creates a XML map, which is then converted to JSON.</xd:desc>
     </xd:doc>
     <xsl:template name="createStemmedTokenJson">
         <xsl:message>Found <xsl:value-of select="$tokenizedDocsCount"/> tokenized documents...</xsl:message>
         <!--Group all of the stems by their values;  tokenizing is a bit overzealous here-->
-        <xsl:for-each-group select="$stems" group-by="tokenize(@data-staticSearch-stem,'\s+')">
+        <xsl:for-each-group select="$stems" group-by="tokenize(@ss-stem,'\s+')">
             <xsl:variable name="stem" select="current-grouping-key()" as="xs:string"/>
             <xsl:call-template name="makeTokenCounterMsg"/>
             <xsl:variable name="map" as="element(j:map)">
@@ -267,7 +267,7 @@
         <xsl:variable name="stem" select="current-grouping-key()" as="xs:string"/>
         
         <!--The group of all the terms (so all of the spans that have this particular term
-            in its @data-staticSearch-stem -->
+            in its @ss-stem -->
         <xsl:variable name="stemGroup" select="current-group()" as="element(span)*"/>
         
         <!--Create the outermost part of the structure-->
@@ -406,7 +406,7 @@
                 <xsl:sort select="xs:integer(@data-staticSearch-pos)" order="ascending"/>
                 
                 <xsl:if test="$verbose">
-                    <xsl:message expand-text="true">{$thisDoc/@data-staticSearch-relativeUri}: {@data-staticSearch-stem} (ctx: {position()}/{$contextCount}):  pos: {@data-staticSearch-pos}</xsl:message>
+                    <xsl:message expand-text="true">{$thisDoc/@data-staticSearch-relativeUri}: {@ss-stem} (ctx: {position()}/{$contextCount}):  pos: {@data-staticSearch-pos}</xsl:message>
                 </xsl:if>
                 
                 <!--Accumulated properties map, which may or may not exist -->
@@ -693,9 +693,9 @@
     <xsl:function name="hcmc:getTotalTermsInDoc" as="xs:integer" new-each-time="no">
         <xsl:param name="docUri" as="xs:string"/>
         <xsl:variable name="thisDoc" select="$tokenizedDocs[document-uri(.) = $docUri]" as="document-node()"/>
-        <xsl:variable name="thisDocSpans" select="$thisDoc//span[@data-staticSearch-stem]" as="element(span)*"/>
+        <xsl:variable name="thisDocSpans" select="$thisDoc//span[@ss-stem]" as="element(span)*"/>
         <!--We tokenize these since there can be multiple stems for a given span-->
-        <xsl:variable name="thisDocStems" select="for $span in $thisDocSpans return tokenize($span/@data-staticSearch-stem,'\s+')" as="xs:string+"/>
+        <xsl:variable name="thisDocStems" select="for $span in $thisDocSpans return tokenize($span/@ss-stem,'\s+')" as="xs:string+"/>
         <xsl:variable name="uniqueStems" select="distinct-values($thisDocStems)" as="xs:string+"/>
         <xsl:sequence select="count($uniqueStems)"/>
     </xsl:function>
