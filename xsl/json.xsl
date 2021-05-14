@@ -726,15 +726,10 @@
             select="'(^|\s+)staticSearch_(desc|num|bool|date|feat)(\s+|$)'"
             as="xs:string"/>
         
-        <!--Get all of the metas (that aren't meant to be excluded) from the tokenized docs-->
-        <xsl:variable name="allMetas" 
-            select="$tokenizedDocs//meta[not(ancestor-or-self::*[@data-staticSearch-exclude])]"
-            as="element(meta)*"/>
-        
-        <!--Now just get the ssMetas-->
-        <xsl:variable name="ssMetas" 
-            select="$allMetas[matches(@class,$filterRex)]"
-            as="element(meta)*"/>
+      <xsl:variable name="ssMetas" 
+        select="$tokenizedDocs//meta[matches(@class,$filterRex)][not(ancestor-or-self::*[@data-staticSearch-exclude])]"
+        as="element(meta)*"/>
+      
         
         <xsl:for-each-group select="$ssMetas" group-by="tokenize(@class,'\s+')[matches(.,$filterRex)]">
             <!--Get the class for the filter (staticSearch_desc, staticSearch_num, etc)-->
