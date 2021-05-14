@@ -247,9 +247,15 @@
     <echo message="pattern = ${ptn}"/>
     <echo message="collection dir = ${ssCollectionDirName}"/>
     <xslt
-      style="${ssBaseDir}/xsl/tokenize.xsl" classpath="${ssSaxon}" destdir="${ssOutputFolder}/temp" reloadstylesheet="true" useimplicitfileset="false">
+      style="${ssBaseDir}/xsl/tokenize.xsl" classpath="${ssSaxon}" destdir="${ssOutputFolder}/temp"
+       reloadstylesheet="true"
+       force="true"
+      useimplicitfileset="false">
       <factory name="net.sf.saxon.TransformerFactoryImpl"/>
-      <fileset id="siteFiles" dir="${ssCollectionDirName}" includesfile="${staticSearchDir}/temp/patternset.txt" excludes="**/staticSearch_report.html" casesensitive="no"></fileset>
+      <fileset id="siteFiles" dir="${ssCollectionDirName}"
+        includesfile="${staticSearchDir}/temp/patternset.txt" 
+        excludes="**/staticSearch_report.html" 
+        casesensitive="no"/>
     </xslt>
   </target>
 
