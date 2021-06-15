@@ -398,6 +398,7 @@
         <include name="ssSearch.js"/>
         <include name="ssSearch-debug.js"/>
         <include name="ssHighlight.js"/>
+        <include name="ssInitialize.js"/>
       </fileset>
       <fileset dir="${ssBaseDir}/css">
         <include name="ss**.css"/>

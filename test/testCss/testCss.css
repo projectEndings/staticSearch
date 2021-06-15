@@ -1,0 +1,24 @@
+/* This CSS belongs and applies only to the StaticSearch 
+ * test suite, and is never needed in a working search 
+ * application context. */
+
+#testResults{
+  margin: 2em;
+  border-top: solid 1pt black;
+}
+.success{
+  background-color: #ccffcc;
+}
+.failure{
+  background-color: #ffcccc;
+}
+#ssResults li[data-ss-img]{
+  margin-top:1em;
+}
+#ssResults li[data-ss-img] > img{
+  display: block;
+  max-width: 100%;
+}
+div#ssResults > ul > li > a > img {
+  max-width: 4em;
+}
