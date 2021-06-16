@@ -1019,8 +1019,8 @@
           <p>The search page created for your website is entirely driven by JavaScript. The
           JavaScript source code can be found in a number of <ident>.js</ident> files inside the repository 
           <ident>js</ident> folder. At build time, these files (with the exception of
-            <ident>ssHighlight.js</ident>, for which see 
-            <ref target="#highlightTargetPage">Highlighting search hits</ref>) are first 
+            <ref target="#highlightTargetPage"><ident>ssHighlight.js</ident></ref> and 
+            <ref target="#jsInitialization"><ident>ssInitialize.js</ident></ref>) are first 
             concatenated into a single large file called <ident>ssSearch-debug.js</ident>. 
             This file is then optimized using the 
             <ref target="https://github.com/google/closure-compiler/">Google Closure Compiler</ref>, 
@@ -1032,6 +1032,20 @@
           </p>
           <p>We are still experimenting with the options and affordances of the Closure compiler,
           in the interests of finding the best balance between file size and performance. </p>
+        </div>
+        
+        <div xml:id="jsInitialization">
+          <head>The JavaScript Initializer file</head>
+          <p>When your search page is created, in addition to the main <ident>ssSearch.js</ident> file, 
+          an additional tiny JavaScript file, <ident>ssInitialize.js</ident>, is also linked into
+          the page. The only purpose of this script is to create a variable for the StaticSearch object
+          and to initialize the object, which causes the search functionality to be set up on the page.
+          We do this in a separate file so that if you have any specific options or setup functions
+          that run on your own site that might conflict with this initialization process, you can 
+          easily modify or remove this single file and manage the initialization of the StaticSearch
+          object with your own code. In early versions of staticSearch, this code was injected directly
+          into a <gi>script</gi> tag within the search page, but since Content Security Policy settings
+          increasingly object to inline JavaScript, we have abstracted it into a separate file.</p>
         </div>
       </div>
       <div xml:id="howDoI">
