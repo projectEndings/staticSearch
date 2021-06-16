@@ -17,8 +17,8 @@ Thumbs.db
 VERSION
 
 # The HTML files created from precursor files in test
-#/test/search.html
-#/test/searchWorthReading.html
+/test/search.html
+/test/searchWorthReading.html
 
 # Temporary files from the build #
 ssTemp_*
