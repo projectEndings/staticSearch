@@ -19,6 +19,11 @@ VERSION
 # The HTML files created from precursor files in test
 /test/search.html
 /test/searchWorthReading.html
+/test/search-debug.html
+
+# Other files generated in test build
+/test/ssTest/*
+/test/ssTestWorthReading/*
 
 # Temporary files from the build #
 ssTemp_*
