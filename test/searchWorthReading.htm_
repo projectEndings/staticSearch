@@ -21,7 +21,10 @@
               Note that if you want to debug a problem with the JavaScript, you can
               change "ssSearch.js" to "ssSearch-debug.js" to link the uncompressed, 
               unminified code instead.
-            --><script src="ssWorthReading/ssInitialize.js"></script><form accept-charset="UTF-8" id="ssForm" data-allowphrasal="yes" data-allowwildcards="yes" data-minwordlength="3" data-scrolltotextfragment="no" data-maxkwicstoshow="3" data-resultsperpage="0" onsubmit="return false;" data-versionstring="_14bc877" data-ssfolder="ssWorthReading" data-kwictruncatestring="..." data-resultslimit="2000"><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><span class="clearButton"><button id="ssClear">Clear</button></span><div class="ssDescFilters">
+            --><script>
+                var Sch;
+                window.addEventListener('load', function(){Sch = new StaticSearch();});
+            </script><form accept-charset="UTF-8" id="ssForm" data-allowphrasal="yes" data-allowwildcards="yes" data-minwordlength="3" data-scrolltotextfragment="no" data-maxkwicstoshow="3" data-resultsperpage="0" onsubmit="return false;" data-versionstring="_6383b16" data-ssfolder="ssWorthReading" data-kwictruncatestring="..." data-resultslimit="2000"><span class="ssQueryAndButton"><input type="text" id="ssQuery"/><button id="ssDoSearch">Search</button></span><span class="clearButton"><button id="ssClear">Clear</button></span><div class="ssDescFilters">
                <fieldset class="ssFieldset" title="Document type" id="ssDesc1">
                   <legend>Document type</legend>
                   <ul class="ssDescCheckboxList">
@@ -56,11 +59,11 @@
             </div>
             <div class="ssDateFilters">
                <fieldset class="ssFieldset" title="Date range" id="ssDate1">
-                  <legend>Date range</legend><span><label for="ssDate1_from">From: </label><input type="text" maxlength="10" pattern="^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$" title="Date range" id="ssDate1_from" class="staticSearch.date staticSearch_date" placeholder="1689-01-01" onchange="this.reportValidity()"/></span><span><label for="ssDate1_to">To: </label><input type="text" maxlength="10" pattern="^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$" title="Date range" id="ssDate1_to" class="staticSearch.date staticSearch_date" placeholder="2019-12-31" onchange="this.reportValidity()"/></span></fieldset>
+                  <legend>Date range</legend><span><label for="ssDate1_from">From: </label><input type="text" placeholder="1689-01-01" title="Date range" id="ssDate1_from" onchange="this.reportValidity()" class="staticSearch.date staticSearch_date" maxlength="10" pattern="^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$"/></span><span><label for="ssDate1_to">To: </label><input type="text" placeholder="2019-12-31" title="Date range" id="ssDate1_to" onchange="this.reportValidity()" class="staticSearch.date staticSearch_date" maxlength="10" pattern="^\d\d\d\d(-((((01)|(03)|(05)|(07)|(08)|(10)|(12))-((0[1-9])|([12][0-9])|(3[01])))|(((04)|(06)|(09)|(11))-((0[1-9])|([12][0-9])|(30)))|(02-((0[1-9])|([12][0-9]))))|(-((0[123456789])|(1[012]))))?$"/></span></fieldset>
             </div>
             <div class="ssNumFilters">
                <fieldset class="ssFieldset" title="Number of animal names" id="ssNum1">
-                  <legend>Number of animal names</legend><span><label for="ssNum1_from">From: </label><input type="number" min="1" max="3" placeholder="1" step="any" title="Number of animal names" id="ssNum1_from" class="staticSearch.num staticSearch_num"/></span><span><label for="ssNum1_to">To: </label><input type="number" min="1" max="3" placeholder="3" step="any" title="Number of animal names" id="ssNum1_to" class="staticSearch.num staticSearch_num"/></span></fieldset>
+                  <legend>Number of animal names</legend><span><label for="ssNum1_from">From: </label><input step="any" type="number" placeholder="1" max="3" title="Number of animal names" id="ssNum1_from" min="1" class="staticSearch.num staticSearch_num"/></span><span><label for="ssNum1_to">To: </label><input step="any" type="number" placeholder="3" max="3" title="Number of animal names" id="ssNum1_to" min="1" class="staticSearch.num staticSearch_num"/></span></fieldset>
             </div><span class="postFilterSearchBtn"><button id="ssDoSearch2">Search</button></span></form>
          <div id="ssSearching">Searching...</div>
          <div id="ssResults"></div>

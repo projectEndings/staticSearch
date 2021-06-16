@@ -153,7 +153,8 @@
       </then>
     </if>
 
-    <!-- If we're building the test data, we need to generate the VERSION file. -->
+    <!-- If we're building the test data, we need to generate the VERSION file
+         and also copy the .htm_ files to .html before starting. -->
     <if>
       <equals arg1="${ssBaseDir}/configTest.xml" arg2="${ssConfigFile}"/>
       <then>
@@ -164,6 +165,8 @@
           <arg value="HEAD"/>
           <redirector output="${ssBaseDir}/test/VERSION"/>
         </exec>
+        <copy file="${ssBaseDir}/test/search.htm_" tofile="${ssBaseDir}/test/search.html"/>
+        <copy file="${ssBaseDir}/test/searchWorthReading.htm_" tofile="${ssBaseDir}/test/searchWorthReading.html"/>
       </then>
     </if>
   </target>
