@@ -42,7 +42,7 @@
             <p>The following is a segment of Martin Porter's discussion of apostrophes in English for the Porter2 Stemmer:
                 <a href="http://snowball.tartarus.org/texts/apostrophe.html">http://snowball.tartarus.org/texts/apostrophe.html</a>, included here as it provides good examples of apostrophes (for instance, <q>o'clock</q>, <q>O'Reilly</q>, etc.).
             </p>
-            <p> The text is unchanged, but it has been slightly re-encoded (<code>p</code>s instead of <code>br</code>s, for instance)</p>
+            <p> The text is unchanged, but it has been slightly re-encoded (<code>p</code>s instead of <code>br</code>s, for instance).</p>
         </div>
         <div id="text">
             <blockquote>
@@ -75,6 +75,7 @@
                     or been an apostrophe following <b><i>s</i></b>. The form <b><i>’s</i></b> is also treated as an ending.</p>
             </blockquote>
             <cite>Martin Porter, "The apostrophe character," <a href="http://snowball.tartarus.org/texts/apostrophe.html">http://snowball.tartarus.org/texts/apostrophe.html</a></cite>
+          <p>This additional paragraph contains a couple of other test items for the tokenizer, including a word containing a combining diaeresis (U+0308, for issue #164). For this we have invented a word which must use a combining diacritic rather than a precomposed character because the precomposed character does not exist; this helps to avoid inadvertent composition. The word puc̈ist is made up for this purpose, along with the word puq̈uist.</p>
             
         </div>
     </body>
