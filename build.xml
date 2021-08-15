@@ -156,7 +156,10 @@
     <!-- If we're building the test data, we need to generate the VERSION file
          and also copy the .htm_ files to .html before starting. -->
     <if>
-      <equals arg1="${ssBaseDir}/configTest.xml" arg2="${ssConfigFile}"/>
+      <or>
+        <equals arg1="${ssBaseDir}/configTest.xml" arg2="${ssConfigFile}"/>
+        <equals arg1="${ssBaseDir}/configTestWorthReading.xml" arg2="${ssConfigFile}"/>
+      </or>
       <then>
         <delete file="${ssBaseDir}/test/VERSION"/>
         <exec executable="git">
