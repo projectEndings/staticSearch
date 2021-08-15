@@ -274,6 +274,24 @@ tests.push({
     });
   }
 });
+
+//Search for a couple of words that contain combining diacritics and 
+//cannot be inadvertently converted to composed chars (puq̈uist, puc̈ist).
+tests.push({
+  setup: function () {
+    Sch.queryBox.value = 'puq̈uist, puc̈ist';
+  },
+  check: function (num) {
+    console.log('Search hook ' + num);
+    console.log('Testing results for the word "puq̈uist" and "puc̈ist", which both appear in one document.');
+    
+    checkResults({
+      docsFound: 1, contextsFound: 2, scoreTotal: 2
+    });
+  }
+});
+
+
 //Search using the number filter.
 tests.push({
   setup: function () {

@@ -98,9 +98,12 @@
     <xsl:variable name="numericWithDecimal">[<xsl:value-of select="string-join($allApos,'')"/>\d]+([\.,]?\d+)</xsl:variable>
     
     <xd:doc>
-        <xd:desc>Regex to match alphanumeric words</xd:desc>
+        <xd:desc>Regex to match alphanumeric words. Note that we use 
+        Unicode character classes to take our best shot at splitting on
+        word boundaries, but this is bound to be fragile where multiple
+        languages are involved.</xd:desc>
     </xd:doc>
-    <xsl:variable name="alphanumeric">[\p{L}<xsl:value-of select="string-join($allApos,'')"/>]+</xsl:variable>
+  <xsl:variable name="alphanumeric">[\p{L}\p{M}<xsl:value-of select="string-join($allApos,'')"/>]+</xsl:variable>
     
     <xd:doc>
         <xd:desc>Regex to match hyphenated words</xd:desc>
