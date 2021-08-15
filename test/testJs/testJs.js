@@ -183,7 +183,7 @@ tests.push({
     checkResults({
       docsFound: 1,
       contextsFound: 2,
-      scoreTotal: 2,
+      scoreTotal: 2
     })
   }
 });
@@ -199,7 +199,7 @@ tests.push({
     checkResults({
       docsFound: 1,
       contextsFound: 1,
-      scoreTotal: 1,
+      scoreTotal: 1
     })
   }
 });
