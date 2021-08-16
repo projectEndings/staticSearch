@@ -80,6 +80,10 @@
 
   <!--Set the verbose flag to false by default; set to true to see detailed messages-->
   <property name="ssVerbose" value="false"/>
+  
+  <!--Set the verboseReport flag to false by default; set to true to allow the report 
+      generation process to create an exhaustive report (may trigger out-of-memory errors). -->
+  <property name="ssVerboseReport" value="false"/>
 
   <!--The path to the search page, relative to the configuration directory-->
   <property name="ssSearchFilePath" location="${configDir}/${config.params.searchFile}"/>
@@ -101,7 +105,7 @@
 
   <!--The directory for all of the static search assets (JSON files, Javascripts, et cetera).
         Note that the static search directory is placed directly within the collection directory-->
-  <property name="staticSearchDir" value="${ssCollectionDirName}/${ssOutputFolder}/"/>
+  <property name="staticSearchDir" value="${ssCollectionDirName}/${ssOutputFolder}"/>
 
   <!--The basename of the search file with suffix still attached-->
   <basename property="ssSearchPageBasename" file="${ssSearchFilePath}"/>
@@ -125,7 +129,7 @@
       deletes any previous results from an earlier build and then recreates the staticSearchDir,
       which is simply the parent directory of the search file specified in the config file. In the
       special case of the test, this target also generates the VERSION file. </description>
-    <echo message="Initializing..."/>
+    <echo message="Initializing staticSearch build using codebase in ${ssBaseDir}..."/>
     <echo message="Deleting old products..."/>
     <delete dir="temp"/>
     <delete file="${ssBaseDir}/xsl/config.xsl"/>
@@ -373,11 +377,18 @@
             inject into the page. It is more efficient to derive the existence of the filters directory here rather than
             in the XSLT.-->
     <available type="dir" property="hasFilters" file="${staticSearchDir}/filters" value="true"/>
+    <resourcecount property="stemFileCount">
+      <fileset dir="${staticSearchDir}/stems">
+        <include name="*.json"/>
+      </fileset>
+    </resourcecount>
     <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
       <arg value="-xsl:${ssBaseDir}/xsl/create_reports.xsl"/>
       <arg value="-s:${ssBaseDir}/xsl/create_reports.xsl"/>
       <arg value="--suppressXsltNamespaceCheck:on"/>
       <arg value="hasFilters=${hasFilters}"/>
+      <arg value="stemFileCount=${stemFileCount}"/>
+      <arg value="verboseReport=${ssVerboseReport}"/>
       <jvmarg value="-Xmx2048m"/>
     </java>
     <move file="${ssBaseDir}/staticSearch_report.html"

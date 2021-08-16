@@ -48,6 +48,22 @@
             we need to create appropriate form controls.</xd:desc>
     </xd:doc>
     <xsl:param name="hasFilters" as="xs:string" select="'false'"/>
+  
+    <xd:doc>
+      <xd:desc><xd:ref name="stemFileCount">$stemFileCount</xd:ref> is a simple 
+      count of all the JSON stem files created earlier in the process, provided
+      by the calling ant target. This is less resource-intensive than counting
+      them ourselves based on the tokenized files.</xd:desc>
+    </xd:doc>
+    <xsl:param name="stemFileCount" as="xs:string" select="''"/>
+  
+    <xd:doc>
+      <xd:desc><xd:ref name="verboseReport">$verboseReport</xd:ref> is a boolean 
+      which controls whether the report contains exhaustive details on 
+      word-counts and so on. For large collections a verboseReport report
+      can cause an out-of-memory error.</xd:desc>
+    </xd:doc>
+    <xsl:param name="verboseReport" as="xs:string" select="'false'"/>
 
 
     <!--**************************************************************
@@ -152,17 +168,23 @@
                         <xsl:call-template name="createDiagnostics"/>
                         <xsl:call-template name="createFilters"/>
                         <xsl:call-template name="createExcludes"/>
-                        <xsl:call-template name="createWordTables"/>
-                        <xsl:call-template name="createNonDictionaryList"/>
-                        <xsl:call-template name="createForeignWordList"/>
+                        <xsl:if test="$verboseReport = 'true'">
+                          <xsl:call-template name="createWordTables"/>
+                          <xsl:call-template name="createNonDictionaryList"/>
+                          <xsl:call-template name="createForeignWordList"/>
+                        </xsl:if>
+                        
                     </div>
                 </body>
             </html>
         </xsl:result-document>
     </xsl:template>
     
-    <xsl:template name="createDiagnostics">
-        
+    <xd:doc>
+      <xd:desc>Template creating diagnostic report on documents that may need 
+      attention in the tokenized collection.</xd:desc>
+    </xd:doc>
+  <xsl:template name="createDiagnostics">
         <xsl:variable name="docsWithoutIds" select="$tokenizedDocs//html[not(@id)]"/>
         <xsl:variable name="docsWithoutLang" select="$tokenizedDocs//html[not(@lang)]"/>
         <xsl:variable name="badNumericFilters"
@@ -332,14 +354,17 @@
                             <td><xsl:value-of select="count($docUris) - count($tokenizedDocs)"/></td>
                         </tr>
                     </xsl:if>
- 
-                    <tr>
+                  
+                    <xsl:if test="$verboseReport = 'true'">
+                      <tr>
                         <th>Total Tokens Stemmed</th>
                         <td><xsl:value-of select="count($spans)"/></td>
-                    </tr>
+                      </tr>
+                    </xsl:if>
+
                     <tr>
                         <th>Total Unique Tokens (= Number of JSON files created)</th>
-                        <td><xsl:value-of select="count(distinct-values($spans/tokenize(@ss-stem,'\s+')))"/></td>
+                      <td><xsl:value-of select="$stemFileCount"/></td>
                     </tr>
                 </tbody>
             </table>
