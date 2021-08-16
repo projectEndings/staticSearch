@@ -277,7 +277,6 @@ class StaticSearch{
       this.jsonToRetrieve.push({id: 'ssStopwords', path: this.jsonDirectory + 'ssStopwords' + this.versionString + '.json'});
       this.jsonToRetrieve.push({id: 'ssTitles', path: this.jsonDirectory + 'ssTitles' + this.versionString + '.json'});
       this.jsonToRetrieve.push({id: 'ssWordString', path: this.jsonDirectory + 'ssWordString' + this.versionString + '.txt'});
-      //this.jsonToRetrieve.push({id: 'ssStems', path: this.jsonDirectory + 'ssStems' + this.versionString + '.json'});
       for (var f of document.querySelectorAll('fieldset.ssFieldset[id], fieldset.ssFieldset select[id]')){
         this.jsonToRetrieve.push({id: f.id, path: this.jsonDirectory + 'filters/' + f.id + this.versionString + '.json'});
       }

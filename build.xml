@@ -281,31 +281,6 @@
     </java>
   </target>
 
-  <target name="createStemsFile">
-    <description>
-      TARGET: createStemsFile
-      This target creates the ssStems.json file by first
-      retrieving the length of all the JSONs available, and then create a JSON from that document.
-      This is necessary for running wildcard searches. </description>
-    <echo message="Creating ssStems.json file..."/>
-    <echo message="First, measure the JSON files..."/>
-    <length property="stemLines" mode="each">
-      <fileset dir="${staticSearchDir}">
-        <include name="stems/**.json"/>
-      </fileset>
-    </length>
-    <echo message="Now create the tokens file..."/>
-    <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true">
-      <arg value="-xsl:${ssBaseDir}/xsl/create_ssStems.xsl"/>
-      <arg value="-s:${ssBaseDir}/xsl/create_ssStems.xsl"/>
-      <arg value="stemLines=${stemLines}"/>
-      <arg value="--suppressXsltNamespaceCheck:on"/>
-    </java>
-  </target>
-
-
-
-
   <target name="makeSearchPage">
     <description>
       TARGET: makeSearchPage
@@ -460,7 +435,7 @@
   </target>
 
   <target name="all"
-    depends="init, validate, config, tokenize, json, buildJS, createStemsFile, copyFiles, makeSearchPage, report, clean">
+    depends="init, validate, config, tokenize, json, buildJS, copyFiles, makeSearchPage, report, clean">
     <description>
       TARGET: all
       Default target for running the entire static search creation process.
@@ -468,7 +443,7 @@
   </target>
 
   <target name="allButValidate"
-    depends="init, config, tokenize, json, buildJS, createStemsFile, copyFiles, makeSearchPage, report, clean">
+    depends="init, config, tokenize, json, buildJS, copyFiles, makeSearchPage, report, clean">
     <description>
       TARGET: allButValidate
       Target to override validation, which is helpful in cases
@@ -477,7 +452,7 @@
   </target>
 
   <target name="test"
-    depends="init, validate, config, tokenize, json, buildJS, createStemsFile, copyFiles, makeSearchPage, makeDebugSearchPage, report">
+    depends="init, validate, config, tokenize, json, buildJS, copyFiles, makeSearchPage, makeDebugSearchPage, report">
     <description>
       TARGET: test
       Target that runs the whole process, but does not clean up the
@@ -486,7 +461,7 @@
   </target>
 
   <target name="basic"
-    depends="init, validate, config, tokenize, json, buildJS, createStemsFile, copyFiles, makeSearchPage, clean">
+    depends="init, validate, config, tokenize, json, buildJS, copyFiles, makeSearchPage, clean">
     <description>
       TARGET: basic
       Target that runs the whole process other than the report creation.
