@@ -112,16 +112,28 @@
 
    <xd:doc>
        <xd:desc>Root template just for checking to see whether or not the document has
-       the require div/@id='staticSearch'.</xd:desc>
+       the require an element with @id='staticSearch' (preferably a div).</xd:desc>
    </xd:doc>
     <xsl:template match="/">
 
-        <!--Warning message if there is no staticSearch div in the document-->
-        <xsl:if test="not(descendant::div[@id='staticSearch'])">
-            <xsl:message>ERROR: Document does not contain a div/@id='staticSearch' and thus this transformation
-                will not do anything.</xsl:message>
+        <!--Warning message if there is no staticSearch elements in the document. -->
+        <xsl:if test="not(descendant::*[@id='staticSearch'])">
+            <xsl:message>ERROR: Document does not contain an HTML element with @id='staticSearch' and thus this transformation will not do anything.</xsl:message>
         </xsl:if>
-
+      
+      <!--Warning message if there are multiple elements with @id='staticSearch'. -->
+      <xsl:if test="count(descendant::*[@id='staticSearch']) gt 1">
+        <xsl:message>WARNING: Document contains multiple HTML elements with @id='staticSearch'. 
+        This transformation will use the first one found.</xsl:message>
+      </xsl:if>
+      
+      <!--Warning message if the first element with @id='staticSearch' is not a div. -->
+      <xsl:if test="descendant::*[@id='staticSearch'] and 
+        local-name(descendant::*[@id='staticSearch'][1]) ne 'div'">
+        <xsl:message>WARNING: The element with @id='staticSearch' is not a div element.
+        This may result in invalid HTML or unpredictable layout behaviour.</xsl:message>
+      </xsl:if>
+      
         <!--Now apply templates-->
         <xsl:apply-templates/>
     </xsl:template>
@@ -155,13 +167,14 @@
     </xsl:template>
 
     <xd:doc>
-        <xd:desc>This is the main template for matching the staticSearch div;
-        this is where all the work happens for create the search box and the filter
-        options. This is also where we load in the Javasript; we do this here
-        rather than in the head of the document so not to interfere with existing Javascript
-        in the header of document.</xd:desc>
+        <xd:desc>This is the main template for matching the staticSearch element
+          (which under normal circumstances should be a div, but which may be 
+          any element). This is where all the work happens for create the search 
+          box and the filter options. This is also where we load in the Javasript; 
+          we do this here rather than in the head of the document so not to 
+          interfere with existing Javascript in the header of document.</xd:desc>
     </xd:doc>
-    <xsl:template match="div[@id='staticSearch']">
+    <xsl:template match="*[@id='staticSearch'][not(preceding::*[@id='staticSearch'])]">
         
         <!--Get the language we should be using for retrieving captions, defaulting to 'en'
             if no language is specified-->
@@ -173,7 +186,7 @@
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:if test="$verbose">
-                        <xsl:message>WARNING: No language declared for div/@id='staticSearch' to determine captions. Using 'en' by default.</xsl:message>
+                        <xsl:message>WARNING: No language declared for element with @id='staticSearch' to determine captions. Using 'en' by default.</xsl:message>
                     </xsl:if>
                     <xsl:sequence select="'en'"/>
                 </xsl:otherwise>
@@ -186,9 +199,9 @@
             <!--Copy out attributes-->
             <xsl:copy-of select="@*"/>
 
-            <!--Warn if there is anything contained within the div, since it will be wiped out-->
+            <!--Warn if there is anything contained within the element, since it will be wiped out-->
             <xsl:if test="* or node()[string-length(normalize-space(string-join(descendant::text(), ''))) gt 0]">
-                <xsl:message>WARNING: Contents of div/@id='staticSearch' will be overwritten</xsl:message>
+                <xsl:message>WARNING: Contents of element with @id='staticSearch' will be overwritten</xsl:message>
             </xsl:if>
 
             <!--Now add the script for the staticSearch library. -->

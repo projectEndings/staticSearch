@@ -16,7 +16,7 @@
    <body>
       
       
-      <div id="staticSearch"><script src="ssWorthReading/ssSearch.js"></script>
+      <section id="staticSearch"><script src="ssWorthReading/ssSearch.js"></script>
          <!--
               Note that if you want to debug a problem with the JavaScript, you can
               change "ssSearch.js" to "ssSearch-debug.js" to link the uncompressed, 
@@ -108,7 +108,7 @@
                      <path transform="matrix(1.1872613,0,0,0.3883161,603.6843,253.81112)" d="m -371.16805,-123.26338 -87.91103,-143.55491 168.27771,-4.35573 z" id="path1533" style="fill:#a02a2c;stroke-width:3;fill-opacity:1"></path>
                      </g>
                   </svg></a></div>
-      </div>
+      </section>
       
       </body>
    </html>
