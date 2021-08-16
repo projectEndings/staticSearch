@@ -190,7 +190,6 @@
     <if>
       <equals arg1="configTestWorthReading.xml" arg2="${ssConfigFileName}"/>
       <then>
-        <echo>!!!!!!!!!!!!!!!!!!!!</echo>
         <copy file="${ssBaseDir}/test/searchWorthReading.htm_" tofile="${ssBaseDir}/test/searchWorthReading.html"/>
       </then>
     </if>
