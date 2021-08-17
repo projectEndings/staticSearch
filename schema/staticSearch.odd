@@ -827,9 +827,18 @@
               We recommend looking at this file regularly, especially if you're encountering unexpected behaviour by the staticSearch
               engine, as it contains information that can often help diagnose issues with configured filters or the HTML document collection
               that, if fixed, can improve staticSearch results.</p>
-            <p>The report also includes a number of tables that outline some statistics about your project. The word frequency chart is particularly useful:
-              it can be used to create and fine-tune the project-specific stopword list (i.e. if a word appears multiple times in every document, then it probably
-              ought to be a stopword).
+            <p>By default, the report includes only basic information about the number of
+            stem files created, the the filters used, and any problems encountered. However,
+            if you run the build process using the additional parameter <ident>ssVerboseReport</ident>:
+            
+            <eg>ant -DssVerboseReport=true -DssConfigFile=...</eg>
+            
+            then the report will also include a number of tables that outline some statistics about your 
+            project. The word frequency chart is particularly useful: it can be used to create and 
+            fine-tune the project-specific stopword list (i.e. if a word appears multiple times in 
+            every document, then it probably ought to be a stopword). <emph>However, please note that compiling
+            these statistics is very memory-intensive and if your site is large, it may cause the build
+            process to run out of memory.</emph>
             </p>
           </div>
           
