@@ -1333,6 +1333,11 @@
             <cell>The main page is itself a search page; this is a digital archive with multiple staticSearch interfaces.</cell>
             <cell><ref target="https://hcmc.uvic.ca/svn/landscapes/production/">SVN</ref></cell>
           </row>
+          <row>
+            <cell><ref target="http://medievalmideast.org/">Historical Index of the Medieval Middle East</ref></cell>
+            <cell>The home page includes a search function which leads to the search page.</cell>
+            <cell></cell>
+          </row>
           <!--<row>
             <cell>Linked Early Modern Drama Online (forthcoming)</cell>
             <cell/>
