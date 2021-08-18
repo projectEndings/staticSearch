@@ -41,13 +41,22 @@
     this.filterData = filterData;
     this.filterName = filterName;
     this.minWordLength = minWordLength;
+    this.reId = /^ssFeat\d+_\d+$/;
     //Because so many staticSearch filter handling is based on 
     //the string values of items rather than ids, we create a map
     //of values to ids.
     this.filterMap = new Map();
-    for (let i=2; i<Object.entries(this.filterData).length; i++){
+    Object.entries(this.filterData).forEach(([key, value]) => {
+      // If the key doesn't match the ssFeat regex, then skip
+      if (!this.reId.test(key)){
+          return;
+        }
+      this.filterMap.set(value.name, key);
+    });
+    //OLD APPROACH
+/*    for (let i=2; i<Object.entries(this.filterData).length; i++){
       this.filterMap.set(Object.entries(this.filterData)[i][1].name, Object.entries(this.filterData)[i][0]);
-    }
+    }*/
     this.input = this.rootEl.getElementsByTagName('input')[0];
     this.input.addEventListener('input', this.suggest.bind(this));
     this.input.addEventListener('keydown', ss.debounce(function(e){this.keyOnInput(e);}.bind(this)), 500);
@@ -60,7 +69,7 @@
     this.checkboxes.classList.add('ssSuggest');
     this.rootEl.appendChild(this.checkboxes);
     this.rootEl.addEventListener('click', function(e){this.blurringMenu(e);}.bind(this), true);
-    this.reId = /^ssFeat\d+_\d+$/;
+
     //Flag to track whether we're already working.
     this.populating = false;
   }
