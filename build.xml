@@ -277,8 +277,11 @@
     </foreach>-->
     <echo message="pattern = ${ptn}"/>
     <echo message="collection dir = ${ssCollectionDirName}"/>
+    <!-- NOTE that we need to set destdir for the xslt task, but we actually output result-documents, and the 
+         xslt task creates an empty document as well. We just put these empty documents in the empty folder 
+         and delete them at the end of the process pending a more elegant solution (see issue #165).-->
     <xslt
-      style="${ssBaseDir}/xsl/tokenize.xsl" classpath="${ssSaxon}" destdir="${ssOutputFolder}/temp"
+      style="${ssBaseDir}/xsl/tokenize.xsl" classpath="${ssSaxon}" destdir="${staticSearchDir}/empty"
        reloadstylesheet="true"
        force="true"
       useimplicitfileset="false">
@@ -288,6 +291,7 @@
         excludes="**/staticSearch_report.html" 
         casesensitive="no"/>
     </xslt>
+    <delete dir="${staticSearchDir}/empty"/>
   </target>
 
   <target name="json">
