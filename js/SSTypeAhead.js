@@ -50,7 +50,7 @@
       if (this.reId.test(key)){
         this.filterMap.set(this.filterData[key].name, key);
       }
-    }
+    };
     /*
     //OLD APPROACH
 /*    for (let i=2; i<Object.entries(this.filterData).length; i++){
