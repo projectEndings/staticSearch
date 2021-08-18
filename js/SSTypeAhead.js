@@ -46,13 +46,12 @@
     //the string values of items rather than ids, we create a map
     //of values to ids.
     this.filterMap = new Map();
-    Object.entries(this.filterData).forEach(([key, value]) => {
-      // If the key doesn't match the ssFeat regex, then skip
-      if (!this.reId.test(key)){
-          return;
-        }
-      this.filterMap.set(value.name, key);
-    });
+    for (let key of Object.keys(this.filterData)){
+      if (this.reId.test(key)){
+        this.filterMap.set(this.filterData[key].name, key);
+      }
+    }
+    /*
     //OLD APPROACH
 /*    for (let i=2; i<Object.entries(this.filterData).length; i++){
       this.filterMap.set(Object.entries(this.filterData)[i][1].name, Object.entries(this.filterData)[i][0]);
