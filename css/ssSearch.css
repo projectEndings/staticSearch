@@ -225,3 +225,28 @@ div.ssSuggest>span>button{
     padding: 0.25em;
     text-align: center;
 }
+
+/* Signal that the search page is loading. */
+body.ssLoading{
+  color: gray;
+  background-color: lightgray;
+  cursor: wait;
+}
+div#ssSplashMessage{
+  display: none;
+}
+body.ssLoading div#ssSplashMessage{
+  display: block;
+  text-align: center;
+  color: black;
+  background-color: white;
+  position: fixed;
+  top: 35vh;
+  width: 20vw;
+  left: 40vw;
+  border: solid 1pt gray;
+  font-size: 2rem;
+  padding: 2em;
+  margin: 0;
+  cursor: wait;
+}

@@ -497,12 +497,16 @@
                 <!--...results here...-->
             </div>
             
-            <!-- Finally, we add our logo and powered-by message. -->
+            <!-- Next, we add our logo and powered-by message. -->
             <div id="ssPoweredBy">
                 
                 <p>
                     <xsl:sequence select="hcmc:getCaption('ssPoweredBy', $captionLang)"/>
                 </p> <a href="https://github.com/projectEndings/staticSearch"><xsl:apply-templates select="doc($svgLogoFile)" mode="svgLogo"/></a>
+            </div>
+            <!-- Finally, we add our splash screen. -->
+            <div id="ssSplashMessage">
+              
             </div>
         </xsl:copy>
     </xsl:template>
