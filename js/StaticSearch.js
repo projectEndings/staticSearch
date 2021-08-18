@@ -49,6 +49,28 @@ class StaticSearch{
   */
   constructor(){
     try {
+    
+      //Captions are done first, since we need one for the splash screen.
+      this.captions = ss.captions; //Default; override this if you wish by setting the property after instantiation.
+      this.captionLang  = document.getElementsByTagName('html')[0].getAttribute('lang') || 'en'; //Document language.
+      if (this.captions.has(this.captionLang)){
+        this.captionSet   = this.captions.get(this.captionLang); //Pointer to the caption object we're going to use.
+      }
+      else{
+        this.captionSet   = this.captions.get('en');
+      }
+      
+      this.splashMessage = document.getElementById('ssSplashMessage');
+      if (this.splashMessage !== null){
+        //Set the caption in the splash screen.
+        this.splashMessage.innerText = this.captionSet.strLoading;
+        
+        //Now we "show" the splash screen.
+        document.body.classList.add('ssLoading');
+      }
+      
+      
+      
       this.ssForm = document.querySelector('#ssForm');
       if (!this.ssForm){
         throw new Error('Failed to find search form. Search functionality will probably break.');
@@ -258,16 +280,6 @@ class StaticSearch{
          
       };
 
-      //Captions
-      this.captions = ss.captions; //Default; override this if you wish by setting the property after instantiation.
-      this.captionLang  = document.getElementsByTagName('html')[0].getAttribute('lang') || 'en'; //Document language.
-      if (this.captions.has(this.captionLang)){
-        this.captionSet   = this.captions.get(this.captionLang); //Pointer to the caption object we're going to use.
-      }
-      else{
-        this.captionSet   = this.captions.get('en');
-      }
-      
       //Default set of stopwords
       /** @type {!Array} this.stopwords */
       this.stopwords = ss.stopwords; //temporary default.
@@ -409,6 +421,7 @@ class StaticSearch{
     }
     else{
       this.allJsonRetrieved = true;
+      document.body.classList.remove('ssLoading');
     }
   }
 

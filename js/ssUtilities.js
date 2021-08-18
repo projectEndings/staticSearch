@@ -76,6 +76,7 @@
   //English
   ss.captions = new Map();
   ss.captions.set('en', {});
+  ss.captions.get('en').strLoading           = 'Loading...';
   ss.captions.get('en').strSearching         = 'Searching...';
   ss.captions.get('en').strDocumentsFound    = 'Documents found: ';
   ss.captions.get('en')[PHRASE]              = 'Exact phrase: ';
@@ -91,6 +92,7 @@
   ss.captions.get('en').strTooManyResults    = 'Your search returned too many results. Include more filters or more search terms.'
   //French
   ss.captions.set('fr', {});
+  ss.captions.get('fr').strLoading           = 'Chargement en cours...';
   ss.captions.get('fr').strSearching         = 'Recherche en cours...';
   ss.captions.get('fr').strDocumentsFound    = 'Documents localisés: ';
   ss.captions.get('fr')[PHRASE]              = 'Phrase exacte: ';
