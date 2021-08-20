@@ -51,11 +51,7 @@
         this.filterMap.set(this.filterData[key].name, key);
       }
     };
-    /*
-    //OLD APPROACH
-/*    for (let i=2; i<Object.entries(this.filterData).length; i++){
-      this.filterMap.set(Object.entries(this.filterData)[i][1].name, Object.entries(this.filterData)[i][0]);
-    }*/
+    
     this.input = this.rootEl.getElementsByTagName('input')[0];
     this.input.addEventListener('input', this.suggest.bind(this));
     this.input.addEventListener('keydown', ss.debounce(function(e){this.keyOnInput(e);}.bind(this)), 500);
