@@ -68,8 +68,7 @@ class StaticSearch{
         //Now we "show" the splash screen.
         document.body.classList.add('ssLoading');
       }
-      
-      
+
       
       this.ssForm = document.querySelector('#ssForm');
       if (!this.ssForm){
@@ -295,6 +294,11 @@ class StaticSearch{
       //Flag to be set when all JSON is retrieved, to save laborious checking on
       //every search.
       this.allJsonRetrieved = false;
+
+      // Flag for telling whether we are currently doing a search;
+      // which starts off false, but may be set to true later on
+      this.isSearching = false;
+
 
       //Boolean: should this instance report the details of its search
       //in human-readable form?
@@ -567,8 +571,8 @@ class StaticSearch{
   * 
   */
   doSearch(popping = false){
-    //We start by intercepting any situation in which we may need the
-    //ssWordString resource, but we don't yet have it.
+  //We start by intercepting any situation in which we may need the
+  //ssWordString resource, but we don't yet have it.
     if (this.allowWildcards){
       if (/[\[\]?*]/.test(this.queryBox.value)){
         var self = this;
@@ -589,9 +593,10 @@ class StaticSearch{
         }
       }
     }
-    setTimeout(function(){
-                this.searchingDiv.style.display = 'block';
-                document.body.style.cursor = 'progress';}.bind(this), 0);
+    // Now initialize that we're searching
+    this.isSearching = true;
+     //And now setup the timeout
+    this.setupSearchingDiv();
     this.docsMatchingFilters.filtersActive = false; //initialize.
     let result = false; //default.
     this.discardedTerms = []; //Clear discarded terms.
@@ -604,19 +609,48 @@ class StaticSearch{
         result = true;
       }
       else{
-        this.searchingDiv.style.display = 'none';
-        document.body.style.cursor = 'default';
+        this.isSearching = false;
       }
     }
     else{
-      this.searchingDiv.style.display = 'none';
-      document.body.style.cursor = 'default';
+      this.isSearching = false;
     }
     window.scroll({ top: this.resultsDiv.offsetTop, behavior: "smooth" });
     return result;
   }
 
-/** @function StaticSearch~setQueryString
+  /** @function StaticSearch~setupSearchingDiv
+   * @description this function sets up the "Searching..." popup message,
+   * by adding a class to the document body that makes the ssSearching div
+   * appear; it then sets polls to see whether StaticSearch.isSearching has been
+   * set back to false and, if so, removes the class
+   *
+   */
+  setupSearchingDiv() {
+    let self = this;
+    // Just check before initiating that it
+    // hasn't already been initiated
+    if (!document.body.classList.contains('ssSearching')){
+      // Add the searching class to the body;
+      document.body.classList.add('ssSearching');
+      // And now create the timeout function that calls itself
+      // to see whether a searching is still ongoing
+      const timeout = function(){
+        if (!self.isSearching){
+          document.body.classList.remove('ssSearching');
+          return;
+        }
+        window.setTimeout(timeout, 100);
+      }
+      timeout();
+    }
+  }
+
+
+
+
+
+  /** @function StaticSearch~setQueryString
   * @description this function is run once a search is initiated,
   * and it takes the search parameters and creates a browser URL
   * search string, then pushes this into the History object so that
@@ -1470,9 +1504,8 @@ if (this.discardedTerms.length > 0){
         let pFound = document.createElement('p');
         pFound.append(this.captionSet.strDocumentsFound + '0');
         this.resultsDiv.appendChild(pFound);
+        this.isSearching = false;
         this.searchFinishedHook(1);
-        this.searchingDiv.style.display = 'none';
-        document.body.style.cursor = 'default';
         return false;
       }
 //#3
@@ -1501,9 +1534,8 @@ if (this.discardedTerms.length > 0){
             this.paginateResults();
           }
         }
+        this.isSearching = false;
         this.searchFinishedHook(2);
-        this.searchingDiv.style.display = 'none';
-        document.body.style.cursor = 'default';
         return (this.resultSet.getSize() > 0);
       }
 
@@ -1731,9 +1763,8 @@ if (this.discardedTerms.length > 0){
           }
           else{
             console.log('No useful search terms found.');
+            this.isSearching = false;
             this.searchFinishedHook(3);
-            this.searchingDiv.style.display = 'none';
-            document.body.style.cursor = 'default';
             return false;
           }
         }
@@ -1767,16 +1798,14 @@ if (this.discardedTerms.length > 0){
           this.paginateResults();
         }
       }
+      this.isSearching = false;
       this.searchFinishedHook(4);
-      this.searchingDiv.style.display = 'none';
-      document.body.style.cursor = 'default';
       return (this.resultSet.getSize() > 0);
     }
     catch(e){
       console.log('ERROR: ' + e.message);
+      this.isSearching = false;
       this.searchFinishedHook(5);
-      this.searchingDiv.style.display = 'none';
-      document.body.style.cursor = 'default';
       return false;
     }
   }
