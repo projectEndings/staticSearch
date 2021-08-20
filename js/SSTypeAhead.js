@@ -42,7 +42,7 @@
     this.filterName = filterName;
     this.minWordLength = minWordLength;
     this.reId = /^ssFeat\d+_\d+$/;
-    //Because so many staticSearch filter handling is based on 
+    //Because so much staticSearch filter handling is based on 
     //the string values of items rather than ids, we create a map
     //of values to ids.
     this.filterMap = new Map();
