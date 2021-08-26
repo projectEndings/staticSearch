@@ -71,18 +71,7 @@ fieldset.ssFieldset > span {
 div.ssNumFilters input[type="number"], div.ssDateFilters input[type="text"], div.ssFeatFilters input[type="text"]{
     padding: 0.5em;
 }
-div#ssSearching{
-    background-color: #000000;
-    color: #ffffff;
-    font-size: 1.5rem;
-    padding: 1rem;
-    border-radius: 0.25rem 0.25rem;
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    display: none;
-}
+
 div#ssResults{
   min-height: 50vh;
 }
@@ -232,11 +221,16 @@ body.ssLoading{
   background-color: lightgray;
   cursor: wait;
 }
-div#ssSplashMessage{
+
+body.ssSearching{
+    cursor: wait;
+}
+
+div#ssSplashMessage,
+div#ssSearching{
   display: none;
 }
 body.ssLoading div#ssSplashMessage{
-  display: block;
   text-align: center;
   color: black;
   background-color: white;
@@ -249,4 +243,18 @@ body.ssLoading div#ssSplashMessage{
   padding: 2em;
   margin: 0;
   cursor: wait;
+  display:block;
+}
+
+body.ssSearching:not(.ssLoading) div#ssSearching{
+    background-color: #000000;
+    color: #ffffff;
+    font-size: 1.5rem;
+    padding: 1rem;
+    border-radius: 0.25rem 0.25rem;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: block;
 }

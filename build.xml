@@ -6,13 +6,13 @@
         **********************************************************
         *  Ant file for building a static search engine for a    *
         *  specific site. When supplied with a config file path  *
-        *  using the -DconfigFile=/home/user/proj/cfg.xml, it    *
+        *  using the -DssConfigFile=/home/user/proj/cfg.xml, it    *
         *  will build the index based on that configuration.     *
         *  If not supplied with a configuration file, it will    *
         *  build the test site by default.                       *
         *                                                        *
         *  Note that you can also specify a relative path using  *
-        *  -Dconfig=../rel/cfg.xml *                             *
+        *  -DssConfig=../rel/cfg.xml *                             *
         *                                                        *
         **********************************************************
     -->
@@ -241,24 +241,7 @@
       <arg value="verbose=${ssVerbose}"/>
     </java>
   </target>
-
-  <!--<target name="tokenizeOneFile">
-    <description>
-      TARGET tokenizeOneFile
-      This target is called from the tokenize target, and it handles the tokenization of
-      a single file. We process files one at a time because processing them all as a 
-      collection causes out-of-memory errors on large collections.
-    </description>
-    <echo message="Tokenizing ${inFile}..."/>
-    <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
-      <arg value="-xsl:${ssBaseDir}/xsl/tokenize.xsl"/>
-      <arg value="-s:${inFile}"/>
-      <arg value="-\-suppressXsltNamespaceCheck:on"/>
-      <!-\-<jvmarg value="-Xmx2048m"/>-\->
-    </java>
-  </target>-->
-
-
+  
   <target name="tokenize">
     <description>
       TARGET: tokenize
@@ -269,14 +252,8 @@
     <echo message="Creating tokenized XHTML files..."/>
     <loadfile srcFile="${staticSearchDir}/temp/patternset.txt" property="ptn" failonerror="true"/>
     
-    <!--<foreach target="tokenizeOneFile" param="inFile" parallel="true">
-      <path>
-        <fileset id="siteFiles" dir="${ssCollectionDirName}" includes="${ptn}" excludes="**/staticSearch_report.html" casesensitive="no">
-        </fileset>
-      </path>
-    </foreach>-->
-    <echo message="pattern = ${ptn}"/>
-    <echo message="collection dir = ${ssCollectionDirName}"/>
+ <!--   <echo message="pattern = ${ptn}"/>
+    <echo message="collection dir = ${ssCollectionDirName}"/>-->
     <!-- NOTE that we need to set destdir for the xslt task, but we actually output result-documents, and the 
          xslt task creates an empty document as well. We just put these empty documents in the empty folder 
          and delete them at the end of the process pending a more elegant solution (see issue #165).-->
