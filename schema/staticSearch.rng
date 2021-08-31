@@ -5,10 +5,10 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2021-08-18T21:18:29Z. 2019-2021.
-TEI Edition: Version 4.2.2. Last updated on
-	9th April 2021, revision 609a109b1
-TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.2.2/
+Schema generated from ODD source 2021-08-31T20:32:07Z. 2019-2021.
+TEI Edition: Version 4.3.0. Last updated on
+        31st August 2021, revision b4f72b1ff
+TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.3.0/
   
 --><!--Free to anyone for any purpose-->
    <sch:ns xmlns:sch="http://purl.oclc.org/dsdl/schematron"
