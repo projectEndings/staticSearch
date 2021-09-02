@@ -217,8 +217,6 @@ div.ssSuggest>span>button{
 
 /* Signal that the search page is loading. */
 body.ssLoading{
-/*  color: gray;
-  background-color: lightgray;*/
   cursor: wait;
 }
 
