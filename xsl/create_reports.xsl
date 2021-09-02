@@ -63,7 +63,7 @@
       word-counts and so on. For large collections a verboseReport report
       can cause an out-of-memory error.</xd:desc>
     </xd:doc>
-    <xsl:param name="verboseReport" as="xs:string" select="'false'" static="yes"/>
+    <xsl:param name="verboseReport" as="xs:string" select="'false'"/>
 
 
     <!--**************************************************************
@@ -91,7 +91,7 @@
         search tokens in the document collection, which we need for many of the different
         reports.</xd:desc>
     </xd:doc>
-    <xsl:variable name="spans" select="$tokenizedDocs//span[@ss-stem]" use-when="not($verboseReport = 'false')"/>
+    <xsl:variable name="spans" select="$tokenizedDocs//span[@ss-stem]"/>
     
     <xd:doc>
         <xd:desc><xd:ref name="filterFiles" type="variable">$filterFiles</xd:ref> are all of the filters
@@ -169,9 +169,9 @@
                         <xsl:call-template name="createFilters"/>
                         <xsl:call-template name="createExcludes"/>
                         <xsl:if test="$verboseReport = 'true'">
-                          <xsl:call-template name="createWordTables" use-when="$verboseReport = 'true'"/>
-                           <xsl:call-template name="createNonDictionaryList" use-when="$verboseReport = 'true'"/>
-                           <xsl:call-template name="createForeignWordList" use-when="$verboseReport = 'true'"/>
+                          <xsl:call-template name="createWordTables"/>
+                          <xsl:call-template name="createNonDictionaryList"/>
+                          <xsl:call-template name="createForeignWordList"/>
                         </xsl:if>
                         
                     </div>
@@ -185,7 +185,6 @@
       attention in the tokenized collection.</xd:desc>
     </xd:doc>
   <xsl:template name="createDiagnostics">
-      <xsl:message>Creating diagnostics...</xsl:message>
         <xsl:variable name="docsWithoutIds" select="$tokenizedDocs//html[not(@id)]"/>
         <xsl:variable name="docsWithoutLang" select="$tokenizedDocs//html[not(@lang)]"/>
         <xsl:variable name="badNumericFilters"
@@ -355,13 +354,14 @@
                             <td><xsl:value-of select="count($docUris) - count($tokenizedDocs)"/></td>
                         </tr>
                     </xsl:if>
-                         
-                     <xsl:sequence use-when="$verboseReport = 'true'">
-                         <tr>
-                             <th>Total Tokens Stemmed</th>
-                             <td><xsl:value-of select="count($spans)"/></td>
-                         </tr>
-                     </xsl:sequence>   
+                  
+                    <xsl:if test="$verboseReport = 'true'">
+                      <tr>
+                        <th>Total Tokens Stemmed</th>
+                        <td><xsl:value-of select="count($spans)"/></td>
+                      </tr>
+                    </xsl:if>
+
                     <tr>
                         <th>Total Unique Tokens (= Number of JSON files created)</th>
                       <td><xsl:value-of select="$stemFileCount"/></td>
@@ -428,7 +428,7 @@
         for determining if there are words that appear so frequently that they should
         be stopwords, etc.</xd:desc>
     </xd:doc>
-    <xsl:template name="createWordTables" use-when="$verboseReport = 'true'">
+    <xsl:template name="createWordTables">
         <xsl:message>Generating frequency tables...</xsl:message>
         <section>
             <h2>Word Frequency</h2>
@@ -532,7 +532,7 @@
         from the dictionary doesn't change the search results, this report is helpful for catching
         typos in your document collection. </xd:desc>
     </xd:doc>
-    <xsl:template name="createNonDictionaryList" use-when="$verboseReport = 'true'">
+    <xsl:template name="createNonDictionaryList">
         <xsl:message>Creating Not-in-Dictionary list...</xsl:message>
         <section>
             <h2>Words Not In Dictionary</h2>
@@ -652,7 +652,7 @@
         This has no bearing on the search results, but this is helpful for determining if there are
         blocks of text in languages that you weren't expecting or thought you had excluded.</xd:desc>
     </xd:doc>
-    <xsl:template name="createForeignWordList" use-when="$verboseReport = 'true'">
+    <xsl:template name="createForeignWordList">
         <xsl:message>Creating Foreign Word list...</xsl:message>
         <section>
             <h2>Foreign Words</h2>
