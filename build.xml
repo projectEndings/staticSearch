@@ -363,14 +363,13 @@
         <include name="*.json"/>
       </fileset>
     </resourcecount>
-    <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
+    <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true">
       <arg value="-xsl:${ssBaseDir}/xsl/create_reports.xsl"/>
       <arg value="-s:${ssBaseDir}/xsl/create_reports.xsl"/>
       <arg value="--suppressXsltNamespaceCheck:on"/>
       <arg value="hasFilters=${hasFilters}"/>
       <arg value="stemFileCount=${stemFileCount}"/>
       <arg value="verboseReport=${ssVerboseReport}"/>
-      <jvmarg value="-Xmx2048m"/>
     </java>
     <move file="${ssBaseDir}/staticSearch_report.html"
       tofile="${staticSearchDir}/staticSearch_report.html"/>
