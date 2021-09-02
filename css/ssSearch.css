@@ -217,8 +217,8 @@ div.ssSuggest>span>button{
 
 /* Signal that the search page is loading. */
 body.ssLoading{
-  color: gray;
-  background-color: lightgray;
+/*  color: gray;
+  background-color: lightgray;*/
   cursor: wait;
 }
 
@@ -230,23 +230,8 @@ div#ssSplashMessage,
 div#ssSearching{
   display: none;
 }
-body.ssLoading div#ssSplashMessage{
-  text-align: center;
-  color: black;
-  background-color: white;
-  position: fixed;
-  top: 35vh;
-  width: 20vw;
-  left: 40vw;
-  border: solid 1pt gray;
-  font-size: 2rem;
-  padding: 2em;
-  margin: 0;
-  cursor: wait;
-  display:block;
-}
 
-body.ssSearching:not(.ssLoading) div#ssSearching{
+body.ssSearching:not(.ssLoading) div#ssSearching, body.ssLoading:not(.ssSearching) div#ssSplashMessage{
     background-color: #000000;
     color: #ffffff;
     font-size: 1.5rem;

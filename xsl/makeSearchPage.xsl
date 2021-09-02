@@ -491,6 +491,12 @@
             <div id="ssSearching">
                 <xsl:sequence select="hcmc:getCaption('ssSearching', $captionLang)"/>
             </div>
+          
+          
+          <!-- Splash screen / loading message. -->
+          <div id="ssSplashMessage">
+            <xsl:sequence select="hcmc:getCaption('ssLoading', $captionLang)"/>
+          </div>
 
             <!--And now create the results div in the document-->
             <div id="ssResults">
@@ -503,10 +509,6 @@
                 <p>
                     <xsl:sequence select="hcmc:getCaption('ssPoweredBy', $captionLang)"/>
                 </p> <a href="https://github.com/projectEndings/staticSearch"><xsl:apply-templates select="doc($svgLogoFile)" mode="svgLogo"/></a>
-            </div>
-            <!-- Finally, we add our splash screen. -->
-            <div id="ssSplashMessage">
-              
             </div>
         </xsl:copy>
     </xsl:template>
