@@ -810,7 +810,7 @@
             
             <p>If the tests all work, then you're ready to build a search for your own site. Now you need
             to run the same command, but this time, tell the build process where to find your custom
-            configuration file:</p>
+            configuration file:<note place="foot">Note that you can use either <ident>ssConfigFile</ident> or <ident>ssConfig</ident> to provide the build with the full path or relative path, respectively, of you configuration file.</note></p>
             
             <eg>ant -DssConfigFile=/home/mholmes/mysite/config_staticSearch.xml</eg>
             
@@ -834,12 +834,16 @@
             <eg>ant -DssVerboseReport=true -DssConfigFile=...</eg>
             
             then the report will also include a number of tables that outline some statistics about your 
-            project. The word frequency chart is particularly useful: it can be used to create and 
-            fine-tune the project-specific stopword list (i.e. if a word appears multiple times in 
-            every document, then it probably ought to be a stopword). <emph>However, please note that compiling
+            project. <emph>However, please note that compiling
             these statistics is very memory-intensive and if your site is large, it may cause the build
             process to run out of memory.</emph>
             </p>
+            <p>As of version 1.4, the word frequency table is a separate document and is no longer included as part of the verbose report. Instead, after running a build, you can then build just the word frequency table with the special <ident>concordance</ident> target:
+              
+              <eg>ant -DssConfigFile=path/to/your/config.xml concordance</eg>
+              
+             While the chart itself is not necessary for the core functionality of staticSearch, it is particularly useful during the initial development of a project’s search engine; it can be used to create and fine-tune the project-specific stopword list (i.e. if a word appears multiple times in every document, then it probably ought to be a stopword) or, in some cases, to locate potential typos in the document collection. Alongside the HTML chart, the concordance target also provides a (large) JSON file that represents that statistical data used to generate the HTML view. It contains a JSON object that lists each stem, its variants; each variant lists each document and the number of times it appears within that document.</p>
+            <p>The concordance target comes with the same warning as above: compiling these statistics is memory-intensive and may cause the build process to run out of memory.</p>
           </div>
           
           <div xml:id="advancedFeatures">
@@ -1108,6 +1112,12 @@
             <gi>scrollToFragmentId</gi> experimental feature supported by some Chromium-based browsers. The former requires
             some modification to your site pages to add some JavaScript, while the latter is non-standard and not really reliable or
             consistent.</cell>
+          </row>
+          <row>
+            <cell>How do I prevent staticSearch from encountering out of memory errors?</cell>
+            <cell>If you are indexing a very large collection of files, you may need to provide ant with additional memory by configuring the ANT_OPTS system property. To provide ant with 4GB of memory, you could do something like so:
+              <eg>export ANT_OPTS="-Xmx4g"; ant -DssConfigFile=/absolute/path/to/your/config.xml</eg>
+              How much memory you can and should provide to Ant depends on your particular system and the size of the document collection. See  <ref target="https://ant.apache.org/manual/install.html">Ant's documentation</ref> for some further examples and explanation.</cell>
           </row>
         </table>
       </div>
