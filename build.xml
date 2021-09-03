@@ -379,12 +379,11 @@
   </target>
   
   <target name="concordance">
-    <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
+    <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true">
       <arg value="-xsl:${ssBaseDir}/xsl/create_concordance.xsl"/>
       <arg value="-s:${ssBaseDir}/xsl/create_concordance.xsl"/>
       <arg value="-it:makeConcordance"/>
       <arg value="--suppressXsltNamespaceCheck:on"/>
-      <jvmarg value="-Xmx2048m"/>
     </java>
   </target>
 

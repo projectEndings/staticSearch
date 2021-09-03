@@ -116,49 +116,7 @@
             <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
                 <head>
                     <title>Static Search Report: <xsl:value-of select="$collectionDir"/></title>
-                    <style>
-                        <xsl:comment>
-                            body{
-                                font-family: sans-serif;
-                                margin: 1em 10%;
-                            }
-                            section{
-                                padding: 1em;
-                                margin: 0.25rem 0;
-                                border-radius: 0.5em;
-                            }
-                            section:nth-of-type(odd){
-                                background-color: #ddddff;
-                            }
-                            section:nth-of-type(even){
-                                background-color: #ddffdd;
-                            }
-                            h1{
-                                text-align: center;
-                                margin: 1em 5%;
-                            }
-                            h2{
-                                margin: 0.25em;
-                            }
-                            summary{
-                                cursor: pointer;
-                            }
-                            summary:hover{
-                                color: #990000;
-                            }
-                            table{
-                                border: solid 1pt gray;
-                                border-collapse: collapse;
-                            }
-                            td, th{
-                                border: solid 1pt gray;
-                                padding: 0.25em;
-                            }
-                            li{
-                                margin: 0.25em;
-                            }
-                        </xsl:comment>
-                    </style>
+                    <link rel="stylesheet" href="ssReports.css"/>
                 </head>
                 <body>
                     <div>
@@ -169,11 +127,9 @@
                         <xsl:call-template name="createFilters"/>
                         <xsl:call-template name="createExcludes"/>
                         <xsl:if test="$verboseReport = 'true'">
-                          <xsl:call-template name="createWordTables"/>
                           <xsl:call-template name="createNonDictionaryList"/>
                           <xsl:call-template name="createForeignWordList"/>
                         </xsl:if>
-                        
                     </div>
                 </body>
             </html>
@@ -300,7 +256,6 @@
         <xsl:message>Generating report on search filters...</xsl:message>
         <section>
             <h2>Search Filters</h2>
-
             <xsl:choose>
                 <xsl:when test="count($filterFiles) gt 0">
                     <details>
@@ -421,110 +376,6 @@
                 </details>
             </section>
         </xsl:if>
-    </xsl:template>
-    
-    <xd:doc>
-        <xd:desc>Template to create the word frequency table; this is useful
-        for determining if there are words that appear so frequently that they should
-        be stopwords, etc.</xd:desc>
-    </xd:doc>
-    <xsl:template name="createWordTables">
-        <xsl:message>Generating frequency tables...</xsl:message>
-        <section>
-            <h2>Word Frequency</h2>
-            <details>
-                <summary>All stems found in the document collection.</summary>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Stem</th>
-                            <th>Total Instances</th>
-                            <th>Total Variants</th>
-                            <th>Variant List</th>
-                            <th>Number of Documents</th>
-                            <th>Average use per document</th>
-                            <!--                        <td>Document List</td>-->
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <xsl:for-each-group select="$spans" group-by="tokenize(@ss-stem,'\s+')">
-                            <xsl:sort select="count(current-group())" order="descending"/>
-                            <xsl:variable name="tokenGroup" select="current-group()"/>
-                            <xsl:variable name="thisToken" select="current-grouping-key()"/>
-                            <xsl:variable name="instancesCount" select="count(current-group())"/>
-                            <xsl:variable name="variants" as="xs:string+">
-                                <xsl:for-each-group select="current-group()" group-by="text()">
-                                    <xsl:sort select="string-length(.)" order="ascending"/>
-                                    <xsl:value-of select="."/>
-                                </xsl:for-each-group>
-                            </xsl:variable>
-                            
-                            <xsl:variable name="docIds" as="xs:string+">
-                                <xsl:for-each-group select="$tokenGroup" group-by="ancestor::html/@id">
-                                    <xsl:value-of select="current-grouping-key()"/>
-                                </xsl:for-each-group>
-                            </xsl:variable>
-                            
-                            <xsl:variable name="distinctDocIds" select="distinct-values($docIds)" as="xs:string+"/>
-                            <xsl:variable name="distinctDocCount" select="count($distinctDocIds)"/>
-                            
-                            <tr>
-                                
-                                <!--STEM-->
-                                <td><xsl:value-of select="current-grouping-key()"/></td>
-                                
-                                <!--TOTAL INSTANCES-->
-                                <td><xsl:value-of select="$instancesCount"/></td>
-                                
-                                <!--TOTAL VARIANTS-->
-                                <td><xsl:value-of select="count($variants)"/></td>
-                                
-                                <!--LIST OF VARIANTS-->
-                                <td>
-                                    <ul>
-                                        <xsl:for-each select="$variants">
-                                            <xsl:sort select="string-length(.)" order="ascending"/>
-                                            <li><xsl:value-of select="."/></li>
-                                        </xsl:for-each>
-                                    </ul>
-                                </td>
-                                
-                                <!--TOTAL DOCS-->
-                                <td>
-                                    <xsl:value-of select="$distinctDocCount"/>
-                                </td>
-                                
-                                <td>
-                                    <xsl:value-of select="format-number($instancesCount div $distinctDocCount,'#.##')"/>
-                                </td>
-                                
-                                <!--LIST OF DOCS-->
-                                <!-- <td>
-                                <xsl:choose>
-                                    <xsl:when test="count(distinct-values($docIds)) = count($docs)">
-                                        All
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <ul>
-                                            <xsl:for-each select="distinct-values($docIds)">
-                                                <xsl:sort/>
-                                                <li><xsl:value-of select="."/></li>
-                                            </xsl:for-each>
-                                        </ul>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                                
-                            </td>-->
-                                
-                            </tr>
-                            
-                        </xsl:for-each-group>
-                    </tbody>
-                </table>
-            </details>
-            
-        </section>
-        
     </xsl:template>
     
     <xd:doc>
