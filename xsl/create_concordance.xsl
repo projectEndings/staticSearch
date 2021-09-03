@@ -14,8 +14,22 @@
         <xd:desc>
             <xd:p><xd:b>Created on:</xd:b> Sept 2, 2021</xd:p>
             <xd:p><xd:b>Authors:</xd:b> Joey Takeda and Martin Holmes</xd:p>            
-            <xd:p>This transformation creates a concordance for the document collection.</xd:p>
+            <xd:p>This transformation creates a concordance for a document collection by investigating
+            each stem file to determine its variants and the frequency of each variant.</xd:p>
         </xd:desc>
+        <xd:param name="ascending">Parameter to determine whether the concordance should be ascending
+        or descending. Set to "false" (the default) to have the highest frequency stems listed
+        first in the table (i.e. if you're interested primarily in potential stopwords);
+        set to "true" to have the lowest frequency listed first (i.e. if you're interested
+        primarily in catching potential typos).</xd:param>
+        <xd:return>Two documents in the staticSearch output directory:
+            <xd:ul>
+                <xd:li>A JSON file that contains the entire map of stems, variants, documents,
+                    and their frequency.</xd:li>
+                <xd:li>An HTML file, viewable in the browser, that provides a table view 
+                    for the wordlist.</xd:li>
+            </xd:ul>
+        </xd:return>
     </xd:doc>
     
     <!--**************************************************************
@@ -57,6 +71,13 @@
     <xsl:variable name="stemsDir" select="$outDir || '/stems'" as="xs:string"/>
     
     <xd:doc>
+        <xd:desc><xd:ref name="stemsURIs" type="variable">$stemsURIs</xd:ref> is a sequence
+        of all of the URIs for the stems found in the document collection.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="stemsURIs" select="uri-collection($stemsDir || '?select=*.json;recurse=no')"
+        as="xs:anyURI+"/>
+    
+    <xd:doc>
         <xd:desc><xd:ref name="stemToVariantsMap" type="variable">$stemToVariantsMap</xd:ref> is
         a map that collects all of the stem JSON files and compiles them into a smaller map to
         use as the basis for the concordance. The map is structured similarly to the input JSON, but removes
@@ -74,15 +95,15 @@
         </xd:return>
     </xd:doc>
     <xsl:variable name="stemToVariantsMap" as="map(xs:string, map(xs:string, map(xs:string, xs:integer)))">
-        <xsl:message>Processing JSON files...</xsl:message>
+        
         <xsl:map>
-            <xsl:for-each select="uri-collection($stemsDir || '?select=*.json;recurse=no')">
-             
+            <xsl:for-each select="$stemsURIs">
                 <!--Parse the JSON into a XPath map-->
                 <xsl:variable name="thisJson" select="parse-json(unparsed-text(.))" as="map(*)"/>
                 <!--Add an entry for each stem-->
                 <xsl:map-entry key="$thisJson?stem">
                     <xsl:map>
+                        
                         <!--Group all of the instances (i.e. documents) by form by flattening
                             the instances into a sequence of maps, and then returning all of the forms
                             that are contained by the array of contexts contained by each instance-->
@@ -90,6 +111,7 @@
                             group-by="for $ctx in array:flatten(.?contexts) return $ctx?form">
                             <xsl:variable name="currForm" select="current-grouping-key()" as="xs:string"/>
                             <xsl:variable name="currInstances" select="current-group()" as="map(*)*"/>
+                            
                             <!--Create an entry for the form-->
                             <xsl:map-entry key="$currForm">
                                 <xsl:map>
@@ -149,31 +171,33 @@
        **************************************************************-->  
 
     <xd:doc>
-        <xd:desc>Documentation</xd:desc>
+        <xd:desc>Root template (called with -it:makeConcordance from ant) that generates the concordance
+        JSON and HTML files.</xd:desc>
     </xd:doc>
     <xsl:template name="makeConcordance">
-        <xsl:message>Found <xsl:value-of select="$stemCount"/> stems...</xsl:message>
+        <xsl:message>Creating concordance for <xsl:value-of select="$collectionDir"/>...</xsl:message>
+        <xsl:message>Processing <xsl:value-of select="count($stemsURIs)"/> stems...</xsl:message>
         <xsl:call-template name="makeConcordanceJSON"/>
         <xsl:call-template name="makeConcordanceHTML"/>
     </xsl:template>
     
     <xd:doc>
-        <xd:desc/>
+        <xd:desc>Template to generate the concordance JSON file; this isn't used for anything, but 
+        may be useful for further analysis if desired.</xd:desc>
     </xd:doc>
     <xsl:template name="makeConcordanceJSON">
         <xsl:result-document href="{$outDir}/concordance.json" method="json">
-            <xsl:message>Creating <xsl:value-of select="j:current-output-uri()"/></xsl:message>
             <xsl:sequence select="$stemToVariantsMap"/>
+            <xsl:message>Created <xsl:value-of select="j:current-output-uri()"/></xsl:message>
         </xsl:result-document>
     </xsl:template>
     
     <xd:doc>
-        <xd:desc/>
+        <xd:desc>Template to generate the (usually very large) concordance HTML file.</xd:desc>
     </xd:doc>
     <xsl:template name="makeConcordanceHTML">
         <xsl:result-document href="{$outDir}/concordance.html" method="xhtml" encoding="UTF-8" normalization-form="NFC"
             exclude-result-prefixes="#all" omit-xml-declaration="yes" html-version="5.0">
-            <xsl:message>Creating <xsl:value-of select="j:current-output-uri()"/></xsl:message>
             <html>
                 <head>
                     <title>Static Search Concordance: <xsl:value-of select="$collectionDir"/></title>
@@ -185,14 +209,20 @@
                     </div>
                 </body>
             </html>
+            <xsl:message>Created <xsl:value-of select="j:current-output-uri()"/></xsl:message>
         </xsl:result-document>       
     </xsl:template>
 
     <xd:doc>
-        <xd:desc/>
-        <xd:param name="stemsToUse"/>
+        <xd:desc>Template that generates the table for the concordance by iterating through
+        the set of stem keys for the stemToVariantsMap. This is parameterized so that to allow
+        for future views of the concordance table that only uses a subset of the stems.</xd:desc>
+        <xd:param name="stemsToUse">A sequence of sorted stems (derived from the stemsToVariantsMap) 
+            to iterate through to create the table.
+        </xd:param>
+        <xd:return>An XHTML5 table.</xd:return>
     </xd:doc>
-    <xsl:template name="makeConcordanceTable">
+    <xsl:template name="makeConcordanceTable" as="element(table)">
         <xsl:param name="stemsToUse" select="$sortedStems" as="xs:string+"/>
         <table>
             <thead>
@@ -206,9 +236,14 @@
                 </tr>
             </thead>
             <tbody>
+                <!--Iterate through each key-->
                 <xsl:for-each select="$stemsToUse">
                     <xsl:variable name="stem" select="." as="xs:string"/>
-                    <xsl:variable name="currMap" select="map:get($stemToVariantsMap, $stem)" as="map(*)"/>
+                    <!--Retrieve the value from the stemToVariantsMap-->
+                    <xsl:variable name="currMap"
+                        select="map:get($stemToVariantsMap, $stem)"
+                        as="map(xs:string, map(xs:string, xs:integer))"/>
+                    <!--Retrieve all of the values from the map-->
                     <xsl:variable name="variants" select="map:keys($currMap)" as="xs:string+"/>
                     <xsl:variable name="variantsTotal" select="map:size($currMap)" as="xs:integer"/>
                     <xsl:variable name="total" select="hcmc:getTotalInstances($stem)" as="xs:integer"/>
@@ -219,9 +254,17 @@
                         <td><xsl:value-of select="$variantsTotal"/></td>
                         <td>
                             <ul>
+                                <!--Iterate through each variant and output
+                                    it in a list with the number of documents 
+                                    that contain that variant -->
                                 <xsl:for-each select="$variants">
                                     <xsl:sort select="map:size($currMap(.))" order="descending"/>
-                                    <li><xsl:value-of select="."/> (<xsl:value-of select="map:size($currMap(.))"/>)</li>
+                                    <li>
+                                        <xsl:value-of select="."/>
+                                        <xsl:text> (</xsl:text>
+                                        <xsl:value-of select="map:size($currMap(.))"/>
+                                        <xsl:text>)</xsl:text>
+                                    </li>
                                 </xsl:for-each>
                             </ul>
                         </td>
@@ -241,32 +284,51 @@
  
     
     <xd:doc>
-        <xd:desc/>
-        <xd:param name="stem"/>
+        <xd:desc><xd:ref name="hcmc:getTotalInstances" type="function">hcmc:getTotalInstances</xd:ref>
+        returns the number of uses across the document collection for a stem.</xd:desc>
+        <xd:param name="stem">The stem value (as a string) from which to get the total.</xd:param>
+        <xd:return>An integer representing the total number of instances for that stem.</xd:return>
     </xd:doc>
-    <xsl:function name="hcmc:getTotalInstances" new-each-time="no">
+    <xsl:function name="hcmc:getTotalInstances" new-each-time="no" as="xs:integer">
         <xsl:param name="stem" as="xs:string"/>
-        <xsl:variable name="stemMap" select="$stemToVariantsMap($stem)" as="map(*)"/>
+        <xsl:variable name="stemMap" 
+            select="$stemToVariantsMap($stem)" 
+            as="map(xs:string, map(xs:string, xs:integer))"/>
         <xsl:variable name="variants" select="map:keys($stemMap)" as="xs:string+"/>
         <xsl:variable name="total" as="xs:integer"
-            select="sum(for $variant in $variants return
-                        let $vMap := $stemMap($variant),
+            select="sum(
+                (:Iterate through the variants in the map :)
+                    for $variant in $variants 
+                        return
+                        (: Get all of the documents for that variant :)
+                        let $vMap := $stemMap($variant), 
                         $docs := map:keys($vMap)
                         return 
+                            (: Total up the number of hits for each variant
+                                in that document :)
                             for $doc in $docs return $vMap($doc))"/>
         <xsl:sequence select="$total"/>
     </xsl:function>
     
     <xd:doc>
-        <xd:desc/>
-        <xd:param name="stem"/>
+        <xd:desc><xd:ref name="hcmc:getTotalDocs" type="function">hcmc:getTotalDocs</xd:ref>
+        returns the number of documents for a stem.</xd:desc>
+        <xd:param name="stem">The stem value (as a string) from which to get
+            the total number of documents.</xd:param>
+        <xd:return>An integer representing the total number of documents in which 
+            that stem appears.</xd:return>
     </xd:doc>
     <xsl:function name="hcmc:getTotalDocs" as="xs:integer">
         <xsl:param name="stem" as="xs:string"/>
-        <xsl:variable name="stemMap" select="$stemToVariantsMap($stem)" as="map(*)"/>
+        <xsl:variable name="stemMap" 
+            select="$stemToVariantsMap($stem)"
+            as="map(xs:string, map(xs:string, xs:integer))"/>
         <xsl:variable name="variants" select="map:keys($stemMap)" as="xs:string+"/>
+        <!--Retrieve all of the documents by getting the 
+            all of the keys for all of the variants-->
         <xsl:variable name="allDocs" 
             select="for $variant in $variants return map:keys($stemMap($variant))" as="xs:string+"/>
+        <!--De-dupe the list of documents-->
         <xsl:variable name="distinctDocs" select="distinct-values($allDocs)" as="xs:string+"/>
         <xsl:sequence select="count($distinctDocs)"/>
     </xsl:function>
