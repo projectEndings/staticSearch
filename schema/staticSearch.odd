@@ -810,7 +810,7 @@
             
             <p>If the tests all work, then you're ready to build a search for your own site. Now you need
             to run the same command, but this time, tell the build process where to find your custom
-            configuration file:<note place="foot">Note that you can use either <ident>ssConfigFile</ident> or <ident>ssConfig</ident> to provide the build with the full path or relative path, respectively, of you configuration file.</note></p>
+            configuration file:<note place="foot">Note that you can use either <ident>ssConfigFile</ident> or <ident>ssConfig</ident> to provide the build with the full path or relative path, respectively, of your configuration file.</note></p>
             
             <eg>ant -DssConfigFile=/home/mholmes/mysite/config_staticSearch.xml</eg>
             
