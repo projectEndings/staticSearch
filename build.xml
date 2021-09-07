@@ -377,6 +377,25 @@
     <echo message="${staticSearchDir}/staticSearch_report.html"/>
     <echo message="Check the report to see any anomalies or problems found."/>
   </target>
+  
+  <target name="concordance" depends="config">
+    <description>
+      TARGET: concordance
+      This target creates a concordance/wordlist for a document collection. 
+      It is not run by default, since it is not necessary for staticSearch functionality
+      but is useful for diagnosing potential stopwords or typos in the document collection.
+      
+      It depends on the config task, since it needs the proper config XSLT to be produced
+      from a specific config file.
+    </description>
+    <echo message="Creating document concordance..."/>
+    <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true">
+      <arg value="-xsl:${ssBaseDir}/xsl/create_concordance.xsl"/>
+      <arg value="-s:${ssBaseDir}/xsl/create_concordance.xsl"/>
+      <arg value="-it:makeConcordance"/>
+      <arg value="--suppressXsltNamespaceCheck:on"/>
+    </java>
+  </target>
 
   <target name="copyFiles">
     <description>
