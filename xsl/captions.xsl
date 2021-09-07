@@ -12,13 +12,15 @@
     
     <xd:doc>
         <xd:desc>A map of captions to use for building the search page. We organize this
-        similarly to the Javascript, indexed by language first.</xd:desc>
+        similarly to the Javascript, indexed by language first. NOTE: We should make this
+        on the fly from the JavaScript somehow.</xd:desc>
     </xd:doc>
     <xsl:param name="captions" as="map(*)" select="map{
         'en':
             map{
                 'ssDoSearch': 'Search',
                 'ssSearching': 'Searching...',
+                'ssLoading': 'Loading...',
                 'ssClear': 'Clear',
                 'ssPoweredBy': 'Powered by',
                 'ssStartTyping': 'Start typing...'
@@ -27,7 +29,8 @@
         'fr': 
             map{
                 'ssDoSearch': 'Chercher',
-                'ssSearching': 'En cours...',
+                'ssSearching': 'Recherche en cours...',
+                'ssLoading': 'Chargement en cours...',
                 'ssClear': 'Effacer',
                 'ssPoweredBy': 'Réalisé par',
                 'ssStartTyping': 'Commencez à taper...'
