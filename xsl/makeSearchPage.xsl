@@ -493,10 +493,14 @@
             </div>
           
           
-          <!-- Splash screen / loading message. -->
-          <div id="ssSplashMessage">
-            <xsl:sequence select="hcmc:getCaption('ssLoading', $captionLang)"/>
-          </div>
+          <!-- Splash screen / loading message, only added if there are typeahead feature filters. -->
+          
+          <xsl:if test="$filterJSONURIs[matches(.,'ssFeat\d+.*\.json')]">
+            <div id="ssSplashMessage">
+              <xsl:sequence select="hcmc:getCaption('ssLoading', $captionLang)"/>
+            </div>
+          </xsl:if>
+          
 
             <!--And now create the results div in the document-->
             <div id="ssResults">
