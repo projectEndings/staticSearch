@@ -495,7 +495,7 @@
           
           <!-- Splash screen / loading message, only added if there are typeahead feature filters. -->
           
-          <xsl:if test="$filterJSONURIs[matches(.,'ssFeat\d+.*\.json')]">
+          <xsl:if test="not(empty($filterJSONURIs[matches(.,'ssFeat\d+.*\.json')]))">
             <div id="ssSplashMessage">
               <xsl:sequence select="hcmc:getCaption('ssLoading', $captionLang)"/>
             </div>
