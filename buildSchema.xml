@@ -65,19 +65,19 @@
     <property name="patch_tei_odd.xsl" value="${xsl.dir}/patch_tei_odd.xsl"/>
     
     <!--ODD 2 ODD XSLT (from the TEI framework)-->
-    <property name="odd2odd.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/released/odds/odd2odd.xsl"/>
+    <property name="odd2odd.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/dev/odds/odd2odd.xsl"/>
     
     <!--ODD 2 RNG XSLT (from the TEI framework)-->
-    <property name="odd2rng.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/released/profiles/tei/relaxng/to.xsl"/>
+    <property name="odd2rng.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/dev/profiles/tei/relaxng/to.xsl"/>
     
     <!--ODD 2 Schematron XSLT (from the TEI framework)-->
-    <property name="odd2sch.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/released/odds/extract-isosch.xsl"/>
+    <property name="odd2sch.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/dev/odds/extract-isosch.xsl"/>
     
     <!--ODD 2 HTML XSLT -->
-    <property name="odd2html.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/released/odds/odd2html.xsl"/>
+    <property name="odd2html.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/dev/odds/odd2html.xsl"/>
     
     <!--ODD 2 Lite XSLT-->
-    <property name="odd2Lite.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/released/odds/odd2lite.xsl"/>
+    <property name="odd2Lite.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/dev/odds/odd2lite.xsl"/>
     
     
     <!--Saxon-->
@@ -186,11 +186,6 @@
             <arg line="-o:${odd.doc}"/>
             <arg line="-xsl:'${odd2html.xsl}'"/>
         </java>
-        
-        <!--Now clean up the awfulness from the result HTML output-->
-        
-        <replaceregexp file="${odd.doc}" match="&lt;!DOCTYPE html" replace=""/>
-        <replaceregexp file="${odd.doc}" match="SYSTEM .about:legacy-compat.&gt;" replace=""/>
         
         <!--And now spiff it up to our standards-->
         <java jar="${saxon}" fork="true" failonerror="true">
