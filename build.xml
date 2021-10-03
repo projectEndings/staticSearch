@@ -260,7 +260,7 @@
         includesfile="${staticSearchDir}/temp/patternset.txt" 
         excludes="**/staticSearch_report.html" 
         casesensitive="no"/>
-      <regexpmapper from="^(.*)\.([^.]+$)" to="\1_tokenized.html"/>
+      <regexpmapper from="^(.*)\.([^\.]+$)" to="\1_tokenized.html"/>
     </xslt>
   </target>
 
