@@ -7,6 +7,7 @@
     xmlns="http://www.w3.org/1999/xhtml"
     exclude-result-prefixes="#all"
     xpath-default-namespace="http://www.w3.org/1999/xhtml"
+    xmlns:map="http://www.w3.org/2005/xpath-functions/map"
     xmlns:ss="http://hcmc.uvic.ca/ns/ssStemmer"
     version="3.0">
     <xd:doc scope="stylesheet">
@@ -116,157 +117,115 @@
         possible words.</xd:desc>
     </xd:doc>
     <xsl:variable name="tokenRegex">(<xsl:value-of select="string-join(($numericWithDecimal,$hyphenatedWord,$alphanumeric),'|')"/>)</xsl:variable>
-
     
     
+    <xd:doc>
+        <xd:desc>The document's URI as a string.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="uri" select="xs:string(document-uri(.))" as="xs:string"/>
+    
+    <xd:doc>
+        <xd:desc>The relative uri from the root:
+            this is the full URI minus the collection dir. 
+            Note that we TRIM off the leading slash</xd:desc>
+    </xd:doc>
+    <xsl:variable name="relativeUri" 
+        select="substring-after($uri,$collectionDir) => replace('^(/|\\)','')"
+        as="xs:string"/>
+    
+    <xd:doc>
+        <xd:desc>The identifier for the document within staticSearch; this is
+                just the relative URI with all of punctuation that could conceivably
+                be in filenames converted to underscores.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="searchIdentifier"
+        select="replace($relativeUri,'^(/|\\)','') => 
+        replace('\.x?html?$','') => 
+        replace('\s+|\\|/|\.','_')" 
+        as="xs:string"/>
     
     <!--**************************************************************
        *                                                            *
        *                         Root template                      *
        *                                                            *
        **************************************************************-->  
-    
-    
     <xd:doc>
         <xd:desc>Root/driver template.</xd:desc>
     </xd:doc>
     <xsl:template match="/">
         
-        <!--<!-\-Count the documents-\->
-        <xsl:variable name="count" select="count($docs)"/>
-        
-        <!-\-Output message for how many documents found-\->
-        <xsl:message>Found <xsl:value-of select="$count"/> documents to process...</xsl:message>-->
-        
         <!--Call the "echoParams" template in the config file,
             which just outputs all parameters when verbose is true-->
         <xsl:call-template name="echoParams"/>
         
-        <!--Now iterate through all of the documents-->
-        <!--<xsl:for-each select="$docs">
-            
-            <!-\-Get the document's position in the loop-\->
-            <xsl:variable name="pos" select="position()"/>-->
-            <!--First, get the URI-->
-            <xsl:variable name="uri" select="xs:string(document-uri(.))" as="xs:string"/>
-            
-            <!--Now find the relative uri from the root:
-            this is the full URI minus the collection dir.
-            
-            Note that we TRIM off the leading slash since it does the root of the server.-->
-            <xsl:variable name="relativeUri" 
-                select="substring-after($uri,$collectionDir) => replace('^(/|\\)','')"
-                as="xs:string"/>
-            
-            <!--This is the IDENTIFIER for the static search, which is just the relative URI with all of the punctuation/
-             slashes et cetera that could conceivably be in filenames turned into underscores.
-            --> 
-            <xsl:variable name="searchIdentifier"
-                select="replace($relativeUri,'^(/|\\)','') => 
-                replace('\.x?html?$','') => 
-                replace('\s+|\\|/|\.','_')" 
-                as="xs:string"/>
-
-            <!--Now create the various documents, and we put the leading slash BACK in-->
-            <xsl:variable name="cleanedOutDoc"
-                select="concat($tempDir,'/', $searchIdentifier,'_cleaned.html')"/>
-            <xsl:variable name="contextualizedOutDoc"
-                select="concat($tempDir,'/',$searchIdentifier,'_contextualized.html')"/>
-            <xsl:variable name="weightedOutDoc"
-                select="concat($tempDir,'/',$searchIdentifier,'_weighted.html')"/>
-            <xsl:variable name="tokenizedOutDoc"
-                select="concat($tempDir,'/',$searchIdentifier,'_tokenized.html')"/>
-            <xsl:variable name="excludedOutDoc" 
-                select="concat($tempDir,'/',$searchIdentifier,'_excluded.html')"/>
-   
-           
-           <!--Now create the excluded document if we have to-->
-           <xsl:variable name="excluded">
-               <xsl:choose>
-                   <!--If the exclusions are specified in the config, then run the document
+        <!--Now create the excluded document if we have to-->
+        <xsl:variable name="excluded">
+            <xsl:choose>
+                <!--If the exclusions are specified in the config, then run the document
                        through the exclusion templates (mode="exclude")-->
-                   <xsl:when test="$hasExclusions">
-                       <xsl:apply-templates mode="exclude"/>
-                   </xsl:when>
-                   
-                   <!--Otherwise, just spit the document back out unchanged-->
-                   <xsl:otherwise>
-                       <xsl:sequence select="."/>
-                   </xsl:otherwise>
-               </xsl:choose>
-           </xsl:variable>
-            
-            <!--Now check to see if exclusions are present in the configuration and if 
+                <xsl:when test="$hasExclusions">
+                    <xsl:apply-templates mode="exclude"/>
+                </xsl:when>
+                
+                <!--Otherwise, just spit the document back out unchanged-->
+                <xsl:otherwise>
+                    <xsl:sequence select="."/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        
+        <!--Now check to see if exclusions are present in the configuration and if 
                 the html root element has been specified as an exclusion. If the document is excluded,
                 then just skip it from being indexed entirely. Otherwise, pass it through the process-->
-            <xsl:if test="if ($hasExclusions) then not($excluded//html[@ss-excld='true']) else true()">
-                
-                <!--Output message to the user as to where we're at in the process-->
-                <!--<xsl:message>Tokenizing <xsl:value-of select="$uri"/> (<xsl:value-of select="$pos"/>/<xsl:value-of select="$count"/>)</xsl:message>-->
-                
-                <!--First, clean the document by passing it through the clean templates. This also
+        <xsl:if test="if ($hasExclusions) then not($excluded//html[@ss-excld='true']) else true()">
+            
+            <!--First, clean the document by passing it through the clean templates. This also
                     requires the relativeUri and searchIdentifier parameters in order to create
                     specific attributes that make the JSON creation simpler-->
-                <xsl:variable name="cleaned">
-                    <xsl:apply-templates select="$excluded" mode="clean">
-                        <xsl:with-param name="relativeUri" select="$relativeUri" tunnel="yes"/>
-                        <xsl:with-param name="searchIdentifier" select="$searchIdentifier" tunnel="yes"/>
-                    </xsl:apply-templates>
-                </xsl:variable>
-                
-                
-                <!--Next add weighting information to the cleaned document-->
-                <xsl:variable name="weighted">
-                    <xsl:apply-templates select="$cleaned" mode="weigh"/>
-                </xsl:variable>
-                
-                <!--Next add context information to the weighted document-->
-                <xsl:variable name="contextualized">
-                    <xsl:apply-templates select="$weighted" mode="contextualize"/>
-                </xsl:variable>
-                
-                <!--Now create the tokenized document-->
-                <xsl:result-document href="{$tokenizedOutDoc}">
-                    
-                    <!--If we're in verbose mode, then say what we're doing-->
-                    <xsl:if test="$verbose">
-                        <xsl:message>Creating <xsl:value-of select="$tokenizedOutDoc"/></xsl:message>
-                    </xsl:if>
-                    
-                    <!--Next tokenize and stem the contextualized document-->
-                    <xsl:variable name="tokenizedDoc">
-                        <xsl:apply-templates select="$contextualized" mode="tokenize">
-                            <xsl:with-param name="currDocUri" select="$uri" tunnel="yes"/>
-                        </xsl:apply-templates>
-                    </xsl:variable>
-                    
-                    <!--And finally pass the tokenized document through the enumeration templates-->
-                    <xsl:apply-templates select="$tokenizedDoc" mode="enumerate"/>
-                </xsl:result-document>
-         
+            <xsl:variable name="cleaned">
+                <xsl:apply-templates select="$excluded" mode="clean"/>
+            </xsl:variable>
             
-                <!--If we're running in verbose mode, then output all of the interstitial
+            <!--Next add weighting information to the cleaned document-->
+            <xsl:variable name="weighted">
+                <xsl:apply-templates select="$cleaned" mode="weigh"/>
+            </xsl:variable>
+            
+            <!--Next add context information to the weighted document-->
+            <xsl:variable name="contextualized">
+                <xsl:apply-templates select="$weighted" mode="contextualize"/>
+            </xsl:variable>
+            
+            <!--Next tokenize and stem the contextualized document-->
+            <xsl:variable name="tokenizedDoc">
+                <xsl:apply-templates select="$contextualized" mode="tokenize">
+                    <xsl:with-param name="currDocUri" select="$uri" tunnel="yes"/>
+                </xsl:apply-templates>
+            </xsl:variable>
+            
+            <!--And finally pass the tokenized document through the enumeration templates-->
+            <xsl:apply-templates select="$tokenizedDoc" mode="enumerate"/>
+            
+            <!--If we're running in verbose mode, then output all of the interstitial
                     documents for easier debugging.-->
-                <xsl:if test="$verbose">
-                    <xsl:message>Creating <xsl:value-of select="$cleanedOutDoc"/></xsl:message>
-                    <xsl:result-document href="{$cleanedOutDoc}">
-                        <xsl:copy-of select="$cleaned"/>
+            <xsl:if test="$verbose">
+                <!--Stash all of the documents we want to output into a map so we can simply
+                    iterate through them-->
+                <xsl:variable name="outputMap" select="map{
+                    'cleaned': $cleaned,
+                    'contextualized': $contextualized,
+                    'weighted': $weighted,
+                    'excluded': $excluded
+                    }"/>
+                <!--Iterate through the keys, which are the filenames-->
+                <xsl:for-each select="map:keys($outputMap)">
+                    <xsl:result-document href="{replace(current-output-uri(),'_tokenized',('_' || .))}">
+                        <xsl:message>Creating <xsl:value-of select="current-output-uri()"/></xsl:message>
+                        <xsl:copy-of select="$outputMap(.)"/>
                     </xsl:result-document>
-                    <xsl:message>Creating <xsl:value-of select="$contextualizedOutDoc"/></xsl:message>
-                    <xsl:result-document href="{$contextualizedOutDoc}">
-                        <xsl:copy-of select="$contextualized"/>
-                    </xsl:result-document>
-                    <xsl:message>Creating <xsl:value-of select="$weightedOutDoc"/></xsl:message>
-                    <xsl:result-document href="{$weightedOutDoc}">
-                        <xsl:copy-of select="$weighted"/>
-                    </xsl:result-document>
-                    <xsl:message>Creating <xsl:value-of select="$excludedOutDoc"/></xsl:message>
-                    <xsl:result-document href="{$excludedOutDoc}">
-                        <xsl:copy-of select="$excluded"/>
-                    </xsl:result-document>
-                </xsl:if>
+                </xsl:for-each>
             </xsl:if>
-        <!--</xsl:for-each>-->
+        </xsl:if>
     </xsl:template>
     
     
@@ -280,12 +239,8 @@
     <xd:doc>
         <xd:desc>This template matches the root HTML element with some parameters
             calculated from before for adding some identifying attributes</xd:desc>
-        <xd:param name="relativeUri">The relative URI calculated by the root template.</xd:param>
-        <xd:param name="searchIdentifier">The search identifier calculated by the root template.</xd:param>
     </xd:doc>
     <xsl:template match="html" mode="clean">
-        <xsl:param name="relativeUri" tunnel="yes" as="xs:string"/>
-        <xsl:param name="searchIdentifier" tunnel="yes" as="xs:string"/>
         <xsl:copy>
             <!--Apply templates to all of the attributes on the HTML element
                 EXCEPT the id, which we might just duplicate or we might fill in-->
@@ -357,10 +312,7 @@
         <xd:desc>Template to check for the soon-to-be deprecated period syntax in class names; in all releases after 1.2,
             staticSearch classes should use an underscore, not a period (i.e. staticSearch_desc).</xd:desc>
     </xd:doc>
-    
     <xsl:template match="meta/@class[matches(.,'(^|\s)staticSearch\.')]" mode="clean">
-        <xsl:param name="relativeUri" tunnel="yes" as="xs:string"/>
-        <xsl:param name="searchIdentifier" tunnel="yes" as="xs:string"/>
         <xsl:variable name="classes" select="tokenize(.)" as="xs:string+"/>
         <xsl:attribute name="class" separator=" ">
             <xsl:for-each select="$classes">
@@ -400,7 +352,6 @@
        *                    Templates: weigh                        *
        *                                                            *
        **************************************************************--> 
-    
     <xd:doc>
         <xd:desc>Default weighting template that specifies that all headings have a weight
         of 2. Note that the other weighting templates are contained within the 
@@ -413,10 +364,8 @@
             <xsl:apply-templates select="node()" mode="#current"/>
         </xsl:copy>
     </xsl:template>
-    
-    
-
-    
+  
+  
     <!--**************************************************************
        *                                                            *
        *                    Templates: contextualize                *
@@ -485,21 +434,14 @@
        *                    Templates: tokenize                     *
        *                                                            *
        **************************************************************--> 
-    
-    
     <xd:doc>
         <xd:desc>Matches the staticSearch_docImage URL so that the URL is relative to the search file, not the containing document.</xd:desc>
-        <xd:param name="currDocUri">Tunnelled parameter for the current document's URI, which we need to 
-            pass in as a parameter since the document has been removed from its context.</xd:param>
     </xd:doc>
     <xsl:template match="meta[contains-token(@class,'staticSearch_docImage')]/@content[not(matches(.,'^https?'))]" mode="tokenize">
-        <xsl:param name="currDocUri" as="xs:string" tunnel="yes"/>
-        <xsl:variable name="absPath" as="xs:string" select="resolve-uri(., $currDocUri)"/>
+        <xsl:variable name="absPath" as="xs:string" select="resolve-uri(., $uri)"/>
         <xsl:variable name="newRelPath" as="xs:string" select="hcmc:makeRelativeUri($searchFile, $absPath)"/>
         <xsl:attribute name="content" select="$newRelPath"/>
     </xsl:template>
-    
-    
     
      <xd:doc>
          <xd:desc>Main tokenizing template: Match all text nodes that:
@@ -610,9 +552,8 @@
         <!--Check whether or not the word is hyphenated-->
         <xsl:variable name="hyphenated" select="matches($cleanedWord,'[A-Za-z]-[A-Za-z]')" as="xs:boolean"/>
         <xsl:if test="$verbose">
-            <xsl:message>hcmc:getStem: hyphenated: <xsl:value-of select="$hyphenated"/></xsl:message>
+            <xsl:message>hcmc:getStem: $hyphenated: <xsl:value-of select="$hyphenated"/></xsl:message>
         </xsl:if>
-
         
         <!--Now create the stem val-->
         <xsl:variable name="stemVal" 
@@ -664,10 +605,6 @@
                     </xsl:choose>
                 </span>
     </xsl:function>
-    
-    
-    
-  
     
     <xd:doc>
         <xd:desc><xd:ref name="hcmc:shouldIndex">hcmc:shouldIndex</xd:ref> returns a boolean value 
