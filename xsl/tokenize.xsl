@@ -118,7 +118,6 @@
     </xd:doc>
     <xsl:variable name="tokenRegex">(<xsl:value-of select="string-join(($numericWithDecimal,$hyphenatedWord,$alphanumeric),'|')"/>)</xsl:variable>
     
-    
     <xd:doc>
         <xd:desc>The document's URI as a string.</xd:desc>
     </xd:doc>
@@ -221,7 +220,7 @@
                 <xsl:for-each select="map:keys($outputMap)">
                     <xsl:result-document href="{replace(current-output-uri(),'_tokenized',('_' || .))}">
                         <xsl:message>Creating <xsl:value-of select="current-output-uri()"/></xsl:message>
-                        <xsl:copy-of select="$outputMap(.)"/>
+                        <xsl:copy-of select="map:get($outputMap, .)"/>
                     </xsl:result-document>
                 </xsl:for-each>
             </xsl:if>
