@@ -106,6 +106,15 @@
   <!--The directory for all of the static search assets (JSON files, Javascripts, et cetera).
         Note that the static search directory is placed directly within the collection directory-->
   <property name="staticSearchDir" value="${ssCollectionDirName}/${ssOutputFolder}"/>
+  
+  <!--The NAME of the temporary folder, which we treat as a constant-->
+  <property name="staticSearchTempFolder" value="ssTemp"/>
+  
+  <!--The temporary directory for staticSearch to put tokenized files etc-->
+  <property name="staticSearchTempDir" value="${staticSearchDir}/${staticSearchTempFolder}"/>
+  
+  <!--Property for the name of the pattern set for use in staticSearch-->
+  <property name="ssPatternsetFile" value="${staticSearchTempDir}/patternset.txt"/>
 
   <!--The basename of the search file with suffix still attached-->
   <basename property="ssSearchPageBasename" file="${ssSearchFilePath}"/>
@@ -210,8 +219,11 @@
     <echo message="Validating ${ssCollectionDirName} for well-formedness"/>
     <!--@lenient='true' since we are only checking well-formedness-->
     <xmlvalidate lenient="true">
+      <!--TODO: This should really validate the actual set of files, and not just any-->
       <fileset dir="${ssCollectionDirName}" casesensitive="false">
         <include name="**/**.*htm*"/>
+        <!--Don't validate items that may be in a different staticSearch output-->
+        <exclude name="**/${staticSearchTempFolder}/**"/>
       </fileset>
     </xmlvalidate>
     <echo message="Validating ${ssConfigFile} against the staticSearch schema..."/>
@@ -238,6 +250,7 @@
       <arg value="configFile=${ssConfigFile}"/>
       <arg value="--suppressXsltNamespaceCheck:on"/>
       <arg value="verbose=${ssVerbose}"/>
+      <arg value="ssPatternsetFile=${ssPatternsetFile}"/>
     </java>
   </target>
   
@@ -249,19 +262,28 @@
       the individual token JSONs. The XSLT is run on itself and uses the information in the config
       XSLT module (generated in the config task) to determine the input files, et cetera. </description>
     <echo message="Creating tokenized XHTML files..."/>
-    <loadfile srcFile="${staticSearchDir}/temp/patternset.txt" property="ptn" failonerror="true"/>
+    <loadfile srcFile="${ssPatternsetFile}" property="ptn" failonerror="true"/>
+
     <xslt
-      style="${ssBaseDir}/xsl/tokenize.xsl" classpath="${ssSaxon}" destdir="${staticSearchDir}/temp"
+      style="${ssBaseDir}/xsl/tokenize.xsl" classpath="${ssSaxon}" destdir="${staticSearchTempDir}"
        reloadstylesheet="true"
        force="true"
       useimplicitfileset="false">
       <factory name="net.sf.saxon.TransformerFactoryImpl"/>
-      <fileset id="siteFiles" dir="${ssCollectionDirName}"
-        includesfile="${staticSearchDir}/temp/patternset.txt" 
-        excludes="**/staticSearch_report.html" 
-        casesensitive="no"/>
+      <fileset id="siteFiles" dir="${ssCollectionDirName}" casesensitive="no">
+        <includesfile name="${ssPatternsetFile}"/>
+        <!--Exclude the temporary directory's basename-->
+        <exclude name="**/${staticSearchTempFolder}/**"/>
+      </fileset>
       <regexpmapper from="^(.*)\.([^\.]+$)" to="\1_tokenized.html"/>
     </xslt>
+    <!--Necessary to delete any empty files (i.e. files excluded by 
+        the configuration) -->
+    <delete verbose="true">
+      <fileset dir="${staticSearchTempDir}">
+        <size value="0"/>
+      </fileset>
+    </delete>
   </target>
 
   <target name="json">
