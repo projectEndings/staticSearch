@@ -189,7 +189,7 @@
         <xd:desc><xd:ref name="tempDir" type="variable">$tempDir</xd:ref> is the directory in which the static search
             process stores all of the temporary outputs; it is deleted at the end of the process (in the ANT build).</xd:desc>
     </xd:doc>
-    <xsl:variable name="tempDir" select="$outDir || '/temp'"/>
+    <xsl:variable name="tempDir" select="$outDir || '/ssTemp'"/>
   
     <xd:doc>
       <xd:desc><xd:ref name="ssPatternsetFile" type="variable">$ssPatternsetFile</xd:ref> is the location for a 
@@ -197,7 +197,7 @@
         forms the basis of a fileset identifying all the files that need to be tokenized.
       </xd:desc>
     </xd:doc>
-    <xsl:variable name="ssPatternsetFile" select="$tempDir || '/patternset.txt'"/>
+    <xsl:param name="ssPatternsetFile" select="$tempDir || '/patternset.txt'"/>
    
     <xd:doc>
         <xd:desc><xd:ref name="recurse" type="variable">$recurse</xd:ref> is a boolean that states whether or not the 

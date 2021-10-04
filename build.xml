@@ -106,6 +106,15 @@
   <!--The directory for all of the static search assets (JSON files, Javascripts, et cetera).
         Note that the static search directory is placed directly within the collection directory-->
   <property name="staticSearchDir" value="${ssCollectionDirName}/${ssOutputFolder}"/>
+  
+  <!--The NAME of the temporary folder, which we treat as a constant-->
+  <property name="staticSearchTempFolder" value="ssTemp"/>
+  
+  <!--The temporary directory for staticSearch to put tokenized files etc-->
+  <property name="staticSearchTempDir" value="${staticSearchDir}/${staticSearchTempFolder}"/>
+  
+  <!--Property for the name of the pattern set for use in staticSearch-->
+  <property name="ssPatternsetFile" value="${staticSearchTempDir}/patternset.txt"/>
 
   <!--The basename of the search file with suffix still attached-->
   <basename property="ssSearchPageBasename" file="${ssSearchFilePath}"/>
@@ -210,11 +219,14 @@
     <echo message="Validating ${ssCollectionDirName} for well-formedness"/>
     <!--@lenient='true' since we are only checking well-formedness-->
     <xmlvalidate lenient="true">
+      <!--TODO: This should really validate the actual set of files, and not just any-->
       <fileset dir="${ssCollectionDirName}" casesensitive="false">
         <include name="**/**.*htm*"/>
+        <!--Don't validate items that may be in a different staticSearch output-->
+        <exclude name="**/${staticSearchTempFolder}/**"/>
+        <exclude name="**/staticSearch_report.html"/>
       </fileset>
     </xmlvalidate>
-
     <echo message="Validating ${ssConfigFile} against the staticSearch schema..."/>
     <exec executable="java" failonerror="false">
       <arg line="-jar ${ssBaseDir}/lib/jing.jar"/>
@@ -239,6 +251,7 @@
       <arg value="configFile=${ssConfigFile}"/>
       <arg value="--suppressXsltNamespaceCheck:on"/>
       <arg value="verbose=${ssVerbose}"/>
+      <arg value="ssPatternsetFile=${ssPatternsetFile}"/>
     </java>
   </target>
   
@@ -250,25 +263,28 @@
       the individual token JSONs. The XSLT is run on itself and uses the information in the config
       XSLT module (generated in the config task) to determine the input files, et cetera. </description>
     <echo message="Creating tokenized XHTML files..."/>
-    <loadfile srcFile="${staticSearchDir}/temp/patternset.txt" property="ptn" failonerror="true"/>
-    
- <!--   <echo message="pattern = ${ptn}"/>
-    <echo message="collection dir = ${ssCollectionDirName}"/>-->
-    <!-- NOTE that we need to set destdir for the xslt task, but we actually output result-documents, and the 
-         xslt task creates an empty document as well. We just put these empty documents in the empty folder 
-         and delete them at the end of the process pending a more elegant solution (see issue #165).-->
+    <loadfile srcFile="${ssPatternsetFile}" property="ptn" failonerror="true"/>
+
     <xslt
-      style="${ssBaseDir}/xsl/tokenize.xsl" classpath="${ssSaxon}" destdir="${staticSearchDir}/empty"
+      style="${ssBaseDir}/xsl/tokenize.xsl" classpath="${ssSaxon}" destdir="${staticSearchTempDir}"
        reloadstylesheet="true"
        force="true"
       useimplicitfileset="false">
       <factory name="net.sf.saxon.TransformerFactoryImpl"/>
-      <fileset id="siteFiles" dir="${ssCollectionDirName}"
-        includesfile="${staticSearchDir}/temp/patternset.txt" 
-        excludes="**/staticSearch_report.html" 
-        casesensitive="no"/>
+      <fileset id="siteFiles" dir="${ssCollectionDirName}" casesensitive="no">
+        <includesfile name="${ssPatternsetFile}"/>
+        <!--Exclude the temporary directory's basename-->
+        <exclude name="**/${staticSearchTempFolder}/**"/>
+      </fileset>
+      <regexpmapper from="^(.*)\.([^\.]+$)" to="\1_tokenized.html"/>
     </xslt>
-    <delete dir="${staticSearchDir}/empty"/>
+    <!--Necessary to delete any empty files (i.e. files excluded by 
+        the configuration) -->
+    <delete verbose="${ssVerbose}">
+      <fileset dir="${staticSearchTempDir}">
+        <size value="0"/>
+      </fileset>
+    </delete>
   </target>
 
   <target name="json">
