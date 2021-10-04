@@ -214,6 +214,7 @@
         <include name="**/**.*htm*"/>
       </fileset>
     </xmlvalidate>
+
     <echo message="Validating ${ssConfigFile} against the staticSearch schema..."/>
     <exec executable="java" failonerror="false">
       <arg line="-jar ${ssBaseDir}/lib/jing.jar"/>
@@ -250,8 +251,14 @@
       XSLT module (generated in the config task) to determine the input files, et cetera. </description>
     <echo message="Creating tokenized XHTML files..."/>
     <loadfile srcFile="${staticSearchDir}/temp/patternset.txt" property="ptn" failonerror="true"/>
+    
+ <!--   <echo message="pattern = ${ptn}"/>
+    <echo message="collection dir = ${ssCollectionDirName}"/>-->
+    <!-- NOTE that we need to set destdir for the xslt task, but we actually output result-documents, and the 
+         xslt task creates an empty document as well. We just put these empty documents in the empty folder 
+         and delete them at the end of the process pending a more elegant solution (see issue #165).-->
     <xslt
-      style="${ssBaseDir}/xsl/tokenize.xsl" classpath="${ssSaxon}" destdir="${staticSearchDir}/temp"
+      style="${ssBaseDir}/xsl/tokenize.xsl" classpath="${ssSaxon}" destdir="${staticSearchDir}/empty"
        reloadstylesheet="true"
        force="true"
       useimplicitfileset="false">
@@ -260,8 +267,8 @@
         includesfile="${staticSearchDir}/temp/patternset.txt" 
         excludes="**/staticSearch_report.html" 
         casesensitive="no"/>
-      <regexpmapper from="^(.*)\.([^\.]+$)" to="\1_tokenized.html"/>
     </xslt>
+    <delete dir="${staticSearchDir}/empty"/>
   </target>
 
   <target name="json">
