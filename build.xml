@@ -279,7 +279,7 @@
     </xslt>
     <!--Necessary to delete any empty files (i.e. files excluded by 
         the configuration) -->
-    <delete verbose="true">
+    <delete verbose="${ssVerbose}">
       <fileset dir="${staticSearchTempDir}">
         <size value="0"/>
       </fileset>
