@@ -441,7 +441,7 @@
       useful. 
     </description>
     <echo message="Cleaning temporary directory..."/>
-    <delete dir="${staticSearchDir}/temp"/>
+    <delete dir="${staticSearchDir}/${staticSearchTempFolder}"/>
     <!--Added 2021-02-19: Remove the dictionary files-->
     <delete dir="${staticSearchDir}/dicts"/>
     <!--Added 2021-03-17: Remove the JS build files. -->
