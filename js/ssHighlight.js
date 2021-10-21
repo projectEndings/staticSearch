@@ -44,8 +44,8 @@ function ssHighlightOnLoad(){
   if ((encStr !== '')&&(encStr !== null)){
     let str = decodeURIComponent(encStr);
     let re = new RegExp('(' + str.replace(/\s+/g, '\\s+') + ')', 'g');
-    let ctx = (document.location.hash != '')? document.getElementById(document.location.hash.substring(1)) : document.body;
-    
+    let ctx = (document.location.hash != '')? document.getElementById(decodeURI(document.location.hash.substring(1))) : document.body;
+    if (ctx == null){ctx = document.body};
     function walkNodes(el){
       let children = el.childNodes;
       for (let i=children.length-1; i>=0; i--){
