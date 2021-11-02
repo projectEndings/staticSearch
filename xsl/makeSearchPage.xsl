@@ -217,6 +217,7 @@
             <!--Now add the script that initializes the search object. -->
           
             <script src="{$outputFolder}/ssInitialize.js"><!-- Don't self-close script tags. --></script>
+            <noscript><xsl:value-of select="hcmc:getCaption('ssScriptRequired', $captionLang)"/></noscript>
 
             <!--Now create the form-->
             <form accept-charset="UTF-8" id="ssForm"

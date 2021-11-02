@@ -23,8 +23,8 @@
                 'ssLoading': 'Loading...',
                 'ssClear': 'Clear',
                 'ssPoweredBy': 'Powered by',
-                'ssStartTyping': 'Start typing...'
-            
+                'ssStartTyping': 'Start typing...',
+                'ssScriptRequired': 'This page requires JavaScript.'
             },
         'fr': 
             map{
@@ -33,7 +33,8 @@
                 'ssLoading': 'Chargement en cours...',
                 'ssClear': 'Effacer',
                 'ssPoweredBy': 'Réalisé par',
-                'ssStartTyping': 'Commencez à taper...'
+                'ssStartTyping': 'Commencez à taper...',
+                'ssScriptRequired': 'Cette page a besoin de Javascript.'
             }
         }"/>
     

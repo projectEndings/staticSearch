@@ -229,7 +229,7 @@ div#ssSearching{
   display: none;
 }
 
-body.ssSearching:not(.ssLoading) div#ssSearching, body.ssLoading:not(.ssSearching) div#ssSplashMessage{
+body.ssSearching:not(.ssLoading) div#ssSearching, body.ssLoading:not(.ssSearching) div#ssSplashMessage, noscript{
     background-color: #000000;
     color: #ffffff;
     font-size: 1.5rem;
