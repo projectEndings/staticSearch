@@ -830,7 +830,7 @@
               </egXML>
             </p>
             
-            <p>Note that, if you pass arguments to ant at the command line arguments, these will be passed to the staticSearch build. This can cause issues especially when using the <code>-lib</code> parameter (since the project's version of Saxon may conflict, for instance, with staticSearch's). If your build requires the use of the <code>-lib</code> parameter, then an alternative approach for calling staticSearch from your build is to use the <code>exec</code> task like so:
+            <p>Note that any arguments passed to ant at the command line arguments will be passed to the staticSearch build. This can cause issues when the main build requires the use of the <code>-lib</code> parameter (since the project's version of Saxon may conflict, for instance, with staticSearch's). If your build requires the use of the <code>-lib</code> parameter, then an alternative approach for calling staticSearch from your build is to use the <code>exec</code> task like so:
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
                 <exec executable="ant" dir="staticSearch">
                   <arg value="-DssConfig=../config_staticSearch.xml"/>
