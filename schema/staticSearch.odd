@@ -820,7 +820,7 @@
             
           </div>
           <div xml:id="callingStaticSearchFromAnt">
-            <head>Running the Search from an Existing Build</head>
+            <head>Running staticSearch from ant</head>
             <p>staticSearch can be integrated into existing ant build processes quite easily. Once  cloned (or downloaded) from GitHub, the staticSearch codebase can be called by a build process using the <code>ant</code> target with a nested <gi>property</gi> value that points to your config file (either relative to staticSearch using <code>ssConfig</code> or an absolute path using <code>ssConfigFile</code>). Assuming that the build file, your config file, and your staticSearch directory are all at the root of the project, you could call the staticSearch build in ant like so:
           
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
