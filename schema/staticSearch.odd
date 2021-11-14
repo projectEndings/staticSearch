@@ -819,6 +819,26 @@
             search in the same ways suggested above.</p>
             
           </div>
+          <div xml:id="callingStaticSearchFromAnt">
+            <head>Running staticSearch from Ant</head>
+            <p>staticSearch can be integrated into existing ant build processes quite easily. Once  cloned (or downloaded) from GitHub, the staticSearch codebase can be called by a build process using the <code>ant</code> target with a nested <gi>property</gi> value that points to your staticSearch config file (either relative to staticSearch using <code>ssConfig</code> or an absolute path using <code>ssConfigFile</code>). Assuming that the build file, your config file, and your staticSearch directory are all at the root of the project, you could call the staticSearch build in ant like so:
+          
+              <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                <ant antfile="${basedir}/staticSearch" inheritall="false">
+                  <property name="ssConfig" value="staticSearch_config.xml"/>
+                </ant>
+              </egXML>
+            </p>
+            
+            <p>Note that any arguments passed to ant at the command line arguments will be passed on to the staticSearch build. This can cause issues when the main build requires the use of the <code>-lib</code> parameter (since the project's version of Saxon may conflict, for instance, with the version used by staticSearch). If your build requires the use of the <code>-lib</code> parameter, then an alternative approach for calling staticSearch from your build is to use the <code>exec</code> task like so:
+              <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                <exec executable="ant" dir="staticSearch">
+                  <arg value="-DssConfig=../config_staticSearch.xml"/>
+                </exec>
+              </egXML>
+
+            </p>
+          </div>
           
           <div xml:id="theStaticSearchReport">
             <head>Generated report</head>
