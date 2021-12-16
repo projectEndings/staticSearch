@@ -131,7 +131,7 @@
         <x:param name="token" select="'égoïsme'"/>
         <x:param name="R2" select="ss:getRVR1R2(ss:preflight('égoïsme'))[6]"></x:param>
       </x:call>
-      <x:expect label="Result of step1a from 'égoïsme'" select="'égo'"/>
+      <x:expect label="Result of step1a from 'égoïsme'" select="'égoïsme'"/>
     </x:scenario>
   </x:scenario>
   

@@ -45,6 +45,6 @@ class SSStemmer{
    * @return {String}       the stemmed token
    */
    stem(token){
-     return token;
+     return token.normalize('NFC');
    }
 }

@@ -224,8 +224,9 @@
     </xd:doc>
     <xsl:function name="ss:stem" as="xs:string" new-each-time="no">
       <xsl:param name="token" as="xs:string"/>
+      <xsl:variable name="normToken" as="xs:string" select="normalize-unicode($token, 'NFC')"/>
       
-      <xsl:variable as="xs:string" name="preProc" select="ss:preflight($token)"/>
+      <xsl:variable as="xs:string" name="preProc" select="ss:preflight($normToken)"/>
       
       <xsl:variable name="rvr1r2" as="item()+" select="ss:getRVR1R2($preProc)"/>
       

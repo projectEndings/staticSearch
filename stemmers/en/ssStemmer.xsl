@@ -246,11 +246,12 @@
   </xd:doc>
   <xsl:function name="ss:stem" as="xs:string" new-each-time="no">
     <xsl:param name="token" as="xs:string"/>
+    <xsl:variable name="normToken" as="xs:string" select="normalize-unicode($token, 'NFC')"/>
     <xsl:choose>
-      <xsl:when test="string-length($token) lt 3"><xsl:value-of select="$token"/></xsl:when>
-      <xsl:when test="$token = $exceptionsTokens"><xsl:value-of select="$exceptionsStems[index-of($exceptionsTokens, $token)]"/></xsl:when>
+      <xsl:when test="string-length($normToken) lt 3"><xsl:value-of select="$normToken"/></xsl:when>
+      <xsl:when test="$normToken = $exceptionsTokens"><xsl:value-of select="$exceptionsStems[index-of($exceptionsTokens, $normToken)]"/></xsl:when>
       <xsl:otherwise>
-        <xsl:variable name="preflight" select="replace(replace(replace($token, '^''', ''), '^y', 'Y'), concat('(', $vowel, ')y'), '$1Y')"/>
+        <xsl:variable name="preflight" select="replace(replace(replace($normToken, '^''', ''), '^y', 'Y'), concat('(', $vowel, ')y'), '$1Y')"/>
         <xsl:variable name="R" select="ss:getR1AndR2($preflight)"/>
         <xsl:variable name="step0" select="ss:step0($preflight)"/>
         <xsl:variable name="step1" select="ss:step1($step0, $R[3])"/>
