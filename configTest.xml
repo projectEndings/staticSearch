@@ -34,8 +34,10 @@
     </rules>
     
     <contexts>
-        <context match="div[@class='l']" label="Poetic lines"/>
-        <context match="span[@class='note']" label="Notes"/>
+        <context match="blockquote" label="Quotations"/>
+        <context match="q" label="Quotations"/>
+        <context match="div[@class='l']"/>
+        <context match="span[@class='note'] | *[contains-token(@class,'sidenotes')]" label="Notes"/>
     </contexts>
     
     <excludes>

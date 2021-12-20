@@ -643,17 +643,19 @@ tokenization.
     </xd:doc>
     <xsl:template name="createContextRules" exclude-result-prefixes="#all">
         
-        <!--First create our own context label map-->
+        <!--First create our own context label map, which has to be slightly more
+        complicated as context rules could have the same label-->
         <xsl:variable name="contextMap" as="map(xs:string, xs:string)">
             <xsl:map>
-                <xsl:for-each select="$contexts[@label]">
-                    <xsl:map-entry key="string(@label)" select="'ssCtx' || position()"/>
-                </xsl:for-each>
+                <!--Group all of the contexts by label-->
+                <xsl:for-each-group select="$contexts[@label]" group-by="normalize-space(@label)">
+                    <xsl:map-entry key="current-grouping-key()" select="'ssCtx' || position()"/>
+                </xsl:for-each-group>
             </xsl:map>
         </xsl:variable>
         
         <!--Now create the config XSL's version of the context map,
-            which may be a map (if there are contexts with labels
+            which may be a map (if there are contexts with labels)
             OR an empty sequence (if there aren't)-->
         <xso:variable name="ssContextMap" as="map(*)?">
             <xsl:choose>
@@ -662,7 +664,9 @@ tokenization.
                         using the values assembled by $contextMap-->
                    <xso:map>
                        <xsl:for-each select="map:keys($contextMap)">
-                           <xso:map-entry key="{concat('''', ., '''')}" select="{concat('''',$contextMap(.), '''')}"/>
+                           <xso:map-entry 
+                               key="{hcmc:quoteString(.)}"
+                               select="{hcmc:quoteString($contextMap(.))}"/>
                        </xsl:for-each>
                    </xso:map>
                 </xsl:when>
@@ -679,13 +683,22 @@ tokenization.
             <xso:copy>
                 <xso:apply-templates select="@*" mode="#current"/>
                 <xsl:for-each select="$contexts">
-                    <xso:if test="self::{@match}">
-                        <xso:attribute name="ss-ctx" select="{concat('''',hcmc:stringToBoolean(@context),'''')}"/>
-                        <!--If the context has a label, then add its corresponding context id value-->
-                        <xsl:if test="@label">
-                            <xso:attribute name="ss-in" select="{concat('''', $contextMap(@label), '''')}"/>
-                        </xsl:if>
-                    </xso:if>
+                    <xsl:variable name="thisCtx" select="@context"/>
+                    <xsl:variable name="thisMatchPtn" select="@match"/>
+                    <xsl:variable name="thisLabel" select="@label"/>
+                    <xsl:for-each select="tokenize($thisMatchPtn,'\s*\|\s*')">
+                        <xso:if test="self::{.}">
+                            <xso:attribute name="ss-ctx" select="{hcmc:quoteString(hcmc:stringToBoolean($thisCtx))}"/>
+                            <!--If the context has a label, then add its corresponding context id value-->
+                            <xsl:if test="exists($thisLabel)">
+                                <xsl:variable name="contextId" 
+                                    select="$contextMap(normalize-space($thisLabel))"
+                                    as="xs:string"/>
+                                <xso:attribute name="ss-ctx-id" select="{hcmc:quoteString($contextId)}"/>
+                            </xsl:if>
+                        </xso:if>
+                    </xsl:for-each>
+                   
                 </xsl:for-each>
                 <xso:apply-templates select="node()" mode="#current"/>
             </xso:copy>
@@ -756,6 +769,18 @@ tokenization.
                 <xsl:value-of select="false()"/>
             </xsl:otherwise>
         </xsl:choose>
+    </xsl:function>
+    
+    <xd:doc>
+        <xd:desc><xd:ref name="hcmc:quoteString">hcmc:quoteString</xd:ref> takes a string value
+        and adds single quotation marks around it; this is for instances where the output
+        XSLT needs to have a string value as its attribute value.</xd:desc>
+        <xd:param name="str">The input string (e.g. "value")</xd:param>
+        <xd:return>The input value with single quotation marks ("'value'")</xd:return>
+    </xd:doc>
+    <xsl:function name="hcmc:quoteString" as="xs:string">
+        <xsl:param name="str" as="item()"/>
+        <xsl:sequence select="concat('''', string($str), '''')"/>
     </xsl:function>
     
     <xd:doc>
