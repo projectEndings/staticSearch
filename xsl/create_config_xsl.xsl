@@ -380,15 +380,15 @@
                     </xsl:if>
                 </xsl:if>
                 
-                <xsl:if test="not(empty($contexts))">
-                    <xsl:call-template name="createContextRules" exclude-result-prefixes="#all"/>
-                    <xsl:if test="$verbose">
-                        <xsl:message>Create context rules</xsl:message>
-                        <xsl:message>
-                            <xsl:call-template name="createContextRules" exclude-result-prefixes="#all"/>
-                        </xsl:message>
-                    </xsl:if>
+                <xsl:call-template name="createContextRules" exclude-result-prefixes="#all"/>
+                
+                <xsl:if test="$verbose and not(empty($contexts))">
+                    <xsl:message>Create context rules</xsl:message>
+                    <xsl:message>
+                        <xsl:call-template name="createContextRules" exclude-result-prefixes="#all"/>
+                    </xsl:message>
                 </xsl:if>
+                
                 
                 <xsl:if test="not(empty($weightedRules))">
                     <xsl:call-template name="createWeightingRules"/>
@@ -676,33 +676,35 @@ tokenization.
             </xsl:choose>
         </xso:variable>
         
-        <xso:template match="{string-join($contexts/@match,' | ')}" priority="1" mode="contextualize">
-            <xso:if test="$verbose">
-                <xso:message>Template #contextualize: Adding @ss-ctx flag to <xso:value-of select="local-name(.)"/></xso:message>
-            </xso:if>
-            <xso:copy>
-                <xso:apply-templates select="@*" mode="#current"/>
-                <xsl:for-each select="$contexts">
-                    <xsl:variable name="thisCtx" select="@context"/>
-                    <xsl:variable name="thisMatchPtn" select="@match"/>
-                    <xsl:variable name="thisLabel" select="@label"/>
-                    <xsl:for-each select="tokenize($thisMatchPtn,'\s*\|\s*')">
-                        <xso:if test="self::{.}">
-                            <xso:attribute name="ss-ctx" select="{hcmc:quoteString(hcmc:stringToBoolean($thisCtx))}"/>
-                            <!--If the context has a label, then add its corresponding context id value-->
-                            <xsl:if test="exists($thisLabel)">
-                                <xsl:variable name="contextId" 
-                                    select="$contextMap(normalize-space($thisLabel))"
-                                    as="xs:string"/>
-                                <xso:attribute name="ss-ctx-id" select="{hcmc:quoteString($contextId)}"/>
-                            </xsl:if>
-                        </xso:if>
+        <xsl:if test="not(empty($contexts))">
+            <xso:template match="{string-join($contexts/@match,' | ')}" priority="1" mode="contextualize">
+                <xso:if test="$verbose">
+                    <xso:message>Template #contextualize: Adding @ss-ctx flag to <xso:value-of select="local-name(.)"/></xso:message>
+                </xso:if>
+                <xso:copy>
+                    <xso:apply-templates select="@*" mode="#current"/>
+                    <xsl:for-each select="$contexts">
+                        <xsl:variable name="thisCtx" select="@context"/>
+                        <xsl:variable name="thisMatchPtn" select="@match"/>
+                        <xsl:variable name="thisLabel" select="@label"/>
+                        <xsl:for-each select="tokenize($thisMatchPtn,'\s*\|\s*')">
+                            <xso:if test="self::{.}">
+                                <xso:attribute name="ss-ctx" select="{hcmc:quoteString(hcmc:stringToBoolean($thisCtx))}"/>
+                                <!--If the context has a label, then add its corresponding context id value-->
+                                <xsl:if test="exists($thisLabel)">
+                                    <xsl:variable name="contextId" 
+                                        select="$contextMap(normalize-space($thisLabel))"
+                                        as="xs:string"/>
+                                    <xso:attribute name="ss-ctx-id" select="{hcmc:quoteString($contextId)}"/>
+                                </xsl:if>
+                            </xso:if>
+                        </xsl:for-each>
+                        
                     </xsl:for-each>
-                   
-                </xsl:for-each>
-                <xso:apply-templates select="node()" mode="#current"/>
-            </xso:copy>
-        </xso:template>
+                    <xso:apply-templates select="node()" mode="#current"/>
+                </xso:copy>
+            </xso:template>
+        </xsl:if>
     </xsl:template>
     
     <xd:doc>
