@@ -34,8 +34,8 @@
     </rules>
     
     <contexts>
-        <context match="div[@class='l']" label="poetic lines"/>
-        <context match="span[@class='note']" label="notes"/>
+        <context match="div[@class='l']" label="Poetic lines"/>
+        <context match="span[@class='note']" label="Notes"/>
     </contexts>
     
     <excludes>

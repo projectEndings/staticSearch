@@ -5,6 +5,7 @@
     xmlns:hcmc="http://hcmc.uvic.ca/ns/staticSearch"
     xpath-default-namespace="http://hcmc.uvic.ca/ns/staticSearch"
     xmlns:tei="http://www.tei-c.org/ns/1.0"
+    xmlns:map="http://www.w3.org/2005/xpath-functions/map"
     xmlns:xso="dummy"
     version="3.0">
     <xd:doc scope="stylesheet">
@@ -314,6 +315,7 @@
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
                 xmlns:hcmc="http://hcmc.uvic.ca/ns/staticSearch"
+                xmlns:map="http://www.w3.org/2005/xpath-functions/map"
                 exclude-result-prefixes="#all"
                 xpath-default-namespace="http://www.w3.org/1999/xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"
@@ -339,7 +341,7 @@
                 
                 <!--First, create the global variables and parameters-->
                 <xsl:call-template name="createGlobals" exclude-result-prefixes="#all"/>
-                
+            
                 <!--Now create the dictionary XML files-->
                 <xsl:call-template name="createDictionaryXML" exclude-result-prefixes="#all"/>
                 
@@ -538,6 +540,9 @@
             </xso:if>
         </xso:template>
     </xsl:template>
+    
+    
+    
 
     <xd:doc>
         <xd:desc>Template to create an XML representation of the dictionary file 
@@ -632,10 +637,41 @@ tokenization.
         <xd:desc>
             <xd:p>The <xd:ref name="createContextRules" type="template">createContextRules</xd:ref> template
                 creates an XSL identity template for the xpaths specified in the configuration file that are
-                specified as context nodes for the kwic.</xd:p>
+                specified as context nodes for the kwic. It also creates the map of context ids/labels,
+                if they are specified in the config, for creating the "Search in" configuration.</xd:p>
         </xd:desc>
     </xd:doc>
     <xsl:template name="createContextRules" exclude-result-prefixes="#all">
+        
+        <!--First create our own context label map-->
+        <xsl:variable name="contextMap" as="map(xs:string, xs:string)">
+            <xsl:map>
+                <xsl:for-each select="$contexts[@label]">
+                    <xsl:map-entry key="string(@label)" select="'ssCtx' || position()"/>
+                </xsl:for-each>
+            </xsl:map>
+        </xsl:variable>
+        
+        <!--Now create the config XSL's version of the context map,
+            which may be a map (if there are contexts with labels
+            OR an empty sequence (if there aren't)-->
+        <xso:variable name="ssContextMap" as="map(*)?">
+            <xsl:choose>
+                <xsl:when test="exists($contexts[@label])">
+                    <!--Create a usable map in the output config
+                        using the values assembled by $contextMap-->
+                   <xso:map>
+                       <xsl:for-each select="map:keys($contextMap)">
+                           <xso:map-entry key="{concat('''', ., '''')}" select="{concat('''',$contextMap(.), '''')}"/>
+                       </xsl:for-each>
+                   </xso:map>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xso:sequence select="()"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xso:variable>
+        
         <xso:template match="{string-join($contexts/@match,' | ')}" priority="1" mode="contextualize">
             <xso:if test="$verbose">
                 <xso:message>Template #contextualize: Adding @ss-ctx flag to <xso:value-of select="local-name(.)"/></xso:message>
@@ -645,6 +681,10 @@ tokenization.
                 <xsl:for-each select="$contexts">
                     <xso:if test="self::{@match}">
                         <xso:attribute name="ss-ctx" select="{concat('''',hcmc:stringToBoolean(@context),'''')}"/>
+                        <!--If the context has a label, then add its corresponding context id value-->
+                        <xsl:if test="@label">
+                            <xso:attribute name="ss-in" select="{concat('''', $contextMap(@label), '''')}"/>
+                        </xsl:if>
                     </xso:if>
                 </xsl:for-each>
                 <xso:apply-templates select="node()" mode="#current"/>
