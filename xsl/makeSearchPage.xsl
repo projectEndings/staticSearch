@@ -264,10 +264,10 @@
                         in the same way-->
                     <xsl:if test="not(empty($ssContextMap))">
                         <xsl:variable name="caption" select="hcmc:getCaption('ssSearchIn', $captionLang)"/>
-                        <div class="ssDescFilters ssSearchInFilters">
+                        <div class="ssSearchInFilters">
                             <fieldset class="ssFieldset" title="{$caption}">
                                 <legend><xsl:value-of select="$caption"/></legend>
-                                <ul class="ssDescCheckboxList ssSearchInCheckboxList">
+                                <ul class="ssSearchInCheckboxList">
                                     <xsl:for-each select="map:keys($ssContextMap)">
                                         <!--Sort the context keys by their value-->
                                         <xsl:sort select="."/>
@@ -277,9 +277,8 @@
                                             as="xs:string"/>
                                         <li>
                                             <input type="checkbox"
-                                                title="{$currLabel}" value="{$id}" id="{$id}"
-                                                class="staticSearch_desc
-                                                staticSearch_searchIn"/>
+                                                title="{$currLabel}" value="{$currLabel}" id="{$id}"
+                                                class="staticSearch_searchIn"/>
                                             <label for="{$id}">
                                                 <xsl:value-of select="$currLabel"/>
                                             </label>
