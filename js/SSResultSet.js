@@ -218,11 +218,8 @@ class SSResultSet{
    * @return {boolean} true if any items remain, false if not
    */
   filterByContexts(activeContextIds){
-    console.log(activeContextIds);
-
     try{
       for (let [key, value] of this.mapDocs){
-        console.log(key);
         let contexts = value.contexts;
         // Filter the contexts using the intersection of the two sets
         let filteredContexts = contexts.filter(ctx => {
