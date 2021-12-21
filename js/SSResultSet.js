@@ -210,6 +210,49 @@ class SSResultSet{
     }
   }
 
+  /**
+   * @function SSResultSet~filterByContexts
+   * @description Deletes any contexts that are not "in" a selected context
+   * and deletes the document from the result set if the document is removed
+   * @param activeContextIds{XSet.<String>} contextIds The context ids to use
+   * @return {boolean} true if any items remain, false if not
+   */
+  filterByContexts(activeContextIds){
+    console.log(activeContextIds);
+
+    try{
+      for (let [key, value] of this.mapDocs){
+        console.log(key);
+        let contexts = value.contexts;
+        // Filter the contexts using the intersection of the two sets
+        let filteredContexts = contexts.filter(ctx => {
+          if (!ctx.hasOwnProperty('in')){
+            return false;
+          }
+          let ctxIds = ctx.in;
+          let ctxSet = new XSet(ctxIds);
+          let intersection = ctxSet.xIntersection(activeContextIds);
+          return (intersection.size > 0);
+        });
+        // If there are no contexts left, then
+        // delete the document from the result set
+        if (filteredContexts.length === 0){
+          this.mapDocs.delete(key);
+          continue;
+        }
+        //Otherwise, reassign the map, copying
+        // the values but overwriting the contexts
+        this.mapDocs.set(key, {
+          ...value,
+          contexts: filteredContexts
+        });
+      }
+      return (this.mapDocs.size > 0);
+    } catch(e){
+      console.log('ERROR: ' + e.message);
+      return false;
+    }
+  }
 /**
   * @function SSResultSet~filterBySet
   * @description Deletes any entry in the list which doesn't match an item
