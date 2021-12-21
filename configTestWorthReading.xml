@@ -31,8 +31,8 @@
     </rules>
     
     <contexts>
-        <context match="div[@class='l']" label="poetic lines"/>
-        <context match="span[@class='note']" label="notes"/>
+        <context match="div[@class='l']"/>
+        <context match="span[@class='note']"/>
     </contexts>
     <excludes>
         <exclude type="index" match="html[not(descendant::meta[@name='Worth reading'][@content='true'])]"/>

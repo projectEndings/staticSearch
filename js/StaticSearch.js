@@ -135,7 +135,10 @@ class StaticSearch{
       }
 
       // Search in fieldset name for the URL
-      this.searchInFieldsetName = document.querySelector('.ssSearchInFilters > fieldset').title || null;
+      this.searchInFieldset = document.querySelector('.ssSearchInFilters > fieldset');
+      if (this.searchInFieldset){
+        this.searchInFieldsetName = this.searchInFieldset.title;
+      }
 
       //Optional search filters:
       //Search in filters
@@ -498,7 +501,6 @@ class StaticSearch{
 
 
     for (let cbx of this.searchInFilterCheckboxes){
-      let name = cbx.getAttribute('title');
       if ((searchParams.has(this.searchInFieldsetName)) && (searchParams.getAll(this.searchInFieldsetName).indexOf(cbx.value) > -1)){
           cbx.checked = true;
           searchToDo = true;
