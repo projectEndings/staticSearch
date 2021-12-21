@@ -24,6 +24,7 @@ VERSION
 # Other files generated in test build
 /test/ssTest/*
 /test/ssTestWorthReading/*
+/test/ssWorthReading
 
 # Temporary files from the build #
 ssTemp_*
@@ -47,4 +48,7 @@ config.xsl
 #Avoid including any generated zip distros.
 /staticSearch*.zip
 
+# Generated JS files
+js/ssSearch-debug.js
+js/ssSearch.js
 
