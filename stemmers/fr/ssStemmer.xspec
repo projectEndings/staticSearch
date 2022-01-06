@@ -131,7 +131,7 @@
         <x:param name="token" select="'égoïsme'"/>
         <x:param name="R2" select="ss:getRVR1R2(ss:preflight('égoïsme'))[6]"></x:param>
       </x:call>
-      <x:expect label="Result of step1a from 'égoïsme'" select="'égo'"/>
+      <x:expect label="Result of step1a from 'égoïsme'" select="'égoïsme'"/>
     </x:scenario>
   </x:scenario>
   
@@ -374,6 +374,14 @@
     </x:scenario>
   </x:scenario>
   
+  <x:scenario label="Test function ss:stem with problem word">
+    <x:scenario label="Testing ss:stem: 'égoïsme'">
+      <x:call function="ss:stem">
+        <x:param name="token" select="'égoïsme'"/>
+      </x:call>
+      <x:expect label="Result of stem from 'égoïsme'" select="'égo'"/>
+    </x:scenario>
+  </x:scenario>
   
   <!-- The big fat complete test set. -->
   <x:scenario label="Test function ss:stem, the core function">

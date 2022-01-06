@@ -120,7 +120,8 @@ class SSStemmer {
    * @return {string}       the stemmed token
    */
   stem(token) {
-    let preProc = this.preflight(token);
+    let normToken = token.normalize('NFC');
+    let preProc = this.preflight(normToken);
     let rvr1r2 = this.getRVR1R2(preProc);
     let step1Result = this.step1(preProc, rvr1r2);
     let doStep2a = (!(step1Result.step1MadeChange) || step1Result.foundMent);

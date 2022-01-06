@@ -46,6 +46,6 @@ class SSStemmer{
    * @return {String}       the stemmed token
    */
    stem(token){
-     return token.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+     return token.normalize('NFD').replace(/[\u0300-\u036f]/g, '').normalize('NFC');
    }
 }
