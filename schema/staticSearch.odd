@@ -1178,6 +1178,7 @@
             might be so large that providing a long list of individual checkboxes for all the options
             is not practical. Instead, the feature filter offers a method of finding and selecting 
             items using a typeahead control.</item>
+            <item>It is now possible to specify components of a page that should be searched within by using the <att>label</att> attribute on <gi>context</gi> (per issue <ref target="https://github.com/projectEndings/staticSearch/issues/20">#20</ref>). See <ptr target="#searchOnlyIn"/> for documentation.</item>
           </list>
         </div>
         
