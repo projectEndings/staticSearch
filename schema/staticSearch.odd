@@ -663,6 +663,26 @@
               </list>
             </p>
           </div>
+            <div xml:id="searchOnlyIn">
+              <head>Specifying searchable contexts (<q>search only in</q>)</head>
+              <p>Pages may contain different kinds of blocks, or <soCalled>contexts</soCalled>, that need to be differentiated. For example, consider a page for an online journal article, which includes the article’s title, an abstract, the body of the article, and footnotes. Users may want to search for terms only within abstracts or they may want to search only within the body of the article, ignoring editorial and paratextual material.</p>
+              <p>The <gi>context</gi> mechanism provides a way to specify particular components of a page that can be searched within using the <att>label</att> attribute.
+                <specList>
+                  <specDesc key="contexts"/>
+                  <specDesc key="context" atts="label"/>
+                </specList>
+                
+            The text in the <att>label</att> serves as the text for a filter option on the generated search page, which allows users to perform a search within only a particular component of the page. For instance, for a page structured like the journal article mentioned above, we could specify the abstract, the notes, and the document’s body like so:
+                <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                  <contexts> 
+                    <context match="article[@id='article_content']" label="Article text only"/>
+                    <context match="div[contains-token(@class,'footnote')]" label="Notes only"/>
+                    <context match="section[@id='abstract']" label="Abstracts only"/>
+                    <context match="span[contains-token(@class,'inline-note')]" label="Notes only"/>
+                  </contexts>
+                </egXML>
+               The generated search page will then contain a set of checkboxes derived from the distinct <att>label</att> values. There is no requirement for the <att>label</att> values to be distinct, but any identical labels will be treated as identical contexts (i.e. in the example above, searching for a string within "Notes only" will return all results found within both the div elements with a <att>class</att>="footnote" and the span elements with <att>class</att>="inline-note".) </p>
+            </div>
             <div xml:id="specifyingExclusions">
               <head>Specifying exclusions (optional)</head>
               
@@ -1158,6 +1178,7 @@
             might be so large that providing a long list of individual checkboxes for all the options
             is not practical. Instead, the feature filter offers a method of finding and selecting 
             items using a typeahead control.</item>
+            <item>It is now possible to specify components of a page that should be searched within by using the <att>label</att> attribute on <gi>context</gi> (per issue <ref target="https://github.com/projectEndings/staticSearch/issues/20">#20</ref>). See <ptr target="#searchOnlyIn"/> for documentation.</item>
           </list>
         </div>
         
@@ -1556,16 +1577,16 @@
           </classSpec>
           
           <classSpec ident="att.labelled" module="ss" type="atts">
-            <gloss>A class providing a label attribute that can be used to identify/describe contexts and other
-              things which benefit from description.</gloss>
+            <gloss>A class providing a label attribute that can be used to identify/describe contexts.</gloss>
             <attList>
               <attDef ident="label" usage="opt">
-                <gloss>A string identifier which may be descriptive.</gloss>
+                <gloss>A string identifier specifying the name for a given context.</gloss>
                 <datatype>
                   <dataRef name="string"/>
                 </datatype>
                 <remarks>
-                  <p>Note that setting a <att>label</att> currently has no effect.</p>
+                  <p>When describing a <gi>context</gi>, the <att>label</att> attribute names a component of the page that
+                    can be searched within (see <ptr target="#searchOnlyIn"/>).</p>
                 </remarks>
               </attDef>
             </attList>

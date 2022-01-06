@@ -83,6 +83,10 @@
             phase="end"/>
     </xsl:accumulator>
     
+    <xsl:accumulator name="context-ids" initial-value="()" as="xs:string*">
+        <xsl:accumulator-rule match="*[@ss-ctx-id]" select="($value, @ss-ctx-id)" phase="start"/>
+        <xsl:accumulator-rule match="*[@ss-ctx-id]" select="$value[position() lt last()]" phase="end"/>
+    </xsl:accumulator>
     
    <!--JT: This accumulator added for 110, but causes overflow issues in LOI;
        commented out temporarily while testing-->
@@ -94,7 +98,7 @@
         <xsl:accumulator-rule match="*[@ss-ctx]" select="$value[position() lt last()]" phase="end"/>
     </xsl:accumulator>-->
 
-    
+  
     <xd:doc>
         <xd:desc>Accumulator to keep track of custom @data-ss-* properties: on entering an element
         with a @data-ss-* attribute, add its value to the value map; on leaving the element, remove the attribute
@@ -431,6 +435,15 @@
                             <xsl:value-of select="@ss-fid"/>
                         </string>
                     </xsl:if>
+                    <xsl:if test="not(empty($ssContextMap))">
+                        <xsl:where-populated>
+                            <array key="in">
+                                <xsl:for-each select="accumulator-before('context-ids')">
+                                    <string><xsl:value-of select="."/></string>
+                                </xsl:for-each>
+                            </array>
+                        </xsl:where-populated>
+                    </xsl:if>
                     <!--Now we add the custom properties, if we need to-->
                     <xsl:if test="exists($properties) and map:size($properties) gt 0">
                         <map key="prop">
@@ -670,7 +683,7 @@
     </xsl:function>
     
     <xd:doc>
-        <xd:desc><xd:ref name="hcmc:returnContextNodes">hcmc:returnContextNodes</xd:ref> returns all of the descendant text nodes
+        <xd:desc><xd:ref name="hcmc:getContextNodes">hcmc:getContextNodes</xd:ref> returns all of the descendant text nodes
         for a context item; since context items can nest, however, this function checks to make sure that every nodes'
         context ancestor is the desired context. Note that this function is cached, since it's called many times.</xd:desc>
         <xd:param name="contextEl">The context element.</xd:param>

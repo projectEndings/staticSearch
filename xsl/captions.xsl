@@ -24,6 +24,7 @@
                 'ssClear': 'Clear',
                 'ssPoweredBy': 'Powered by',
                 'ssStartTyping': 'Start typing...',
+                'ssSearchIn': 'Search only in',
                 'ssScriptRequired': 'This page requires JavaScript.'
             },
         'fr': 

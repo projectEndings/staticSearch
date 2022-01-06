@@ -5,6 +5,7 @@
     xmlns:hcmc="http://hcmc.uvic.ca/ns/staticSearch"
     xpath-default-namespace="http://hcmc.uvic.ca/ns/staticSearch"
     xmlns:tei="http://www.tei-c.org/ns/1.0"
+    xmlns:map="http://www.w3.org/2005/xpath-functions/map"
     xmlns:xso="dummy"
     version="3.0">
     <xd:doc scope="stylesheet">
@@ -314,6 +315,7 @@
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
                 xmlns:hcmc="http://hcmc.uvic.ca/ns/staticSearch"
+                xmlns:map="http://www.w3.org/2005/xpath-functions/map"
                 exclude-result-prefixes="#all"
                 xpath-default-namespace="http://www.w3.org/1999/xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"
@@ -339,7 +341,7 @@
                 
                 <!--First, create the global variables and parameters-->
                 <xsl:call-template name="createGlobals" exclude-result-prefixes="#all"/>
-                
+            
                 <!--Now create the dictionary XML files-->
                 <xsl:call-template name="createDictionaryXML" exclude-result-prefixes="#all"/>
                 
@@ -378,15 +380,15 @@
                     </xsl:if>
                 </xsl:if>
                 
-                <xsl:if test="not(empty($contexts))">
-                    <xsl:call-template name="createContextRules" exclude-result-prefixes="#all"/>
-                    <xsl:if test="$verbose">
-                        <xsl:message>Create context rules</xsl:message>
-                        <xsl:message>
-                            <xsl:call-template name="createContextRules" exclude-result-prefixes="#all"/>
-                        </xsl:message>
-                    </xsl:if>
+                <xsl:call-template name="createContextRules" exclude-result-prefixes="#all"/>
+                
+                <xsl:if test="$verbose and not(empty($contexts))">
+                    <xsl:message>Create context rules</xsl:message>
+                    <xsl:message>
+                        <xsl:call-template name="createContextRules" exclude-result-prefixes="#all"/>
+                    </xsl:message>
                 </xsl:if>
+                
                 
                 <xsl:if test="not(empty($weightedRules))">
                     <xsl:call-template name="createWeightingRules"/>
@@ -538,6 +540,9 @@
             </xso:if>
         </xso:template>
     </xsl:template>
+    
+    
+    
 
     <xd:doc>
         <xd:desc>Template to create an XML representation of the dictionary file 
@@ -632,24 +637,74 @@ tokenization.
         <xd:desc>
             <xd:p>The <xd:ref name="createContextRules" type="template">createContextRules</xd:ref> template
                 creates an XSL identity template for the xpaths specified in the configuration file that are
-                specified as context nodes for the kwic.</xd:p>
+                specified as context nodes for the kwic. It also creates the map of context ids/labels,
+                if they are specified in the config, for creating the "Search in" configuration.</xd:p>
         </xd:desc>
     </xd:doc>
     <xsl:template name="createContextRules" exclude-result-prefixes="#all">
-        <xso:template match="{string-join($contexts/@match,' | ')}" priority="1" mode="contextualize">
-            <xso:if test="$verbose">
-                <xso:message>Template #contextualize: Adding @ss-ctx flag to <xso:value-of select="local-name(.)"/></xso:message>
-            </xso:if>
-            <xso:copy>
-                <xso:apply-templates select="@*" mode="#current"/>
-                <xsl:for-each select="$contexts">
-                    <xso:if test="self::{@match}">
-                        <xso:attribute name="ss-ctx" select="{concat('''',hcmc:stringToBoolean(@context),'''')}"/>
-                    </xso:if>
-                </xsl:for-each>
-                <xso:apply-templates select="node()" mode="#current"/>
-            </xso:copy>
-        </xso:template>
+        
+        <!--First create our own context label map, which has to be slightly more
+        complicated as context rules could have the same label-->
+        <xsl:variable name="contextMap" as="map(xs:string, xs:string)">
+            <xsl:map>
+                <!--Group all of the contexts by label-->
+                <xsl:for-each-group select="$contexts[@label]" group-by="normalize-space(@label)">
+                    <xsl:map-entry key="current-grouping-key()" select="'ssCtx' || position()"/>
+                </xsl:for-each-group>
+            </xsl:map>
+        </xsl:variable>
+        
+        <!--Now create the config XSL's version of the context map,
+            which may be a map (if there are contexts with labels)
+            OR an empty sequence (if there aren't)-->
+        <xso:variable name="ssContextMap" as="map(*)?">
+            <xsl:choose>
+                <xsl:when test="exists($contexts[@label])">
+                    <!--Create a usable map in the output config
+                        using the values assembled by $contextMap-->
+                   <xso:map>
+                       <xsl:for-each select="map:keys($contextMap)">
+                           <xso:map-entry 
+                               key="{hcmc:quoteString(.)}"
+                               select="{hcmc:quoteString($contextMap(.))}"/>
+                       </xsl:for-each>
+                   </xso:map>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xso:sequence select="()"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xso:variable>
+        
+        <xsl:if test="not(empty($contexts))">
+            <xso:template match="{string-join($contexts/@match,' | ')}" priority="1" mode="contextualize">
+                <xso:if test="$verbose">
+                    <xso:message>Template #contextualize: Adding @ss-ctx flag to <xso:value-of select="local-name(.)"/></xso:message>
+                </xso:if>
+                <xso:copy>
+                    <xso:apply-templates select="@*" mode="#current"/>
+                    <xsl:for-each select="$contexts">
+                        <xsl:variable name="thisCtx" select="@context"/>
+                        <xsl:variable name="thisMatchPtn" select="@match"/>
+                        <xsl:variable name="thisLabel" select="@label"/>
+                        <xsl:for-each select="tokenize($thisMatchPtn,'\s*\|\s*')">
+                            <xso:if test="self::{.}">
+                                <xso:attribute name="ss-ctx" select="{hcmc:quoteString(hcmc:stringToBoolean($thisCtx))}"/>
+                                <!--If the context has a label, then add its corresponding context id value-->
+                                <xsl:if test="exists($thisLabel)">
+                                    <xsl:variable name="contextId" 
+                                        select="$contextMap(normalize-space($thisLabel))"
+                                        as="xs:string"/>
+                                    <xso:attribute name="ss-ctx-id" select="{hcmc:quoteString($contextId)}"/>
+                                </xsl:if>
+                            </xso:if>
+                        </xsl:for-each>
+                        
+                    </xsl:for-each>
+                    <xso:apply-templates select="node()" mode="#current"/>
+                </xso:copy>
+            </xso:template>
+        </xsl:if>
     </xsl:template>
     
     <xd:doc>
@@ -716,6 +771,18 @@ tokenization.
                 <xsl:value-of select="false()"/>
             </xsl:otherwise>
         </xsl:choose>
+    </xsl:function>
+    
+    <xd:doc>
+        <xd:desc><xd:ref name="hcmc:quoteString">hcmc:quoteString</xd:ref> takes a string value
+        and adds single quotation marks around it; this is for instances where the output
+        XSLT needs to have a string value as its attribute value.</xd:desc>
+        <xd:param name="str">The input string (e.g. "value")</xd:param>
+        <xd:return>The input value with single quotation marks ("'value'")</xd:return>
+    </xd:doc>
+    <xsl:function name="hcmc:quoteString" as="xs:string">
+        <xsl:param name="str" as="item()"/>
+        <xsl:sequence select="concat('''', string($str), '''')"/>
     </xsl:function>
     
     <xd:doc>

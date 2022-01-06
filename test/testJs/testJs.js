@@ -346,7 +346,34 @@ tests.push({
     });
   }
 });
-
+//Testing for a word within a context
+tests.push({
+  setup: function () {
+    Sch.queryBox.value = 'Porter';
+    document.querySelector('.ssSearchInCheckboxList input[value="Citations"]').checked = true;
+  },
+  check: function (num) {
+    console.log('Search hook ' + num);
+    console.log('Testing results for "Porter" only in Citations');
+    checkResults({
+      docsFound: 1, contextsFound: 1, scoreTotal: 1
+    });
+  }
+});
+//Testing for a wildcard within a context
+tests.push({
+  setup: function () {
+    Sch.queryBox.value = 'con*';
+    document.querySelector('.ssSearchInCheckboxList input[value="Quotations"]').checked = true;
+  },
+  check: function (num) {
+    console.log('Search hook ' + num);
+    console.log('Testing results for wildcard "con*" only in Quotations');
+    checkResults({
+      docsFound: 1, contextsFound: 6, scoreTotal: 12
+    });
+  }
+});
 
 var startTime = null;
 

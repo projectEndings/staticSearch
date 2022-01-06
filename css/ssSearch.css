@@ -30,12 +30,12 @@ input.staticSearch_feat:disabled{
   cursor: wait;
 }
 
-div.ssDescFilters, div.ssDateFilters, div.ssNumFilters, div.ssBoolFilters{
+div.ssDescFilters, div.ssDateFilters, div.ssNumFilters, div.ssBoolFilters, div.ssSearchInFilters{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
 }
-div.ssDescFilters fieldset, div.ssDateFilters fieldset, div.ssNumFilters fieldset, div.ssBoolFilters fieldset{
+div.ssDescFilters fieldset, div.ssDateFilters fieldset, div.ssNumFilters fieldset, div.ssBoolFilters fieldset, div.ssSearchInFilters fieldset{
     margin: 0.25em auto;
     padding: 0.25em;
     flex-grow: 1;
@@ -48,13 +48,15 @@ div.ssFeatFilters fieldset{
     padding: 0.25em;
 }
 
-ul.ssDescCheckboxList{
+ul.ssDescCheckboxList,
+ul.ssSearchInCheckboxList{
     list-style-type: none;
     max-height: 8em;
     overflow-y: auto;
     min-width: 90%;
 }
-ul.ssDescCheckboxList li{
+ul.ssDescCheckboxList li,
+ul.ssSearchInCheckboxList li{
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;

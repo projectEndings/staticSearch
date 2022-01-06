@@ -134,7 +134,17 @@ class StaticSearch{
        throw new Error('Failed to find div with id "ssResults". Cannot provide search functionality.');
       }
 
+      // Search in fieldset name for the URL
+      this.searchInFieldset = document.querySelector('.ssSearchInFilters > fieldset');
+      if (this.searchInFieldset){
+        this.searchInFieldsetName = this.searchInFieldset.title;
+      }
+
       //Optional search filters:
+      //Search in filters
+      this.searchInFilterCheckboxes =
+           Array.from(document.querySelectorAll("input[type='checkbox'].staticSearch_searchIn"));
+
       //Description label filters
       this.descFilterCheckboxes =
            Array.from(document.querySelectorAll("input[type='checkbox'].staticSearch_desc"));
@@ -147,6 +157,8 @@ class StaticSearch{
       //Boolean filters
       this.boolFilterSelects =
            Array.from(document.querySelectorAll("select.staticSearch_bool"));
+
+
       //Feature filters will eventually have checkboxes, but they don't yet.
       this.featFilterCheckboxes = [];
       //However they do have inputs.
@@ -191,6 +203,9 @@ class StaticSearch{
       //test of the currently-configured set of filters. This is recreated
       //for every search.
       this.docsMatchingFilters = new XSet();
+
+      //An XSet object that will contain a list of active contexts
+      this.activeContexts = new XSet();
 
       //Any / all selector for combining filters. TODO. MAY NOT BE USED.
       this.matchAllFilters = false;
@@ -482,6 +497,18 @@ class StaticSearch{
         searchToDo = true;
       }
     }
+
+
+
+    for (let cbx of this.searchInFilterCheckboxes){
+      if ((searchParams.has(this.searchInFieldsetName)) && (searchParams.getAll(this.searchInFieldsetName).indexOf(cbx.value) > -1)){
+          cbx.checked = true;
+          searchToDo = true;
+      } else {
+        cbx.checked = false;
+      }
+    }
+
     for (let cbx of this.descFilterCheckboxes){
       let key = cbx.getAttribute('title');
       if ((searchParams.has(key)) && (searchParams.getAll(key).indexOf(cbx.value) > -1)){
@@ -667,6 +694,14 @@ class StaticSearch{
         if (q.length > 0){
           search.push('q=' + q);
         }
+
+        //Search in filter handling
+        for (let cbx of this.searchInFilterCheckboxes){
+          if (cbx.checked){
+            search.push(this.searchInFieldsetName + "=" + cbx.value);
+          }
+        }
+
         for (let cbx of this.descFilterCheckboxes){
           if (cbx.checked){
             search.push(cbx.title + '=' + cbx.value);
@@ -926,6 +961,11 @@ class StaticSearch{
   clearSearchForm(){
     try{
       this.queryBox.value = '';
+
+      for (let cbx of this.searchInFilterCheckboxes){
+        cbx.checked = false;
+      }
+
       for (let cbx of this.descFilterCheckboxes){
         cbx.checked = false;
       }
@@ -964,6 +1004,7 @@ class StaticSearch{
   processFilters(){
     try{
       this.docsMatchingFilters = this.getDocIdsForFilters();
+      this.activeContexts = new XSet(this.searchInFilterCheckboxes.filter(cbx => cbx.checked).map(c => c.id));
       return true;
     }
     catch(e){
@@ -1482,6 +1523,11 @@ class StaticSearch{
   For #3, construct the result set directly from the filter doc list,
      passing only ids and titles, for a simple listing display.
   For #4, do nothing at all (or possibly display an error message).
+
+  For cases #1 and #2 (i.e. where there is a search term), there may be
+  active context filters; those are a bit different, since they do not require
+  any fetching (all of that information is contained within the JSON).
+
   */
 //Since we have to handle discarded search terms in the same
 //manner whatever the scenario, we do them first.
@@ -1582,7 +1628,8 @@ if (this.discardedTerms.length > 0){
                   if (phraseRegex.test(unmarkedContext)){
   //We have a candidate document for inclusion, and a candidate context.
                     let c = unmarkedContext.replace(phraseRegex, '<mark>' + '$&' + '</mark>');
-                    currContexts.push({form: str, context: c, weight: 2, fid: cntxt.fid ? cntxt.fid : '', prop: cntxt.prop ? cntxt.prop : {}});
+                    currContexts.push(
+                    {form: str, context: c, weight: 2, fid: cntxt.fid ? cntxt.fid : '', prop: cntxt.prop ? cntxt.prop : {}, in: cntxt.in ? cntxt.in : []});
                   }
                 }
   //If we've found contexts, we know we have a document to add to the results.
@@ -1775,6 +1822,14 @@ if (this.discardedTerms.length > 0){
       if (this.docsMatchingFilters.filtersActive == true){
         this.resultSet.filterBySet(this.docsMatchingFilters);
       }
+
+      // Now process the resultSet and filter out any contexts
+      // and docs that by active contexts, if any
+      if (this.activeContexts.size > 0){
+   
+        this.resultSet.filterByContexts(this.activeContexts);
+      }
+
 
       this.resultSet.sortByScoreDesc();
       this.clearResultsDiv();
