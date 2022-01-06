@@ -239,9 +239,14 @@ class SSResultSet{
         }
         //Otherwise, reassign the map, copying
         // the values but overwriting the contexts
+        // and the score
+        
         this.mapDocs.set(key, {
           ...value,
-          contexts: filteredContexts
+          contexts: filteredContexts,
+          score: parseInt(filteredContexts.reduce((total, b) => {
+              return total + b.weight;
+           }, 0))
         });
       }
       return (this.mapDocs.size > 0);

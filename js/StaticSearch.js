@@ -1628,7 +1628,8 @@ if (this.discardedTerms.length > 0){
                   if (phraseRegex.test(unmarkedContext)){
   //We have a candidate document for inclusion, and a candidate context.
                     let c = unmarkedContext.replace(phraseRegex, '<mark>' + '$&' + '</mark>');
-                    currContexts.push({form: str, context: c, weight: 2, fid: cntxt.fid ? cntxt.fid : '', prop: cntxt.prop ? cntxt.prop : {}});
+                    currContexts.push(
+                    {form: str, context: c, weight: 2, fid: cntxt.fid ? cntxt.fid : '', prop: cntxt.prop ? cntxt.prop : {}, in: cntxt.in ? cntxt.in : []});
                   }
                 }
   //If we've found contexts, we know we have a document to add to the results.
@@ -1825,6 +1826,7 @@ if (this.discardedTerms.length > 0){
       // Now process the resultSet and filter out any contexts
       // and docs that by active contexts, if any
       if (this.activeContexts.size > 0){
+   
         this.resultSet.filterByContexts(this.activeContexts);
       }
 
