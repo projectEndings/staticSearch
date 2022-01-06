@@ -35,6 +35,7 @@
                 'ssClear': 'Effacer',
                 'ssPoweredBy': 'Réalisé par',
                 'ssStartTyping': 'Commencez à taper...',
+                'ssSearchIn': 'Recherchez seulement dans',
                 'ssScriptRequired': 'Cette page a besoin de Javascript.'
             }
         }"/>
