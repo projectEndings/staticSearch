@@ -189,16 +189,17 @@ class SSStemmer{
    * @return {string}       the stemmed token
    */
    stem(token){
-     if (token.length < 3){
-       return token;
+    let normToken = token.normalize('NFC');
+     if (normToken.length < 3){
+       return normToken;
      }
      else{
-       var indEx = this.arrExceptions.indexOf(token);
+       var indEx = this.arrExceptions.indexOf(normToken);
        if (indEx > -1){
          return this.arrExceptionStems[indEx];
        }
        else{
-         var pref = this.preflight(token);
+         var pref = this.preflight(normToken);
          var R = this.getR1AndR2(pref);
          var s0 = this.step0(pref);
          var s1 = this.step1(s0, R.r1of);

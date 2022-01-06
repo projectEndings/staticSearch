@@ -30,7 +30,7 @@
   </xd:doc>
   <xsl:function name="ss:stem" as="xs:string" new-each-time="no">
     <xsl:param name="token" as="xs:string"/>
-    <xsl:sequence select="replace(normalize-unicode($token, 'NFD'),'[&#x0300;-&#x036f;]', '')"/>
+    <xsl:sequence select="normalize-unicode(replace(normalize-unicode($token, 'NFD'),'[&#x0300;-&#x036f;]', ''), 'NFC')"/>
   </xsl:function>
   
   
