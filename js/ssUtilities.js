@@ -89,8 +89,9 @@
   ss.captions.get('en').strDiscardedTerms    = 'Not searched (too common or too short): ';
   ss.captions.get('en').strShowMore          = 'Show more';
   ss.captions.get('en').strShowAll           = 'Show all';
-  ss.captions.get('en').strTooManyResults    = 'Your search returned too many results. Include more filters or more search terms.'
-  //French
+  ss.captions.get('en').strTooManyResults    = 'Your search returned too many results. Include more filters or more search terms.';
+  
+  //French: thank you Claire Carlin.
   ss.captions.set('fr', {});
   ss.captions.get('fr').strLoading           = 'Chargement en cours...';
   ss.captions.get('fr').strSearching         = 'Recherche en cours...';
@@ -106,6 +107,23 @@
   ss.captions.get('fr').strShowMore          = 'Montrez plus';
   ss.captions.get('fr').strShowAll           = 'Montrez tout';
   ss.captions.get('fr').strTooManyResults    = 'Votre recherche a obtenu trop de résultats. Il faut inclure plus de filtres ou plus de termes de recherche.';
+  
+  //German: thank you @babslgam and @martinantonmueller
+  ss.captions.set('de', {});
+  ss.captions.get('de').strLoading           = 'lädt…';
+  ss.captions.get('de').strSearching         = 'sucht…';
+  ss.captions.get('de').strDocumentsFound    = 'Treffer: ';
+  ss.captions.get('de')[PHRASE]              = 'Exakte Formulierung: ';
+  ss.captions.get('de')[MUST_CONTAIN]        = 'Muss enthalten: ';
+  ss.captions.get('de')[MUST_NOT_CONTAIN]    = 'Darf nicht enthalten: ';
+  ss.captions.get('de')[MAY_CONTAIN]         = 'Kann enthalten: ';
+  ss.captions.get('de')[WILDCARD]            = 'Platzhalter: ';
+  ss.captions.get('de').strScore             = 'Rating: ';
+  ss.captions.get('de').strSearchTooBroad    = 'Die Suche ergibt zu viele Treffer. Bitte die Zeichenzahl im Wort erhöhen.';
+  ss.captions.get('de').strDiscardedTerms    = 'Nicht gesucht (zu kurz oder zu allgemein): ';
+  ss.captions.get('de').strShowMore          = 'Mehr';
+  ss.captions.get('de').strShowAll           = 'Zeige alles';
+  ss.captions.get('de').strTooManyResults    = 'Die Suche ergibt zu viele Treffer. Durch Filterung oder Suchbegriffe einschränken.';
 
 /**
   * @property ss.stopwords

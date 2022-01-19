@@ -37,6 +37,17 @@
                 'ssStartTyping': 'Commencez à taper...',
                 'ssSearchIn': 'Recherchez seulement dans',
                 'ssScriptRequired': 'Cette page a besoin de Javascript.'
+             },
+         'de': 
+            map{
+                'ssDoSearch': 'Suche',
+                'ssSearching': 'Suche…',
+                'ssLoading': 'Lade…',
+                'ssClear': 'Leeren',
+                'ssPoweredBy': 'Bereitgestellt von',
+                'ssStartTyping': 'Zu tippen beginnen…',
+                'ssSearchIn': 'Suche nur in',
+                'ssScriptRequired': 'Diese Seite benötigt JavaScript.'
             }
         }"/>
     
