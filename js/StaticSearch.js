@@ -2020,7 +2020,7 @@ if (this.discardedTerms.length > 0){
     let strRe  = esc.replace(/[\?]/g, '[^\\|]').replace(/[\*]/g, '[^\\|]$&?');
     //Test the regex, and return it if OK, otherwise return null.
     try{
-      let re = new RegExp('\\|(' + strRe + ')\\|', 'g');
+      let re = new RegExp('\\|(' + strRe + ')\\|', 'gi');
       return re;
     }
     catch(e){
