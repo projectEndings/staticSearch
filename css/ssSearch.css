@@ -54,6 +54,7 @@ ul.ssSearchInCheckboxList{
     max-height: 8em;
     overflow-y: auto;
     min-width: 90%;
+    padding-left: 0.25em;
 }
 ul.ssDescCheckboxList li,
 ul.ssSearchInCheckboxList li{
