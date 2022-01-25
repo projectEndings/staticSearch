@@ -856,7 +856,7 @@
                 select="$filterIdPrefix || '_' || $thisPosition" 
                 as="xs:string"/>
             <xsl:variable name="declaredSortKey"
-                select="current-group()[@data-ssFilterSortKey][1]/@data-ssFilterSortKey"
+                select="current-group()[@data-ssfiltersortkey][1]/@data-ssfiltersortkey"
                 as="xs:string?"/>
             <xsl:variable name="currMetas" select="current-group()" as="element(meta)+"/>
             

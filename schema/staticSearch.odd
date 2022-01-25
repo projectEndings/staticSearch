@@ -1171,6 +1171,10 @@
         </list>
         <div xml:id="newIn1.4">
           <head>Changes in version 1.4</head>
+          <p>Deprecations requiring changes to existing projects:</p>
+          <list>
+            <item>Filter sort keys must be declared using the all lower-cased data attribute <att>data-ssfiltersortkey</att>. While the documentation in <ptr target="#descFilterSorting"/> correctly specified the attribute's name, the processing code only accepted the camel-case version, which is invalid XHTML5. In 1.4, using <att>data-ssFilterSortKey</att> will result in WARNINGs; in all subsequent versions, using the camel-case attribute name will result in build failures.</item>
+          </list>
           <p>New features and enhancements:</p>
           <list>
             <item>A new <ref target="#featFilters">feature filter</ref> has been added to the collection of search facets.

@@ -33,9 +33,9 @@
       <p>This is a simple search page for the test collection. It runs a number of automated
          tests on load.
          Note that the <q>Document type</q> options should appear sorted in reverse alphabetical order, 
-         as a test of the functionality of the <code>@data-ssFilterSortKey</code> setting; the <q>Random 
+         as a test of the functionality of the <code>@data-ssfiltersortkey</code> setting; the <q>Random 
             numeric value</q> options should appear in ascending numeric order although they do not have a
-         configured <code>@data-ssFilterSortKey</code> setting.</p>
+         configured <code>@data-ssfiltersortkey</code> setting.</p>
       
       
       <p>For other ad-hoc tests of JSON sanitizing, search for the word "bold".</p>
