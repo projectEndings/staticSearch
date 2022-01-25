@@ -305,8 +305,6 @@
         </xsl:copy>
     </xsl:template>
     
-    
-    
     <xd:doc>
         <xd:desc>Template to check for the soon-to-be deprecated period syntax in class names; in all releases after 1.2,
             staticSearch classes should use an underscore, not a period (i.e. staticSearch_desc).</xd:desc>
@@ -343,6 +341,17 @@
                 </xsl:choose>
             </xsl:for-each>
         </xsl:attribute>
+    </xsl:template>
+    
+    <xd:doc>
+        <xd:desc>Template (added for release 1.4) to catch any instance of 
+        @data-ssFilterSortKey, which should be @data-ssfiltersortkey per the 
+        XHTML spec. This should be deprecated for version 1.4 and by invalid for
+        1.5.</xd:desc>
+    </xd:doc>
+    <xsl:template match="@data-ssFilterSortKey" mode="clean">
+        <xsl:message terminate="no">WARNING: @data-ssFilterSortKey is deprecated and will not be supported in the next version of staticSearch. Use @data-ssfiltersortkey (all lowercased) instead.</xsl:message>
+        <xsl:attribute name="data-ssfiltersortkey" select="."/>
     </xsl:template>
     
     
