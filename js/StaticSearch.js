@@ -588,13 +588,7 @@ class StaticSearch{
 
     if (searchToDo === true){
       //Open any ancestor details elements.
-      changedControls.forEach(function(ctrl){
-        let d = ctrl.closest('details:not([open])');
-        while (d !== null){
-          d.open = true;
-          d = d.closest('details:not([open])');
-        }
-      });
+      this.openAncestorElements(changedControls);
 
       this.doSearch(popping);
       return true;
@@ -602,6 +596,27 @@ class StaticSearch{
     else{
       return false;
     }
+  }
+
+/** @function StaticSearch~openAncestorElements
+ * @param {Array} startingElements The array of elements from which
+ *                to search up the tree for ancestors which need to
+ *                be opened. For each element, any ancestor details
+ *                element is opened so that the starting control
+ *                is not hidden.
+ * @return {boolean} true if any change is made, otherwise false.
+ */
+  openAncestorElements(startingElements){
+    let retVal = false;
+    startingElements.forEach(function(ctrl){
+      let d = ctrl.closest('details:not([open])');
+      while (d !== null){
+        d.open = true;
+        retVal = true;
+        d = d.closest('details:not([open])');
+      }
+    });
+    return retVal;
   }
 
 /** @function StaticSearch~doSearch
