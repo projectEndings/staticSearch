@@ -490,20 +490,24 @@ class StaticSearch{
     //Do we need to do a search?
     let searchToDo = false; //default
 
+    //Keep an array of all the elements we configure so we can traverse
+    //the hierarchy and open any closed details elements above them.
+    let changedControls = [];
+
     if (searchParams.has('q')){
       let currQ = searchParams.get('q').trim();
       if (currQ !== ''){
         this.queryBox.value = searchParams.get('q');
         searchToDo = true;
+        changedControls.push(this.queryBox);
       }
     }
-
-
 
     for (let cbx of this.searchInFilterCheckboxes){
       if ((searchParams.has(this.searchInFieldsetName)) && (searchParams.getAll(this.searchInFieldsetName).indexOf(cbx.value) > -1)){
           cbx.checked = true;
           searchToDo = true;
+          changedControls.push(cbx);
       } else {
         cbx.checked = false;
       }
@@ -514,6 +518,7 @@ class StaticSearch{
       if ((searchParams.has(key)) && (searchParams.getAll(key).indexOf(cbx.value) > -1)){
           cbx.checked = true;
           searchToDo = true;
+          changedControls.push(cbx);
       }
       else{
         cbx.checked = false;
@@ -527,6 +532,7 @@ class StaticSearch{
       let filterId = inp.parentNode.id;
       if (searchParams.has(key)){
         searchToDo = true;
+        changedControls.push(inp);
     //if so, check whether its typeahead control has been set up yet.
         if (!this.mapFeatFilters.has(key)){
     //If not, await its JSON retrieval, and set it up.
@@ -544,6 +550,7 @@ class StaticSearch{
       if ((searchParams.has(key)) && (searchParams.get(key).length > 3)){
         txt.value = searchParams.get(key);
         searchToDo = true;
+        changedControls.push(txt);
       }
       else{
         txt.value = '';
@@ -554,6 +561,7 @@ class StaticSearch{
       if ((searchParams.has(key)) && (searchParams.get(key).length > 3)){
         num.value = searchParams.get(key);
         searchToDo = true;
+        changedControls.push(num);
       }
       else{
         num.value = '';
@@ -566,10 +574,12 @@ class StaticSearch{
         case 'true':
           sel.selectedIndex = 1;
           searchToDo = true;
+          changedControls.push(sel);
           break;
         case 'false':
           sel.selectedIndex = 2;
           searchToDo = true;
+          changedControls.push(sel);
           break;
         default:
           sel.selectedIndex = 0;
@@ -577,6 +587,15 @@ class StaticSearch{
     }
 
     if (searchToDo === true){
+      //Open any ancestor details elements.
+      changedControls.forEach(function(ctrl){
+        let d = ctrl.closest('details:not([open])');
+        while (d !== null){
+          d.open = true;
+          let d = d.closest('details:not([open])');
+        }
+      });
+
       this.doSearch(popping);
       return true;
     }
