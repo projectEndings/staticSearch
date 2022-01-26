@@ -592,7 +592,7 @@ class StaticSearch{
         let d = ctrl.closest('details:not([open])');
         while (d !== null){
           d.open = true;
-          let d = d.closest('details:not([open])');
+          d = d.closest('details:not([open])');
         }
       });
 
