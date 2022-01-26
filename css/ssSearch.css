@@ -34,6 +34,7 @@ div.ssDescFilters, div.ssDateFilters, div.ssNumFilters, div.ssBoolFilters, div.s
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    gap: 0.25em;
 }
 div.ssDescFilters fieldset, div.ssDateFilters fieldset, div.ssNumFilters fieldset, div.ssBoolFilters fieldset, div.ssSearchInFilters fieldset{
     margin: 0.25em auto;
@@ -41,6 +42,7 @@ div.ssDescFilters fieldset, div.ssDateFilters fieldset, div.ssNumFilters fieldse
     flex-grow: 1;
     display: flex;
     flex-wrap: wrap;
+    gap: 0.25em;
 }
 
 div.ssFeatFilters fieldset{
@@ -77,6 +79,9 @@ div.ssNumFilters input[type="number"], div.ssDateFilters input[type="text"], div
 
 div#ssResults{
   min-height: 50vh;
+/* Leaving a bit of space above when scrolling to results. */
+  padding-top: 1rem;
+  margin-top: -1rem;
 }
 div#ssResults>ul>li{
     display: flex;
