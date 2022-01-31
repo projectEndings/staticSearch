@@ -30,6 +30,7 @@ input.staticSearch_feat:disabled{
   cursor: wait;
 }
 
+// Visually hide elements necessary for accessibility
 fieldset.ssFieldset > legend.sr-only{
      position: absolute;
   width: 1px;
@@ -40,7 +41,7 @@ fieldset.ssFieldset > legend.sr-only{
   clip: rect(0,0,0,0);
   border: 0; 
 }
-// Visually hide elements necessary for accessibility
+
 
 div.ssDescFilters, div.ssDateFilters, div.ssNumFilters, div.ssBoolFilters, div.ssSearchInFilters{
     display: flex;
