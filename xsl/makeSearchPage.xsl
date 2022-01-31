@@ -242,7 +242,7 @@
                          browser behaviour is too variable. -->
                     <!--<xsl:variable name="validationPattern" as="xs:string">\s*(.*([^\*\?\[\]\s]+[^\s]*){3})+\s*</xsl:variable>
                     <input type="text" id="ssQuery" pattern="{$validationPattern}"/>-->
-                    <input type="text" id="ssQuery"/>
+                    <input type="text" id="ssQuery" aria-label="{hcmc:getCaption('ssDoSearch', $captionLang)}"/>
                     <button id="ssDoSearch"><xsl:sequence select="hcmc:getCaption('ssDoSearch', $captionLang)"/></button>
                 </span>
                 
@@ -547,7 +547,7 @@
                 
                 <p>
                     <xsl:sequence select="hcmc:getCaption('ssPoweredBy', $captionLang)"/>
-                </p> <a href="https://github.com/projectEndings/staticSearch"><xsl:apply-templates select="doc($svgLogoFile)" mode="svgLogo"/></a>
+                </p> <a href="https://github.com/projectEndings/staticSearch" aria-label="{hcmc:getCaption('ssPoweredBy', $captionLang)} staticSearch"><xsl:apply-templates select="doc($svgLogoFile)" mode="svgLogo"/></a>
             </div>
         </xsl:copy>
     </xsl:template>
