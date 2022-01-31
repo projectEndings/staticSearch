@@ -242,7 +242,7 @@
                          browser behaviour is too variable. -->
                     <!--<xsl:variable name="validationPattern" as="xs:string">\s*(.*([^\*\?\[\]\s]+[^\s]*){3})+\s*</xsl:variable>
                     <input type="text" id="ssQuery" pattern="{$validationPattern}"/>-->
-                    <input type="text" id="ssQuery"/>
+                    <input type="text" id="ssQuery" aria-label="{hcmc:getCaption('ssDoSearch', $captionLang)}"/>
                     <button id="ssDoSearch"><xsl:sequence select="hcmc:getCaption('ssDoSearch', $captionLang)"/></button>
                 </span>
                 
@@ -485,6 +485,8 @@
                         <div class="ssBoolFilters">
                             <!-- We create a single fieldset for all these filters, since they're individual. -->
                             <fieldset class="ssFieldset">
+                                <!--Add a legend here to make this pass accessibility validation-->
+                                <legend class="sr-only">Boolean filters</legend>
                                 <!-- We stash these in a variable so we can output them 
                                       sorted alphabetically based on their names, which we
                                       don't know until they're created. -->
@@ -547,7 +549,7 @@
                 
                 <p>
                     <xsl:sequence select="hcmc:getCaption('ssPoweredBy', $captionLang)"/>
-                </p> <a href="https://github.com/projectEndings/staticSearch"><xsl:apply-templates select="doc($svgLogoFile)" mode="svgLogo"/></a>
+                </p> <a href="https://github.com/projectEndings/staticSearch" aria-label="{hcmc:getCaption('ssPoweredBy', $captionLang)} staticSearch"><xsl:apply-templates select="doc($svgLogoFile)" mode="svgLogo"/></a>
             </div>
         </xsl:copy>
     </xsl:template>
