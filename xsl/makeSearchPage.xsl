@@ -485,6 +485,8 @@
                         <div class="ssBoolFilters">
                             <!-- We create a single fieldset for all these filters, since they're individual. -->
                             <fieldset class="ssFieldset">
+                                <!--Add a legend here to make this pass accessibility validation-->
+                                <legend class="sr-only">Boolean filters</legend>
                                 <!-- We stash these in a variable so we can output them 
                                       sorted alphabetically based on their names, which we
                                       don't know until they're created. -->
