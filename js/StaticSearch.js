@@ -1304,7 +1304,7 @@ class StaticSearch{
           }
         }
         for (let ctrl of document.querySelectorAll('input[type="number"].staticSearch_num')){
-          if (ctrl.value.length > 3){
+          if (ctrl.value.length > 0){
             let filterId = ctrl.id.split('_')[0];
             if (this.mapJsonRetrieved.get(filterId) != GOT){
               filterIds.add(filterId);
