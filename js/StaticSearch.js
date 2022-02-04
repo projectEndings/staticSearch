@@ -558,7 +558,7 @@ class StaticSearch{
     }
     for (let num of this.numFilterInputs){
       let key = num.getAttribute('title') + num.id.replace(/^.+((_from)|(_to))$/, '$1');
-      if ((searchParams.has(key)) && (searchParams.get(key).length > 3)){
+      if ((searchParams.has(key)) && (searchParams.get(key).length > 0)){
         num.value = searchParams.get(key);
         searchToDo = true;
         changedControls.push(num);
@@ -1132,7 +1132,7 @@ class StaticSearch{
         }
       }
 
-      //Find each date pair and get its descriptor.
+      //Find each number pair and get its descriptor.
       let nums = document.querySelectorAll('fieldset[id ^= "ssNum"]');
       for (let num of nums){
         let numName = num.title;
@@ -1304,7 +1304,7 @@ class StaticSearch{
           }
         }
         for (let ctrl of document.querySelectorAll('input[type="number"].staticSearch_num')){
-          if (ctrl.value.length > 3){
+          if (ctrl.value.length > 0){
             let filterId = ctrl.id.split('_')[0];
             if (this.mapJsonRetrieved.get(filterId) != GOT){
               filterIds.add(filterId);
