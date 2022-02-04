@@ -1132,7 +1132,7 @@ class StaticSearch{
         }
       }
 
-      //Find each date pair and get its descriptor.
+      //Find each number pair and get its descriptor.
       let nums = document.querySelectorAll('fieldset[id ^= "ssNum"]');
       for (let num of nums){
         let numName = num.title;
