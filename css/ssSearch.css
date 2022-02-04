@@ -30,7 +30,7 @@ input.staticSearch_feat:disabled{
   cursor: wait;
 }
 
-// Visually hide elements necessary for accessibility
+/* Visually hide elements necessary for accessibility */
 fieldset.ssFieldset > legend.sr-only{
      position: absolute;
   width: 1px;
