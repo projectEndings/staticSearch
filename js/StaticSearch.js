@@ -558,7 +558,7 @@ class StaticSearch{
     }
     for (let num of this.numFilterInputs){
       let key = num.getAttribute('title') + num.id.replace(/^.+((_from)|(_to))$/, '$1');
-      if ((searchParams.has(key)) && (searchParams.get(key).length > 3)){
+      if ((searchParams.has(key)) && (searchParams.get(key).length > 0)){
         num.value = searchParams.get(key);
         searchToDo = true;
         changedControls.push(num);
