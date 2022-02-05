@@ -1197,6 +1197,9 @@
             the search page is initially configuring itself.</item>
             <item>All inline CSS and JavaScript has now been moved to external
             files, to better suit Content Security Policy constraints.</item>
+            <item>The staticSearch report has been simplified and no longer produces a concordance of stems by default. The concordance can be built at the command line by calling the <code>concordance</code> target in ant:
+            <eg>ant concordance -DssConfig=cfg.xml</eg>
+            </item>
           </list>
           <p>Bug fixes:</p>
           <list>
@@ -1205,6 +1208,7 @@
             <item>A bug which caused the tokenizer to assume wordbreaks when encountering
             certain diacritics has been fixed.</item>
           </list>
+          <p>All issues and tickets related to version 1.4 can be found on <ref target="https://github.com/projectEndings/staticSearch/issues?q=is%3Aissue+milestone%3A%22Release+1.4%22+" >GitHub</ref>.</p>
         </div>
         
         <div xml:id="newIn1.3">
@@ -1411,7 +1415,7 @@
           </row>
           <row>
             <cell><ref target="https://loi.uvic.ca/archive/">Landscapes of Injustice</ref></cell>
-            <cell>The main page is itself a search page; this is a digital archive with multiple staticSearch interfaces.</cell>
+            <cell><ref target="https://loi.uvic.ca/archive/search.html">Search</ref>. The home page is itself a search page; this is a digital archive with multiple staticSearch interfaces.</cell>
             <cell><ref target="https://hcmc.uvic.ca/svn/landscapes/production/">SVN</ref></cell>
           </row>
           <row>
