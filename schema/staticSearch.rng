@@ -5,7 +5,7 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2021-11-14T01:12:58Z. 2019-2021.
+Schema generated from ODD source 2022-02-05T00:39:32Z. 2019-2022.
 TEI Edition: Version 4.3.0. Last updated on
         31st August 2021, revision b4f72b1ff
 TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.3.0/
@@ -192,7 +192,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.3.0/
    <define name="att.labelled.attribute.label">
       <optional>
          <attribute name="label">
-            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(A string identifier which may be descriptive.) </a:documentation>
+            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(A string identifier specifying the name for a given context.) </a:documentation>
             <data type="string"/>
          </attribute>
       </optional>

@@ -27,7 +27,7 @@
         </docTitle>
         <docAuthor>Martin Holmes</docAuthor>
         <docAuthor>Joey Takeda</docAuthor>
-        <docDate>2019-2021</docDate>
+        <docDate>2019-2022</docDate>
       </titlePage>
       <p>This documentation provides instructions on how to use the Project Endings
         staticSearch Generator to provide a fully-functional search <soCalled>engine</soCalled>
@@ -1167,7 +1167,7 @@
         <head>What's new since version 1.0?</head>
         <list>
           <item>Level: Intermediate</item>
-          <item>Last Updated: <date when="2021-05-12">12 May 2021</date></item>
+          <item>Last Updated: <date when="2022-02-04">4 February 2022</date></item>
         </list>
         <div xml:id="newIn1.4">
           <head>Changes in version 1.4</head>
@@ -1177,12 +1177,33 @@
           </list>
           <p>New features and enhancements:</p>
           <list>
+            <item>A new <ref target="#searchOnlyIn">Search only in</ref> feature has been added. 
+              This enables you to specify regions of documents and label them using the 
+              <att>label</att> attribute on <gi>context</gi> (per issue <ref target="https://github.com/projectEndings/staticSearch/issues/20">#20</ref>). 
+              Users can then check only the regions they would 
+            like to get search results from.</item>
             <item>A new <ref target="#featFilters">feature filter</ref> has been added to the collection of search facets.
             This provides an option for cases where the number of items in a description filter
             might be so large that providing a long list of individual checkboxes for all the options
             is not practical. Instead, the feature filter offers a method of finding and selecting 
             items using a typeahead control.</item>
-            <item>It is now possible to specify components of a page that should be searched within by using the <att>label</att> attribute on <gi>context</gi> (per issue <ref target="https://github.com/projectEndings/staticSearch/issues/20">#20</ref>). See <ptr target="#searchOnlyIn"/> for documentation.</item>
+            <item>Search page controls are now <ref target="https://www.w3.org/WAI/WCAG2AA-Conformance">WCAG2</ref>-compliant.</item>
+            <item>When you navigate back or forward to a previous search, if any 
+            of the filters which were used in that search are hidden inside closed 
+            HTML details elements, those elements will be opened.</item>
+            <item>A noscript element is now inserted into the search page to handle
+            cases where JavaScript is turned off in the user's browser.</item>
+            <item>A <soCalled>Loading...</soCalled> splash screen is shown when 
+            the search page is initially configuring itself.</item>
+            <item>All inline CSS and JavaScript has now been moved to external
+            files, to better suit Content Security Policy constraints.</item>
+          </list>
+          <p>Bug fixes:</p>
+          <list>
+            <item>A bug which caused number filters to be ignored when navigating back
+            to a previous search has been fixed.</item>
+            <item>A bug which caused the tokenizer to assume wordbreaks when encountering
+            certain diacritics has been fixed.</item>
           </list>
         </div>
         
@@ -1372,6 +1393,11 @@
             <cell><ref target="https://graves.uvic.ca/">The Robert Graves Diary</ref></cell>
             <cell><ref target="https://graves.uvic.ca/search.html">Search</ref></cell>
             <cell><ref target="https://hcmc.uvic.ca/svn/graves/config_staticSearch.xml">SVN</ref></cell>
+          </row>
+          <row>
+            <cell><ref target="https://francotoile.uvic.ca/">Francotoile</ref> ( a digital library of videos and transcripts of French speakers from around the world)</cell>
+            <cell><ref target="https://francotoile.uvic.ca/search.html">Search</ref></cell>
+            <cell><ref target="https://hcmc.uvic.ca/svn/francotoile/trunk/config_staticSearch.xml">SVN</ref></cell>
           </row>
           <row>
             <cell><ref target="https://dvpp.uvic.ca">Digital Victorian Periodical Poetry</ref></cell>
