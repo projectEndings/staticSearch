@@ -198,7 +198,7 @@ div#ssPoweredBy>* {
 div.ssFeatFilters>fieldset.ssFieldset>menu{
     padding: 0;
     margin: 0;
-    display: flex;
+    display: none;
     flex-direction: column;
     gap: 0;
     width: min-content;
@@ -214,6 +214,11 @@ div.ssFeatFilters>fieldset.ssFieldset>menu>div.select{
 div.ssFeatFilters>fieldset.ssFieldset>menu>div.select:hover, div.ssFeatFilters>fieldset.ssFieldset>menu>div.select:focus{
     background-color: lightgray;
 }
+/* Only display the menu when the focus is within the fieldset. */
+div.ssFeatFilters>fieldset.ssFieldset:focus-within>menu{
+  display: flex;
+}
+
 div.ssSuggest{
     padding: 0.5em;
     display: flex;
