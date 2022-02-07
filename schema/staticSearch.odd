@@ -425,6 +425,35 @@
               and <gi>contexts</gi> (<ptr target="#specifyingContexts"/>) for the best results.
             </p>
             
+            <p>For examples of full configuration files, see the <ref target="https://github.com/projectEndings/staticSearch">staticSearch GitHub repository</ref> as well as the list of projects in <ptr target="#projectsUsingSS"/>, which provides a link to each site’s configuration file.</p>
+            
+            <div xml:id="rootConfigElement">
+              <head>The <gi>config</gi> element</head>
+              <p>The configuration element has a root <gi>config</gi> element in the staticSearch namespace (<val>http://hcmc.uvic.ca/ns/staticSearch</val>):
+                
+                <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                  <config xmlns="http://hcmc.uvic.ca/ns/staticSearch">
+                    <params>
+                      <!--Parameters-->
+                    </params>
+                    <rules>
+                      <!--Rules-->
+                    </rules>
+                    <contexts>
+                      <!--Contexts-->
+                    </contexts>
+                  </config>
+                </egXML>
+                
+               The <gi>config</gi> element may bear the optional <att>version</att> attribute, which provides the major version number (i.e. a single integer value) of staticSearch that corresponds with the configuration file. 
+                
+              <specList>
+                <specDesc key="config" atts="version"/>
+              </specList>
+                Though optional, the <att>version</att> attribute is recommended for all configuration files; future version of staticSearch may introduce breaking changes to the structure and syntax of the configuration file, which can be more easily detected by staticSearch when an <att>version</att> is specified.
+              </p>
+            </div>
+            
             
             <div xml:id="specifyingParameters">
               <head>Specifying parameters</head>
@@ -1452,6 +1481,28 @@
               <elementRef key="contexts" minOccurs="0"/>
               <elementRef key="excludes" minOccurs="0"/>
             </content>
+            <attList>
+              <attDef ident="version" usage="rec">
+                <gloss>specifies the major version of staticSearch to which
+                  this configuration file corresponds. If this attribute is not used, the configuration file is assumed to have an <att>version</att> value of <val>1</val>.</gloss>
+                <datatype>
+                  <dataRef name="nonNegativeInteger"/>
+                </datatype>
+                <defaultVal>1</defaultVal>
+                <exemplum>
+                  <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                    <config version="1">
+                      <params>
+                        <!--Config options-->
+                      </params>
+                    </config>
+                  </egXML>
+                </exemplum>
+                <remarks>
+                  <p>The <att>version</att> attribute only needs to specify the major version of staticSearch with which the configuration file is compatible. While minor versions may introduce new, optional configuration options, backwards-incompatible changes to the config will only occur across major versions (e.g. a configuration file created for staticSearch 1.1 will work with staticSearch 1.4, but is not guaranteed to work with staticSearch 2.0).</p>
+                </remarks>
+              </attDef>
+            </attList>
           </elementSpec>
 
           <elementSpec ident="params" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
