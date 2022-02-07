@@ -5,7 +5,7 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2022-02-05T20:59:09Z. 2019-2022.
+Schema generated from ODD source 2022-02-07T05:43:38Z. 2019-2022.
 TEI Edition: Version 4.3.0. Last updated on
         31st August 2021, revision b4f72b1ff
 TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.3.0/
@@ -27,6 +27,16 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.3.0/
          <optional>
             <ref name="excludes"/>
          </optional>
+         <optional>
+            <attribute xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+                       name="version"
+                       a:defaultValue="1">
+               <a:documentation>(specifies the major version of staticSearch to which
+                  this configuration file corresponds. If this attribute is not used, the configuration file is assumed to have an version value of 1.) </a:documentation>
+               <data type="nonNegativeInteger"/>
+            </attribute>
+         </optional>
+         <empty/>
       </element>
    </define>
    <define name="params">
