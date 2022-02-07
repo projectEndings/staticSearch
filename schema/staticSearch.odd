@@ -1229,6 +1229,7 @@
             <item>The staticSearch report has been simplified and no longer produces a concordance of stems by default. The concordance can be built at the command line by calling the <code>concordance</code> target in ant:
             <eg>ant concordance -DssConfig=cfg.xml</eg>
             </item>
+            <item>The <att>version</att> attribute has been added to the root <gi>config</gi> element to better future-proof the alignment of configuration files and the staticSearch codebase. See <ptr target="#rootConfigElement"/> for more details.</item>
           </list>
           <p>Bug fixes:</p>
           <list>
