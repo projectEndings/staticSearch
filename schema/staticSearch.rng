@@ -5,7 +5,7 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2022-02-14T21:01:10Z. 2019-2022.
+Schema generated from ODD source 2022-02-14T21:10:59Z. 2019-2022.
 TEI Edition: Version 4.3.0. Last updated on
         31st August 2021, revision b4f72b1ff
 TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.3.0/
@@ -54,9 +54,6 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.3.0/
             <ref name="recurse"/>
             <optional>
                <ref name="minWordLength"/>
-            </optional>
-            <optional>
-               <ref name="scrollToTextFragment"/>
             </optional>
             <optional>
                <ref name="scoringAlgorithm"/>
@@ -252,14 +249,6 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.3.0/
       <element name="minWordLength" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The minimum length of a term to be indexed. Default is 3 characters.) </a:documentation>
          <data type="nonNegativeInteger"/>
-      </element>
-   </define>
-   <define name="scrollToTextFragment">
-      <element name="scrollToTextFragment" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(WARNING: Experimental technology. This turns on a feature currently only 
-            supported by a subset of browsers, enabling links from keyword-in-context results
-            directly to the specific text string in the target document.) </a:documentation>
-         <data type="boolean"/>
       </element>
    </define>
    <define name="totalKwicLength">

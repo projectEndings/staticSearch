@@ -543,12 +543,7 @@
                   <specList>
                     <specDesc key="kwicTruncateString"/>
                   </specList>
-                  
-                  
-                  <specList>
-                    <specDesc key="scrollToTextFragment"/>
-                  </specList>
-                  
+
                   <specList>
                     <specDesc key="resultsPerPage"/>
                   </specList>
@@ -1001,11 +996,6 @@
               interference between this library and your own code, so you may have to
               make some adjustments to the code.</p>
               
-              <p>Note that another alternative is to use the <gi>scrollToTextFragment</gi>
-              feature; this does not require any special JavaScript, but at the time 
-              of writing it is supported only on some Chromium-based browsers and is 
-              non-standard and somewhat unreliable.</p>
-              
             </div>
             
             
@@ -1222,6 +1212,12 @@
                 }
               </eg>
               </cell>
+            </row>
+            <row>
+              <cell><gi>scrollToTextFragment</gi></cell>
+              <cell>The <gi>scrollToTextFragment</gi> option, which relied on the experimental <ref target="https://wicg.github.io/scroll-to-text-fragment/">Text Fragments specification</ref>, has been removed. 
+                A more reliable alternative is to use JavaScript to 
+                <ref target="#highlightTargetPage">highlight hits on the target page</ref>.</cell>
             </row>
             
           </table>
@@ -1546,7 +1542,6 @@
                 <elementRef key="stemmerFolder" minOccurs="0"/>
                 <elementRef key="recurse"/>
                 <elementRef key="minWordLength" minOccurs="0"/>
-                <elementRef key="scrollToTextFragment" minOccurs="0"/>
                 <elementRef key="scoringAlgorithm" minOccurs="0"/>
                 <elementRef key="phrasalSearch" minOccurs="0"/>
                 <elementRef key="wildcardSearch" minOccurs="0"/>
@@ -1905,34 +1900,7 @@
             </remarks>
           </elementSpec>
           
-          <elementSpec ident="scrollToTextFragment" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
-            <gloss>WARNING: Experimental technology. This turns on a feature currently only 
-            supported by a subset of browsers, enabling links from keyword-in-context results
-            directly to the specific text string in the target document.</gloss>
-            <content>
-              <dataRef name="boolean"/>
-            </content>
-            <remarks>
-              <p>Google has proposed a browser feature called 
-                <ref target="https://wicg.github.io/scroll-to-text-fragment/">Text Fragments</ref>, which would support 
-                a special kind of link that targets a specific string of text inside a page.
-                When clicking on such a link, the browser would scroll to, and then highlight,
-                the target text. This has been implemented in Chrome-based browsers (Chrome, 
-                Chromium and Edge) at the time of writing, but other browser producers are sceptical
-                with regard to the specification and worried about possible security implications.
-                The specification is subject to radical change. <gi>scrollToTextFragment</gi> is a 
-                boolean parameter that specifies whether you want to turn on this feature for 
-                browsers that support it. It depends on the availability of keyword-in-context 
-                strings, so <gi>createContexts</gi> must also be turned on to make it work. The
-                feature is automatically suppressed for browsers which do not support it. We recommend 
-                only using this feature on sites which are in steady development, so that if 
-                necessary it can be turned off, our the staticSearch implementation can be 
-                updated to take account of changes. For sites intended to remain unchanged or
-                archived for any length of time, this feature should be left turned off. It is
-                off by default. A more reliable alternative is probably to use JavaScript to 
-                <ref target="#highlightTargetPage">highlight hits on the target page</ref>.</p>
-            </remarks>
-          </elementSpec>
+
           
           <elementSpec ident="totalKwicLength" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>If <gi>createContexts</gi> is set to true, then this parameter controls the length (in words) of
