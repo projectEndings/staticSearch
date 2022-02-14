@@ -472,11 +472,6 @@
                 <xso:param name="scoringAlgorithm" select="'raw'"/>
             </xsl:if>
             
-            <!--Specify whether or not to link to fragments; we default true-->
-            <xsl:if test="not($configDoc//params/linkToFragmentId)">
-                <xso:param name="linkToFragmentId" select="true()"/>
-            </xsl:if>
-            
             <!--Specify the minimum length of items to index; we default to 3. -->
             <xsl:if test="not($configDoc//params/minWordLength)">
                 <xso:param name="minWordLength" select="3"/>
