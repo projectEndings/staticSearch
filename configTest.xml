@@ -17,7 +17,6 @@
         <maxKwicsToShow>5</maxKwicsToShow>
         <totalKwicLength>15</totalKwicLength>
         <kwicTruncateString>...</kwicTruncateString>
-        <verbose>false</verbose>
         <stopwordsFile>test/test_stopwords.txt</stopwordsFile>
         <dictionaryFile>xsl/english_words.txt</dictionaryFile>
         <indentJSON>true</indentJSON>
