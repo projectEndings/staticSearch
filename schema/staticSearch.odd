@@ -557,10 +557,6 @@
                   </specList>
                   
                   <specList>
-                    <specDesc key="verbose"/>
-                  </specList>
-                  
-                  <specList>
                     <specDesc key="stopwordsFile"/>
                   </specList>
                   
@@ -1155,17 +1151,15 @@
           </row>
           <row>
             <cell>How can I get staticSearch to show debugging messages?</cell>
-            <cell>Switch <gi>verbose</gi> to true in the configuration file:
-              <egXML xmlns="http://www.tei-c.org/ns/Examples">
-                <config xmlns="http://hcmc.uvic.ca/ns/staticSearch">
-                  <params>
-                    <!--....-->
-                    <verbose>true</verbose>
-                    <!--....-->
-                  </params>
-                  <!--Rules, etc-->
-                </config>
-              </egXML>
+            <cell>Set the <code>ssVerbose</code> property to true at the command line:
+              <eg>
+                ant -DssConfig=cfg.xml -DssVerbose=true
+              </eg>
+              Note that verbosity settings persist after creating the initial config; so, if you are trying
+              to debug just the tokenization process, you must make sure to run the config target beforehand:
+              <eg>
+                ant config tokenize -DssConfig=cfg.xml -DssVerbose=true
+              </eg>
             </cell>
           </row>
           <row>
@@ -1526,7 +1520,6 @@
                 <elementRef key="maxKwicsToShow" minOccurs="0"/>
                 <elementRef key="totalKwicLength" minOccurs="0"/>
                 <elementRef key="kwicTruncateString" minOccurs="0"/>
-                <elementRef key="verbose" minOccurs="0"/>
                 <elementRef key="stopwordsFile" minOccurs="0"/>
                 <elementRef key="dictionaryFile" minOccurs="0"/>
                 <elementRef key="indentJSON" minOccurs="0"/>
@@ -2058,19 +2051,6 @@
               can return a set of document that can cause a browser's rendering engine to fail. For smaller collections, it's unlikely
               that this limit would ever be reached, but setting a limit may be helpful for large document collections, projects that want to constrain the number
               of possible results, or projects with memory-intensive or complex rendering.</p>
-            </remarks>
-          </elementSpec>
-          
-          <elementSpec ident="verbose" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
-            <gloss>Turns on more detailed reporting during the indexing process.</gloss>
-            <content>
-              <dataRef name="boolean"/>
-            </content>
-            <remarks>
-              <p>The staticSearch build process can be lengthy, and if something goes
-            wrong it can be difficult to figure out where the problem was. If you're
-            having build problems, turn on verbose messages in the configuration file 
-            to help with debugging, and you'll see a lot more output at the command line.</p>
             </remarks>
           </elementSpec>
           

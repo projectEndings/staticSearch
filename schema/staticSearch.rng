@@ -5,7 +5,7 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2022-02-07T23:18:55Z. 2019-2022.
+Schema generated from ODD source 2022-02-14T16:51:14Z. 2019-2022.
 TEI Edition: Version 4.3.0. Last updated on
         31st August 2021, revision b4f72b1ff
 TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.3.0/
@@ -84,9 +84,6 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.3.0/
             </optional>
             <optional>
                <ref name="kwicTruncateString"/>
-            </optional>
-            <optional>
-               <ref name="verbose"/>
             </optional>
             <optional>
                <ref name="stopwordsFile"/>
@@ -344,12 +341,6 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.3.0/
               saying that the search returned too many results. This is usually set to 2000 by default, but you may want to have a higher or lower limit,
             depending on the specific structure of your project.  ) </a:documentation>
          <data type="nonNegativeInteger"/>
-      </element>
-   </define>
-   <define name="verbose">
-      <element name="verbose" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Turns on more detailed reporting during the indexing process.) </a:documentation>
-         <data type="boolean"/>
       </element>
    </define>
    <define name="stopwordsFile">
