@@ -65,6 +65,32 @@
         </xsl:if>
     </xsl:template>
     
+    <xd:doc>
+        <xd:desc>scrollToTextFragment has been removed; it was experimental to begin with
+            and is still not widely supported.</xd:desc>
+    </xd:doc>
+    <xsl:template match="linkToFragmentId">
+        <xsl:if test="not(matches(normalize-space(.),'^(t|true|1|y|yes)$','i'))">
+            <xsl:message>WARNING: linkToFragmentId is no longer configurable; by default,
+            all results will link to their nearest ancestor id. You can hide those links
+            by targeting the .fidLink class in your CSS (e.g. .fidLink{ display:none; }).</xsl:message>
+        </xsl:if>
+    </xsl:template>
+    
+    
+    <xd:doc>
+        <xd:desc>scrollToTextFragment has been removed; it was experimental to begin with
+            and is still not widely supported.</xd:desc>
+    </xd:doc>
+    <xsl:template match="scrollToTextFragment">
+        <xsl:if test="matches(normalize-space(.),'^(t|true|1|y|yes)$','i')">
+            <xsl:message>WARNING: scrollToTextFragment has been removed due to lack of
+            browser support. See the documentation for alternative approaches for in-page
+            highlighting, including the use of the ssHighlight.js across your document
+            collection.</xsl:message>
+        </xsl:if>
+    </xsl:template>
+    
     
     
 </xsl:stylesheet>
