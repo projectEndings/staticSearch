@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<config xmlns="http://hcmc.uvic.ca/ns/staticSearch">
+<config xmlns="http://hcmc.uvic.ca/ns/staticSearch" version="2">
     <params>
         <searchFile>output/search.html</searchFile>
         <versionFile>output/VERSION</versionFile>
