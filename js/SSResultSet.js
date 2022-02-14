@@ -380,8 +380,6 @@ class SSResultSet{
           let sp = document.createElement('span');
           sp.innerHTML = value.contexts[i].context;
           li2.appendChild(sp);
-          //Create a text fragment identifier (see https://wicg.github.io/scroll-to-text-fragment/)
-          let cleanContext = value.contexts[i].context.replace(/<\/?mark>/g, '').replace(this.reKwicTruncateStr, '');
           //Create a query string containing the marked text so that downstream JS can 
           //do its own highlighting on the target page.
           let cleanMark = value.contexts[i].context.replace(/.*<mark>([^<]+)<\/mark>.+/, '$1');
