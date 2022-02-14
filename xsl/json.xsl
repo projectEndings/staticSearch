@@ -428,7 +428,7 @@
                         <xsl:sequence select="hcmc:returnContext(.)"/>
                     </string>
                     <!--Get the best fragment id if that's set-->
-                    <xsl:if test="$linkToFragmentId and @ss-fid">
+                    <xsl:if test="@ss-fid">
                         <string key="fid">
                             <xsl:value-of select="@ss-fid"/>
                         </string>

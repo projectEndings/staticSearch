@@ -544,9 +544,6 @@
                     <specDesc key="kwicTruncateString"/>
                   </specList>
                   
-                  <specList>
-                    <specDesc key="linkToFragmentId"/>
-                  </specList>
                   
                   <specList>
                     <specDesc key="scrollToTextFragment"/>
@@ -915,9 +912,7 @@
               
               <head>Custom attributes</head>
               
-              <p>As described in <ptr target="#paramsOptional"/>, if you set the 
-                <gi>linkToFragmentId</gi> parameter to <ident>true</ident>, the 
-                search index will link each keyword-in-context extract with the 
+              <p>The search index will automatically link each keyword-in-context extract with the 
                 closest element that has an <att>id</att>, so that each keyword-in-context
               string in a search result will point directly to a specific page fragment.
               You can also add your own attributes to any element in your document in 
@@ -980,10 +975,12 @@
               workaround that you can use. Since staticSearch does not modify your web pages, though,
               the implementation has to be done by you.</p>
               
-              <p>By default, when you turn on <gi>linkToFragmentId</gi> in the configuration,
-              each keyword-in-context result that shows on the search page will have its
-              own specific link to the fragment of the document which contains the hit.
-              Those links are also provided with a search string, like this:
+              <p>By default each keyword-in-context result that shows on the search page will have its
+                own specific link to the fragment of the document which contains the hit. We strongly 
+                recommend that you ensure your target documents have id attributes for any significant divisions
+                so that result links are as precise as possible, making the search results much more useful.</p>
+              
+              <p>Those links are also provided with a search string, like this:
               
               <code>https://example.com/egPage.html?ssMark=elephant#animals</code>
                 
@@ -1160,12 +1157,6 @@
             </cell>
           </row>
           <row>
-            <cell>How can I get staticSearch to jump straight to a specific hit in the document from a search result?</cell>
-            <cell>The best way to do this is to ensure that <gi>linkToFragmentId</gi> is set to the <val>true</val> and that the
-            input HTML contains ids at whatever level you think is most helpful. For instance, if possible, you could give each
-            <gi>xhtml:p</gi> element an <att>id</att>, which would mean that each KWIC could be linked to the right paragraph in the input document.</cell>
-          </row>
-          <row>
             <cell>How can I get staticSearch to highlight the found text in a target document?</cell>
             <cell>There are two approaches to this: you could implement a JavaScript solution as explained in 
             <ref target="#highlightTargetPage">Highlighting search hits on target pages</ref>, or you could turn on the 
@@ -1215,6 +1206,22 @@
               </cell>
               <cell><gi>indentJSON</gi> has been removed since it is rarely necessary other than for debugging purposes,
               which can be better handled by other tools (i.e. viewed in Firefox or using the command-line tool jq).</cell>
+            </row>
+            <row>
+              <cell>
+                <gi>linkToFragmentId</gi>
+              </cell>
+              <cell><gi>linkToFragmentId</gi>, which controlled whether the search results should link back to the
+                nearest document fragment with an <att>id</att>, has been made part of the default behaviour of 
+                staticSearch and is no longer configurable. However, if you do not want the link to the nearest fragment
+              to appear in the results, you can visually hide the link element with the <ident>fidLink</ident> class 
+                in your site's CSS:
+              <eg>
+                .fidLink{
+                  display:none;
+                }
+              </eg>
+              </cell>
             </row>
             
           </table>
@@ -1538,7 +1545,6 @@
                 <elementRef key="versionFile" minOccurs="0"/>
                 <elementRef key="stemmerFolder" minOccurs="0"/>
                 <elementRef key="recurse"/>
-                <elementRef key="linkToFragmentId" minOccurs="0"/>
                 <elementRef key="minWordLength" minOccurs="0"/>
                 <elementRef key="scrollToTextFragment" minOccurs="0"/>
                 <elementRef key="scoringAlgorithm" minOccurs="0"/>
