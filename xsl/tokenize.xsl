@@ -48,7 +48,8 @@
             </xd:ol>
         </xd:desc>
     </xd:doc>
-
+    
+    
     <!--**************************************************************
        *                                                            *
        *                         Includes                           *
@@ -267,9 +268,8 @@
         as important for weighting or contextualizing.</xd:desc>
     </xd:doc>
     <xsl:template match="span | em | b | i | a" mode="clean">
-        <xsl:if test="$verbose">
-            <xsl:message>TEMPLATE clean: Matching <xsl:value-of select="local-name()"/></xsl:message>
-        </xsl:if>
+        <xsl:message use-when="$verbose">TEMPLATE clean: Matching <xsl:value-of select="local-name()"/></xsl:message>
+        
         <!--Just apply templates to the inner nodes-->
         <xsl:apply-templates select="node()" mode="#current"/>
     </xsl:template>
@@ -488,27 +488,21 @@
         <xsl:param name="word" as="xs:string"/>
         
         <!--If we're in verbose mode, then return the word-->
-        <xsl:if test="$verbose">
-            <xsl:message>$word: <xsl:value-of select="$word"/></xsl:message>
-        </xsl:if>
-        
+        <xsl:message use-when="$verbose">$word: <xsl:value-of select="$word"/></xsl:message>
+
+
         <!--Clean the word for stemming-->
         <xsl:variable name="wordToStem" select="hcmc:cleanWordForStemming($word)"/>
-        <xsl:if test="$verbose">
-            <xsl:message>$wordToStem: <xsl:value-of select="$wordToStem"/></xsl:message>
-        </xsl:if>
+        <xsl:message use-when="$verbose">$wordToStem: <xsl:value-of select="$wordToStem"/></xsl:message>
         
         <!--Return it as a lowercase word-->
         <xsl:variable name="lcWord" select="lower-case($wordToStem)"/>
-        <xsl:if test="$verbose">
-            <xsl:message>$lcWord: <xsl:value-of select="$lcWord"/></xsl:message>
-        </xsl:if>
+        <xsl:message use-when="$verbose">$lcWord: <xsl:value-of select="$lcWord"/></xsl:message>
+        
         
         <!--Determine whether or not it should be indexed-->
         <xsl:variable name="shouldIndex" select="hcmc:shouldIndex($lcWord)"/>
-        <xsl:if test="$verbose">
-            <xsl:message>$shouldIndex: <xsl:value-of select="$shouldIndex"/></xsl:message>
-        </xsl:if>
+        <xsl:message use-when="$verbose">$shouldIndex: <xsl:value-of select="$shouldIndex"/></xsl:message>
         
         <xsl:choose>
             <!--If it should, then create the stem for it-->
@@ -533,44 +527,38 @@
     </xd:doc>
     <xsl:function name="hcmc:getStem" as="element(span)">
         <xsl:param name="word" as="xs:string"/>
-        <xsl:if test="$verbose">
-            <xsl:message>hcmc:getStem: $word: <xsl:value-of select="$word"/></xsl:message>
-        </xsl:if>
+
+        <xsl:message use-when="$verbose">hcmc:getStem: $word: <xsl:value-of select="$word"/></xsl:message>
+        
         
         <!--Get the cleaned word again, since we're using the ORIGINAL word here, not the cleaned word
         we used to determine the word's stemmability in hcmc:startStemmingProcess -->
         <xsl:variable name="cleanedWord" select="hcmc:cleanWordForStemming($word)" as="xs:string"/>
-        <xsl:if test="$verbose">
-            <xsl:message>hcmc:getStem: $cleanedWord: <xsl:value-of select="$cleanedWord"/></xsl:message>
-        </xsl:if>
+        <xsl:message use-when="$verbose">hcmc:getStem: $cleanedWord: <xsl:value-of select="$cleanedWord"/></xsl:message>
+        
         
         <!--Make it lowercase-->
         <xsl:variable name="lcWord" select="lower-case($cleanedWord)" as="xs:string"/>
-        <xsl:if test="$verbose">
-            <xsl:message>hcmc:getStem: $lcWord: <xsl:value-of select="$lcWord"/></xsl:message>
-        </xsl:if>
+        <xsl:message use-when="$verbose">hcmc:getStem: $lcWord: <xsl:value-of select="$lcWord"/></xsl:message>
+        
         
         <!--Determine whether or not the word has a digit in it; if it does, then the word shouldn't be put
         through the stemmer-->
         <xsl:variable name="containsDigit" select="matches($cleanedWord,'\d+')" as="xs:boolean"/>
-        <xsl:if test="$verbose">
-            <xsl:message>hcmc:getStem: $containsDigit: <xsl:value-of select="$containsDigit"/></xsl:message>
-        </xsl:if>
+        <xsl:message use-when="$verbose">hcmc:getStem: $containsDigit: <xsl:value-of select="$containsDigit"/></xsl:message>
+        
         
         <!--Check whether or not the word is hyphenated-->
         <xsl:variable name="hyphenated" select="matches($cleanedWord,'[A-Za-z]-[A-Za-z]')" as="xs:boolean"/>
-        <xsl:if test="$verbose">
-            <xsl:message>hcmc:getStem: $hyphenated: <xsl:value-of select="$hyphenated"/></xsl:message>
-        </xsl:if>
+        <xsl:message use-when="$verbose">hcmc:getStem: $hyphenated: <xsl:value-of select="$hyphenated"/></xsl:message>
+        
         
         <!--Now create the stem val-->
         <xsl:variable name="stemVal" 
             select="if ($containsDigit) then $lcWord else ss:stem($lcWord)"
             as="xs:string?"/>
+        <xsl:message use-when="$verbose">hcmc:getStem: $stemVal: <xsl:value-of select="$stemVal"/></xsl:message>
         
-        <xsl:if test="$verbose">
-            <xsl:message>hcmc:getStem: $stemVal: <xsl:value-of select="$stemVal"/></xsl:message>
-        </xsl:if>
         
         <!--Now do stuff-->
         <!--Wrap it in a span-->
@@ -584,9 +572,7 @@
                         
                         <!--When we have a hyphenated word, we want to split it into pieces-->
                         <xsl:when test="$hyphenated">
-                            <xsl:if test="$verbose">
-                                <xsl:message>hcmc:getStem: Found hyphenated construct: <xsl:value-of select="$word"/></xsl:message>
-                            </xsl:if>
+                            <xsl:message use-when="$verbose">hcmc:getStem: Found hyphenated construct: <xsl:value-of select="$word"/></xsl:message>
                             
                             <!--Split the word on the hyphens-->
                             <xsl:variable name="wordTokens" select="tokenize($word,'-')" as="xs:string+"/>
@@ -597,9 +583,8 @@
                                 <xsl:variable name="thisTokenPosition" select="position()"/>
                                 
                                 <!--Spit out a message if we want it-->
-                                <xsl:if test="$verbose">
-                                    <xsl:message>hcmc:getStem: Process hyphenated segment: <xsl:value-of select="$thisToken"/> (<xsl:value-of select="$thisTokenPosition"/>/<xsl:value-of select="count($wordTokens)"/>)</xsl:message>
-                                </xsl:if>
+                                <xsl:message use-when="$verbose" expand-text="yes">hcmc:getStem: Process hyphenated segment: {$thisToken} ({$thisTokenPosition}/{count($wordTokens)})</xsl:message>
+                                
                                 
                                 <!--Now run each hyphen through the process again, and add hyphens after each word-->
                                 <xsl:sequence select="hcmc:startStemmingProcess(.)"/><xsl:if test="$thisTokenPosition ne count($wordTokens)"><xsl:text>-</xsl:text></xsl:if>
@@ -685,9 +670,7 @@
             <xsl:attribute name="ss-pos" select="accumulator-before('stem-position')"/>
             <xsl:if test="$id">
                 <xsl:attribute name="ss-fid" select="$id"/>
-                <xsl:if test="$verbose">
-                    <xsl:message>Found fragment id: <xsl:value-of select="$id"/></xsl:message>
-                </xsl:if>
+                <xsl:message use-when="$verbose">Found fragment id: <xsl:value-of select="$id"/></xsl:message>
             </xsl:if>
             <xsl:apply-templates select="@*|node()" mode="#current"/>
         </xsl:copy>

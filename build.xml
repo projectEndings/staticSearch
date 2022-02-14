@@ -241,7 +241,7 @@
       <arg value="-s:${ssBaseDir}/xsl/create_config_xsl.xsl"/>
       <arg value="configFile=${ssConfigFile}"/>
       <arg value="--suppressXsltNamespaceCheck:on"/>
-      <arg value="verbose=${ssVerbose}"/>
+      <arg value="ssVerbose=${ssVerbose}"/>
       <arg value="ssPatternsetFile=${ssPatternsetFile}"/>
     </java>
   </target>
@@ -258,7 +258,7 @@
 
     <xslt
       style="${ssBaseDir}/xsl/tokenize.xsl" classpath="${ssSaxon}" destdir="${staticSearchTempDir}"
-       reloadstylesheet="true"
+       reloadstylesheet="true" 
        force="true"
       useimplicitfileset="false">
       <factory name="net.sf.saxon.TransformerFactoryImpl"/>
@@ -267,7 +267,8 @@
         <!--Exclude the temporary directory's basename-->
         <exclude name="**/${staticSearchTempFolder}/**"/>
       </fileset>
-      <regexpmapper from="^(.*)\.([^\.]+$)" to="\1_tokenized.html"/>
+
+       <regexpmapper from="^(.*)\.([^\.]+$)" to="\1_tokenized.html"/>
     </xslt>
     <!--Necessary to delete any empty files (i.e. files excluded by 
         the configuration) -->
@@ -290,6 +291,7 @@
     <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true">
       <arg value="-xsl:${ssBaseDir}/xsl/json.xsl"/>
       <arg value="-s:${ssBaseDir}/xsl/json.xsl"/>
+      <arg value="ssVerbose=${ssVerbose}"/>
       <arg value="--suppressXsltNamespaceCheck:on"/>
     </java>
   </target>

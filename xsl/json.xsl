@@ -220,9 +220,7 @@
         <xsl:if test="position() = 1">
             <xsl:message>Creating <xsl:value-of select="last()"/> JSON documents...</xsl:message>
         </xsl:if>
-        <xsl:if test="$verbose">
-            <xsl:message>Processing <xsl:value-of select="current-grouping-key()"/></xsl:message>
-        </xsl:if>
+        <xsl:message use-when="$verbose">Processing <xsl:value-of select="current-grouping-key()"/></xsl:message>
         <!--Figure out ten percent-->
         <xsl:variable name="tenPercent" select="last() idiv 10"/>
         <!--Get the rough percentage-->
@@ -304,9 +302,9 @@
                     <!--Get the total number of documents (i.e. the number of iterations that this
                         for-each-group will perform) for this span-->
                     <xsl:variable name="stemDocsCount" select="last()" as="xs:integer"/>
-                    <xsl:if test="$verbose">
-                        <xsl:message><xsl:value-of select="$stem"/>: Processing <xsl:value-of select="$currDocUri"/></xsl:message>
-                    </xsl:if>
+                   
+                    <xsl:message use-when="$verbose"><xsl:value-of select="$stem"/>: Processing <xsl:value-of select="$currDocUri"/></xsl:message>
+                    
                     
                     <!--The document that we want to process will always be the ancestor html of
                         any item of the current-group() -->
@@ -409,9 +407,9 @@
                 <xsl:sort select="hcmc:returnWeight(.)" order="descending"/>
                 <xsl:sort select="xs:integer(@ss-pos)" order="ascending"/>
                 
-                <xsl:if test="$verbose">
-                    <xsl:message expand-text="true">{$thisDoc/@data-staticSearch-relativeUri}: {@ss-stem} (ctx: {position()}/{$contextCount}):  pos: {@ss-pos}</xsl:message>
-                </xsl:if>
+
+                    <xsl:message use-when="$verbose" expand-text="true">{$thisDoc/@data-staticSearch-relativeUri}: {@ss-stem} (ctx: {position()}/{$contextCount}):  pos: {@ss-pos}</xsl:message>
+                
                 
                 <!--Accumulated properties map, which may or may not exist -->
                 <xsl:variable name="properties"
@@ -504,9 +502,9 @@
         
         <!--Now get the term frequency index document frequency (i.e. tf-idf) -->
         <xsl:variable name="tf-idf" select="$tf * $idf" as="xs:double"/>
-        <xsl:if test="$verbose">
-            <xsl:message>Calculated tf-idf: <xsl:sequence select="$tf-idf"/></xsl:message>
-        </xsl:if>
+        
+        <xsl:message use-when="$verbose">Calculated tf-idf: <xsl:sequence select="$tf-idf"/></xsl:message>
+        
         <xsl:sequence
             select="$tf * $idf"/>
     </xsl:function>
