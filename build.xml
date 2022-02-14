@@ -239,8 +239,8 @@
     <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true">
       <arg value="-xsl:${ssBaseDir}/xsl/create_config_xsl.xsl"/>
       <arg value="-s:${ssBaseDir}/xsl/create_config_xsl.xsl"/>
-      <arg value="configFile=${ssConfigFile}"/>
       <arg value="--suppressXsltNamespaceCheck:on"/>
+      <arg value="configFile=${ssConfigFile}"/>
       <arg value="ssVerbose=${ssVerbose}"/>
       <arg value="ssPatternsetFile=${ssPatternsetFile}"/>
     </java>
@@ -291,7 +291,6 @@
     <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true">
       <arg value="-xsl:${ssBaseDir}/xsl/json.xsl"/>
       <arg value="-s:${ssBaseDir}/xsl/json.xsl"/>
-      <arg value="ssVerbose=${ssVerbose}"/>
       <arg value="--suppressXsltNamespaceCheck:on"/>
     </java>
   </target>

@@ -205,7 +205,7 @@
                 <xsl:call-template name="makeMap"/>
             </xsl:variable>
             <xsl:result-document href="{$outDir}/stems/{$stem}{$versionString}.json" method="text">
-                <xsl:sequence select="xml-to-json($map, map{'indent': $indentJSON})"/>
+                <xsl:sequence select="xml-to-json($map)"/>
             </xsl:result-document>
         </xsl:for-each-group>
     </xsl:template>
@@ -814,7 +814,7 @@
                 </xsl:variable>
                 <!--Now output the JSON-->
                 <xsl:result-document href="{$outDir || '/filters/' || $thisFilterId || $versionString || '.json'}" method="text">
-                    <xsl:value-of select="xml-to-json($tmpMap, map{'indent': $indentJSON})"/>
+                    <xsl:value-of select="xml-to-json($tmpMap)"/>
                 </xsl:result-document>
                 
             </xsl:for-each-group>
@@ -1006,7 +1006,7 @@
             <xsl:variable name="map">
                 <xsl:apply-templates select="$stopwordsFileXml" mode="dictToArray"/>
             </xsl:variable>
-            <xsl:value-of select="xml-to-json($map, map{'indent': $indentJSON})"/>
+            <xsl:value-of select="xml-to-json($map)"/>
         </xsl:result-document>
     </xsl:template>
     
@@ -1039,7 +1039,7 @@
                     </xsl:for-each>
                 </map>
             </xsl:variable>
-            <xsl:sequence select="xml-to-json($map, map{'indent': $indentJSON})"/>
+            <xsl:sequence select="xml-to-json($map)"/>
         </xsl:result-document>
     </xsl:template>
     
@@ -1092,7 +1092,7 @@
             <xsl:variable name="map">
                 <xsl:apply-templates select="doc($configFile)" mode="configToArray"/>
             </xsl:variable>
-            <xsl:value-of select="xml-to-json($map, map{'indent': $indentJSON})"/>
+            <xsl:value-of select="xml-to-json($map)"/>
         </xsl:result-document>
     </xsl:template>
     

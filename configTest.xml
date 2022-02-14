@@ -19,7 +19,6 @@
         <kwicTruncateString>...</kwicTruncateString>
         <stopwordsFile>test/test_stopwords.txt</stopwordsFile>
         <dictionaryFile>xsl/english_words.txt</dictionaryFile>
-        <indentJSON>true</indentJSON>
         <outputFolder>ssTest</outputFolder>
     </params>
     

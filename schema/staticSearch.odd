@@ -563,10 +563,7 @@
                   <specList>
                     <specDesc key="dictionaryFile"/>
                   </specList>
-                  
-                  <specList>
-                    <specDesc key="indentJSON"/>
-                  </specList>
+
                   
                   <specList>
                     <specDesc key="outputFolder"/>
@@ -1205,12 +1202,19 @@
             </row>
             <row>
               <cell><gi>verbose</gi></cell>
-              <cell>The verbose parameter has been removed and replaced by the <code>ssVerbose</code> property in ant. To get debugging messages,
+              <cell>The verbose option has been removed and replaced by the <code>ssVerbose</code> property in ant. To get debugging messages,
                 set the ssVerbose parameter to true (other accepted values: t, yes, y, 1)
                 <eg>
                   ant -DssConfig=cfg.xml -DssVerbose=true
                 </eg>
               </cell>
+            </row>
+            <row>
+              <cell>
+                <gi>indentJSON</gi>
+              </cell>
+              <cell><gi>indentJSON</gi> has been removed since it is rarely necessary other than for debugging purposes,
+              which can be better handled by other tools (i.e. viewed in Firefox or using the command-line tool jq).</cell>
             </row>
             
           </table>
@@ -1547,7 +1551,6 @@
                 <elementRef key="kwicTruncateString" minOccurs="0"/>
                 <elementRef key="stopwordsFile" minOccurs="0"/>
                 <elementRef key="dictionaryFile" minOccurs="0"/>
-                <elementRef key="indentJSON" minOccurs="0"/>
                 <elementRef key="outputFolder" minOccurs="0"/>
                 <elementRef key="resultsPerPage" minOccurs="0"/>
                 <elementRef key="resultsLimit" minOccurs="0"/>
@@ -1989,22 +1992,6 @@
             character. Japanese, for example, uses the 3-dot-leader character.</p>
             </remarks>
           </elementSpec>
-
-          <elementSpec ident="indentJSON" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
-            <gloss>Whether or not to indent code in the JSON index files. Indenting increases the
-              file size, but it can be useful if you need to read the files for debugging
-              purposes.</gloss>
-            <content>
-              <dataRef name="boolean"/>
-            </content>
-            <remarks>
-              <p>Normally, the JSON index files will only be processed by JavaScript, so
-            there is no need to indent them, but if you are debugging or investigating how
-            the code works, you may find it useful to generate them in a more human-readable
-            layout.</p>
-            </remarks>
-          </elementSpec>
-          
           
           <elementSpec ident="phrasalSearch" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>Whether or not to support phrasal searches. If this is true, then the <gi>maxContexts</gi>

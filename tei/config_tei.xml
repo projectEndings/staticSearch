@@ -19,7 +19,6 @@
         <kwicTruncateString>...</kwicTruncateString>
         <stopwordsFile>tei_stopwords.txt</stopwordsFile>
         <dictionaryFile>../xsl/english_words.txt</dictionaryFile>
-        <indentJSON>true</indentJSON>
         <outputFolder>staticSearch</outputFolder>
     </params>
     

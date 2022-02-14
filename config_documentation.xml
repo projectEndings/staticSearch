@@ -16,7 +16,6 @@
         <kwicTruncateString>...</kwicTruncateString>
         <stopwordsFile>xsl/english_stopwords.txt</stopwordsFile>
         <dictionaryFile>xsl/english_words.txt</dictionaryFile>
-        <indentJSON>true</indentJSON>
         <outputFolder>search</outputFolder>
     </params>
     
