@@ -1192,6 +1192,31 @@
           <item>Level: Intermediate</item>
           <item>Last Updated: <date when="2022-02-04">4 February 2022</date></item>
         </list>
+        <div xml:id="newIn2.0">
+        <head>Changes in version 2.0</head>
+          <p>staticSearch 2.0 contains  breaking changes and improvements to staticSearch. In particular,
+          the configuration file has been significantly re-organized; configuration files made for earlier
+          versions of staticSearch <emph>will not</emph> work in 2.0.
+          </p>
+          <table>
+            <row role="label">
+              <cell role="label">Configuration Option</cell>
+              <cell role="label">Explanation</cell>
+            </row>
+            <row>
+              <cell><gi>verbose</gi></cell>
+              <cell>The verbose parameter has been removed and replaced by the <code>ssVerbose</code> property in ant. To get debugging messages,
+                set the ssVerbose parameter to true (other accepted values: t, yes, y, 1)
+                <eg>
+                  ant -DssConfig=cfg.xml -DssVerbose=true
+                </eg>
+              </cell>
+            </row>
+            
+          </table>
+          
+        </div>
+        
         <div xml:id="newIn1.4">
           <head>Changes in version 1.4</head>
           <p>Deprecations requiring changes to existing projects:</p>
