@@ -145,28 +145,6 @@
     <echo>Running staticSearch build based on config file: 
     ${ssConfigFile}</echo>
 
-    <!-- For version 1.2 only, we need to warn users if they're still using
-             the old config and configFile property names as parameters. -->
-    <if>
-      <or>
-        <not>
-          <equals arg1="${config}" arg2="OBSOLETE"/>
-        </not>
-        <not>
-          <equals arg1="${configFile}" arg2="OBSOLETE"/>
-        </not>
-      </or>
-      <then>
-        <echo message="*************************************************"/>
-        <echo message="DEPRECATION WARNING: It appears that you're still"/>
-        <echo message="using one of the deprecated 'config' or 'configFile' "/>
-        <echo message="parameters. Please switch to using 'ssConfig' and/or "/>
-        <echo message="'ssConfigFile' instead."/>
-        <echo message=""/>
-        <fail message="BUILD FAILED."/>
-      </then>
-    </if>
-
     <!-- If we're building the test data, we need to generate the VERSION file
          and also copy the .htm_ files to .html before starting. -->
     <if>
