@@ -57,11 +57,6 @@
   <!-- What output conformity we want for our JS. We're fairly forward-looking by default. -->
   <property name="ssClosureOutputSpec" value="ECMASCRIPT_2019"/>
 
-  <!-- DEPRECATED UNPREFIXED PROPERTIES. IF SET, SHOULD ABORT THE BUILD.
-         REMOVE AFTER 1.2 RELEASE. -->
-  <property name="config" value="OBSOLETE"/>
-  <property name="configFile" value="OBSOLETE"/>
-
   <!--The configuration file path, relative to this build file. -->
   <property name="ssConfig" value="configTest.xml"/>
 
