@@ -1196,8 +1196,16 @@
         <head>What's new since version 1.0?</head>
         <list>
           <item>Level: Intermediate</item>
-          <item>Last Updated: <date when="2022-02-04">4 February 2022</date></item>
+          <item>Last Updated: <date when="2022-02-16">16 February 2022</date></item>
         </list>
+        <div xml:id="newIn1.4.1">
+          <head>Changes in version 1.4.1</head>
+          <p>Bug fix:</p>
+          <list>
+            <item>A minor bug whereby a rare combination of circumstances could lead to document 
+            hit scores being reported as concatenated numbers rather than summed numbers has been fixed.</item>
+          </list>
+        </div>
         <div xml:id="newIn1.4">
           <head>Changes in version 1.4</head>
           <p>Deprecations requiring changes to existing projects:</p>
