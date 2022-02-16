@@ -245,7 +245,7 @@ class SSResultSet{
           ...value,
           contexts: filteredContexts,
           score: parseInt(filteredContexts.reduce((total, b) => {
-              return total + b.weight;
+              return total + parseInt(b.weight);
            }, 0))
         });
       }
