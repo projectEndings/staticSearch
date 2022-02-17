@@ -231,20 +231,20 @@
                 </xsl:choose>
             </details>
             
-            <xsl:if test="$linkToFragmentId">
-                <details>
-                    <summary>Documents without ids within the body (<xsl:value-of select="count($docsWithoutFragmentIds)"/>)</summary>
-                   <xsl:choose>
-                       <xsl:when test="count($docsWithoutFragmentIds) gt 0">
-                           <ul>
-                               <xsl:for-each select="$docsWithoutFragmentIds">
-                                   <li><xsl:value-of select="document-uri(root(.))"/></li>
-                               </xsl:for-each>
-                           </ul>
-                       </xsl:when>
-                   </xsl:choose>
-                </details>
-            </xsl:if>
+            
+            <details>
+                <summary>Documents without ids within the body (<xsl:value-of select="count($docsWithoutFragmentIds)"/>)</summary>
+                <xsl:choose>
+                    <xsl:when test="count($docsWithoutFragmentIds) gt 0">
+                        <ul>
+                            <xsl:for-each select="$docsWithoutFragmentIds">
+                                <li><xsl:value-of select="document-uri(root(.))"/></li>
+                            </xsl:for-each>
+                        </ul>
+                    </xsl:when>
+                </xsl:choose>
+            </details>
+            
             
         </section>
     </xsl:template>

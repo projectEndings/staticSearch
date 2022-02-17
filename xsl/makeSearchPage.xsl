@@ -187,9 +187,7 @@
                     <xsl:sequence select="$declaredLang"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:if test="$verbose">
-                        <xsl:message>WARNING: No language declared for element with @id='staticSearch' to determine captions. Using 'en' by default.</xsl:message>
-                    </xsl:if>
+                        <xsl:message use-when="$verbose">WARNING: No language declared for element with @id='staticSearch' to determine captions. Using 'en' by default.</xsl:message>
                     <xsl:sequence select="'en'"/>
                 </xsl:otherwise>
             </xsl:choose>
@@ -226,7 +224,6 @@
                 data-allowphrasal="{if ($phrasalSearch) then 'yes' else 'no'}"
                 data-allowwildcards="{if ($wildcardSearch) then 'yes' else 'no'}"
                 data-minwordlength="{if ($minWordLength) then $minWordLength else '3'}"
-                data-scrolltotextfragment="{if ($scrollToTextFragment) then 'yes' else 'no'}"
                 data-maxkwicstoshow="{if ($maxKwicsToShow) then $maxKwicsToShow else 10}"
                 data-resultsperpage="{$resultsPerPage}"
                 onsubmit="return false;"

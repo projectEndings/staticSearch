@@ -5,7 +5,7 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2022-02-16T17:18:01Z. 2019-2022.
+Schema generated from ODD source 2022-02-16T17:38:23Z. 2019-2022.
 TEI Edition: Version 4.3.0. Last updated on
         31st August 2021, revision b4f72b1ff
 TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.3.0/
@@ -53,13 +53,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.3.0/
             </optional>
             <ref name="recurse"/>
             <optional>
-               <ref name="linkToFragmentId"/>
-            </optional>
-            <optional>
                <ref name="minWordLength"/>
-            </optional>
-            <optional>
-               <ref name="scrollToTextFragment"/>
             </optional>
             <optional>
                <ref name="scoringAlgorithm"/>
@@ -86,16 +80,10 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.3.0/
                <ref name="kwicTruncateString"/>
             </optional>
             <optional>
-               <ref name="verbose"/>
-            </optional>
-            <optional>
                <ref name="stopwordsFile"/>
             </optional>
             <optional>
                <ref name="dictionaryFile"/>
-            </optional>
-            <optional>
-               <ref name="indentJSON"/>
             </optional>
             <optional>
                <ref name="outputFolder"/>
@@ -263,20 +251,6 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.3.0/
          <data type="nonNegativeInteger"/>
       </element>
    </define>
-   <define name="linkToFragmentId">
-      <element name="linkToFragmentId" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Whether to link keyword-in-context extracts to the nearest id in the document. Default is true.) </a:documentation>
-         <data type="boolean"/>
-      </element>
-   </define>
-   <define name="scrollToTextFragment">
-      <element name="scrollToTextFragment" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(WARNING: Experimental technology. This turns on a feature currently only 
-            supported by a subset of browsers, enabling links from keyword-in-context results
-            directly to the specific text string in the target document.) </a:documentation>
-         <data type="boolean"/>
-      </element>
-   </define>
    <define name="totalKwicLength">
       <element name="totalKwicLength" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(If createContexts is set to true, then this parameter controls the length (in words) of
@@ -304,14 +278,6 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.3.0/
               keyword-in-context extract. Conventionally three periods, or an ellipsis
               character (which is the default value).) </a:documentation>
          <text/>
-      </element>
-   </define>
-   <define name="indentJSON">
-      <element name="indentJSON" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Whether or not to indent code in the JSON index files. Indenting increases the
-              file size, but it can be useful if you need to read the files for debugging
-              purposes.) </a:documentation>
-         <data type="boolean"/>
       </element>
    </define>
    <define name="phrasalSearch">
@@ -344,12 +310,6 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.3.0/
               saying that the search returned too many results. This is usually set to 2000 by default, but you may want to have a higher or lower limit,
             depending on the specific structure of your project.  ) </a:documentation>
          <data type="nonNegativeInteger"/>
-      </element>
-   </define>
-   <define name="verbose">
-      <element name="verbose" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Turns on more detailed reporting during the indexing process.) </a:documentation>
-         <data type="boolean"/>
       </element>
    </define>
    <define name="stopwordsFile">

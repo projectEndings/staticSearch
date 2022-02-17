@@ -235,10 +235,6 @@ class StaticSearch{
       //Configuration for use of wildcards. Default false.
       this.allowWildcards = this.getConfigBool('allowwildcards', false);
 
-      //Configuration for use of experimental scroll-to-text-fragment feature. 
-      //Default false, and also depends on browser support.
-      this.scrollToTextFragment = ((this.getConfigBool('scrolltotextfragment', false)) && ('fragmentDirective' in document));
-
       //String for leading and trailing truncations of KWICs.
       this.kwicTruncateString = this.getConfigStr('kwictruncatestring', '...');
 
@@ -341,7 +337,7 @@ class StaticSearch{
       this.maxKwicsToShow = this.getConfigInt('maxKwicsToShow', 10);
 
       //Result handling object
-      this.resultSet = new SSResultSet(this.maxKwicsToShow, this.scrollToTextFragment, this.reKwicTruncateStr);
+      this.resultSet = new SSResultSet(this.maxKwicsToShow, this.reKwicTruncateStr);
 
       //This allows the user to navigate through searches using the back and
       //forward buttons; to avoid repeatedly pushing state when this happens,

@@ -543,21 +543,9 @@
                   <specList>
                     <specDesc key="kwicTruncateString"/>
                   </specList>
-                  
-                  <specList>
-                    <specDesc key="linkToFragmentId"/>
-                  </specList>
-                  
-                  <specList>
-                    <specDesc key="scrollToTextFragment"/>
-                  </specList>
-                  
+
                   <specList>
                     <specDesc key="resultsPerPage"/>
-                  </specList>
-                  
-                  <specList>
-                    <specDesc key="verbose"/>
                   </specList>
                   
                   <specList>
@@ -567,10 +555,7 @@
                   <specList>
                     <specDesc key="dictionaryFile"/>
                   </specList>
-                  
-                  <specList>
-                    <specDesc key="indentJSON"/>
-                  </specList>
+
                   
                   <specList>
                     <specDesc key="outputFolder"/>
@@ -922,9 +907,7 @@
               
               <head>Custom attributes</head>
               
-              <p>As described in <ptr target="#paramsOptional"/>, if you set the 
-                <gi>linkToFragmentId</gi> parameter to <ident>true</ident>, the 
-                search index will link each keyword-in-context extract with the 
+              <p>The search index will automatically link each keyword-in-context extract with the 
                 closest element that has an <att>id</att>, so that each keyword-in-context
               string in a search result will point directly to a specific page fragment.
               You can also add your own attributes to any element in your document in 
@@ -987,10 +970,12 @@
               workaround that you can use. Since staticSearch does not modify your web pages, though,
               the implementation has to be done by you.</p>
               
-              <p>By default, when you turn on <gi>linkToFragmentId</gi> in the configuration,
-              each keyword-in-context result that shows on the search page will have its
-              own specific link to the fragment of the document which contains the hit.
-              Those links are also provided with a search string, like this:
+              <p>By default each keyword-in-context result that shows on the search page will have its
+                own specific link to the fragment of the document which contains the hit. We strongly 
+                recommend that you ensure your target documents have id attributes for any significant divisions
+                so that result links are as precise as possible, making the search results much more useful.</p>
+              
+              <p>Those links are also provided with a search string, like this:
               
               <code>https://example.com/egPage.html?ssMark=elephant#animals</code>
                 
@@ -1010,11 +995,6 @@
               existing JavaScript that runs when the page loads, there may be some 
               interference between this library and your own code, so you may have to
               make some adjustments to the code.</p>
-              
-              <p>Note that another alternative is to use the <gi>scrollToTextFragment</gi>
-              feature; this does not require any special JavaScript, but at the time 
-              of writing it is supported only on some Chromium-based browsers and is 
-              non-standard and somewhat unreliable.</p>
               
             </div>
             
@@ -1155,24 +1135,16 @@
           </row>
           <row>
             <cell>How can I get staticSearch to show debugging messages?</cell>
-            <cell>Switch <gi>verbose</gi> to true in the configuration file:
-              <egXML xmlns="http://www.tei-c.org/ns/Examples">
-                <config xmlns="http://hcmc.uvic.ca/ns/staticSearch">
-                  <params>
-                    <!--....-->
-                    <verbose>true</verbose>
-                    <!--....-->
-                  </params>
-                  <!--Rules, etc-->
-                </config>
-              </egXML>
+            <cell>Set the <code>ssVerbose</code> property to true at the command line:
+              <eg>
+                ant -DssConfig=cfg.xml -DssVerbose=true
+              </eg>
+              Note that verbosity settings persist after creating the initial config; so, if you are trying
+              to debug just the tokenization process, you must make sure to run the config target beforehand:
+              <eg>
+                ant config tokenize -DssConfig=cfg.xml -DssVerbose=true
+              </eg>
             </cell>
-          </row>
-          <row>
-            <cell>How can I get staticSearch to jump straight to a specific hit in the document from a search result?</cell>
-            <cell>The best way to do this is to ensure that <gi>linkToFragmentId</gi> is set to the <val>true</val> and that the
-            input HTML contains ids at whatever level you think is most helpful. For instance, if possible, you could give each
-            <gi>xhtml:p</gi> element an <att>id</att>, which would mean that each KWIC could be linked to the right paragraph in the input document.</cell>
           </row>
           <row>
             <cell>How can I get staticSearch to highlight the found text in a target document?</cell>
@@ -1198,6 +1170,59 @@
           <item>Level: Intermediate</item>
           <item>Last Updated: <date when="2022-02-16">16 February 2022</date></item>
         </list>
+        <div xml:id="newIn2.0">
+        <head>Changes in version 2.0</head>
+          <p>staticSearch 2.0 contains  breaking changes and improvements to staticSearch. In particular,
+          the configuration file has been significantly re-organized; configuration files made for earlier
+          versions of staticSearch <emph>will not</emph> work in 2.0.
+          </p>
+          <table>
+            <row role="label">
+              <cell role="label">Configuration Option</cell>
+              <cell role="label">Explanation</cell>
+            </row>
+            <row>
+              <cell><gi>verbose</gi></cell>
+              <cell>The verbose option has been removed and replaced by the <code>ssVerbose</code> property in ant. To get debugging messages,
+                set the ssVerbose parameter to true (other accepted values: t, yes, y, 1)
+                <eg>
+                  ant -DssConfig=cfg.xml -DssVerbose=true
+                </eg>
+              </cell>
+            </row>
+            <row>
+              <cell>
+                <gi>indentJSON</gi>
+              </cell>
+              <cell><gi>indentJSON</gi> has been removed since it is rarely necessary other than for debugging purposes,
+              which can be better handled by other tools (i.e. viewed in Firefox or using the command-line tool jq).</cell>
+            </row>
+            <row>
+              <cell>
+                <gi>linkToFragmentId</gi>
+              </cell>
+              <cell><gi>linkToFragmentId</gi>, which controlled whether the search results should link back to the
+                nearest document fragment with an <att>id</att>, has been made part of the default behaviour of 
+                staticSearch and is no longer configurable. However, if you do not want the link to the nearest fragment
+              to appear in the results, you can visually hide the link element with the <ident>fidLink</ident> class 
+                in your site's CSS:
+              <eg>
+                .fidLink{
+                  display:none;
+                }
+              </eg>
+              </cell>
+            </row>
+            <row>
+              <cell><gi>scrollToTextFragment</gi></cell>
+              <cell>The <gi>scrollToTextFragment</gi> option, which relied on the experimental <ref target="https://wicg.github.io/scroll-to-text-fragment/">Text Fragments specification</ref>, has been removed. 
+                A more reliable alternative is to use JavaScript to 
+                <ref target="#highlightTargetPage">highlight hits on the target page</ref>.</cell>
+            </row>
+            
+          </table>
+          
+        </div>
         <div xml:id="newIn1.4.1">
           <head>Changes in version 1.4.1</head>
           <p>Bug fix:</p>
@@ -1523,9 +1548,7 @@
                 <elementRef key="versionFile" minOccurs="0"/>
                 <elementRef key="stemmerFolder" minOccurs="0"/>
                 <elementRef key="recurse"/>
-                <elementRef key="linkToFragmentId" minOccurs="0"/>
                 <elementRef key="minWordLength" minOccurs="0"/>
-                <elementRef key="scrollToTextFragment" minOccurs="0"/>
                 <elementRef key="scoringAlgorithm" minOccurs="0"/>
                 <elementRef key="phrasalSearch" minOccurs="0"/>
                 <elementRef key="wildcardSearch" minOccurs="0"/>
@@ -1534,10 +1557,8 @@
                 <elementRef key="maxKwicsToShow" minOccurs="0"/>
                 <elementRef key="totalKwicLength" minOccurs="0"/>
                 <elementRef key="kwicTruncateString" minOccurs="0"/>
-                <elementRef key="verbose" minOccurs="0"/>
                 <elementRef key="stopwordsFile" minOccurs="0"/>
                 <elementRef key="dictionaryFile" minOccurs="0"/>
-                <elementRef key="indentJSON" minOccurs="0"/>
                 <elementRef key="outputFolder" minOccurs="0"/>
                 <elementRef key="resultsPerPage" minOccurs="0"/>
                 <elementRef key="resultsLimit" minOccurs="0"/>
@@ -1886,34 +1907,7 @@
             </remarks>
           </elementSpec>
           
-          <elementSpec ident="scrollToTextFragment" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
-            <gloss>WARNING: Experimental technology. This turns on a feature currently only 
-            supported by a subset of browsers, enabling links from keyword-in-context results
-            directly to the specific text string in the target document.</gloss>
-            <content>
-              <dataRef name="boolean"/>
-            </content>
-            <remarks>
-              <p>Google has proposed a browser feature called 
-                <ref target="https://wicg.github.io/scroll-to-text-fragment/">Text Fragments</ref>, which would support 
-                a special kind of link that targets a specific string of text inside a page.
-                When clicking on such a link, the browser would scroll to, and then highlight,
-                the target text. This has been implemented in Chrome-based browsers (Chrome, 
-                Chromium and Edge) at the time of writing, but other browser producers are sceptical
-                with regard to the specification and worried about possible security implications.
-                The specification is subject to radical change. <gi>scrollToTextFragment</gi> is a 
-                boolean parameter that specifies whether you want to turn on this feature for 
-                browsers that support it. It depends on the availability of keyword-in-context 
-                strings, so <gi>createContexts</gi> must also be turned on to make it work. The
-                feature is automatically suppressed for browsers which do not support it. We recommend 
-                only using this feature on sites which are in steady development, so that if 
-                necessary it can be turned off, our the staticSearch implementation can be 
-                updated to take account of changes. For sites intended to remain unchanged or
-                archived for any length of time, this feature should be left turned off. It is
-                off by default. A more reliable alternative is probably to use JavaScript to 
-                <ref target="#highlightTargetPage">highlight hits on the target page</ref>.</p>
-            </remarks>
-          </elementSpec>
+
           
           <elementSpec ident="totalKwicLength" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>If <gi>createContexts</gi> is set to true, then this parameter controls the length (in words) of
@@ -1979,22 +1973,6 @@
             character. Japanese, for example, uses the 3-dot-leader character.</p>
             </remarks>
           </elementSpec>
-
-          <elementSpec ident="indentJSON" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
-            <gloss>Whether or not to indent code in the JSON index files. Indenting increases the
-              file size, but it can be useful if you need to read the files for debugging
-              purposes.</gloss>
-            <content>
-              <dataRef name="boolean"/>
-            </content>
-            <remarks>
-              <p>Normally, the JSON index files will only be processed by JavaScript, so
-            there is no need to indent them, but if you are debugging or investigating how
-            the code works, you may find it useful to generate them in a more human-readable
-            layout.</p>
-            </remarks>
-          </elementSpec>
-          
           
           <elementSpec ident="phrasalSearch" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>Whether or not to support phrasal searches. If this is true, then the <gi>maxContexts</gi>
@@ -2066,19 +2044,6 @@
               can return a set of document that can cause a browser's rendering engine to fail. For smaller collections, it's unlikely
               that this limit would ever be reached, but setting a limit may be helpful for large document collections, projects that want to constrain the number
               of possible results, or projects with memory-intensive or complex rendering.</p>
-            </remarks>
-          </elementSpec>
-          
-          <elementSpec ident="verbose" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
-            <gloss>Turns on more detailed reporting during the indexing process.</gloss>
-            <content>
-              <dataRef name="boolean"/>
-            </content>
-            <remarks>
-              <p>The staticSearch build process can be lengthy, and if something goes
-            wrong it can be difficult to figure out where the problem was. If you're
-            having build problems, turn on verbose messages in the configuration file 
-            to help with debugging, and you'll see a lot more output at the command line.</p>
             </remarks>
           </elementSpec>
           

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<config xmlns="http://hcmc.uvic.ca/ns/staticSearch" version="1">
+<config xmlns="http://hcmc.uvic.ca/ns/staticSearch" version="2">
     <params>
         <searchFile>test/search.html</searchFile>
         <versionFile>test/VERSION</versionFile>
         <recurse>true<!--Need to set recurse to true for the test--></recurse>
-        <linkToFragmentId>true</linkToFragmentId>
-        <scrollToTextFragment>false</scrollToTextFragment>
         <phrasalSearch>true</phrasalSearch>
         <wildcardSearch>true</wildcardSearch>
         <createContexts>true</createContexts>
@@ -17,10 +15,8 @@
         <maxKwicsToShow>5</maxKwicsToShow>
         <totalKwicLength>15</totalKwicLength>
         <kwicTruncateString>...</kwicTruncateString>
-        <verbose>false</verbose>
         <stopwordsFile>test/test_stopwords.txt</stopwordsFile>
         <dictionaryFile>xsl/english_words.txt</dictionaryFile>
-        <indentJSON>true</indentJSON>
         <outputFolder>ssTest</outputFolder>
     </params>
     

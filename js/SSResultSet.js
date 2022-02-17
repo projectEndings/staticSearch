@@ -28,10 +28,6 @@ class SSResultSet{
   * @param {number} maxKwicsToShow The maximum number of keyword-
   *              in-context strings to display for any single hit
   *              document.
-  * @param {boolean} scrollToTextFragment Whether to construct 
-  *              scroll-to-text-fragment result links for individual
-  *              KWICs. This depends on browser support for the 
-  *              feature and user configuration to turn it on.
   * @param {RegExp} reKwicTruncateStr A pre-constructed regular 
   *              expression that will remove leading and trailing 
   *              ellipses (whatever form these take, configured by
@@ -39,14 +35,12 @@ class SSResultSet{
   *              a scroll-to-text-fragment link.
   */
   
-  constructor(maxKwicsToShow, scrollToTextFragment, reKwicTruncateStr){
+  constructor(maxKwicsToShow, reKwicTruncateStr){
     try{
       this.mapDocs = new Map([]);
       //The maximum allowed number of keyword-in-context results to be
       //included in output.
       this.maxKwicsToShow = maxKwicsToShow;
-      //Whether to try using scroll-to-text-fragment feature.
-      this.scrollToTextFragment = scrollToTextFragment;
       //A regex to trim KWICs
       this.reKwicTruncateStr = reKwicTruncateStr;
       //A list of titles indexed by docUri is retrieved by AJAX
@@ -386,19 +380,16 @@ class SSResultSet{
           let sp = document.createElement('span');
           sp.innerHTML = value.contexts[i].context;
           li2.appendChild(sp);
-          //Create a text fragment identifier (see https://wicg.github.io/scroll-to-text-fragment/)
-          let cleanContext = value.contexts[i].context.replace(/<\/?mark>/g, '').replace(this.reKwicTruncateStr, '');
-          let tf = ((this.scrollToTextFragment) && (cleanContext.length > 1))? encodeURIComponent(':~:text=' + cleanContext) : '';
           //Create a query string containing the marked text so that downstream JS can 
           //do its own highlighting on the target page.
           let cleanMark = value.contexts[i].context.replace(/.*<mark>([^<]+)<\/mark>.+/, '$1');
           let queryString = '?ssMark=' + encodeURIComponent(cleanMark);
           //If we have a fragment id, output that.
-          if (((value.contexts[i].hasOwnProperty('fid'))&&(value.contexts[i].fid != ''))||(tf != '')){
+          if (((value.contexts[i].hasOwnProperty('fid'))&&(value.contexts[i].fid != ''))){
             let fid = value.contexts[i].hasOwnProperty('fid')? value.contexts[i].fid : '';
             let a2 = document.createElement('a');
             a2.appendChild(document.createTextNode('\u21ac'));
-            a2.setAttribute('href', value.docUri + queryString + '#' + fid + tf);
+            a2.setAttribute('href', value.docUri + queryString + '#' + fid);
             a2.setAttribute('class', 'fidLink');
             li2.appendChild(a2);
           }
