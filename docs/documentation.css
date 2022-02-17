@@ -196,7 +196,7 @@ div.cdata{
     white-space: pre;
     clear: both;
 }
-
+/*
 span.tag::before{
 
 }
@@ -206,6 +206,7 @@ span.tag::after{
 span.gi,
 span.tag{
 }
+*/
 span.att, span.attribute{
   font-weight: bold;
   color: #f5844c;
@@ -261,18 +262,20 @@ td.classSpec,
 td.macroSpec{
     font-weight: bold;
 }
-a.link_odd_element: link,
-a.link_odd_element: visited{
-    /*     color: #006400; */
+/*
+a.link_odd_element:link,
+a.link_odd_element:visited{
+    \/*     color: #006400; *\/
 }
-a.link_odd_macro: link,
-a.link_odd_macro: visited{
+a.link_odd_macro:link,
+a.link_odd_macro:visited{
 
 }
-a.link_odd_class: link,
-a.link_odd_class: visited{
+a.link_odd_class:link,
+a.link_odd_class:visited{
 
-}
+}*/
+
 span.element{
     font-weight: bold;
     color: black;
@@ -412,8 +415,8 @@ span.specName{
     padding: 0;
     width: 1.5em;
 }
-.index a: link,
-.index a: visited{
+.index a:link,
+.index a:visited{
     background: #fff;
     color: navy;
     display: block;
@@ -425,14 +428,14 @@ span.specName{
     border: 1px solid #999;
 }
 li.showall,
-li.showall a: visited,
-li.showall a: link{
+li.showall a:visited,
+li.showall a:link{
     width: 10em;
 }
 * html .index li{
     margin: 0.2em 0.2em;
 }
-ul.index li a: hover{
+ul.index li a:hover{
     background-color: #93D1E4;
     color: #fff;
     text-decoration: underline;
@@ -788,24 +791,24 @@ div.breadcrumb{
     display: none;
 }
 
-a: hover
+a:hover
 {
     text-decoration: underline;
 }
 
-a.navbar: link
+a.navbar:link
 {
     color: #FFFFFF;
     text-decoration: none;
 }
 
-a.navbar: visited
+a.navbar:visited
 {
     color: #FFFFFF;
     text-decoration: none;
 }
 
-a.navbar: hover{
+a.navbar:hover{
     color: #FFFFFF;
     text-decoration: underline;
 }
@@ -875,16 +878,16 @@ li.toc{
 
 /* table of contents links */
 
-a.inlinetoc: link,
-a.inlinetoc: visited
+a.inlinetoc:link,
+a.inlinetoc:visited
 {
     color: #7A7A7A;
     font-size: smaller;
     text-decoration: none;
 }
 
-a.inlinetoc-this: visited,
-a.inlinetoc-this: link
+a.inlinetoc-this:visited,
+a.inlinetoc-this:link
 {
     font-size: smaller;
     color: #000000;
@@ -892,8 +895,8 @@ a.inlinetoc-this: link
     text-decoration: underline;
 }
 
-a.inlinetoc-sub: visited,
-a.inlinetoc-sub: link
+a.inlinetoc-sub:visited,
+a.inlinetoc-sub:link
 {
     text-decoration: none;
     color: #000000;
@@ -939,8 +942,8 @@ span.toclist-this{
     color: red;
 }
 
-a.toclist: visited,
-a.toclist: link
+a.toclist:visited,
+a.toclist:link
 {
     font-weight: bold;
     color: #000000;
@@ -1083,10 +1086,10 @@ div.numbering{
     font-size: smaller;
     width: 2em;
 }
-
+/* 
 div.linenumber{
 }
-
+ */
 div.signed{
     text-align: left;
 }
@@ -1215,8 +1218,10 @@ div.q{
     font-style: italic;
 }
 /* inline quote */
+/* 
 span.q{
-}
+} 
+*/
 
 /* from drama */
 /* speeches in drama */
@@ -1277,11 +1282,12 @@ span.titlem{
 span.titlej{
     font-style: italic;
 }
+/* 
 span.titleu{
 }
 span.titles{
 }
-
+ */
 aside,
 span.notemargin,
 span.notemarginOuter,
@@ -1390,7 +1396,7 @@ p.mainEditor{
 
 /* for ePub */
 div.EpubCoverPage{
-    -webkit-hyphens: none;
+    hyphens: none;
     font-family: serif;
     height: 860pt;
     font-size: 30pt;
@@ -1500,10 +1506,10 @@ span.foreign{
 }
 
 /* transcription */
-
+/* 
 div.sourceDoc{
 }
-
+ */
 div.surfaceGrp{
     border-bottom-width: 1pt;
     border-bottom-color: green;
@@ -1525,10 +1531,10 @@ div.zone{
     border-color: lightgrey;
     margin-bottom: 0.5ex;
 }
-
+/* 
 div.line{
 }
-
+ */
 div.facsimage{
     float: right;
 }
@@ -1552,8 +1558,10 @@ div.app{
     margin-top: 1pt;
     font-size: smaller;
 }
+/* 
 span.lemma{
 }
+ */
 span.lemmawitness{
     font-weight: bold;
 }
@@ -1589,4 +1597,30 @@ table.border{
 }
 .orange{
     color: orange;
+}
+
+/* Updates 2022 to make our documentation more readable. */
+body{
+    font-family: georgia, sans-serif;
+}
+
+div.tei_body{
+    border-right: solid 1pt black;
+    border-left: solid 1pt black;
+    padding: 1em;
+    background-color: #f9f9f9;
+}
+
+div.tei_body>nav{
+    max-width: 43vw;
+}
+
+a:link, a:visited, a.anchorlink{
+    color: #882200;
+}
+
+table{
+    border-collapse: collapse;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    margin-top: 0.25em;
 }
