@@ -1598,3 +1598,29 @@ table.border{
 .orange{
     color: orange;
 }
+
+/* Updates 2022 to make our documentation more readable. */
+body{
+    font-family: georgia, sans-serif;
+}
+
+div.tei_body{
+    border-right: solid 1pt black;
+    border-left: solid 1pt black;
+    padding: 1em;
+    background-color: #f9f9f9;
+}
+
+div.tei_body>nav{
+    max-width: 43vw;
+}
+
+a:link, a:visited, a.anchorlink{
+    color: #882200;
+}
+
+table{
+    border-collapse: collapse;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    margin-top: 0.25em;
+}
