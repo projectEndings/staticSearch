@@ -844,7 +844,7 @@
         <xsl:param name="filterIdPrefix" as="xs:string"/>
         
         <xsl:for-each-group select="$metas" group-by="xs:string(@content)">
-            <xsl:sort select="current-grouping-key()"/>
+            <xsl:sort select="lower-case(current-grouping-key())"/>
             <xsl:variable name="thisName"
                 select="current-grouping-key()"
                 as="xs:string"/>
