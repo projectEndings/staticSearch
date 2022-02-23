@@ -722,7 +722,7 @@ class StaticSearch{
         let search = [];
         let q = this.queryBox.value.replace(/\s+/, ' ').replace(/(^\s+)|(\s+$)/g, '');
         if (q.length > 0){
-          search.push('q=' + q);
+          search.push('q=' + encodeURIComponent(q));
         }
 
         //Search in filter handling
