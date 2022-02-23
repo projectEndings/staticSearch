@@ -306,44 +306,6 @@
     </xsl:template>
     
     <xd:doc>
-        <xd:desc>Template to check for the soon-to-be deprecated period syntax in class names; in all releases after 1.2,
-            staticSearch classes should use an underscore, not a period (i.e. staticSearch_desc).</xd:desc>
-    </xd:doc>
-    <xsl:template match="meta/@class[matches(.,'(^|\s)staticSearch\.')]" mode="clean">
-        <xsl:variable name="classes" select="tokenize(.)" as="xs:string+"/>
-        <xsl:attribute name="class" separator=" ">
-            <xsl:for-each select="$classes">
-                <xsl:variable name="currClass" select="." as="xs:string"/>
-                <xsl:choose>
-                    <xsl:when test="matches(.,'^staticSearch\.')">
-                        <xsl:variable name="ssType" select="substring-after($currClass,'staticSearch.')" as="xs:string"/>
-                        <xsl:choose>
-                            <!--Check to see if it's a valid filter or document meta,
-                                in which case we (currently) transform it into the new syntax
-                                for backwards compatibility-->
-                            <xsl:when test="$ssType = ($ssFilters, $docMetas)">
-                                <xsl:variable name="classWithUnderscore" select="translate($currClass,'.','_')" as="xs:string"/>
-                                <!--CHANGE TERMINATE TO YES AND CHANGE MESSAGE TO ERROR ONCE FULLY DEPRECATED-->
-                                <xsl:message terminate="no">WARNING: Deprecated meta/@class in <xsl:value-of select="$relativeUri"/> (<xsl:value-of select="$currClass"/>). The "staticSearch." syntax has been deprecated and will not be supported in the next version of staticSearch. Use <xsl:value-of select="$classWithUnderscore"/> instead.
-                                </xsl:message>
-                                <!--REMOVE THE FOLLOWING LINE AFTER DEPRECATION PERIOD-->
-                                <xsl:value-of select="$classWithUnderscore"/>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <!--TODO: Should we error if there a class isn't properly configured?-->
-                                <xsl:value-of select="$currClass"/>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="$currClass"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:for-each>
-        </xsl:attribute>
-    </xsl:template>
-    
-    <xd:doc>
         <xd:desc>Template (added for release 1.4) to catch any instance of 
         @data-ssFilterSortKey, which should be @data-ssfiltersortkey per the 
         XHTML spec. This should be deprecated for version 1.4 and by invalid for
