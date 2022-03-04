@@ -468,7 +468,7 @@
   </target>
 
   <target name="all"
-    depends="init, validate, config, tokenize, json, buildJS, copyFiles, makeSearchPage, makeDebugSearchPage, report, clean">
+    depends="init, validate, config, tokenize, json, buildJS, copyFiles, makeSearchPage, report, clean">
     <description>
       TARGET: all
       Default target for running the entire static search creation process.
@@ -476,7 +476,7 @@
   </target>
 
   <target name="allButValidate"
-    depends="init, config, tokenize, json, buildJS, copyFiles, makeSearchPage, makeDebugSearchPage, report, clean">
+    depends="init, config, tokenize, json, buildJS, copyFiles, makeSearchPage, report, clean">
     <description>
       TARGET: allButValidate
       Target to override validation, which is helpful in cases
@@ -494,7 +494,7 @@
   </target>
 
   <target name="basic"
-    depends="init, validate, config, tokenize, json, buildJS, copyFiles, makeSearchPage, makeDebugSearchPage, clean">
+    depends="init, validate, config, tokenize, json, buildJS, copyFiles, makeSearchPage, clean">
     <description>
       TARGET: basic
       Target that runs the whole process other than the report creation.
