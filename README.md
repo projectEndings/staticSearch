@@ -6,7 +6,9 @@ This codebase, developed by Joey Takeda and Martin Holmes, provides a configurab
 
 The generation code uses XSLT3 and the search functionality is JavaScript. Implementations of the Porter2 stemmer in XSLT and JavaScript are part of the package. Live search pages based on this code are already in use in the sites [_Mapping Keats's Progress_](https://johnkeats.uvic.ca/search.html), [_The Map of Early Modern London_](https://mapoflondon.uvic.ca/search.htm) and [_The Winnifred Eaton Archive_](https://www.winnifredeatonarchive.org/search.html).
 
-The default branch of this repo is the dev branch; the main branch is used for releases. Formal releases started in early 2020, and the main branch will always reflect the latest release tag, so you can pin your own project either to master or to a specific release tag to avoid unexpected changes in behaviour due to codebase changes. For testing to prepare for upcoming changes, you can use the dev branch.
+The default branch of this repo is the dev branch; the main branch is used for releases. Formal releases started in early 2020, and the main branch will always reflect the latest release tag, so you can pin your own project either to master or to a specific release tag to avoid unexpected changes in behaviour due to codebase changes. For testing to prepare for upcoming changes, you can use the dev branch. Releases are also archived on Zenodo:
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6329800.svg)](https://doi.org/10.5281/zenodo.6329800)
 
 Full documentation can be found in the file docs/staticSearch.html. Live searchable documentation (built using staticSearch) for the latest release can be found at the [Project Endings site](https://endings.uvic.ca/staticSearch/docs/).
 
