@@ -325,6 +325,25 @@
     <copy file="${ssSearchFilePath}" tofile="${ssDebugSearchPage}"/>
     <replace file="${ssDebugSearchPage}" token="ssSearch.js" value="ssSearch-debug.js"/>
   </target>
+  
+  <target name="makeManualDebugSearchPage">
+    <description>
+      TARGET: makeManualDebugSearchPage
+      This copies the newly-produced search page to a new file
+      and then replaces the link to ssSearch.js with one to 
+      ssSearch-debug.js, for better testing, but also removes the
+      link to the test set, so that the search page has no activity
+      on load and can be used for manual testing and debugging.
+    </description>
+    <propertyregex property="ssManualDebugSearchPage" 
+      input="${ssSearchFilePath}"
+      regexp="(\.[a-zA-Z]+)$"
+      replace="-manual-debug\1"
+      global="false"/>
+    <echo message="Creating manual debug search page: ${ssManualDebugSearchPage}"/>
+    <copy file="${ssSearchFilePath}" tofile="${ssManualDebugSearchPage}"/>
+    <replaceregexp file="${ssManualDebugSearchPage}" match="&lt;/svg>.+&lt;/body>" replace="&lt;/svg>&lt;/a>&lt;/div>&lt;/div>&lt;/body>" flags="s"/>
+  </target>
 
   <target name="report">
     <description>
@@ -412,6 +431,8 @@
     <!--Added 2021-03-17: Remove the JS build files. -->
     <delete file="${ssBaseDir}/js/ssSearch.js"/>
     <delete file="${ssBaseDir}/js/ssSearch-debug.js"/>
+    <delete file="${ssBaseDir}/search-debug.html"/>
+    <delete file="${ssBaseDir}/ssSearch-manual-debug.html"/>
   </target>
 
   <target name="buildJS">
@@ -464,7 +485,7 @@
   </target>
 
   <target name="test"
-    depends="init, validate, config, tokenize, json, buildJS, copyFiles, makeSearchPage, makeDebugSearchPage, report">
+    depends="init, validate, config, tokenize, json, buildJS, copyFiles, makeSearchPage, makeDebugSearchPage, makeManualDebugSearchPage, report">
     <description>
       TARGET: test
       Target that runs the whole process, but does not clean up the
