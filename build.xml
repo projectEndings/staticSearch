@@ -479,9 +479,7 @@
       </sources>
     </jscomp>
     <echo message="Adding source map comment to the end of the ssSearch.js file..."/>
-    <echo file="${ssBaseDir}/js/ssSearch.js" append="true">
-      //# sourceMappingURL=ssSearch.js.map
-    </echo>
+    <echo file="${ssBaseDir}/js/ssSearch.js" append="true">&#x0a;//# sourceMappingURL=ssSearch.js.map</echo>
   </target>
 
   <target name="all"
