@@ -408,6 +408,7 @@
     <copy todir="${staticSearchDir}/">
       <fileset dir="${ssBaseDir}/js">
         <include name="ssSearch.js"/>
+        <include name="ssSearch.js.map"/>
         <include name="ssSearch-debug.js"/>
         <include name="ssHighlight.js"/>
         <include name="ssInitialize.js"/>
@@ -458,13 +459,29 @@
       </fileset>
     </concat>
     <!-- Note that we're currently suppressing warnings when compiling. -->
-    <jscomp compilationLevel="${ssClosureCompilationLevel}" warning="${ssClosureWarning}" 
+    <!--<jscomp compilationLevel="${ssClosureCompilationLevel}" warning="${ssClosureWarning}" 
       debug="false" languageOut="${ssClosureOutputSpec}"
       output="${ssBaseDir}/js/ssSearch.js">
       <sources dir="${ssBaseDir}/js">
         <file name="ssSearch-debug.js"/>
       </sources>
+    </jscomp>-->
+    <jscomp compilationLevel="${ssClosureCompilationLevel}" 
+      warning="${ssClosureWarning}" 
+      debug="false" languageOut="${ssClosureOutputSpec}" 
+      output="${ssBaseDir}/js/ssSearch.js"
+      sourceMapFormat="V3"
+      sourceMapLocationMapping="js/ssSearch-debug.js|ssSearch-debug.js"
+      sourceMapOutputFile="${ssBaseDir}/js/ssSearch.js.map"
+      >
+      <sources dir="${ssBaseDir}/js">
+        <file name="ssSearch-debug.js"/>
+      </sources>
     </jscomp>
+    <echo message="Adding source map comment to the end of the ssSearch.js file..."/>
+    <echo file="${ssBaseDir}/js/ssSearch.js" append="true">
+      //# sourceMappingURL=ssSearch.js.map
+    </echo>
   </target>
 
   <target name="all"
