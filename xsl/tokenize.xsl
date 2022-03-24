@@ -237,25 +237,13 @@
     
     
     <xd:doc>
-        <xd:desc>This template matches the root HTML element with some parameters
-            calculated from before for adding some identifying attributes</xd:desc>
+        <xd:desc>This template matches the root HTML element and adds a relativeUri 
+        attribute.</xd:desc>
     </xd:doc>
     <xsl:template match="html" mode="clean">
         <xsl:copy>
             <xsl:apply-templates select="@*" mode="#current"/>
-            
-            <!--<!-\-Apply templates to all of the attributes on the HTML element
-                EXCEPT the id, which we might just duplicate or we might fill in-\->
-            <xsl:apply-templates select="@*[not(local-name()='id')]" mode="#current"/>
-            
-            <!-\-Now (potentially re-)make the id, either using the declared value
-                or an inserted value-\->
-            <xsl:attribute name="id" select="if (@id) then @id else $searchIdentifier"/>
-            <xsl:if test="not(@id)">
-                <xsl:attribute name="ss-noId" select="'true'"/>
-            </xsl:if>-->
-            
-            <!--And create a relativeUri in the attribute, so we know where to point
+            <!--Create a relativeUri in the attribute, so we know where to point
                 things if ids and filenames don't match or if nesting-->
             <xsl:attribute name="data-staticSearch-relativeUri" select="$relativeUri"/>
             
