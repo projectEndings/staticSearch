@@ -1024,7 +1024,7 @@ class StaticSearch{
   }
 
 /** @function StaticSearch~processFilters
-  * @description this function calls StaticSearch~getDocIdsForFilters(),
+  * @description this function calls StaticSearch~getDocUrisForFilters(),
   * and if the function succeeds, it sets the docsMatchingFilters to
   * the returned XSet and returns true, otherwise it clears the current
   * set of filters (THINK: IS THIS CORRECT BEHAVIOUR?) and returns false.
@@ -1033,7 +1033,7 @@ class StaticSearch{
   */
   processFilters(){
     try{
-      this.docsMatchingFilters = this.getDocIdsForFilters();
+      this.docsMatchingFilters = this.getDocUrisForFilters();
       this.activeContexts = new XSet(this.searchInFilterCheckboxes.filter(cbx => cbx.checked).map(c => c.id));
       return true;
     }
@@ -1043,7 +1043,7 @@ class StaticSearch{
     }
   }
 
-  /** @function StaticSearch~getDocIdsForFilters
+  /** @function StaticSearch~getDocUrisForFilters
     * @description this function gets the set of currently-configured
     * filters by analyzing the form elements, then returns a
     * set (in the form of an XSet object) of all the document ids
@@ -1055,7 +1055,7 @@ class StaticSearch{
     * @suppress {missingProperties} The compiler doesn't know about the 
     * docs property.
     */
-    getDocIdsForFilters(){
+    getDocUrisForFilters(){
 
       var xSets = [];
       var currXSet;
