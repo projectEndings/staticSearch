@@ -320,13 +320,7 @@
                     
                    <!--Map for each document that has this token-->
                     <map xmlns="http://www.w3.org/2005/xpath-functions">
-                        <!--Now the document ID, which we've created (if necessary) in the
-                        tokenization step -->
-                        <string key="docId">
-                            <xsl:value-of select="$thisDoc/@id"/>
-                        </string>
-                        
-                        <!--And the relative URI from the document, which is to be used
+                        <!--First the relative URI from the document, which is to be used
                         for linking from the KWIC to the document. We've created this
                         already in the tokenization stage and stored it in a custom
                         data-attribute-->
