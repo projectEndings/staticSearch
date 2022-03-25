@@ -245,7 +245,7 @@
             <xsl:apply-templates select="@*" mode="#current"/>
             <!--Create a relativeUri in the attribute, so we know where to point
                 things if ids and filenames don't match or if nesting-->
-            <xsl:attribute name="data-staticSearch-relativeUri" select="$relativeUri"/>
+            <xsl:attribute name="ss-uri" select="$relativeUri"/>
             
             <!--And process nodes normally-->
             <xsl:apply-templates select="node()" mode="#current"/>
@@ -356,7 +356,7 @@
             <xsl:when test="local-name()=('id','lang')">
                 <xsl:copy-of select="."/>
             </xsl:when>
-            <xsl:when test="matches(local-name(),'^data-(staticSearch|ss)-')">
+            <xsl:when test="matches(local-name(),'^(data-)?(staticSearch|ss)-')">
                 <xsl:copy-of select="."/>
             </xsl:when>
             <xsl:otherwise/>
@@ -382,7 +382,7 @@
                 <xsl:variable name="hasClass" select="exists($currMeta[contains-token(@class, $thisDocMetaClass)])" as="xs:boolean"/>
                 <!--Has the name or a class, but not both, raise a warning.-->
                 <xsl:if test="($hasName or $hasClass) and not($hasName and $hasClass)">
-                    <xsl:message>WARNING: Bad meta tag in <xsl:value-of select="$currMeta/ancestor::html/@data-staticSearch-relativeUri"/> (<xsl:value-of select="'name: ' || $currMeta/@name || '; class=' || $currMeta/@class"/>). All <xsl:value-of select="$thisDocMeta"/> meta tags must have matching @name="<xsl:value-of select="$thisDocMeta"/>" and @class="<xsl:value-of select="$thisDocMetaClass"/>".</xsl:message>
+                    <xsl:message>WARNING: Bad meta tag in <xsl:value-of select="$currMeta/ancestor::html/@ss-uri"/> (<xsl:value-of select="'name: ' || $currMeta/@name || '; class=' || $currMeta/@class"/>). All <xsl:value-of select="$thisDocMeta"/> meta tags must have matching @name="<xsl:value-of select="$thisDocMeta"/>" and @class="<xsl:value-of select="$thisDocMetaClass"/>".</xsl:message>
                 </xsl:if>
             </xsl:for-each>
         </xsl:if>

@@ -325,7 +325,7 @@
                         already in the tokenization stage and stored it in a custom
                         data-attribute-->
                         <string key="docUri">
-                            <xsl:value-of select="$thisDoc/@data-staticSearch-relativeUri"/>
+                            <xsl:value-of select="$thisDoc/@ss-uri"/>
                         </string>
                         
                         <!--The document's score, forked depending on configured
@@ -402,7 +402,7 @@
                 <xsl:sort select="xs:integer(@ss-pos)" order="ascending"/>
                 
 
-                    <xsl:message use-when="$verbose" expand-text="true">{$thisDoc/@data-staticSearch-relativeUri}: {@ss-stem} (ctx: {position()}/{$contextCount}):  pos: {@ss-pos}</xsl:message>
+                    <xsl:message use-when="$verbose" expand-text="true">{$thisDoc/@ss-uri}: {@ss-stem} (ctx: {position()}/{$contextCount}):  pos: {@ss-pos}</xsl:message>
                 
                 
                 <!--Accumulated properties map, which may or may not exist -->
@@ -859,7 +859,7 @@
                     <xsl:value-of select="if (exists($declaredSortKey)) then $declaredSortKey else $thisName"/>
                 </string>
                 <array key="docs">
-                    <xsl:for-each-group select="$currMetas" group-by="string(ancestor::html/@data-staticSearch-relativeUri)">
+                    <xsl:for-each-group select="$currMetas" group-by="string(ancestor::html/@ss-uri)">
                         <string><xsl:value-of select="current-grouping-key()"/></string>
                     </xsl:for-each-group>
                 </array>
@@ -914,7 +914,7 @@
             <map key="{$filterId}" xmlns="http://www.w3.org/2005/xpath-functions">
                 <string key="value"><xsl:value-of select="$thisValue"/></string>
                 <array key="docs">
-                    <xsl:for-each-group select="$currMetas" group-by="string(ancestor::html/@data-staticSearch-relativeUri)">
+                    <xsl:for-each-group select="$currMetas" group-by="string(ancestor::html/@ss-uri)">
                         <string><xsl:value-of select="current-grouping-key()"/></string>
                     </xsl:for-each-group>
                 </array>
@@ -938,7 +938,7 @@
         <xsl:param name="metas" as="element(meta)+"/>
         <xsl:param name="filterIdPrefix" as="xs:string"/>
         <map key="docs" xmlns="http://www.w3.org/2005/xpath-functions">
-            <xsl:for-each-group select="$metas" group-by="string(ancestor::html/@data-staticSearch-relativeUri)">
+            <xsl:for-each-group select="$metas" group-by="string(ancestor::html/@ss-uri)">
                 <xsl:variable name="docUri" select="current-grouping-key()" as="xs:string"/>
                 <xsl:variable name="metasForDoc" select="current-group()" as="element(meta)+"/>
                 <array key="{$docUri}">
@@ -971,7 +971,7 @@
         <xsl:param name="metas" as="element(meta)+"/>
         <xsl:param name="filterIdPrefix" as="xs:string"/>
         <map key="docs" xmlns="http://www.w3.org/2005/xpath-functions">
-            <xsl:for-each-group select="$metas" group-by="string(ancestor::html/@data-staticSearch-relativeUri)">
+            <xsl:for-each-group select="$metas" group-by="string(ancestor::html/@ss-uri)">
                 <xsl:variable name="docUri" select="current-grouping-key()" as="xs:string"/>
                 <xsl:variable name="metasForDoc" select="current-group()" as="element(meta)+"/>
                 <array key="{$docUri}">
@@ -1024,7 +1024,7 @@
             <xsl:variable name="map" as="element(j:map)">
                 <map xmlns="http://www.w3.org/2005/xpath-functions">
                     <xsl:for-each select="$tokenizedDocs//html">
-                        <array key="{@data-staticSearch-relativeUri}">
+                        <array key="{@ss-uri}">
                             <string><xsl:value-of select="hcmc:getDocTitle(.)"/></string>
                              <!--Add a thumbnail graphic if one is specified. This generates
                             an empty string or nothing if there isn't. -->
@@ -1188,7 +1188,7 @@
         <xsl:choose>
             <xsl:when test="exists($docTitle)">
                 <xsl:if test="count($docTitle) gt 1">
-                    <xsl:message>WARNING: Multiple docTitles declared in <xsl:value-of select="$doc/@data-staticSearch-relativeUri"/>. Using <xsl:value-of select="$docTitle[1]/@content"/></xsl:message>
+                    <xsl:message>WARNING: Multiple docTitles declared in <xsl:value-of select="$doc/@ss-uri"/>. Using <xsl:value-of select="$docTitle[1]/@content"/></xsl:message>
                 </xsl:if>
                 <xsl:value-of select="normalize-space($docTitle[1]/@content)"/>
             </xsl:when>
@@ -1224,7 +1224,7 @@
         <xsl:choose>
             <xsl:when test="exists($docImage)">
                 <xsl:if test="count($docImage) gt 1">
-                    <xsl:message>WARNING: Multiple docImages declared in <xsl:value-of select="$doc/@data-staticSearch-relativeUri"/>. Using <xsl:value-of select="$docImage[1]/@content"/></xsl:message>
+                    <xsl:message>WARNING: Multiple docImages declared in <xsl:value-of select="$doc/@ss-uri"/>. Using <xsl:value-of select="$docImage[1]/@content"/></xsl:message>
                 </xsl:if>
                 <j:string><xsl:value-of select="$docImage[1]/@content"/></j:string>
             </xsl:when>
@@ -1249,7 +1249,7 @@
             as="element(meta)*"/>
         <xsl:if test="exists($docSortKey)">
             <xsl:if test="count($docSortKey) gt 1">
-                <xsl:message>WARNING: Multiple docSortKeys declared in <xsl:value-of select="$doc/@data-staticSearch-relativeUri"/>. Using <xsl:value-of select="$docSortKey[1]/@content"/></xsl:message>
+                <xsl:message>WARNING: Multiple docSortKeys declared in <xsl:value-of select="$doc/@ss-uri"/>. Using <xsl:value-of select="$docSortKey[1]/@content"/></xsl:message>
             </xsl:if>
             <j:string><xsl:value-of select="$docSortKey[1]/@content"/></j:string>
         </xsl:if>
