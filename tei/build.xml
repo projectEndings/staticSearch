@@ -36,7 +36,7 @@
   <!-- Place to get the TEI Guidelines build from. This is currently
     a release package, but it could also be a Jenkins build from another
     branch if required. -->
-  <property name="glinesUrl" value="https://github.com/TEIC/TEI/releases/download/P5_Release_4.3.0/tei-4.3.0.zip"/>
+  <property name="glinesUrl" value="https://github.com/TEIC/TEI/releases/download/P5_Release_4.4.0/tei-4.4.0.zip"/>
   
   <!-- Source folder location. -->
   <property name="sourceFolder" value="${basedir}/source"/>
@@ -92,13 +92,14 @@
     <copy todir="${outputFolder}" file="${basedir}/search.html"/>
   </target>
   
-  <target name="unborkGuidelines">
+  <!-- NOTE: THIS IS NO LONGER REQUIRED. TEI IS FIXED. -->
+  <!--<target name="unborkGuidelines">
     <description>
       TARGET unborkGuidelines
       This target fixes some egregiousness in the
       HTML encoding of the Guidelines pages.
     </description>
-    <!--First clean up the awfulness from the Guidelines HTML. -->
+    <!-\-First clean up the awfulness from the Guidelines HTML. -\->
     <echo message="Fixing horrible broken HTML..."/>
     <replaceregexp match="&lt;!DOCTYPE html" replace="">
       <fileset refid="sourceHtml"/>
@@ -106,7 +107,7 @@
     <replaceregexp match="SYSTEM .about:legacy-compat.&gt;" replace="">
       <fileset refid="sourceHtml"/>
     </replaceregexp>
-  </target>
+  </target>-->
   
   <target name="preprocessGuidelines">
     <description>
@@ -166,7 +167,7 @@
     <antcall target="clean"/>
     <antcall target="getGuidelines"/>
     <antcall target="deployEuroGuidelines"/>
-    <antcall target="unborkGuidelines"/>
+    <!--<antcall target="unborkGuidelines"/>-->
     <antcall target="preprocessGuidelines"/>
     <antcall target="buildStaticSearch"/>
     <antcall target="copyOtherGuidelines"/>
