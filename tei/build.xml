@@ -120,7 +120,7 @@
     <copy file="${basedir}/search.html" todir="${outputFolder}"/>
     <echo message="Preprocessing Guidelines pages..."/>
     <java classpath="${saxon}" classname="net.sf.saxon.Transform" 
-          failonerror="true">
+          failonerror="true" fork="true">
       <arg value="-xsl:${basedir}/xsl/preprocess.xsl"/>
       <arg value="-s:${basedir}/xsl/preprocess.xsl"/>
       <arg line="basedir=${basedir}"/>
