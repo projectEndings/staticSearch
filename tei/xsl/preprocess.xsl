@@ -172,13 +172,4 @@
     </xsl:copy>
   </xsl:template>
   
-  <xd:doc>
-    <xd:desc>Fix another invalidity. 
-      <!-- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> -->
-    shouldn't be there. XSLT will add the correct meta tag anyway.</xd:desc>
-  </xd:doc>
-  <xsl:template match="meta[matches(@content, 'charset=UTF-8', 'i')]"/>
-    
-  
-  
 </xsl:stylesheet>
