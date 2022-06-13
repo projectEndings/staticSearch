@@ -236,7 +236,7 @@
       throughout in the pipeline. The XSLT is run on itself, but loads the configuration file as a
       parameter. </description>
     <echo message="Creating configuration file..."/>
-    <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true">
+    <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
       <arg value="-xsl:${ssBaseDir}/xsl/create_config_xsl.xsl"/>
       <arg value="-s:${ssBaseDir}/xsl/create_config_xsl.xsl"/>
       <arg value="configFile=${ssConfigFile}"/>
@@ -287,7 +287,7 @@
       files, et cetera. Note that this task will likely create *a lot* of files and may take some
       time, depending on the size of the resource collection. </description>
     <echo message="Creating individual JSON files..."/>
-    <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true">
+    <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
       <arg value="-xsl:${ssBaseDir}/xsl/json.xsl"/>
       <arg value="-s:${ssBaseDir}/xsl/json.xsl"/>
       <arg value="--suppressXsltNamespaceCheck:on"/>
@@ -370,7 +370,7 @@
         <include name="*.json"/>
       </fileset>
     </resourcecount>
-    <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true">
+    <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
       <arg value="-xsl:${ssBaseDir}/xsl/create_reports.xsl"/>
       <arg value="-s:${ssBaseDir}/xsl/create_reports.xsl"/>
       <arg value="--suppressXsltNamespaceCheck:on"/>
@@ -396,7 +396,7 @@
       from a specific config file.
     </description>
     <echo message="Creating document concordance..."/>
-    <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true">
+    <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
       <arg value="-xsl:${ssBaseDir}/xsl/create_concordance.xsl"/>
       <arg value="-s:${ssBaseDir}/xsl/create_concordance.xsl"/>
       <arg value="-it:makeConcordance"/>
