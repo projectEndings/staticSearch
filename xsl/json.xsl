@@ -222,7 +222,7 @@
         </xsl:if>
         <xsl:message use-when="$verbose">Processing <xsl:value-of select="current-grouping-key()"/></xsl:message>
         <!--Figure out ten percent-->
-        <xsl:variable name="tenPercent" select="last() idiv 10"/>
+        <xsl:variable name="tenPercent" select="max((last() idiv 10, 1))"/>
         <!--Get the rough percentage-->
         <xsl:variable name="roughPercentage" select="position() idiv $tenPercent"/>
         <xsl:variable name="isLast" select="position() = last()"/>
