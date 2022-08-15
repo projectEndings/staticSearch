@@ -1196,8 +1196,17 @@
         <head>What's new since version 1.0?</head>
         <list>
           <item>Level: Intermediate</item>
-          <item>Last Updated: <date when="2022-02-16">16 February 2022</date></item>
+          <item>Last Updated: <date when="2022-08-15">15 August 2022</date></item>
         </list>
+        <div xml:id="newIn1.4.2">
+          <head>Changes in version 1.4.2</head>
+          <p>Bug fix:</p>
+          <list>
+            <item>A bug which could cause a divide-by-zero error in the JSON generation 
+            stage of the build when the target site consisted of fewer than ten documents
+            was fixed via a pull request from Norman Walsh. Thanks Norman!</item>
+          </list>
+        </div>
         <div xml:id="newIn1.4.1">
           <head>Changes in version 1.4.1</head>
           <p>Bug fix:</p>
@@ -1392,7 +1401,7 @@
         <head>Projects using staticSearch</head>
         <list>
           <item>Level: Basic</item>
-          <item>Last Updated: <date when="2021-01-06">6 January 2021</date></item>
+          <item>Last Updated: <date when="2022-08-15">15 August 2022</date></item>
         </list>
         <table>
           <row role="label">
@@ -1426,11 +1435,11 @@
             <cell><ref target="https://bcgenesis.uvic.ca/search.html">Search</ref></cell>
             <cell><ref target="https://hcmc.uvic.ca/svn/coldesp/trunk/config_staticSearch.xml">SVN</ref></cell>
           </row>
-          <row>
+          <!--<row>
             <cell><ref target="https://scancan.net">The Scandinavian-Canadian Studies Journal</ref></cell>
             <cell><ref target="https://scancan.net/search.htm">Search</ref></cell>
             <cell><ref target="https://hcmc.uvic.ca/svn/scancan/config_staticSearch.xml">SVN</ref></cell>
-          </row>
+          </row>-->
           <row>
             <cell><ref target="https://graves.uvic.ca/">The Robert Graves Diary</ref></cell>
             <cell><ref target="https://graves.uvic.ca/search.html">Search</ref></cell>
