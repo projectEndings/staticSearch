@@ -1223,6 +1223,15 @@
           </table>
           
         </div>
+        <div xml:id="newIn1.4.2">
+          <head>Changes in version 1.4.2</head>
+          <p>Bug fix:</p>
+          <list>
+            <item>A bug which could cause a divide-by-zero error in the JSON generation 
+              stage of the build when the target site consisted of fewer than ten documents
+              was fixed via a pull request from Norman Walsh. Thanks Norman!</item>
+          </list>
+        </div>
         <div xml:id="newIn1.4.1">
           <head>Changes in version 1.4.1</head>
           <p>Bug fix:</p>
