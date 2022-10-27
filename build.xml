@@ -545,8 +545,14 @@
 
   <!-- Oxygen framework targets. -->
 
-  <property name="edition.file" value="${ssBaseDir.converted}/EDITION" />
+  <property name="edition.file" value="${ssBaseDir.converted}/EDITION"/>
   <loadfile property="edition" srcfile="${edition.file}"/>
+  <loadfile property="add-on.version" srcfile="${edition.file}">
+    <filterchain>
+      <replaceregex pattern="^(\d+\.\d+\.\d+).*" replace="\1"/>
+    </filterchain>
+  </loadfile>
+    
   <!-- Whether to force processing to run. -->
   <property name="force" value="no" />
 
@@ -567,7 +573,7 @@
     <replaceregexp file="${ssBaseDir.converted}/add-on.xml"
 		   encoding="UTF-8">
       <regexp pattern="&lt;xt:version>[^&lt;]+&lt;/xt:version>" />
-      <substitution expression="&lt;xt:version>${edition}&lt;/xt:version>"/>
+      <substitution expression="&lt;xt:version>${add-on.version}&lt;/xt:version>"/>
     </replaceregexp>
     <replaceregexp file="${ssBaseDir.converted}/add-on.xml"
 		   encoding="UTF-8">
