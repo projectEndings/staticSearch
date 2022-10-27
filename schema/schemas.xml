@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<!-- Schema locating rules for use with Emacs' 'nXML' mode. -->
+<locatingRules xmlns="http://thaiopensource.com/ns/locating-rules/1.0">
+  <namespace ns="http://hcmc.uvic.ca/ns/staticSearch" uri="staticSearch.rnc"/>
+</locatingRules>
