@@ -47,8 +47,11 @@ config.xsl
 
 #Avoid including any generated zip distros.
 /staticSearch*.zip
+releases
 
 # Generated JS files
 js/ssSearch-debug.js
 js/ssSearch.js
 
+# Emacs backup files
+*~

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xt:extensions xmlns:xt="http://www.oxygenxml.com/ns/extension"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.oxygenxml.com/ns/extension http://www.oxygenxml.com/ns/extension/extensions.xsd">
+    <xt:extension id="staticSearch">
+        <xt:location href="https://github.com/tgraham-antenna/staticSearch/releases/download/v2.0.0alpha/staticSearch-framework-2.0.0alpha.zip"/>
+        <xt:version>2.0.0alpha</xt:version>
+        <xt:oxy_version>14.0+</xt:oxy_version>
+        <xt:type>framework</xt:type>
+        <xt:author>Martin Holmes and Joey Takeda</xt:author>
+        <xt:name>staticSearch</xt:name>
+        <xt:description xmlns="http://www.w3.org/1999/xhtml"><h1>staticSearch</h1>
+<p>A codebase to support a pure JSON search engine requiring no backend for any XHTML5 document collection.</p>
+
+<p>See <a href="https://github.com/projectEndings/staticSearch">https://github.com/projectEndings/staticSearch</a>.</p>
+	</xt:description>
+        <xt:license><![CDATA[The code is licensed under both MPL and BSD.]]></xt:license>
+    </xt:extension>
+</xt:extensions>
