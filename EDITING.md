@@ -14,7 +14,7 @@ The staticSearch framework can be installed either as add-on inside Oxygen or as
 
 Follow the instructions in the Oxygen manual at https://www.oxygenxml.com/doc/ug-editor/topics/installing-and-updating-add-ons.html
 
-The staticSearch framework update site URL is https://raw.githubusercontent.com/tgraham-antenna/static-search/dev/add-on.xml
+The staticSearch framework update site URL is https://raw.githubusercontent.com/tgraham-antenna/staticSearch/framework/add-on.xml
 
 Note that Oxygen will require you to restart the editor after installing the add-on framework.
 
