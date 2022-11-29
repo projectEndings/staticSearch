@@ -36,6 +36,29 @@
     </front>
     <body>
         <head>Project Endings staticSearch Generator</head>
+      
+      
+      
+      <div xml:id="whatDoesItNeed">
+        <head>What do I need in order to use this?</head>
+        <p>In order to build a static search index on your document collection,
+          you will need:</p>
+        
+        <list>
+          <item>A collection of <ref target="https://www.lesliesikos.com/xhtml5-the-zenith-of-markup-languages/">XHTML5 documents</ref> (HTML documents which are in the XHTML namespace 
+            and are well-formed). </item>
+          <item>A computer running Linux or Mac OSX (the indexing process does not yet work on Windows, although
+            you could use the Windows Subsystem for Linux to run it)</item>
+          <item>Java, <ref target="https://ant.apache.org/">Apache Ant</ref>, and <ref target="https://ant-contrib.sourceforge.net/">ant-contrib</ref> installed on the system.</item>
+        </list>
+        
+        <p>Once you have run the indexing process on your document collection, you can place the results 
+          on any web server and the search will work with any modern browser. The requirements above 
+          are only for building the search index, which you only need to do once (until your documents
+          change).</p>
+        
+      </div>
+      
         <div xml:id="whatDoesItDo">
           <head>What does it do?</head>
           <list>
