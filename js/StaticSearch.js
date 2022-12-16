@@ -355,6 +355,11 @@ class StaticSearch{
       //search has completed.
       this.searchFinishedHook = function(num){};
 
+      //We add a method which can be overridden by end users to do any 
+      //special handling for input strings (such as removing some diacritics
+      //but not others).
+      this.preProcessSearchString = function(strSearch){return strSearch;};
+
       //Now we're instantiated, check to see if there's a query
       //string that should initiate a search.
       this.parseUrlQueryString();
@@ -796,6 +801,13 @@ class StaticSearch{
       this.terms = [];
       this.normalizedQuery = [];
       let strSearch = this.queryBox.value;
+
+      //Normalize unicode of course
+      strSearch = strSearch.normalize('NFC');
+
+      //Call the overridable function so end-users can specify their own
+      //tweaks.
+      strSearch = this.preProcessSearchString(strSearch);
 
       //Start by normalizing whitespace.
       strSearch = strSearch.replace(/((^\s+)|\s+$)/g, '');
