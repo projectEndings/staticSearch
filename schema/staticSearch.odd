@@ -1223,6 +1223,15 @@
           </table>
           
         </div>
+        <div xml:id="newIn1.4.3">
+          <head>Changes in version 1.4.3</head>
+          <p>Minor enhancement:</p>
+          <list>
+            <item>The user-provided search string is now normalized to Unicode Normalization Form NFC
+            before being processed, and a user-overridable preprocessing function has been added to 
+            the search-string parsing code. This will be documented in a future release.</item>
+          </list>
+        </div>
         <div xml:id="newIn1.4.2">
           <head>Changes in version 1.4.2</head>
           <p>Bug fix:</p>
