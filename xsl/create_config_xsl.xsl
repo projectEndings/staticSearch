@@ -177,7 +177,7 @@
     <xsl:variable name="stemmerFolder" select="if ($configDoc//stemmerFolder) then $configDoc//stemmerFolder/text() else $ssDefaultStemmerFolder" as="xs:string"/>
     
     <xd:doc>
-        <xd:desc><xd:ref name="collectionDir" type="variable">$searchDirName</xd:ref> is the path to the
+        <xd:desc><xd:ref name="collectionDir" type="variable">$collectionDir</xd:ref> is the path to the
         directory that contains the search document, which we assume is the project directory that contains
         all of the files that static search is meant to index.</xd:desc>
     </xd:doc>
