@@ -130,7 +130,7 @@
             Note that we TRIM off the leading slash</xd:desc>
     </xd:doc>
     <xsl:variable name="relativeUri" 
-        select="substring-after($uri,$collectionDir) => replace('^(/|\\)','')"
+        select="substring-after($uri,replace($collectionDir, '^(file:/)/+', '$1')) => replace('^(/|\\)','')"
         as="xs:string"/>
     
     <xd:doc>
