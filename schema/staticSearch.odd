@@ -27,7 +27,7 @@
         </docTitle>
         <docAuthor>Martin Holmes</docAuthor>
         <docAuthor>Joey Takeda</docAuthor>
-        <docDate>2019-2022</docDate>
+        <docDate>2019-2023</docDate>
       </titlePage>
       <p>This documentation provides instructions on how to use the Project Endings
         staticSearch Generator to provide a fully-functional search <soCalled>engine</soCalled>
@@ -1196,8 +1196,24 @@
         <head>What's new since version 1.0?</head>
         <list>
           <item>Level: Intermediate</item>
-          <item>Last Updated: <date when="2022-08-15">15 August 2022</date></item>
+          <item>Last Updated: <date when="2023-02-05">5 February 2023</date></item>
         </list>
+        
+        <div xml:id="newIn1.4.4">
+          <head>Changes in version 1.4.4</head>
+          <p>Bug fix:</p>
+          <list>
+            <item>A deprecated JavaScript function, <code>substr()</code>, which was 
+            used in one line of code only, has been replaced by <code>substring()</code>.</item>
+          </list>
+        </div>
+        <div xml:id="newIn1.4.3">
+        <head>Changes in version 1.4.3</head>
+        <p>New feature:</p>
+        <list>
+          <item>A new method has been added to the <code>StaticSearch</code> class: <code>preProcessSearchString()</code>, which is called from <code>parseSearchQuery()</code>, does nothing as it is defined, but can be overridden by end-users to enable them to do any special processing they might need to do on an input search string. This is sometimes necessary when (for example) specific diacritics are being ignored by the search indexing, but end-users might type them in anyway. The search string is also being unicode-normalized (to NFC) at the beginning of the parsing function.</item>
+        </list>
+      </div>
         <div xml:id="newIn1.4.2">
           <head>Changes in version 1.4.2</head>
           <p>Bug fix:</p>
