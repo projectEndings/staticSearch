@@ -843,7 +843,7 @@ class StaticSearch{
           }
         }
         if (qCount % 2 > 0){
-          strSearch = tmp.substr(0, lastQPos) + tmp.substr(lastQPos + 1, tmp.length);
+          strSearch = tmp.substring(0, lastQPos) + tmp.substring(lastQPos + 1, tmp.length);
         }
         else{
           strSearch = tmp;
