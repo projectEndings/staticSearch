@@ -31,7 +31,7 @@
      ****************************************************************-->
   
   <!-- Saxon of course. -->
-  <property name="saxon" value="${basedir}/../lib/saxon-he-10.jar"/>
+  <property name="saxon" value="${basedir}/../lib/saxon-he-11.4.jar"/>
   
   <!-- Place to get the TEI Guidelines build from. This is currently
     a release package, but it could also be a Jenkins build from another

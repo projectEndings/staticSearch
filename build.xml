@@ -49,7 +49,7 @@
   </pathconvert>
 
   <!-- Use the saxon in our lib folder. -->
-  <property name="ssSaxon" value="${ssBaseDir.converted}/lib/saxon-he-10.jar"/>
+  <property name="ssSaxon" value="${ssBaseDir.converted}/lib/saxon-he-11.4.jar"/>
   
   <!-- Use the closure compiler in our lib folder. -->
   <property name="ssClosure" value="${ssBaseDir.converted}/lib/closure-compiler.jar"/>
@@ -241,6 +241,7 @@
       <arg value="-s:${ssBaseDir.converted}/xsl/create_config_xsl.xsl"/>
       <arg value="--suppressXsltNamespaceCheck:on"/>
       <arg value="configFile=file:///${ssConfigFile}"/>
+      <arg value="ssBaseDir=${ssBaseDir.converted}"/>
       <arg value="ssVerbose=${ssVerbose}"/>
       <arg value="ssPatternsetFile=file:///${ssPatternsetFile}"/>
     </java>

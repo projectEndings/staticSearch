@@ -289,7 +289,7 @@
                     then use that as the grouping-key; otherwise,
                     use the document uri -->
                 <xsl:for-each-group select="$stemGroup"
-                    group-by="document-uri(/)">
+                    group-by="base-uri(.)">
                     <!--Sort the documents so that the document with the most number of this hit comes first-->
                     <xsl:sort select="count(current-group())" order="descending"/>
                     

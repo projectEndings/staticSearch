@@ -28,10 +28,10 @@
     <xsl:variable name="toc" select="//div[@class='tei_front']" as="element(div)"/>
     
     <xd:doc>
-        <xd:desc>Misleadingly named variable; this is just the document's uri, but we use it below
+        <xd:desc>The document's uri, which we use it below
         to create proper output paths for each section.</xd:desc>
     </xd:doc>
-    <xsl:variable name="thisDir" select="document-uri(/)"/>
+    <xsl:variable name="thisUri" select="base-uri()"/>
     
     <xd:doc>
         <xd:desc>All of the sections that we want to split into individual documents for ease of browsing.</xd:desc>
@@ -63,7 +63,7 @@
         <xd:desc>Create a new HTML with the new out path as the index.</xd:desc>
     </xd:doc>
     <xsl:template match="html" mode="index">
-        <xsl:result-document href="{replace($thisDir,'[^/]+\.html','index.html')}">
+        <xsl:result-document href="{replace($thisUri,'[^/]+\.html','index.html')}">
             <xsl:copy>
                 <xsl:apply-templates select="@*|node()" mode="#current"/>
             </xsl:copy>
@@ -161,8 +161,8 @@
     </xd:doc>
     <xsl:template match="html" mode="section">
         <xsl:param name="section" tunnel="yes"/>
-        <xsl:message>Creating document <xsl:value-of select="replace($thisDir,'[^/]+\.html',$section/@id || '.html')"/></xsl:message>
-        <xsl:result-document href="{replace($thisDir,'[^/]+\.html',$section/@id || '.html')}">
+        <xsl:message>Creating document <xsl:value-of select="replace($thisUri,'[^/]+\.html',$section/@id || '.html')"/></xsl:message>
+        <xsl:result-document href="{replace($thisUri,'[^/]+\.html',$section/@id || '.html')}">
             <xsl:copy>
                 <xsl:apply-templates select="@*|node()" mode="#current"/>
             </xsl:copy>
