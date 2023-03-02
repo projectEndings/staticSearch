@@ -306,7 +306,7 @@
         </xsl:result-document>
         
         <!--Create the result document, which is also an XSLT document, but placed in the dummy XSO namespace-->
-        <xsl:result-document href="{$ssBaseDir}/xsl/config.xsl" method="xml" encoding="UTF-8" normalization-form="NFC" indent="yes">
+        <xsl:result-document href="file:///{$ssBaseDir}/xsl/config.xsl" method="xml" encoding="UTF-8" normalization-form="NFC" indent="yes">
             
             <!--Root stylesheet-->
             <xso:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"

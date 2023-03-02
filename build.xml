@@ -46,6 +46,7 @@
     <map from="c:" to="C:"/>
     <map from="d:" to="D:"/>
     <map from="e:" to="E:"/>
+    <map from="z:" to="Z:"/>
   </pathconvert>
 
   <!-- Use the saxon in our lib folder. -->
@@ -86,6 +87,7 @@
     <map from="c:" to="C:"/>
     <map from="d:" to="D:"/>
     <map from="e:" to="E:"/>
+    <map from="z:" to="Z:"/>
   </pathconvert>
 
   <!--Load the configuration file as a property file-->
