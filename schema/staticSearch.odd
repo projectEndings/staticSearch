@@ -27,7 +27,7 @@
         </docTitle>
         <docAuthor>Martin Holmes</docAuthor>
         <docAuthor>Joey Takeda</docAuthor>
-        <docDate>2019-2022</docDate>
+        <docDate>2019-2023</docDate>
       </titlePage>
       <p>This documentation provides instructions on how to use the Project Endings
         staticSearch Generator to provide a fully-functional search <soCalled>engine</soCalled>
@@ -53,6 +53,29 @@
             <ref target="#projectsUsingSS">Projects using staticSearch</ref>.</p>
           
         </div>
+      
+      <div xml:id="whatDoesItNeed">
+        <head>What do I need in order to use this?</head>
+        <list>
+          <item>Level: Basic</item>
+          <item>Last Updated: <date when="2023-03-07">7 March 2023</date></item>
+        </list>
+        <p>In order to build a static search index on your document collection,
+          you will need:</p>
+        
+        <list>
+          <item>A collection of <ref target="https://www.lesliesikos.com/xhtml5-the-zenith-of-markup-languages/">XHTML5 documents</ref> 
+            (HTML documents which are in the XHTML namespace and are well-formed). </item>
+          <item>A computer running a recent version of Linux, Mac OSX, or Windows</item>
+          <item>Java, <ref target="https://ant.apache.org/">Apache Ant</ref>, and <ref target="https://ant-contrib.sourceforge.net/">ant-contrib</ref> installed on the system.</item>
+        </list>
+        
+        <p>Once you have run the indexing process on your document collection, you can place the results 
+          on any web server and the search will work with any modern browser. The requirements above 
+          are only for building the search index, which you only need to do once (until your documents
+          change).</p>
+      </div>
+      
       <div xml:id="whyWouldIUseIt">
         <head>Why would I use it?</head>
         <list>
@@ -1168,10 +1191,12 @@
         <head>What's new since version 1.0?</head>
         <list>
           <item>Level: Intermediate</item>
-          <item>Last Updated: <date when="2022-02-16">16 February 2022</date></item>
+          <item>Last Updated: <date when="2023-03-07">7 March 2023</date></item>
         </list>
         <div xml:id="newIn2.0">
         <head>Changes in version 2.0</head>
+          <p>Windows support has been added courtesy of a pull request from Tony Graham, and we will continue
+          to test and maintain it from now on.</p>
           <p>staticSearch 2.0 contains  breaking changes and improvements to staticSearch. In particular,
           the configuration file has been significantly re-organized; configuration files made for earlier
           versions of staticSearch <emph>will not</emph> work in 2.0.
@@ -1435,7 +1460,7 @@
         <head>Projects using staticSearch</head>
         <list>
           <item>Level: Basic</item>
-          <item>Last Updated: <date when="2021-01-06">6 January 2021</date></item>
+          <item>Last Updated: <date when="2023-03-07">7 March 2023</date></item>
         </list>
         <table>
           <row role="label">
@@ -1470,11 +1495,6 @@
             <cell><ref target="https://hcmc.uvic.ca/svn/coldesp/trunk/config_staticSearch.xml">SVN</ref></cell>
           </row>
           <row>
-            <cell><ref target="https://scancan.net">The Scandinavian-Canadian Studies Journal</ref></cell>
-            <cell><ref target="https://scancan.net/search.htm">Search</ref></cell>
-            <cell><ref target="https://hcmc.uvic.ca/svn/scancan/config_staticSearch.xml">SVN</ref></cell>
-          </row>
-          <row>
             <cell><ref target="https://graves.uvic.ca/">The Robert Graves Diary</ref></cell>
             <cell><ref target="https://graves.uvic.ca/search.html">Search</ref></cell>
             <cell><ref target="https://hcmc.uvic.ca/svn/graves/config_staticSearch.xml">SVN</ref></cell>
@@ -1504,11 +1524,11 @@
             <cell>The home page includes a search function which leads to the search page.</cell>
             <cell></cell>
           </row>
-          <!--<row>
-            <cell>Linked Early Modern Drama Online (forthcoming)</cell>
-            <cell/>
-            <cell/>
-          </row>-->
+          <row>
+            <cell><ref target="https://lemdo.uvic.ca/moms/">The MoEML Mayoral Shows Anthology (hosted by Linked Early Modern Drama Online)</ref></cell>
+            <cell><ref target="https://lemdo.uvic.ca/moms/search.html">Search</ref></cell>
+            <cell><ref target="https://hcmc.uvic.ca/svn/lemdo/data/anthologies/moms/config_staticSearch.xml">SVN</ref></cell>
+          </row>
         </table>
       </div>
       

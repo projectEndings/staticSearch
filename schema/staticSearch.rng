@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <grammar xmlns="http://relaxng.org/ns/structure/1.0"
-         xmlns:tei="http://www.tei-c.org/ns/1.0"
-         xmlns:teix="http://www.tei-c.org/ns/Examples"
-         xmlns:xlink="http://www.w3.org/1999/xlink"
-         datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
-         ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2022-12-16T23:11:19Z. 2019-2022.
+          xmlns:tei="http://www.tei-c.org/ns/1.0"
+          xmlns:teix="http://www.tei-c.org/ns/Examples"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
+          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
+Schema generated from ODD source 2023-03-07T23:18:05Z. 2019-2023.
 TEI Edition: Version 4.5.0. Last updated on
         25th October 2022, revision 3e98e619e
 TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.5.0/
   
 --><!--Free to anyone for any purpose-->
    <sch:ns xmlns:sch="http://purl.oclc.org/dsdl/schematron"
-           prefix="tei"
-           uri="http://www.tei-c.org/ns/1.0"/>
+            prefix="tei"
+            uri="http://www.tei-c.org/ns/1.0"/>
    <define name="config">
       <element name="config" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The root element for the Search Generator configuration file.) </a:documentation>
@@ -29,8 +29,8 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.5.0/
          </optional>
          <optional>
             <attribute xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
-                       name="version"
-                       a:defaultValue="1">
+                        name="version"
+                        a:defaultValue="1">
                <a:documentation>(specifies the major version of staticSearch to which
                   this configuration file corresponds. If this attribute is not used, the configuration file is assumed to have an version value of 1.) </a:documentation>
                <data type="nonNegativeInteger"/>
