@@ -51,4 +51,5 @@ config.xsl
 # Generated JS files
 js/ssSearch-debug.js
 js/ssSearch.js
+js/*.js.map
 
