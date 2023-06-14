@@ -532,7 +532,7 @@
         <xso:variable name="hasExclusions" 
             select="{if ($configDoc//exclude) then 'true' else 'false'}()"/>
         
-        <xso:variable name="hasFilters" 
+        <xso:variable name="hasFilterLabels" 
             select="{if ($configDoc//filter) then 'true' else 'false'}()"/>
         
         <xso:template name="echoParams">
