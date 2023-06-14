@@ -270,6 +270,16 @@
     </xd:doc>
     <xsl:variable name="contexts" select="$configDoc//contexts/context" as="element(context)*"/>
     
+    <xd:doc>
+        <xd:desc>
+            <xd:p>The <xd:ref name="filters" type="variable">filters</xd:ref> variable is
+                a sequence of 0 or more filter elements that may be specified by the 
+                user wanting more control over filter labels.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:variable name="filters" select="$configDoc//filters/filter" as="element(filter)*"/>
+    
+    
     <!--**************************************************************
        *                                                            * 
        *                         TEMPLATES                          *
@@ -522,6 +532,8 @@
         <xso:variable name="hasExclusions" 
             select="{if ($configDoc//exclude) then 'true' else 'false'}()"/>
         
+        <xso:variable name="hasFilters" 
+            select="{if ($configDoc//filter) then 'true' else 'false'}()"/>
         
         <xso:template name="echoParams">
             <xso:if test="$verbose">

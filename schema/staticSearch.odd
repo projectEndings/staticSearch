@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TEI xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:svg="http://www.w3.org/2000/svg"
   xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns="http://www.tei-c.org/ns/1.0"
-  xmlns:sch="http://purl.oclc.org/dsdl/schematron">
+  xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+  xmlns:xh="http://www.w3.org/1999/xhtml">
   <teiHeader>
     <fileDesc>
       <titleStmt>
@@ -1552,6 +1553,7 @@
               <elementRef key="rules" minOccurs="0"/>
               <elementRef key="contexts" minOccurs="0"/>
               <elementRef key="excludes" minOccurs="0"/>
+              <elementRef key="filters" minOccurs="0"/>
             </content>
             <attList>
               <attDef ident="version" usage="rec">
@@ -2143,6 +2145,68 @@
                 different locations.</p>
             </remarks>
           </elementSpec>
+          
+          <elementSpec ident="filters" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>Wrapper for filter elements in the configuration file</gloss>
+            <desc>The optional filters/filter part of the configuration file allows the
+            user to specify custom labels with HTML markup for specific filters, so they
+            are not limited by the label supplied in the XHTML meta/@name attribute.</desc>
+            <content>
+              <elementRef key="filter" minOccurs="1" maxOccurs="unbounded"/>
+            </content>
+          </elementSpec>
+          
+          <elementSpec ident="filter" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
+            <gloss>Allows specification of a custom label for a filter on the search page</gloss>
+            <desc>Filters are identified through plain-text labels defined as XHTML meta/@name
+            attributes in the document headers. This element allows a user to specify a richer
+            label for a particular filter by using HTML code. Multiple labels may be specified
+            in different languages. The <att>filterName</att> attribute must be supplied, and 
+            must be identical to the XHTML meta/@name attribute for the filter as it appears
+            in the HTML document heads.</desc>
+            <content>
+              <elementRef key="label" minOccurs="1" maxOccurs="unbounded"/>
+            </content>
+            <attList>
+              <attDef ident="filterName" usage="req">
+                <datatype>
+                  <dataRef key="teidata.text"/>
+                </datatype>
+              </attDef>
+            </attList>
+          </elementSpec>
+          
+          <!-- HTML finds its way into our config file now, so here is where we 
+               do some rudimentary constraining. -->
+          <moduleSpec ident="ssHTML">
+            <desc>A module to encapsulate HTML elements (in the XHTML namespace)
+            which are used as part of our configuration setup, enabling users to 
+            specify e.g. rich HTML markup inside labels that will appear on the 
+            search page.</desc>
+          </moduleSpec>
+          
+          <elementSpec ident="label" module="ssHTML" ns="http://www.w3.org/1999/xhtml">
+            <gloss>An HTML label</gloss>
+            <desc>A standard HTML label element, within which other HTML content can 
+            be included. We do not prescribe or validate the content model; see e.g.
+            https://developer.mozilla.org/en-US/docs/Web/HTML/Element/label
+            for information.</desc>
+            <content>
+              <alternate minOccurs="1" maxOccurs="unbounded">
+              <anyElement require="http://www.w3.org/1999/xhtml" minOccurs="0" maxOccurs="unbounded"/>
+                <textNode/>
+              </alternate>
+            </content>
+            <attList>
+              <attDef ident="lang" usage="rec">
+                <gloss>The language of this label</gloss>
+                <desc>Multiple labels may be supplied in different languages if required. The value
+                of this attribute should be a valid language identifier per BCP 47.</desc>
+                <datatype><dataRef key="teidata.language"/></datatype>
+              </attDef>
+            </attList>
+          </elementSpec>
+          
         </schemaSpec>
       </div>
     </back>
