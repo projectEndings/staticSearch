@@ -403,6 +403,14 @@
                     </xsl:message>
                 </xsl:if>
                 
+                <xsl:if test="not(empty($filters))">
+                    <xsl:call-template name="createFilterLabels"/>
+                    <xsl:message use-when="$verbose">
+                        <xsl:message>Create filter labels</xsl:message>
+                        <xsl:message><xsl:call-template name="createFilterLabels" exclude-result-prefixes="#all"/></xsl:message>
+                    </xsl:message>
+                </xsl:if>
+                
                 
             </xso:stylesheet>
             
@@ -735,6 +743,16 @@ tokenization.
                 <xso:apply-templates select="node()" mode="#current"/>
             </xso:copy>
         </xso:template>
+    </xsl:template>
+    
+    <xd:doc>
+        <xd:desc>The <xd:ref name="createFilterLabels" type="template">createFilterLabels</xd:ref> template creates a copy of the original filter data in a variable; there's no real reason to process 
+        it in any special way.</xd:desc>
+    </xd:doc>
+    <xsl:template name="createFilterLabels" exclude-result-prefixes="#all">
+        <xso:variable name="filterLabels" as="element(hcmc:filters)">
+            <xsl:sequence select="$filters"/>
+        </xso:variable>
     </xsl:template>
     
  
