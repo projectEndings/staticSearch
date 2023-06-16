@@ -1156,8 +1156,28 @@
         </xsl:element>
     </xsl:template>
     
+    <xd:doc>
+        <xd:desc>Template to convert an hcmc:filters element to a JSON array.</xd:desc>
+    </xd:doc>
+    <xsl:template match="hcmc:filters" mode="configToArray">
+        <j:array key="filters">
+            <j:map>
+                <xsl:apply-templates mode="#current"/>
+            </j:map>
+        </j:array>
+    </xsl:template>
     
-    
+    <xd:doc>
+        <xd:desc>Template to convert any child of an hcmc:filters element to a JSON value.
+        NOTE: This is ugly and only saves the text, but this output JSON is informational only
+        so it seems like overkill to add routines for serializing HTML as escaped text.</xd:desc>
+    </xd:doc>
+    <xsl:template match="hcmc:filters/hcmc:*" mode="configToArray">
+        <xsl:element namespace="http://www.w3.org/2005/xpath-functions" name="{if (text() castable as xs:integer) then 'number' else 'string'}">
+            <xsl:attribute name="key" select="local-name()"/>
+            <xsl:sequence select="normalize-space(.)"/>
+        </xsl:element>
+    </xsl:template>
     
     <xd:doc>
         <xd:desc><xd:ref name="hcmc:normalize-boolean">hcmc:normalize-boolean</xd:ref>

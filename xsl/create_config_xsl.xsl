@@ -750,7 +750,7 @@ tokenization.
         it in any special way.</xd:desc>
     </xd:doc>
     <xsl:template name="createFilterLabels" exclude-result-prefixes="#all">
-        <xso:variable name="filterLabels" as="element(hcmc:filters)">
+        <xso:variable name="filterLabels" as="element(hcmc:filter)*">
             <xsl:sequence select="$filters"/>
         </xso:variable>
     </xsl:template>
