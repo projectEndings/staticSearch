@@ -8,7 +8,6 @@
     xmlns:map="http://www.w3.org/2005/xpath-functions/map"
     xpath-default-namespace="http://www.w3.org/1999/xhtml"
     xmlns="http://www.w3.org/1999/xhtml"
-    
     exclude-result-prefixes="#all"
     version="3.0">
     <xd:doc scope="stylesheet">
@@ -493,7 +492,8 @@
                                         <xsl:variable name="filterName" select="$jsonDoc//j:string[@key='filterName']"/>
                                         <xsl:variable name="filterId" select="$jsonDoc//j:string[@key='filterId']"/>
                                         <span>
-                                            <label for="{$filterId}"><xsl:value-of select="$filterName"/>: </label>
+                                            <xsl:sequence select="hcmc:getFilterLabel($filterName, $filterId)"/>
+                                            <!--<label for="{$filterId}"><xsl:sequence select="hcmc:getFilterLabel($filterName)"/>: </label>-->
                                             <select id="{$filterId}" title="{$filterName}" class="staticSearch.bool staticSearch_bool">
                                                 <option value="">?</option>
                                                 <!-- Check mark = true -->
@@ -606,6 +606,38 @@
                 <xsl:sequence select="()"/>
             </xsl:otherwise>
         </xsl:choose>
+    </xsl:function>
+    
+    <xd:doc>
+        <xd:desc><xd:ref name="hcmc:getFilterLabel" type="function">hcmc:getFilterLabel</xd:ref> retrieves
+        an item to be used as the label for a filter on the search page. This is either going to be the 
+        text string which is the filter name from the html:meta/@name attribute, or (if the user has 
+        overridden this in their configuration file) an HTML label element with perhaps some HTML markup
+        inside it.</xd:desc>
+        <xd:param name="filterName" as="xs:string">The string value of the @name attribute, which can 
+        be used to look up the result.</xd:param>
+        <xd:param name="filterId" as="xs:string">The id value of the filter as it will be rendered on the page.</xd:param>
+        <xd:return as="element()">An HTML label element.</xd:return>
+    </xd:doc>
+    <xsl:function name="hcmc:getFilterLabel" as="element()">
+        <xsl:param name="filterName" as="xs:string"/>
+        <xsl:param name="filterId" as="xs:string"/>    
+        <xsl:message expand-text="yes">Filter name: {$filterName}; filter id: {$filterId}; filters to check: {count($filterLabels/hcmc:filter)}</xsl:message>
+        <xsl:choose>
+            <xsl:when test="$filterLabels/hcmc:filter[@filterName=$filterName]">
+                <xsl:variable name="currLabel" select="$filterLabels/hcmc:filter[@filterName=$filterName][1]/*[1]"/>
+                <xsl:copy select="$currLabel">
+                    <xsl:copy-of select="$currLabel/@*[not(local-name() = 'for')]"/>
+                    <xsl:attribute name="for" select="$filterId"/>
+                    <xsl:copy-of select="$currLabel/node()"/>
+                    <xsl:if test="starts-with($filterId, 'ssBool')"><xsl:text>: </xsl:text></xsl:if>
+                </xsl:copy>
+            </xsl:when>
+            <xsl:otherwise>
+                <label for="{$filterId}"><xsl:sequence select="$filterName"/><xsl:text>: </xsl:text></label>
+            </xsl:otherwise>
+        </xsl:choose>
+        
     </xsl:function>
     
     <!--**************************************************************

@@ -46,7 +46,7 @@
     <filters>
         <filter filterName="Worth reading">
             <label xmlns="http://www.w3.org/1999/xhtml">
-                <i>Really</i> worth reading!
+                <i>Really</i> worth reading
             </label>
         </filter>
     </filters>
