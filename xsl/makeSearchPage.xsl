@@ -622,15 +622,14 @@
     <xsl:function name="hcmc:getFilterLabel" as="element()">
         <xsl:param name="filterName" as="xs:string"/>
         <xsl:param name="filterId" as="xs:string"/>    
-        <xsl:message expand-text="yes">Filter name: {$filterName}; filter id: {$filterId}; filters to check: {count($filterLabels/hcmc:filter)}</xsl:message>
+        <xsl:message expand-text="yes">Filter name: {$filterName}; filter id: {$filterId}; filters to check: {count($filterLabels)}</xsl:message>
         <xsl:choose>
-            <xsl:when test="$filterLabels/hcmc:filter[@filterName=$filterName]">
-                <xsl:variable name="currLabel" select="$filterLabels/hcmc:filter[@filterName=$filterName][1]/*[1]"/>
+            <xsl:when test="$filterLabels[@filterName=$filterName]">
+                <xsl:variable name="currLabel" select="$filterLabels[@filterName=$filterName][1]/*[1]"/>
                 <xsl:copy select="$currLabel">
                     <xsl:copy-of select="$currLabel/@*[not(local-name() = 'for')]"/>
                     <xsl:attribute name="for" select="$filterId"/>
                     <xsl:copy-of select="$currLabel/node()"/>
-                    <xsl:if test="starts-with($filterId, 'ssBool')"><xsl:text>: </xsl:text></xsl:if>
                 </xsl:copy>
             </xsl:when>
             <xsl:otherwise>
