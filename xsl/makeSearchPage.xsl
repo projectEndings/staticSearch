@@ -305,7 +305,10 @@
                                     
                                     <!--And now create the fieldset and legend-->
                                     <fieldset class="ssFieldset" title="{$filterName}" id="{$filterId}">
-                                        <legend><xsl:value-of select="$filterName"/></legend>
+                                        <legend>
+                                            <xsl:sequence select="hcmc:getFilterLabel($filterName, $filterId)"/>
+                                            <!--<xsl:value-of select="$filterName"/>-->
+                                        </legend>
                                         
                                         <!--And create a ul from each of the embedded maps-->
                                         <ul class="ssDescCheckboxList">
