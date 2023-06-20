@@ -50,7 +50,7 @@
             </label>
         </filter>
         <filter filterName="Random nonsense">
-            <label xmlns="http://www.w3.org/1999/xhtml">
+            <label xmlns="http://www.w3.org/1999/xhtml" lang="en">
                 <span style="font-variant: small-caps;">Random Piffle</span>
             </label>
         </filter>

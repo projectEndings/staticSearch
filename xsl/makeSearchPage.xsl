@@ -626,8 +626,8 @@
         <xsl:param name="filterId" as="xs:string"/>    
         <xsl:message expand-text="yes">Filter name: {$filterName}; filter id: {$filterId}; filters to check: {count($filterLabels)}</xsl:message>
         <xsl:choose>
-            <xsl:when test="$filterLabels[@filterName=$filterName]">
-                <xsl:variable name="currLabel" select="$filterLabels[@filterName=$filterName][1]/*[1]"/>
+            <xsl:when test="$filterLabels[@filterName=$filterName and (@lang=$pageLang or not(@lang))]">
+                <xsl:variable name="currLabel" select="$filterLabels[@filterName=$filterName and (@lang=$pageLang or not(@lang))][1]/*[1]"/>
                 <xsl:copy select="$currLabel">
                     <xsl:copy-of select="$currLabel/@*[not(local-name() = 'for')]"/>
                     <xsl:attribute name="for" select="$filterId"/>
