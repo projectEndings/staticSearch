@@ -307,7 +307,6 @@
                                     <fieldset class="ssFieldset" title="{$filterName}" id="{$filterId}">
                                         <legend>
                                             <xsl:sequence select="hcmc:getFilterLabel($filterName, $filterId)"/>
-                                            <!--<xsl:value-of select="$filterName"/>-->
                                         </legend>
                                         
                                         <!--And create a ul from each of the embedded maps-->
@@ -377,7 +376,7 @@
                           
                           <!--And now create the fieldset and legend-->
                           <fieldset class="ssFieldset" title="{$filterName}" id="{$filterId}">
-                            <legend><xsl:value-of select="$filterName"/></legend>
+                            <legend><xsl:sequence select="hcmc:getFilterLabel($filterName, $filterId)"/></legend>
                             
                             <!--And create a simple text box for the feature.-->
                             <input type="text" title="{$filterName}" placeholder="{hcmc:getCaption('ssStartTyping', $captionLang)}"
@@ -416,7 +415,7 @@
                                     
                                     <fieldset class="ssFieldset" title="{$filterName}" id="{$filterId}">
                                         <!--And add the filter name as the legend-->
-                                        <legend><xsl:value-of select="$filterName"/></legend>
+                                        <legend><xsl:sequence select="hcmc:getFilterLabel($filterName, $filterId)"/></legend>
                                         <span>
                                             <label for="{$filterId}_from">From: </label>
                                             <input type="text" maxlength="10" pattern="{$dateRegex}" title="{$filterName}" id="{$filterId}_from" class="staticSearch.date staticSearch_date" placeholder="{format-date($minDate, '[Y0001]-[M01]-[D01]')}" onchange="this.reportValidity()"/>
@@ -455,7 +454,7 @@
                                     
                                     <fieldset class="ssFieldset" title="{$filterName}" id="{$filterId}">
                                         <!--And add the filter name as the legend-->
-                                        <legend><xsl:value-of select="$filterName"/></legend>
+                                        <legend><xsl:sequence select="hcmc:getFilterLabel($filterName, $filterId)"/></legend>
                                         <span>
                                             <label for="{$filterId}_from">From: </label>
                                             <input type="number" min="{$minVal}" max="{$maxVal}" placeholder="{$minVal}" step="any"
