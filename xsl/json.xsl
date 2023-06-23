@@ -1156,8 +1156,19 @@
         </xsl:element>
     </xsl:template>
     
-    
-    
+    <xd:doc>
+        <xd:desc>Template to convert an hcmc:filters element to a JSON array. Note that 
+        we do not currently bother serializing the html:label element inside an hcmc:filter 
+        into the JSON; for the moment, we just record the fact that a custom label
+        was supplied.</xd:desc>
+    </xd:doc>
+    <xsl:template match="hcmc:filters" mode="configToArray">
+        <j:array key="filtersWithCustomLabels">
+                <xsl:for-each select="child::hcmc:filter">
+                    <j:string><xsl:value-of select="@filterName"/></j:string>
+                </xsl:for-each>
+        </j:array>
+    </xsl:template>
     
     <xd:doc>
         <xd:desc><xd:ref name="hcmc:normalize-boolean">hcmc:normalize-boolean</xd:ref>

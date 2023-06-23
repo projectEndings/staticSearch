@@ -270,6 +270,16 @@
     </xd:doc>
     <xsl:variable name="contexts" select="$configDoc//contexts/context" as="element(context)*"/>
     
+    <xd:doc>
+        <xd:desc>
+            <xd:p>The <xd:ref name="filters" type="variable">filters</xd:ref> variable is
+                a sequence of 0 or more filter elements that may be specified by the 
+                user wanting more control over filter labels.</xd:p>
+        </xd:desc>
+    </xd:doc>
+    <xsl:variable name="filters" select="$configDoc//filters/filter" as="element(filter)*"/>
+    
+    
     <!--**************************************************************
        *                                                            * 
        *                         TEMPLATES                          *
@@ -390,6 +400,14 @@
                     <xsl:message use-when="$verbose">
                         <xsl:message>Create weighting rules</xsl:message>
                         <xsl:message><xsl:call-template name="createWeightingRules" exclude-result-prefixes="#all"/></xsl:message>
+                    </xsl:message>
+                </xsl:if>
+                
+                <xsl:if test="not(empty($filters))">
+                    <xsl:call-template name="createFilterLabels"/>
+                    <xsl:message use-when="$verbose">
+                        <xsl:message>Create filter labels</xsl:message>
+                        <xsl:message><xsl:call-template name="createFilterLabels" exclude-result-prefixes="#all"/></xsl:message>
                     </xsl:message>
                 </xsl:if>
                 
@@ -522,6 +540,8 @@
         <xso:variable name="hasExclusions" 
             select="{if ($configDoc//exclude) then 'true' else 'false'}()"/>
         
+        <xso:variable name="hasFilterLabels" 
+            select="{if ($configDoc//filter) then 'true' else 'false'}()"/>
         
         <xso:template name="echoParams">
             <xso:if test="$verbose">
@@ -723,6 +743,16 @@ tokenization.
                 <xso:apply-templates select="node()" mode="#current"/>
             </xso:copy>
         </xso:template>
+    </xsl:template>
+    
+    <xd:doc>
+        <xd:desc>The <xd:ref name="createFilterLabels" type="template">createFilterLabels</xd:ref> template creates a copy of the original filter data in a variable; there's no real reason to process 
+        it in any special way.</xd:desc>
+    </xd:doc>
+    <xsl:template name="createFilterLabels" exclude-result-prefixes="#all">
+        <xso:variable name="filterLabels" as="element(hcmc:filter)*">
+            <xsl:sequence select="$filters"/>
+        </xso:variable>
     </xsl:template>
     
  
