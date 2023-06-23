@@ -624,10 +624,10 @@
     <xsl:function name="hcmc:getFilterLabel" as="element()">
         <xsl:param name="filterName" as="xs:string"/>
         <xsl:param name="filterId" as="xs:string"/>    
-        <xsl:message expand-text="yes">Filter name: {$filterName}; filter id: {$filterId}; filters to check: {count($filterLabels)}</xsl:message>
+        <!--<xsl:message expand-text="yes">Filter name: {$filterName}; filter id: {$filterId}; filters to check: {count($filterLabels)}</xsl:message>-->
+        <xsl:variable name="currLabel" as="element(label)?" select="$filterLabels[@filterName=$filterName and (@lang=$pageLang or not(@lang))][1]/label[1]"/>
         <xsl:choose>
-            <xsl:when test="$filterLabels[@filterName=$filterName and (@lang=$pageLang or not(@lang))]">
-                <xsl:variable name="currLabel" select="$filterLabels[@filterName=$filterName and (@lang=$pageLang or not(@lang))][1]/*[1]"/>
+            <xsl:when test="$currLabel">
                 <xsl:copy select="$currLabel">
                     <xsl:copy-of select="$currLabel/@*[not(local-name() = 'for')]"/>
                     <xsl:attribute name="for" select="$filterId"/>
