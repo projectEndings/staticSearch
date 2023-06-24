@@ -403,13 +403,13 @@
                     </xsl:message>
                 </xsl:if>
                 
-                <xsl:if test="not(empty($filters))">
-                    <xsl:call-template name="createFilterLabels"/>
-                    <xsl:message use-when="$verbose">
-                        <xsl:message>Create filter labels</xsl:message>
-                        <xsl:message><xsl:call-template name="createFilterLabels" exclude-result-prefixes="#all"/></xsl:message>
-                    </xsl:message>
-                </xsl:if>
+                <!-- Always create the filterLabels variable even if there aren't any. It 
+                     makes downstream processing easier. -->
+                <xsl:call-template name="createFilterLabels"/>
+                <xsl:message use-when="$verbose">
+                    <xsl:message>Create filter labels</xsl:message>
+                    <xsl:message><xsl:call-template name="createFilterLabels" exclude-result-prefixes="#all"/></xsl:message>
+                </xsl:message>
                 
                 
             </xso:stylesheet>
