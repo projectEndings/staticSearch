@@ -302,8 +302,7 @@
         1.5.</xd:desc>
     </xd:doc>
     <xsl:template match="@data-ssFilterSortKey" mode="clean">
-        <xsl:message terminate="no">WARNING: @data-ssFilterSortKey is deprecated and will not be supported in the next version of staticSearch. Use @data-ssfiltersortkey (all lowercased) instead. (<xsl:value-of select="$relativeUri"/>)</xsl:message>
-        <xsl:attribute name="data-ssfiltersortkey" select="."/>
+        <xsl:message terminate="yes">ERROR: @data-ssFilterSortKey is deprecated. Use @data-ssfiltersortkey (all lowercased) instead. (<xsl:value-of select="$relativeUri"/>)</xsl:message>
     </xsl:template>
     
     
