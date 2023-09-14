@@ -342,16 +342,17 @@
                 <!--Now create the dictionary XML files-->
                 <xsl:call-template name="createDictionaryXML" exclude-result-prefixes="#all"/>
                 
+                <xso:variable name="dataMap" as="map(xs:string, item()*)?">
+                    <xso:map>
+                        <xso:map-entry key="'weights'" select="()"/>
+                        <xso:map-entry key="'contexts'" select="()"/>
+                        <xso:map-entry key="'ctxIds'" select="()"/>
+                        <xso:map-entry key="'excludes'" select="()"/>
+                    </xso:map>
+                </xso:variable>
                 <xso:template match="*" priority="7" mode="clean">
                     <xso:next-match>
-                        <xso:with-param name="data" tunnel="yes" as="map(*)">
-                            <xso:map>
-                                <xso:map-entry key="'weights'" select="()"/>
-                                <xso:map-entry key="'contexts'" select="()"/>
-                                <xso:map-entry key="'ctxIds'" select="()"/>
-                                <xso:map-entry key="'excludes'" select="()"/>
-                            </xso:map>
-                        </xso:with-param>
+                        <xso:with-param name="data" tunnel="yes" as="map(*)" select="$dataMap"/>
                     </xso:next-match>
                 </xso:template>
                 
@@ -360,11 +361,16 @@
                         <xso:param name="data" tunnel="yes" as="map(*)"/>
                         <xso:variable name="oldVal" select="map:get($data,'weights')" as="xs:integer*"/>
                         <xso:variable name="thisWeight" select="{@weight}" as="xs:integer"/>
-                        <xso:variable name="newVal" select="($oldVal, $thisWeight)"/>
-                        <xso:next-match>
-                            <xso:with-param name="data" tunnel="yes" as="map(*)"
-                                select="map:put($data, 'weights', $newVal)"/>
-                        </xso:next-match>
+                        <xso:choose>
+                            <xso:when test="$thisWeight = 0"/>
+                            <xso:otherwise>
+                                <xso:variable name="newVal" select="($oldVal, $thisWeight)"/>
+                                <xso:next-match>
+                                    <xso:with-param name="data" tunnel="yes" as="map(*)"
+                                        select="map:put($data, 'weights', $newVal)"/>
+                                </xso:next-match>
+                            </xso:otherwise>
+                        </xso:choose>
                     </xso:template>
                 </xsl:for-each>
                 <!--Now create the config XSL's version of the context map,
@@ -394,12 +400,24 @@
                         <xso:param name="data" tunnel="yes" as="map(*)"/>
                         <xso:variable name="currVals" select="map:get($data,'contexts')" as="xs:boolean*"/>
                         <xso:variable name="isContext" select="{hcmc:stringToBoolean(@context)}()" as="xs:boolean"/>
-                        <xso:variable name="newVals" select="($currVals, $isContext)" as="xs:boolean+"/>
-                        <xso:next-match>
-                            <xso:with-param name="data" 
-                                tunnel="yes" as="map(*)" 
-                                select="map:put($data, 'contexts', $newVals)"/>
-                        </xso:next-match>
+                        <xso:choose>
+                            <xso:when test="not($isContext)">
+                                <xso:call-template name="last">
+                                    <xso:with-param name="data" 
+                                        tunnel="yes" as="map(*)" 
+                                        select="map:put($data, 'contexts', $isContext)"/>
+                                </xso:call-template>
+                            </xso:when>
+                            <xso:otherwise>
+                                <xso:variable name="newVals" select="($currVals, $isContext)" as="xs:boolean+"/>
+                                <xso:next-match>
+                                    <xso:with-param name="data" 
+                                        tunnel="yes" as="map(*)" 
+                                        select="map:put($data, 'contexts', $newVals)"/>
+                                </xso:next-match>
+                            </xso:otherwise>
+                        </xso:choose>
+
                     </xso:template>
                     <xsl:if test="@label">
                         <xsl:variable name="thisLabel" select="@label"/>
@@ -424,9 +442,11 @@
                     <xso:template match="{@match}" priority="3" mode="clean">
                         <xso:param name="data" tunnel="yes" as="map(*)"/>
                         <xso:variable name="exclude" select="{hcmc:stringToBoolean('')}()" as="xs:boolean"/>
-                        <xso:next-match>
-                            <xso:with-param name="data" tunnel="yes" select="map:put($data,'excludes', ($data?excludes, $exclude))"/>
-                        </xso:next-match>
+                        <xso:if test="$exclude">
+                            <xso:call-template name="last">
+                                <xso:with-param name="data" tunnel="yes" select="map:put($data,'excludes', ($data?excludes, $exclude))"/>
+                            </xso:call-template>
+                        </xso:if>
                     </xso:template>
                 </xsl:for-each>
                
@@ -439,20 +459,24 @@
                     <xsl:message><xsl:call-template name="createFilterLabels" exclude-result-prefixes="#all"/></xsl:message>
                 </xsl:message>
                 <!--Now, finally, the last rule -->
-                <xso:template match="*" priority="1" mode="clean">
+                <xso:template match="*" name="last" priority="1" mode="clean">
                     <xso:param name="data" tunnel="yes" as="map(*)"/>
                     <xso:variable name="weights" select="$data?weights" as="xs:integer*"/>
                     <xso:variable name="ctxIds" select="$data?ctxIds" as="xs:string*"/>
                     <xso:variable name="contexts" select="$data?contexts" as="xs:boolean*"/>
                     <xso:variable name="excludes" select="$data?excludes" as="xs:boolean*"/>
+                    <xso:variable name="mustKeep" select="not(empty(@xml:lang | @lang | @id | @xml:id))" as="xs:boolean"/>
+                   
                     <xso:choose>
                         <xso:when test="exists($weights) and $weights[1] = 0">
                             <xso:if test="($data?break, false())[1]">
                                 <xsl:text> </xsl:text>
                             </xso:if>
                         </xso:when>
-                        <xso:when test="exists($contexts) and $contexts[1] = false() and not(@xml:lang | @lang | @id | @xml:id)">
-                            <xso:apply-templates select="node()" mode="#current"/>
+                        <xso:when test="(empty($contexts) or ($contexts[1] = false())) and not($mustKeep)">
+                            <xso:apply-templates select="node()" mode="#current">
+                                <xso:with-param name="data" tunnel="yes" select="()"/>
+                            </xso:apply-templates>
                         </xso:when>
 <!--                        <xso:when test="not(@xml:lang | @lang | @id | @xml:id | @*[matches(local-name(),'^data-ss-')] and exists($contexts) and not($contexts[1]))">
                             <xso:apply-templates select="node()" mode="#current"/>
@@ -475,7 +499,9 @@
                                 <xso:where-populated>
                                     <xso:attribute name="ss-excld" select="xs:string($excludes[1])"/>
                                 </xso:where-populated>
-                                <xso:apply-templates select="node()" mode="#current"/>
+                                <xso:apply-templates select="node()" mode="#current">
+                                    <xso:with-param name="data" tunnel="yes" select="()"/>
+                                </xso:apply-templates>
                             </xso:copy>
                         </xso:otherwise>
                     </xso:choose>

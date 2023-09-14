@@ -242,6 +242,13 @@
         <xsl:next-match/>
     </xsl:template>
     
+    <xsl:template match="html/head" priority="2" mode="clean">
+        <xsl:param name="data" tunnel="yes" as="map(*)"/>
+        <xsl:next-match>
+            <xsl:with-param name="data" as="map(*)" tunnel="yes" select="map:put($data,'contexts', ($data?contexts, true()))"/>
+        </xsl:next-match>
+    </xsl:template>
+    
     <xd:doc>
         <xd:desc>Basic template to strip away extraneous tags around elements that won't affect indexing in any way.
         Note that this template is overriden by templates in the configuration file if they have been specified
@@ -259,7 +266,8 @@
     <xd:doc>
         <xd:desc>Template to match all block-like elements that we assume are contexts by default.</xd:desc>
     </xd:doc>
-    <xsl:template match="body | div | blockquote | p | li | section | article | nav | h1 | h2 | h3 | h4 | h5 | h6 | td | details | summary" priority="2" mode="clean">
+    <xsl:template match="body | div | blockquote | p | li | section | article | nav | h1 | h2 | h3 | h4 | h5 | h6 | td | details | summary | table/caption"
+        priority="2" mode="clean">
         <xsl:param name="data" tunnel="yes" as="map(*)"/>
         <xsl:next-match>
             <xsl:with-param name="data" as="map(*)" tunnel="yes" select="map:put($data,'contexts', ($data?contexts, true()))"/>
