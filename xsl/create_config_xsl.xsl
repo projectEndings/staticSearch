@@ -217,30 +217,6 @@
   <xsl:variable name="sq">'</xsl:variable>
  
       
-      
-    <xd:doc>
-        <xd:desc>
-            <xd:p>The <xd:ref name="retainRules" type="variable">retainRules</xd:ref> variable is
-                a sequence of 0 or more rules that either have a weight greater than 0 or have been
-                specified as a context item.</xd:p>
-        </xd:desc>
-    </xd:doc>
-    <xsl:variable name="retainRules" 
-        select="
-        $configDoc//rule[(xs:integer(@weight) gt 0) or 
-        (parent::contexts and hcmc:stringToBoolean(@context))]" as="element(rule)*"/>
-    
-    
-    <xd:doc>
-        <xd:desc>
-            <xd:p>The <xd:ref name="deleteRules" type="variable">deleteRules</xd:ref> variable is
-                a sequence of 0 or more rules that either have have a weight of 0, which means that
-                the xpaths specified should not be processed by the tokenizer and should be deleted
-                from the document that will eventually be indexed.</xd:p>
-        </xd:desc>
-    </xd:doc>
-    <xsl:variable name="deleteRules" select="$configDoc//rule[xs:integer(@weight) = 0]" as="element(rule)*"/>
-    
     
     <xd:doc>
         <xd:desc>
@@ -250,16 +226,14 @@
     </xd:doc>
     <xsl:variable name="excludeRules" select="$configDoc//excludes/exclude" as="element(exclude)*"/>
     
-    
-   
     <xd:doc>
         <xd:desc>
-            <xd:p>The <xd:ref name="weightedRules" type="variable">weightedRules</xd:ref> variable
-                is a sequence of 0 or more rules of elements that have a weight higher than 1 and should be flagged
+            <xd:p>The <xd:ref name="rules" type="variable">rules</xd:ref> variable
+                is a sequence of 0 or more rules that should be flagged
                 with a particular weight during tokenization.</xd:p>
         </xd:desc>
     </xd:doc>
-    <xsl:variable name="weightedRules" select="$configDoc//rule[xs:integer(@weight) gt 1]" as="element(rule)*"/>
+    <xsl:variable name="rules" select="$configDoc//rule" as="element(rule)*"/>
     
     <xd:doc>
         <xd:desc>
@@ -269,6 +243,21 @@
         </xd:desc>
     </xd:doc>
     <xsl:variable name="contexts" select="$configDoc//contexts/context" as="element(context)*"/>
+    
+    <!--First create our own context label map, which has to be slightly more
+        complicated as context rules could have the same label-->
+    <xsl:variable name="contextMap" as="map(xs:string, xs:string)">
+        <xsl:map>
+            <!--Group all of the contexts by label-->
+            <xsl:for-each-group select="$contexts[@label]" group-by="normalize-space(@label)">
+                <xsl:map-entry key="current-grouping-key()" select="'ssCtx' || position()"/>
+            </xsl:for-each-group>
+        </xsl:map>
+    </xsl:variable>
+    
+    <!--All matches-->
+    <xsl:variable name="selectors" 
+        select="distinct-values(($rules/@match, $excludeRules/@match, $contexts/@match))"/>
     
     <xd:doc>
         <xd:desc>
@@ -353,55 +342,94 @@
                 <!--Now create the dictionary XML files-->
                 <xsl:call-template name="createDictionaryXML" exclude-result-prefixes="#all"/>
                 
+                <xso:template match="*" priority="7" mode="clean">
+                    <xso:next-match>
+                        <xso:with-param name="data" tunnel="yes" as="map(*)">
+                            <xso:map>
+                                <xso:map-entry key="'weights'" select="()"/>
+                                <xso:map-entry key="'contexts'" select="()"/>
+                                <xso:map-entry key="'ctxIds'" select="()"/>
+                                <xso:map-entry key="'excludes'" select="()"/>
+                            </xso:map>
+                        </xso:with-param>
+                    </xso:next-match>
+                </xso:template>
                 
-                <!--And now create the sets of templates that will be used in the later tokenization stages-->
-                <!--If there are retain rules specified in the configuration file,
-                    then call the createRetainRules template-->
-                <xsl:if test="not(empty($retainRules))">
-                    <xsl:call-template name="createRetainRules" exclude-result-prefixes="#all"/>
-                    <xsl:message use-when="$verbose">
-                        <xsl:text>Create retain rules</xsl:text>
-                        <xsl:call-template name="createRetainRules"/>
-                    </xsl:message>
-                </xsl:if>
+                <xsl:for-each select="$rules">
+                    <xso:template match="{@match}" priority="3" mode="clean">
+                        <xso:param name="data" tunnel="yes" as="map(*)"/>
+                        <xso:variable name="oldVal" select="map:get($data,'weights')" as="xs:integer*"/>
+                        <xso:variable name="thisWeight" select="{@weight}" as="xs:integer"/>
+                        <xso:variable name="newVal" select="($oldVal, $thisWeight)"/>
+                        <xso:next-match>
+                            <xso:with-param name="data" tunnel="yes" as="map(*)"
+                                select="map:put($data, 'weights', $newVal)"/>
+                        </xso:next-match>
+                    </xso:template>
+                </xsl:for-each>
+                <!--Now create the config XSL's version of the context map,
+            which may be a map (if there are contexts with labels)
+            OR an empty sequence (if there aren't)-->
+                <xso:variable name="ssContextMap" as="map(*)?">
+                    <xsl:choose>
+                        <xsl:when test="exists($contexts[@label])">
+                            <!--Create a usable map in the output config
+                        using the values assembled by $contextMap-->
+                            <xso:map>
+                                <xsl:for-each select="map:keys($contextMap)">
+                                    <xso:map-entry 
+                                        key="{hcmc:quoteString(.)}"
+                                        select="{hcmc:quoteString($contextMap(.))}"/>
+                                </xsl:for-each>
+                            </xso:map>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xso:sequence select="()"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xso:variable>
                 
+                <xsl:for-each select="$contexts">
+                    <xso:template match="{@match}" priority="3" mode="clean">
+                        <xso:param name="data" tunnel="yes" as="map(*)"/>
+                        <xso:variable name="currVals" select="map:get($data,'contexts')" as="xs:boolean*"/>
+                        <xso:variable name="isContext" select="{hcmc:stringToBoolean(@context)}()" as="xs:boolean"/>
+                        <xso:variable name="newVals" select="($currVals, $isContext)" as="xs:boolean+"/>
+                        <xso:next-match>
+                            <xso:with-param name="data" 
+                                tunnel="yes" as="map(*)" 
+                                select="map:put($data, 'contexts', $newVals)"/>
+                        </xso:next-match>
+                    </xso:template>
+                    <xsl:if test="@label">
+                        <xsl:variable name="thisLabel" select="@label"/>
+                        <xsl:variable name="contextId" 
+                            select="$contextMap(normalize-space($thisLabel))"
+                            as="xs:string"/>
+                        <xso:template match="{@match}" priority="3" mode="clean">
+                            <xso:param name="data" tunnel="yes" as="map(*)"/>
+                            <xso:variable name="currVals" select="map:get($data, 'ctxIds')" as="xs:string*"/>
+                            <xso:variable name="ctxId" select="{hcmc:quoteString($contextId)}"/>
+                            <xso:variable name="newVals" select="($currVals, $ctxId)"/>
+                            <xso:next-match>
+                                <xso:with-param name="data"
+                                    tunnel="yes" as="map(*)"
+                                    select="map:put($data, 'ctxIds',$newVals)"/>
+                            </xso:next-match>
+                        </xso:template>
+                    </xsl:if>
+                </xsl:for-each>
                 
-                <!--If there are deletion rules specified in the configuration file,
-                    then call the createDeleteRules template-->
-                <xsl:if test="not(empty($deleteRules))">
-                    <xsl:call-template name="createDeleteRules" exclude-result-prefixes="#all"/>
-                    <xsl:message use-when="$verbose">
-                        <xsl:text>Create delete rules</xsl:text>
-                        <xsl:call-template name="createDeleteRules"/>
-                    </xsl:message>
-                </xsl:if>
-                
-                <xsl:if test="not(empty($excludeRules))">
-                    <xsl:call-template name="createExcludeRules" exclude-result-prefixes="#all"/>
-                    <xsl:message use-when="$verbose">
-                        <xsl:text>Create exclude rules</xsl:text>
-                        <xsl:call-template name="createExcludeRules"/>
-                    </xsl:message>
-                </xsl:if>
-                
-                <xsl:call-template name="createContextRules" exclude-result-prefixes="#all"/>
-                
-                
-                <xsl:if test="not(empty($contexts))" use-when="$verbose">
-                    <xsl:message>Create context rules</xsl:message>
-                    <xsl:message>
-                        <xsl:call-template name="createContextRules" exclude-result-prefixes="#all"/>
-                    </xsl:message>
-                </xsl:if>
-                
-                
-                <xsl:if test="not(empty($weightedRules))">
-                    <xsl:call-template name="createWeightingRules"/>
-                    <xsl:message use-when="$verbose">
-                        <xsl:message>Create weighting rules</xsl:message>
-                        <xsl:message><xsl:call-template name="createWeightingRules" exclude-result-prefixes="#all"/></xsl:message>
-                    </xsl:message>
-                </xsl:if>
+                <xsl:for-each select="$excludeRules">
+                    <xso:template match="{@match}" priority="3" mode="clean">
+                        <xso:param name="data" tunnel="yes" as="map(*)"/>
+                        <xso:variable name="exclude" select="{hcmc:stringToBoolean('')}()" as="xs:boolean"/>
+                        <xso:next-match>
+                            <xso:with-param name="data" tunnel="yes" select="map:put($data,'excludes', ($data?excludes, $exclude))"/>
+                        </xso:next-match>
+                    </xso:template>
+                </xsl:for-each>
+               
                 
                 <!-- Always create the filterLabels variable even if there aren't any. It 
                      makes downstream processing easier. -->
@@ -410,13 +438,52 @@
                     <xsl:message>Create filter labels</xsl:message>
                     <xsl:message><xsl:call-template name="createFilterLabels" exclude-result-prefixes="#all"/></xsl:message>
                 </xsl:message>
-                
+                <!--Now, finally, the last rule -->
+                <xso:template match="*" priority="1" mode="clean">
+                    <xso:param name="data" tunnel="yes" as="map(*)"/>
+                    <xso:variable name="weights" select="$data?weights" as="xs:integer*"/>
+                    <xso:variable name="ctxIds" select="$data?ctxIds" as="xs:string*"/>
+                    <xso:variable name="contexts" select="$data?contexts" as="xs:boolean*"/>
+                    <xso:variable name="excludes" select="$data?excludes" as="xs:boolean*"/>
+                    <xso:choose>
+                        <xso:when test="exists($weights) and $weights[1] = 0">
+                            <xso:if test="($data?break, false())[1]">
+                                <xsl:text> </xsl:text>
+                            </xso:if>
+                        </xso:when>
+                        <xso:when test="exists($contexts) and $contexts[1] = false() and not(@xml:lang | @lang | @id | @xml:id)">
+                            <xso:apply-templates select="node()" mode="#current"/>
+                        </xso:when>
+<!--                        <xso:when test="not(@xml:lang | @lang | @id | @xml:id | @*[matches(local-name(),'^data-ss-')] and exists($contexts) and not($contexts[1]))">
+                            <xso:apply-templates select="node()" mode="#current"/>
+                        </xso:when>-->
+                        <xso:otherwise>
+                            <xso:copy>
+                                <xso:if test="not(ancestor::*)">
+                                    <xso:attribute name="ss-uri" select="$relativeUri"/>
+                                </xso:if>
+                                <xso:apply-templates select="@*" mode="#current"/>
+                                <xso:where-populated>
+                                    <xso:attribute name="ss-wt" select="$weights[1]"/>
+                                </xso:where-populated>
+                                <xso:where-populated>
+                                    <xso:attribute name="ss-ctx-id" select="string-join($ctxIds, ' ')"/>
+                                </xso:where-populated>
+                                <xso:where-populated>
+                                    <xso:attribute name="ss-ctx" select="xs:string($contexts[1])"/>
+                                </xso:where-populated>
+                                <xso:where-populated>
+                                    <xso:attribute name="ss-excld" select="xs:string($excludes[1])"/>
+                                </xso:where-populated>
+                                <xso:apply-templates select="node()" mode="#current"/>
+                            </xso:copy>
+                        </xso:otherwise>
+                    </xso:choose>
+                </xso:template>
                 
             </xso:stylesheet>
             
         </xsl:result-document>
-        
-        
     </xsl:template>
     
     
@@ -469,6 +536,9 @@
                     </xsl:choose>
                 </xso:param>
             </xsl:for-each>
+            
+            
+            
             
             <!-- We record the current default stemmer folder. -->
             <xso:param name="defaultStemmerFolder"><xsl:value-of select="$ssDefaultStemmerFolder"/></xso:param>
@@ -543,6 +613,21 @@
         <xso:variable name="hasFilterLabels" 
             select="{if ($configDoc//filter) then 'true' else 'false'}()"/>
         
+        
+        <xd:doc>
+            <xd:desc>The document's URI as a string.</xd:desc>
+        </xd:doc>
+        <xso:variable name="uri" select="xs:string(document-uri(.))" as="xs:string"/>
+        
+        <xd:doc>
+            <xd:desc>The relative uri from the root:
+                this is the full URI minus the collection dir. 
+                Note that we TRIM off the leading slash</xd:desc>
+        </xd:doc>
+        <xso:variable name="relativeUri" 
+            select="substring-after($uri,replace($collectionDir, '^(file:/)/+', '$1')) => replace('^(/|\\)','')"
+            as="xs:string"/>
+        
         <xso:template name="echoParams">
             <xso:if test="$verbose">
                 <xsl:for-each select="$params">
@@ -581,7 +666,7 @@
     </xsl:template>
     
     
-    <xd:doc>
+ <!--   <xd:doc>
         <xd:desc>
             <xd:p>The <xd:ref name="createRetainRules" type="template">createRetainRules</xd:ref> template
             creates an XSL identity template for the xpaths specified in the configuration file that have
@@ -597,9 +682,9 @@
                 <xso:apply-templates select="@*|node()" mode="#current"/>
             </xso:copy>
         </xso:template>
-    </xsl:template>
+    </xsl:template>-->
     
-    
+  <!--  
     <xd:doc>
         <xd:desc>
             <xd:p>The <xd:ref name="createDeleteRules" type="template">createDeleteRules</xd:ref> template
@@ -625,7 +710,7 @@ tokenization.
             </xso:message>
           </xso:if>
         </xso:template>
-    </xsl:template>
+    </xsl:template>-->
     
     
     <xd:doc>
@@ -635,7 +720,7 @@ tokenization.
                 process.</xd:p>
         </xd:desc>
     </xd:doc>
-    <xsl:template name="createExcludeRules" exclude-result-prefixes="#all">
+<!--    <xsl:template name="createExcludeRules" exclude-result-prefixes="#all">
         <xso:template match="{string-join($excludeRules/@match, ' | ')}" priority="1" mode="exclude">
             <xso:if test="$verbose">
                 <xso:message>Template #exclude: Adding @ss-excld flag to <xso:value-of select="local-name(.)"/></xso:message>
@@ -645,7 +730,7 @@ tokenization.
                 <xso:apply-templates select="@*|node()" mode="#current"/>
             </xso:copy>
         </xso:template>
-    </xsl:template>
+    </xsl:template>-->
 
     <xd:doc>
         <xd:desc>
@@ -657,40 +742,9 @@ tokenization.
     </xd:doc>
     <xsl:template name="createContextRules" exclude-result-prefixes="#all">
         
-        <!--First create our own context label map, which has to be slightly more
-        complicated as context rules could have the same label-->
-        <xsl:variable name="contextMap" as="map(xs:string, xs:string)">
-            <xsl:map>
-                <!--Group all of the contexts by label-->
-                <xsl:for-each-group select="$contexts[@label]" group-by="normalize-space(@label)">
-                    <xsl:map-entry key="current-grouping-key()" select="'ssCtx' || position()"/>
-                </xsl:for-each-group>
-            </xsl:map>
-        </xsl:variable>
+
         
-        <!--Now create the config XSL's version of the context map,
-            which may be a map (if there are contexts with labels)
-            OR an empty sequence (if there aren't)-->
-        <xso:variable name="ssContextMap" as="map(*)?">
-            <xsl:choose>
-                <xsl:when test="exists($contexts[@label])">
-                    <!--Create a usable map in the output config
-                        using the values assembled by $contextMap-->
-                   <xso:map>
-                       <xsl:for-each select="map:keys($contextMap)">
-                           <xso:map-entry 
-                               key="{hcmc:quoteString(.)}"
-                               select="{hcmc:quoteString($contextMap(.))}"/>
-                       </xsl:for-each>
-                   </xso:map>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xso:sequence select="()"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xso:variable>
-        
-        <xsl:if test="not(empty($contexts))">
+       <!-- <xsl:if test="not(empty($contexts))">
             <xso:template match="{string-join($contexts/@match,' | ')}" priority="1" mode="contextualize">
                 <xso:if test="$verbose">
                     <xso:message>Template #contextualize: Adding @ss-ctx flag to <xso:value-of select="local-name(.)"/></xso:message>
@@ -704,7 +758,7 @@ tokenization.
                         <xsl:for-each select="tokenize($thisMatchPtn,'\s*\|\s*')">
                             <xso:if test="self::{.}">
                                 <xso:attribute name="ss-ctx" select="{hcmc:quoteString(hcmc:stringToBoolean($thisCtx))}"/>
-                                <!--If the context has a label, then add its corresponding context id value-->
+                                <!-\-If the context has a label, then add its corresponding context id value-\->
                                 <xsl:if test="exists($thisLabel)">
                                     <xsl:variable name="contextId" 
                                         select="$contextMap(normalize-space($thisLabel))"
@@ -718,9 +772,9 @@ tokenization.
                     <xso:apply-templates select="node()" mode="#current"/>
                 </xso:copy>
             </xso:template>
-        </xsl:if>
+        </xsl:if>-->
     </xsl:template>
-    
+  <!--  
     <xd:doc>
         <xd:desc>
             <xd:p>The <xd:ref name="createWeightingRules" type="template">createWeightingRules</xd:ref> template
@@ -743,7 +797,7 @@ tokenization.
                 <xso:apply-templates select="node()" mode="#current"/>
             </xso:copy>
         </xso:template>
-    </xsl:template>
+    </xsl:template>-->
     
     <xd:doc>
         <xd:desc>The <xd:ref name="createFilterLabels" type="template">createFilterLabels</xd:ref> template creates a copy of the original filter data in a variable; there's no real reason to process 
