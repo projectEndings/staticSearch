@@ -212,7 +212,7 @@
     <xmlvalidate lenient="true">
       <!--TODO: This should really validate the actual set of files, and not just any-->
       <fileset dir="${ssCollectionDirName}" casesensitive="false">
-        <include name="**/**.*htm*"/>
+        <filename regex=".+\..?htm.?$"/>
         <!--Don't validate items that may be in a different staticSearch output-->
         <exclude name="**/${staticSearchTempFolder}/**"/>
         <exclude name="**/staticSearch_report.html"/>
