@@ -112,7 +112,7 @@
         <p>The Generator supports the following search facets or filters:</p>
         <list>
           <item><term>Descriptors</term>. You might for example classify your documents as poems, 
-          short stories and novels; the user can then choose to search in only poems, or poems and short stories.</item>
+          short stories and novels; the user can then choose to search in only poems or in poems and short stories.</item>
           
           <item><term>Date ranges</term>. You might assign each document a date (or a date range) for its first 
           publication and another for its last publication; then users could search for documents first published in a
@@ -459,10 +459,12 @@
               <head>Specifying parameters</head>
               <div xml:id="paramsRequired">
                 <head>Required parameters</head>
-                <p>The <gi>params</gi> element has two required elements for determining the resource collection that you wish to index:
+                <p>The <gi>params</gi> element has four required elements for determining the resource collection that you wish to index:
                   <specList>
                     <specDesc key="searchFile"/>
                     <specDesc key="recurse"/>
+                    <specDesc key="stopwordsFile"/>
+                    <specDesc key="dictionaryFile"/>
                   </specList>
                 </p>
                 <p>The <gi>searchFile</gi> element is a relative URI (resolved, like all URIs specified in the config file, against the configuration file location) that points
@@ -558,14 +560,6 @@
                   
                   <specList>
                     <specDesc key="verbose"/>
-                  </specList>
-                  
-                  <specList>
-                    <specDesc key="stopwordsFile"/>
-                  </specList>
-                  
-                  <specList>
-                    <specDesc key="dictionaryFile"/>
                   </specList>
                   
                   <specList>
@@ -1560,8 +1554,8 @@
                 <elementRef key="totalKwicLength" minOccurs="0"/>
                 <elementRef key="kwicTruncateString" minOccurs="0"/>
                 <elementRef key="verbose" minOccurs="0"/>
-                <elementRef key="stopwordsFile" minOccurs="0"/>
-                <elementRef key="dictionaryFile" minOccurs="0"/>
+                <elementRef key="stopwordsFile"/>
+                <elementRef key="dictionaryFile"/>
                 <elementRef key="indentJSON" minOccurs="0"/>
                 <elementRef key="outputFolder" minOccurs="0"/>
                 <elementRef key="resultsPerPage" minOccurs="0"/>
