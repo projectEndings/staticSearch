@@ -5,7 +5,7 @@
           xmlns:xlink="http://www.w3.org/1999/xlink"
           datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
           ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2023-06-14T18:02:28Z. 2019-2023.
+Schema generated from ODD source 2023-09-25T16:16:18Z. 2019-2023.
 TEI Edition: Version 4.6.0. Last updated on
         4th April 2023, revision f18deffba
 TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.6.0/
@@ -36,7 +36,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.6.0/
       <ns xmlns="http://purl.oclc.org/dsdl/schematron"
            prefix="xh"
            uri="http://www.w3.org/1999/xhtml"/>
-      <pattern xmlns="http://purl.oclc.org/dsdl/schematron" id="d10e3356-constraint">
+      <pattern xmlns="http://purl.oclc.org/dsdl/schematron" id="d10e3357-constraint">
          <rule context="xh:label">
             <report test="descendant::*[not(namespace-uri(.) =               ('http://www.w3.org/1999/xhtml', 'http://www.tei-c.org/ns/1.0'))]">label descendants must be in the
               namespaces
@@ -47,19 +47,21 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.6.0/
    <define name="config">
       <element name="config" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The root element for the Search Generator configuration file.) </a:documentation>
-         <ref name="params"/>
-         <optional>
-            <ref name="rules"/>
-         </optional>
-         <optional>
-            <ref name="contexts"/>
-         </optional>
-         <optional>
-            <ref name="excludes"/>
-         </optional>
-         <optional>
-            <ref name="filters"/>
-         </optional>
+         <group>
+            <ref name="params"/>
+            <optional>
+               <ref name="rules"/>
+            </optional>
+            <optional>
+               <ref name="contexts"/>
+            </optional>
+            <optional>
+               <ref name="excludes"/>
+            </optional>
+            <optional>
+               <ref name="filters"/>
+            </optional>
+         </group>
          <optional>
             <attribute xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
                         name="version"
@@ -112,12 +114,8 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.6.0/
             <optional>
                <ref name="kwicTruncateString"/>
             </optional>
-            <optional>
-               <ref name="stopwordsFile"/>
-            </optional>
-            <optional>
-               <ref name="dictionaryFile"/>
-            </optional>
+            <ref name="stopwordsFile"/>
+            <ref name="dictionaryFile"/>
             <optional>
                <ref name="outputFolder"/>
             </optional>
