@@ -441,9 +441,10 @@
                 <xsl:for-each select="$excludeRules">
                     <xso:template match="{@match}" priority="3" mode="clean">
                         <xso:param name="data" tunnel="yes" as="map(*)"/>
-                        <xso:variable name="exclude" select="{hcmc:stringToBoolean('')}()" as="xs:boolean"/>
+                        <xso:variable name="exclude" 
+                            select="{hcmc:stringToBoolean('')}()" as="xs:boolean"/>
                         <xso:if test="$exclude">
-                            <xso:call-template name="last">
+                            <xso:call-template name="hcmc:copy">
                                 <xso:with-param name="data" tunnel="yes" select="map:put($data,'excludes', ($data?excludes, $exclude))"/>
                             </xso:call-template>
                         </xso:if>
@@ -458,53 +459,55 @@
                     <xsl:message>Create filter labels</xsl:message>
                     <xsl:message><xsl:call-template name="createFilterLabels" exclude-result-prefixes="#all"/></xsl:message>
                 </xsl:message>
+                
                 <!--Now, finally, the last rule -->
                 <xso:template match="*" name="last" priority="1" mode="clean">
                     <xso:param name="data" tunnel="yes" as="map(*)"/>
                     <xso:variable name="weights" select="$data?weights" as="xs:integer*"/>
                     <xso:variable name="ctxIds" select="$data?ctxIds" as="xs:string*"/>
                     <xso:variable name="contexts" select="$data?contexts" as="xs:boolean*"/>
-                    <xso:variable name="excludes" select="$data?excludes" as="xs:boolean*"/>
-                    <xso:variable name="mustKeep" select="not(empty(@xml:lang | @lang | @id | @xml:id))" as="xs:boolean"/>
-                   
+                    <xso:variable name="excludes" 
+                        select="$data?excludes"
+                        as="xs:boolean*"/>
                     <xso:choose>
-                        <xso:when test="exists($weights) and $weights[1] = 0">
-                            <xso:if test="($data?break, false())[1]">
-                                <xsl:text> </xsl:text>
-                            </xso:if>
-                        </xso:when>
-                        <xso:when test="(empty($contexts) or ($contexts[1] = false())) and not($mustKeep)">
+                        <xso:when
+                            test="(empty($contexts) or ($contexts[1] = false()))">
                             <xso:apply-templates select="node()" mode="#current">
                                 <xso:with-param name="data" tunnel="yes" select="()"/>
                             </xso:apply-templates>
                         </xso:when>
-<!--                        <xso:when test="not(@xml:lang | @lang | @id | @xml:id | @*[matches(local-name(),'^data-ss-')] and exists($contexts) and not($contexts[1]))">
-                            <xso:apply-templates select="node()" mode="#current"/>
-                        </xso:when>-->
                         <xso:otherwise>
-                            <xso:copy>
-                                <xso:if test="not(ancestor::*)">
-                                    <xso:attribute name="ss-uri" select="$relativeUri"/>
-                                </xso:if>
-                                <xso:apply-templates select="@*" mode="#current"/>
-                                <xso:where-populated>
-                                    <xso:attribute name="ss-wt" select="$weights[1]"/>
-                                </xso:where-populated>
-                                <xso:where-populated>
-                                    <xso:attribute name="ss-ctx-id" select="string-join($ctxIds, ' ')"/>
-                                </xso:where-populated>
-                                <xso:where-populated>
-                                    <xso:attribute name="ss-ctx" select="xs:string($contexts[1])"/>
-                                </xso:where-populated>
-                                <xso:where-populated>
-                                    <xso:attribute name="ss-excld" select="xs:string($excludes[1])"/>
-                                </xso:where-populated>
-                                <xso:apply-templates select="node()" mode="#current">
-                                    <xso:with-param name="data" tunnel="yes" select="()"/>
-                                </xso:apply-templates>
-                            </xso:copy>
+                            <xso:call-template name="hcmc:copy"/>
                         </xso:otherwise>
                     </xso:choose>
+                </xso:template>
+                
+                <xso:template name="hcmc:copy">
+                    <xso:copy>
+                        <xso:call-template name="hcmc:copy-atts"/>
+                        <xso:apply-templates select="node()" mode="clean"/>
+                    </xso:copy>
+                </xso:template>
+                
+                <xso:template name="hcmc:copy-atts">
+                    <xso:param name="data" as="map(*)" tunnel="yes"/>
+                    <xsl:message>Add the ss-uri attribute for the uris</xsl:message>
+                    <xso:if test="not(ancestor::*)">
+                        <xso:attribute name="ss-uri" select="$relativeUri"/>
+                    </xso:if>
+                    <xso:apply-templates select="@*" mode="clean"/>
+                    <xso:where-populated>
+                        <xso:attribute name="ss-wt" select="$data?weights[1]"/>
+                    </xso:where-populated>
+                    <xso:where-populated>
+                        <xso:attribute name="ss-ctx-id" select="string-join($data?ctxIds, ' ')"/>
+                    </xso:where-populated>
+                    <xso:where-populated>
+                        <xso:attribute name="ss-ctx" select="xs:string($data?contexts[1])"/>
+                    </xso:where-populated>
+                    <xso:where-populated>
+                        <xso:attribute name="ss-excld" select="xs:string($data?excludes[1])"/>
+                    </xso:where-populated>
                 </xso:template>
                 
             </xso:stylesheet>

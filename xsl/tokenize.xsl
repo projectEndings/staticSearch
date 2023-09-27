@@ -151,16 +151,14 @@
         <xsl:variable name="cleaned">
             <xsl:apply-templates mode="clean"/>
         </xsl:variable>
-        
-        <xsl:variable name="tokenizedDoc">
-            <xsl:apply-templates select="$cleaned" mode="tokenize">
-                <xsl:with-param name="currDocUri" select="$uri" tunnel="yes"/>
-            </xsl:apply-templates>
-        </xsl:variable>
-        
-        <xsl:apply-templates select="$tokenizedDoc" mode="enumerate"/>
-        
-        
+        <xsl:if test="not(root($cleaned)/*[@ss-excld])">
+            <xsl:variable name="tokenizedDoc">
+                <xsl:apply-templates select="$cleaned" mode="tokenize">
+                    <xsl:with-param name="currDocUri" select="$uri" tunnel="yes"/>
+                </xsl:apply-templates>
+            </xsl:variable>
+            <xsl:apply-templates select="$tokenizedDoc" mode="enumerate"/>
+        </xsl:if>
         <xsl:if test="$verbose">
             <!--Stash all of the documents we want to output into a map so we can simply
                     iterate through them-->
@@ -175,6 +173,7 @@
                 </xsl:result-document>
             </xsl:for-each>
         </xsl:if>
+        
         
         <!--<!-\-Now create the excluded document if we have to-\->
         <xsl:variable name="excluded">
@@ -260,8 +259,7 @@
             <xsl:with-param name="data" as="map(*)" tunnel="yes" select="map:put($data,'contexts', ($data?contexts, false()))"/>
         </xsl:next-match>
     </xsl:template>
-    
-    
+
     
     <xd:doc>
         <xd:desc>Template to match all block-like elements that we assume are contexts by default.</xd:desc>
@@ -282,11 +280,15 @@
     <xsl:template match="*[matches(local-name(),'^h\d$')]" priority="2" mode="clean">
         <xsl:param name="data" tunnel="yes" as="map(*)"/>
         <xsl:next-match>
-            <xsl:with-param name="data" as="map(*)" tunnel="yes" select="map:put($data,'weights', ($data?weights, 2))"/>
+            <xsl:with-param name="data" as="map(*)" tunnel="yes" 
+                select="map:put($data,'weights', ($data?weights, 2))"/>
         </xsl:next-match>
     </xsl:template>
     
     
+    <xsl:template match="*[@xml:lang | @lang | @id | @xml:id]" priority="2" mode="clean">
+        <xsl:call-template name="hcmc:copy"/>
+    </xsl:template>
     <xd:doc>
         <xd:desc>Template to convert all self closing elements--except for the wbr element (processed below)--into
             single spaces since we assume that they are word boundary marking</xd:desc>
@@ -295,9 +297,7 @@
         priority="2"
         mode="clean">
         <xsl:param name="data" tunnel="yes" as="map(*)"/>
-        <xsl:next-match>
-            <xsl:with-param name="data" as="map(*)" tunnel="yes" select="map:put($data,'weights', ($data?weights, 0)) => map:put('break', true())"/>
-        </xsl:next-match>
+        <xsl:text> </xsl:text>
     </xsl:template>
     
     <xd:doc>
@@ -310,13 +310,22 @@
             <xsl:with-param name="data" as="map(*)" tunnel="yes" select="map:put($data, 'weights', ($data?weights, 0))"/>
         </xsl:next-match>
     </xsl:template>
-
+    
+    
+    <xd:doc>
+        <xd:desc>Template to retain all important meta information.</xd:desc>
+    </xd:doc>
+    <xsl:template 
+        match="head/title | head/meta[matches(@class,'staticSearch')] | head/meta[matches(@content,'charset')] | head/meta[@charset]" priority="2" mode="clean">
+        <xsl:call-template name="hcmc:copy"/>
+    </xsl:template>
+    
     <xd:doc>
         <xd:desc>Template to delete script elements in the body, since they
             will never contain information that should be indexed.</xd:desc>
     </xd:doc>
     <xsl:template 
-        match="script | link | meta[not(contains(@class, 'staticSearch') or matches(@content, 'charset') or @charset)]"
+        match="script | link"
         priority="2"
         mode="clean">
         <xsl:param name="data" tunnel="yes" as="map(*)"/>
