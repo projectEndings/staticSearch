@@ -483,10 +483,13 @@
               <head>Specifying parameters</head>
               <div xml:id="paramsRequired">
                 <head>Required parameters</head>
-                <p>The <gi>params</gi> element has two required elements for determining the resource collection that you wish to index:
+                <p>The <gi>params</gi> element has four required elements for determining the resource collection that you wish to index,
+                  and controlling the indexing process:
                   <specList>
                     <specDesc key="searchFile"/>
                     <specDesc key="recurse"/>
+                    <specDesc key="stopwordsFile"/>
+                    <specDesc key="dictionaryFile"/>
                   </specList>
                 </p>
                 <p>The <gi>searchFile</gi> element is a relative URI (resolved, like all URIs specified in the config file, against the configuration file location) that points
@@ -519,6 +522,14 @@
                   </list>
                 </p>
                 <p>We also require the <gi>recurse</gi> element in the case where the document collection may be nested (as is common with static sites generated from Jekyll or Wordpress). The <gi>recurse</gi> element is a boolean (true or false) that determines whether or not to recurse into the subdirectories of the collection and index those files.</p>
+                
+                <p>Finally, in order to support stemming and phrasal search effectively, it is important 
+                to specify a <gi>stopwordsFile</gi> (a file containing words that will be ignored at index time) 
+                and a <gi>dictionaryFile</gi> (also used for indexing). Default files for English and French are 
+                supplied in the <code>xsl</code> folder, but you will probably want to create or customize the
+                stopword list for your own project. You may also supply empty text files for these parameters
+                if for example you donʼt want to use a stoplist at all.</p>
+                
               </div>
               
               <div xml:id="paramsOptional">
@@ -571,15 +582,6 @@
                   <specList>
                     <specDesc key="resultsPerPage"/>
                   </specList>
-                  
-                  <specList>
-                    <specDesc key="stopwordsFile"/>
-                  </specList>
-                  
-                  <specList>
-                    <specDesc key="dictionaryFile"/>
-                  </specList>
-
                   
                   <specList>
                     <specDesc key="outputFolder"/>
@@ -1549,11 +1551,13 @@
           <elementSpec ident="config" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
             <gloss>The root element for the Search Generator configuration file.</gloss>
             <content>
-              <elementRef key="params"/>
-              <elementRef key="rules" minOccurs="0"/>
-              <elementRef key="contexts" minOccurs="0"/>
-              <elementRef key="excludes" minOccurs="0"/>
-              <elementRef key="filters" minOccurs="0"/>
+              <sequence>
+                <elementRef key="params"/>
+                <elementRef key="rules" minOccurs="0"/>
+                <elementRef key="contexts" minOccurs="0"/>
+                <elementRef key="excludes" minOccurs="0"/>
+                <elementRef key="filters" minOccurs="0"/>
+              </sequence>
             </content>
             <attList>
               <attDef ident="version" usage="rec">
@@ -1597,8 +1601,8 @@
                 <elementRef key="maxKwicsToShow" minOccurs="0"/>
                 <elementRef key="totalKwicLength" minOccurs="0"/>
                 <elementRef key="kwicTruncateString" minOccurs="0"/>
-                <elementRef key="stopwordsFile" minOccurs="0"/>
-                <elementRef key="dictionaryFile" minOccurs="0"/>
+                <elementRef key="stopwordsFile" minOccurs="1" maxOccurs="1"/>
+                <elementRef key="dictionaryFile" minOccurs="1" maxOccurs="1"/>
                 <elementRef key="outputFolder" minOccurs="0"/>
                 <elementRef key="resultsPerPage" minOccurs="0"/>
                 <elementRef key="resultsLimit" minOccurs="0"/>
