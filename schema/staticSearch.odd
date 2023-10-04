@@ -459,11 +459,12 @@
               <head>Specifying parameters</head>
               <div xml:id="paramsRequired">
                 <head>Required parameters</head>
-                <p>The <gi>params</gi> element has two required elements for determining the resource collection that you wish to index:
+                <p>The <gi>params</gi> element has four required elements for determining the resource collection that you wish to index: <gi>searchFile</gi>, <gi>recurse</gi>, <gi>stopwordsFile</gi>, and <gi>dictionaryFile</gi>.
+                  
                   <specList>
                     <specDesc key="searchFile"/>
-                    <specDesc key="recurse"/>
                   </specList>
+                  
                 </p>
                 <p>The <gi>searchFile</gi> element is a relative URI (resolved, like all URIs specified in the config file, against the configuration file location) that points
                   directly to the search page that will be the primary access point for the search. Since the search file must be at the root of the directory that you wish to index
@@ -494,7 +495,29 @@
                     </item>
                   </list>
                 </p>
-                <p>We also require the <gi>recurse</gi> element in the case where the document collection may be nested (as is common with static sites generated from Jekyll or Wordpress). The <gi>recurse</gi> element is a boolean (true or false) that determines whether or not to recurse into the subdirectories of the collection and index those files.</p>
+                  
+                  <p>
+                  <specList>
+                    <specDesc key="recurse"/>
+                  </specList>
+                  We also require the <gi>recurse</gi> element in the case where the document collection may be nested (as is common with static sites generated from Jekyll or Wordpress). The <gi>recurse</gi> element is a boolean (true or false) that determines whether or not to recurse into the subdirectories of the collection and index those files.
+                </p>
+                  
+                  <p>In order to support stemming and phrasal search effectively, it is important 
+                    to specify a <gi>stopwordsFile</gi> (a file containing words that will be ignored at index time) 
+                    and a <gi>dictionaryFile</gi> (also used for indexing). Default files for English and French are 
+                    supplied in the <code>xsl</code> folder, but you will probably want to create or customize the
+                    stopword list for your own project. You may also supply empty text files for these parameters
+                    if for example you donʼt want to use a stoplist at all.
+                  <specList>
+                    <specDesc key="stopwordsFile"/>
+                  </specList>
+                  
+                  <specList>
+                    <specDesc key="dictionaryFile"/>
+                  </specList>
+                    
+                </p>
               </div>
               
               <div xml:id="paramsOptional">
@@ -558,14 +581,6 @@
                   
                   <specList>
                     <specDesc key="verbose"/>
-                  </specList>
-                  
-                  <specList>
-                    <specDesc key="stopwordsFile"/>
-                  </specList>
-                  
-                  <specList>
-                    <specDesc key="dictionaryFile"/>
                   </specList>
                   
                   <specList>
@@ -1199,6 +1214,20 @@
           <item>Last Updated: <date when="2023-02-05">5 February 2023</date></item>
         </list>
         
+        <div xml:id="newIn1.4.5">
+          <head>Changes in version 1.4.5</head>
+          <p>Bug fixes:</p>
+          <list>
+            <item>Two configuration parameters, <gi>stopwordsFile</gi> and <gi>dictionaryFile</gi>, 
+            were previously documented as optional, but in fact the build process requires them. The
+            documentation has been updated.</item>
+            <item>There was a mismatch between files which were included in the indexing process and 
+            files which were checked for well-formedness ahead of indexing; it was possible for files
+            that were not intended to be indexed at all to be checked and fail the well-formedness 
+            test even though they were not part of the build. This has been fixed.</item>
+          </list>
+        </div>
+        
         <div xml:id="newIn1.4.4">
           <head>Changes in version 1.4.4</head>
           <p>Bug fix:</p>
@@ -1510,10 +1539,12 @@
           <elementSpec ident="config" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
             <gloss>The root element for the Search Generator configuration file.</gloss>
             <content>
-              <elementRef key="params"/>
-              <elementRef key="rules" minOccurs="0"/>
-              <elementRef key="contexts" minOccurs="0"/>
-              <elementRef key="excludes" minOccurs="0"/>
+              <sequence>
+                <elementRef key="params"/>
+                <elementRef key="rules" minOccurs="0"/>
+                <elementRef key="contexts" minOccurs="0"/>
+                <elementRef key="excludes" minOccurs="0"/>
+              </sequence>
             </content>
             <attList>
               <attDef ident="version" usage="rec">
@@ -1560,8 +1591,8 @@
                 <elementRef key="totalKwicLength" minOccurs="0"/>
                 <elementRef key="kwicTruncateString" minOccurs="0"/>
                 <elementRef key="verbose" minOccurs="0"/>
-                <elementRef key="stopwordsFile" minOccurs="0"/>
-                <elementRef key="dictionaryFile" minOccurs="0"/>
+                <elementRef key="stopwordsFile" minOccurs="1" maxOccurs="1"/>
+                <elementRef key="dictionaryFile" minOccurs="1" maxOccurs="1"/>
                 <elementRef key="indentJSON" minOccurs="0"/>
                 <elementRef key="outputFolder" minOccurs="0"/>
                 <elementRef key="resultsPerPage" minOccurs="0"/>

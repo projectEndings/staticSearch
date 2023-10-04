@@ -5,10 +5,9 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2023-02-05T23:17:36Z. 2019-2023.
-TEI Edition: Version 4.5.0. Last updated on
-        25th October 2022, revision 3e98e619e
-TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.5.0/
+Schema generated from ODD source 2023-10-04T21:57:37Z. 2019-2023. 
+TEI Edition: Version 4.6.0. Last updated on 4th April 2023, revision f18deffba 
+TEI Edition Location: https://www.tei-c.org/Vault/P5/4.6.0/ 
   
 --><!--Free to anyone for any purpose-->
    <sch:ns xmlns:sch="http://purl.oclc.org/dsdl/schematron"
@@ -17,16 +16,18 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.5.0/
    <define name="config">
       <element name="config" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The root element for the Search Generator configuration file.) </a:documentation>
-         <ref name="params"/>
-         <optional>
-            <ref name="rules"/>
-         </optional>
-         <optional>
-            <ref name="contexts"/>
-         </optional>
-         <optional>
-            <ref name="excludes"/>
-         </optional>
+         <group>
+            <ref name="params"/>
+            <optional>
+               <ref name="rules"/>
+            </optional>
+            <optional>
+               <ref name="contexts"/>
+            </optional>
+            <optional>
+               <ref name="excludes"/>
+            </optional>
+         </group>
          <optional>
             <attribute xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
                        name="version"
@@ -88,12 +89,8 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/Version 4.5.0/
             <optional>
                <ref name="verbose"/>
             </optional>
-            <optional>
-               <ref name="stopwordsFile"/>
-            </optional>
-            <optional>
-               <ref name="dictionaryFile"/>
-            </optional>
+            <ref name="stopwordsFile"/>
+            <ref name="dictionaryFile"/>
             <optional>
                <ref name="indentJSON"/>
             </optional>
