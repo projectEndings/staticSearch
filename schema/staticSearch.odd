@@ -180,7 +180,7 @@
           <head>How do I use it?</head>
           <list>
             <item>Level: Intermediate</item>
-            <item>Last Updated: <date when="2021-02-26">26 February 2021</date></item>
+            <item>Last Updated: <date when="2023-10-04">4 October 2023</date></item>
           </list>
           <p>First, you will have to make sure your site pages are correctly configured so that the Generator can
           parse them. Then, you will have to create a configuration file specifying what options you want to use. 
@@ -1211,7 +1211,7 @@
         <head>What's new since version 1.0?</head>
         <list>
           <item>Level: Intermediate</item>
-          <item>Last Updated: <date when="2023-02-05">5 February 2023</date></item>
+          <item>Last Updated: <date when="2023-10-04">4 October 2023</date></item>
         </list>
         
         <div xml:id="newIn1.4.5">
