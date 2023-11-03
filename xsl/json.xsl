@@ -1188,7 +1188,7 @@
     </xd:doc>
     <xsl:function name="hcmc:getDocTitle" as="xs:string">
         <xsl:param name="doc" as="element(html)"/>
-        <xsl:variable name="defaultTitle" select="normalize-space(string-join($doc//head/title[1]/descendant::text(),''))" as="xs:string?"/>
+        <xsl:variable name="defaultTitle" select="normalize-space($doc//head/title[1])" as="xs:string?"/>
         <xsl:variable name="docTitle" 
             select="$doc/head/meta[@name='docTitle'][contains-token(@class,'staticSearch_docTitle')][not(@ss-excld)]"
             as="element(meta)*"/>
@@ -1203,6 +1203,7 @@
                 <xsl:value-of select="$defaultTitle"/>
             </xsl:when>
             <xsl:otherwise>
+                <xsl:message>WARNING: No document title found in <xsl:value-of select="$doc/@data-staticSearch-relativeUri"/>. Using <xsl:value-of select="$doc/@id"/></xsl:message>
                 <xsl:value-of select="$doc/@id"/>
             </xsl:otherwise>
         </xsl:choose>
