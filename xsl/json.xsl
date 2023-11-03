@@ -908,7 +908,7 @@
             
             <!--If there under two categories, and we're grouping, then we have a lopsided boolean-->
             <xsl:if test="last() lt 2">
-                <xsl:message><xsl:value-of select="$filterId"/> only contains <xsl:value-of select="$thisValue"/>.</xsl:message>
+                <xsl:message>WARNING: <xsl:value-of select="$filterId"/> only contains <xsl:value-of select="$thisValue"/>.</xsl:message>
             </xsl:if>
             
             <map key="{$filterId}" xmlns="http://www.w3.org/2005/xpath-functions">
@@ -1199,16 +1199,20 @@
         <xsl:choose>
             <xsl:when test="exists($docTitle)">
                 <xsl:if test="count($docTitle) gt 1">
-                    <xsl:message>WARNING: Multiple docTitles declared in <xsl:value-of select="$doc/@ss-uri"/>. Using <xsl:value-of select="$docTitle[1]/@content"/></xsl:message>
+                    <xsl:message>WARNING: Multiple docTitles declared in <xsl:value-of select="$doc/@ss-uri"/>. Using '<xsl:value-of select="$docTitle[1]/@content"/>'.</xsl:message>
                 </xsl:if>
                 <xsl:value-of select="normalize-space($docTitle[1]/@content)"/>
             </xsl:when>
             <xsl:when test="string-length($defaultTitle) gt 0">
                 <xsl:value-of select="$defaultTitle"/>
             </xsl:when>
-            <xsl:otherwise>
-                <xsl:message>WARNING: No document title found in <xsl:value-of select="$doc/@ss-uri"/>. Using <xsl:value-of select="$doc/@id"/></xsl:message>
+            <xsl:when test="string-length($doc/@id) gt 0">
+                <xsl:message>WARNING: No document title found in <xsl:value-of select="$doc/@ss-uri"/>. Using '<xsl:value-of select="$doc/@id"/>'.</xsl:message>
                 <xsl:value-of select="$doc/@id"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:message>WARNING: No document title found in <xsl:value-of select="$doc/@ss-uri"/>. Using '<xsl:value-of select="$doc/@ss-uri"/>'.</xsl:message>
+                <xsl:value-of select="$doc/@ss-uri"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
@@ -1236,7 +1240,7 @@
         <xsl:choose>
             <xsl:when test="exists($docImage)">
                 <xsl:if test="count($docImage) gt 1">
-                    <xsl:message>WARNING: Multiple docImages declared in <xsl:value-of select="$doc/@ss-uri"/>. Using <xsl:value-of select="$docImage[1]/@content"/></xsl:message>
+                    <xsl:message>WARNING: Multiple docImages declared in <xsl:value-of select="$doc/@ss-uri"/>. Using '<xsl:value-of select="$docImage[1]/@content"/>'.</xsl:message>
                 </xsl:if>
                 <j:string><xsl:value-of select="$docImage[1]/@content"/></j:string>
             </xsl:when>
@@ -1261,7 +1265,7 @@
             as="element(meta)*"/>
         <xsl:if test="exists($docSortKey)">
             <xsl:if test="count($docSortKey) gt 1">
-                <xsl:message>WARNING: Multiple docSortKeys declared in <xsl:value-of select="$doc/@ss-uri"/>. Using <xsl:value-of select="$docSortKey[1]/@content"/></xsl:message>
+                <xsl:message>WARNING: Multiple docSortKeys declared in <xsl:value-of select="$doc/@ss-uri"/>. Using '<xsl:value-of select="$docSortKey[1]/@content"/>'.</xsl:message>
             </xsl:if>
             <j:string><xsl:value-of select="$docSortKey[1]/@content"/></j:string>
         </xsl:if>
