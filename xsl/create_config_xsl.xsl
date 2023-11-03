@@ -25,6 +25,8 @@
             for messages in the XSLT--useful primarily for debugging.</xd:param>
     </xd:doc>
     
+    <xsl:include href="constants.xsl"/>
+    
     <!--**************************************************************
        *                                                            * 
        *                         PARAMETERS                         *
@@ -333,6 +335,7 @@
                 <!-- First, we have to include the stemmer. We can't do this dynamically because
                     a dynamic variable can't be used to create a shadow attribute. -->
                 <xso:include href="{$ssBaseDir || '/stemmers/' || $stemmerFolder || '/ssStemmer.xsl'}"/>
+                <xso:include href="constants.xsl"/>
                 
                 <!--Now, create all the parameters-->
                 
@@ -341,38 +344,44 @@
             
                 <!--Now create the dictionary XML files-->
                 <xsl:call-template name="createDictionaryXML" exclude-result-prefixes="#all"/>
+          
                 
-                <xso:variable name="dataMap" as="map(xs:string, item()*)?">
-                    <xso:map>
-                        <xso:map-entry key="'weights'" select="()"/>
-                        <xso:map-entry key="'contexts'" select="()"/>
-                        <xso:map-entry key="'ctxIds'" select="()"/>
-                        <xso:map-entry key="'excludes'" select="()"/>
-                    </xso:map>
-                </xso:variable>
-                <xso:template match="*" priority="7" mode="clean">
+                <xso:template match="*" priority="{$PRIORITY_FIRST}" mode="decorate">
                     <xso:next-match>
-                        <xso:with-param name="data" tunnel="yes" as="map(*)" select="$dataMap"/>
+                        <xso:with-param name="data" tunnel="yes" as="map(*)">
+                            <xso:map>
+                                <xso:map-entry key="$KEY_WEIGHTS" select="()"/>
+                                <xso:map-entry key="$KEY_CONTEXTS" select="()"/>
+                                <xso:map-entry key="$KEY_CONTEXT_IDS" select="()"/>
+                                <xso:map-entry key="$KEY_EXCLUDES" select="()"/>
+                            </xso:map>
+                        </xso:with-param>
                     </xso:next-match>
                 </xso:template>
                 
                 <xsl:for-each select="$rules">
-                    <xso:template match="{@match}" priority="3" mode="clean">
-                        <xso:param name="data" tunnel="yes" as="map(*)"/>
-                        <xso:variable name="oldVal" select="map:get($data,'weights')" as="xs:integer*"/>
+                    <xso:template match="{@match}" priority="{$PRIORITY_THIRD}" mode="decorate">
+                        <xso:param name="data" tunnel="yes" as="map(*)"/>                        
+                        <xso:call-template name="hcmc:updateData">
+                            <xso:with-param name="caller" select="'config#decorate'"/>
+                            <xso:with-param name="key" select="$KEY_WEIGHTS"/>
+                            <xso:with-param name="value" select="{@weight}"/>
+                            <xso:with-param name="append">[<xsl:value-of select="local-name()"/>/@match=<xsl:value-of select="@match"/>]</xso:with-param>
+                        </xso:call-template>
+                        <!--FORMER WAY OF DOING THIS: KEEPING HERE BUT SHOULD REMOVE-->
+                        <!--<xso:variable name="oldVals" select="map:get($data,$KEY_WEIGHTS)" as="xs:integer*"/>
                         <xso:variable name="thisWeight" select="{@weight}" as="xs:integer"/>
-                        <xso:choose>
-                            <xso:when test="$thisWeight = 0"/>
-                            <xso:otherwise>
-                                <xso:variable name="newVal" select="($oldVal, $thisWeight)"/>
-                                <xso:next-match>
-                                    <xso:with-param name="data" tunnel="yes" as="map(*)"
-                                        select="map:put($data, 'weights', $newVal)"/>
-                                </xso:next-match>
-                            </xso:otherwise>
-                        </xso:choose>
+                        <xso:variable name="newVals" select="($oldVals, $thisWeight)" as="xs:integer+"/>
+                        <xsl:call-template name="printTemplateDebug">
+                            <xsl:with-param name="key" select="$KEY_WEIGHTS"/>
+                        </xsl:call-template>
+                        <xso:next-match>
+                            <xso:with-param name="data" tunnel="yes" as="map(*)"
+                                select="map:put($data, $KEY_WEIGHTS, $newVals)"/>
+                        </xso:next-match>-->
                     </xso:template>
                 </xsl:for-each>
+                
                 <!--Now create the config XSL's version of the context map,
             which may be a map (if there are contexts with labels)
             OR an empty sequence (if there aren't)-->
@@ -396,61 +405,41 @@
                 </xso:variable>
                 
                 <xsl:for-each select="$contexts">
-                    <xso:template match="{@match}" priority="3" mode="clean">
-                        <xso:param name="data" tunnel="yes" as="map(*)"/>
-                        <xso:variable name="currVals" select="map:get($data,'contexts')" as="xs:boolean*"/>
-                        <xso:variable name="isContext" select="{hcmc:stringToBoolean(@context)}()" as="xs:boolean"/>
-                        <xso:choose>
-                            <xso:when test="not($isContext)">
-                                <xso:call-template name="last">
-                                    <xso:with-param name="data" 
-                                        tunnel="yes" as="map(*)" 
-                                        select="map:put($data, 'contexts', $isContext)"/>
-                                </xso:call-template>
-                            </xso:when>
-                            <xso:otherwise>
-                                <xso:variable name="newVals" select="($currVals, $isContext)" as="xs:boolean+"/>
-                                <xso:next-match>
-                                    <xso:with-param name="data" 
-                                        tunnel="yes" as="map(*)" 
-                                        select="map:put($data, 'contexts', $newVals)"/>
-                                </xso:next-match>
-                            </xso:otherwise>
-                        </xso:choose>
-
+                    <xso:template match="{@match}" priority="{$PRIORITY_THIRD}" mode="decorate">
+                        <xso:call-template name="hcmc:updateData">
+                            <xso:with-param name="caller" select="'config#decorate'"/>
+                            <xso:with-param name="key" select="$KEY_CONTEXTS"/>
+                            <xso:with-param name="value" select="{hcmc:stringToBoolean(@context)}()"/>
+                            <xso:with-param name="append">[<xsl:value-of select="local-name()"/>/@match=<xsl:value-of select="@match"/>]</xso:with-param>
+                        </xso:call-template>
                     </xso:template>
+                    
                     <xsl:if test="@label">
                         <xsl:variable name="thisLabel" select="@label"/>
                         <xsl:variable name="contextId" 
                             select="$contextMap(normalize-space($thisLabel))"
                             as="xs:string"/>
-                        <xso:template match="{@match}" priority="3" mode="clean">
-                            <xso:param name="data" tunnel="yes" as="map(*)"/>
-                            <xso:variable name="currVals" select="map:get($data, 'ctxIds')" as="xs:string*"/>
-                            <xso:variable name="ctxId" select="{hcmc:quoteString($contextId)}"/>
-                            <xso:variable name="newVals" select="($currVals, $ctxId)"/>
-                            <xso:next-match>
-                                <xso:with-param name="data"
-                                    tunnel="yes" as="map(*)"
-                                    select="map:put($data, 'ctxIds',$newVals)"/>
-                            </xso:next-match>
+                        <xso:template match="{@match}" priority="{$PRIORITY_THIRD}" mode="decorate">
+                            <xso:call-template name="hcmc:updateData">
+                                <xso:with-param name="caller" select="'config#decorate'"/>
+                                <xso:with-param name="key" select="$KEY_CONTEXT_IDS"/>
+                                <xso:with-param name="value" select="{hcmc:quoteString($contextId)}"/>
+                                <xso:with-param name="append">[<xsl:value-of select="local-name()"/>/@match=<xsl:value-of select="@match"/>]</xso:with-param>
+                            </xso:call-template>
                         </xso:template>
                     </xsl:if>
                 </xsl:for-each>
                 
                 <xsl:for-each select="$excludeRules">
-                    <xso:template match="{@match}" priority="3" mode="clean">
-                        <xso:param name="data" tunnel="yes" as="map(*)"/>
-                        <xso:variable name="exclude" 
-                            select="{hcmc:stringToBoolean('')}()" as="xs:boolean"/>
-                        <xso:if test="$exclude">
-                            <xso:call-template name="hcmc:copy">
-                                <xso:with-param name="data" tunnel="yes" select="map:put($data,'excludes', ($data?excludes, $exclude))"/>
-                            </xso:call-template>
-                        </xso:if>
+                    <xso:template match="{@match}"  priority="{$PRIORITY_THIRD}" mode="decorate">
+                        <xso:call-template name="hcmc:updateData">
+                            <xso:with-param name="caller" select="'config#decorate'"/>
+                            <xso:with-param name="key" select="$KEY_EXCLUDES"/>
+                            <xso:with-param name="value" select="{hcmc:stringToBoolean('')}()"/>
+                            <xso:with-param name="append">[<xsl:value-of select="local-name()"/>/@match=<xsl:value-of select="@match"/>]</xso:with-param>
+                        </xso:call-template>
                     </xso:template>
                 </xsl:for-each>
-               
                 
                 <!-- Always create the filterLabels variable even if there aren't any. It 
                      makes downstream processing easier. -->
@@ -461,20 +450,24 @@
                 </xsl:message>
                 
                 <!--Now, finally, the last rule -->
-                <xso:template match="*" name="last" priority="1" mode="clean">
+                <xso:template match="*" name="last"  priority="{$PRIORITY_LAST}" mode="decorate">
                     <xso:param name="data" tunnel="yes" as="map(*)"/>
-                    <xso:variable name="weights" select="$data?weights" as="xs:integer*"/>
-                    <xso:variable name="ctxIds" select="$data?ctxIds" as="xs:string*"/>
-                    <xso:variable name="contexts" select="$data?contexts" as="xs:boolean*"/>
-                    <xso:variable name="excludes" 
-                        select="$data?excludes"
-                        as="xs:boolean*"/>
+                    <xso:variable name="weights" select="$data($KEY_WEIGHTS)" as="xs:integer*"/>
+                    <xso:variable name="ctxIds" select="$data($KEY_CONTEXT_IDS)" as="xs:string*"/>
+                    <xso:variable name="contexts" select="$data($KEY_CONTEXTS)" as="xs:boolean*"/>
+                    <xso:variable name="excludes" select="$data($KEY_EXCLUDES)" as="xs:boolean*"/>
                     <xso:choose>
-                        <xso:when
-                            test="(empty($contexts) or ($contexts[1] = false()))">
-                            <xso:apply-templates select="node()" mode="#current">
-                                <xso:with-param name="data" tunnel="yes" select="()"/>
-                            </xso:apply-templates>
+                        <!--This is the root, so we must process it-->
+                        <xso:when test="not(ancestor::*)">
+                            <xso:call-template name="hcmc:copy"/>
+                        </xso:when>
+                        <xso:when test="not(empty($weights)) and $weights[last()] = 0">
+                            <xso:if test="$verbose">
+                                <xso:message>config#decorate: Removing <xso:value-of select="local-name()"/> (weight=0)</xso:message>
+                            </xso:if>
+                        </xso:when>
+                        <xso:when test="empty($contexts) or ($contexts[last()] = false())">
+                            <xso:apply-templates select="node()" mode="#current"/>
                         </xso:when>
                         <xso:otherwise>
                             <xso:call-template name="hcmc:copy"/>
@@ -482,10 +475,40 @@
                     </xso:choose>
                 </xso:template>
                 
+                <!--Special template used to update data and 
+                    provide debugging output, if necessary-->
+                <xso:template name="hcmc:updateData">
+                    <xso:param name="data" tunnel="yes" as="map(*)"/>
+                    <xso:param name="caller" as="xs:string?"/>
+                    <xso:param name="append" as="xs:string?"/>
+                    <xso:param name="key" as="xs:string"/>
+                    <xso:param name="value" as="item()"/>
+                    <xso:variable name="currValues" select="$data($key)" as="item()*"/>
+                    <xso:variable name="newValues" select="($currValues, $value)" as="item()+"/>
+                    <xso:if test="$verbose">
+                        <xso:message>
+                            <xso:value-of separator=": ">
+                                <xso:text>hcmc:updateData</xso:text>
+                                <xso:sequence select="$caller"/>
+                                <xso:sequence select="'Updating ' || local-name()"/>
+                                <xso:sequence select="$key || '=' || string-join($newValues,';')"/>
+                            </xso:value-of>
+                            <xso:if test="not(empty($append))">
+                                <xso:value-of select="' ' || $append"/>
+                            </xso:if>
+                        </xso:message>
+                    </xso:if>
+                    <xso:next-match>
+                        <xso:with-param name="data"
+                            tunnel="yes" as="map(*)"
+                            select="map:put($data, $key ,$newValues)"/>
+                    </xso:next-match>
+                </xso:template>
+                
                 <xso:template name="hcmc:copy">
                     <xso:copy>
                         <xso:call-template name="hcmc:copy-atts"/>
-                        <xso:apply-templates select="node()" mode="clean"/>
+                        <xso:apply-templates select="node()" mode="decorate"/>
                     </xso:copy>
                 </xso:template>
                 
@@ -495,18 +518,18 @@
                     <xso:if test="not(ancestor::*)">
                         <xso:attribute name="ss-uri" select="$relativeUri"/>
                     </xso:if>
-                    <xso:apply-templates select="@*" mode="clean"/>
+                    <xso:apply-templates select="@*" mode="decorate"/>
                     <xso:where-populated>
-                        <xso:attribute name="ss-wt" select="$data?weights[1]"/>
+                        <xso:attribute name="ss-wt" select="$data($KEY_WEIGHTS)[last()]"/>
                     </xso:where-populated>
                     <xso:where-populated>
-                        <xso:attribute name="ss-ctx-id" select="string-join($data?ctxIds, ' ')"/>
+                        <xso:attribute name="ss-ctx-id" select="string-join($data($KEY_CONTEXT_IDS), ' ')"/>
                     </xso:where-populated>
                     <xso:where-populated>
-                        <xso:attribute name="ss-ctx" select="xs:string($data?contexts[1])"/>
+                        <xso:attribute name="ss-ctx" select="xs:string($data($KEY_CONTEXTS)[last()])"/>
                     </xso:where-populated>
                     <xso:where-populated>
-                        <xso:attribute name="ss-excld" select="xs:string($data?excludes[1])"/>
+                        <xso:attribute name="ss-excld" select="xs:string($data($KEY_EXCLUDES)[last()])"/>
                     </xso:where-populated>
                 </xso:template>
                 
@@ -514,7 +537,6 @@
             
         </xsl:result-document>
     </xsl:template>
-    
     
     
     <!--**************************************************************
@@ -845,6 +867,8 @@ tokenization.
        *                                                            *
        **************************************************************-->
  
+ 
+ 
     <xd:doc>
         <xd:desc>
             <xd:p><xd:ref name="hcmc:stringToBoolean" type="function">hcmc:stringToBoolean</xd:ref> converts a string value to a boolean. String values can be one of (case-insensitive): "T", "true", "y", "yes", "1"; anything else will evaluate to false.</xd:p>
@@ -900,6 +924,5 @@ tokenization.
         <xsl:variable name="xml" select="json-to-xml($json)"/>
         <xsl:value-of select="$xml//*:string[@key='tag_name']/text()"/>
     </xsl:function>
-    
     
 </xsl:stylesheet>

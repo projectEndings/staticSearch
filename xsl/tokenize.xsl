@@ -68,7 +68,7 @@
     </xd:doc>
     <xsl:include href="functions.xsl"/>
     
-    <xsl:mode name="clean" warning-on-multiple-match="no" on-no-match="shallow-copy"/>
+    <xsl:mode name="decorate" warning-on-multiple-match="no" on-no-match="shallow-copy"/>
     <xsl:mode name="tokenize" on-no-match="shallow-copy"/>
     <xsl:mode name="enumerate" on-no-match="shallow-copy"/>
     
@@ -148,12 +148,12 @@
             which just outputs all parameters when verbose is true-->
         <xsl:call-template name="echoParams"/>
         
-        <xsl:variable name="cleaned">
-            <xsl:apply-templates mode="clean"/>
+        <xsl:variable name="decorated">
+            <xsl:apply-templates select="/" mode="decorate"/>
         </xsl:variable>
-        <xsl:if test="not(root($cleaned)/*[@ss-excld])">
+        <xsl:if test="not(root($decorated)/*[@ss-excld])">
             <xsl:variable name="tokenizedDoc">
-                <xsl:apply-templates select="$cleaned" mode="tokenize">
+                <xsl:apply-templates select="$decorated" mode="tokenize">
                     <xsl:with-param name="currDocUri" select="$uri" tunnel="yes"/>
                 </xsl:apply-templates>
             </xsl:variable>
@@ -163,7 +163,7 @@
             <!--Stash all of the documents we want to output into a map so we can simply
                     iterate through them-->
             <xsl:variable name="outputMap" select="map{
-                'cleaned': $cleaned
+                'decorated': $decorated
                 }"/>
             <!--Iterate through the keys, which are the filenames-->
             <xsl:for-each select="map:keys($outputMap)">
@@ -226,7 +226,7 @@
     
     <!--**************************************************************
        *                                                            *
-       *                    Templates: clean                        *
+       *                    Templates: decorate                     *
        *                                                            *
        **************************************************************-->  
     
@@ -236,16 +236,23 @@
             XHTML spec. This should be deprecated for version 1.4 and by invalid for
             1.5.</xd:desc>
     </xd:doc>
-    <xsl:template match="@data-ssFilterSortKey" priority="8" mode="clean">
+    <xsl:template match="@data-ssFilterSortKey"       
+        _priority="{$PRIORITY_SECOND}"
+        mode="decorate">
         <xsl:message terminate="yes">ERROR: @data-ssFilterSortKey is deprecated. Use @data-ssfiltersortkey (all lowercased) instead. (<xsl:value-of select="$relativeUri"/>)</xsl:message>
         <xsl:next-match/>
     </xsl:template>
+
     
-    <xsl:template match="html/head" priority="2" mode="clean">
+    <xsl:template match="html/head"        
+        _priority="{$PRIORITY_SECOND}"
+        mode="decorate">
         <xsl:param name="data" tunnel="yes" as="map(*)"/>
-        <xsl:next-match>
-            <xsl:with-param name="data" as="map(*)" tunnel="yes" select="map:put($data,'contexts', ($data?contexts, true()))"/>
-        </xsl:next-match>
+        <xsl:call-template name="hcmc:updateData">
+            <xsl:with-param name="caller" select="'tokenize#decorate'"/>
+            <xsl:with-param name="key" select="$KEY_CONTEXTS"/>
+            <xsl:with-param name="value" select="true()"/>
+        </xsl:call-template>
     </xsl:template>
     
     <xd:doc>
@@ -253,23 +260,30 @@
         Note that this template is overriden by templates in the configuration file if they have been specified
         as important for weighting or contextualizing.</xd:desc>
     </xd:doc>
-    <xsl:template match="span | em | b | i | a" priority="2" mode="clean">
+    <xsl:template match="span | em | b | i | a"     
+        _priority="{$PRIORITY_SECOND}" mode="decorate">
         <xsl:param name="data" tunnel="yes" as="map(*)"/>
-        <xsl:next-match>
-            <xsl:with-param name="data" as="map(*)" tunnel="yes" select="map:put($data,'contexts', ($data?contexts, false()))"/>
-        </xsl:next-match>
+        <xsl:call-template name="hcmc:updateData">
+            <xsl:with-param name="caller" select="'tokenize#decorate'"/>
+            <xsl:with-param name="key" select="$KEY_CONTEXTS"/>
+            <xsl:with-param name="value" select="false()"/>
+        </xsl:call-template>
     </xsl:template>
 
     
     <xd:doc>
         <xd:desc>Template to match all block-like elements that we assume are contexts by default.</xd:desc>
     </xd:doc>
-    <xsl:template match="body | div | blockquote | p | li | section | article | nav | h1 | h2 | h3 | h4 | h5 | h6 | td | details | summary | table/caption"
-        priority="2" mode="clean">
+    <xsl:template 
+        match="body | div | blockquote | p | li | section | article | nav | h1 | h2 | h3 | h4 | h5 | h6 | td | details | summary | table/caption"
+        _priority="{$PRIORITY_SECOND}"
+        mode="decorate">
         <xsl:param name="data" tunnel="yes" as="map(*)"/>
-        <xsl:next-match>
-            <xsl:with-param name="data" as="map(*)" tunnel="yes" select="map:put($data,'contexts', ($data?contexts, true()))"/>
-        </xsl:next-match>
+        <xsl:call-template name="hcmc:updateData">
+            <xsl:with-param name="caller" select="'tokenize#decorate'"/>
+            <xsl:with-param name="key" select="$KEY_CONTEXTS"/>
+            <xsl:with-param name="value" select="true()"/>
+        </xsl:call-template>
     </xsl:template>
     
     <xd:doc>
@@ -277,38 +291,41 @@
             of 2. Note that the other weighting templates are contained within the 
             generated configuration file and will override this one, if necessary.</xd:desc>
     </xd:doc>
-    <xsl:template match="*[matches(local-name(),'^h\d$')]" priority="2" mode="clean">
+    <xsl:template 
+        match="*[matches(local-name(),'^h\d$')]" 
+        _priority="{$PRIORITY_SECOND}"
+        mode="decorate">
         <xsl:param name="data" tunnel="yes" as="map(*)"/>
-        <xsl:next-match>
-            <xsl:with-param name="data" as="map(*)" tunnel="yes" 
-                select="map:put($data,'weights', ($data?weights, 2))"/>
-        </xsl:next-match>
+        <xsl:call-template name="hcmc:updateData">
+            <xsl:with-param name="caller" select="'tokenize#decorate'"/>
+            <xsl:with-param name="key" select="$KEY_WEIGHTS"/>
+            <xsl:with-param name="value" select="2"/>
+        </xsl:call-template>
     </xsl:template>
     
-    
-    <xsl:template match="*[@xml:lang | @lang | @id | @xml:id]" priority="2" mode="clean">
+<!--    
+    <xsl:template 
+        match="*[@xml:lang | @lang | @id | @xml:id]" 
+        _priority="{$PRIORITY_SECOND}"
+        mode="decorate">
         <xsl:call-template name="hcmc:copy"/>
     </xsl:template>
-    <xd:doc>
-        <xd:desc>Template to convert all self closing elements--except for the wbr element (processed below)--into
-            single spaces since we assume that they are word boundary marking</xd:desc>
-    </xd:doc>
-    <xsl:template match="br | hr | area | base | col | embed | hr | img | input | link[ancestor::body] | meta[ancestor::body] | param | source | track"
-        priority="2"
-        mode="clean">
-        <xsl:param name="data" tunnel="yes" as="map(*)"/>
-        <xsl:text> </xsl:text>
-    </xsl:template>
+    -->
     
     <xd:doc>
         <xd:desc>Template that simply deletes the word break opportunity (wbr) element,
             since it is specifically not word breaking.</xd:desc>
     </xd:doc>
-    <xsl:template match="wbr" priority="2" mode="clean">
+    <xsl:template 
+        match="wbr"   
+        _priority="{$PRIORITY_SECOND}"
+        mode="decorate">
         <xsl:param name="data" tunnel="yes" as="map(*)"/>
-        <xsl:next-match>
-            <xsl:with-param name="data" as="map(*)" tunnel="yes" select="map:put($data, 'weights', ($data?weights, 0))"/>
-        </xsl:next-match>
+        <xsl:call-template name="hcmc:updateData">
+            <xsl:with-param name="caller" select="'tokenize#decorate'"/>
+            <xsl:with-param name="key" select="$KEY_WEIGHTS"/>
+            <xsl:with-param name="value" select="0"/>
+        </xsl:call-template>
     </xsl:template>
     
     
@@ -316,7 +333,9 @@
         <xd:desc>Template to retain all important meta information.</xd:desc>
     </xd:doc>
     <xsl:template 
-        match="head/title | head/meta[matches(@class,'staticSearch')] | head/meta[matches(@content,'charset')] | head/meta[@charset]" priority="2" mode="clean">
+        match="head/title | head/meta[matches(@class,'staticSearch')] | head/meta[matches(@content,'charset')] | head/meta[@charset]"
+        _priority="{$PRIORITY_SECOND}"
+        mode="decorate">
         <xsl:call-template name="hcmc:copy"/>
     </xsl:template>
     
@@ -326,12 +345,14 @@
     </xd:doc>
     <xsl:template 
         match="script | link"
-        priority="2"
-        mode="clean">
+        _priority="{$PRIORITY_SECOND}"
+        mode="decorate">
         <xsl:param name="data" tunnel="yes" as="map(*)"/>
-        <xsl:next-match>
-            <xsl:with-param name="data" as="map(*)" tunnel="yes" select="map:put($data, 'weights', ($data?weights, 0))"/>
-        </xsl:next-match>
+        <xsl:call-template name="hcmc:updateData">
+            <xsl:with-param name="caller" select="'tokenize#decorate'"/>
+            <xsl:with-param name="key" select="$KEY_WEIGHTS"/>
+            <xsl:with-param name="value" select="0"/>
+        </xsl:call-template>
     </xsl:template>
     
     <xd:doc>
@@ -341,7 +362,10 @@
             since any configuration based off of these attributes has already been handled
             by a previous template pass.</xd:desc>
     </xd:doc>
-    <xsl:template match="*[not(self::meta)]/@*" priority="1" mode="clean">
+    <xsl:template 
+        match="*[not(self::meta)]/@*" 
+        _priority="{$PRIORITY_SECOND}" 
+        mode="decorate">
         <xsl:choose>
             <xsl:when test="local-name()=('id','lang')">
                 <xsl:copy-of select="."/>
@@ -352,6 +376,27 @@
             <xsl:otherwise/>
         </xsl:choose>
     </xsl:template>
+    
+    <xd:doc>
+        <xd:desc>Template to convert all self closing elements--except for the wbr element (processed below)--into
+            single spaces since we assume that they are word boundary marking, unless otherwise specified</xd:desc>
+    </xd:doc>
+    
+    <xsl:template 
+        match="br | hr | area | base | col | embed | hr | img | input | link[ancestor::body] | meta[ancestor::body] | param | source | track"
+        _priority="{$PRIORITY_FOURTH}"
+        mode="decorate">
+        <xsl:param name="data" tunnel="yes" as="map(*)"/>
+        <xsl:choose>
+            <xsl:when test="some $key in map:keys($data) satisfies not(empty($data($key)))">
+                <xsl:next-match/>
+            </xsl:when> 
+            <xsl:otherwise>
+                <xsl:text> </xsl:text>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
     
     <!--**************************************************************
        *                                                            *
