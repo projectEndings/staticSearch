@@ -57,10 +57,13 @@
 
     <xd:doc>
         <xd:desc>Output as XHTML with HTML version 5.0; this is necessary for adding the
-        propery DOCTYPE processing instruction.</xd:desc>
+        propery DOCTYPE processing instruction. We include the content type and below
+        suppress meta[@charset] because there should be one of the two, but using both
+        is an error.</xd:desc>
     </xd:doc>
     <xsl:output method="xhtml" encoding="UTF-8" normalization-form="NFC"
-        exclude-result-prefixes="#all" omit-xml-declaration="yes" html-version="5.0"/>
+        exclude-result-prefixes="#all" omit-xml-declaration="yes" html-version="5.0"
+        include-content-type="yes"/>
 
     <!--**************************************************************
        *                                                            *
@@ -166,7 +169,13 @@
             <xsl:apply-templates select="node()"/>
         </xsl:copy>
     </xsl:template>
-
+    
+    <xd:doc>
+        <xd:desc>This suppresses the meta[@charset] element if any, because we
+        are including the content type in the xsl:output.</xd:desc>
+    </xd:doc>
+    <xsl:template match="meta[@charset]"/>
+    
     <xd:doc>
         <xd:desc>This is the main template for matching the staticSearch element
           (which under normal circumstances should be a div, but which may be 
