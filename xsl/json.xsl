@@ -1158,7 +1158,7 @@
     
     <xd:doc>
         <xd:desc>Template to convert an hcmc:filters element to a JSON array. Note that 
-        we do not currently bother serializing the html:label element inside an hcmc:filter 
+        we do not currently bother serializing the html:span element inside an hcmc:filter 
         into the JSON; for the moment, we just record the fact that a custom label
         was supplied.</xd:desc>
     </xd:doc>

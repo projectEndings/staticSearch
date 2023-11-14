@@ -68,7 +68,7 @@
     <property name="odd2odd.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/dev/odds/odd2odd.xsl"/>
     
     <!--ODD 2 RNG XSLT (from the TEI framework)-->
-    <property name="odd2rng.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/dev/profiles/tei/relaxng/to.xsl"/>
+    <property name="odd2rng.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/dev/profiles/tei/rng/to.xsl"/>
     
     <!--ODD 2 Schematron XSLT (from the TEI framework)-->
     <property name="odd2sch.xsl" value="https://raw.githubusercontent.com/TEIC/Stylesheets/dev/odds/extract-isosch.xsl"/>
