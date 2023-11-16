@@ -92,13 +92,13 @@
     <copy todir="${outputFolder}" file="${basedir}/search.html"/>
   </target>
   
-  <target name="unborkGuidelines">
+  <!--<target name="unborkGuidelines">
     <description>
       TARGET unborkGuidelines
       This target fixes some egregiousness in the
       HTML encoding of the Guidelines pages.
     </description>
-    <!--First clean up the awfulness from the Guidelines HTML. -->
+    <!-\-First clean up the awfulness from the Guidelines HTML. -\->
     <echo message="Fixing horrible broken HTML..."/>
     <replaceregexp match="&lt;!DOCTYPE html" replace="">
       <fileset refid="sourceHtml"/>
@@ -106,7 +106,7 @@
     <replaceregexp match="SYSTEM .about:legacy-compat.&gt;" replace="">
       <fileset refid="sourceHtml"/>
     </replaceregexp>
-  </target>
+  </target>-->
   
   <target name="preprocessGuidelines">
     <description>
@@ -119,7 +119,7 @@
     <copy file="${basedir}/search.html" todir="${outputFolder}"/>
     <echo message="Preprocessing Guidelines pages..."/>
     <java classpath="${saxon}" classname="net.sf.saxon.Transform" 
-          failonerror="true">
+          failonerror="true" fork="true">
       <arg value="-xsl:${basedir}/xsl/preprocess.xsl"/>
       <arg value="-s:${basedir}/xsl/preprocess.xsl"/>
       <arg line="basedir=${basedir}"/>
@@ -166,7 +166,7 @@
     <antcall target="clean"/>
     <antcall target="getGuidelines"/>
     <antcall target="deployEuroGuidelines"/>
-    <antcall target="unborkGuidelines"/>
+    <!--<antcall target="unborkGuidelines"/>-->
     <antcall target="preprocessGuidelines"/>
     <antcall target="buildStaticSearch"/>
     <antcall target="copyOtherGuidelines"/>
