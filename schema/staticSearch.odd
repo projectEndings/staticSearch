@@ -2169,7 +2169,7 @@
             must be identical to the XHTML meta/@name attribute for the filter as it appears
             in the HTML document heads.</desc>
             <content>
-              <elementRef key="label" minOccurs="1" maxOccurs="unbounded"/>
+              <elementRef key="span" minOccurs="1" maxOccurs="unbounded"/>
             </content>
             <attList>
               <attDef ident="filterName" usage="req">
@@ -2185,15 +2185,15 @@
           <moduleSpec ident="ssHTML">
             <desc>A module to encapsulate HTML elements (in the XHTML namespace)
             which are used as part of our configuration setup, enabling users to 
-            specify e.g. rich HTML markup inside labels that will appear on the 
+            specify e.g. rich HTML markup inside span elements that will appear on the 
             search page.</desc>
           </moduleSpec>
           
-          <elementSpec ident="label" module="ssHTML" ns="http://www.w3.org/1999/xhtml">
-            <gloss>An HTML label</gloss>
-            <desc>A standard HTML label element, within which other HTML content can 
+          <elementSpec ident="span" module="ssHTML" ns="http://www.w3.org/1999/xhtml">
+            <gloss>An HTML span</gloss>
+            <desc>A standard HTML span element, within which other HTML content can 
             be included. We do not prescribe or validate the content model; see e.g.
-            https://developer.mozilla.org/en-US/docs/Web/HTML/Element/label
+            https://developer.mozilla.org/en-US/docs/Web/HTML/Element/span
             for information.</desc>
             <content>
               <alternate minOccurs="1" maxOccurs="unbounded">
@@ -2203,8 +2203,8 @@
             </content>
             <attList>
               <attDef ident="lang" usage="rec">
-                <gloss>The language of this label</gloss>
-                <desc>Multiple labels may be supplied in different languages if required. The value
+                <gloss>The language of this span</gloss>
+                <desc>Multiple spans may be supplied in different languages if required. The value
                 of this attribute should be a valid language identifier per BCP 47.</desc>
                 <datatype><dataRef key="teidata.language"/></datatype>
               </attDef>

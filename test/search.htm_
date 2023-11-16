@@ -157,7 +157,7 @@
              your own site's search page.
       -->
       
-      <script src="testJs/testJs.js"><!-- Don't self-close script tags. --></script>
+      <script src="testJs/testJs.js"></script>
       
       
       <div id="testResults">

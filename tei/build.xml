@@ -31,12 +31,12 @@
      ****************************************************************-->
   
   <!-- Saxon of course. -->
-  <property name="saxon" value="${basedir}/../lib/saxon-he-11.4.jar"/>
+  <property name="saxon" value="${basedir}/../lib/saxon-he-10.jar"/>
   
   <!-- Place to get the TEI Guidelines build from. This is currently
     a release package, but it could also be a Jenkins build from another
     branch if required. -->
-  <property name="glinesUrl" value="https://github.com/TEIC/TEI/releases/download/P5_Release_4.4.0/tei-4.4.0.zip"/>
+  <property name="glinesUrl" value="https://github.com/TEIC/TEI/releases/download/P5_Release_4.7.0/tei-4.7.0.zip"/>
   
   <!-- Source folder location. -->
   <property name="sourceFolder" value="${basedir}/source"/>
@@ -92,7 +92,6 @@
     <copy todir="${outputFolder}" file="${basedir}/search.html"/>
   </target>
   
-  <!-- NOTE: THIS IS NO LONGER REQUIRED. TEI IS FIXED. -->
   <!--<target name="unborkGuidelines">
     <description>
       TARGET unborkGuidelines
@@ -120,7 +119,7 @@
     <copy file="${basedir}/search.html" todir="${outputFolder}"/>
     <echo message="Preprocessing Guidelines pages..."/>
     <java classpath="${saxon}" classname="net.sf.saxon.Transform" 
-          failonerror="true" fork="true">
+      failonerror="true" fork="true">
       <arg value="-xsl:${basedir}/xsl/preprocess.xsl"/>
       <arg value="-s:${basedir}/xsl/preprocess.xsl"/>
       <arg line="basedir=${basedir}"/>

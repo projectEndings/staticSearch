@@ -19,8 +19,8 @@
              xmlns:teix="http://www.tei-c.org/ns/Examples"
              xmlns:xlink="http://www.w3.org/1999/xlink"
              id="d10e3357-constraint">
-      <rule context="xh:label">
-         <report test="descendant::*[not(namespace-uri(.) =               ('http://www.w3.org/1999/xhtml', 'http://www.tei-c.org/ns/1.0'))]">label descendants must be in the
+      <rule context="xh:span">
+         <report test="descendant::*[not(namespace-uri(.) =               ('http://www.w3.org/1999/xhtml', 'http://www.tei-c.org/ns/1.0'))]">span descendants must be in the
               namespaces
               'http://www.w3.org/1999/xhtml', 'http://www.tei-c.org/ns/1.0'</report>
       </rule>

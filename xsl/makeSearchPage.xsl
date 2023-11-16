@@ -57,10 +57,13 @@
 
     <xd:doc>
         <xd:desc>Output as XHTML with HTML version 5.0; this is necessary for adding the
-        propery DOCTYPE processing instruction.</xd:desc>
+        propery DOCTYPE processing instruction. We include the content type and below
+        suppress meta[@charset] because there should be one of the two, but using both
+        is an error.</xd:desc>
     </xd:doc>
     <xsl:output method="xhtml" encoding="UTF-8" normalization-form="NFC"
-        exclude-result-prefixes="#all" omit-xml-declaration="yes" html-version="5.0"/>
+        exclude-result-prefixes="#all" omit-xml-declaration="yes" html-version="5.0"
+        include-content-type="yes"/>
 
     <!--**************************************************************
        *                                                            *
@@ -166,7 +169,13 @@
             <xsl:apply-templates select="node()"/>
         </xsl:copy>
     </xsl:template>
-
+    
+    <xd:doc>
+        <xd:desc>This suppresses the meta[@charset] element if any, because we
+        are including the content type in the xsl:output.</xd:desc>
+    </xd:doc>
+    <xsl:template match="meta[@charset]"/>
+    
     <xd:doc>
         <xd:desc>This is the main template for matching the staticSearch element
           (which under normal circumstances should be a div, but which may be 
@@ -306,7 +315,7 @@
                                     <!--And now create the fieldset and legend-->
                                     <fieldset class="ssFieldset" title="{$filterName}" id="{$filterId}">
                                         <legend>
-                                            <xsl:sequence select="hcmc:getFilterLabel($filterName, $filterId)"/>
+                                            <xsl:sequence select="hcmc:getFilterLabel($filterName, $filterId, false())"/>
                                         </legend>
                                         
                                         <!--And create a ul from each of the embedded maps-->
@@ -376,7 +385,7 @@
                           
                           <!--And now create the fieldset and legend-->
                           <fieldset class="ssFieldset" title="{$filterName}" id="{$filterId}">
-                            <legend><xsl:sequence select="hcmc:getFilterLabel($filterName, $filterId)"/></legend>
+                            <legend><xsl:sequence select="hcmc:getFilterLabel($filterName, $filterId, false())"/></legend>
                             
                             <!--And create a simple text box for the feature.-->
                             <input type="text" title="{$filterName}" placeholder="{hcmc:getCaption('ssStartTyping', $captionLang)}"
@@ -415,7 +424,7 @@
                                     
                                     <fieldset class="ssFieldset" title="{$filterName}" id="{$filterId}">
                                         <!--And add the filter name as the legend-->
-                                        <legend><xsl:sequence select="hcmc:getFilterLabel($filterName, $filterId)"/></legend>
+                                        <legend><xsl:sequence select="hcmc:getFilterLabel($filterName, $filterId, false())"/></legend>
                                         <span>
                                             <label for="{$filterId}_from">From: </label>
                                             <input type="text" maxlength="10" pattern="{$dateRegex}" title="{$filterName}" id="{$filterId}_from" class="staticSearch.date staticSearch_date" placeholder="{format-date($minDate, '[Y0001]-[M01]-[D01]')}" onchange="this.reportValidity()"/>
@@ -454,7 +463,7 @@
                                     
                                     <fieldset class="ssFieldset" title="{$filterName}" id="{$filterId}">
                                         <!--And add the filter name as the legend-->
-                                        <legend><xsl:sequence select="hcmc:getFilterLabel($filterName, $filterId)"/></legend>
+                                        <legend><xsl:sequence select="hcmc:getFilterLabel($filterName, $filterId, false())"/></legend>
                                         <span>
                                             <label for="{$filterId}_from">From: </label>
                                             <input type="number" min="{$minVal}" max="{$maxVal}" placeholder="{$minVal}" step="any"
@@ -494,7 +503,7 @@
                                         <xsl:variable name="filterName" select="$jsonDoc//j:string[@key='filterName']"/>
                                         <xsl:variable name="filterId" select="$jsonDoc//j:string[@key='filterId']"/>
                                         <span>
-                                            <xsl:sequence select="hcmc:getFilterLabel($filterName, $filterId)"/>
+                                            <xsl:sequence select="hcmc:getFilterLabel($filterName, $filterId, true())"/>
                                             <!--<label for="{$filterId}"><xsl:sequence select="hcmc:getFilterLabel($filterName)"/>: </label>-->
                                             <select id="{$filterId}" title="{$filterName}" class="staticSearch.bool staticSearch_bool">
                                                 <option value="">?</option>
@@ -614,28 +623,35 @@
         <xd:desc><xd:ref name="hcmc:getFilterLabel" type="function">hcmc:getFilterLabel</xd:ref> retrieves
         an item to be used as the label for a filter on the search page. This is either going to be the 
         text string which is the filter name from the html:meta/@name attribute, or (if the user has 
-        overridden this in their configuration file) an HTML label element with perhaps some HTML markup
+        overridden this in their configuration file) an HTML span element with perhaps some HTML markup
         inside it.</xd:desc>
         <xd:param name="filterName" as="xs:string">The string value of the @name attribute, which can 
         be used to look up the result.</xd:param>
         <xd:param name="filterId" as="xs:string">The id value of the filter as it will be rendered on the page.</xd:param>
-        <xd:return as="element()">An HTML label element.</xd:return>
+        <xd:param name="filterIdIsControl" as="xs:string">Whether or not the filter we're labelling is
+        an actual HTML form control, in which case we can use label[@for].</xd:param>
+        <xd:return as="element()">An HTML span or label element.</xd:return>
     </xd:doc>
     <xsl:function name="hcmc:getFilterLabel" as="element()">
         <xsl:param name="filterName" as="xs:string"/>
-        <xsl:param name="filterId" as="xs:string"/>    
+        <xsl:param name="filterId" as="xs:string"/> 
+        <xsl:param name="filterIdIsControl" as="xs:boolean"/>
         <!--<xsl:message expand-text="yes">Filter name: {$filterName}; filter id: {$filterId}; filters to check: {count($filterLabels)}</xsl:message>-->
-        <xsl:variable name="currLabel" as="element(label)?" select="$filterLabels[@filterName=$filterName and (@lang=$pageLang or not(@lang))][1]/label[1]"/>
+        <xsl:variable name="currLabel" as="element(span)?" select="$filterLabels[@filterName=$filterName and (@lang=$pageLang or not(@lang))][1]/span[1]"/>
         <xsl:choose>
-            <xsl:when test="$currLabel">
-                <xsl:copy select="$currLabel">
-                    <xsl:copy-of select="$currLabel/@*[not(local-name() = 'for')]"/>
-                    <xsl:attribute name="for" select="$filterId"/>
-                    <xsl:copy-of select="$currLabel/node()"/>
-                </xsl:copy>
+            <xsl:when test="$currLabel and $filterIdIsControl">
+                <label for="{$filterId}">
+                    <xsl:copy-of select="$currLabel"/>
+                </label>
+            </xsl:when>
+            <xsl:when test="$currLabel and not($filterIdIsControl)">
+                <xsl:copy-of select="$currLabel"/>
+            </xsl:when>
+            <xsl:when test="not($currLabel) and $filterIdIsControl">
+                <label for="{$filterId}"><xsl:sequence select="$filterName"/><xsl:text>: </xsl:text></label>
             </xsl:when>
             <xsl:otherwise>
-                <label for="{$filterId}"><xsl:sequence select="$filterName"/><xsl:text>: </xsl:text></label>
+                <span><xsl:sequence select="$filterName"/><xsl:text>: </xsl:text></span>
             </xsl:otherwise>
         </xsl:choose>
         
