@@ -348,10 +348,8 @@
                 
                 <!--First, create the global variables and parameters-->
                 <xsl:call-template name="createGlobals" exclude-result-prefixes="#all"/>
-            
-                <!--Now create the dictionary XML files-->
-                <xsl:call-template name="createDictionaryXML" exclude-result-prefixes="#all"/>
                 
+                <xsl:call-template name="createStopwordsXML" exclude-result-prefixes="#all"/>
                 
                 <xsl:for-each select="$rules">
                     <xso:template match="{@match}" priority="{$PRIORITY_THIRD}" mode="decorate">
@@ -583,9 +581,6 @@
                 </xso:param>
             </xsl:for-each>
             
-            
-            
-            
             <!-- We record the current default stemmer folder. -->
             <xso:param name="defaultStemmerFolder"><xsl:value-of select="$ssDefaultStemmerFolder"/></xso:param>
             
@@ -686,9 +681,27 @@
         </xso:template>
     </xsl:template>
     
-    
-    
-
+    <xd:doc>
+        <xd:desc>Template to create an XML representation of the stopwords file
+        and an associated key</xd:desc>
+    </xd:doc>
+    <xsl:template name="createStopwordsXML">
+        <xsl:for-each select="($configDoc//stopwordsFile)">
+            <xsl:variable name="path" select="resolve-uri(text(),$configUri)"/>
+            <xsl:variable name="uri" select="concat($outDir,'/dicts/',substring-before(tokenize($path,'/')[last()],'.txt'),'.xml')"/>
+            <xsl:result-document href="{$uri}" method="xml">
+                <hcmc:words>
+                    <xsl:for-each select="tokenize(unparsed-text($path),'\s+')">
+                        <hcmc:word><xsl:value-of select="lower-case(normalize-space(.))"/></hcmc:word>
+                    </xsl:for-each>
+                </hcmc:words>
+            </xsl:result-document>
+            <xsl:variable name="docFn">doc('<xsl:value-of select="$uri"/>')</xsl:variable>
+            <xso:variable name="{concat(local-name(),'Xml')}" select="{$docFn}"/>
+        </xsl:for-each>
+        <xso:key name="w" match="hcmc:word" use="."/>
+    </xsl:template>
+<!--
     <xd:doc>
         <xd:desc>Template to create an XML representation of the dictionary file 
         and an associated key.</xd:desc>
@@ -709,7 +722,7 @@
         </xsl:for-each>
         
         <xso:key name="w" match="hcmc:word" use="."/>
-    </xsl:template>
+    </xsl:template>-->
     
     
     
