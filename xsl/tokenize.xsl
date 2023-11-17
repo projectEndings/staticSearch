@@ -13,38 +13,51 @@
     <xd:doc scope="stylesheet">
         <xd:desc>
             <xd:p><xd:b>Created on:</xd:b> June 26, 2019</xd:p>
+            <xd:p><xd:b>Updated on:</xd:b> November 16, 2023</xd:p>
             <xd:p><xd:b>Authors:</xd:b> Joey Takeda and Martin Holmes</xd:p>
-            <xd:p>This transformation takes as input one of the collection of documents specified in 
-                  the configuration file and creates the temporary tokenized and stemmed output HTML 
-                  files to create the JSON indexes.</xd:p>
-            <xd:p>The document is run through a chain of templates to create a version that contains 
-              all of the necessary information for the creation of the JSON indexes. These modified 
-              documents are then output into a temporary directory (removed at the end of the ANT build).</xd:p>
-            <xd:p>The templates/passes are described below. Since many of these templates contain rules
-                that are contingent on the configuration options, the clean, weigh, and contextualize
-                templates are primarily default templates that are usually overriden or supplemented by
-                rules specified in the config file.</xd:p>
+            <xd:p>This transformation takes as input one of the collection of documents specified in
+                the configuration file and creates the temporary tokenized and stemmed output HTML
+                files to create the JSON indexes.</xd:p>
+            <xd:p>The document is run through a chain of templates to create a version that contains
+                all of the necessary information for the creation of the JSON indexes. These
+                modified documents are then output into a temporary directory (removed at the end of
+                the ANT build).</xd:p>
+            <xd:p>Note that these templates are contingent on <xd:a href="config.xsl">config.xsl</xd:a>,
+                which is a generated file that contains templates that
+                correspond to rules specified in the configuration file.</xd:p>
+            <xd:p>Where older versions of staticSearch performed transformations in 6 passes, as of
+                staticSearch 2.0, this transformation processes a document thrice:</xd:p>
             <xd:ol>
                 <xd:li>
-                    <xd:b>exclude</xd:b>: Determines whether or not the document has any exclusions or
-                    if the document itself is excluded. Note that the document is only passed through
-                    the exclusion templates if exclusions have been defined in the configuration
-                    file.</xd:li>
-                <xd:li><xd:b>clean</xd:b>: Removes unnecessary tagging (spans, et cetera) in order to
-                    reduce the file size if possible and adds staticSearch specific attributes for later
-                    processing.</xd:li>
-                <xd:li><xd:b>weigh</xd:b>: Adds @ss-wt attributes to the elements
-                    specified in the configuration file. This allows for higher weighting of terms found
-                    in particular contexts.</xd:li>
-                <xd:li><xd:b>contextualize</xd:b>: Adds @ss-ctx to the elements
-                    specified in the configuration file so that KWICS, if generated in the JSON file,
-                    are properly bounded by their containing elements.</xd:li>
-                <xd:li><xd:b>tokenize</xd:b>: Tokenizes the file on word boundaries, wraps each word in
-                    a span element, and adds a @data-ss-stem for that term. This is the bulk of the
-                    process.</xd:li>
+                    <xd:p>First, the document is passed through the <xd:b>decorate</xd:b> templates.
+                        These templates rely on the priority attribute and
+                        <xd:pre>xsl:next-match</xd:pre> and process each element multiple times,
+                        accumulating data (e.g. weight, ignore, contexts, et cetera) using the
+                        tunneled <xd:ref name="DATA" type="param">$data</xd:ref> parameter.</xd:p>
+                    <xd:p>The highest priority templates are located in <xd:a ref="tokenize.xsl"
+                            >this file</xd:a>; the template with highest priority (<xd:ref
+                            name="PRIORITY_FIRST" type="variable">$PRIORITY_FIRST</xd:ref>) just
+                        matches all elements and initializes the data map. Templates with the second
+                        highest priority (<xd:ref name="PRIORITY_SECOND" type="variable"
+                            >$PRIORITY_SECOND</xd:ref>) are those that are understood to be default
+                        configurations; for instance, we presume that all xhtml:script and
+                        xhtml:style elements should be given a weight of 0 and thus removed
+                        entirely. These templates are meant to be overridden by the lower priority
+                        templates that derive from the user-supplied configuration (in <xd:a
+                            href="config.xsl">config.xsl</xd:a>, but are generated via <xd:a
+                            href="create_config_xsl.xsl">create_config.xsl</xd:a>).</xd:p>
+                    <xd:p>The final template in the process (<xd:ref name="hcmc:last"
+                            type="template">hcmc:last</xd:ref>) evaluates the accumulated data and
+                        determines how to process the element (whether it ought to be deleted
+                        entirely, ignored, or decorated with the attributes necessary to create the
+                        stem files (cf. <xd:a href="json.xsl">json.xsl</xd:a>).</xd:p>
+                </xd:li>
+                <xd:li><xd:b>tokenize</xd:b>: Tokenizes the decorated file on word boundaries, wraps each word
+                    in a span element, and adds a @data-ss-stem for that term. This is the bulk of
+                    the process.</xd:li>
                 <xd:li><xd:b>enumerate</xd:b>: A final pass on the tokenized document, which adds a
-                    position for each stem and any other document-specific information necessary for the
-                    JSON step.</xd:li>
+                    position for each stem and any other document-specific information necessary for
+                    the JSON step.</xd:li>
             </xd:ol>
         </xd:desc>
     </xd:doc>
@@ -148,17 +161,25 @@
             which just outputs all parameters when verbose is true-->
         <xsl:call-template name="echoParams"/>
         
+        <!--Store the results from the #decorate templates -->
         <xsl:variable name="decorated">
             <xsl:apply-templates select="/" mode="decorate"/>
         </xsl:variable>
+        <!--Check to see if the root element is excluded; if it is,
+            then we can just skip this step entirely; if it isn't,
+            then process the document.-->
         <xsl:if test="not(root($decorated)/*[@ss-excld])">
+            <!--Now tokenize the document-->
             <xsl:variable name="tokenizedDoc">
                 <xsl:apply-templates select="$decorated" mode="tokenize">
                     <xsl:with-param name="currDocUri" select="$uri" tunnel="yes"/>
                 </xsl:apply-templates>
             </xsl:variable>
+            <!--And then finally add positions to the tokenized document-->
             <xsl:apply-templates select="$tokenizedDoc" mode="enumerate"/>
         </xsl:if>
+        <!--For debugging purposes only: Output the decorated version
+            of the document (and any others)-->
         <xsl:if test="$verbose">
             <!--Stash all of the documents we want to output into a map so we can simply
                     iterate through them-->
@@ -173,54 +194,6 @@
                 </xsl:result-document>
             </xsl:for-each>
         </xsl:if>
-        
-        
-        <!--<!-\-Now create the excluded document if we have to-\->
-        <xsl:variable name="excluded">
-            <xsl:choose>
-                <!-\-If the exclusions are specified in the config, then run the document
-                       through the exclusion templates (mode="exclude")-\->
-                <xsl:when test="$hasExclusions">
-                    <xsl:apply-templates mode="exclude"/>
-                </xsl:when>
-                
-                <!-\-Otherwise, just spit the document back out unchanged-\->
-                <xsl:otherwise>
-                    <xsl:sequence select="."/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-        
-        <!-\-Now check to see if exclusions are present in the configuration and if 
-                the html root element has been specified as an exclusion. If the document is excluded,
-                then just skip it from being indexed entirely. Otherwise, pass it through the process-\->
-        <xsl:if test="if ($hasExclusions) then not($excluded//html[@ss-excld='true']) else true()">
-            
-            <!-\-First, clean the document by passing it through the clean templates. This also
-                    requires the relativeUri and searchIdentifier parameters in order to create
-                    specific attributes that make the JSON creation simpler-\->
-   
-            
-            <!-\-Next add weighting information to the cleaned document-\->
-            <xsl:variable name="weighted">
-                <xsl:apply-templates select="$cleaned" mode="weigh"/>
-            </xsl:variable>
-            
-            <!-\-Next add context information to the weighted document-\->
-            <xsl:variable name="contextualized">
-                <xsl:apply-templates select="$weighted" mode="contextualize"/>
-            </xsl:variable>
-            
-            <!-\-Next tokenize and stem the contextualized document-\->
-         
-            
-            <!-\-And finally pass the tokenized document through the enumeration templates-\->
-            <xsl:apply-templates select="$tokenizedDoc" mode="enumerate"/>
-            
-            <!-\-If we're running in verbose mode, then output all of the interstitial
-                    documents for easier debugging.-\->-->
-            
-
     </xsl:template>
     
     
@@ -228,7 +201,25 @@
        *                                                            *
        *                    Templates: decorate                     *
        *                                                            *
-       **************************************************************-->  
+       **************************************************************-->
+    
+    <xd:doc>
+        <xd:desc>Highest priority template, which sets up an empty
+            data map to hold accumulated values to tunnel through
+            each element.</xd:desc>
+    </xd:doc>
+    <xsl:template match="*" _priority="{$PRIORITY_FIRST}" mode="decorate">
+        <xsl:next-match>
+            <xsl:with-param name="data" tunnel="yes" as="map(*)">
+                <xsl:map>
+                    <xsl:map-entry key="$KEY_WEIGHTS" select="()"/>
+                    <xsl:map-entry key="$KEY_CONTEXTS" select="()"/>
+                    <xsl:map-entry key="$KEY_CONTEXT_IDS" select="()"/>
+                    <xsl:map-entry key="$KEY_EXCLUDES" select="()"/>
+                </xsl:map>
+            </xsl:with-param>
+        </xsl:next-match>
+    </xsl:template>
     
     <xd:doc>
         <xd:desc>Template (added for release 1.4) to catch any instance of 
@@ -243,11 +234,13 @@
         <xsl:next-match/>
     </xsl:template>
 
-    
+    <xd:doc>
+        <xd:desc>All html head elements should
+        remain a context, since they contain crucial information.</xd:desc>
+    </xd:doc>
     <xsl:template match="html/head"        
         _priority="{$PRIORITY_SECOND}"
         mode="decorate">
-        <xsl:param name="data" tunnel="yes" as="map(*)"/>
         <xsl:call-template name="hcmc:updateData">
             <xsl:with-param name="caller" select="'tokenize#decorate'"/>
             <xsl:with-param name="key" select="$KEY_CONTEXTS"/>
@@ -262,7 +255,6 @@
     </xd:doc>
     <xsl:template match="span | em | b | i | a"     
         _priority="{$PRIORITY_SECOND}" mode="decorate">
-        <xsl:param name="data" tunnel="yes" as="map(*)"/>
         <xsl:call-template name="hcmc:updateData">
             <xsl:with-param name="caller" select="'tokenize#decorate'"/>
             <xsl:with-param name="key" select="$KEY_CONTEXTS"/>
@@ -278,7 +270,6 @@
         match="body | div | blockquote | p | li | section | article | nav | h1 | h2 | h3 | h4 | h5 | h6 | td | details | summary | table/caption"
         _priority="{$PRIORITY_SECOND}"
         mode="decorate">
-        <xsl:param name="data" tunnel="yes" as="map(*)"/>
         <xsl:call-template name="hcmc:updateData">
             <xsl:with-param name="caller" select="'tokenize#decorate'"/>
             <xsl:with-param name="key" select="$KEY_CONTEXTS"/>
@@ -295,22 +286,12 @@
         match="*[matches(local-name(),'^h\d$')]" 
         _priority="{$PRIORITY_SECOND}"
         mode="decorate">
-        <xsl:param name="data" tunnel="yes" as="map(*)"/>
         <xsl:call-template name="hcmc:updateData">
             <xsl:with-param name="caller" select="'tokenize#decorate'"/>
             <xsl:with-param name="key" select="$KEY_WEIGHTS"/>
             <xsl:with-param name="value" select="2"/>
         </xsl:call-template>
     </xsl:template>
-    
-<!--    
-    <xsl:template 
-        match="*[@xml:lang | @lang | @id | @xml:id]" 
-        _priority="{$PRIORITY_SECOND}"
-        mode="decorate">
-        <xsl:call-template name="hcmc:copy"/>
-    </xsl:template>
-    -->
     
     <xd:doc>
         <xd:desc>Template that simply deletes the word break opportunity (wbr) element,
@@ -320,7 +301,6 @@
         match="wbr"   
         _priority="{$PRIORITY_SECOND}"
         mode="decorate">
-        <xsl:param name="data" tunnel="yes" as="map(*)"/>
         <xsl:call-template name="hcmc:updateData">
             <xsl:with-param name="caller" select="'tokenize#decorate'"/>
             <xsl:with-param name="key" select="$KEY_WEIGHTS"/>
@@ -347,7 +327,6 @@
         match="script | link"
         _priority="{$PRIORITY_SECOND}"
         mode="decorate">
-        <xsl:param name="data" tunnel="yes" as="map(*)"/>
         <xsl:call-template name="hcmc:updateData">
             <xsl:with-param name="caller" select="'tokenize#decorate'"/>
             <xsl:with-param name="key" select="$KEY_WEIGHTS"/>
@@ -380,8 +359,9 @@
     <xd:doc>
         <xd:desc>Template to convert all self closing elements--except for the wbr element (processed below)--into
             single spaces since we assume that they are word boundary marking, unless otherwise specified</xd:desc>
+        <xd:param name="data" tunnel="yes">The data map, which is 
+        necessary for evaluating whether this element can safely be converted into a space.</xd:param>
     </xd:doc>
-    
     <xsl:template 
         match="br | hr | area | base | col | embed | hr | img | input | link[ancestor::body] | meta[ancestor::body] | param | source | track"
         _priority="{$PRIORITY_FOURTH}"
@@ -403,7 +383,9 @@
        *                    Templates: tokenize                     *
        *                                                            *
        **************************************************************--> 
-    
+    <xd:doc>
+        <xd:desc>If some element has been excluded, then don't process it any further.</xd:desc>
+    </xd:doc>
     <xsl:template match="*[@ss-excl]" mode="tokenize">
         <xsl:copy-of select="."/>
     </xsl:template>
