@@ -1665,6 +1665,18 @@
             <content>
               <empty/>
             </content>
+            <constraintSpec ident="labelledContextMustBeContext" scheme="schematron">
+              <constraint>
+                <sch:ns uri="http://hcmc.uvic.ca/ns/staticSearch" prefix="ss"/>
+                <sch:pattern>
+                  <sch:rule context="ss:context">
+                    <sch:assert test="not(@label and @context = 'false')">
+                      ERROR: If a context has a label, it must be a context for the purposes of indexing.
+                    </sch:assert>
+                  </sch:rule>
+                </sch:pattern>
+              </constraint>
+            </constraintSpec>
             <attList>
               <attDef ident="context" usage="opt">
                 <datatype>
