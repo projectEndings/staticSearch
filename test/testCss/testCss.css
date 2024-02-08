@@ -2,6 +2,20 @@
  * test suite, and is never needed in a working search 
  * application context. */
 
+/* Test that scrolling works with fixed header. */
+
+h1{
+    position: fixed;
+    background-color: white;
+    margin: 0;
+    padding: 1rem;
+    width: 100%;
+}
+
+main{
+    padding-top: 6rem;
+}
+
 #testResults{
   margin: 2em;
   border-top: solid 1pt black;

@@ -29,7 +29,7 @@
       
       <h1>Test search page</h1>
       
-      
+      <main>
       <p>This is a simple search page for the test collection. It runs a number of automated
          tests on load.
          Note that the <q>Document type</q> options should appear sorted in reverse alphabetical order, 
@@ -163,6 +163,6 @@
       <div id="testResults">
          
          </div>
-      
+      </main>
       </body>
    </html>

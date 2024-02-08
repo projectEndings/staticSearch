@@ -677,7 +677,7 @@ class StaticSearch{
     else{
       this.isSearching = false;
     }
-    window.scroll({ top: this.resultsDiv.offsetTop, behavior: "smooth" });
+    this.scrollToResults();
     return result;
   }
 
@@ -2070,5 +2070,22 @@ if (this.discardedTerms.length > 0){
       return null;
     }
   }
-}
 
+/** @function StaticSearch~scrollToResults
+  * @description This method scrolls the search page to the results
+  * div, attempting to allow for confounding factors such as a fixed
+  * header. It is encapsulated so that it can be easily overridden
+  * when necessary.
+  * @return {boolean} true if successful, false if not.
+  */
+
+  scrollToResults(){
+    try{
+      this.resultsDiv.scrollIntoView({behavior: 'smooth', block: 'center'});
+    }
+    catch(e){
+      return false;
+    }
+  }
+
+}
