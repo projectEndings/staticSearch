@@ -681,7 +681,7 @@ class StaticSearch{
     else{
       this.isSearching = false;
     }
-    window.scroll({ top: this.resultsDiv.offsetTop, behavior: "smooth" });
+    this.resultsDiv.scrollIntoView({behavior: 'smooth', block: 'center'});
     return result;
   }
 
