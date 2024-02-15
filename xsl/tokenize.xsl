@@ -13,38 +13,51 @@
     <xd:doc scope="stylesheet">
         <xd:desc>
             <xd:p><xd:b>Created on:</xd:b> June 26, 2019</xd:p>
+            <xd:p><xd:b>Updated on:</xd:b> November 16, 2023</xd:p>
             <xd:p><xd:b>Authors:</xd:b> Joey Takeda and Martin Holmes</xd:p>
-            <xd:p>This transformation takes as input one of the collection of documents specified in 
-                  the configuration file and creates the temporary tokenized and stemmed output HTML 
-                  files to create the JSON indexes.</xd:p>
-            <xd:p>The document is run through a chain of templates to create a version that contains 
-              all of the necessary information for the creation of the JSON indexes. These modified 
-              documents are then output into a temporary directory (removed at the end of the ANT build).</xd:p>
-            <xd:p>The templates/passes are described below. Since many of these templates contain rules
-                that are contingent on the configuration options, the clean, weigh, and contextualize
-                templates are primarily default templates that are usually overriden or supplemented by
-                rules specified in the config file.</xd:p>
+            <xd:p>This transformation takes as input one of the collection of documents specified in
+                the configuration file and creates the temporary tokenized and stemmed output HTML
+                files to create the JSON indexes.</xd:p>
+            <xd:p>The document is run through a chain of templates to create a version that contains
+                all of the necessary information for the creation of the JSON indexes. These
+                modified documents are then output into a temporary directory (removed at the end of
+                the ANT build).</xd:p>
+            <xd:p>Note that these templates are contingent on <xd:a href="config.xsl">config.xsl</xd:a>,
+                which is a generated file that contains templates that
+                correspond to rules specified in the configuration file.</xd:p>
+            <xd:p>Where older versions of staticSearch performed transformations in 6 passes, as of
+                staticSearch 2.0, this transformation processes a document thrice:</xd:p>
             <xd:ol>
                 <xd:li>
-                    <xd:b>exclude</xd:b>: Determines whether or not the document has any exclusions or
-                    if the document itself is excluded. Note that the document is only passed through
-                    the exclusion templates if exclusions have been defined in the configuration
-                    file.</xd:li>
-                <xd:li><xd:b>clean</xd:b>: Removes unnecessary tagging (spans, et cetera) in order to
-                    reduce the file size if possible and adds staticSearch specific attributes for later
-                    processing.</xd:li>
-                <xd:li><xd:b>weigh</xd:b>: Adds @ss-wt attributes to the elements
-                    specified in the configuration file. This allows for higher weighting of terms found
-                    in particular contexts.</xd:li>
-                <xd:li><xd:b>contextualize</xd:b>: Adds @ss-ctx to the elements
-                    specified in the configuration file so that KWICS, if generated in the JSON file,
-                    are properly bounded by their containing elements.</xd:li>
-                <xd:li><xd:b>tokenize</xd:b>: Tokenizes the file on word boundaries, wraps each word in
-                    a span element, and adds a @data-ss-stem for that term. This is the bulk of the
-                    process.</xd:li>
+                    <xd:p>First, the document is passed through the <xd:b>decorate</xd:b> templates.
+                        These templates rely on the priority attribute and
+                        <xd:pre>xsl:next-match</xd:pre> and process each element multiple times,
+                        accumulating data (e.g. weight, ignore, contexts, et cetera) using the
+                        tunneled <xd:ref name="DATA" type="param">$data</xd:ref> parameter.</xd:p>
+                    <xd:p>The highest priority templates are located in <xd:a ref="tokenize.xsl"
+                            >this file</xd:a>; the template with highest priority (<xd:ref
+                            name="PRIORITY_FIRST" type="variable">$PRIORITY_FIRST</xd:ref>) just
+                        matches all elements and initializes the data map. Templates with the second
+                        highest priority (<xd:ref name="PRIORITY_SECOND" type="variable"
+                            >$PRIORITY_SECOND</xd:ref>) are those that are understood to be default
+                        configurations; for instance, we presume that all xhtml:script and
+                        xhtml:style elements should be given a weight of 0 and thus removed
+                        entirely. These templates are meant to be overridden by the lower priority
+                        templates that derive from the user-supplied configuration (in <xd:a
+                            href="config.xsl">config.xsl</xd:a>, but are generated via <xd:a
+                            href="create_config_xsl.xsl">create_config.xsl</xd:a>).</xd:p>
+                    <xd:p>The final template in the process (<xd:ref name="hcmc:last"
+                            type="template">hcmc:last</xd:ref>) evaluates the accumulated data and
+                        determines how to process the element (whether it ought to be deleted
+                        entirely, ignored, or decorated with the attributes necessary to create the
+                        stem files (cf. <xd:a href="json.xsl">json.xsl</xd:a>).</xd:p>
+                </xd:li>
+                <xd:li><xd:b>tokenize</xd:b>: Tokenizes the decorated file on word boundaries, wraps each word
+                    in a span element, and adds a @data-ss-stem for that term. This is the bulk of
+                    the process.</xd:li>
                 <xd:li><xd:b>enumerate</xd:b>: A final pass on the tokenized document, which adds a
-                    position for each stem and any other document-specific information necessary for the
-                    JSON step.</xd:li>
+                    position for each stem and any other document-specific information necessary for
+                    the JSON step.</xd:li>
             </xd:ol>
         </xd:desc>
     </xd:doc>
@@ -68,6 +81,9 @@
     </xd:doc>
     <xsl:include href="functions.xsl"/>
     
+    <xsl:mode name="decorate" warning-on-multiple-match="no" on-no-match="shallow-copy"/>
+    <xsl:mode name="tokenize" on-no-match="shallow-copy"/>
+    <xsl:mode name="enumerate" on-no-match="shallow-copy"/>
     
     <!--**************************************************************
        *                                                            *
@@ -118,20 +134,7 @@
         possible words.</xd:desc>
     </xd:doc>
     <xsl:variable name="tokenRegex">(<xsl:value-of select="string-join(($numericWithDecimal,$hyphenatedWord,$alphanumeric),'|')"/>)</xsl:variable>
-    
-    <xd:doc>
-        <xd:desc>The document's URI as a string.</xd:desc>
-    </xd:doc>
-    <xsl:variable name="uri" select="xs:string(document-uri(.))" as="xs:string"/>
-    
-    <xd:doc>
-        <xd:desc>The relative uri from the root:
-            this is the full URI minus the collection dir. 
-            Note that we TRIM off the leading slash</xd:desc>
-    </xd:doc>
-    <xsl:variable name="relativeUri" 
-        select="substring-after($uri,replace($collectionDir, '^(file:/)/+', '$1')) => replace('^(/|\\)','')"
-        as="xs:string"/>
+
     
     <xd:doc>
         <xd:desc>The identifier for the document within staticSearch; this is
@@ -158,199 +161,190 @@
             which just outputs all parameters when verbose is true-->
         <xsl:call-template name="echoParams"/>
         
-        <!--Now create the excluded document if we have to-->
-        <xsl:variable name="excluded">
-            <xsl:choose>
-                <!--If the exclusions are specified in the config, then run the document
-                       through the exclusion templates (mode="exclude")-->
-                <xsl:when test="$hasExclusions">
-                    <xsl:apply-templates mode="exclude"/>
-                </xsl:when>
-                
-                <!--Otherwise, just spit the document back out unchanged-->
-                <xsl:otherwise>
-                    <xsl:sequence select="."/>
-                </xsl:otherwise>
-            </xsl:choose>
+        <!--Store the results from the #decorate templates -->
+        <xsl:variable name="decorated">
+            <xsl:apply-templates select="/" mode="decorate"/>
         </xsl:variable>
-        
-        <!--Now check to see if exclusions are present in the configuration and if 
-                the html root element has been specified as an exclusion. If the document is excluded,
-                then just skip it from being indexed entirely. Otherwise, pass it through the process-->
-        <xsl:if test="if ($hasExclusions) then not($excluded//html[@ss-excld='true']) else true()">
-            
-            <!--First, clean the document by passing it through the clean templates. This also
-                    requires the relativeUri and searchIdentifier parameters in order to create
-                    specific attributes that make the JSON creation simpler-->
-            <xsl:variable name="cleaned">
-                <xsl:apply-templates select="$excluded" mode="clean"/>
-            </xsl:variable>
-            
-            <!--Next add weighting information to the cleaned document-->
-            <xsl:variable name="weighted">
-                <xsl:apply-templates select="$cleaned" mode="weigh"/>
-            </xsl:variable>
-            
-            <!--Next add context information to the weighted document-->
-            <xsl:variable name="contextualized">
-                <xsl:apply-templates select="$weighted" mode="contextualize"/>
-            </xsl:variable>
-            
-            <!--Next tokenize and stem the contextualized document-->
+        <!--Check to see if the root element is excluded; if it is,
+            then we can just skip this step entirely; if it isn't,
+            then process the document.-->
+        <xsl:if test="not(root($decorated)/*[@ss-excld])">
+            <!--Now tokenize the document-->
             <xsl:variable name="tokenizedDoc">
-                <xsl:apply-templates select="$contextualized" mode="tokenize">
+                <xsl:apply-templates select="$decorated" mode="tokenize">
                     <xsl:with-param name="currDocUri" select="$uri" tunnel="yes"/>
                 </xsl:apply-templates>
             </xsl:variable>
-            
-            <!--And finally pass the tokenized document through the enumeration templates-->
+            <!--And then finally add positions to the tokenized document-->
             <xsl:apply-templates select="$tokenizedDoc" mode="enumerate"/>
-            
-            <!--If we're running in verbose mode, then output all of the interstitial
-                    documents for easier debugging.-->
-            <xsl:if test="$verbose">
-                <!--Stash all of the documents we want to output into a map so we can simply
+        </xsl:if>
+        <!--For debugging purposes only: Output the decorated version
+            of the document (and any others)-->
+        <xsl:if test="$verbose">
+            <!--Stash all of the documents we want to output into a map so we can simply
                     iterate through them-->
-                <xsl:variable name="outputMap" select="map{
-                    'cleaned': $cleaned,
-                    'contextualized': $contextualized,
-                    'weighted': $weighted,
-                    'excluded': $excluded
-                    }"/>
-                <!--Iterate through the keys, which are the filenames-->
-                <xsl:for-each select="map:keys($outputMap)">
-                    <xsl:result-document href="{replace(current-output-uri(),'_tokenized',('_' || .))}">
-                        <xsl:message>Creating <xsl:value-of select="current-output-uri()"/></xsl:message>
-                        <xsl:copy-of select="map:get($outputMap, .)"/>
-                    </xsl:result-document>
-                </xsl:for-each>
-            </xsl:if>
+            <xsl:variable name="outputMap" select="map{
+                'decorated': $decorated
+                }"/>
+            <!--Iterate through the keys, which are the filenames-->
+            <xsl:for-each select="map:keys($outputMap)">
+                <xsl:result-document href="{replace(current-output-uri(),'_tokenized',('_' || .))}">
+                    <xsl:message>Creating <xsl:value-of select="current-output-uri()"/></xsl:message>
+                    <xsl:copy-of select="map:get($outputMap, .)"/>
+                </xsl:result-document>
+            </xsl:for-each>
         </xsl:if>
     </xsl:template>
     
     
     <!--**************************************************************
        *                                                            *
-       *                    Templates: clean                        *
+       *                    Templates: decorate                     *
        *                                                            *
-       **************************************************************-->  
-    
+       **************************************************************-->
     
     <xd:doc>
-        <xd:desc>This template matches the root HTML element and adds a relativeUri 
-        attribute.</xd:desc>
+        <xd:desc>Highest priority template, which sets up an empty
+            data map to hold accumulated values to tunnel through
+            each element.</xd:desc>
     </xd:doc>
-    <xsl:template match="html" mode="clean">
-        <xsl:copy>
-            <xsl:apply-templates select="@*" mode="#current"/>
-            <!--Create a relativeUri in the attribute, so we know where to point
-                things if ids and filenames don't match or if nesting-->
-            <xsl:attribute name="ss-uri" select="$relativeUri"/>
-            
-            <!--And process nodes normally-->
-            <xsl:apply-templates select="node()" mode="#current"/>
-        </xsl:copy>
+    <xsl:template match="*" _priority="{$PRIORITY_FIRST}" mode="decorate">
+        <xsl:next-match>
+            <xsl:with-param name="data" tunnel="yes" as="map(*)">
+                <xsl:map>
+                    <xsl:map-entry key="$KEY_WEIGHTS" select="()"/>
+                    <xsl:map-entry key="$KEY_CONTEXTS" select="()"/>
+                    <xsl:map-entry key="$KEY_CONTEXT_IDS" select="()"/>
+                    <xsl:map-entry key="$KEY_EXCLUDES" select="()"/>
+                </xsl:map>
+            </xsl:with-param>
+        </xsl:next-match>
+    </xsl:template>
+    
+    <xd:doc>
+        <xd:desc>Template (added for release 1.4) to catch any instance of 
+            @data-ssFilterSortKey, which should be @data-ssfiltersortkey per the 
+            XHTML spec. This should be deprecated for version 1.4 and by invalid for
+            1.5.</xd:desc>
+    </xd:doc>
+    <xsl:template match="@data-ssFilterSortKey"       
+        _priority="{$PRIORITY_SECOND}"
+        mode="decorate">
+        <xsl:message terminate="yes">ERROR: @data-ssFilterSortKey is deprecated. Use @data-ssfiltersortkey (all lowercased) instead. (<xsl:value-of select="$relativeUri"/>)</xsl:message>
+        <xsl:next-match/>
     </xsl:template>
 
+    <xd:doc>
+        <xd:desc>All html head elements should
+        remain a context, since they contain crucial information.</xd:desc>
+    </xd:doc>
+    <xsl:template match="html/head"        
+        _priority="{$PRIORITY_SECOND}"
+        mode="decorate">
+        <xsl:call-template name="hcmc:updateData">
+            <xsl:with-param name="caller" select="'tokenize#decorate'"/>
+            <xsl:with-param name="key" select="$KEY_CONTEXTS"/>
+            <xsl:with-param name="value" select="true()"/>
+        </xsl:call-template>
+    </xsl:template>
+    
     <xd:doc>
         <xd:desc>Basic template to strip away extraneous tags around elements that won't affect indexing in any way.
         Note that this template is overriden by templates in the configuration file if they have been specified
         as important for weighting or contextualizing.</xd:desc>
     </xd:doc>
-    <xsl:template match="span | em | b | i | a" mode="clean">
-        <xsl:message use-when="$verbose">TEMPLATE clean: Matching <xsl:value-of select="local-name()"/></xsl:message>
-        
-        <!--Just apply templates to the inner nodes-->
-        <xsl:apply-templates select="node()" mode="#current"/>
+    <xsl:template match="span | em | b | i | a"     
+        _priority="{$PRIORITY_SECOND}" mode="decorate">
+        <xsl:call-template name="hcmc:updateData">
+            <xsl:with-param name="caller" select="'tokenize#decorate'"/>
+            <xsl:with-param name="key" select="$KEY_CONTEXTS"/>
+            <xsl:with-param name="value" select="false()"/>
+        </xsl:call-template>
+    </xsl:template>
+
+    
+    <xd:doc>
+        <xd:desc>Template to match all block-like elements that we assume are contexts by default.</xd:desc>
+    </xd:doc>
+    <xsl:template 
+        match="body | div | blockquote | p | li | section | article | nav | h1 | h2 | h3 | h4 | h5 | h6 | td | details | summary | table/caption"
+        _priority="{$PRIORITY_SECOND}"
+        mode="decorate">
+        <xsl:call-template name="hcmc:updateData">
+            <xsl:with-param name="caller" select="'tokenize#decorate'"/>
+            <xsl:with-param name="key" select="$KEY_CONTEXTS"/>
+            <xsl:with-param name="value" select="true()"/>
+        </xsl:call-template>
     </xsl:template>
     
     <xd:doc>
-        <xd:desc>Template to convert all self closing elements--except for the wbr element (processed below)--into
-            single spaces since we assume that they are word boundary marking</xd:desc>
+        <xd:desc>Default weighting template that specifies that all headings have a weight
+            of 2. Note that the other weighting templates are contained within the 
+            generated configuration file and will override this one, if necessary.</xd:desc>
     </xd:doc>
-    <xsl:template match="br | hr | area | base | col | embed | hr | img | input | link[ancestor::body] | meta[ancestor::body] | param | source | track" mode="clean">
-        <xsl:text> </xsl:text>
+    <xsl:template 
+        match="*[matches(local-name(),'^h\d$')]" 
+        _priority="{$PRIORITY_SECOND}"
+        mode="decorate">
+        <xsl:call-template name="hcmc:updateData">
+            <xsl:with-param name="caller" select="'tokenize#decorate'"/>
+            <xsl:with-param name="key" select="$KEY_WEIGHTS"/>
+            <xsl:with-param name="value" select="2"/>
+        </xsl:call-template>
     </xsl:template>
     
     <xd:doc>
         <xd:desc>Template that simply deletes the word break opportunity (wbr) element,
             since it is specifically not word breaking.</xd:desc>
     </xd:doc>
-    <xsl:template match="wbr" mode="clean"/>
+    <xsl:template 
+        match="wbr"   
+        _priority="{$PRIORITY_SECOND}"
+        mode="decorate">
+        <xsl:call-template name="hcmc:updateData">
+            <xsl:with-param name="caller" select="'tokenize#decorate'"/>
+            <xsl:with-param name="key" select="$KEY_WEIGHTS"/>
+            <xsl:with-param name="value" select="0"/>
+        </xsl:call-template>
+    </xsl:template>
+    
+    
+    <xd:doc>
+        <xd:desc>Template to retain all important meta information.</xd:desc>
+    </xd:doc>
+    <xsl:template 
+        match="head/title | head/meta[matches(@class,'staticSearch')] | head/meta[matches(@content,'charset')] | head/meta[@charset]"
+        _priority="{$PRIORITY_SECOND}"
+        mode="decorate">
+        <xsl:call-template name="hcmc:copy"/>
+    </xsl:template>
     
     <xd:doc>
         <xd:desc>Template to delete script elements in the body, since they
             will never contain information that should be indexed.</xd:desc>
     </xd:doc>
-    <xsl:template match="script | link | meta[not(contains(@class, 'staticSearch') or matches(@content, 'charset') or @charset)]" mode="clean"/>
-    
-    
-    <xd:doc>
-        <xd:desc>Template to retain all elements that have a declared language, a declared id, or a
-            special data-ss- attribute since we may need those elements in other contexts.</xd:desc>
-    </xd:doc>
-    <xsl:template match="*[@lang or @xml:lang or @id or @*[matches(local-name(),'^data-ss-')]][ancestor::body]" mode="clean">
-        <xsl:copy>
-            <xsl:apply-templates select="@*|node()" mode="#current"/>
-        </xsl:copy>
-    </xsl:template>
-    
-    <xd:doc>
-        <xd:desc>Template (added for release 1.4) to catch any instance of 
-        @data-ssFilterSortKey, which should be @data-ssfiltersortkey per the 
-        XHTML spec. This should be deprecated for version 1.4 and by invalid for
-        1.5.</xd:desc>
-    </xd:doc>
-    <xsl:template match="@data-ssFilterSortKey" mode="clean">
-        <xsl:message terminate="yes">ERROR: @data-ssFilterSortKey is deprecated. Use @data-ssfiltersortkey (all lowercased) instead. (<xsl:value-of select="$relativeUri"/>)</xsl:message>
-    </xsl:template>
-    
-    
-    <!--**************************************************************
-       *                                                            *
-       *                    Templates: weigh                        *
-       *                                                            *
-       **************************************************************--> 
-    <xd:doc>
-        <xd:desc>Default weighting template that specifies that all headings have a weight
-        of 2. Note that the other weighting templates are contained within the 
-        generated configuration file and will override this one, if necessary.</xd:desc>
-    </xd:doc>
-    <xsl:template match="*[matches(local-name(),'^h\d$')]" mode="weigh">
-        <xsl:copy>
-            <xsl:apply-templates select="@*" mode="#current"/>
-            <xsl:attribute name="ss-wt" select="2"/>
-            <xsl:apply-templates select="node()" mode="#current"/>
-        </xsl:copy>
-    </xsl:template>
-  
-  
-    <!--**************************************************************
-       *                                                            *
-       *                    Templates: contextualize                *
-       *                                                            *
-       **************************************************************-->  
-    
-    <xd:doc>
-        <xd:desc>Template to match all block-like elements that we assume are contexts by default.</xd:desc>
-    </xd:doc>
-    <xsl:template match="body | div | blockquote | p | li | section | article | nav | h1 | h2 | h3 | h4 | h5 | h6 | td | details | summary" mode="contextualize">
-        <xsl:copy>
-            <xsl:apply-templates select="@*" mode="#current"/>
-            <!--Add the ss-ctx attribute-->
-            <xsl:attribute name="ss-ctx" select="'true'"/>
-            <xsl:apply-templates select="node()" mode="#current"/>
-        </xsl:copy>
+    <xsl:template 
+        match="script | link"
+        _priority="{$PRIORITY_SECOND}"
+        mode="decorate">
+        <xsl:call-template name="hcmc:updateData">
+            <xsl:with-param name="caller" select="'tokenize#decorate'"/>
+            <xsl:with-param name="key" select="$KEY_WEIGHTS"/>
+            <xsl:with-param name="value" select="0"/>
+        </xsl:call-template>
     </xsl:template>
     
     <xd:doc>
         <xd:desc>Template to remove all unnecessary attributes from the document to make
-        processing more efficient; since the contextualization step is the final step
-        before tokenizing, most of the elements attributes are unimportant by this point
-        since any configuration based off of these attributes has already been handled
-        by a previous template pass.</xd:desc>
+            processing more efficient; since the contextualization step is the final step
+            before tokenizing, most of the elements attributes are unimportant by this point
+            since any configuration based off of these attributes has already been handled
+            by a previous template pass.</xd:desc>
     </xd:doc>
-    <xsl:template match="*[not(self::meta)]/@*" mode="contextualize">
+    <xsl:template 
+        match="*[not(self::meta)]/@*" 
+        _priority="{$PRIORITY_SECOND}" 
+        mode="decorate">
         <xsl:choose>
             <xsl:when test="local-name()=('id','lang')">
                 <xsl:copy-of select="."/>
@@ -363,9 +357,52 @@
     </xsl:template>
     
     <xd:doc>
+        <xd:desc>Template to convert all self closing elements--except for the wbr element (processed below)--into
+            single spaces since we assume that they are word boundary marking, unless otherwise specified</xd:desc>
+        <xd:param name="data" tunnel="yes">The data map, which is 
+        necessary for evaluating whether this element can safely be converted into a space.</xd:param>
+    </xd:doc>
+    <xsl:template 
+        match="br | hr | area | base | col | embed | hr | img | input | link[ancestor::body] | meta[ancestor::body] | param | source | track"
+        _priority="{$PRIORITY_FOURTH}"
+        mode="decorate">
+        <xsl:param name="data" tunnel="yes" as="map(*)"/>
+        <xsl:choose>
+            <xsl:when test="some $key in map:keys($data) satisfies not(empty($data($key)))">
+                <xsl:next-match/>
+            </xsl:when> 
+            <xsl:otherwise>
+                <xsl:text> </xsl:text>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
+    
+    <!--**************************************************************
+       *                                                            *
+       *                    Templates: tokenize                     *
+       *                                                            *
+       **************************************************************--> 
+    <xd:doc>
+        <xd:desc>If some element has been excluded, then don't process it any further.</xd:desc>
+    </xd:doc>
+    <xsl:template match="*[@ss-excl]" mode="tokenize">
+        <xsl:copy-of select="."/>
+    </xsl:template>
+    
+    <xd:doc>
+        <xd:desc>Matches the staticSearch_docImage URL so that the URL is relative to the search file, not the containing document.</xd:desc>
+    </xd:doc>
+    <xsl:template match="meta[contains-token(@class,'staticSearch_docImage')]/@content[not(matches(.,'^https?'))]" mode="tokenize">
+        <xsl:variable name="absPath" as="xs:string" select="resolve-uri(., $uri)"/>
+        <xsl:variable name="newRelPath" as="xs:string" select="hcmc:makeRelativeUri($searchFile, $absPath)"/>
+        <xsl:attribute name="content" select="$newRelPath"/>
+    </xsl:template>
+    
+    <xd:doc>
         <xd:desc>Checks docImage, docTitle, and docSortKey metas to make sure that they have matching values. </xd:desc>
     </xd:doc>
-    <xsl:template match="meta[@name or @class][not(@ss-excld)]" mode="contextualize">
+    <xsl:template match="meta[@name or @class][not(@ss-excld)]" mode="tokenize">
         <xsl:variable name="currMeta" select="."/>
         <!--Process the meta no matter what-->
         <xsl:copy>
@@ -386,21 +423,6 @@
             </xsl:for-each>
         </xsl:if>
     </xsl:template>
-
-    
-    <!--**************************************************************
-       *                                                            *
-       *                    Templates: tokenize                     *
-       *                                                            *
-       **************************************************************--> 
-    <xd:doc>
-        <xd:desc>Matches the staticSearch_docImage URL so that the URL is relative to the search file, not the containing document.</xd:desc>
-    </xd:doc>
-    <xsl:template match="meta[contains-token(@class,'staticSearch_docImage')]/@content[not(matches(.,'^https?'))]" mode="tokenize">
-        <xsl:variable name="absPath" as="xs:string" select="resolve-uri(., $uri)"/>
-        <xsl:variable name="newRelPath" as="xs:string" select="hcmc:makeRelativeUri($searchFile, $absPath)"/>
-        <xsl:attribute name="content" select="$newRelPath"/>
-    </xsl:template>
     
      <xd:doc>
          <xd:desc>Main tokenizing template: Match all text nodes that:
@@ -409,7 +431,7 @@
           * Are not descendant of an excluded element.
          </xd:desc>
      </xd:doc>
-    <xsl:template match="text()[ancestor::body][not(matches(.,'^\s+$'))][not(ancestor::*[@ss-excld])]" mode="tokenize">
+    <xsl:template match="text()[ancestor::body][matches(.,'\S')][not(ancestor::*[@ss-excld])]" mode="tokenize">
         
         <!--Stash the current node so that we can retain its context in later steps-->
         <xsl:variable name="currNode" select="."/>
@@ -626,21 +648,5 @@
             <xsl:apply-templates select="@*|node()" mode="#current"/>
         </xsl:copy>
     </xsl:template>
-    
-    
-    <!--**************************************************************
-       *                                                            *
-       *               Template: identity transform                 *
-       *                                                            *
-       **************************************************************-->
- 
-   <xd:doc>
-       <xd:desc>Ol' faithful identity transform</xd:desc>
-   </xd:doc>
-   <xsl:template match="@*|node()" mode="#all" priority="-1">
-       <xsl:copy>
-           <xsl:apply-templates select="@*|node()" mode="#current"/>
-       </xsl:copy>
-   </xsl:template>
-    
+   
 </xsl:stylesheet>

@@ -177,6 +177,15 @@
   </xsl:function>
   
   
+  <xd:doc>
+    <xd:desc><xd:ref name="hcmc:serialize">hcmc:serialize</xd:ref>
+    takes the input data and serializes it for use in debugging.</xd:desc>
+  </xd:doc>
+  <xsl:function name="hcmc:serialize">
+    <xsl:param name="data"/>
+    <xsl:sequence select="serialize($data, map{'method':'adaptive'})"/>
+  </xsl:function>
+  
   
 
 </xsl:stylesheet>

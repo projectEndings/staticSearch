@@ -127,7 +127,7 @@
                         <xsl:call-template name="createFilters"/>
                         <xsl:call-template name="createExcludes"/>
                         <xsl:if test="$verboseReport = 'true'">
-                          <xsl:call-template name="createNonDictionaryList"/>
+<!--                          <xsl:call-template name="createNonDictionaryList"/>-->
                           <xsl:call-template name="createForeignWordList"/>
                         </xsl:if>
                     </div>
@@ -378,7 +378,7 @@
         </xsl:if>
     </xsl:template>
     
-    <xd:doc>
+<!--    <xd:doc>
         <xd:desc>Template for creating the "Not in Dictionary" list. While a term's exclusion
         from the dictionary doesn't change the search results, this report is helpful for catching
         typos in your document collection. </xd:desc>
@@ -388,29 +388,29 @@
         <section>
             <h2>Words Not In Dictionary</h2>
             
-            <!--Only check stems that are words-->
+            <!-\-Only check stems that are words-\->
             <xsl:variable name="stemsToCheck" select="$spans[not(matches(@ss-stem,'\d'))][not(hcmc:isForeign(.))]" as="element(span)*"/>
             
-            <!--Retrieve the outermost spans so we don't include the nested spans from hyphenated terms 
-                (we process those a bit differently) -->
+            <!-\-Retrieve the outermost spans so we don't include the nested spans from hyphenated terms 
+                (we process those a bit differently) -\->
             <xsl:variable name="outermostStems" select="outermost($stemsToCheck)" as="element(span)*"/>
             
             <xsl:variable name="wordsNotInDictionaryMap" as="map(xs:string, element(span)*)">
                 <xsl:map>
-                    <!--Group by whether or not it has descendant spans-->
+                    <!-\-Group by whether or not it has descendant spans-\->
                     <xsl:for-each-group select="$outermostStems" group-by="exists(child::span[@ss-stem])">
                         <xsl:choose>
-                            <!--If this thing has child stems, it's a hyphenated construct
-                            and so we check each child term individually-->
+                            <!-\-If this thing has child stems, it's a hyphenated construct
+                            and so we check each child term individually-\->
                             <xsl:when test="current-grouping-key()">
-                                <!--Now iterate through all of the hyphenated spans-->
+                                <!-\-Now iterate through all of the hyphenated spans-\->
                                 <xsl:for-each-group select="current-group()" group-by="string(.)">
-                                    <!--Stash the word-->                                
+                                    <!-\-Stash the word-\->                                
                                     <xsl:variable name="term" select="current-grouping-key()"/>
-                                    <!--Stash the current context-->
+                                    <!-\-Stash the current context-\->
                                     <xsl:variable name="hyphenatedSpan" select="current-group()[1]" as="element(span)"/>
                                     
-                                    <!--Not in dictionary spans-->
+                                    <!-\-Not in dictionary spans-\->
                                     <xsl:variable name="words" 
                                         select="for $s in $hyphenatedSpan/span[@ss-stem] return lower-case(string($s))" 
                                         as="xs:string*"/>
@@ -428,7 +428,7 @@
                                 </xsl:for-each-group>
                             </xsl:when>
                             <xsl:otherwise>
-                                <!--Group by string value (so basically just distinct values)-->
+                                <!-\-Group by string value (so basically just distinct values)-\->
                                 <xsl:for-each-group select="current-group()" group-by="hcmc:cleanWordForStemming(lower-case(string(.)))">
                                     <xsl:variable name="word" select="current-grouping-key()" as="xs:string"/>
                                     <xsl:if test="not(hcmc:isInDictionary($word))">
@@ -483,9 +483,9 @@
                 </xsl:choose>
             </details>
         </section>
-    </xsl:template>
+    </xsl:template>-->
     
-    <xd:doc>
+  <!--  <xd:doc>
         <xd:desc><xd:ref name="hcmc:isInDictionary">hcmc:isInDictionary</xd:ref> checks
         whether or not a word is in the provided dictionary. This is basically just a wrapper
         around the key() function, but we take advantage of Saxon 10HE's memo-function capabilities
@@ -495,7 +495,7 @@
     <xsl:function name="hcmc:isInDictionary" new-each-time="no" as="xs:boolean">
         <xsl:param name="word" as="xs:string"/>
         <xsl:sequence select="exists(key('w', $word, $dictionaryFileXml))"/>
-    </xsl:function>
+    </xsl:function>-->
     
     <xd:doc>
         <xd:desc>Template to create a report of all "foreign" words in the collection:

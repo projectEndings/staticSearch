@@ -12,18 +12,27 @@
         <xd:desc>
             <xd:p><xd:b>Created on:</xd:b> June 26, 2019</xd:p>
             <xd:p><xd:b>Authors:</xd:b> Joey Takeda and Martin Holmes</xd:p>            
-            <xd:p>This transformation converts the configuration file (config.xml) into
-                  an XSLT stylesheet, which is imported into the main tokenization stylesheet
-                  to allow for various configuration options. <!--WRITE MORE HERE ONCE WRITTEN--></xd:p>
+            <xd:p>This transformation converts the user-supplied configuration file (config.xml) into
+                  an XSLT stylesheet that can be imported throughout the process. In particular,
+            the generated configuration contains:</xd:p>
+            <xd:ul>
+                <xd:li>Global variables and parameters that correspond to (or calculated from)
+                configuration options</xd:li>
+                <xd:li>Templates (derived from rules) to customize the tokenization process;
+                see <xd:a href="tokenize.xsl">tokenize.xsl</xd:a> for full documentation
+                on the tokenization process.</xd:li>
+            </xd:ul>
           
         </xd:desc>
         <xd:param name="configFile">A URI pointing to the config XML file that will be turned into the 
         configuration XSLT.</xd:param>
         <xd:param name="buildReportFilename">A URI pointing to the staticSearch report file.</xd:param>
         <xd:param name="ssBaseDir">The basedir for staticSearch</xd:param>
-        <xd:param name="verbose">Flag passed from ant that describes the user set verbosity setting
+        <xd:param name="ssVerbose">Flag passed from ant that describes the user set verbosity setting
             for messages in the XSLT--useful primarily for debugging.</xd:param>
     </xd:doc>
+    
+    <xsl:include href="constants.xsl"/>
     
     <!--**************************************************************
        *                                                            * 
@@ -40,8 +49,6 @@
         <xd:desc>Parameter to determine if verbose xsl:messages should be enabled.</xd:desc>
     </xd:doc>
     <xsl:variable name="verbose" as="xs:boolean" select="matches($ssVerbose,'^(t|true|y|yes|1)','i')" static="yes"/>
-    
-    
     
     
     <!--**************************************************************
@@ -217,30 +224,6 @@
   <xsl:variable name="sq">'</xsl:variable>
  
       
-      
-    <xd:doc>
-        <xd:desc>
-            <xd:p>The <xd:ref name="retainRules" type="variable">retainRules</xd:ref> variable is
-                a sequence of 0 or more rules that either have a weight greater than 0 or have been
-                specified as a context item.</xd:p>
-        </xd:desc>
-    </xd:doc>
-    <xsl:variable name="retainRules" 
-        select="
-        $configDoc//rule[(xs:integer(@weight) gt 0) or 
-        (parent::contexts and hcmc:stringToBoolean(@context))]" as="element(rule)*"/>
-    
-    
-    <xd:doc>
-        <xd:desc>
-            <xd:p>The <xd:ref name="deleteRules" type="variable">deleteRules</xd:ref> variable is
-                a sequence of 0 or more rules that either have have a weight of 0, which means that
-                the xpaths specified should not be processed by the tokenizer and should be deleted
-                from the document that will eventually be indexed.</xd:p>
-        </xd:desc>
-    </xd:doc>
-    <xsl:variable name="deleteRules" select="$configDoc//rule[xs:integer(@weight) = 0]" as="element(rule)*"/>
-    
     
     <xd:doc>
         <xd:desc>
@@ -250,16 +233,14 @@
     </xd:doc>
     <xsl:variable name="excludeRules" select="$configDoc//excludes/exclude" as="element(exclude)*"/>
     
-    
-   
     <xd:doc>
         <xd:desc>
-            <xd:p>The <xd:ref name="weightedRules" type="variable">weightedRules</xd:ref> variable
-                is a sequence of 0 or more rules of elements that have a weight higher than 1 and should be flagged
+            <xd:p>The <xd:ref name="rules" type="variable">rules</xd:ref> variable
+                is a sequence of 0 or more rules that should be flagged
                 with a particular weight during tokenization.</xd:p>
         </xd:desc>
     </xd:doc>
-    <xsl:variable name="weightedRules" select="$configDoc//rule[xs:integer(@weight) gt 1]" as="element(rule)*"/>
+    <xsl:variable name="rules" select="$configDoc//rule" as="element(rule)*"/>
     
     <xd:doc>
         <xd:desc>
@@ -269,6 +250,21 @@
         </xd:desc>
     </xd:doc>
     <xsl:variable name="contexts" select="$configDoc//contexts/context" as="element(context)*"/>
+    
+    <!--First create our own context label map, which has to be slightly more
+        complicated as context rules could have the same label-->
+    <xsl:variable name="contextMap" as="map(xs:string, xs:string)">
+        <xsl:map>
+            <!--Group all of the contexts by label-->
+            <xsl:for-each-group select="$contexts[@label]" group-by="normalize-space(@label)">
+                <xsl:map-entry key="current-grouping-key()" select="'ssCtx' || position()"/>
+            </xsl:for-each-group>
+        </xsl:map>
+    </xsl:variable>
+    
+    <!--All matches-->
+    <xsl:variable name="selectors" 
+        select="distinct-values(($rules/@match, $excludeRules/@match, $contexts/@match))"/>
     
     <xd:doc>
         <xd:desc>
@@ -334,9 +330,11 @@
                     <xd:desc>
                         <xd:p>Created on <xsl:value-of select="format-date(current-date(), '[Y0001]-[M01]-[D01]')"/> by an automated process.</xd:p>
                         <xd:p><xd:b>Authors:</xd:b> Joey Takeda and Martin Holmes</xd:p>
-                        <xd:p>This is the temporary stylesheet derived from <xsl:value-of select="$configUri"/> and generated by <xsl:value-of select="base-uri()"/>.
-                            See <xd:a href="create_config_xsl.xsl">create_config_xsl.xsl</xd:a> (or https://github.com/projectEndings/staticSearch/blob/master/xsl/create_config_xsl.xsl)
-                            for further information on how this document is created and the purpose it serves for the static search codebase.
+                        <xd:p>This is the temporary stylesheet derived from <xsl:value-of select="$configUri"/> and generated by 
+                            <xsl:value-of select="base-uri()"/>. See <xd:a href="create_config_xsl.xsl">create_config_xsl.xsl</xd:a>
+                            (or https://github.com/projectEndings/staticSearch/blob/master/xsl/create_config_xsl.xsl)
+                            for further information on how this document is created and the purpose it serves for the
+                            staticSearch codebase.
                         </xd:p>
                     </xd:desc>
                 </xd:doc>
@@ -344,64 +342,85 @@
                 <!-- First, we have to include the stemmer. We can't do this dynamically because
                     a dynamic variable can't be used to create a shadow attribute. -->
                 <xso:include href="{$ssBaseDir || '/stemmers/' || $stemmerFolder || '/ssStemmer.xsl'}"/>
+                <xso:include href="constants.xsl"/>
                 
                 <!--Now, create all the parameters-->
                 
                 <!--First, create the global variables and parameters-->
                 <xsl:call-template name="createGlobals" exclude-result-prefixes="#all"/>
-            
-                <!--Now create the dictionary XML files-->
-                <xsl:call-template name="createDictionaryXML" exclude-result-prefixes="#all"/>
                 
+                <xsl:call-template name="createStopwordsXML" exclude-result-prefixes="#all"/>
                 
-                <!--And now create the sets of templates that will be used in the later tokenization stages-->
-                <!--If there are retain rules specified in the configuration file,
-                    then call the createRetainRules template-->
-                <xsl:if test="not(empty($retainRules))">
-                    <xsl:call-template name="createRetainRules" exclude-result-prefixes="#all"/>
-                    <xsl:message use-when="$verbose">
-                        <xsl:text>Create retain rules</xsl:text>
-                        <xsl:call-template name="createRetainRules"/>
-                    </xsl:message>
-                </xsl:if>
+                <xsl:for-each select="$rules">
+                    <xso:template match="{@match}" priority="{$PRIORITY_THIRD}" mode="decorate">
+                        <xso:param name="data" tunnel="yes" as="map(*)"/>                        
+                        <xso:call-template name="hcmc:updateData">
+                            <xso:with-param name="caller" select="'config#decorate'"/>
+                            <xso:with-param name="key" select="$KEY_WEIGHTS"/>
+                            <xso:with-param name="value" select="{@weight}"/>
+                            <xso:with-param name="append">[<xsl:value-of select="local-name()"/>/@match=<xsl:value-of select="@match"/>]</xso:with-param>
+                        </xso:call-template>
+                    </xso:template>
+                </xsl:for-each>
                 
+                <!--Now create the config XSL's version of the context map,
+            which may be a map (if there are contexts with labels)
+            OR an empty sequence (if there aren't)-->
+                <xso:variable name="ssContextMap" as="map(*)?">
+                    <xsl:choose>
+                        <xsl:when test="exists($contexts[@label])">
+                            <!--Create a usable map in the output config
+                        using the values assembled by $contextMap-->
+                            <xso:map>
+                                <xsl:for-each select="map:keys($contextMap)">
+                                    <xso:map-entry 
+                                        key="{hcmc:quoteString(.)}"
+                                        select="{hcmc:quoteString($contextMap(.))}"/>
+                                </xsl:for-each>
+                            </xso:map>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xso:sequence select="()"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xso:variable>
                 
-                <!--If there are deletion rules specified in the configuration file,
-                    then call the createDeleteRules template-->
-                <xsl:if test="not(empty($deleteRules))">
-                    <xsl:call-template name="createDeleteRules" exclude-result-prefixes="#all"/>
-                    <xsl:message use-when="$verbose">
-                        <xsl:text>Create delete rules</xsl:text>
-                        <xsl:call-template name="createDeleteRules"/>
-                    </xsl:message>
-                </xsl:if>
+                <xsl:for-each select="$contexts">
+                    <xso:template match="{@match}" priority="{$PRIORITY_THIRD}" mode="decorate">
+                        <xso:call-template name="hcmc:updateData">
+                            <xso:with-param name="caller" select="'config#decorate'"/>
+                            <xso:with-param name="key" select="$KEY_CONTEXTS"/>
+                            <xso:with-param name="value" select="{hcmc:stringToBoolean(@context)}()"/>
+                            <xso:with-param name="append">[<xsl:value-of select="local-name()"/>/@match=<xsl:value-of select="@match"/>]</xso:with-param>
+                        </xso:call-template>
+                    </xso:template>
+                    
+                    <xsl:if test="@label">
+                        <xsl:variable name="thisLabel" select="@label"/>
+                        <xsl:variable name="contextId" 
+                            select="$contextMap(normalize-space($thisLabel))"
+                            as="xs:string"/>
+                        <xso:template match="{@match}" priority="{$PRIORITY_THIRD}" mode="decorate">
+                            <xso:call-template name="hcmc:updateData">
+                                <xso:with-param name="caller" select="'config#decorate'"/>
+                                <xso:with-param name="key" select="$KEY_CONTEXT_IDS"/>
+                                <xso:with-param name="value" select="{hcmc:quoteString($contextId)}"/>
+                                <xso:with-param name="append">[<xsl:value-of select="local-name()"/>/@match=<xsl:value-of select="@match"/>]</xso:with-param>
+                            </xso:call-template>
+                        </xso:template>
+                    </xsl:if>
+                </xsl:for-each>
                 
-                <xsl:if test="not(empty($excludeRules))">
-                    <xsl:call-template name="createExcludeRules" exclude-result-prefixes="#all"/>
-                    <xsl:message use-when="$verbose">
-                        <xsl:text>Create exclude rules</xsl:text>
-                        <xsl:call-template name="createExcludeRules"/>
-                    </xsl:message>
-                </xsl:if>
-                
-                <xsl:call-template name="createContextRules" exclude-result-prefixes="#all"/>
-                
-                
-                <xsl:if test="not(empty($contexts))" use-when="$verbose">
-                    <xsl:message>Create context rules</xsl:message>
-                    <xsl:message>
-                        <xsl:call-template name="createContextRules" exclude-result-prefixes="#all"/>
-                    </xsl:message>
-                </xsl:if>
-                
-                
-                <xsl:if test="not(empty($weightedRules))">
-                    <xsl:call-template name="createWeightingRules"/>
-                    <xsl:message use-when="$verbose">
-                        <xsl:message>Create weighting rules</xsl:message>
-                        <xsl:message><xsl:call-template name="createWeightingRules" exclude-result-prefixes="#all"/></xsl:message>
-                    </xsl:message>
-                </xsl:if>
+                <xsl:for-each select="$excludeRules">
+                    <xso:template match="{@match}"  priority="{$PRIORITY_THIRD}" mode="decorate">
+                        <xso:call-template name="hcmc:updateData">
+                            <xso:with-param name="caller" select="'config#decorate'"/>
+                            <xso:with-param name="key" select="$KEY_EXCLUDES"/>
+                            <xso:with-param name="value" select="{hcmc:stringToBoolean('')}()"/>
+                            <xso:with-param name="append">[<xsl:value-of select="local-name()"/>/@match=<xsl:value-of select="@match"/>]</xso:with-param>
+                        </xso:call-template>
+                    </xso:template>
+                </xsl:for-each>
                 
                 <!-- Always create the filterLabels variable even if there aren't any. It 
                      makes downstream processing easier. -->
@@ -411,14 +430,106 @@
                     <xsl:message><xsl:call-template name="createFilterLabels" exclude-result-prefixes="#all"/></xsl:message>
                 </xsl:message>
                 
+                <!--Now, finally, the last rule -->
+                <xso:template match="*" name="hcmc:last"  priority="{$PRIORITY_LAST}" mode="decorate">
+                    <xso:param name="data" tunnel="yes" as="map(*)"/>
+                    <xso:variable name="weights" select="$data($KEY_WEIGHTS)" as="xs:integer*"/>
+                    <xso:variable name="ctxIds" select="$data($KEY_CONTEXT_IDS)" as="xs:string*"/>
+                    <xso:variable name="contexts" select="$data($KEY_CONTEXTS)" as="xs:boolean*"/>
+                    <xso:variable name="excludes" select="$data($KEY_EXCLUDES)" as="xs:boolean*"/>
+                    <xso:choose>
+                        <!--This is the root, so we must process it-->
+                        <xso:when test="not(ancestor::*)">
+                            <xso:if test="not(empty($weights)) and $weights[last()] = 0">
+                                <xso:message terminate="yes">
+                                    *********************************************
+                                    ERROR: You have specified a weight of 0 for 
+                                    the root <xso:value-of select="local-name()"/> element, 
+                                    which would create an empty output file and generate an error during 
+                                    tokenization.
+                                    
+                                    Did you mean to use an exclude instead?
+                                    *********************************************
+                                </xso:message>
+                            </xso:if>
+                            <xso:call-template name="hcmc:copy"/>
+                        </xso:when>
+                        <xso:when test="not(empty($weights)) and $weights[last()] = 0">
+                            <xso:if test="$verbose">
+                                <xso:message>config#decorate: Removing <xso:value-of select="local-name()"/> (weight=0)</xso:message>
+                            </xso:if>
+                        </xso:when>
+                        <xso:when test="empty($contexts) or ($contexts[last()] = false())">
+                            <xso:apply-templates select="node()" mode="#current"/>
+                        </xso:when>
+                        <xso:otherwise>
+                            <xso:call-template name="hcmc:copy"/>
+                        </xso:otherwise>
+                    </xso:choose>
+                </xso:template>
+                
+                <!--Special template used to update data and 
+                    provide debugging output, if necessary-->
+                <xso:template name="hcmc:updateData">
+                    <xso:param name="data" tunnel="yes" as="map(*)"/>
+                    <xso:param name="caller" as="xs:string?"/>
+                    <xso:param name="append" as="xs:string?"/>
+                    <xso:param name="key" as="xs:string"/>
+                    <xso:param name="value" as="item()"/>
+                    <xso:variable name="currValues" select="$data($key)" as="item()*"/>
+                    <xso:variable name="newValues" select="($currValues, $value)" as="item()+"/>
+                    <xso:if test="$verbose">
+                        <xso:message>
+                            <xso:value-of separator=": ">
+                                <xso:text>hcmc:updateData</xso:text>
+                                <xso:sequence select="$caller"/>
+                                <xso:sequence select="'Updating ' || local-name()"/>
+                                <xso:sequence select="$key || '=' || string-join($newValues,';')"/>
+                            </xso:value-of>
+                            <xso:if test="not(empty($append))">
+                                <xso:value-of select="' ' || $append"/>
+                            </xso:if>
+                        </xso:message>
+                    </xso:if>
+                    <xso:next-match>
+                        <xso:with-param name="data"
+                            tunnel="yes" as="map(*)"
+                            select="map:put($data, $key ,$newValues)"/>
+                    </xso:next-match>
+                </xso:template>
+                
+                <xso:template name="hcmc:copy">
+                    <xso:copy>
+                        <xso:call-template name="hcmc:copy-atts"/>
+                        <xso:apply-templates select="node()" mode="decorate"/>
+                    </xso:copy>
+                </xso:template>
+                
+                <xso:template name="hcmc:copy-atts">
+                    <xso:param name="data" as="map(*)" tunnel="yes"/>
+                    <xsl:message>Add the ss-uri attribute for the uris</xsl:message>
+                    <xso:if test="not(ancestor::*)">
+                        <xso:attribute name="ss-uri" select="$relativeUri"/>
+                    </xso:if>
+                    <xso:apply-templates select="@*" mode="decorate"/>
+                    <xso:where-populated>
+                        <xso:attribute name="ss-wt" select="$data($KEY_WEIGHTS)[last()]"/>
+                    </xso:where-populated>
+                    <xso:where-populated>
+                        <xso:attribute name="ss-ctx-id" select="string-join($data($KEY_CONTEXT_IDS), ' ')"/>
+                    </xso:where-populated>
+                    <xso:where-populated>
+                        <xso:attribute name="ss-ctx" select="xs:string($data($KEY_CONTEXTS)[last()])"/>
+                    </xso:where-populated>
+                    <xso:where-populated>
+                        <xso:attribute name="ss-excld" select="xs:string($data($KEY_EXCLUDES)[last()])"/>
+                    </xso:where-populated>
+                </xso:template>
                 
             </xso:stylesheet>
             
         </xsl:result-document>
-        
-        
     </xsl:template>
-    
     
     
     <!--**************************************************************
@@ -543,6 +654,21 @@
         <xso:variable name="hasFilterLabels" 
             select="{if ($configDoc//filter) then 'true' else 'false'}()"/>
         
+        
+        <xd:doc>
+            <xd:desc>The document's URI as a string.</xd:desc>
+        </xd:doc>
+        <xso:variable name="uri" select="xs:string(document-uri(.))" as="xs:string"/>
+        
+        <xd:doc>
+            <xd:desc>The relative uri from the root:
+                this is the full URI minus the collection dir. 
+                Note that we TRIM off the leading slash</xd:desc>
+        </xd:doc>
+        <xso:variable name="relativeUri" 
+            select="substring-after($uri,replace($collectionDir, '^(file:/)/+', '$1')) => replace('^(/|\\)','')"
+            as="xs:string"/>
+        
         <xso:template name="echoParams">
             <xso:if test="$verbose">
                 <xsl:for-each select="$params">
@@ -555,9 +681,27 @@
         </xso:template>
     </xsl:template>
     
-    
-    
-
+    <xd:doc>
+        <xd:desc>Template to create an XML representation of the stopwords file
+        and an associated key</xd:desc>
+    </xd:doc>
+    <xsl:template name="createStopwordsXML">
+        <xsl:for-each select="($configDoc//stopwordsFile)">
+            <xsl:variable name="path" select="resolve-uri(text(),$configUri)"/>
+            <xsl:variable name="uri" select="concat($outDir,'/dicts/',substring-before(tokenize($path,'/')[last()],'.txt'),'.xml')"/>
+            <xsl:result-document href="{$uri}" method="xml">
+                <hcmc:words>
+                    <xsl:for-each select="tokenize(unparsed-text($path),'\s+')">
+                        <hcmc:word><xsl:value-of select="lower-case(normalize-space(.))"/></hcmc:word>
+                    </xsl:for-each>
+                </hcmc:words>
+            </xsl:result-document>
+            <xsl:variable name="docFn">doc('<xsl:value-of select="$uri"/>')</xsl:variable>
+            <xso:variable name="{concat(local-name(),'Xml')}" select="{$docFn}"/>
+        </xsl:for-each>
+        <xso:key name="w" match="hcmc:word" use="."/>
+    </xsl:template>
+<!--
     <xd:doc>
         <xd:desc>Template to create an XML representation of the dictionary file 
         and an associated key.</xd:desc>
@@ -578,176 +722,14 @@
         </xsl:for-each>
         
         <xso:key name="w" match="hcmc:word" use="."/>
-    </xsl:template>
+    </xsl:template>-->
     
-    
-    <xd:doc>
-        <xd:desc>
-            <xd:p>The <xd:ref name="createRetainRules" type="template">createRetainRules</xd:ref> template
-            creates an XSL identity template for the xpaths specified in the configuration file that have
-            either a weight greater than 0 OR want to be retained as a context item for the kwic.</xd:p>
-        </xd:desc>
-    </xd:doc>
-    <xsl:template name="createRetainRules" exclude-result-prefixes="#all">
-        <xso:template match="{string-join($retainRules/@match,' | ')}" priority="1" mode="clean">
-            <xso:if test="$verbose">
-                <xso:message>Template #clean: retaining <xso:value-of select="local-name(.)"/></xso:message>
-            </xso:if>
-            <xso:copy>
-                <xso:apply-templates select="@*|node()" mode="#current"/>
-            </xso:copy>
-        </xso:template>
-    </xsl:template>
     
     
     <xd:doc>
-        <xd:desc>
-            <xd:p>The <xd:ref name="createDeleteRules" type="template">createDeleteRules</xd:ref> template
-                creates an XSL identity template for the xpaths specified in the configuration file that have
-                a weight of 0, which signals that these elements should be deleted from the tokenization process.
-                These are usually elements that have text content that shouldn't be analyzed (for instance, footer
-                text that appears in every document or navigation items).</xd:p>
-        </xd:desc>
-    </xd:doc>
-    <xsl:template name="createDeleteRules" exclude-result-prefixes="#all">
-        <xso:template match="{string-join($deleteRules/@match,' | ')}" priority="1" mode="clean">
-            <xso:if test="$verbose">
-                <xso:message>Template #clean: Deleting <xso:value-of select="local-name(.)"/></xso:message>
-            </xso:if>
-          <xso:if test="local-name() = 'html'">
-            <xso:message terminate="yes">
-*********************************************
-ERROR: You have specified a weight of 0 for 
-an html element, which will create an empty 
-output file and generate an error during 
-tokenization.
-*********************************************
-            </xso:message>
-          </xso:if>
-        </xso:template>
-    </xsl:template>
-    
-    
-    <xd:doc>
-        <xd:desc>
-            <xd:p>The <xd:ref name="createExcludeRules" type="template">createDeleteRules</xd:ref> template
-                creates an XSL identity template for the xpaths specified in the configuration file that have been excluded from the tokenization
-                process.</xd:p>
-        </xd:desc>
-    </xd:doc>
-    <xsl:template name="createExcludeRules" exclude-result-prefixes="#all">
-        <xso:template match="{string-join($excludeRules/@match, ' | ')}" priority="1" mode="exclude">
-            <xso:if test="$verbose">
-                <xso:message>Template #exclude: Adding @ss-excld flag to <xso:value-of select="local-name(.)"/></xso:message>
-            </xso:if>
-            <xso:copy>
-                <xso:attribute name="ss-excld" select="'true'"/>
-                <xso:apply-templates select="@*|node()" mode="#current"/>
-            </xso:copy>
-        </xso:template>
-    </xsl:template>
-
-    <xd:doc>
-        <xd:desc>
-            <xd:p>The <xd:ref name="createContextRules" type="template">createContextRules</xd:ref> template
-                creates an XSL identity template for the xpaths specified in the configuration file that are
-                specified as context nodes for the kwic. It also creates the map of context ids/labels,
-                if they are specified in the config, for creating the "Search in" configuration.</xd:p>
-        </xd:desc>
-    </xd:doc>
-    <xsl:template name="createContextRules" exclude-result-prefixes="#all">
-        
-        <!--First create our own context label map, which has to be slightly more
-        complicated as context rules could have the same label-->
-        <xsl:variable name="contextMap" as="map(xs:string, xs:string)">
-            <xsl:map>
-                <!--Group all of the contexts by label-->
-                <xsl:for-each-group select="$contexts[@label]" group-by="normalize-space(@label)">
-                    <xsl:map-entry key="current-grouping-key()" select="'ssCtx' || position()"/>
-                </xsl:for-each-group>
-            </xsl:map>
-        </xsl:variable>
-        
-        <!--Now create the config XSL's version of the context map,
-            which may be a map (if there are contexts with labels)
-            OR an empty sequence (if there aren't)-->
-        <xso:variable name="ssContextMap" as="map(*)?">
-            <xsl:choose>
-                <xsl:when test="exists($contexts[@label])">
-                    <!--Create a usable map in the output config
-                        using the values assembled by $contextMap-->
-                   <xso:map>
-                       <xsl:for-each select="map:keys($contextMap)">
-                           <xso:map-entry 
-                               key="{hcmc:quoteString(.)}"
-                               select="{hcmc:quoteString($contextMap(.))}"/>
-                       </xsl:for-each>
-                   </xso:map>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xso:sequence select="()"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xso:variable>
-        
-        <xsl:if test="not(empty($contexts))">
-            <xso:template match="{string-join($contexts/@match,' | ')}" priority="1" mode="contextualize">
-                <xso:if test="$verbose">
-                    <xso:message>Template #contextualize: Adding @ss-ctx flag to <xso:value-of select="local-name(.)"/></xso:message>
-                </xso:if>
-                <xso:copy>
-                    <xso:apply-templates select="@*" mode="#current"/>
-                    <xsl:for-each select="$contexts">
-                        <xsl:variable name="thisCtx" select="@context"/>
-                        <xsl:variable name="thisMatchPtn" select="@match"/>
-                        <xsl:variable name="thisLabel" select="@label"/>
-                        <xsl:for-each select="tokenize($thisMatchPtn,'\s*\|\s*')">
-                            <xso:if test="self::{.}">
-                                <xso:attribute name="ss-ctx" select="{hcmc:quoteString(hcmc:stringToBoolean($thisCtx))}"/>
-                                <!--If the context has a label, then add its corresponding context id value-->
-                                <xsl:if test="exists($thisLabel)">
-                                    <xsl:variable name="contextId" 
-                                        select="$contextMap(normalize-space($thisLabel))"
-                                        as="xs:string"/>
-                                    <xso:attribute name="ss-ctx-id" select="{hcmc:quoteString($contextId)}"/>
-                                </xsl:if>
-                            </xso:if>
-                        </xsl:for-each>
-                        
-                    </xsl:for-each>
-                    <xso:apply-templates select="node()" mode="#current"/>
-                </xso:copy>
-            </xso:template>
-        </xsl:if>
-    </xsl:template>
-    
-    <xd:doc>
-        <xd:desc>
-            <xd:p>The <xd:ref name="createWeightingRules" type="template">createWeightingRules</xd:ref> template
-                creates an XSL identity template for the xpaths specified in the configuration file that have
-                some non-0 weight specified.</xd:p>
-        </xd:desc>
-    </xd:doc>
-    <xsl:template name="createWeightingRules" exclude-result-prefixes="#all">
-        <xso:template match="{string-join($weightedRules/@match,' | ')}" priority="1" mode="weigh">
-            <xso:if test="$verbose">
-                <xso:message>Template #weigh: Adding @data-weight to <xso:value-of select="local-name(.)"/></xso:message>
-            </xso:if>
-            <xso:copy>
-                <xso:apply-templates select="@*" mode="#current"/>
-                <xsl:for-each select="$weightedRules[xs:integer(@weight) gt 1]">
-                    <xso:if test="self::{@match}">
-                        <xso:attribute name="ss-wt" select="{@weight}"/>
-                    </xso:if>
-                </xsl:for-each>
-                <xso:apply-templates select="node()" mode="#current"/>
-            </xso:copy>
-        </xso:template>
-    </xsl:template>
-    
-    <xd:doc>
-        <xd:desc>The <xd:ref name="createFilterLabels" type="template">createFilterLabels</xd:ref> template creates a copy of the original filter data in a variable; there's no real reason to process 
-        it in any special way.</xd:desc>
+        <xd:desc>The <xd:ref name="createFilterLabels" type="template">createFilterLabels</xd:ref> template creates 
+            a copy of the original filter data in a variable; there's no real reason to process 
+            it in any special way.</xd:desc>
     </xd:doc>
     <xsl:template name="createFilterLabels" exclude-result-prefixes="#all">
         <xso:variable name="filterLabels" as="element(hcmc:filter)*">
@@ -761,6 +743,8 @@ tokenization.
        *                         FUNCTIONS                          *
        *                                                            *
        **************************************************************-->
+ 
+ 
  
     <xd:doc>
         <xd:desc>
@@ -817,6 +801,5 @@ tokenization.
         <xsl:variable name="xml" select="json-to-xml($json)"/>
         <xsl:value-of select="$xml//*:string[@key='tag_name']/text()"/>
     </xsl:function>
-    
     
 </xsl:stylesheet>

@@ -34,7 +34,7 @@ tests.push({
     console.log('Search hook ' + num);
     console.log('Testing results for the word "twilight".');
     checkResults({
-      docsFound: 2, contextsFound: 3, scoreTotal: 3
+      docsFound: 2, contextsFound: 3, scoreTotal: 4
     });
   }
 });
