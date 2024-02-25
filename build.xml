@@ -20,16 +20,6 @@
 
   <!--****************************************************************
      *                                                              *
-     *                       Task Definitions                       *
-     *                                                              *
-     ****************************************************************-->
-
-  <!--  We need ant contrib. -->
-  <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
-
-
-  <!--****************************************************************
-     *                                                              *
      *                           Properties                         *
      *                                                              *
      ****************************************************************-->
@@ -174,33 +164,34 @@
     <echo>Running staticSearch build based on config file: 
     ${ssConfigFile}</echo>
 
-    <!-- If we're building the test data, we need to generate the VERSION file
-         and also copy the .htm_ files to .html before starting. -->
-    <if>
+
+    <!-- Some various special-purpose stuff needs to be done if we are
+         using the build-in configTest configuration: -->
+    <condition property="ssTesting">
       <equals arg1="configTest.xml" arg2="${ssConfigFileName}"/>
-      <then>
-        <delete file="${ssBaseDir.converted}/test/VERSION"/>
-        <exec executable="git">
-          <arg value="rev-parse"/>
-          <arg value="--short"/>
-          <arg value="HEAD"/>
-          <redirector output="${ssBaseDir.converted}/test/VERSION"/>
-        </exec>
-      </then>
-    </if>
-    <!-- If this build is our test suite, then we need to copy the 
-      template file for the search page (*.htm_) to its output file (*.html) so the
-      build process can use it. This enables us to avoid a constantly-changing 
-      .html file that causes endless merge conflicts.
-    -->
-    <if>
-      <equals arg1="configTest.xml" arg2="${ssConfigFileName}"/>
-      <then>
-        <copy file="${ssBaseDir.converted}/test/search.htm_" tofile="${ssBaseDir.converted}/test/search.html"/>
-      </then>
-    </if>
+    </condition>
+    <antcall target="testing"/>
+
   </target>
 
+  <target name="testing" depends="testingTrue, testingFalse"/>
+  <target name="testingTrue" if="ssTesting">
+    <!-- Generate (a new version of) the VERSION file -->
+    <delete file="${ssBaseDir.converted}/test/VERSION"/>
+    <exec executable="git">
+      <arg value="rev-parse"/>
+      <arg value="--short"/>
+      <arg value="HEAD"/>
+      <redirector output="${ssBaseDir.converted}/test/VERSION"/>
+    </exec>
+    <!-- Copy the .html_ file to .thml -->
+    <copy file="${ssBaseDir.converted}/test/search.htm_" tofile="${ssBaseDir.converted}/test/search.html"/>
+  </target>
+  <target name="testingFalse" unless="ssTesting">
+    <!-- This target exists just to make it clear that nothing happens
+         when ssTesting is false. -->
+  </target>
+    
   <target name="validate">
     <description>
       TARGET: validate
@@ -308,17 +299,13 @@
       specified as a temp page. That temporary page is then copied over and overwrites the original
       page. </description>
     <echo message="Creating search page..."/>
-    <if taskname="copy">
-      <not>
-        <available file="${ssSearchFilePath}"/>
-      </not>
-      <then>
-        <echo>WARNING: Cannot find search file at ${ssSearchFilePath}. Created a template file from
-          xsl/sample_search.html.</echo>
-        <copy file="xsl/sample_search.html" tofile="${ssSearchFilePath}"/>
-      </then>
-    </if>
 
+    <condition property="ssSearchFilePathAvailable">
+      <available file="${ssSearchFilePath}"/>
+    </condition>
+
+    <antcall target="createTemplateSampleSearchPage"/>
+    
     <echo message="Creating temporary search page: ${tempSearchPageOutput}"/>
 
     <!--We create a hasFilters property here since the search page needs to know whether or not there are filters to 
@@ -339,6 +326,17 @@
 
   </target>
   
+  <target name="createTemplateSampleSearchPage" depends="copyTemplateSampleSearchPage, skipTemplateSampleSearchPage"/>
+  <target name="copyTemplateSampleSearchPage" unless="ssSearchFilePathAvailable">
+    <echo>WARNING: Cannot find search file at ${ssSearchFilePath}. Created a template file from
+    xsl/sample_search.html.</echo>
+    <copy file="xsl/sample_search.html" tofile="${ssSearchFilePath}"/>
+  </target>
+  <target name="skipTemplateSampleSearchPage" if="ssSearchFilePathAvailable">
+    <!-- This target exists just to make it clear that nothing happens
+         when ssSearchFilePathAvailable is true. -->
+  </target>
+ 
   <target name="makeDebugSearchPage">
     <description>
       TARGET: makeDebugSearchPage
@@ -346,11 +344,10 @@
       and then replaces the link to ssSearch.js with one to 
       ssSearch-debug.js, for better testing.
     </description>
-    <propertyregex property="ssDebugSearchPage" 
-                   input="${ssSearchFilePath}"
-                   regexp="(\.[a-zA-Z]+)$"
-                   replace="-debug\1"
-                   global="false"/>
+    <pathconvert property="ssManualDebugSearchPage">
+      <path path="${ssSearchFilePath}"/>
+      <globmapper from="*.*" to="*-debug.*"/>
+    </pathconvert>	
     <echo message="Creating debug search page: ${ssDebugSearchPage}"/>
     <copy file="${ssSearchFilePath}" tofile="${ssDebugSearchPage}"/>
     <replace file="${ssDebugSearchPage}" token="ssSearch.js" value="ssSearch-debug.js"/>
@@ -365,11 +362,10 @@
       link to the test set, so that the search page has no activity
       on load and can be used for manual testing and debugging.
     </description>
-    <propertyregex property="ssManualDebugSearchPage" 
-      input="${ssSearchFilePath}"
-      regexp="(\.[a-zA-Z]+)$"
-      replace="-manual-debug\1"
-      global="false"/>
+    <pathconvert property="ssManualDebugSearchPage">
+      <path path="${ssSearchFilePath}"/>
+      <globmapper from="*.*" to="*-manual-debug.*"/>
+    </pathconvert>	
     <echo message="Creating manual debug search page: ${ssManualDebugSearchPage}"/>
     <copy file="${ssSearchFilePath}" tofile="${ssManualDebugSearchPage}"/>
     <replaceregexp file="${ssManualDebugSearchPage}" match="&lt;/svg>.+&lt;/body>" replace="&lt;/svg>&lt;/a>&lt;/div>&lt;/div>&lt;/body>" flags="s"/>
