@@ -31,6 +31,7 @@
             match="span[@class='lineNum']"/>
         <rule weight="0"
             match="script | style"/>
+        <rule weight="10" match="span[@class='weighty']"/>
     </rules>
     
     <contexts>
