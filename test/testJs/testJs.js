@@ -374,6 +374,20 @@ tests.push({
     });
   }
 });
+//Testing an extreme weight
+tests.push({
+  setup: function () {
+    Sch.queryBox.value = 'crossword'
+  },
+  check: function (num) {
+    console.log('Search hook ' + num);
+    console.log('Testing results for heavily weighted context');
+    checkResults({
+      docsFound: 1, contextsFound: 5, scoreTotal: 16
+    });
+  }
+});
+
 
 var startTime = null;
 
