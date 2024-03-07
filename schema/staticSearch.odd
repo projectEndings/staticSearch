@@ -27,7 +27,7 @@
         </docTitle>
         <docAuthor>Martin Holmes</docAuthor>
         <docAuthor>Joey Takeda</docAuthor>
-        <docDate>2019-2023</docDate>
+        <docDate>2019-2024</docDate>
       </titlePage>
       <p>This documentation provides instructions on how to use the Project Endings
         staticSearch Generator to provide a fully-functional search <soCalled>engine</soCalled>
@@ -1211,8 +1211,24 @@
         <head>What's new since version 1.0?</head>
         <list>
           <item>Level: Intermediate</item>
-          <item>Last Updated: <date when="2023-10-04">4 October 2023</date></item>
+          <item>Last Updated: <date when="2024-03-07">7 March 2024</date></item>
         </list>
+        
+        <div xml:id="newIn1.4.6">
+          <head>Changes in version 1.4.6</head>
+          <p>Bug fixes:</p>
+          <list>
+            <item>A bug which caused weighting values to be lost during tokenizing has been corrected.</item>
+            <item>The mechanism which scrolls the search page automatically to display search results
+            has been adjusted in an attempt to avoid hiding the first result(s) behind a sticky or fixed
+            page header.</item>
+            <item>The build process has been modified in an attempt to ensure that the search page 
+            which is generated contains one and only one charset declaration. </item>
+            <item>A warning is now issued when no title is found for a document being indexed. This
+            situation means that any search results will be less useful to the end user because
+            no document title can be displayed for the document.</item>
+          </list>
+        </div>
         
         <div xml:id="newIn1.4.5">
           <head>Changes in version 1.4.5</head>

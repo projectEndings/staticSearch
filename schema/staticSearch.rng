@@ -5,9 +5,9 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2023-10-04T22:17:43Z. 2019-2023. 
-TEI Edition: Version 4.6.0. Last updated on 4th April 2023, revision f18deffba 
-TEI Edition Location: https://www.tei-c.org/Vault/P5/4.6.0/ 
+Schema generated from ODD source 2024-03-07T18:29:22Z. 2019-2024. 
+TEI Edition: P5 Version 4.7.0. Last updated on 16th November 2023, revision e5dd73ed0 
+TEI Edition Location: https://www.tei-c.org/Vault/P5/4.7.0/ 
   
 --><!--Free to anyone for any purpose-->
    <sch:ns xmlns:sch="http://purl.oclc.org/dsdl/schematron"
