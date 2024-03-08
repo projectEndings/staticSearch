@@ -374,6 +374,32 @@ tests.push({
     });
   }
 });
+//Testing an extreme weight
+tests.push({
+  setup: function () {
+    Sch.queryBox.value = 'crossword'
+  },
+  check: function (num) {
+    console.log('Search hook ' + num);
+    console.log('Testing results for heavily weighted context');
+    checkResults({
+      docsFound: 1, contextsFound: 5, scoreTotal: 16
+    });
+  }
+});
+//Testing a weight inside a table cell context.
+tests.push({
+  setup: function(){
+    Sch.queryBox.value = 'wholesale'
+  },
+  check: function(num){
+    console.log('search hook ' + num);
+    console.log('Testing results for weighted search in td context');
+    checkResults({
+      docsFound: 1, contextsFound: 2, scoreTotal: 6
+    })
+  }
+})
 
 var startTime = null;
 
