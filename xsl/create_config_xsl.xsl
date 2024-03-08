@@ -454,10 +454,20 @@
                             </xso:if>
                             <xso:call-template name="hcmc:copy"/>
                         </xso:when>
-                        <xso:when test="not(empty($weights)) and $weights[last()] = 0">
-                            <xso:if test="$verbose">
-                                <xso:message>config#decorate: Removing <xso:value-of select="local-name()"/> (weight=0)</xso:message>
-                            </xso:if>
+                        <!--If there is weighting info, then either...-->
+                        <xso:when test="not(empty($weights))">
+                            <xso:choose>
+                                <!--It should be removed (since it's a weight=0)-->
+                                <xso:when test="$weights[last()] = 0">
+                                    <xso:if test="$verbose">
+                                        <xso:message>config#decorate: Removing <xso:value-of select="local-name()"/> (weight=0)</xso:message>
+                                    </xso:if>
+                                </xso:when>
+                                <!--Or it must be retained-->
+                                <xso:otherwise>
+                                    <xso:call-template name="hcmc:copy"/>
+                                </xso:otherwise>
+                            </xso:choose>
                         </xso:when>
                         <xso:when test="empty($contexts) or ($contexts[last()] = false())">
                             <xso:apply-templates select="node()" mode="#current"/>
