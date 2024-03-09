@@ -344,7 +344,7 @@
       and then replaces the link to ssSearch.js with one to 
       ssSearch-debug.js, for better testing.
     </description>
-    <pathconvert property="ssManualDebugSearchPage">
+    <pathconvert property="ssDebugSearchPage">
       <path path="${ssSearchFilePath}"/>
       <globmapper from="*.*" to="*-debug.*"/>
     </pathconvert>	
