@@ -1,0 +1,20 @@
+name: Test staticSearch
+on:
+    push:
+    repository_dispatch:
+concurrency:
+    group: ${{ github.ref }}
+    cancel-in-progress: false
+
+jobs:
+   test:
+        name: Test
+        runs-on: ubuntu-latest
+        steps:
+            # First checkout this repo
+            - name: Self checkout
+              uses: actions/checkout@v4
+
+            # Build everything
+            - name: Run test 
+              run: ant -f ${{ github.workspace }}/build.xml test
