@@ -25,7 +25,11 @@
      ****************************************************************-->
 
   <!--  We need ant contrib. -->
-  <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+  <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+    <classpath>
+      <pathelement location="${basedir}/lib/ant-contrib.jar"/>
+    </classpath>
+  </taskdef>
 
 
   <!--****************************************************************
