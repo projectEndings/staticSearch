@@ -524,7 +524,7 @@
         
         <!--The first ancestor that has been signaled as an ancestor-->
         <xsl:variable name="contextAncestor"
-            select="$span/ancestor::*[@ss-ctx][1]"
+            select="$span/ancestor::*[not(@ss-ctx = 'false')][1]"
             as="element()"/>
         
         <!--Get all of the descendant text nodes for that ancestor-->
@@ -684,7 +684,7 @@
         <xsl:param name="contextEl" as="element()"/>
         <!--TODO: Remove if we no longer use accumulator-->
        <!-- <xsl:sequence select="$contextEl/descendant::text()[accumulator-before('context')[last()][. is $contextEl]]"/>-->
-        <xsl:sequence select="$contextEl/descendant::text()[ancestor::*[@ss-ctx][1][. is $contextEl]]"/>
+        <xsl:sequence select="$contextEl/descendant::text()[ancestor::*[@ss-ctx = 'true'][1][. is $contextEl]]"/>
     </xsl:function>
 
     
