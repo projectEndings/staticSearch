@@ -684,7 +684,7 @@
         <xsl:param name="contextEl" as="element()"/>
         <!--TODO: Remove if we no longer use accumulator-->
        <!-- <xsl:sequence select="$contextEl/descendant::text()[accumulator-before('context')[last()][. is $contextEl]]"/>-->
-        <xsl:sequence select="$contextEl/descendant::text()[ancestor::*[@ss-ctx = 'true'][1][. is $contextEl]]"/>
+        <xsl:sequence select="$contextEl/descendant::text()[ancestor::*[@ss-ctx][1][. is $contextEl]]"/>
     </xsl:function>
 
     
