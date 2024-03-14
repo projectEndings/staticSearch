@@ -463,7 +463,7 @@
     <delete file="${ssBaseDir.converted}/js/ssSearch.js"/>
     <delete file="${ssBaseDir.converted}/js/ssSearch-debug.js"/>
     <delete file="${ssBaseDir.converted}/search-debug.html"/>
-    <delete file="${ssBaseDir.converted}/ssSearch-manual-debug.html"/>
+    <delete file="${ssBaseDir.converted}/search-manual-debug.html"/>
   </target>
 
   <target name="buildJS">
