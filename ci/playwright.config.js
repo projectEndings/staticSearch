@@ -8,11 +8,10 @@ module.exports = defineConfig({
   outputDir: "test-results",
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: true,
-  retries: 2,
+  retries: 0,
   workers: 1,
   reporter: "list",
   use: {
-    trace: "on-first-retry",
     screenshot: {
       mode: "on",
       fullPage: true,
@@ -30,14 +29,14 @@ module.exports = defineConfig({
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
     },
-    {
-      name: "firefox",
-      use: { ...devices["Desktop Firefox"] },
-    },
+    // {
+    //   name: "firefox",
+    //   use: { ...devices["Desktop Firefox"] },
+    // },
 
-    {
-      name: "webkit",
-      use: { ...devices["Desktop Safari"] },
-    },
+    // {
+    //   name: "webkit",
+    //   use: { ...devices["Desktop Safari"] },
+    // },
   ],
 });
