@@ -39,9 +39,6 @@ jobs:
             # Build everything
             - name: Run test 
               run: ant -f ${{ github.workspace }}/build.xml test
-
-            - name: Spin up server
-              run: npx -y http-server
             
             - name: Run Playwright Tests
               run: npx playwright test --config ${{ github.workspace }}/ci/playwright.config.js
