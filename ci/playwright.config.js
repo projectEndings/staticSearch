@@ -19,6 +19,11 @@ module.exports = defineConfig({
     },
     baseURL: "http://127.0.0.1:8080",
   },
+  webServer: {
+    command: "npx http-server ../",
+    url: "http://127.0.0.1:8080",
+    reuseExistingServer: false,
+  },
   /* Configure projects for major browsers */
   projects: [
     {
