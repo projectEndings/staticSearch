@@ -1,15 +1,18 @@
 import { test, expect } from "@playwright/test";
 
 test("search page exists", async ({ page }) => {
-  await page.goto("./test/search.html");
+  const response = await page.goto("./test/search.html");
+  expect(response.status()).toEqual(200);
 });
 
 test("search debug exists", async ({ page }) => {
-  await page.goto("./test/search-debug.html");
+  const response = await page.goto("./test/search-debug.html");
+  expect(response.status()).toEqual(200);
 });
 
 test("manual search debug exists", async ({ page }) => {
-  await page.goto(".test/search-manual-debug.html");
+  const response = await page.goto("./test/search-manual-debug.html");
+  expect(response.status()).toEqual(200);
 });
 
 test("tests are successful", async ({ page }) => {
