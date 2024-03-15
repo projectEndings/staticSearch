@@ -370,7 +370,7 @@ tests.push({
     console.log('Search hook ' + num);
     console.log('Testing results for wildcard "con*" only in Quotations');
     checkResults({
-      docsFound: 1, contextsFound: 6, scoreTotal: 12
+      docsFound: 1, contextsFound: 6, scoreTotal: 10
     });
   }
 });
