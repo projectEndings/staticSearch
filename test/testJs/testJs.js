@@ -420,12 +420,12 @@ function runTests() {
 
 function reportResults(msg, succeed) {
   let timeSoFar = performance.now() - startTime;
-  reportDiv.innerHTML = '<p class="' + (succeed ? 'success': 'failure') + '"> Test #' + (currTestNum + 1) + ': ' + msg + '. Time so far: ' + timeSoFar + '.</p>' + reportDiv.innerHTML;
+  reportDiv.innerHTML = '<p class="' + (succeed ? 'success': 'failure complete') + '"> Test #' + (currTestNum + 1) + ': ' + msg + '. Time so far: ' + timeSoFar + '.</p>' + reportDiv.innerHTML;
   if (succeed) {
     Sch.clearSearchForm();
     currTestNum++;
     if (currTestNum >= tests.length) {
-      reportDiv.innerHTML = '<p class="success">Done! Total time: ' + (performance.now() - startTime) + '.</p>' + reportDiv.innerHTML;
+      reportDiv.innerHTML = '<p class="success complete">Done! Total time: ' + (performance.now() - startTime) + '.</p>' + reportDiv.innerHTML;
       Sch.searchFinishedHook = function () {
       };
       //Set this back, so we can do other testing manually.
