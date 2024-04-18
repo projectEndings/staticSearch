@@ -66,7 +66,7 @@
     </xsl:template>
     
     <xd:doc>
-        <xd:desc>scrollToTextFragment has been removed; it was experimental to begin with
+        <xd:desc>linkToFragmentId has been removed; it was experimental to begin with
             and is still not widely supported.</xd:desc>
     </xd:doc>
     <xsl:template match="linkToFragmentId">
