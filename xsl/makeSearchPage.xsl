@@ -233,6 +233,7 @@
                 data-allowwildcards="{if ($wildcardSearch) then 'yes' else 'no'}"
                 data-minwordlength="{if ($minWordLength) then $minWordLength else '3'}"
                 data-maxkwicstoshow="{if ($maxKwicsToShow) then $maxKwicsToShow else 10}"
+                data-scoringalgorithm="{if ($scoringAlgorithm) then $scoringAlgorithm else 'raw'}"
                 data-resultsperpage="{$resultsPerPage}"
                 onsubmit="return false;"
                 data-versionstring="{$versionString}"
