@@ -333,7 +333,12 @@
                         <number key="score">
                             <xsl:choose>
                                 <xsl:when test="$scoringAlgorithm = 'tf-idf'">
-                                    <xsl:sequence select="hcmc:returnTfIdf($rawScore, $stemDocsCount, $currDocUri)"/>
+                                    <xsl:sequence 
+                                        select="hcmc:returnTfIdf($rawScore, $stemDocsCount, $currDocUri)"/>
+                                </xsl:when>
+                                <xsl:when test="$scoringAlgorithm = 'BM25'">
+                                    <xsl:sequence 
+                                        select="hcmc:returnBM25($rawScore, $stemDocsCount, $currDocUri)"/>
                                 </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:sequence select="$rawScore"/>
@@ -502,7 +507,74 @@
         <xsl:sequence
             select="$tf * $idf"/>
     </xsl:function>
-
+    <xd:doc>
+        <xd:desc><xd:ref name="hcmc:returnBM25" type="function">hcmc:tf-idf</xd:ref> returns the BM25
+            relevance score for a term; this is calculated following 
+            <xd:a href="https://www.elastic.co/blog/practical-bm25-part-2-the-bm25-algorithm-and-its-variables">Elasticsearch's implementation</xd:a>.
+        </xd:desc>
+        <xd:param name="rawScore">The raw score for this term (t)</xd:param>
+        <xd:param name="stemDocsCount">The number of documents in which this stem appears (df)</xd:param>
+        <xd:param name="thisDocUri">The document URI from which we can generate the total terms that
+            appear in that document.(f)</xd:param>
+        <xd:return>A score as a double.</xd:return>
+    </xd:doc>
+    <xsl:function name="hcmc:returnBM25" as="xs:double">
+        <xsl:param name="rawScore" as="xs:integer"/>
+        <xsl:param name="stemDocsCount" as="xs:integer"/>
+        <xsl:param name="thisDocUri" as="xs:string"/>
+        <!--Compute the average document length-->
+        <!--TODO: While getTotalTermsInDoc is memoized, 
+            this should be moved outside
+            of the function-->
+        <xsl:variable name="averageDocLength" 
+            select="sum($tokenizedUris ! hcmc:getTotalTermsInDoc(.))
+                        div 
+                    count($tokenizedUris)" as="xs:double"/>
+        
+        <!--Get the total terms in the document-->
+        <xsl:variable name="totalTermsInDoc" 
+            select="hcmc:getTotalTermsInDoc($thisDocUri)" as="xs:integer"/>
+        
+        <!--The ratio of terms in this doc versus the average document length-->
+        <xsl:variable name="lengthRatio" select="$totalTermsInDoc div $averageDocLength"/>
+        
+        <!--Now calculate the modified inverse document frequency —
+            see https://www.elastic.co/blog/practical-bm25-part-2-the-bm25-algorithm-and-its-variables
+            If you had 10 documents and 3 in which this stem appeared, you'd get:
+            ln(1 + ((10 - (3 + 0.5))/(3 + 0.5)))
+            => ln(1 + (6.5 / 3.5))
+            => ln(1 + 1.857) => ln(2.857) => 1.050
+        
+            [Note that math:log is, in XSLT, the natural log]
+        -->
+        <xsl:variable name="idf" 
+            as="xs:double"
+            select="math:log(1 + 
+                (($tokenizedDocsCount - ($stemDocsCount + 0.5))
+                    div 
+                 ($stemDocsCount + 0.5)
+                 ))"/>
+        
+        <!--For b and k, see          
+            https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules-similarity.html.
+            -->
+        <!--"b" is a constant, which "controls to what degree document length normalizes tf values" -->
+        <xsl:variable name="b" select="0.75"/>
+        
+        <!--"k1" is a constant, which "controls non-linear term frequency normalization (saturation)"-->
+        <xsl:variable name="k1" select="1.2"/>
+        
+        <!--Splitting the numerator and denominator for readability-->
+        <xsl:variable name="numerator" 
+            select="$rawScore * ($k1 + 1)"/>
+        <xsl:variable name="denominator" 
+            select="$rawScore + $k1 * (1 - $b + $b * $lengthRatio)"/>
+        
+        <!--Now the final BM25 relevance score-->
+        <xsl:variable name="BM25" select="$idf * ($numerator div $denominator)" as="xs:double"/>
+        <xsl:message use-when="$verbose">Calculated BM25: <xsl:sequence select="$BM25"/></xsl:message>
+        <xsl:sequence select="$BM25"/>
+    </xsl:function>
 
     <xd:doc>
         <xd:desc><xd:ref name="hcmc:returnContext" type="function">hcmc:returnContext</xd:ref> returns
@@ -697,7 +769,7 @@
     </xd:doc>
     <xsl:function name="hcmc:getTotalTermsInDoc" as="xs:integer" new-each-time="no">
         <xsl:param name="docUri" as="xs:string"/>
-        <xsl:variable name="thisDoc" select="$tokenizedDocs[document-uri(.) = $docUri]" as="document-node()"/>
+        <xsl:variable name="thisDoc" select="$tokenizedDocs[base-uri(.) = $docUri]" as="document-node()"/>
         <xsl:variable name="thisDocSpans" select="$thisDoc//span[@ss-stem]" as="element(span)*"/>
         <!--We tokenize these since there can be multiple stems for a given span-->
         <xsl:variable name="thisDocStems" select="for $span in $thisDocSpans return tokenize($span/@ss-stem,'\s+')" as="xs:string+"/>
