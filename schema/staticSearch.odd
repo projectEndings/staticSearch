@@ -1565,7 +1565,7 @@
             <attList>
               <attDef ident="version" usage="rec">
                 <gloss>specifies the major version of staticSearch to which
-                  this configuration file corresponds. If this attribute is not used, the configuration file is assumed to have an <att>version</att> value of <val>1</val>.</gloss>
+                  this configuration file corresponds. If this attribute is not used, the configuration file is assumed to have a <att>version</att> value of <val>1</val>.</gloss>
                 <datatype>
                   <dataRef name="nonNegativeInteger"/>
                 </datatype>
