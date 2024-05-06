@@ -55,6 +55,22 @@ tests.push({
   }
 });
 
+//One word search word-internal sinological dot search
+tests.push({
+  setup: function () {
+    Sch.queryBox.value = "teꞏst";
+  },
+  check: function (num) {
+    console.log("Search hook " + num);
+    console.log(`Testing results for word with word - internal sinological dot "teꞏst".`);
+    checkResults({
+      docsFound: 1,
+      contextsFound: 1,
+      scoreTotal: 1
+    })
+  }
+});
+
 //One word possessive apostrophe search
 tests.push({
   setup: function () {
