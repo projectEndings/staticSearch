@@ -697,7 +697,7 @@
     </xd:doc>
     <xsl:function name="hcmc:getTotalTermsInDoc" as="xs:integer" new-each-time="no">
         <xsl:param name="docUri" as="xs:string"/>
-        <xsl:variable name="thisDoc" select="$tokenizedDocs[document-uri(.) = $docUri]" as="document-node()"/>
+        <xsl:variable name="thisDoc" select="$tokenizedDocs[base-uri(.) = $docUri]" as="document-node()"/>
         <xsl:variable name="thisDocSpans" select="$thisDoc//span[@ss-stem]" as="element(span)*"/>
         <!--We tokenize these since there can be multiple stems for a given span-->
         <xsl:variable name="thisDocStems" select="for $span in $thisDocSpans return tokenize($span/@ss-stem,'\s+')" as="xs:string+"/>
