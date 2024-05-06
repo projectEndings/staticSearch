@@ -218,6 +218,20 @@ tests.push({
   }
 });
 
+//Phrasal search with ampersand.
+tests.push({
+  setup: function () {
+    Sch.queryBox.value = '"Marks & Spencer"'
+  },
+  check: function (num) {
+    console.log('Search hook ' + num);
+    console.log('Testing results for the phrase "Marks & Spencer".');
+    checkResults({
+      docsFound: 1, contextsFound: 3, scoreTotal: 3
+    });
+  }
+});
+
 //Two MUST_CONTAINs with boolean flag.
 tests.push({
   setup: function () {
