@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <grammar xmlns="http://relaxng.org/ns/structure/1.0"
          xmlns:tei="http://www.tei-c.org/ns/1.0"
          xmlns:teix="http://www.tei-c.org/ns/Examples"
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2024-03-14T16:28:08Z. 2019-2024. 
+Schema generated from ODD source 2024-05-08T19:37:54Z. 2019-2024. 
 TEI Edition: P5 Version 4.7.0. Last updated on 16th November 2023, revision e5dd73ed0 
 TEI Edition Location: https://www.tei-c.org/Vault/P5/4.7.0/ 
   
@@ -33,7 +33,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.7.0/
                        name="version"
                        a:defaultValue="1">
                <a:documentation>(specifies the major version of staticSearch to which
-                  this configuration file corresponds. If this attribute is not used, the configuration file is assumed to have an version value of 1.) </a:documentation>
+                  this configuration file corresponds. If this attribute is not used, the configuration file is assumed to have a version value of 1.) </a:documentation>
                <data type="nonNegativeInteger"/>
             </attribute>
          </optional>

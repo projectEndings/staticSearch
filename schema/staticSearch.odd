@@ -1211,8 +1211,18 @@
         <head>What's new since version 1.0?</head>
         <list>
           <item>Level: Intermediate</item>
-          <item>Last Updated: <date when="2024-03-07">7 March 2024</date></item>
+          <item>Last Updated: <date when="2024-04-08">8 March 2024</date></item>
         </list>
+        
+        <div xml:id="newIn1.4.7">
+          <head>Changes in version 1.4.7</head>
+          <p>Bug fixes:</p>
+          <list>
+            <item>A bug which caused a tokenization error because the XSLT processor was using an 
+              old Unicode dataset has been handled with a temporary workaround, adding the codepoint
+              U+A78F to the tokenization mechanism.</item>
+          </list>
+        </div>
         
         <div xml:id="newIn1.4.6">
           <head>Changes in version 1.4.6</head>
