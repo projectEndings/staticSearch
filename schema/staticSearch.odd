@@ -1221,6 +1221,9 @@
             <item>A bug which caused a tokenization error because the XSLT processor was using an 
               old Unicode dataset has been handled with a temporary workaround, adding the codepoint
               U+A78F to the tokenization mechanism.</item>
+            <item>When searching for a phrase containing an ampersand, the phrase would be successfully
+            found, but if the same search was reloaded from the browser URL, it would fail. This has
+            now been corrected. Thanks to the TMP team for reporting this.</item>
           </list>
         </div>
         

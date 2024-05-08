@@ -823,6 +823,9 @@ class StaticSearch{
       //Then remove any leading or trailing apostrophes
       strSearch = strSearch.replace(/(^'|'$)/g,'');
 
+      //Now escape ampersands.
+      strSearch = strSearch.replace(/&/g, '&amp;');
+
       //If we're not supporting phrasal searches, get rid of double quotes.
       if (!this.allowPhrasal){
         strSearch = strSearch.replace(/"/g, '');
@@ -876,8 +879,9 @@ class StaticSearch{
       this.addSearchItem(strSoFar, inPhrase);
      
       // Now clear the queryBox and replace its contents
-      // By joining the normalized query
-      this.queryBox.value = this.normalizedQuery.join(" ");
+      // by joining the normalized query, and putting 
+      // any ampersands back where they were.
+      this.queryBox.value = this.normalizedQuery.join(" ").replace(/&amp;/, '&');
       
 
       //We always want to handle the terms in order of
