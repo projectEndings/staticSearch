@@ -451,7 +451,7 @@ class StaticSearch{
   *              control and assigns functionality events to it.
   * @param {!string} filterId the id of the filter to set up.
   * @param {!string} filterName the string name of the filter.
-  * @param {!string} minNameLength the minimum length for the string
+  * @param {!number} minNameLength the minimum length for the string
   *               a user types into the control at which a search 
   *               of the filter values will be initiated.
   * @return {boolean} true if a filter is found and set up, else false.
