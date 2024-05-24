@@ -683,7 +683,7 @@
                 </contexts>
               </egXML>
             </p>
-            <p>The default contexts elements are:
+            <p>The default context elements are:
               <list>
                 <item><gi>body</gi></item>
                 <item><gi>div</gi></item>
@@ -700,6 +700,9 @@
                 <item><gi>h5</gi></item>
                 <item><gi>h6</gi></item>
                 <item><gi>td</gi></item>
+                <item><gi>details</gi></item>
+                <item><gi>summary</gi></item>
+                <item><gi>caption</gi> (as a child of <gi>table</gi>)</item>
               </list>
             </p>
           </div>
