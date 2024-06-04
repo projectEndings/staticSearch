@@ -451,15 +451,18 @@ class StaticSearch{
   *              control and assigns functionality events to it.
   * @param {!string} filterId the id of the filter to set up.
   * @param {!string} filterName the string name of the filter.
+  * @param {!number} minNameLength the minimum length for the string
+  *               a user types into the control at which a search 
+  *               of the filter values will be initiated.
   * @return {boolean} true if a filter is found and set up, else false.
   */
-  setupFeatFilter(filterId, filterName){
+  setupFeatFilter(filterId, filterName, minNameLength){
     let featFilter = document.getElementById(filterId);
     if (featFilter !== null){
       try{
         //Now we set up the control as a typeahead.
         let filterData = this.mapFilterData.get(filterName);
-        this.mapFeatFilters.set(filterName, new SSTypeAhead(featFilter, filterData, filterName, this.minWordLength));
+        this.mapFeatFilters.set(filterName, new SSTypeAhead(featFilter, filterData, filterName, minNameLength));
         //Re-enable it.
         let inp = featFilter.querySelector('input');
         inp.disabled = false;
@@ -540,7 +543,7 @@ class StaticSearch{
           let fch = await fetch(this.jsonDirectory + 'filters/' + filterId + this.versionString + '.json');
           let json = await fch.json();
           this.mapFilterData.set(json.filterName, json);
-          this.setupFeatFilter(json.filterId, json.filterName);
+          this.setupFeatFilter(json.filterId, json.filterName, json.minNameLength);
         }
     //Then set its checkboxes appropriately.
         this.mapFeatFilters.get(key).setCheckboxes(searchParams.getAll(key));

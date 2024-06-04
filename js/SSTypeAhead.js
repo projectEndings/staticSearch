@@ -33,14 +33,17 @@
   *              as JSON by the StaticSearch instance which is 
   *              creating this control.
   * @param {!string} filterName the textual descriptive name of the 
-  *              filter.
+  *              filter.* 
+  * @param {!number} minNameLength the minimum length of textual input that
+  *               will trigger a typeahead search. Normally equal to the 
+  *               shortest length of item in the typeahead data list.
   *              
   */
-  constructor(rootEl, filterData, filterName, minWordLength){
+  constructor(rootEl, filterData, filterName, minNameLength){
     this.rootEl = rootEl;
     this.filterData = filterData;
     this.filterName = filterName;
-    this.minWordLength = minWordLength;
+    this.minNameLength = minNameLength;
     this.reId = /^ssFeat\d+_\d+$/;
     //Because so much staticSearch filter handling is based on 
     //the string values of items rather than ids, we create a map
@@ -106,7 +109,7 @@
   *              matches.
   */
   populate(){
-    if ((this.populating)||(this.input.value.length < this.minWordLength)){
+    if ((this.populating)||(this.input.value.length < this.minNameLength)){
       return;
     }
     this.populating = true;

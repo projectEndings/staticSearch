@@ -789,6 +789,12 @@
                         <!--Now fork on filter types and call the respective functions-->
                         <xsl:choose>
                             <xsl:when test="$thisFilterType = ('desc', 'feat')">
+                                <xsl:if test="$thisFilterType = 'feat'">
+                                    <number key="minNameLength">
+                                        <xsl:sequence 
+                                            select="min(($minWordLength, ($thisFilterMetas ! string-length(@content))))"/>
+                                    </number>
+                                </xsl:if>
                                 <xsl:sequence select="hcmc:createDescFeatFilterMap($thisFilterMetas, $thisFilterId)"/>
                             </xsl:when>
                             <xsl:when test="$thisFilterType = 'date'">
