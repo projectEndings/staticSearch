@@ -2,6 +2,22 @@
  * test suite, and is never needed in a working search 
  * application context. */
 
+/*  Uncomment this if you wish to work on scrolling a
+ *  result set into view while working around the problem
+ *  of a fixed header which may obscure it. This provides 
+ *  an extreme example of the problem for dev purposes. */
+/* 
+body:has(div#staticSearch) h1{
+    position: fixed;
+    top: 0;
+    margin: 0 0 0.25em 0;;
+    padding: 1em;
+    background-color: white;
+    border: solid 1pt gray;
+    width: 100%;
+    height: 30vh;
+} */
+
 #testResults{
   margin: 2em;
   border-top: solid 1pt black;

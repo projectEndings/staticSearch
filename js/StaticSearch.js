@@ -355,6 +355,11 @@ class StaticSearch{
       //search has completed.
       this.searchFinishedHook = function(num){};
 
+      //We add another function which can be overridden by end-users if
+      //for example they need the results div to be scrolled while taking
+      //account of a fixed page header or something similar.
+      this.scrollToResults = function(){this.resultsDiv.scrollIntoView({behavior: 'smooth', block: 'start'});};
+
       //We add a method which can be overridden by end users to do any 
       //special handling for input strings (such as removing some diacritics
       //but not others).
@@ -680,7 +685,7 @@ class StaticSearch{
     else{
       this.isSearching = false;
     }
-    window.scroll({ top: this.resultsDiv.offsetTop, behavior: "smooth" });
+    this.scrollToResults();
     return result;
   }
 
