@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <grammar xmlns="http://relaxng.org/ns/structure/1.0"
           xmlns:tei="http://www.tei-c.org/ns/1.0"
           xmlns:teix="http://www.tei-c.org/ns/Examples"
           xmlns:xlink="http://www.w3.org/1999/xlink"
           datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
           ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2023-11-24T19:18:34Z. 2019-2023. 
+Schema generated from ODD source 2024-06-07T16:29:46Z. 2019-2023. 
 TEI Edition: P5 Version 4.7.0. Last updated on 16th November 2023, revision e5dd73ed0 
 TEI Edition Location: https://www.tei-c.org/Vault/P5/4.7.0/ 
   
@@ -35,7 +35,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.7.0/
       <ns xmlns="http://purl.oclc.org/dsdl/schematron"
            prefix="xh"
            uri="http://www.w3.org/1999/xhtml"/>
-      <pattern xmlns="http://purl.oclc.org/dsdl/schematron" id="d10e3373-constraint">
+      <pattern xmlns="http://purl.oclc.org/dsdl/schematron" id="d10e3393-constraint">
          <rule context="xh:span">
             <report test="descendant::*[not(namespace-uri(.) =               ('http://www.w3.org/1999/xhtml', 'http://www.tei-c.org/ns/1.0'))]">span descendants must be in the
               namespaces
@@ -66,7 +66,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.7.0/
                         name="version"
                         a:defaultValue="1">
                <a:documentation>(specifies the major version of staticSearch to which
-                  this configuration file corresponds. If this attribute is not used, the configuration file is assumed to have an version value of 1.) </a:documentation>
+                  this configuration file corresponds. If this attribute is not used, the configuration file is assumed to have a version value of 1.) </a:documentation>
                <data type="nonNegativeInteger"/>
             </attribute>
          </optional>
@@ -168,6 +168,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.7.0/
          <empty/>
          <sch:ns xmlns="http://www.tei-c.org/ns/1.0"
                   xmlns:math="http://www.w3.org/1998/Math/MathML"
+                  xmlns:rng="http://relaxng.org/ns/structure/1.0"
                   xmlns:sch="http://purl.oclc.org/dsdl/schematron"
                   xmlns:svg="http://www.w3.org/2000/svg"
                   xmlns:xh="http://www.w3.org/1999/xhtml"
@@ -176,6 +177,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.7.0/
                   prefix="ss"/>
          <sch:pattern xmlns="http://www.tei-c.org/ns/1.0"
                        xmlns:math="http://www.w3.org/1998/Math/MathML"
+                       xmlns:rng="http://relaxng.org/ns/structure/1.0"
                        xmlns:sch="http://purl.oclc.org/dsdl/schematron"
                        xmlns:svg="http://www.w3.org/2000/svg"
                        xmlns:xh="http://www.w3.org/1999/xhtml"
@@ -394,13 +396,19 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.7.0/
    </define>
    <define name="filter">
       <element name="filter" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Allows specification of a custom label for a filter on the search page) Filters are identified through plain-text labels defined as XHTML meta/@name attributes in the document headers. This element allows a user to specify a richer label for a particular filter by using HTML code. Multiple labels may be specified in different languages. The <code xmlns="http://www.w3.org/1999/xhtml">@filterName</code> attribute must be supplied, and must be identical to the XHTML meta/@name attribute for the filter as it appears in the HTML document heads.</a:documentation>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Allows specification of a custom label for a filter on the search page) Filters are identified through plain-text labels defined as XHTML meta/@name attributes in the document headers. This element allows a user to specify a richer label for a particular filter by using HTML code. Multiple labels may be specified in different languages. The <code xmlns="http://www.w3.org/1999/xhtml"
+                   xmlns:rng="http://relaxng.org/ns/structure/1.0">@filterName</code> attribute must be supplied, and must be identical to the XHTML meta/@name attribute for the filter as it appears in the HTML document heads.</a:documentation>
          <oneOrMore>
             <ref name="span"/>
          </oneOrMore>
          <attribute name="filterName">
             <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
          </attribute>
+         <optional>
+            <attribute name="sortable">
+               <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+            </attribute>
+         </optional>
          <empty/>
       </element>
    </define>

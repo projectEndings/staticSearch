@@ -28,7 +28,7 @@
              xmlns:tei="http://www.tei-c.org/ns/1.0"
              xmlns:teix="http://www.tei-c.org/ns/Examples"
              xmlns:xlink="http://www.w3.org/1999/xlink"
-             id="d10e3373-constraint">
+             id="d10e3393-constraint">
       <rule context="xh:span">
          <report test="descendant::*[not(namespace-uri(.) =               ('http://www.w3.org/1999/xhtml', 'http://www.tei-c.org/ns/1.0'))]">span descendants must be in the
               namespaces

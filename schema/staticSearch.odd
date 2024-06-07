@@ -2192,6 +2192,11 @@
                   <dataRef key="teidata.text"/>
                 </datatype>
               </attDef>
+              <attDef ident="sortable" usage="opt">
+                <datatype>
+                  <dataRef key="teidata.truthValue"/>
+                </datatype>
+              </attDef>
             </attList>
           </elementSpec>
           
