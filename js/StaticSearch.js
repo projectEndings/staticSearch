@@ -29,6 +29,8 @@
   * input[type='number'].staticSearch_num      (optional; inputs for numerical filters)
   * input[type='checkbox'].staticSearch_bool  (optional: checkboxes for boolean filters)
   * input[type='text'].staticSearch_text  (NOT YET IMPLEMENTED: type-in search filter boxes)
+  * input[type='checkbox']#ssCaseSensitivePhrasal  (optional; checkbox to control case-sensitivity 
+  *                                                 in phrasal searches)
   *
   * The first is mandatory, although the user is
   * not required to use it; they may choose simply
@@ -113,6 +115,13 @@ class StaticSearch{
       if (this.searchButton2){
         this.searchButton2.addEventListener('click', function(){this.doSearch(); return false;}.bind(this));
       }
+
+      //Optional case-sensitivity checkbox for phrasal searches.
+      this.chkCaseSensitivePhrasal = document.querySelector("input#ssChkCaseSensitivePhrasal");
+      if (this.chkCaseSensitivePhrasal){
+        this.queryBox.addEventListener('change', function(){this.showHideCaseSensitivityControl(); return false;})
+      }
+
 
       //Clear button will be there if there are filter controls.
       this.clearButton = document.querySelector("button#ssClear");
@@ -2010,6 +2019,15 @@ if (this.discardedTerms.length > 0){
     }
   }
 
+  /** @function StaticSearch~showHideSensitivityControl
+   *  @description This function triggers from the onchange event of the 
+   *  query text box; if we find a phrasal search typed in there, we display
+   *  the case-sensitivity checkbox. 
+   * @return {boolean} true on success, false on failure
+   */
+  showHideSensitivityControl(){
+    //if (this.queryBox.match)
+  }
 
   /** @function StaticSearch~phraseToRegex
    *  @description This method takes a phrase and converts it
