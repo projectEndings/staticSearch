@@ -118,7 +118,7 @@ class StaticSearch{
 
       //Optional case-sensitivity checkbox for phrasal searches.
       this.chkCaseSensitivePhrasal = document.querySelector("input#ssChkCaseSensitivePhrasal");
-      if (this.chkCaseSensitivePhrasal){
+      if (this.allowPhrasal && this.chkCaseSensitivePhrasal){
         let fn = function(){this.showHideCaseSensitivityControl(); return false;}.bind(this);
         this.queryBox.addEventListener('input', fn);
       }
@@ -603,11 +603,17 @@ class StaticSearch{
           sel.selectedIndex = 0;
       }
     }
+    if (this.allowPhrasal && this.chkCaseSensitivePhrasal){
+      let val = (searchParams.has('chkCase'))? searchParams.get('chkCase') : 'true';
+      this.chkCaseSensitivePhrasal.checked = (val === 'false')? false : true;
+    }
 
     if (searchToDo === true){
       //Open any ancestor details elements.
       this.openAncestorElements(changedControls);
-
+      if (this.allowPhrasal && this.chkCaseSensitivePhrasal){
+        this.showHideCaseSensitivityControl();
+      }
       this.doSearch(popping);
       return true;
     }
@@ -785,7 +791,9 @@ class StaticSearch{
             search.push(sel.getAttribute('title') + '=' + ((sel.selectedIndex == 1)? 'true' : 'false'));
           }
         }
-
+        if (this.allowPhrasal && this.chkCaseSensitivePhrasal){
+          search.push('chkCase=' + (this.chkCaseSensitivePhrasal.checked ? 'true' : 'false'));
+        }
         if (search.length > 0){
           url += '?' + encodeURI(search.join('&'));
           history.pushState({time: Date.now()}, '', url);
