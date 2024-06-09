@@ -17,6 +17,11 @@ form#ssForm{
     display: flex;
     flex-direction: column;
 }
+
+input, select, button{
+    font-size: 1.25rem;
+}
+
 span.ssQueryAndButton{
     display: flex;
     flex-direction: row;

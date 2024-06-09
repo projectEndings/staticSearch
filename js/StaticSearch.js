@@ -119,7 +119,8 @@ class StaticSearch{
       //Optional case-sensitivity checkbox for phrasal searches.
       this.chkCaseSensitivePhrasal = document.querySelector("input#ssChkCaseSensitivePhrasal");
       if (this.chkCaseSensitivePhrasal){
-        this.queryBox.addEventListener('change', function(){this.showHideCaseSensitivityControl(); return false;})
+        let fn = function(){this.showHideCaseSensitivityControl(); return false;}.bind(this);
+        this.queryBox.addEventListener('input', fn);
       }
 
 
@@ -296,7 +297,6 @@ class StaticSearch{
       this.charsToDiscardPattern = /[\.,!;:@#$%”“\^&]/g;
       if (!this.allowWildcards){
           this.charsToDiscardPattern = /[\.,!;:@#$%\^&*?\[\]]/g;
-         
       };
 
       //Default set of stopwords
@@ -2019,14 +2019,19 @@ if (this.discardedTerms.length > 0){
     }
   }
 
-  /** @function StaticSearch~showHideSensitivityControl
+  /** @function StaticSearch~showHideCaseSensitivityControl
    *  @description This function triggers from the onchange event of the 
    *  query text box; if we find a phrasal search typed in there, we display
    *  the case-sensitivity checkbox. 
    * @return {boolean} true on success, false on failure
    */
-  showHideSensitivityControl(){
-    //if (this.queryBox.match)
+  showHideCaseSensitivityControl(){
+    if (this.queryBox.value.match(/".*"/)){
+      this.chkCaseSensitivePhrasal.parentNode.style.visibility = 'visible';
+    }
+    else{
+      this.chkCaseSensitivePhrasal.parentNode.style.visibility = 'hidden';
+    }
   }
 
   /** @function StaticSearch~phraseToRegex
@@ -2053,9 +2058,15 @@ if (this.discardedTerms.length > 0){
       strRe = strRe + '\\b';
     }
     // Test the regex and return null if it's broken
+    let re;
     try{
       //Make the phrase into a regex for matching.
-      let re = new RegExp(strRe);
+      if (this.chkCaseSensitivePhrasal.checked){
+        re = new RegExp(strRe, 'i');
+      }
+      else{
+        re = new RegExp(strRe);
+      }
       return re;
     }
     catch(e){
