@@ -26,13 +26,18 @@ span.ssQueryAndButton{
 input#ssQuery{
     flex: 1;
 }
+span.ssCaseSensitivePhrasal{
+    margin-bottom: 0.75rem;
+    visibility: hidden;
+}
+
 input.staticSearch_feat:disabled{
   cursor: wait;
 }
 
 /* Visually hide elements necessary for accessibility */
 fieldset.ssFieldset > legend.sr-only{
-     position: absolute;
+  position: absolute;
   width: 1px;
   height: 1px;
   padding: 0;

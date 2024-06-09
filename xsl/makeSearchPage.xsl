@@ -251,6 +251,13 @@
                     <input type="text" id="ssQuery" aria-label="{hcmc:getCaption('ssDoSearch', $captionLang)}"/>
                     <button id="ssDoSearch"><xsl:sequence select="hcmc:getCaption('ssDoSearch', $captionLang)"/></button>
                 </span>
+                <xsl:if test="$phrasalSearch">
+                    <span class="ssCaseSensitivePhrasal">
+                        <input type="checkbox" checked="checked" id="ssChkCaseSensitivePhrasal"/>
+                        <label for="ssChkCaseSensitivePhrasal"><xsl:value-of select="hcmc:getCaption('ssCaseSensitivePhrasal', $captionLang)"/></label>
+                    </span>
+                    
+                </xsl:if>
                 
                 <xsl:if test="not(empty($filterJSONURIs)) or not(empty($ssContextMap))">
                     <xsl:variable name="descFilters" select="$filterJSONURIs[matches(.,'ssDesc\d+.*\.json')]"/>

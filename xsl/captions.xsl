@@ -19,6 +19,7 @@
         'en':
             map{
                 'ssDoSearch': 'Search',
+                'ssCaseSensitivePhrasal': 'Make phrasal searches case-sensitive',
                 'ssSearching': 'Searching...',
                 'ssLoading': 'Loading...',
                 'ssClear': 'Clear',
@@ -30,6 +31,7 @@
         'fr': 
             map{
                 'ssDoSearch': 'Chercher',
+                'ssCaseSensitivePhrasal': 'Rendre les recherches phrastiques sensibles à la casse',
                 'ssSearching': 'Recherche en cours...',
                 'ssLoading': 'Chargement en cours...',
                 'ssClear': 'Effacer',
@@ -41,6 +43,7 @@
          'de': 
             map{
                 'ssDoSearch': 'Suche',
+                'ssCaseSensitivePhrasal': 'Machen Sie phrasale Suchanfragen Groß- und Kleinschreibung beachtend',
                 'ssSearching': 'Suche…',
                 'ssLoading': 'Lade…',
                 'ssClear': 'Leeren',
