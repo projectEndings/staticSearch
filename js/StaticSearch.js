@@ -2062,10 +2062,10 @@ if (this.discardedTerms.length > 0){
     try{
       //Make the phrase into a regex for matching.
       if (this.chkCaseSensitivePhrasal.checked){
-        re = new RegExp(strRe, 'i');
+        re = new RegExp(strRe);
       }
       else{
-        re = new RegExp(strRe);
+        re = new RegExp(strRe, 'i');
       }
       return re;
     }
