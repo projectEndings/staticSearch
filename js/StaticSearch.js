@@ -116,14 +116,6 @@ class StaticSearch{
         this.searchButton2.addEventListener('click', function(){this.doSearch(); return false;}.bind(this));
       }
 
-      //Optional case-sensitivity checkbox for phrasal searches.
-      this.chkCaseSensitivePhrasal = document.querySelector("input#ssChkCaseSensitivePhrasal");
-      if (this.allowPhrasal && this.chkCaseSensitivePhrasal){
-        let fn = function(){this.showHideCaseSensitivityControl(); return false;}.bind(this);
-        this.queryBox.addEventListener('input', fn);
-      }
-
-
       //Clear button will be there if there are filter controls.
       this.clearButton = document.querySelector("button#ssClear");
       if (this.clearButton){
@@ -241,6 +233,15 @@ class StaticSearch{
 
       //Configuration for phrasal searches if found. Default true.
       this.allowPhrasal = this.getConfigBool('allowphrasal', true);
+
+
+      //Optional case-sensitivity checkbox for phrasal searches.
+      this.chkCaseSensitivePhrasal = document.querySelector("input#ssChkCaseSensitivePhrasal");
+      if (this.allowPhrasal && this.chkCaseSensitivePhrasal){
+        let fn = function(){this.showHideCaseSensitivityControl(); return false;}.bind(this);
+        this.queryBox.addEventListener('input', fn);
+      }
+
 
       //Configuration for use of wildcards. Default false.
       this.allowWildcards = this.getConfigBool('allowwildcards', false);
