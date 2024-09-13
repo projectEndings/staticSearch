@@ -222,7 +222,7 @@ class SSResultSet{
           }
           let ctxIds = ctx.in;
           let ctxSet = new XSet(ctxIds);
-          let intersection = ctxSet.xIntersection(activeContextIds);
+          let intersection = ctxSet.intersection(activeContextIds);
           return (intersection.size > 0);
         });
         // If there are no contexts left, then

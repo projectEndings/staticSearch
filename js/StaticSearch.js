@@ -1187,7 +1187,7 @@ class StaticSearch{
       if (xSets.length > 0){
         let result = xSets[0];
         for (var i=1; i<xSets.length; i++){
-          result = result.xIntersection(xSets[i]);
+          result = result.intersection(xSets[i]);
         }
         result.filtersActive = true;
         return result;
