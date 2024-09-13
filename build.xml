@@ -177,13 +177,35 @@
     <if>
       <equals arg1="configTest.xml" arg2="${ssConfigFileName}"/>
       <then>
-        <delete file="${ssBaseDir}/test/VERSION"/>
+        <delete file="${ssBaseDir.converted}/test/VERSION"/>
         <exec executable="git">
           <arg value="rev-parse"/>
-          <arg value="--short"/>
-          <arg value="HEAD"/>
-          <redirector output="${ssBaseDir}/test/VERSION"/>
+          <arg value="--is-inside-work-tree"/>
+          <redirector outputproperty="isGitRepo"/>
         </exec>
+        <if>
+          <equals arg1="true" arg2="${isGitRepo}"/>
+          <then>
+            <exec executable="git">
+              <arg value="rev-parse"/>
+              <arg value="--short"/>
+              <arg value="HEAD"/>
+              <redirector output="${ssBaseDir}/test/VERSION"/>
+            </exec>
+          </then>
+          <else>
+            <!-- Generate a random version string. -->
+            <math result="rand" datatype="int">
+              <op op="rint">
+                <op op="*">
+                  <num value="1000"/>
+                  <op op="random"/>
+                </op>
+              </op>
+            </math>
+            <echo file="${ssBaseDir}/test/VERSION" message="vrand${rand}"/>
+          </else>
+        </if>
       </then>
     </if>
     <!-- If this build is our test suite, then we need to copy the 
