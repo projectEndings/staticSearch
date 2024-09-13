@@ -54,7 +54,7 @@
   </pathconvert>
 
   <!-- Use the saxon in our lib folder. -->
-  <property name="ssSaxon" value="${ssBaseDir.converted}/lib/saxon-he-11.4.jar"/>
+  <property name="ssSaxon" value="${ssBaseDir.converted}/lib/saxon-he-12.5.jar"/>
   
   <!-- Use the closure compiler in our lib folder. -->
   <property name="ssClosure" value="${ssBaseDir.converted}/lib/closure-compiler.jar"/>
