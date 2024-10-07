@@ -83,6 +83,12 @@
   <!--The derived name of the configuration directory based off of the configuration
         file path-->
   <dirname property="configDir" file="${ssConfigFile}"/>
+  
+  <condition property="isWindows">
+    <os family="windows" />
+  </condition>
+  
+  
 
   <pathconvert property="configDir.converted" dirsep="/">
     <path location="${configDir}" />
@@ -268,7 +274,8 @@
       <arg value="-xsl:${ssBaseDir.converted}/xsl/create_config_xsl.xsl"/>
       <arg value="-s:${ssBaseDir.converted}/xsl/create_config_xsl.xsl"/>
       <arg value="--suppressXsltNamespaceCheck:on"/>
-      <arg value="configFile=file://${ssConfigFile}"/>
+      <arg value="configFile=file://${ssConfigFile}" unless:true="${isWindows}"/>
+      <arg value="configFile=file:///${ssConfigFile}" if:true="${isWindows}"/>
       <arg value="ssBaseDir=${ssBaseDir.converted}"/>
       <arg value="ssVerbose=${ssVerbose}"/>
       <arg value="ssPatternsetFile=file:///${ssPatternsetFile}"/>
