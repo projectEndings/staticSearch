@@ -430,6 +430,20 @@ tests.push({
     })
   }
 })
+//Testing tokenization with a word containing an undertie (connector punctuation).
+tests.push({
+  setup: function(){
+    Sch.queryBox.value = 'kn‿kaš'
+  },
+  check: function(num){
+    console.log('search hook ' + num);
+    console.log('Testing results for a word containing connector punctuation');
+    checkResults({
+      docsFound: 1, contextsFound: 2, scoreTotal: 2
+    })
+  }
+})
+
 
 var startTime = null;
 
