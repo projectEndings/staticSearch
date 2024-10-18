@@ -551,8 +551,12 @@
         <!--Create the the context string, and add an escaped
             version of the mark element around it (the kwicTruncateString is added by the returnSnippet
             function)-->
+        <xsl:variable name="taggedStartSnippet" as="xs:string" select="replace(hcmc:sanitizeForJson($startSnippet), '^' || $kwicTruncateString, '&lt;span class=&quot;trunc&quot;&gt;' || $kwicTruncateString || '&lt;/span&gt;')"/>
+        
+        <xsl:variable name="taggedEndSnippet" as="xs:string" select="replace(hcmc:sanitizeForJson($endSnippet), $kwicTruncateString || '$', '&lt;span class=&quot;trunc&quot;&gt;' || $kwicTruncateString || '&lt;/span&gt;')"/>
+        
         <xsl:sequence
-          select="hcmc:sanitizeForJson($startSnippet) || '&lt;mark&gt;' || $thisTerm || '&lt;/mark&gt;' || hcmc:sanitizeForJson($endSnippet)"/>
+          select="$taggedStartSnippet || '&lt;mark&gt;' || $thisTerm || '&lt;/mark&gt;' || $taggedEndSnippet"/>
     </xsl:function>
   
   <xd:doc>
