@@ -1211,9 +1211,24 @@
         <head>What's new since version 1.0?</head>
         <list>
           <item>Level: Intermediate</item>
-          <item>Last Updated: <date when="2024-05-08">8 May 2024</date></item>
+          <item>Last Updated: <date when="2024-10-22">22 October 2024</date></item>
         </list>
         
+        <div xml:id="newIn1.4.9">
+          <head>Changes in version 1.4.9</head>
+          <p>Bug fix:</p>
+          <list>
+            <item>Documentation was updated.</item>
+          </list>
+        </div>
+        
+        <div xml:id="newIn1.4.8">
+          <head>Changes in version 1.4.8</head>
+          <p>Bug fix:</p>
+          <list>
+            <item>A bug which caused a VERSION file to be created containing a git error message if the user chose to customize the test suite instead of creating their own configuration has been fixed. A random version identifier is created instead.</item>
+          </list>
+        </div>
         <div xml:id="newIn1.4.7">
           <head>Changes in version 1.4.7</head>
           <p>Bug fixes:</p>
@@ -1804,7 +1819,8 @@
                 when users repeatedly visit the search page, but if the project is rebuilt with 
                 a new version, those cached files will not be used because the new version will
                 have different filenames. The path specified is relative to the location of the
-                configuration file (or absolute, if you wish).</p>
+                configuration file (or absolute, if you wish). If you do not provide a version 
+                file, a random identifier will be generated instead.</p>
             </remarks>
           </elementSpec>
           
