@@ -37,7 +37,10 @@
      *                           Properties                         *
      *                                                              *
      ****************************************************************-->
-
+  
+  <!-- We want to allow users to turn fork=true off if they need to
+       because of Security Manager warnings. -->
+  <property name="javaFork" value="true"/>
 
   <!-- We want our own base directory in case basedir is overridden
        by an invoking ant process. -->
