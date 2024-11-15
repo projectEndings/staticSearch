@@ -28,7 +28,7 @@
         </docTitle>
         <docAuthor>Martin Holmes</docAuthor>
         <docAuthor>Joey Takeda</docAuthor>
-        <docDate>2019-2023</docDate>
+        <docDate>2019-2024</docDate>
       </titlePage>
       <p>This documentation provides instructions on how to use the Project Endings
         staticSearch Generator to provide a fully-functional search <soCalled>engine</soCalled>
@@ -1186,8 +1186,14 @@
           <row>
             <cell>How do I prevent staticSearch from encountering out of memory errors?</cell>
             <cell>If you are indexing a very large collection of files, you may need to provide ant with additional memory by configuring the ANT_OPTS system property. To provide ant with 4GB of memory, you could do something like so:
-              <eg>export ANT_OPTS="-Xmx4g"; ant -DssConfigFile=/absolute/path/to/your/config.xml</eg>
-              How much memory you can and should provide to Ant depends on your particular system and the size of the document collection. See  <ref target="https://ant.apache.org/manual/install.html">Ant's documentation</ref> for some further examples and explanation.</cell>
+              <eg>export ANT_OPTS="-Xmx4g"; ant -DjavaFork=false
+                -DssConfigFile=/absolute/path/to/your/config.xml</eg>
+              How much memory you can and should provide to Ant depends on your particular system and the size of the document collection. See  <ref target="https://ant.apache.org/manual/install.html">Ant's documentation</ref> for some further examples and explanation. 
+              The javaFork parameter prevents calls to Java processes (such as Saxon) from 
+              forking into a new Java VM, which allows them to take advantage of the expanded 
+              memory you have assigned to Ant.
+              <eg></eg>
+              This </cell>
           </row>
         </table>
       </div>
