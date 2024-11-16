@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns="http://www.tei-c.org/ns/1.0"
+   xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+   xmlns:xh="http://www.w3.org/1999/xhtml">
+  <teiHeader>
+      <fileDesc>
+         <titleStmt>
+            <title>staticSearch ODD 2.0</title>
+         </titleStmt>
+         <publicationStmt>
+            <p>Modification of staticSearch ODD for testing v2.0</p>
+      </publicationStmt>
+         <sourceDesc>
+            <p>born digital</p>
+         </sourceDesc>
+      </fileDesc>
+  </teiHeader>
+  <text>
+     <front>
+        <div>
+           
+        </div>
+     </front>
+      <body>
+         
+         
+         <schemaSpec ident="staticSearch2" start="config" ns="http://hcmc.uvic.ca/ns/staticSearch"
+            defaultExceptions="http://hcmc.uvic.ca/ns/staticSearch" source="staticSearch.odd">
+            <moduleRef key="ss"/>
+            <moduleRef key="ssHTML"/> 
+
+            <elementSpec ident="params" mode="change">
+               <content>
+                  <sequence preserveOrder="false">
+                     <elementRef key="searchPage"/>
+                     <elementRef key="index" minOccurs="0"/>
+                     <elementRef key="stopwordsFile" minOccurs="0"/>
+                     <elementRef key="dictionaryFile"
+                        minOccurs="0"/>
+                     <elementRef key="tokenizer" minOccurs="0"/>
+                     <elementRef key="scoringAlgorithm"
+                        minOccurs="0"/>
+                     <elementRef key="stemmerFolder" minOccurs="0"/>
+                     <elementRef key="contextOptions"
+                        minOccurs="0"/>
+                     <elementRef key="results" minOccurs="0"/>
+                     <elementRef key="versionFile" minOccurs="0"/>
+                     <elementRef key="outputFolder"/>
+                  </sequence>
+               </content>
+            </elementSpec>
+            
+            <elementSpec ident="searchPage" mode="change">
+               <classes mode="change">
+                  <memberOf key="ss.atts.file"/>
+               </classes>
+               <content>
+                  <empty/>
+               </content>
+            </elementSpec>
+            
+            <elementSpec ident="recurse"
+               mode="delete"/>
+            <!--Add new index element to replace recurse-->
+            <elementSpec ident="index" mode="add">
+               <gloss>Configures options relating to indexing</gloss>
+               <attList>
+                  <attDef ident="recurse" usage="rec">
+                     <datatype>
+                        <dataRef key="boolean"/>
+                     </datatype>
+                     <defaultVal>false</defaultVal>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            
+            <!--Rename stopwordsFile-->
+            <elementSpec ident="stopwordsFile"
+               mode="change">
+               <altIdent>stopwords</altIdent>
+               <classes mode="change">
+                  <memberOf key="ss.atts.file"/>
+               </classes>
+               <content>
+                  <empty/>
+               </content>
+               <attList>
+                  <attDef ident="file"
+                     mode="change">
+                     <defaultVal>test/test_stopwords.txt</defaultVal>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            
+            <!--Rename dictionaryFile -->
+            <elementSpec ident="dictionaryFile"
+               mode="change">
+               <altIdent>dictionary</altIdent>
+               <classes mode="change">
+                  <memberOf key="ss.atts.file"/>
+               </classes>
+               <content>
+                  <empty/>
+               </content>
+               <attList>
+                  <attDef ident="file"
+                     mode="change">
+                     <defaultVal>xsl/english_words.txt</defaultVal>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            
+            <!--Remove minWordLength and replace with tokenizer-->
+            <elementSpec ident="minWordLength" mode="delete"/>
+            <elementSpec ident="tokenizer" module="ss" mode="add">
+               <gloss>Configures options for the tokenizing process</gloss>
+               <attList>
+                  <attDef ident="minWordLength" usage="rec">
+                     <datatype>
+                        <dataRef name="nonNegativeInteger"/>
+                     </datatype>
+                     <defaultVal>2</defaultVal>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            
+            <!-- Update scoringAlgorithm -->
+            <elementSpec ident="scoringAlgorithm"
+               mode="change">
+               <content>
+                  <empty/>
+               </content>
+               <attList>
+                  <attDef ident="name" mode="add" usage="rec">
+                     <defaultVal>raw</defaultVal>
+                     <valList type="closed">
+                        <valItem ident="raw">
+                           <desc>raw score</desc>
+                           <gloss>Default: Calculate the score based off of the weighted number of 
+                              instances of a term in a text.</gloss>
+                        </valItem>
+                        <valItem ident="tf-idf">
+                           <gloss>Calculate the score based off of the tf-idf scoring algorithm.</gloss>
+                        </valItem>
+                     </valList>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            
+            <!--Update stemmerFolder and rename to stemmer-->
+            <elementSpec ident="stemmerFolder" mode="change">
+               <altIdent>stemmer</altIdent>
+               <attList>
+                  <attDef ident="dir" mode="add" usage="rec">
+                     <gloss>The directory for the stemmer</gloss>
+                     <datatype>
+                        <dataRef name="anyURI"/>
+                     </datatype>
+                     <defaultVal>stemmers/en/</defaultVal>
+                     <valList type="semi">
+                        <valItem ident="stemmers/en/">
+                           <desc>English stemmer</desc>
+                        </valItem>
+                        <valItem ident="stemmers/fr/">
+                           <desc>French stemmer</desc>
+                        </valItem>
+                        <valItem ident="stemmers/identity">
+                           <desc>Identity stemmer</desc>
+                        </valItem>
+                     </valList>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            
+            <!--Delete createContexts, phrasalSearch, wildcardSearch, createContexts, maxKwicsToHarvest, totalKwicLength, and kwicTruncateString and convert to attributes -->
+            <elementSpec ident="createContexts" mode="delete"/>
+            <elementSpec ident="phrasalSearch" mode="delete"/>
+            <elementSpec ident="wildcardSearch" mode="delete"/>
+            <elementSpec ident="createContexts" mode="delete"/>
+            <elementSpec ident="maxKwicsToHarvest" mode="delete"/>
+            <elementSpec ident="totalKwicLength" mode="delete"/>
+            <elementSpec ident="kwicTruncateString" mode="delete"/>
+            <!--TODO: We have this has contexts in the GitHub issue, but that's a name collision-->
+            <elementSpec ident="contextOptions" mode="add" module="ss">
+               <content>
+                  <empty/>
+               </content>
+               <attList org="choice">
+                  <attList org="group">
+                     <attDef ident="create">
+                        <valList type="closed">
+                           <valItem ident="false"/>
+                        </valList>
+                     </attDef>
+                  </attList>
+                  <attList org="group">
+                     <attDef ident="create">
+                        <valList type="closed">
+                           <valItem ident="true"/>
+                        </valList>
+                     </attDef>
+                     <attDef ident="phrasalSearch">
+                        <datatype>
+                           <dataRef name="boolean"/>
+                        </datatype>
+                        <defaultVal>true</defaultVal>
+                     </attDef>
+                     <attDef ident="wildcardSearch">
+                        <datatype>
+                           <dataRef name="boolean"/>
+                        </datatype>
+                        <defaultVal>true</defaultVal>
+                     </attDef>
+                     <!--TODO: This will also need to be
+                        constrained since the value doesn't matter
+                     unless wildcardSearch and phrasalSearch are
+                     false-->
+                     <attDef ident="maxKwicsToHarvest">
+                        <datatype>
+                           <dataRef name="nonNegativeInteger"/>
+                        </datatype>
+                        <defaultVal>5</defaultVal>
+                     </attDef>
+                     <attDef ident="maxKwicLength">
+                        <datatype>
+                           <dataRef name="nonNegativeInteger"/>
+                        </datatype>
+                        <defaultVal>15</defaultVal>
+                     </attDef>
+                     <attDef ident="kwicTruncateString">
+                        <datatype>
+                           <dataRef name="string"/>
+                        </datatype>
+                        <defaultVal>...</defaultVal>
+                     </attDef>
+                  </attList>
+               </attList>
+            </elementSpec>
+            
+            <!--Remove maxKwicsToShow-->
+            <elementSpec ident="maxKwicsToShow" mode="delete"/>
+            <elementSpec ident="resultsPerPage" mode="delete"/>
+            <elementSpec ident="resultsLimit" mode="delete"/>
+            
+            <elementSpec ident="results" mode="add" module="ss">
+               <gloss>Controls results configuration</gloss>
+               <attList>
+                  <attDef ident="resultsPerPage">
+                     <datatype>
+                        <dataRef name="nonNegativeInteger"/>
+                     </datatype>
+                     <defaultVal>25</defaultVal>
+                  </attDef>
+                  <attDef ident="maxKwicsToShow">
+                     <datatype>
+                        <dataRef name="nonNegativeInteger"/>
+                     </datatype>
+                     <defaultVal>25</defaultVal>
+                  </attDef>
+                  <!--NOTE: Renamking resultsLimit to maxResults-->
+                  <attDef ident="maxResults">
+                     <datatype>
+                        <dataRef name="nonNegativeInteger"/>
+                     </datatype>
+                     <defaultVal>2000</defaultVal>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="versionFile" mode="change"
+               module="ss">
+               <altIdent>version</altIdent>
+               <classes mode="change">
+                  <memberOf key="ss.atts.file" mode="add"/>
+               </classes>
+               <content>
+                  <empty/>
+               </content>
+            </elementSpec>
+            <elementSpec ident="outputFolder" mode="change">
+               <altIdent>outputDir</altIdent>
+               <content>
+                  <empty/>
+               </content>
+               <attList>
+                  <attDef mode="add" ident="name">
+                     <datatype>
+                        <dataRef name="NCName"/>
+                     </datatype>
+                     <defaultVal>staticSearch</defaultVal>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            
+            
+            
+            <classSpec type="atts" ident="ss.atts.file"
+               mode="add" module="ss">
+               <attList>
+                  <attDef ident="file" usage="req">
+                     <gloss>A pointer to a local file</gloss>
+                     <datatype>
+                        <dataRef name="anyURI"/>
+                     </datatype>
+                  </attDef>
+               </attList>
+            </classSpec>
+         </schemaSpec>
+      </body>
+  </text>
+</TEI>
