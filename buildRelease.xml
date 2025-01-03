@@ -15,7 +15,19 @@
         **********************************************************
     -->
 
-
+  <!--****************************************************************
+     *                                                              *
+     *                       Task Definitions                       *
+     *                                                              *
+     ****************************************************************-->
+  
+  <!--  We need ant contrib. -->
+  <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+    <classpath>
+      <pathelement location="${basedir}/lib/ant-contrib.jar"/>
+    </classpath>
+  </taskdef>
+  
   <!--****************************************************************
      *                                                              *
      *                           Properties                         *
@@ -26,31 +38,6 @@
        by an invoking ant process. -->
   <dirname property="ssBaseDir" file="${ant.file}"/>
 
-  <!-- Use the saxon in our lib folder. -->
-  <property name="ssSaxon" value="${ssBaseDir}/lib/saxon-he-12.5.jar"/>
-  
-  <!-- STOPPING HERE, waiting for a decision on whether to include the closure compiler
-       in the distro package and rebuild the JS every time, or pre-build it once and 
-       put a compiled version into the distro package. -->
-  
-  <!-- Use the closure compiler in our lib folder. -->
-  <property name="ssClosure" value="${ssBaseDir}/lib/closure-compiler.jar"/>
-  <taskdef name="jscomp" classname="com.google.javascript.jscomp.ant.CompileTask" classpath="${ssClosure}"/>
-  
-  <!-- Normally we suppress warnings, but we may turn them ("verbose") on for testing. -->
-  <property name="ssClosureWarning" value="quiet"/>
-  
-  <!-- Normally we stick to simple optimizations, but the user may wish to override
-       in search of performance. WARNING: setting compilation level to ADVANCED seems
-       to break it completely. -->
-  <property name="ssClosureCompilationLevel" value="SIMPLE"/>
-  
-  <!-- What output conformity we want for our JS. We're fairly forward-looking by default. -->
-  <property name="ssClosureOutputSpec" value="ECMASCRIPT_2019"/>
-
-  <!--Set the verbose flag to false by default; set to true to see detailed messages-->
-  <property name="ssVerbose" value="false"/>
-
   <!--Output folder for the package we create. -->
   <property name="distOutputFolder" value="${ssBaseDir}/dist"/>
   
@@ -59,435 +46,96 @@
   
   <!--The temporary directory for distro files before zipping etc.-->
   <property name="staticSearchTempDir" value="${ssBaseDir}/${tempFolder}"/>
-
-
-<!-- NO CHANGES HERE YET. Retaining existing targets in case we need any
-     of them, or variants of them. -->
-
-  <!--****************************************************************
-     *                                                              *
-     *                           Targets                            *
-     *                                                              *
-     ****************************************************************-->
-
-  <target name="init">
-    <description>
-      TARGET: init
-      This target initializes the static search indexing process. It first
-      deletes any previous results from an earlier build and then recreates the staticSearchDir,
-      which is simply the parent directory of the search file specified in the config file. In the
-      special case of the test, this target also generates the VERSION file. </description>
-    <echo message="Initializing staticSearch build using codebase in ${ssBaseDir.converted}..."/>
-    <echo message="Deleting old products..."/>
-    <delete dir="temp"/>
-    <delete file="${ssBaseDir.converted}/xsl/config.xsl"/>
-    <delete file="${tempSearchPageOutput}"/>
-    <delete dir="${staticSearchDir}"/>
-    <echo message="Creating new static search directory: ${staticSearchDir}"/>
-    <mkdir dir="${staticSearchDir}"/>
-
-    <echo>Running staticSearch build based on config file: 
-    ${ssConfigFile}</echo>
-
-    <!-- If we're building the test data, we need to generate the VERSION file
-         and also copy the .htm_ files to .html before starting. -->
-    <if>
-      <equals arg1="configTest.xml" arg2="${ssConfigFileName}"/>
-      <then>
-        <delete file="${ssBaseDir.converted}/test/VERSION"/>
-        <exec executable="git">
-          <arg value="rev-parse"/>
-          <arg value="--is-inside-work-tree"/>
-          <redirector outputproperty="isGitRepo"/>
-        </exec>
-        <if>
-          <equals arg1="true" arg2="${isGitRepo}"/>
-          <then>
-            <exec executable="git">
-              <arg value="rev-parse"/>
-              <arg value="--short"/>
-              <arg value="HEAD"/>
-              <redirector output="${ssBaseDir.converted}/test/VERSION"/>
-            </exec>
-          </then>
-          <else>
-            <!-- Generate a random version string. -->
-            <math result="rand" datatype="int">
-              <op op="rint">
-                <op op="*">
-                  <num value="1000"/>
-                  <op op="random"/>
-                </op>
-              </op>
-            </math>
-            <echo file="${ssBaseDir.converted}/test/VERSION" message="vrand${rand}"/>
-          </else>
-        </if>
-      </then>
-    </if>
-    <!-- If this build is our test suite, then we need to copy the 
-      template file for the search page (*.htm_) to its output file (*.html) so the
-      build process can use it. This enables us to avoid a constantly-changing 
-      .html file that causes endless merge conflicts.
-    -->
-    <if>
-      <equals arg1="configTest.xml" arg2="${ssConfigFileName}"/>
-      <then>
-        <copy file="${ssBaseDir.converted}/test/search.htm_" tofile="${ssBaseDir.converted}/test/search.html"/>
-      </then>
-    </if>
-  </target>
-
-  <target name="validate">
-    <description>
-      TARGET: validate
-      Task to validate that the source XHTML is well-formed XHTML. Note that this DOES
-      NOT check whether or not it is valid XHTML: only that it is well-formed. This target also
-      checks the config file and sees if it's invalid. We don't fail if it's invalid, though, since
-      we must assume that some people just don't care: but raise the error anyway. 
-    </description>
-    <echo message="Validating ${ssCollectionDirName.converted} for well-formedness"/>
-    <!--@lenient='true' since we are only checking well-formedness-->
-    <xmlvalidate lenient="true">
-      <!--TODO: This should really validate the actual set of files, and not just any-->
-      <fileset dir="${ssCollectionDirName.converted}" casesensitive="false">
-        <filename regex=".+\..?htm.?$"/>
-        <!--Don't validate items that may be in a different staticSearch output-->
-        <exclude name="**/${staticSearchTempFolder}/**"/>
-        <exclude name="**/staticSearch_report.html"/>
-      </fileset>
-    </xmlvalidate>
-    <echo message="Validating ${ssConfigFile} against the staticSearch schema..."/>
-    <exec executable="java" failonerror="false">
-      <arg line="-jar ${ssBaseDir.converted}/lib/jing.jar"/>
-      <arg value="${ssBaseDir.converted}/schema/staticSearch.rng"/>
-      <arg value="${ssConfigFile}"/>
-    </exec>
-  </target>
-
-
-
-  <target name="config">
-    <description>
-      TARGET: config
-      This target creates an XSLT module from the XML configuration file,
-      and converts the various configuration options into XSLT variables, et cetera, necessary
-      throughout in the pipeline. The XSLT is run on itself, but loads the configuration file as a
-      parameter. </description>
-    <echo message="Creating configuration file..."/>
-    <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
-      <arg value="-xsl:${ssBaseDir.converted}/xsl/create_config_xsl.xsl"/>
-      <arg value="-s:${ssBaseDir.converted}/xsl/create_config_xsl.xsl"/>
-      <arg value="--suppressXsltNamespaceCheck:on"/>
-      <arg value="configFile=file://${ssConfigFile}" unless:true="${isWindows}"/>
-      <arg value="configFile=file:///${ssConfigFile}" if:true="${isWindows}"/>
-      <arg value="ssBaseDir=${ssBaseDir.converted}"/>
-      <arg value="ssVerbose=${ssVerbose}"/>
-      <arg value="ssPatternsetFile=file:///${ssPatternsetFile}"/>
-    </java>
-  </target>
   
-  <target name="tokenize">
+  <!-- The fileset we need. -->
+  <fileset id="requiredFiles" dir="${ssBaseDir}">
+    <include name="css/**/*"/>
+    <include name="docs/staticSearch.html"/>
+    <include name="docs/documentation.css"/>
+    <include name="js/**/*"/>
+    <include name="lib/**/*"/>
+    <include name="schema/staticSearch.odd"/>
+    <include name="schema/staticSearch.rng"/>
+    <include name="schema/staticSearch.sch"/>
+    <!-- NOTE: If we move the stemmers around, this will need to change. -->
+    <include name="stemmers/**/*"/>
+    <include name="xsl/**/*"/>
+    <include name="build.xml"/>
+    <include name="EDITION"/>
+    <include name="license_BSD.txt"/>
+  </fileset>
+  
+  <loadfile property="edition" srcFile="${ssBaseDir}/EDITION"/>
+  
+  <target name="readEdition">
     <description>
-      TARGET: tokenize
-      This target runs the multi-stage tokenization process on the
-      XHTML collection and creates a stash of tokenized and cleaned up files from which we generate
-      the individual token JSONs. The XSLT is run on itself and uses the information in the config
-      XSLT module (generated in the config task) to determine the input files, et cetera. </description>
-    <echo message="Creating tokenized XHTML files..."/>
-    <loadfile srcFile="${ssPatternsetFile}" property="ptn" failonerror="true"/>
-
-    <xslt
-      style="${ssBaseDir.converted}/xsl/tokenize.xsl" classpath="${ssSaxon}" destdir="${staticSearchTempDir}"
-       reloadstylesheet="true" 
-       force="true"
-      useimplicitfileset="false">
-      <factory name="net.sf.saxon.TransformerFactoryImpl"/>
-      <fileset id="siteFiles" dir="${ssCollectionDirName.converted}" casesensitive="no">
-        <includesfile name="${ssPatternsetFile}"/>
-        <!--Exclude the temporary directory's basename-->
-        <exclude name="**/${staticSearchTempFolder}/**"/>
-      </fileset>
-
-       <regexpmapper from="^(.*)\.([^\.]+$)" to="\1_tokenized.html"/>
-    </xslt>
-    <!--Necessary to delete any empty files (i.e. files excluded by 
-        the configuration) -->
-    <delete verbose="${ssVerbose}">
-      <fileset dir="${staticSearchTempDir}">
-        <size value="0"/>
-      </fileset>
-    </delete>
-  </target>
-
-  <target name="json">
-    <description>
-      TARGET: json
-      This target creates the individual token JSON files from the
-      tokenized XHTML files created by the above tokenize task. It is run on itself and uses the
-      information in the configuration XSLT module (generated in the config task) to determine input
-      files, et cetera. Note that this task will likely create *a lot* of files and may take some
-      time, depending on the size of the resource collection. </description>
-    <echo message="Creating individual JSON files..."/>
-    <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
-      <arg value="-xsl:${ssBaseDir.converted}/xsl/json.xsl"/>
-      <arg value="-s:${ssBaseDir.converted}/xsl/json.xsl"/>
-      <arg value="--suppressXsltNamespaceCheck:on"/>
-    </java>
-  </target>
-
-  <target name="makeSearchPage">
-    <description>
-      TARGET: makeSearchPage
-      This target creates the search page at the location
-      specified in the configuration file. If a file already exists, then this process modifies the
-      existing search page by replacing the content of div/@id='staticSearch'. If the file does not
-      exist, then a generic search page is generated. This runs an XSLT on itself with an output
-      specified as a temp page. That temporary page is then copied over and overwrites the original
-      page. </description>
-    <echo message="Creating search page..."/>
-    <if taskname="copy">
+      TARGET readEdition
+      This reads the EDITION file in the root directory
+      and if it's an alpha or beta, it checks with the 
+      user to make sure they do want to create a release.
+    </description>
+    <loadfile property="alphabeta" srcFile="${ssBaseDir}/EDITION">
+      <filterchain>
+        <replaceregex pattern="\s*[\d\.]+([^\d\.]+)\s*$" replace="\1">
+        </replaceregex>
+      </filterchain>
+    </loadfile>
+    <if>
       <not>
-        <available file="${ssSearchFilePath}"/>
+        <equals arg1="${alphabeta}" arg2=""/>
       </not>
       <then>
-        <echo>WARNING: Cannot find search file at ${ssSearchFilePath}. Created a template file from
-          xsl/sample_search.html.</echo>
-        <copy file="xsl/sample_search.html" tofile="${ssSearchFilePath}"/>
+        <input message="Warning: the edition is apparently a prerelease (${edition}). Are you sure you want to continue?"
+          validargs="y,n"
+          addproperty="continue"/>
+        <condition property="abort">
+          <equals arg1="n" arg2="${continue}"/>
+        </condition>
+        <fail if="${abort}">Build aborted.</fail>
       </then>
     </if>
-
-    <echo message="Creating temporary search page: ${tempSearchPageOutput}"/>
-
-    <!--We create a hasFilters property here since the search page needs to know whether or not there are filters to 
-            inject into the page. It is more efficient to derive the existence of the filters directory here rather than
-            in the XSLT.-->
-    <available type="dir" property="hasFilters" file="${staticSearchDir}/filters" value="true"/>
-    <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
-      <arg value="-xsl:${ssBaseDir.converted}/xsl/makeSearchPage.xsl"/>
-      <arg value="-s:${ssSearchFilePath}"/>
-      <arg value="-o:${tempSearchPageOutput}"/>
-      <arg value="hasFilters=${hasFilters}"/>
-      <arg value="--suppressXsltNamespaceCheck:on"/>
-      <jvmarg value="-Xmx2048m"/>
-    </java>
-
-    <echo message="Moving ${tempSearchPageOutput} to overwrite ${ssSearchFilePath}"/>
-    <move file="${tempSearchPageOutput}" tofile="${ssSearchFilePath}"/>
-
+    <echo message="Edition is ${edition}"/>
   </target>
   
-  <target name="makeDebugSearchPage">
+  <target name="buildDist">
     <description>
-      TARGET: makeDebugSearchPage
-      This copies the newly-produced search page to a new file
-      and then replaces the link to ssSearch.js with one to 
-      ssSearch-debug.js, for better testing.
+      TARGET buildDist
+      This copies all the required files into the temporary 
+      folder ready for zipping.
     </description>
-    <propertyregex property="ssDebugSearchPage" 
-                   input="${ssSearchFilePath}"
-                   regexp="(\.[a-zA-Z]+)$"
-                   replace="-debug\1"
-                   global="false"/>
-    <echo message="Creating debug search page: ${ssDebugSearchPage}"/>
-    <copy file="${ssSearchFilePath}" tofile="${ssDebugSearchPage}"/>
-    <replace file="${ssDebugSearchPage}" token="ssSearch.js" value="ssSearch-debug.js"/>
-  </target>
-  
-  <target name="makeManualDebugSearchPage">
-    <description>
-      TARGET: makeManualDebugSearchPage
-      This copies the newly-produced search page to a new file
-      and then replaces the link to ssSearch.js with one to 
-      ssSearch-debug.js, for better testing, but also removes the
-      link to the test set, so that the search page has no activity
-      on load and can be used for manual testing and debugging.
-    </description>
-    <propertyregex property="ssManualDebugSearchPage" 
-      input="${ssSearchFilePath}"
-      regexp="(\.[a-zA-Z]+)$"
-      replace="-manual-debug\1"
-      global="false"/>
-    <echo message="Creating manual debug search page: ${ssManualDebugSearchPage}"/>
-    <copy file="${ssSearchFilePath}" tofile="${ssManualDebugSearchPage}"/>
-    <replaceregexp file="${ssManualDebugSearchPage}" match="&lt;/svg>.+&lt;/body>" replace="&lt;/svg>&lt;/a>&lt;/div>&lt;/div>&lt;/body>" flags="s"/>
-  </target>
-
-  <target name="report">
-    <description>
-      TARGET: report
-      This target creates a report page from the various products
-      generated by the static search. It is not necessary for static search to work, but it is
-      *highly* recommended, since the result page contains various warnings as well as useful
-      statistics that track word use, et cetera. The XSLT is run on itself and creates a result
-      document passed off of a path specified in the config file; the resulting HTML file for the
-      report will be in the staticSearchDir. </description>
-    <!--We create a hasFilters property here since the search page needs to know whether or not there are filters to 
-            inject into the page. It is more efficient to derive the existence of the filters directory here rather than
-            in the XSLT.-->
-    <available type="dir" property="hasFilters" file="${staticSearchDir}/filters" value="true"/>
-    <resourcecount property="stemFileCount">
-      <fileset dir="${staticSearchDir}/stems">
-        <include name="*.json"/>
-      </fileset>
-    </resourcecount>
-    <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
-      <arg value="-xsl:${ssBaseDir.converted}/xsl/create_reports.xsl"/>
-      <arg value="-s:${ssBaseDir.converted}/xsl/create_reports.xsl"/>
-      <arg value="--suppressXsltNamespaceCheck:on"/>
-      <arg value="hasFilters=${hasFilters}"/>
-      <arg value="stemFileCount=${stemFileCount}"/>
-      <arg value="verboseReport=${ssVerboseReport}"/>
-    </java>
-    <move file="${ssBaseDir.converted}/staticSearch_report.html"
-      tofile="${staticSearchDir}/staticSearch_report.html"/>
-    <echo message="The build process has produced the following report: "/>
-    <echo message="${staticSearchDir}/staticSearch_report.html"/>
-    <echo message="Check the report to see any anomalies or problems found."/>
-  </target>
-  
-  <target name="concordance" depends="config">
-    <description>
-      TARGET: concordance
-      This target creates a concordance/wordlist for a document collection. 
-      It is not run by default, since it is not necessary for staticSearch functionality
-      but is useful for diagnosing potential stopwords or typos in the document collection.
-      
-      It depends on the config task, since it needs the proper config XSLT to be produced
-      from a specific config file.
-    </description>
-    <echo message="Creating document concordance..."/>
-    <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
-      <arg value="-xsl:${ssBaseDir.converted}/xsl/create_concordance.xsl"/>
-      <arg value="-s:${ssBaseDir.converted}/xsl/create_concordance.xsl"/>
-      <arg value="-it:makeConcordance"/>
-      <arg value="--suppressXsltNamespaceCheck:on"/>
-    </java>
-  </target>
-
-  <target name="copyFiles">
-    <description>
-      TARGET: copyFiles
-      This target copies the necessary Javascript and CSS files from
-      the staticSearch directory (i.e. this directory) and places them in the project's static
-      search directory. We copy the compiled JS file which contains everything, along with 
-      the expanded debug version, and the CSS.
-    </description>
-    <copy todir="${staticSearchDir}/">
-      <fileset dir="${ssBaseDir.converted}/js">
-        <include name="ssSearch.js"/>
-        <include name="ssSearch.js.map"/>
-        <include name="ssSearch-debug.js"/>
-        <include name="ssHighlight.js"/>
-        <include name="ssInitialize.js"/>
-      </fileset>
-      <fileset dir="${ssBaseDir.converted}/css">
-        <include name="ss**.css"/>
-      </fileset>
+    <echo message="Creating distribution..."/>
+    <echo message="Cleaning out existing folder..."/>
+    <delete dir="${staticSearchTempDir}"/>
+    <mkdir dir="${staticSearchTempDir}/staticSearch"/>
+    <echo message="Copying files..."/>
+    <copy todir="${staticSearchTempDir}/staticSearch">
+      <fileset refid="requiredFiles"/>
     </copy>
   </target>
-
-  <target name="clean">
+  
+  <target name="zipDist">
     <description>
-      TARGET: clean
-      This target deletes the temporary directory, since it's no longer
-      useful. 
+      TARGET zipDist
+      Creates two output archives from the distribution 
+      content, one zip and one tar.gz.
     </description>
-    <echo message="Cleaning temporary directory..."/>
-    <delete dir="${staticSearchDir}/${staticSearchTempFolder}"/>
-    <!--Added 2021-02-19: Remove the dictionary files-->
-    <delete dir="${staticSearchDir}/dicts"/>
-    <!--Added 2021-03-17: Remove the JS build files. -->
-    <delete file="${ssBaseDir.converted}/js/ssSearch.js"/>
-    <delete file="${ssBaseDir.converted}/js/ssSearch-debug.js"/>
-    <delete file="${ssBaseDir.converted}/search-debug.html"/>
-    <delete file="${ssBaseDir.converted}/search-manual-debug.html"/>
+    <echo message="Creating compressed archives..."/>
+    <delete dir="${distOutputFolder}"/>
+    <mkdir dir="${distOutputFolder}"/>
+    <zip destfile="${distOutputFolder}/staticSearch_${edition}.zip" 
+      basedir="${staticSearchTempDir}" 
+      includes="staticSearch/**/*"/>
   </target>
-
-  <target name="buildJS">
+  
+  <target name="all">
     <description>
-      TARGET: buildJS
-      This target concatenates the various JS modular files
-      into a single version called ssSearch-debug.js, which OutputSpec
-      is uncompressed, and then calls the Closure compiler
-      to create a compressed version for production use.
+      TARGET all
+      Runs a complete build.
     </description>
-    <echo message="Compiling JavaScript source code..."/>
-    <concat destfile="${ssBaseDir.converted}/js/ssSearch-debug.js" encoding="UTF-8">
-      <filelist dir="${ssBaseDir.converted}/js">
-        <file name="ssPreamble.js"/>
-        <file name="ssUtilities.js"/>
-        <file name="StaticSearch.js"/>
-        <file name="SSResultSet.js"/>
-        <file name="XSet.js"/>
-        <file name="SSTypeAhead.js"/>
-      </filelist>
-      <fileset dir="${ssBaseDir.converted}/stemmers/${ssStemmerFolder}">
-        <include name="ssStemmer.js"/>
-      </fileset>
-    </concat>
-    <!-- Note that we're currently suppressing warnings when compiling. -->
-    <!--<jscomp compilationLevel="${ssClosureCompilationLevel}" warning="${ssClosureWarning}" 
-      debug="false" languageOut="${ssClosureOutputSpec}"
-      output="${ssBaseDir.converted}/js/ssSearch.js">
-      <sources dir="${ssBaseDir.converted}/js">
-        <file name="ssSearch-debug.js"/>
-      </sources>
-    </jscomp>-->
-    <jscomp compilationLevel="${ssClosureCompilationLevel}" 
-      warning="${ssClosureWarning}" 
-      debug="false" languageOut="${ssClosureOutputSpec}" 
-      output="${ssBaseDir.converted}/js/ssSearch.js"
-      sourceMapFormat="V3"
-      sourceMapLocationMapping="js/ssSearch-debug.js|ssSearch-debug.js"
-      sourceMapOutputFile="${ssBaseDir.converted}/js/ssSearch.js.map"
-      >
-      <sources dir="${ssBaseDir.converted}/js">
-        <file name="ssSearch-debug.js"/>
-      </sources>
-    </jscomp>
-    <echo message="Adding source map comment to the end of the ssSearch.js file..."/>
-    <echo file="${ssBaseDir.converted}/js/ssSearch.js" append="true">&#x0a;//# sourceMappingURL=ssSearch.js.map</echo>
+    <antcall target="readEdition"/>
+    <antcall target="buildDist"/>
+    <antcall target="zipDist"/>
   </target>
-
-  <target name="all"
-    depends="init, validate, config, tokenize, json, buildJS, copyFiles, makeSearchPage, report, clean">
-    <description>
-      TARGET: all
-      Default target for running the entire static search creation process.
-    </description>
-  </target>
-
-  <target name="allButValidate"
-    depends="init, config, tokenize, json, buildJS, copyFiles, makeSearchPage, report, clean">
-    <description>
-      TARGET: allButValidate
-      Target to override validation, which is helpful in cases
-      where the HTML output has been validated by a stricter set of validation rules (like the VNU
-      validator) </description>
-  </target>
-
-  <target name="test"
-    depends="init, validate, config, tokenize, json, buildJS, copyFiles, makeSearchPage, makeDebugSearchPage, makeManualDebugSearchPage, report">
-    <description>
-      TARGET: test
-      Target that runs the whole process, but does not clean up the
-      temporary files. Also creates debug/testing version of the 
-      search page. Useful for debugging. </description>
-  </target>
-
-  <target name="basic"
-    depends="init, validate, config, tokenize, json, buildJS, copyFiles, makeSearchPage, clean">
-    <description>
-      TARGET: basic
-      Target that runs the whole process other than the report creation.
-    </description>
-  </target>
-
-  <!-- Utility targets. -->
-
-  <target name="echoproperties">
-    <echoproperties />
-  </target>
+  
 
 </project>
