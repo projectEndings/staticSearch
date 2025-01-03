@@ -53,6 +53,7 @@
     <include name="css/**/*"/>
     <include name="docs/staticSearch.html"/>
     <include name="docs/documentation.css"/>
+    <include name="images/**/*"/>
     <include name="js/**/*"/>
     <include name="lib/**/*"/>
     <include name="schema/staticSearch.odd"/>
