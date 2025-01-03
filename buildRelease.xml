@@ -48,7 +48,8 @@
   <property name="staticSearchTempDir" value="${ssBaseDir}/${tempFolder}"/>
   
   <!-- The fileset we need. -->
-  <fileset id="requiredFiles" dir="${ssBaseDir}">
+  <fileset id="requiredFiles" dir="${ssBaseDir}" 
+    excludes="xsl/functions.xspec xsl/patch_tei_odd.xsl xsl/spiff_up_documentation.xsl xsl/split_documentation.xsl js/searchTest.* js/out js/out/**/*">
     <include name="css/**/*"/>
     <include name="docs/staticSearch.html"/>
     <include name="docs/documentation.css"/>
