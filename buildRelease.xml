@@ -126,6 +126,12 @@
     <zip destfile="${distOutputFolder}/staticSearch_${edition}.zip" 
       basedir="${staticSearchTempDir}" 
       includes="staticSearch/**/*"/>
+    <tar destfile="${distOutputFolder}/staticSearch_${edition}.tar.gz" 
+      basedir="${staticSearchTempDir}" 
+      includes="staticSearch/**/*"
+      compression="gzip"
+      longfile="posix"
+    />
   </target>
   
   <target name="all">
