@@ -137,7 +137,6 @@ table.attList{
 }
 td.odd_label{
     vertical-align: top;
-    width: 15em;
     font-weight: bold;
 }
 td.odd_value{
@@ -149,7 +148,6 @@ table.attDef{
     width: 100%;
 }
 table.attDef td.odd_label{
-    min-width: 10%;
     vertical-align: top;
     font-weight: normal;
 }
@@ -352,11 +350,15 @@ span.moduleSpecHead{
     font-style: italic;
 }
 ul.specList{
-    position: relative;
-    left: -2em;
+    margin-left: -2em;
     padding: 0.5em;
     background-color: #e0e0e0;
     width: calc(100% + 2em);
+    @media only screen and (max-width: 768px) {
+        margin-left: 0;
+        margin-right: 0.25em;
+        width: auto;
+    }
 }
 ul.specList li{
     list-style: none;
@@ -688,6 +690,9 @@ h2{
     background-color: white;
     padding: 0.5em;
     border: solid 1pt gray;
+    @media only screen and (max-width: 768px) {
+        margin-left: 0;
+    }
 }
 
 h3{
@@ -699,6 +704,13 @@ h3{
     background-color: white;
     padding: 0.25em;
     border: solid 1pt gray;
+    @media only screen and (max-width: 768px) {
+        margin-left: 0;
+    }
+}
+
+.teidiv2 h3{
+    font-size: 1em;
 }
 
 h1.maintitle{
@@ -856,6 +868,7 @@ div.eg{
     white-space: pre;
     background-color: silver;
     max-width: 35em;
+    text-wrap: wrap;
 }
 
 div.pre{
@@ -1133,6 +1146,9 @@ tr.label td{
 
 span.label{
     font-weight: bold;
+    @media only screen and (max-width: 768px) {
+        font-size: 0.8rem;
+    }
 }
 
 h5{
@@ -1611,9 +1627,12 @@ body{
     font-family: georgia, sans-serif;
 }
 
+div.tei_front{
+    padding: 0.25rem 1rem;
+}
+
 div.tei_body{
-    border-right: solid 1pt black;
-    border-left: solid 1pt black;
+    border: solid 1pt black;
     padding: 1em;
     background-color: #f9f9f9;
 }
