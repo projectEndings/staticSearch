@@ -65,6 +65,7 @@
     <include name="build.xml"/>
     <include name="EDITION"/>
     <include name="license_BSD.txt"/>
+    <include name="gitInfo.txt"/>
   </fileset>
   
   <loadfile property="edition" srcFile="${ssBaseDir}/EDITION"/>
@@ -97,6 +98,28 @@
       </then>
     </if>
     <echo message="Edition is ${edition}"/>
+  </target>
+  
+  <target name="getGitInfo">
+    <description>
+      TARGET getGitInfo
+      This generates a small text file containing the 
+      git branch and revision information, so it's 
+      easy to determine what the release package was
+      built from.
+    </description>
+    <delete file="${ssBaseDir}/gitInfo.txt"/>
+    <echo output="${ssBaseDir}/gitInfo.txt" message="Branch: " append="false"/>
+    <exec executable="git" output="${ssBaseDir}/gitInfo.txt" append="true">
+      <arg value="rev-parse"/>
+      <arg value="--abbrev-ref"/>
+      <arg value="HEAD"/>
+    </exec>
+    <echo output="${ssBaseDir}/gitInfo.txt" message="Commit: " append="true"/>
+    <exec executable="git" output="${ssBaseDir}/gitInfo.txt" append="true">
+      <arg value="rev-parse"/>
+      <arg value="HEAD"/>
+    </exec>
   </target>
   
   <target name="buildDist">
@@ -141,6 +164,7 @@
       Runs a complete build.
     </description>
     <antcall target="readEdition"/>
+    <antcall target="getGitInfo"/>
     <antcall target="buildDist"/>
     <antcall target="zipDist"/>
   </target>
