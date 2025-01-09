@@ -190,6 +190,49 @@ td p{
     margin-bottom: 2pt;
 }
 
+
+/* Messing with tables because they're too squashed. */
+td.odd_value{
+    width: 100%;
+}
+
+table.attList{
+    width: 100%;
+}
+
+ul.attList, ul.attList ul{
+    padding-left: 1em;
+
+}
+
+table.attList>tbody>tr, table.attDef>tbody>tr{
+    display: list;
+    list-style-type: none;
+    padding-left: 0;
+    ul, ol{
+        padding-left: 0.25em;
+    }
+    >td{
+        display: list-item;
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+        border: none;
+        div.pre, pre{
+            max-width: 90%;
+        }
+    }
+    table.attDef td+td{
+        margin-left: 0.5em;
+    }
+}
+
+table.wovenodd div.pre, table.wovenodd pre{
+    max-width: 90%;
+}
+
+
+
 div.cdata{
     white-space: pre;
     clear: both;
@@ -1647,6 +1690,5 @@ a:link, a:visited, a.anchorlink{
 
 table{
     border-collapse: collapse;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
     margin-top: 0.25em;
 }
