@@ -75,6 +75,15 @@
           on any web server and the search will work with any modern browser. The requirements above 
           are only for building the search index, which you only need to do once (until your documents
           change).</p>
+        
+        <p>It is important to note that most browsers prevent some JavaScript interactions when
+          a local file is loaded from disk; in other words, you will not be able to test your 
+          staticSearch implementation just by loading the search page into your browser. You 
+          will need to host your site on a web server in order to test the search page. You 
+          can either do this by uploading your site to a web server on which you have an account,
+          or you can run a local developer-friendly web server on your computer; Python,
+          PHP, and Node/NPM all have built-in servers you can use.
+        </p>
       </div>
       
       <div xml:id="whyWouldIUseIt">
