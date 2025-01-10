@@ -9,11 +9,13 @@
     version="3.0">
     <xd:doc scope="stylesheet">
         <xd:desc>
-            <xd:p><xd:b>Created on:</xd:b> February 14, 2022</xd:p>
+            <xd:p><xd:b>Created on:</xd:b> February 14, 2022; restarted in early 2025.</xd:p>
             <xd:p><xd:b>Authors:</xd:b> Joey Takeda and Martin Holmes</xd:p>            
             <xd:p>This transformation is used to automatically convert a configuration
             file crafted for a pre-2.0 staticSearch to the configuration format for 2.0.</xd:p>
-            <xd:p>For more information on changes, see the documentation and GitHub issues.</xd:p>            
+            <xd:p>For more information on changes, see the documentation and GitHub issues.</xd:p> 
+            <xd:p>NOTE: We should parameterize the version numbers so this same transformation
+            can be run for future changes.</xd:p>
         </xd:desc>
     </xd:doc>
 
@@ -23,6 +25,18 @@
                  this transform can be an identity transformation.</xd:desc>
     </xd:doc>
     <xsl:mode on-no-match="shallow-copy"/>
+    
+    <xd:doc>
+        <xd:desc>This parameter controls how the transformation operates;
+        the user gets to choose whether to overwrite the old file or not.
+        Options are (overwrite|new).</xd:desc>
+    </xd:doc>
+    <xsl:param name="output" as="xs:string" select="'new'"/>
+    
+    <xd:doc>
+        <xd:desc>The output file is calculated based on the parameter above.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="outputFile" as="xs:string" select="if ($output eq 'overwrite') then base-uri(/) else replace(base-uri(/),'\.xml$','_v2.xml')"/>
     
     
     <xd:doc>
@@ -37,11 +51,23 @@
                 </xsl:message>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:result-document href="{replace(document-uri(.),'\.xml$','_v2.xml')}">
+                <xsl:result-document href="{$outputFile}">
+                    <xsl:comment expand-text="yes">Configuration file {base-uri(/)} converted to version 2 {format-date(current-date(), '[Y0001]-[M01]-[D01]')}.</xsl:comment>
                     <xsl:apply-templates/>
                 </xsl:result-document>
             </xsl:otherwise>
         </xsl:choose>
+    </xsl:template>
+    
+    <xd:doc>
+        <xd:desc>The config element itself needs the new version.</xd:desc>
+    </xd:doc>
+    <xsl:template match="config">
+        <xsl:copy>
+            <xsl:apply-templates select="@*[not(local-name() eq 'version')]"/>
+            <xsl:attribute name="version" select="'2'"/>
+            <xsl:apply-templates select="node()"/>
+        </xsl:copy>
     </xsl:template>
     
     <xd:doc>
