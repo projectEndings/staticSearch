@@ -38,14 +38,14 @@
     <xd:doc>
         <xd:desc>This parameter controls how the transformation operates;
         the user gets to choose whether to overwrite the old file or not.
-        Options are (overwrite|new).</xd:desc>
+        Options are (o=overwrite|n=new).</xd:desc>
     </xd:doc>
-    <xsl:param name="output" as="xs:string" select="'new'"/>
+    <xsl:param name="output" as="xs:string" select="'n'"/>
     
     <xd:doc>
         <xd:desc>The output file is calculated based on the parameter above.</xd:desc>
     </xd:doc>
-    <xsl:variable name="outputFile" as="xs:string" select="if ($output eq 'overwrite') then base-uri(/) else replace(base-uri(/),'\.xml$','_v2.xml')"/>
+    <xsl:variable name="outputFile" as="xs:string" select="if ($output eq 'o') then base-uri(/) else replace(base-uri(/),'\.xml$','_v2.xml')"/>
     
     <xd:doc>
         <xd:desc>In v1 we allowed boolean parameters to take a variety of forms; this
@@ -65,7 +65,7 @@
                     is already set to version=2, so this transformation will do nothing.
                 </xsl:message>
             </xsl:when>
-            <xsl:when test="$output eq 'new' and unparsed-text-available($outputFile)">
+            <xsl:when test="$output eq 'n' and unparsed-text-available($outputFile)">
                 <xsl:message terminate="yes">&#x0a;******************&#x0a;The file {$outputFile} already exists.&#x0a;Please delete or move it before running this process again.&#x0a;******************&#x0a;&#x0a;</xsl:message>
             </xsl:when>
             <xsl:otherwise>
