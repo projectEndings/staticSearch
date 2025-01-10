@@ -38,6 +38,11 @@
     </xd:doc>
     <xsl:variable name="outputFile" as="xs:string" select="if ($output eq 'overwrite') then base-uri(/) else replace(base-uri(/),'\.xml$','_v2.xml')"/>
     
+    <xd:doc>
+        <xd:desc>In v1 we allowed boolean parameters to take a variety of forms; this
+        regex should match them all.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="reBoolean" as="xs:string">^\s*(t|true|1|y|yes)\s*$</xsl:variable>
     
     <xd:doc>
         <xd:desc>Root template: if the config is already set to 2.0, this transformation just ends
@@ -71,6 +76,44 @@
     </xsl:template>
     
     <xd:doc>
+        <xd:desc>This is where most of the changes have been made.</xd:desc>
+    </xd:doc>
+    <xsl:template match="params">
+        <xsl:copy>
+        <!-- The best approach here is to construct a complete file based on 
+             what's present. -->
+            <searchPage file="{searchFile/text()}"/>
+            <index recurse="{if (recurse and matches(recurse/text(), '(t|true|1|y|yes)')) then 'true' else 'false'}"/>
+            <stopwords
+                file="{if (stopwordsFile[string-length(.) gt 0]) then stopwordsFile/text() else ''}"/>
+            <dictionary
+                file="{if (dictionaryFile[string-length(.) gt 0]) then dictionaryFile/text() else ''}"/>
+            <tokenizer
+                minWordLength="{minWordLength/text()}"/>
+            <scoringAlgorithm name="{scoringAlgorithm/text()}"/>
+            <stemmer
+                dir="{if (stemmerFolder[string-length(.) gt 0]) then stemmerFolder/text() else 'stemmers/en/'}"/>
+            <tokenizer minWordLength="{if (minWordLength) then matches(minWordLength/text(), '^\s*\d+\s*$') else '2'}"/>
+            <contexts
+                create="{if (createContexts and matches(createContexts/text(), '(t|true|1|y|yes)')) then 'true' else 'false'}"
+                phrasalSearch="{if (phrasalSearch and matches(phrasalSearch/text(), '(t|true|1|y|yes)')) then 'true' else 'false'}" 
+                wildcardSearch="{if (wildcardSearch and matches(wildcardSearch/text(), '(t|true|1|y|yes)')) then 'true' else 'false'}"
+                maxKwicsToHarvest="{if (maxKwicsToHarvest) and matches(maxKwicsToHarvest/text(), '^\s*\d+\s*$') then max else '5'}"
+                maxKwicLength="{if (totalKwicLength) then matches(maxKwicsToHarvest/text(), '^\s*\d+\s*$') else '5'}"
+                kwicTruncateString="..."         
+            />
+            <results 
+                resultsPerPage="5"
+                maxKwicsToShow="#"/>
+            <version file="test/VERSION"/>
+            <outputDir name="ssTest"/>
+        </xsl:copy>
+        
+        <!-- Now we handle the things we want to warn about. -->
+        <xsl:apply-templates select="verbose | indentJSON | linkToFragmentId"/>
+    </xsl:template>
+    
+    <xd:doc>
         <xd:desc>Verbose has been removed; use the ant parameter ssVerbose instead.</xd:desc>
     </xd:doc>
     <xsl:template match="verbose">
@@ -85,7 +128,7 @@
         debugging the output JSON files, which can be better handled by external tools.</xd:desc>
     </xd:doc>
     <xsl:template match="indentJSON">
-        <xsl:if test="matches(normalize-space(.),'^(t|true|1|y|yes)$','i')">
+        <xsl:if test="matches(normalize-space(.),$reBoolean,'i')">
             <xsl:message>WARNING: indentJSON has been removed and output files will no
             longer be indented.</xsl:message>
         </xsl:if>
@@ -96,7 +139,7 @@
             and is still not widely supported.</xd:desc>
     </xd:doc>
     <xsl:template match="linkToFragmentId">
-        <xsl:if test="not(matches(normalize-space(.),'^(t|true|1|y|yes)$','i'))">
+        <xsl:if test="not(matches(normalize-space(.),$reBoolean,'i'))">
             <xsl:message>WARNING: linkToFragmentId is no longer configurable; by default,
             all results will link to their nearest ancestor id. You can hide those links
             by targeting the .fidLink class in your CSS (e.g. .fidLink{ display:none; }).</xsl:message>
@@ -109,13 +152,30 @@
             and is still not widely supported.</xd:desc>
     </xd:doc>
     <xsl:template match="scrollToTextFragment">
-        <xsl:if test="matches(normalize-space(.),'^(t|true|1|y|yes)$','i')">
+        <xsl:if test="matches(normalize-space(.),$reBoolean,'i')">
             <xsl:message>WARNING: scrollToTextFragment has been removed due to lack of
             browser support. See the documentation for alternative approaches for in-page
             highlighting, including the use of the ssHighlight.js across your document
             collection.</xsl:message>
         </xsl:if>
     </xsl:template>
+    
+    <xd:doc>
+        <xd:desc>Function to create boolean values from unreliable or absent input.</xd:desc>
+        <xd:param name="input" as="item()?">May be an element, attribute, or text node
+        which contains the original value if it exists.</xd:param>
+    </xd:doc>
+    <xsl:function name="hcmc:getStrBoolean" as="xs:string">
+        <xsl:param name="input" as="item()?"/>
+        <xsl:choose>
+            <xsl:when test="$input and matches($input, $reBoolean, 'i')">
+                <xsl:sequence select="'true'"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="'false'"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
     
     
     
