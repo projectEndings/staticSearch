@@ -8,6 +8,7 @@
     xmlns:map="http://www.w3.org/2005/xpath-functions/map"
     exclude-result-prefixes="#all"
     xmlns="http://hcmc.uvic.ca/ns/staticSearch"
+    expand-text="yes"
     version="3.0">
     <xd:doc scope="stylesheet">
         <xd:desc>
@@ -64,10 +65,13 @@
                     is already set to version=2, so this transformation will do nothing.
                 </xsl:message>
             </xsl:when>
+            <xsl:when test="$output eq 'new' and unparsed-text-available($outputFile)">
+                <xsl:message terminate="yes">&#x0a;******************&#x0a;The file {$outputFile} already exists.&#x0a;Please delete or move it before running this process again.&#x0a;******************&#x0a;&#x0a;</xsl:message>
+            </xsl:when>
             <xsl:otherwise>
                 <xsl:result-document href="{$outputFile}">
-                    <xsl:message expand-text="yes">Configuration file {base-uri(/)} converted to version 2 {format-date(current-date(), '[Y0001]-[M01]-[D01]')}, with output at {$outputFile}.</xsl:message>
-                    <xsl:comment expand-text="yes">Configuration file {base-uri(/)} converted to version 2 {format-date(current-date(), '[Y0001]-[M01]-[D01]')}.</xsl:comment>
+                    <xsl:message>Configuration file {base-uri(/)} converted to version 2 {format-date(current-date(), '[Y0001]-[M01]-[D01]')}, with output at {$outputFile}.</xsl:message>
+                    <xsl:comment>Configuration file {base-uri(/)} converted to version 2 {format-date(current-date(), '[Y0001]-[M01]-[D01]')}.</xsl:comment>
                     <xsl:apply-templates/>
                 </xsl:result-document>
             </xsl:otherwise>
@@ -156,7 +160,7 @@
         <xsl:if test="not(matches(normalize-space(.),$reBooleanTrue,'i'))">
             <xsl:message>WARNING: linkToFragmentId is no longer configurable; by default,
             all results will link to their nearest ancestor id. You can hide those links
-            by targeting the .fidLink class in your CSS (e.g. .fidLink{ display:none; }).</xsl:message>
+            by targeting the .fidLink class in your CSS (e.g. .fidLink{{ display:none; }}).</xsl:message>
         </xsl:if>
     </xsl:template>
     
