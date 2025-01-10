@@ -6,6 +6,8 @@
     xpath-default-namespace="http://hcmc.uvic.ca/ns/staticSearch"
     xmlns:tei="http://www.tei-c.org/ns/1.0"
     xmlns:map="http://www.w3.org/2005/xpath-functions/map"
+    exclude-result-prefixes="#all"
+    xmlns="http://hcmc.uvic.ca/ns/staticSearch"
     version="3.0">
     <xd:doc scope="stylesheet">
         <xd:desc>
@@ -21,10 +23,16 @@
 
     
     <xd:doc>
+        <xd:desc>This is an xml-to-xml identity transform.</xd:desc>
+    </xd:doc>
+    <xsl:output method="xml" encoding="UTF-8" exclude-result-prefixes="#all"
+         normalization-form="NFC" indent="yes" />
+    
+    <xd:doc>
         <xd:desc>Since much of the configuration has not been changed,
                  this transform can be an identity transformation.</xd:desc>
     </xd:doc>
-    <xsl:mode on-no-match="shallow-copy"/>
+    <xsl:mode on-no-match="shallow-copy" exclude-result-prefixes="#all"/>
     
     <xd:doc>
         <xd:desc>This parameter controls how the transformation operates;
@@ -42,7 +50,8 @@
         <xd:desc>In v1 we allowed boolean parameters to take a variety of forms; this
         regex should match them all.</xd:desc>
     </xd:doc>
-    <xsl:variable name="reBoolean" as="xs:string">^\s*(t|true|1|y|yes)\s*$</xsl:variable>
+    <xsl:variable name="reBooleanTrue" as="xs:string">^\s*(t|true|1|y|yes)\s*$</xsl:variable>
+    <xsl:variable name="reBooleanFalse" as="xs:string">^\s*(f|false|0|n|no)\s*$</xsl:variable>
     
     <xd:doc>
         <xd:desc>Root template: if the config is already set to 2.0, this transformation just ends
@@ -57,6 +66,7 @@
             </xsl:when>
             <xsl:otherwise>
                 <xsl:result-document href="{$outputFile}">
+                    <xsl:message expand-text="yes">Configuration file {base-uri(/)} converted to version 2 {format-date(current-date(), '[Y0001]-[M01]-[D01]')}, with output at {$outputFile}.</xsl:message>
                     <xsl:comment expand-text="yes">Configuration file {base-uri(/)} converted to version 2 {format-date(current-date(), '[Y0001]-[M01]-[D01]')}.</xsl:comment>
                     <xsl:apply-templates/>
                 </xsl:result-document>
@@ -83,30 +93,34 @@
         <!-- The best approach here is to construct a complete file based on 
              what's present. -->
             <searchPage file="{searchFile/text()}"/>
-            <index recurse="{if (recurse and matches(recurse/text(), '(t|true|1|y|yes)')) then 'true' else 'false'}"/>
+            <index recurse="{hcmc:getStrBoolean(recurse, 'true')}"/>
             <stopwords
-                file="{if (stopwordsFile[string-length(.) gt 0]) then stopwordsFile/text() else ''}"/>
+                file="{hcmc:getString(stopwordsFile, '')}"/>
             <dictionary
-                file="{if (dictionaryFile[string-length(.) gt 0]) then dictionaryFile/text() else ''}"/>
+                file="{hcmc:getString(dictionaryFile, '')}"/>
             <tokenizer
-                minWordLength="{minWordLength/text()}"/>
-            <scoringAlgorithm name="{scoringAlgorithm/text()}"/>
+                minWordLength="{xs:string(hcmc:getInteger(minWordLength, 2))}"/>
+            <scoringAlgorithm name="{hcmc:getString(scoringAlgorithm, 'raw')}"/>
             <stemmer
-                dir="{if (stemmerFolder[string-length(.) gt 0]) then stemmerFolder/text() else 'stemmers/en/'}"/>
-            <tokenizer minWordLength="{if (minWordLength) then matches(minWordLength/text(), '^\s*\d+\s*$') else '2'}"/>
+                dir="{hcmc:getString(stemmerFolder, 'stemmers/en/')}"/>
+            <tokenizer minWordLength="{hcmc:getInteger(minWordLength, 2)}"/>
             <contexts
-                create="{if (createContexts and matches(createContexts/text(), '(t|true|1|y|yes)')) then 'true' else 'false'}"
-                phrasalSearch="{if (phrasalSearch and matches(phrasalSearch/text(), '(t|true|1|y|yes)')) then 'true' else 'false'}" 
-                wildcardSearch="{if (wildcardSearch and matches(wildcardSearch/text(), '(t|true|1|y|yes)')) then 'true' else 'false'}"
-                maxKwicsToHarvest="{if (maxKwicsToHarvest) and matches(maxKwicsToHarvest/text(), '^\s*\d+\s*$') then max else '5'}"
-                maxKwicLength="{if (totalKwicLength) then matches(maxKwicsToHarvest/text(), '^\s*\d+\s*$') else '5'}"
-                kwicTruncateString="..."         
+                create="{hcmc:getStrBoolean(createContexts, 'false')}"
+                phrasalSearch="{hcmc:getStrBoolean(phrasalSearch, 'true')}" 
+                wildcardSearch="{hcmc:getStrBoolean(wildcardSearch, 'true')}"
+                maxKwicsToHarvest="{hcmc:getInteger(maxKwicsToHarvest, 5)}"
+                maxKwicLength="{hcmc:getInteger(totalKwicLength, 15)}"
+                kwicTruncateString="{hcmc:getString(kwicTruncateString, '...')}"         
             />
             <results 
-                resultsPerPage="5"
-                maxKwicsToShow="#"/>
-            <version file="test/VERSION"/>
-            <outputDir name="ssTest"/>
+                resultsPerPage="{hcmc:getInteger(resultsPerPage, 100)}"
+                maxKwicsToShow="{hcmc:getInteger(maxKwicsToShow, 5)}"
+                maxResults="{hcmc:getInteger(resultsLimit, 1000)}"/>
+            <version file="{hcmc:getString(versionFile, '')}"/>
+            
+            <!-- NOTE: I believe this should actually be:
+                 <output dir=""/> -->
+            <outputDir name="{hcmc:getString(outputFolder, 'staticSearch')}"/>
         </xsl:copy>
         
         <!-- Now we handle the things we want to warn about. -->
@@ -117,7 +131,7 @@
         <xd:desc>Verbose has been removed; use the ant parameter ssVerbose instead.</xd:desc>
     </xd:doc>
     <xsl:template match="verbose">
-        <xsl:if test="matches(normalize-space(.),'^(t|true|1|y|yes)$','i')">
+        <xsl:if test="matches(normalize-space(.),$reBooleanTrue,'i')">
             <xsl:message>WARNING: verbose has been removed; to add verbose messages to 
             the console during the build process, use the ant parameter ssVerbose.</xsl:message>
         </xsl:if>
@@ -128,7 +142,7 @@
         debugging the output JSON files, which can be better handled by external tools.</xd:desc>
     </xd:doc>
     <xsl:template match="indentJSON">
-        <xsl:if test="matches(normalize-space(.),$reBoolean,'i')">
+        <xsl:if test="matches(normalize-space(.),$reBooleanTrue,'i')">
             <xsl:message>WARNING: indentJSON has been removed and output files will no
             longer be indented.</xsl:message>
         </xsl:if>
@@ -139,7 +153,7 @@
             and is still not widely supported.</xd:desc>
     </xd:doc>
     <xsl:template match="linkToFragmentId">
-        <xsl:if test="not(matches(normalize-space(.),$reBoolean,'i'))">
+        <xsl:if test="not(matches(normalize-space(.),$reBooleanTrue,'i'))">
             <xsl:message>WARNING: linkToFragmentId is no longer configurable; by default,
             all results will link to their nearest ancestor id. You can hide those links
             by targeting the .fidLink class in your CSS (e.g. .fidLink{ display:none; }).</xsl:message>
@@ -152,7 +166,7 @@
             and is still not widely supported.</xd:desc>
     </xd:doc>
     <xsl:template match="scrollToTextFragment">
-        <xsl:if test="matches(normalize-space(.),$reBoolean,'i')">
+        <xsl:if test="matches(normalize-space(.),$reBooleanTrue,'i')">
             <xsl:message>WARNING: scrollToTextFragment has been removed due to lack of
             browser support. See the documentation for alternative approaches for in-page
             highlighting, including the use of the ssHighlight.js across your document
@@ -161,18 +175,64 @@
     </xsl:template>
     
     <xd:doc>
-        <xd:desc>Function to create boolean values from unreliable or absent input.</xd:desc>
+        <xd:desc>Function to create boolean string values from unreliable or absent input.</xd:desc>
         <xd:param name="input" as="item()?">May be an element, attribute, or text node
-        which contains the original value if it exists.</xd:param>
+            which contains the original value if it exists.</xd:param>
+        <xd:param name="default" as="xs:string">The default value to use if the input does 
+            not provide anything usable.</xd:param>
     </xd:doc>
     <xsl:function name="hcmc:getStrBoolean" as="xs:string">
         <xsl:param name="input" as="item()?"/>
+        <xsl:param name="default" as="xs:string"/>
         <xsl:choose>
-            <xsl:when test="$input and matches($input, $reBoolean, 'i')">
+            <xsl:when test="$input and matches($input, $reBooleanTrue, 'i')">
                 <xsl:sequence select="'true'"/>
             </xsl:when>
-            <xsl:otherwise>
+            <xsl:when test="$input and matches($input, $reBooleanFalse, 'i')">
                 <xsl:sequence select="'false'"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="$default"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+    
+    <xd:doc>
+        <xd:desc>Function to create string values from unreliable or absent input.</xd:desc>
+        <xd:param name="input" as="item()?">May be an element, attribute, or text node
+            which contains the original value if it exists.</xd:param>
+        <xd:param name="default" as="xs:string">The default value to use if the input does 
+        not provide anything usable.</xd:param>
+    </xd:doc>
+    <xsl:function name="hcmc:getString" as="xs:string">
+        <xsl:param name="input" as="item()?"/>
+        <xsl:param name="default" as="xs:string"/>
+        <xsl:choose>
+            <xsl:when test="$input and string-length($input) gt 0">
+                <xsl:sequence select="xs:string($input)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="$default"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+    
+    <xd:doc>
+        <xd:desc>Function to create integer values from unreliable or absent input.</xd:desc>
+        <xd:param name="input" as="item()?">May be an element, attribute, or text node
+            which contains the original value if it exists.</xd:param>
+        <xd:param name="default" as="xs:integer">The default value to use if the input does 
+            not provide anything usable.</xd:param>
+    </xd:doc>
+    <xsl:function name="hcmc:getInteger" as="xs:integer">
+        <xsl:param name="input" as="item()?"/>
+        <xsl:param name="default" as="xs:integer"/>
+        <xsl:choose>
+            <xsl:when test="$input and xs:integer($input)">
+                <xsl:sequence select="xs:integer($input)"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="$default"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
