@@ -1694,7 +1694,6 @@ table{
 }
 
 section[id] div.table table>tbody>tr{
-
     @media only screen and (max-width: 768px) {
         display: list;
         list-style-type: none;

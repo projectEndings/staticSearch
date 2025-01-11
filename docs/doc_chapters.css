@@ -22,6 +22,12 @@ body.simple{
     overflow-y:auto;
     margin:0 2rem;
     padding-right:1rem;
+    @media only screen and (max-width: 768px) {
+        height: auto;
+        margin: 0;
+        padding-right: 0;
+        position: static;
+    }
 }
 
 
@@ -29,6 +35,11 @@ body.simple{
 div.tei_body{
     max-width:45vw;
     margin:0 2rem;
+    @media only screen and (max-width: 768px) {
+        max-width: 98vw;
+        width: 98vw;
+        margin: 0;
+    }
 }
 
 div.tei_front > div > ul.toc{
@@ -36,8 +47,12 @@ div.tei_front > div > ul.toc{
 }
 
 div.tei_body[data-section='schemaSpec']{
-    
     max-width:60vw;
+    @media only screen and (max-width: 768px) {
+        max-width: 98vw;
+        width: 98vw;
+        margin: 0;
+    }
 }
 
 div[data-section] > h1 + ul {
