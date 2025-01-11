@@ -1693,7 +1693,7 @@ table{
     margin-top: 0.25em;
 }
 
-section[id]>div.table table>tbody>tr{
+section[id] div.table table>tbody>tr{
     display: list;
     list-style-type: none;
     padding-left: 0;

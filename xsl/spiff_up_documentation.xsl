@@ -71,7 +71,7 @@
   
   <!-- The forced whitespace-pre structures with &nbsp; characters
        really get in the way of responsive design. -->
-  <xsl:template match="pre/text()">
+  <xsl:template match="text()[ancestor::pre or ancestor::div[matches(@class, '(\s|^)pre(\s|$)')]]">
     <xsl:sequence select="replace(., '&#160;', ' ')"/>
   </xsl:template>
   
