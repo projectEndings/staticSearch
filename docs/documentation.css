@@ -1694,19 +1694,22 @@ table{
 }
 
 section[id] div.table table>tbody>tr{
-    display: list;
-    list-style-type: none;
-    padding-left: 0;
-    border-style: solid;
-    border-color: gray;
-    border-width: 1pt 0;
-    td:first-child{
-        padding-top: 0.25em;
-        margin-top: 0.25em;
-        font-weight: bold;
-        text-decoration: underline;
-    }
-    td{
-        display: list-item;
+
+    @media only screen and (max-width: 768px) {
+        display: list;
+        list-style-type: none;
+        padding-left: 0;
+        border-style: solid;
+        border-color: gray;
+        border-width: 1pt 0;
+        td:first-child{
+            padding-top: 0.25em;
+            margin-top: 0.25em;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        td{
+            display: list-item;
+        }
     }
 }
