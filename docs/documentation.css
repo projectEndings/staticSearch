@@ -1665,7 +1665,7 @@ table.border{
     color: orange;
 }
 
-/* Updates 2022 to make our documentation more readable. */
+/* Updates 2022-2024 to make our documentation more readable. */
 body{
     font-family: georgia, sans-serif;
 }
@@ -1691,4 +1691,22 @@ a:link, a:visited, a.anchorlink{
 table{
     border-collapse: collapse;
     margin-top: 0.25em;
+}
+
+section[id]>div.table table>tbody>tr{
+    display: list;
+    list-style-type: none;
+    padding-left: 0;
+    border-style: solid;
+    border-color: gray;
+    border-width: 1pt 0;
+    td:first-child{
+        padding-top: 0.25em;
+        margin-top: 0.25em;
+        font-weight: bold;
+        text-decoration: underline;
+    }
+    td{
+        display: list-item;
+    }
 }
