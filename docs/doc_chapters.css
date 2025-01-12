@@ -10,9 +10,12 @@ body.simple{
 
 .tei_front{
     flex: 0 1 30vw;
-    
     font-size:0.95em;
-    
+    @media only screen and (max-width: 768px) {
+        order: 2;
+        width: 100%;
+        flex: auto;
+    }
 }
 
 .tei_front > div {
@@ -39,6 +42,7 @@ div.tei_body{
         max-width: 98vw;
         width: 98vw;
         margin: 0;
+        order: 1;
     }
 }
 
