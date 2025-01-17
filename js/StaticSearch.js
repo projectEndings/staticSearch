@@ -781,6 +781,10 @@ class StaticSearch{
           url += '?' + encodeURI(search.join('&'));
           history.pushState({time: Date.now()}, '', url);
         }
+        else{
+//If there are no search parameters, clear the URL.
+          history.pushState({time: Date.now()}, '', url);
+        }
       }
       /*else{
         console.log('Not storing search in browser history.');
@@ -791,7 +795,6 @@ class StaticSearch{
       console.log('ERROR: failed to push search into browser history: ' + e.message);
     }
   }
-
 
 /** @function StaticSearch~parseSearchQuery
   * @description this retrieves the content of the text
@@ -1038,6 +1041,9 @@ class StaticSearch{
       for (let sel of this.boolFilterSelects){
         sel.selectedIndex = 0;
       }
+      //Clear the search params in the URL too.
+      let url = window.location.href.split(/[?#]/)[0];
+      history.pushState({time: Date.now()}, '', url);
       return true;
     }
     catch(e){
