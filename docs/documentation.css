@@ -685,6 +685,9 @@ h2{
     margin-bottom: 0.7em;
     font-weight: bold;
     margin-left: -3em;
+    background-color: white;
+    padding: 0.5em;
+    border: solid 1pt gray;
 }
 
 h3{
@@ -693,6 +696,9 @@ h3{
     margin-bottom: 0.5em;
     font-style: italic;
     margin-left: -2em;
+    background-color: white;
+    padding: 0.25em;
+    border: solid 1pt gray;
 }
 
 h1.maintitle{
@@ -849,6 +855,7 @@ div.eg{
     font-size: 10pt;
     white-space: pre;
     background-color: silver;
+    max-width: 35em;
 }
 
 div.pre{
