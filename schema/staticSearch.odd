@@ -28,7 +28,7 @@
         </docTitle>
         <docAuthor>Martin Holmes</docAuthor>
         <docAuthor>Joey Takeda</docAuthor>
-        <docDate>2019-2024</docDate>
+        <docDate>2019-2025</docDate>
       </titlePage>
       <p>This documentation provides instructions on how to use the Project Endings
         staticSearch Generator to provide a fully-functional search <soCalled>engine</soCalled>
@@ -1472,13 +1472,28 @@
         <head>Projects using staticSearch</head>
         <list>
           <item>Level: Basic</item>
-          <item>Last Updated: <date when="2023-03-07">7 March 2023</date></item>
+          <item>Last Updated: <date when="2024-12-27">27 December 2024</date></item>
         </list>
         <table>
           <row role="label">
             <cell>Name</cell>
             <cell>Search Page(s)</cell>
             <cell>Configuration file(s)</cell>
+          </row>
+          <row>
+            <cell><ref target="https://becklectures.uvic.ca/">The Beck Lecture Series</ref></cell>
+            <cell><ref target="https://becklectures.uvic.ca/search.html">Search</ref></cell>
+            <cell><ref target="https://hcmc.uvic.ca/svn/beck/config_staticSearch.xml">SVN</ref></cell>
+          </row>
+          <row>
+            <cell><ref target="https://hcmc.uvic.ca/project/bbti/">The British Book Trade Index</ref></cell>
+            <cell><ref target="https://hcmc.uvic.ca/project/bbti/search.html">Search</ref></cell>
+            <cell><ref target="https://github.com/UVicHCMC/BBTI">GitHub</ref></cell>
+          </row>
+          <row>
+            <cell><ref target="https://www.moravians-at-sea.de/">Moravians at Sea</ref></cell>
+            <cell><ref target="https://www.moravians-at-sea.de/suche.html">Suche</ref></cell>
+            <cell><ref target="https://github.com/mprell/moravians-at-sea-Prod">GitHub</ref></cell>
           </row>
           <row>
             <cell><ref target="https://mapoflondon.uvic.ca">The Map of Early Modern London</ref></cell>
