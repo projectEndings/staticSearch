@@ -934,6 +934,9 @@ div.egXML_invalid{
 /* table of contents */
 ul.toc{
     list-style: none;
+    @media only screen and (max-width: 768px) {
+        padding-left: 1em;
+    }
 }
 li.toc{
     list-style: none;
@@ -1697,7 +1700,6 @@ section[id] div.table table>tbody>tr{
     @media only screen and (max-width: 768px) {
         display: list;
         list-style-type: none;
-        padding-left: 0;
         border-style: solid;
         border-color: gray;
         border-width: 1pt 0;
