@@ -4,10 +4,6 @@
 
 //Initially we create event listeners for all our custom 
 //events, so that we can check they're working in the console.
-
-
-//This is a set of automated tests which are intended to check whether
-//we're getting the results we expect back from the search object.
 const fncTestEvents = function(evt){
   console.log('Custom event received: ' + evt.type);
   if (evt.detail){
@@ -21,6 +17,8 @@ window.addEventListener('ssSearchStarting', fncTestEvents);
 window.addEventListener('ssFormCleared', fncTestEvents);
 window.addEventListener('ssSearchCompleted', fncTestEvents);
 
+//Now is a set of automated tests which are intended to check whether
+//we're getting the results we expect back from the search object.
 var reportDiv = null;
 
 var currTestNum = -1;
