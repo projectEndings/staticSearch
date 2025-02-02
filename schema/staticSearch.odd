@@ -1156,7 +1156,7 @@
             <cell>How do I get staticSearch to ignore large chunks of my document?</cell>
             <cell>Any element with a weight of 0 is ignored completely by the indexer, so add a <gi>rule</gi> for the element. So to ignore all elements with the class <val>ignoreThisElement</val>, you could do something like:
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
-                <rule weight="0" match="div[contains-token(@class,'ignoreThisElement')"/>
+                <rule weight="0" match="div[contains-token(@class, 'ignoreThisElement')"/>
               </egXML></cell>
           </row>
           <row>
