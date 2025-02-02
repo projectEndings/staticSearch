@@ -520,7 +520,7 @@ span.specChildModule{
 div.specChild{
     margin-bottom: 4pt;
     margin-left: 25px;
-    text-indent: -30px;
+    text-indent: -20px;
 }
 span.emptySlash::after{
     content: "/";
@@ -1683,6 +1683,15 @@ div.tei_body{
     background-color: #f9f9f9;
 }
 
+div.tei_back{
+    @media only screen and (max-width: 768px) {
+        max-width: 92vw;
+        padding: 0.2em 1vw;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
 div.tei_body>nav{
     max-width: 43vw;
 }
@@ -1696,7 +1705,20 @@ table{
     margin-top: 0.25em;
 }
 
-section[id] div.table table>tbody>tr{
+li.item div.table{
+    @media only screen and (max-width: 768px) {
+        tr{
+            display: list;
+            border-bottom: solid 1pt gray;
+            td{
+                display: list-item;
+                list-style-type: none;
+            }
+        }
+    }
+}
+
+/* section[id] div.table table>tbody>tr{
     @media only screen and (max-width: 768px) {
         display: list;
         list-style-type: none;
@@ -1713,4 +1735,4 @@ section[id] div.table table>tbody>tr{
             display: list-item;
         }
     }
-}
+} */
