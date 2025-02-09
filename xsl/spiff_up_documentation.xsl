@@ -58,7 +58,7 @@
      be present. -->
   <xsl:template match="meta[@charset]"/>
   
-  <!-- Regenerate the title element, cos it gets borked. -->
+  <!-- Regenerate the title element, cos it gets borked. Also add the viewport meta tag. -->
   <xsl:template match="title">
     <xsl:copy>
       <xsl:value-of select="//div[@class='titlePart'][1]"/>
@@ -66,6 +66,13 @@
       <xsl:value-of select="string-join((//div[@class='docAuthor']), ', ')"/>
       <xsl:text>)</xsl:text>
     </xsl:copy>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </xsl:template>
+  
+  <!-- The forced whitespace-pre structures with &nbsp; characters
+       really get in the way of responsive design. -->
+  <xsl:template match="text()[ancestor::pre or ancestor::div[matches(@class, '(\s|^)pre(\s|$)')]]">
+    <xsl:sequence select="replace(., '&#160;', ' ')"/>
   </xsl:template>
   
 </xsl:stylesheet>
