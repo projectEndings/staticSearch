@@ -102,29 +102,38 @@
                 file="{hcmc:getString(stopwordsFile, '')}"/>
             <dictionary
                 file="{hcmc:getString(dictionaryFile, '')}"/>
-            <tokenizer
-                minWordLength="{xs:string(hcmc:getInteger(minWordLength, 2))}"/>
             <scoringAlgorithm name="{hcmc:getString(scoringAlgorithm, 'raw')}"/>
             <stemmer
                 dir="{hcmc:getString(stemmerFolder, 'stemmers/en/')}"/>
             <tokenizer minWordLength="{hcmc:getInteger(minWordLength, 2)}"/>
-            <contexts
-                create="{hcmc:getStrBoolean(createContexts, 'false')}"
-                phrasalSearch="{hcmc:getStrBoolean(phrasalSearch, 'true')}" 
-                wildcardSearch="{hcmc:getStrBoolean(wildcardSearch, 'true')}"
-                maxKwicsToHarvest="{hcmc:getInteger(maxKwicsToHarvest, 5)}"
-                maxKwicLength="{hcmc:getInteger(totalKwicLength, 15)}"
-                kwicTruncateString="{hcmc:getString(kwicTruncateString, '...')}"         
-            />
+            <createContexts>
+                <xsl:variable name="create" 
+                    select="hcmc:getStrBoolean(createContexts, 'true')" as="xs:string"/>
+                <xsl:attribute name="create" select="$create"/>
+                <!--If create is false, no other attributes are allowed, so we're done-->
+                <xsl:if test="$create = 'true'">
+                    <!--Always check phrasal search-->
+                    <xsl:variable name="phrasalSearch" as="xs:string"
+                        select="hcmc:getStrBoolean(phrasalSearch, 'true')"/>
+                    <xsl:attribute name="phrasalSearch" select="$phrasalSearch"/>
+                    <xsl:attribute name="wildcardSearch"
+                        select="hcmc:getStrBoolean(wildcardSearch, 'true')"/>
+                    <xsl:if test="$phrasalSearch = 'false'">
+                        <xsl:attribute name="maxKwicsToHarvest"
+                            select="hcmc:getInteger(maxKwicsToHarvest, 5)"/>
+                    </xsl:if>
+                    <xsl:attribute name="maxKwicLength"
+                        select="hcmc:getInteger(totalKwicLength, 15)"/>
+                    <xsl:attribute name="kwicTruncateString" 
+                        select="hcmc:getString(kwicTruncateString, '...')"/>
+                </xsl:if>
+            </createContexts>
             <results 
                 resultsPerPage="{hcmc:getInteger(resultsPerPage, 100)}"
                 maxKwicsToShow="{hcmc:getInteger(maxKwicsToShow, 5)}"
                 maxResults="{hcmc:getInteger(resultsLimit, 1000)}"/>
             <version file="{hcmc:getString(versionFile, '')}"/>
-            
-            <!-- NOTE: I believe this should actually be:
-                 <output dir=""/> -->
-            <outputDir name="{hcmc:getString(outputFolder, 'staticSearch')}"/>
+            <output dir="{hcmc:getString(outputFolder, 'staticSearch')}"/>
         </xsl:copy>
         
         <!-- Now we handle the things we want to warn about. -->

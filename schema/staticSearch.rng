@@ -5,7 +5,7 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2025-02-02T23:07:57Z. 2019-2025. 
+Schema generated from ODD source 2025-02-09T07:44:53Z. 2019-2025. 
 TEI Edition: P5 Version 4.9.0. Last updated on 24th January 2025, revision f73186978 
 TEI Edition Location: https://www.tei-c.org/Vault/P5/4.9.0/ 
   
@@ -32,7 +32,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.9.0/
       <ns xmlns="http://purl.oclc.org/dsdl/schematron"
           prefix="xh"
           uri="http://www.w3.org/1999/xhtml"/>
-      <pattern xmlns="http://purl.oclc.org/dsdl/schematron" id="d9e3448-constraint">
+      <pattern xmlns="http://purl.oclc.org/dsdl/schematron" id="d9e3564-constraint">
          <rule context="xh:span">
             <report test="descendant::*[not(namespace-uri(.) =               ('http://www.w3.org/1999/xhtml', 'http://www.tei-c.org/ns/1.0'))]">span descendants must be in the
               namespaces
@@ -73,54 +73,284 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.9.0/
       <element name="params" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Element containing most of the settings which enable the Generator to find the target website content and process it appropriately.) </a:documentation>
          <interleave>
-            <ref name="searchFile"/>
+            <ref name="searchPage"/>
             <optional>
-               <ref name="versionFile"/>
+               <ref name="index"/>
             </optional>
             <optional>
-               <ref name="stemmerFolder"/>
+               <ref name="stopwords"/>
             </optional>
-            <ref name="recurse"/>
             <optional>
-               <ref name="minWordLength"/>
+               <ref name="dictionary"/>
+            </optional>
+            <optional>
+               <ref name="tokenizer"/>
             </optional>
             <optional>
                <ref name="scoringAlgorithm"/>
             </optional>
             <optional>
-               <ref name="phrasalSearch"/>
-            </optional>
-            <optional>
-               <ref name="wildcardSearch"/>
+               <ref name="stemmer"/>
             </optional>
             <optional>
                <ref name="createContexts"/>
             </optional>
             <optional>
-               <ref name="maxKwicsToHarvest"/>
+               <ref name="results"/>
             </optional>
             <optional>
-               <ref name="maxKwicsToShow"/>
+               <ref name="version"/>
             </optional>
-            <optional>
-               <ref name="totalKwicLength"/>
-            </optional>
-            <optional>
-               <ref name="kwicTruncateString"/>
-            </optional>
-            <ref name="stopwordsFile"/>
-            <ref name="dictionaryFile"/>
-            <optional>
-               <ref name="outputFolder"/>
-            </optional>
-            <optional>
-               <ref name="resultsPerPage"/>
-            </optional>
-            <optional>
-               <ref name="resultsLimit"/>
-            </optional>
+            <ref name="output"/>
          </interleave>
       </element>
+   </define>
+   <define name="searchPage">
+      <element name="searchPage" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The search page that will be the primary access point for staticSearch. This page may or may not exist, but its location is used for determining the collection that will be indexed, so it must be at the root of the collection directory.) </a:documentation>
+         <empty/>
+         <ref name="ss.atts.file.attributes"/>
+         <empty/>
+      </element>
+   </define>
+   <define name="index">
+      <element name="index" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Configures options relating to indexing.) </a:documentation>
+         <empty/>
+         <optional>
+            <attribute xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+                       name="recurse"
+                       a:defaultValue="false">
+               <a:documentation>(Determines whether or not to recurse into the subdirectories of the collection and index those files.) </a:documentation>
+            </attribute>
+         </optional>
+         <empty/>
+      </element>
+   </define>
+   <define name="version">
+      <element name="version" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Specifies the unique version to append to the index, so that the browser will not use cached versions of older index files.) </a:documentation>
+         <empty/>
+         <attribute name="file">
+            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The path (relative to the config file) to a text file containing a single version identifier (such as 1.5, 123456, or 06ad419).) </a:documentation>
+            <data type="anyURI"/>
+         </attribute>
+         <empty/>
+      </element>
+   </define>
+   <define name="stopwords">
+      <element name="stopwords" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Specifies a list of stopwords--that is, words to be ignored when indexing.) </a:documentation>
+         <empty/>
+         <attribute name="file">
+            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The path (relative to the config file) to a text file containing a list of words to be ignored by the indexer (one word per line).) </a:documentation>
+            <data type="anyURI"/>
+         </attribute>
+         <empty/>
+      </element>
+   </define>
+   <define name="dictionary">
+      <element name="dictionary" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Specifies a dictionary against which tokens may be checked during indexing.) </a:documentation>
+         <empty/>
+         <attribute name="file">
+            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The relative path (from the config file) to a dictionary file (one word per line).) </a:documentation>
+            <data type="anyURI"/>
+         </attribute>
+         <empty/>
+      </element>
+   </define>
+   <define name="tokenizer">
+      <element name="tokenizer" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Configures options for the tokenizing process.) </a:documentation>
+         <empty/>
+         <optional>
+            <attribute xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+                       name="minWordLength"
+                       a:defaultValue="2">
+               <a:documentation>(Specifies the minimum length in characters of a sequence of text that will be considered to be a word worth indexing.) </a:documentation>
+               <data type="nonNegativeInteger"/>
+            </attribute>
+         </optional>
+         <empty/>
+      </element>
+   </define>
+   <define name="scoringAlgorithm">
+      <element name="scoringAlgorithm" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The scoring algorithm to use for ranking keyword results.) </a:documentation>
+         <empty/>
+         <attribute name="name">
+            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Specifies the name of the scoring algorithm to use.) </a:documentation>
+            <choice>
+               <value>raw</value>
+               <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Default: Calculate the score based off of the weighted number of instances of a term in a text.) raw score</a:documentation>
+               <value>tf-idf</value>
+               <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Calculate the score based off of the tf-idf scoring algorithm.) tf-idf (term frequency-inverse document frequency)</a:documentation>
+            </choice>
+         </attribute>
+         <empty/>
+      </element>
+   </define>
+   <define name="stemmer">
+      <element name="stemmer" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The name of a folder inside the staticSearch /stemmers/ folder, in which the JavaScript and XSLT implementations of stemmers can be found. If not specified, then the staticSearch default English stemmer (en) will be used.) </a:documentation>
+         <empty/>
+         <attribute name="dir">
+            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The path (relative to the config file) of the directory to use for stemming.) 
+Suggested values include: 1] stemmers/en/; 2] stemmers/fr/; 3] stemmers/identity; 4] stemmers/stripDiacritics</a:documentation>
+            <choice>
+               <value>stemmers/en/</value>
+               <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">English stemmer</a:documentation>
+               <value>stemmers/fr/</value>
+               <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">French stemmer</a:documentation>
+               <value>stemmers/identity</value>
+               <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">Identity stemmer</a:documentation>
+               <value>stemmers/stripDiacritics</value>
+               <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">Diacritic stripping stemmer</a:documentation>
+               <data type="anyURI"/>
+            </choice>
+         </attribute>
+         <empty/>
+      </element>
+   </define>
+   <define name="createContexts">
+      <element name="createContexts" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Whether to include keyword-in-context extracts in the index.) </a:documentation>
+         <empty/>
+         <choice>
+            <rng:optional xmlns:rng="http://relaxng.org/ns/structure/1.0">
+               <attribute name="create">
+                  <value>false</value>
+                  <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+               </attribute>
+            </rng:optional>
+            <group>
+               <optional>
+                  <attribute name="create">
+                     <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">Specifies whether the indexer stores keyword-in-context extracts for each hit in a document.</a:documentation>
+                     <choice>
+                        <value>true</value>
+                        <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+                     </choice>
+                  </attribute>
+               </optional>
+               <optional>
+                  <attribute xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+                             name="phrasalSearch"
+                             a:defaultValue="true">
+                     <a:documentation>(Whether or not to support phrasal searches. If this is true, then the maxContexts setting will be ignored, because all contexts are required to properly support phrasal search.) </a:documentation>
+                     <data type="boolean"/>
+                  </attribute>
+               </optional>
+               <optional>
+                  <attribute xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+                             name="wildcardSearch"
+                             a:defaultValue="true">
+                     <a:documentation>(Whether or not to support wildcard searches.) </a:documentation>
+                     <data type="boolean"/>
+                  </attribute>
+               </optional>
+               <optional>
+                  <attribute xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+                             name="maxKwicsToHarvest"
+                             a:defaultValue="5">
+                     <a:documentation>(Controls the number of keyword-in-context extracts that will be harvested from the data for each term in a document.) </a:documentation>
+                     <data type="nonNegativeInteger"/>
+                  </attribute>
+               </optional>
+               <optional>
+                  <attribute xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+                             name="maxKwicLength"
+                             a:defaultValue="15">
+                     <a:documentation>(Sets the maximum length (in words) of a keyword-in-context result.) </a:documentation>
+                     <data type="nonNegativeInteger"/>
+                  </attribute>
+               </optional>
+               <optional>
+                  <attribute xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+                             name="kwicTruncateString"
+                             a:defaultValue="…">
+                     <a:documentation>(The string that will be used to signal ellipsis at the beginning and end of a keyword-in-context extract. Conventionally three periods, or an ellipsis character (which is the default value).) </a:documentation>
+                     <data type="string"/>
+                  </attribute>
+               </optional>
+            </group>
+         </choice>
+         <empty/>
+      </element>
+   </define>
+   <define name="results">
+      <element name="results" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Controls the configuration of the results page.) </a:documentation>
+         <empty/>
+         <optional>
+            <attribute xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+                       name="resultsPerPage"
+                       a:defaultValue="0">
+               <a:documentation>(The maximum number of document results to be displayed per page. All results are displayed by default; setting resultsPerPage to a positive integer creates a Show More/Show All widget at the bottom of the batch of results.) </a:documentation>
+               <data type="nonNegativeInteger"/>
+            </attribute>
+         </optional>
+         <optional>
+            <attribute xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+                       name="maxKwicsToShow"
+                       a:defaultValue="25">
+               <a:documentation>(Controls the maximum number of keyword-in-context extracts that will be shown in the search page for each hit document returned.) </a:documentation>
+               <data type="nonNegativeInteger"/>
+            </attribute>
+         </optional>
+         <optional>
+            <attribute xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+                       name="maxResults"
+                       a:defaultValue="2000">
+               <a:documentation>(The maximum number of results that can be returned for any search before returning an error; if the number of documents in a result set exceeds this number, then staticSearch will not render the results and will provide a message saying that the search returned too many results.) </a:documentation>
+               <data type="nonNegativeInteger"/>
+            </attribute>
+         </optional>
+         <empty/>
+      </element>
+   </define>
+   <define name="output">
+      <element name="output" ns="http://hcmc.uvic.ca/ns/staticSearch">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Sets the folder into which the index data and JavaScript will be placed.) </a:documentation>
+         <empty/>
+         <attribute xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+                    name="dir"
+                    a:defaultValue="staticSearch">
+            <a:documentation>(A pointer to a local directory.) </a:documentation>
+            <data type="NCName"/>
+         </attribute>
+         <empty/>
+      </element>
+   </define>
+   <define name="att.match.attributes">
+      <ref name="att.match.attribute.match"/>
+   </define>
+   <define name="att.match.attribute.match">
+      <attribute name="match">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(An XPath equivalent to the @match attribute of an xsl:template, which specifies a context in a document.) </a:documentation>
+         <data type="string"/>
+      </attribute>
+   </define>
+   <define name="att.labelled.attributes">
+      <ref name="att.labelled.attribute.label"/>
+   </define>
+   <define name="att.labelled.attribute.label">
+      <optional>
+         <attribute name="label">
+            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(A string identifier specifying the name for a given context.) </a:documentation>
+            <data type="string"/>
+         </attribute>
+      </optional>
+   </define>
+   <define name="ss.atts.file.attributes">
+      <ref name="ss.atts.file.attribute.file"/>
+   </define>
+   <define name="ss.atts.file.attribute.file">
+      <attribute name="file">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(A pointer to a local file.) </a:documentation>
+         <data type="anyURI"/>
+      </attribute>
    </define>
    <define name="rules">
       <element name="rules" ns="http://hcmc.uvic.ca/ns/staticSearch">
@@ -144,7 +374,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.9.0/
    </define>
    <define name="contexts">
       <element name="contexts" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The set of context elements that identify contexts for keyword-in-context fragments.) </a:documentation>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The set of context that identify contexts for keyword-in-context fragments.) </a:documentation>
          <oneOrMore>
             <ref name="context"/>
          </oneOrMore>
@@ -210,139 +440,6 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.9.0/
             </choice>
          </attribute>
          <empty/>
-      </element>
-   </define>
-   <define name="att.match.attributes">
-      <ref name="att.match.attribute.match"/>
-   </define>
-   <define name="att.match.attribute.match">
-      <attribute name="match">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(An XPath equivalent to the @match attribute of an xsl:template, which specifies a context in a document.) </a:documentation>
-         <data type="string"/>
-      </attribute>
-   </define>
-   <define name="att.labelled.attributes">
-      <ref name="att.labelled.attribute.label"/>
-   </define>
-   <define name="att.labelled.attribute.label">
-      <optional>
-         <attribute name="label">
-            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(A string identifier specifying the name for a given context.) </a:documentation>
-            <data type="string"/>
-         </attribute>
-      </optional>
-   </define>
-   <define name="searchFile">
-      <element name="searchFile" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The search file (aka page) that will be the primary access point for the staticSearch. Note that this page must be at the root of the collection directory.) </a:documentation>
-         <data type="anyURI"/>
-      </element>
-   </define>
-   <define name="versionFile">
-      <element name="versionFile" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The relative path to a text file containing a single version identifier (such as 1.5, 123456, or 06ad419). This will be used to create unique filenames for JSON resources, so that the browser will not use cached versions of older index files.) </a:documentation>
-         <data type="anyURI"/>
-      </element>
-   </define>
-   <define name="stemmerFolder">
-      <element name="stemmerFolder" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The name of a folder inside the staticSearch /stemmers/ folder, in which the JavaScript and XSLT implementations of stemmers can be found. If left blank, then the staticSearch default English stemmer (en) will be used.) </a:documentation>
-         <data type="NCName"/>
-      </element>
-   </define>
-   <define name="scoringAlgorithm">
-      <element name="scoringAlgorithm" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The scoring algorithm to use for ranking keyword results. Default is "raw" (i.e. weighted counts)) </a:documentation>
-         <choice>
-            <value>raw</value>
-            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Default: Calculate the score based off of the weighted number of instances of a term in a text.) raw score</a:documentation>
-            <value>tf-idf</value>
-            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Calculate the score based off of the tf-idf scoring algorithm.) </a:documentation>
-         </choice>
-      </element>
-   </define>
-   <define name="recurse">
-      <element name="recurse" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Whether to recurse into subdirectories of the collection directory or not.) </a:documentation>
-         <data type="boolean"/>
-      </element>
-   </define>
-   <define name="createContexts">
-      <element name="createContexts" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Whether to include keyword-in-context extracts in the index.) </a:documentation>
-         <data type="boolean"/>
-      </element>
-   </define>
-   <define name="minWordLength">
-      <element name="minWordLength" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The minimum length of a term to be indexed. Default is 3 characters.) </a:documentation>
-         <data type="nonNegativeInteger"/>
-      </element>
-   </define>
-   <define name="totalKwicLength">
-      <element name="totalKwicLength" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(If createContexts is set to true, then this parameter controls the length (in words) of the harvested keyword-in-context string.) </a:documentation>
-         <data type="nonNegativeInteger"/>
-      </element>
-   </define>
-   <define name="maxKwicsToHarvest">
-      <element name="maxKwicsToHarvest" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(This controls the maximum number of keyword-in-context extracts that will be stored for each term in a document.) </a:documentation>
-         <data type="nonNegativeInteger"/>
-      </element>
-   </define>
-   <define name="maxKwicsToShow">
-      <element name="maxKwicsToShow" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(This controls the maximum number of keyword-in-context extracts that will be shown in the search page for each hit document returned.) </a:documentation>
-         <data type="nonNegativeInteger"/>
-      </element>
-   </define>
-   <define name="kwicTruncateString">
-      <element name="kwicTruncateString" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The string that will be used to signal ellipsis at the beginning and end of a keyword-in-context extract. Conventionally three periods, or an ellipsis character (which is the default value).) </a:documentation>
-         <text/>
-      </element>
-   </define>
-   <define name="phrasalSearch">
-      <element name="phrasalSearch" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Whether or not to support phrasal searches. If this is true, then the maxContexts setting will be ignored, because all contexts are required to properly support phrasal search.) </a:documentation>
-         <data type="boolean"/>
-      </element>
-   </define>
-   <define name="wildcardSearch">
-      <element name="wildcardSearch" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Whether or not to support wildcard searches. Note that wildcard searches are more effective when phrasal searching is also turned on, because the contexts available for phrasal searches are also used to provide wildcard results.) </a:documentation>
-         <data type="boolean"/>
-      </element>
-   </define>
-   <define name="resultsPerPage">
-      <element name="resultsPerPage" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The maximum number of document results to be displayed per page. All results are displayed by default; setting resultsPerPage to a positive integer creates a Show More/Show All widget at the bottom of the batch of results.) </a:documentation>
-         <data type="nonNegativeInteger"/>
-      </element>
-   </define>
-   <define name="resultsLimit">
-      <element name="resultsLimit" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The maximum number of results that can be returned for any search before returning an error; if the number of documents in a result set exceeds this number, then staticSearch will not render the results and will provide a message saying that the search returned too many results. This is usually set to 2000 by default, but you may want to have a higher or lower limit, depending on the specific structure of your project.) </a:documentation>
-         <data type="nonNegativeInteger"/>
-      </element>
-   </define>
-   <define name="stopwordsFile">
-      <element name="stopwordsFile" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The relative path (from the config file) to a text file containing a list of stopwords (words to be ignored when indexing).) </a:documentation>
-         <data type="anyURI"/>
-      </element>
-   </define>
-   <define name="dictionaryFile">
-      <element name="dictionaryFile" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The relative path (from the config file) to a dictionary file (one word per line) which will be used to check tokens when indexing.) </a:documentation>
-         <data type="anyURI"/>
-      </element>
-   </define>
-   <define name="outputFolder">
-      <element name="outputFolder" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The name of the output folder into which the index data and JavaScript will be placed in the site search. This should conform with the XML Name specification.) </a:documentation>
-         <data type="NCName"/>
       </element>
    </define>
    <define name="filters">

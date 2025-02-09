@@ -253,7 +253,7 @@
     <!--<echo message="Is not v2? ${isNotV2}"/>-->
   </target>
   
-  <target name="convertConfigFile" if="${isNotV2}">
+  <target name="convertConfigFile" depends="checkConfigVersion" if:true="${isNotV2}">
     <description>
       TARGET convertConfigFile
       This runs an identity transform on the supplied config

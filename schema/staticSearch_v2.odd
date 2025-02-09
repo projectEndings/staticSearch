@@ -243,36 +243,11 @@
             <elementSpec ident="resultsPerPage" mode="delete"/>
             <elementSpec ident="resultsLimit" mode="delete"/>
             
-            <elementSpec ident="results" mode="add" module="ss">
-               <gloss>Controls results configuration</gloss>
-               <attList>
-                  <attDef ident="resultsPerPage">
-                     <datatype>
-                        <dataRef name="nonNegativeInteger"/>
-                     </datatype>
-                     <defaultVal>25</defaultVal>
-                  </attDef>
-                  <attDef ident="maxKwicsToShow">
-                     <datatype>
-                        <dataRef name="nonNegativeInteger"/>
-                     </datatype>
-                     <defaultVal>25</defaultVal>
-                  </attDef>
-                  <!--NOTE: Renamking resultsLimit to maxResults-->
-                  <attDef ident="maxResults">
-                     <datatype>
-                        <dataRef name="nonNegativeInteger"/>
-                     </datatype>
-                     <defaultVal>2000</defaultVal>
-                  </attDef>
-               </attList>
-            </elementSpec>
+           
             <elementSpec ident="versionFile" mode="change"
                module="ss">
                <altIdent>version</altIdent>
-               <classes mode="change">
-                  <memberOf key="ss.atts.file" mode="add"/>
-               </classes>
+
                <content>
                   <empty/>
                </content>
