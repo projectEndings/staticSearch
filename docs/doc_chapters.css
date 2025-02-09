@@ -10,9 +10,12 @@ body.simple{
 
 .tei_front{
     flex: 0 1 30vw;
-    
     font-size:0.95em;
-    
+    @media only screen and (max-width: 768px) {
+        order: 3;
+        width: 100%;
+        flex: auto;
+    }
 }
 
 .tei_front > div {
@@ -22,6 +25,12 @@ body.simple{
     overflow-y:auto;
     margin:0 2rem;
     padding-right:1rem;
+    @media only screen and (max-width: 768px) {
+        height: auto;
+        margin: 0;
+        padding-right: 0;
+        position: static;
+    }
 }
 
 
@@ -29,6 +38,15 @@ body.simple{
 div.tei_body{
     max-width:45vw;
     margin:0 2rem;
+    @media only screen and (max-width: 768px) {
+        max-width: 96vw;
+        width: 96vw;
+        margin: 0;
+        order: 1;
+    }
+}
+div.notes{
+    order: 2;
 }
 
 div.tei_front > div > ul.toc{
@@ -36,8 +54,12 @@ div.tei_front > div > ul.toc{
 }
 
 div.tei_body[data-section='schemaSpec']{
-    
     max-width:60vw;
+    @media only screen and (max-width: 768px) {
+        max-width: 96vw;
+        width: 96vw;
+        margin: 0;
+    }
 }
 
 div[data-section] > h1 + ul {
@@ -83,7 +105,17 @@ h3{
     margin-left:0;
 }
 
-
+/* Fix width of examples for small-format devices. */
+@media only screen and (max-width: 768px) {
+    pre, div.pre, div.pre_eg, pre.eg, div.eg {
+        max-width: 85vw;
+    }
+    td{
+        pre, div.pre, div.pre_eg, pre.eg, div.eg {
+            max-width: 55vw
+        }
+    }
+}
 
 
 div.notes,

@@ -781,16 +781,16 @@
                   <excludes>
                     <!-- We only index files which have illustrations in them. -->
                     <exclude type="index" 
-                      match="html[not(descendant::meta[@name='Has illustration(s)'][@content='true'])]"/>
+                      match="html [not( descendant::meta [@name='Has illustration(s)'] [@content='true'] )]"/>
                     
                     <!-- We ignore the document type filter, 
                          because we are only indexing one type 
                          of document anyway. -->
-                    <exclude type="filter" match="meta[@name='Document type']"/>
+                    <exclude type="filter" match="meta[ @name='Document type' ]"/>
                     
                     <!-- We exclude the filter that specifies 
                          these documents because it's pointless. -->
-                    <exclude type="filter" match="meta[@name='Has illustration(s)']"/>
+                    <exclude type="filter" match="meta[ @name='Has illustration(s)' ]"/>
                   </excludes>
                 </egXML>
               
@@ -1156,7 +1156,7 @@
             <cell>How do I get staticSearch to ignore large chunks of my document?</cell>
             <cell>Any element with a weight of 0 is ignored completely by the indexer, so add a <gi>rule</gi> for the element. So to ignore all elements with the class <val>ignoreThisElement</val>, you could do something like:
               <egXML xmlns="http://www.tei-c.org/ns/Examples">
-                <rule weight="0" match="div[contains-token(@class,'ignoreThisElement')"/>
+                <rule weight="0" match="div[contains-token(@class, 'ignoreThisElement')"/>
               </egXML></cell>
           </row>
           <row>
@@ -1201,8 +1201,7 @@
               The javaFork parameter prevents calls to Java processes (such as Saxon) from 
               forking into a new Java VM, which allows them to take advantage of the expanded 
               memory you have assigned to Ant.
-              <eg></eg>
-              This </cell>
+              </cell>
           </row>
         </table>
       </div>

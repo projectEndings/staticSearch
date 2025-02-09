@@ -368,6 +368,9 @@ class StaticSearch{
       //Now we're instantiated, check to see if there's a query
       //string that should initiate a search.
       this.parseUrlQueryString();
+
+      //Emit an event to notify that the object is instantiated.
+      window.dispatchEvent(new CustomEvent('ssInstantiated'));
     }
     catch(e){
       console.log('ERROR: ' + e.message);
@@ -447,6 +450,8 @@ class StaticSearch{
     else{
       this.allJsonRetrieved = true;
       document.body.classList.remove('ssLoading');
+      //Emit an event to notify that all Json has been retrieved.
+      window.dispatchEvent(new CustomEvent('ssJsonRetrieved'));
     }
   }
 
@@ -663,6 +668,8 @@ class StaticSearch{
         }
       }
     }
+    //Emit an event to notify that the object is instantiated.
+    window.dispatchEvent(new CustomEvent('ssSearchStarting'));
     // Now initialize that we're searching
     this.isSearching = true;
      //And now setup the timeout
@@ -781,6 +788,10 @@ class StaticSearch{
           url += '?' + encodeURI(search.join('&'));
           history.pushState({time: Date.now()}, '', url);
         }
+        else{
+//If there are no search parameters, clear the URL.
+          history.pushState({time: Date.now()}, '', url);
+        }
       }
       /*else{
         console.log('Not storing search in browser history.');
@@ -791,7 +802,6 @@ class StaticSearch{
       console.log('ERROR: failed to push search into browser history: ' + e.message);
     }
   }
-
 
 /** @function StaticSearch~parseSearchQuery
   * @description this retrieves the content of the text
@@ -1038,6 +1048,12 @@ class StaticSearch{
       for (let sel of this.boolFilterSelects){
         sel.selectedIndex = 0;
       }
+      //Clear the search params in the URL too.
+      let url = window.location.href.split(/[?#]/)[0];
+      history.pushState({time: Date.now()}, '', url);
+
+    //Emit an event to notify that the form has been cleared.
+    window.dispatchEvent(new CustomEvent('ssFormCleared'));
       return true;
     }
     catch(e){
@@ -1535,6 +1551,8 @@ class StaticSearch{
       let pTooManyResults = document.createElement('p');
       pTooManyResults.append(this.captionSet.strTooManyResults);
       this.resultsDiv.appendChild(pTooManyResults);
+      //Emit an event to notify that the search is completed, including the hit count.
+      window.dispatchEvent(new CustomEvent('ssSearchCompleted', {detail: {'hits': this.resultSet.getSize()}}));
       return true;
     } catch (e) {
       console.log('ERROR: ' + e);
@@ -1908,6 +1926,8 @@ if (this.discardedTerms.length > 0){
       }
       this.isSearching = false;
       this.searchFinishedHook(4);
+      //Emit an event to notify that the search is completed, including the hit count.
+      window.dispatchEvent(new CustomEvent('ssSearchCompleted', {detail: {'hits': this.resultSet.getSize()}}));
       return (this.resultSet.getSize() > 0);
     }
     catch(e){
