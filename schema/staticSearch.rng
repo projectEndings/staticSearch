@@ -5,7 +5,7 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2025-02-10T19:21:21Z. 2019-2025. 
+Schema generated from ODD source 2025-02-19T07:15:54Z. 2019-2025. 
 TEI Edition: P5 Version 4.9.0. Last updated on 24th January 2025, revision f73186978 
 TEI Edition Location: https://www.tei-c.org/Vault/P5/4.9.0/ 
   
@@ -32,7 +32,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.9.0/
       <ns xmlns="http://purl.oclc.org/dsdl/schematron"
           prefix="xh"
           uri="http://www.w3.org/1999/xhtml"/>
-      <pattern xmlns="http://purl.oclc.org/dsdl/schematron" id="d9e3641-constraint">
+      <pattern xmlns="http://purl.oclc.org/dsdl/schematron" id="d9e3660-constraint">
          <rule context="xh:span">
             <report test="descendant::*[not(namespace-uri(.) =               ('http://www.w3.org/1999/xhtml', 'http://www.tei-c.org/ns/1.0'))]">span descendants must be in the
               namespaces
@@ -109,7 +109,10 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.9.0/
       <element name="searchPage" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The search page that will be the primary access point for staticSearch. This page may or may not exist, but its location is used for determining the collection that will be indexed, so it must be at the root of the collection directory.) </a:documentation>
          <empty/>
-         <ref name="ss.atts.file.attributes"/>
+         <attribute name="file">
+            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The path (relative to the config file) to the search page.) </a:documentation>
+            <data type="anyURI"/>
+         </attribute>
          <empty/>
       </element>
    </define>
@@ -142,8 +145,10 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.9.0/
       <element name="stopwords" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Specifies a list of stopwords--that is, words to be ignored when indexing.) </a:documentation>
          <empty/>
-         <attribute name="file">
-            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The path (relative to the config file) to a text file containing a list of words to be ignored by the indexer (one word per line).) </a:documentation>
+         <attribute xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+                    name="file"
+                    a:defaultValue="xsl/english_stopwords.txt">
+            <a:documentation>(The path (relative to the config file) to a text file containing a list of words to be ignored by the indexer (one word per line).) </a:documentation>
             <data type="anyURI"/>
          </attribute>
          <empty/>
@@ -153,8 +158,10 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.9.0/
       <element name="dictionary" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Specifies a dictionary against which tokens may be checked during indexing.) </a:documentation>
          <empty/>
-         <attribute name="file">
-            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The relative path (from the config file) to a dictionary file (one word per line).) </a:documentation>
+         <attribute xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+                    name="file"
+                    a:defaultValue="xsl/english_words.txt">
+            <a:documentation>(The relative path (from the config file) to a dictionary file (one word per line).) </a:documentation>
             <data type="anyURI"/>
          </attribute>
          <empty/>
@@ -179,15 +186,20 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.9.0/
       <element name="scoringAlgorithm" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The scoring algorithm to use for ranking keyword results.) </a:documentation>
          <empty/>
-         <attribute name="name">
-            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Specifies the name of the scoring algorithm to use.) </a:documentation>
-            <choice>
-               <value>raw</value>
-               <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Default: Calculate the score based off of the weighted number of instances of a term in a text.) raw score</a:documentation>
-               <value>tf-idf</value>
-               <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Calculate the score based off of the tf-idf scoring algorithm.) tf-idf (term frequency-inverse document frequency)</a:documentation>
-            </choice>
-         </attribute>
+         <ref name="ss.atts.file.attributes"/>
+         <optional>
+            <attribute xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+                       name="name"
+                       a:defaultValue="raw">
+               <a:documentation>(Specifies the name of the scoring algorithm to use.) </a:documentation>
+               <choice>
+                  <value>raw</value>
+                  <a:documentation>(Default: Calculate the score based off of the weighted number of instances of a term in a text.) raw score</a:documentation>
+                  <value>tf-idf</value>
+                  <a:documentation>(Calculate the score based off of the tf-idf scoring algorithm.) tf-idf (term frequency-inverse document frequency)</a:documentation>
+               </choice>
+            </attribute>
+         </optional>
          <empty/>
       </element>
    </define>
@@ -195,18 +207,20 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.9.0/
       <element name="stemmer" ns="http://hcmc.uvic.ca/ns/staticSearch">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The name of a folder inside the staticSearch /stemmers/ folder, in which the JavaScript and XSLT implementations of stemmers can be found. If not specified, then the staticSearch default English stemmer (en) will be used.) </a:documentation>
          <empty/>
-         <attribute name="dir">
-            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(The path (relative to the config file) of the directory to use for stemming.) 
+         <attribute xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+                    name="dir"
+                    a:defaultValue="stemmers/en/">
+            <a:documentation>(The path (relative to the config file) of the directory to use for stemming.) 
 Suggested values include: 1] stemmers/en/; 2] stemmers/fr/; 3] stemmers/identity; 4] stemmers/stripDiacritics</a:documentation>
             <choice>
                <value>stemmers/en/</value>
-               <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">English stemmer</a:documentation>
+               <a:documentation>English stemmer</a:documentation>
                <value>stemmers/fr/</value>
-               <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">French stemmer</a:documentation>
+               <a:documentation>French stemmer</a:documentation>
                <value>stemmers/identity</value>
-               <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">Identity stemmer</a:documentation>
+               <a:documentation>Identity stemmer</a:documentation>
                <value>stemmers/stripDiacritics</value>
-               <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">Diacritic stripping stemmer</a:documentation>
+               <a:documentation>Diacritic stripping stemmer</a:documentation>
                <data type="anyURI"/>
             </choice>
          </attribute>
@@ -226,11 +240,13 @@ Suggested values include: 1] stemmers/en/; 2] stemmers/fr/; 3] stemmers/identity
             </rng:optional>
             <group>
                <optional>
-                  <attribute name="create">
-                     <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">Specifies whether the indexer stores keyword-in-context extracts for each hit in a document.</a:documentation>
+                  <attribute xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+                             name="create"
+                             a:defaultValue="true">
+                     <a:documentation>Specifies whether the indexer stores keyword-in-context extracts for each hit in a document.</a:documentation>
                      <choice>
                         <value>true</value>
-                        <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+                        <a:documentation/>
                      </choice>
                   </attribute>
                </optional>
