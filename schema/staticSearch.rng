@@ -5,7 +5,7 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2025-02-19T18:01:34Z. 2019-2025. 
+Schema generated from ODD source 2025-02-19T18:36:23Z. 2019-2025. 
 TEI Edition: P5 Version 4.9.0. Last updated on 24th January 2025, revision f73186978 
 TEI Edition Location: https://www.tei-c.org/Vault/P5/4.9.0/ 
   
@@ -32,7 +32,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.9.0/
       <ns xmlns="http://purl.oclc.org/dsdl/schematron"
           prefix="xh"
           uri="http://www.w3.org/1999/xhtml"/>
-      <pattern xmlns="http://purl.oclc.org/dsdl/schematron" id="d9e3658-constraint">
+      <pattern xmlns="http://purl.oclc.org/dsdl/schematron" id="d9e3706-constraint">
          <rule context="xh:span">
             <report test="descendant::*[not(namespace-uri(.) =               ('http://www.w3.org/1999/xhtml', 'http://www.tei-c.org/ns/1.0'))]">span descendants must be in the
               namespaces
@@ -125,6 +125,12 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.9.0/
                        name="recurse"
                        a:defaultValue="false">
                <a:documentation>(Determines whether or not to recurse into the subdirectories of the collection and index those files.) </a:documentation>
+               <choice>
+                  <value>true</value>
+                  <a:documentation/>
+                  <value>false</value>
+                  <a:documentation/>
+               </choice>
             </attribute>
          </optional>
          <empty/>
@@ -254,7 +260,12 @@ Suggested values include: 1] stemmers/en/; 2] stemmers/fr/; 3] stemmers/identity
                              name="phrasalSearch"
                              a:defaultValue="true">
                      <a:documentation>(Whether or not to support phrasal searches. If this is true, then the maxContexts setting will be ignored, because all contexts are required to properly support phrasal search.) </a:documentation>
-                     <data type="boolean"/>
+                     <choice>
+                        <value>true</value>
+                        <a:documentation/>
+                        <value>false</value>
+                        <a:documentation/>
+                     </choice>
                   </attribute>
                </optional>
                <optional>
@@ -262,7 +273,12 @@ Suggested values include: 1] stemmers/en/; 2] stemmers/fr/; 3] stemmers/identity
                              name="wildcardSearch"
                              a:defaultValue="true">
                      <a:documentation>(Whether or not to support wildcard searches.) </a:documentation>
-                     <data type="boolean"/>
+                     <choice>
+                        <value>true</value>
+                        <a:documentation/>
+                        <value>false</value>
+                        <a:documentation/>
+                     </choice>
                   </attribute>
                </optional>
                <optional>
@@ -417,7 +433,12 @@ Suggested values include: 1] stemmers/en/; 2] stemmers/fr/; 3] stemmers/identity
          <optional>
             <attribute name="context">
                <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
-               <data type="boolean"/>
+               <choice>
+                  <value>true</value>
+                  <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+                  <value>false</value>
+                  <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+               </choice>
             </attribute>
          </optional>
          <empty/>

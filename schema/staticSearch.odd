@@ -600,6 +600,10 @@
                 </p>
                 
               </div>
+              <div xml:id="paramsExample">
+                  <head>Example Parameters (with defaults)</head>
+                  <divGen xml:id="paramsExample_withDefaults"/>
+               </div>
             </div>
           <div xml:id="specifyingRules">
             <head>Specifying rules (optional)</head>
@@ -1723,7 +1727,7 @@
               <attDef ident="recurse" usage="rec">
                 <gloss>Determines whether or not to recurse into the subdirectories of the collection and index those files.</gloss>
                 <datatype>
-                  <dataRef key="boolean"/>
+                  <dataRef key="ssdata.boolean"/>
                 </datatype>
                 <defaultVal>false</defaultVal>
                 <remarks>
@@ -2027,7 +2031,7 @@
                     setting will be ignored, 
                     because all contexts are required to properly support phrasal search.</gloss>
                   <datatype>
-                    <dataRef name="boolean"/>
+                    <dataRef key="ssdata.boolean"/>
                   </datatype>
                   <defaultVal>true</defaultVal>
                   <remarks>
@@ -2047,7 +2051,7 @@
                 <attDef ident="wildcardSearch">
                   <gloss>Whether or not to support wildcard searches.</gloss>
                   <datatype>
-                    <dataRef name="boolean"/>
+                    <dataRef key="ssdata.boolean"/>
                   </datatype>
                   <defaultVal>true</defaultVal>
                   <remarks>
@@ -2347,7 +2351,7 @@
             <attList>
               <attDef ident="context" usage="opt">
                 <datatype>
-                  <dataRef name="boolean"/>
+                  <dataRef key="ssdata.boolean"/>
                 </datatype>
               </attDef>
             </attList>
@@ -2430,7 +2434,18 @@
               </attDef>
             </attList>
           </elementSpec>
-          
+
+
+          <dataSpec ident="ssdata.boolean" module="ss">
+            <gloss>Custom boolean datatype, which restricts boolean values to 
+            true or false for ease of processing.</gloss>
+             <content>
+               <valList>
+                 <valItem ident="true"/>
+                 <valItem ident="false"/>
+               </valList>
+             </content>
+          </dataSpec>
           <!-- HTML finds its way into our config file now, so here is where we 
                do some rudimentary constraining. -->
           <moduleSpec ident="ssHTML">
