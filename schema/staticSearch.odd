@@ -1204,16 +1204,75 @@
       </div>
       
       
+      <div xml:id="programming">
+        <head>Programming with staticSearch</head>
+        <list>
+          <item>Level: Advanced</item>
+          <item>Last Updated: <date when="2025-02-10">10 February 2025</date></item>
+        </list>
+        <p>If you are a programmer, you may want to write your own code to interact with staticSearch in some way.
+        To make it easier to work with the JavaScript that runs on the search page, the StaticSearch object dispatches
+        a number of CustomEvents which you can listen for in your own code. These are the events:</p>
+        <list>
+          <item><code>ssInstantiated</code>: This event is dispatched at the end of the constructor for the 
+          StaticSearch object, indicating that it is instantiated and you may access its properties and methods.</item>
+          <item><code>ssJsonRetrieved</code>: This is dispatched when the StaticSearch object has completed its initial
+          retrieval of the core JSON required to handle searches.</item>
+          <item><code>ssSearchStarting</code>: This is dispatched when the user has initiated a search operation.</item>
+          <item><code>ssFormCleared</code>: This is dispatched when the user has cleared the search form.</item>
+          <item><code>ssSearchCompleted</code>: This is dispatched when a search has been completed and the results
+          displayed on the search page. This event carries additional information in its <code>detail</code> property:
+          an integer which is the count of the number of hit documents found.</item>
+        </list>
+        
+        <p>You can use these events in your code in the following way:</p>
+        
+        <eg>
+          var showMessage = function(){
+            alert('The StaticSearch instance has been constructed!');
+          }
+          window.addEventListener('ssInstantiated', showMessage);
+        </eg>
+        
+        <p>In the case of the <code>ssSearchCompleted</code> event, you could do this:</p>
+        
+        <eg>
+          var showMessage = function(evt){
+            alert(evt.detail.hits + ' documents found!');
+          }
+          window.addEventListener('ssSearchCompleted', showMessage);
+        </eg>
+        
+      </div>
+      
       <div xml:id="newSinceVersion1">
         <head>What's new since version 1.0?</head>
         <list>
           <item>Level: Intermediate</item>
-          <item>Last Updated: <date when="2023-03-07">7 March 2023</date></item>
+          <item>Last Updated: <date when="2025-02-10">10 February 2025</date></item>
         </list>
         <div xml:id="newIn2.0">
         <head>Changes in version 2.0</head>
-          <p>Windows support has been added courtesy of a pull request from Tony Graham, and we will continue
-          to test and maintain it from now on.</p>
+          
+          <list>
+            <item>Five JavaScript CustomEvents are now dispatched by the StaticSearch object, to better
+              enable programmers to write JavaScript code which interacts with the search page. See
+              <ref target="#programming">Programming with staticSearch</ref> for more details.</item>
+            <item>A distribution package has been created, so that you donʼt have to download or 
+            clone the entire repository to use staticSearch in your project (although of course you can 
+            still do that if you prefer).</item>
+            <item>A static one-page HTML version of the staticSearch documentation is now provided as 
+            part of the distribution package.</item>
+            <item>The Saxon XSLT processor has been updated to version 12.5.</item>
+            <item>The <ident>ant-contrib.jar</ident> library is now included in the repository, so you no longer need
+            to install it yourself. (You still need to install Ant itself.)</item>
+            <item>Windows support has been added courtesy of a pull request from Tony Graham, and we will continue
+              to try to test and maintain it from now on.</item>
+          </list>
+          
+          
+       <!-- TODO: THIS NEEDS TO REFLECT THE ACTUAL CHAHNGES MADE, INCLUDING THE AUTOMATED UPDATING
+            OF OLD CONFIG FILES. -->
           <p>staticSearch 2.0 contains  breaking changes and improvements to staticSearch. In particular,
           the configuration file has been significantly re-organized; configuration files made for earlier
           versions of staticSearch <emph>will not</emph> work in 2.0.
