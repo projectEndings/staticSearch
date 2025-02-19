@@ -3,6 +3,7 @@
 <config xmlns="http://hcmc.uvic.ca/ns/staticSearch" version="2">
     <params>
         <searchPage file="test/search.html"/>
+        <index recurse="true"/>
         <version file="test/VERSION"/>
         <output dir="ssTestV2"/>
     </params>
