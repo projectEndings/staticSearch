@@ -1860,7 +1860,6 @@
             <gloss>The scoring algorithm to use for ranking keyword results.</gloss>
             <classes>
               <memberOf key="ss.model.param"/>
-              <memberOf key="ss.atts.file"/>
             </classes>
             <content>
               <empty/>

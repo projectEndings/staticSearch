@@ -4,8 +4,19 @@
     <params>
         <searchPage file="test/search.html"/>
         <index recurse="true"/>
+        <stopwords file="test/test_stopwords.txt"/>
+        <dictionary file="xsl/english_words.txt"/>
+        <scoringAlgorithm name="raw"/>
+        <stemmer dir="stemmers/en/"/>
+        <tokenizer minWordLength="2"/>
+        <createContexts create="true"
+            phrasalSearch="true"
+            wildcardSearch="true"
+            maxKwicLength="15"
+            kwicTruncateString="..."/>
+        <results resultsPerPage="5" maxKwicsToShow="5" maxResults="1000"/>
         <version file="test/VERSION"/>
-        <output dir="ssTestV2"/>
+        <output dir="ssTest"/>
     </params>
     <rules>
         <rule weight="2" match="h1 | h2"/>
