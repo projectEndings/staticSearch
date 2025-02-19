@@ -4,6 +4,7 @@
   xmlns:math="http://www.w3.org/2005/xpath-functions/math"
   xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
   xmlns:hcmc="http://hcmc.uvic.ca/ns"
+  xmlns:tei="http://www.tei-c.org/ns/1.0"
   xpath-default-namespace="http://www.w3.org/1999/xhtml"
   xmlns="http://www.w3.org/1999/xhtml"
   exclude-result-prefixes="#all"
@@ -17,6 +18,8 @@
       friendly document.</xd:p>
     </xd:desc>
   </xd:doc>
+  
+  <xsl:include href="process_schema_for_config.xsl"/>
   
   <xsl:output method="xhtml" html-version="5.0" encoding="UTF-8" indent="yes" omit-xml-declaration="yes"/>
 
@@ -75,4 +78,61 @@
     <xsl:sequence select="replace(., '&#160;', ' ')"/>
   </xsl:template>
   
+  <!--For the special quickstart egXML, make the attribute values editable-->
+  <xsl:template match="span[contains-token(@class,'attributevalue')][ancestor::div[@id = 'configQuickstart_egXML']]">
+    <xsl:variable name="element" select="parent::span[contains-token(@class, 'element')]" as="element(span)"/>
+    <xsl:variable name="value" select="normalize-space(string(.))" as="xs:string"/>
+    <xsl:variable name="gi" select="replace($element/text()[1],'[^A-Za-z]+','')" as="xs:string"/>
+    <xsl:variable name="att" 
+      select="normalize-space(preceding-sibling::span[contains-token(@class,'attribute')][1]/text())"
+      as="xs:string"/>
+    <xsl:variable name="key" select="$gi || '.' || $att" as="xs:string"/>
+    <xsl:variable name="thisElementSpec" select="$paramElementSpecs[@ident = $gi]" as="element(tei:elementSpec)?"/>
+    <xsl:copy>
+      <xsl:apply-templates select="@*"/>
+      <xsl:choose>
+        <xsl:when test="empty($thisElementSpec)">
+          <xsl:apply-templates select="node()"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:variable name="type" select="$paramTypes($key)" as="xs:string?"/>
+          <xsl:variable name="attDef" 
+            select="$thisElementSpec/tei:attList/tei:attDef[@ident = $att]" 
+            as="element(tei:attDef)?"/>
+          <span class="fillable-attval">
+
+            <xsl:choose>
+              <xsl:when test="matches($type, 'boolean')">
+                <select>
+                  <xsl:for-each select="('true','false')">
+                    <!--Options need to be sorted, since the first one is the default-->
+                    <xsl:sort select=". = $value" order="descending"/>
+                    <option value="{.}"><xsl:value-of select="."/></option>
+                  </xsl:for-each>
+                </select>
+              </xsl:when>
+              <xsl:when test="$type = 'nonNegativeInteger'">
+                <input type="number" min="0" value="{$value}" size="4"/>
+              </xsl:when>
+              <xsl:when test="$attDef/tei:valList">
+                 <select>
+                   <xsl:for-each select="$attDef/tei:valList/tei:valItem">
+                     <xsl:sort select="@ident = $value" order="descending"/>
+                     <option value="{@ident}"><xsl:value-of select="@ident"/></option>
+                   </xsl:for-each>
+                 </select>
+              </xsl:when> 
+              <xsl:otherwise>
+                <input type="text" value="{$value}"/>
+              </xsl:otherwise>
+            </xsl:choose>
+            <span class="initial-value">
+              <xsl:apply-templates select="node()"/>
+            </span>
+          </span>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:copy>
+  </xsl:template>
+    
 </xsl:stylesheet>

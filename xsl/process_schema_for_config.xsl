@@ -106,7 +106,7 @@
         <xsl:variable name="type" select="$paramTypes($key)" as="xs:string"/>
         <xsl:choose>
             <xsl:when test="$val = '' or empty($val)"/>
-            <xsl:when test="$type = 'boolean'">
+            <xsl:when test="$type = ('boolean', 'ssdata.boolean')">
                 <xsl:sequence select="matches($val,'true','i')"/>
             </xsl:when>
             <xsl:when test="$type = 'nonNegativeInteger'">

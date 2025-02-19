@@ -62,7 +62,7 @@
     <xsl:variable name="orderedSequence"
       select="$elementSpecs[@ident='params']/content/descendant::elementRef/@key" 
       as="xs:string+"/>
-    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+    <egXML xmlns="http://www.tei-c.org/ns/Examples" xml:id="{@xml:id}">
       <config xmlns="http://hcmc.uvic.ca/ns/staticSearch" version="2">
         <xsl:sequence select="hcmc:makeCommentForElement('params')"/>
         <params>

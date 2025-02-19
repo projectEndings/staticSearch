@@ -338,6 +338,16 @@ span.attributevalue{
     font-weight: normal;
     color: #993300;
 }
+
+span.fillable-attval .initial-value{
+    display:none;
+}
+
+/*span.attributevalue + .attribute:has( +.attributevalue > .fillable-attval):before {
+    content: "";
+    display: block;
+}
+*/
 span.comment{
     color: black;
     font-style: italic;
