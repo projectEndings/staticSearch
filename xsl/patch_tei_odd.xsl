@@ -7,6 +7,7 @@
   xmlns:xi="http://www.w3.org/2001/XInclude" 
   xmlns:svg="http://www.w3.org/2000/svg"
   xmlns:rng="http://relaxng.org/ns/structure/1.0"
+  xmlns:hcmc="http://hcmc.uvic.ca/ns/staticSearch"
   xmlns="http://www.tei-c.org/ns/1.0"
   xpath-default-namespace="http://www.tei-c.org/ns/1.0"
   xmlns:sch="http://purl.oclc.org/dsdl/schematron"
@@ -38,6 +39,10 @@
   </xd:doc>
   <xsl:mode exclude-result-prefixes="#all" on-no-match="shallow-copy"/>
   
+  <xd:doc>
+    <xd:desc>Global variable for elementSpecs, just for ease of retrieval</xd:desc>
+  </xd:doc>
+  <xsl:variable name="elementSpecs" select="//elementSpec" as="element(elementSpec)+"/>
   
   <xd:doc>
     <xd:desc>This simply replaces the TEI sequence element with its
@@ -53,15 +58,18 @@
   <xd:doc>
     <xd:desc>Expands the sample configuration divGen to use default values.</xd:desc>
   </xd:doc>
-  <xsl:template match="divGen[@xml:id = 'paramsExample_withDefaults']">
+  <xsl:template match="divGen[@xml:id = 'configQuickstart_egXML']">
     <xsl:variable name="orderedSequence"
-      select="//elementSpec[@ident='params']/content/descendant::elementRef/@key" 
+      select="$elementSpecs[@ident='params']/content/descendant::elementRef/@key" 
       as="xs:string+"/>
     <egXML xmlns="http://www.tei-c.org/ns/Examples">
-      <xsl:variable name="temp" as="element()">
+      <xsl:sequence select="hcmc:makeCommentForElement('config')"/>
+      <config xmlns="http://hcmc.uvic.ca/ns/staticSearch" version="2">
+        <xsl:sequence select="hcmc:makeCommentForElement('params')"/>
         <params>
           <xsl:for-each-group select="map:keys($defaultParams)" group-by="tokenize(.,'\.')[1]">
             <xsl:sort select="(index-of($orderedSequence, current-grouping-key()),99)[1]"/>
+            <xsl:sequence select="hcmc:makeCommentForElement(current-grouping-key())"/>
             <xsl:element name="{current-grouping-key()}">
               <xsl:for-each select="current-group()">
                 <xsl:variable name="att" select="tokenize(.,'\.')[2]" as="xs:string"/>
@@ -70,12 +78,32 @@
             </xsl:element>
           </xsl:for-each-group>
         </params>
-      </xsl:variable>
-      <!--An annoying hack to try and get indentation working-->
-      <xsl:sequence 
-        select="serialize($temp, map{'method': 'xml', 'indent': true()}) => parse-xml-fragment()"/>
+        <xsl:sequence select="hcmc:makeCommentForElement('rules')"/>
+        <rules>
+          <rule weight="0" match="script | style"/>
+          <rule weight="2" match="h1 | h2 | h3 | h4 | h5 | h6"/>
+        </rules>
+        <xsl:sequence select="hcmc:makeCommentForElement('contexts')"/>
+        <contexts>
+        </contexts>
+      </config>
     </egXML>
   </xsl:template>
+  
+  <xd:doc>
+    <xd:desc>Function to create a comment based on an elementSpec's gloss; useful
+    for egXMLs</xd:desc>
+    <xd:param name="elName">The name of the element</xd:param>
+  </xd:doc>
+  <xsl:function name="hcmc:makeCommentForElement" as="item()+">
+    <xsl:param name="elName" as="xs:string"/>
+    <xsl:variable name="thisElSpec" select="$elementSpecs[@ident = $elName]" as="element(elementSpec)"/>
+    <xsl:sequence select="codepoints-to-string(10)"/>
+    <xsl:comment expand-text="yes">
+      {$elName}: {string-join($thisElSpec/gloss/descendant::text())}
+    </xsl:comment>
+    <xsl:sequence select="codepoints-to-string(10)"/>
+  </xsl:function>
   
   
   <xd:doc>

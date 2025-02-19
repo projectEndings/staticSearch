@@ -460,6 +460,11 @@
             
             <p>For examples of full configuration files, see the <ref target="https://github.com/projectEndings/staticSearch">staticSearch GitHub repository</ref> as well as the list of projects in <ptr target="#projectsUsingSS"/>, which provides a link to each site’s configuration file.</p>
             
+            <div xml:id="configQuickstart">
+              <head>Quickstart: Example configuration (with defaults)</head>
+              <divGen xml:id="configQuickstart_egXML"/>
+            </div>
+            
             <div xml:id="rootConfigElement">
               <head>The <gi>config</gi> element</head>
               <p>The configuration element has a root <gi>config</gi> element in the staticSearch namespace (<val>http://hcmc.uvic.ca/ns/staticSearch</val>):
@@ -598,12 +603,8 @@
                
                   
                 </p>
-                
               </div>
-              <div xml:id="paramsExample">
-                  <head>Example Parameters (with defaults)</head>
-                  <divGen xml:id="paramsExample_withDefaults"/>
-               </div>
+
             </div>
           <div xml:id="specifyingRules">
             <head>Specifying rules (optional)</head>
@@ -2322,7 +2323,7 @@
             <gloss>The set of <gi>context</gi> that identify
               contexts for keyword-in-context fragments.</gloss>
             <content>
-              <elementRef key="context" minOccurs="1" maxOccurs="unbounded"/>
+              <elementRef key="context" minOccurs="0" maxOccurs="unbounded"/>
             </content>
           </elementSpec>
           
