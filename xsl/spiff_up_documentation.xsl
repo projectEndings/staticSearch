@@ -78,6 +78,14 @@
     <xsl:sequence select="replace(., '&#160;', ' ')"/>
   </xsl:template>
   
+  <!--Add a little control before the egXML-->
+  <xsl:template match="div[@id = 'configQuickstart_egXML']">
+    <input type="checkbox" id="configQuickstart_egXML_control">Show/Hide fillable inputs</input>
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:copy>
+  </xsl:template>
+  
   <!--For the special quickstart egXML, make the attribute values editable-->
   <xsl:template match="span[contains-token(@class,'attributevalue')][ancestor::div[@id = 'configQuickstart_egXML']]">
     <xsl:variable name="element" select="parent::span[contains-token(@class, 'element')]" as="element(span)"/>
@@ -90,48 +98,52 @@
     <xsl:variable name="thisElementSpec" select="$paramElementSpecs[@ident = $gi]" as="element(tei:elementSpec)?"/>
     <xsl:copy>
       <xsl:apply-templates select="@*"/>
-      <xsl:choose>
-        <xsl:when test="empty($thisElementSpec)">
-          <xsl:apply-templates select="node()"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:variable name="type" select="$paramTypes($key)" as="xs:string?"/>
-          <xsl:variable name="attDef" 
-            select="$thisElementSpec/tei:attList/tei:attDef[@ident = $att]" 
-            as="element(tei:attDef)?"/>
-          <span class="fillable-attval">
+      <!--Stash the initial value just in case for now;
+              we hide this with CSS -->
+      <span class="initial-value">
+        <xsl:apply-templates select="node()"/>
+      </span>
+      <!--If this isn't one of the parameters, don't do anything-->
+      <!--Otherwise, create the special fillable inputs,
+              which change depending on their type-->
+      <xsl:if test="not(empty($thisElementSpec))">
+        <xsl:variable name="type" select="$paramTypes($key)" as="xs:string?"/>
+        <xsl:variable name="attDef" 
+          select="$thisElementSpec/tei:attList/tei:attDef[@ident = $att]" 
+          as="element(tei:attDef)?"/>
 
-            <xsl:choose>
-              <xsl:when test="matches($type, 'boolean')">
-                <select>
-                  <xsl:for-each select="('true','false')">
-                    <!--Options need to be sorted, since the first one is the default-->
-                    <xsl:sort select=". = $value" order="descending"/>
-                    <option value="{.}"><xsl:value-of select="."/></option>
-                  </xsl:for-each>
-                </select>
-              </xsl:when>
-              <xsl:when test="$type = 'nonNegativeInteger'">
-                <input type="number" min="0" value="{$value}" size="4"/>
-              </xsl:when>
-              <xsl:when test="$attDef/tei:valList">
-                 <select>
-                   <xsl:for-each select="$attDef/tei:valList/tei:valItem">
-                     <xsl:sort select="@ident = $value" order="descending"/>
-                     <option value="{@ident}"><xsl:value-of select="@ident"/></option>
-                   </xsl:for-each>
-                 </select>
-              </xsl:when> 
-              <xsl:otherwise>
-                <input type="text" value="{$value}"/>
-              </xsl:otherwise>
-            </xsl:choose>
-            <span class="initial-value">
-              <xsl:apply-templates select="node()"/>
-            </span>
-          </span>
-        </xsl:otherwise>
-      </xsl:choose>
+        <span class="fillable-attval">
+          <xsl:choose>
+            <xsl:when test="matches($type, 'boolean')">
+              <select>
+                <xsl:for-each select="('true','false')">
+                  <!--Options need to be sorted, since the first one is the default-->
+                  <xsl:sort select=". = $value" order="descending"/>
+                  <option value="{.}"><xsl:value-of select="."/></option>
+                </xsl:for-each>
+              </select>
+            </xsl:when>
+            <xsl:when test="$type = 'nonNegativeInteger'">
+              <input type="number" min="0" value="{$value}" size="4"/>
+            </xsl:when>
+            <!--If there's a configured valList (e.g. as it is 
+                  for scoringAlgorithm), then create a select list-->
+            <xsl:when test="$attDef/tei:valList">
+              <select>
+                <xsl:for-each select="$attDef/tei:valList/tei:valItem">
+                  <xsl:sort select="@ident = $value" order="descending"/>
+                  <option value="{@ident}"><xsl:value-of select="@ident"/></option>
+                </xsl:for-each>
+              </select>
+            </xsl:when>
+            <!--Otherwise, just assume it's text-->
+            <xsl:otherwise>
+              <input type="text" value="{$value}"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </span>
+      </xsl:if>
+      
     </xsl:copy>
   </xsl:template>
     

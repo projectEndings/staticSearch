@@ -339,8 +339,17 @@ span.attributevalue{
     color: #993300;
 }
 
-span.fillable-attval .initial-value{
+span.fillable-attval{
     display:none;
+}
+
+#configQuickstart_egXML_control:checked ~ div#configQuickstart_egXML span.attributevalue:has(.fillable-attval){
+    span.fillable-attval{
+        display: inline;
+    }
+    span.initial-value{
+       display:none;
+    }
 }
 
 /*span.attributevalue + .attribute:has( +.attributevalue > .fillable-attval):before {

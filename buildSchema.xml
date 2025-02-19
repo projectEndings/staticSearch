@@ -241,6 +241,14 @@
             and documentation creation tasks.</description>
     </target>
     
+    <target name="justDocs" depends="patchOddSrc, odd2processedOdd, odd2Doc">
+        <description>
+            TARGET: justDocs
+            
+            This target just creates the documentation; useful for quick proofing and rapid development.
+        </description>
+    </target>
+    
     
     
 </project>
