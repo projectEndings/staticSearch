@@ -251,13 +251,14 @@
     <fileset id="configOnly" dir="${ssBaseDir.converted}" includes="${ssConfig}">
       <containsregexp expression="&lt;config[^&gt;]+version\s*=\s*.2."/>
     </fileset>
-    <condition property="isNotV2">
-      <resourcecount when="less" count="1" refid="configOnly"/>
+    <condition property="isV2" value="true" else="false">
+      <matches pattern="^2" string="${config.version}"/>
     </condition>
-    <!--<echo message="Is not v2? ${isNotV2}"/>-->
+    
+    <antcall target="convertConfigFile" unless:true="${isV2}"/>
   </target>
   
-  <target name="convertConfigFile" depends="checkConfigVersion" if:true="${isNotV2}">
+  <target name="convertConfigFile">
     <description>
       TARGET convertConfigFile
       This runs an identity transform on the supplied config
@@ -281,11 +282,11 @@ create a new file? (o=overwrite, n=new)"
       <arg value="output=${outputStrategy}"/>
     </java>
   </target>
-
-  <target name="validate">
+  
+  <target name="validate.html">
     <description>
-      TARGET: validate
-      Task to validate that the source XHTML is well-formed XHTML. Note that this DOES
+      TARGET: validate.html
+      Target to check input files as well-formed XHTML. Note that this DOES
       NOT check whether or not it is valid XHTML: only that it is well-formed. This target also
       checks the config file and sees if it's invalid. We don't fail if it's invalid, though, since
       we must assume that some people just don't care: but raise the error anyway. 
@@ -301,12 +302,22 @@ create a new file? (o=overwrite, n=new)"
         <exclude name="**/staticSearch_report.html"/>
       </fileset>
     </xmlvalidate>
+  </target>
+  
+  <target name="validate.config" depends="checkConfigVersion">
     <echo message="Validating ${ssConfigFile} against the staticSearch schema..."/>
     <exec executable="java" failonerror="false">
       <arg line="-jar ${ssBaseDir.converted}/lib/jing.jar"/>
       <arg value="${ssBaseDir.converted}/schema/staticSearch.rng"/>
       <arg value="${ssConfigFile}"/>
     </exec>
+  </target>
+
+  <target name="validate" depends="validate.config, validate.html">
+    <description>
+      TARGET: validate
+      Task to validate various input files, including the XHTML and the configuration file.
+    </description>
   </target>
 
 
