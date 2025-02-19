@@ -1,36 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<config xmlns="http://hcmc.uvic.ca/ns/staticSearch">
+<!--Configuration file file:/Users/takeda/projects/staticSearch/configTest.xml converted to version 2 2025-02-08.-->
+<config xmlns="http://hcmc.uvic.ca/ns/staticSearch" version="2">
     <params>
-        <searchFile>test/search.html</searchFile>
-        <versionFile>test/VERSION</versionFile>
-        <recurse>true<!--Need to set recurse to true for the test--></recurse>
-        <phrasalSearch>true</phrasalSearch>
-        <wildcardSearch>true</wildcardSearch>
-        <createContexts>true</createContexts>
-        <resultsPerPage>5</resultsPerPage>
-        <minWordLength>2</minWordLength>
-        <!--NOTE: If phrasalSearch is set to TRUE, then
-        maxContexts prop will be ignored-->
-        <maxKwicsToHarvest>5</maxKwicsToHarvest>
-        <maxKwicsToShow>5</maxKwicsToShow>
-        <totalKwicLength>15</totalKwicLength>
-        <kwicTruncateString>...</kwicTruncateString>
-        <stopwordsFile>test/test_stopwords.txt</stopwordsFile>
-        <dictionaryFile>xsl/english_words.txt</dictionaryFile>
-        <outputFolder>ssTest</outputFolder>
+        <searchPage file="test/search.html"/>
+        <version file="test/VERSION"/>
+        <output dir="ssTestV2"/>
     </params>
-    
     <rules>
-        <rule weight="2"
-            match="h1 | h2"/>
-        <rule weight="0"
-            match="span[@class='lineNum']"/>
-        <rule weight="0"
-            match="script | style"/>
+        <rule weight="2" match="h1 | h2"/>
+        <rule weight="0" match="span[@class='lineNum']"/>
+        <rule weight="0" match="script | style"/>
         <rule weight="10" match="span[@class='weighty']"/>
         <rule weight="5" match="td/span"/>
     </rules>
-    
     <contexts>
         <context match="blockquote" label="Quotations"/>
         <context match="div[@class='l']"/>
@@ -39,12 +21,10 @@
         <context match="cite" label="Citations"/>
         <context match="p[contains-token(@class,'citation')]" label="Citations"/>
     </contexts>
-    
     <excludes>
         <exclude type="index" match="html[@id='excluded']"/>
         <exclude match="meta[contains-token(@class,'excludedMeta')]" type="filter"/>
     </excludes>
-    
     <filters>
         <filter filterName="Worth reading">
             <span xmlns="http://www.w3.org/1999/xhtml">
@@ -56,6 +36,5 @@
                 <span style="font-variant: small-caps;">Random Piffle</span>
             </span>
         </filter>
-            
     </filters>
 </config>

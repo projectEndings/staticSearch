@@ -104,7 +104,7 @@
   </pathconvert>
 
   <!--Load the configuration file as a property file-->
-  <xmlproperty file="${ssConfigFile}" keeproot="true"/>
+  <xmlproperty file="${ssConfigFile}" keeproot="true" collapseattributes="true"/>
 
   <!--Set the verbose flag to false by default; set to true to see detailed messages-->
   <property name="ssVerbose" value="false"/>
@@ -114,7 +114,7 @@
   <property name="ssVerboseReport" value="false"/>
 
   <!--The path to the search page, relative to the configuration directory-->
-  <property name="ssSearchFilePath" value="${configDir.converted}/${config.params.searchFile}"/>
+  <property name="ssSearchFilePath" value="${configDir.converted}/${config.params.searchPage.file}"/>
 
   <!--The name of the collection dir, derived from the search file-->
   <dirname property="ssCollectionDirName" file="${ssSearchFilePath}"/>
@@ -130,9 +130,12 @@
 
   <!--Output folder, which is forked, depending on whether or not an output folder
         is specified in the configuration file-->
-  <property name="ssOutputFolder" if:set="config.params.outputFolder"
-    value="${config.params.outputFolder}"/>
-  <property name="ssOutputFolder" unless:set="config.params.outputFolder" value="staticSearch"/>
+  <property name="ssOutputFolder"
+    if:set="config.params.output.dir"
+    value="${config.params.output.dir}"/>
+  <property name="ssOutputFolder"
+    unless:set="config.params.output.dir"
+    value="staticSearch"/>
 
   <!--Stemmer folder, which is forked, depending on whether or not a stemmer folder
         is specified in the configuration file-->
@@ -189,6 +192,7 @@
 
     <!-- If we're building the test data, we need to generate the VERSION file
          and also copy the .htm_ files to .html before starting. -->
+    <echo message="${ssConfigFileName}"/>
     <if>
       <equals arg1="configTest.xml" arg2="${ssConfigFileName}"/>
       <then>

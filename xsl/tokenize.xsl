@@ -397,7 +397,7 @@
     </xd:doc>
     <xsl:template match="meta[contains-token(@class,'staticSearch_docImage')]/@content[not(matches(.,'^https?'))]" mode="tokenize">
         <xsl:variable name="absPath" as="xs:string" select="resolve-uri(., $uri)"/>
-        <xsl:variable name="newRelPath" as="xs:string" select="hcmc:makeRelativeUri($searchFile, $absPath)"/>
+        <xsl:variable name="newRelPath" as="xs:string" select="hcmc:makeRelativeUri($searchDocUri, $absPath)"/>
         <xsl:attribute name="content" select="$newRelPath"/>
     </xsl:template>
     
@@ -584,7 +584,7 @@
     </xd:doc>
     <xsl:function name="hcmc:shouldIndex" as="xs:boolean">
         <xsl:param name="lcWord" as="xs:string"/>
-        <xsl:sequence select="string-length($lcWord) ge xs:integer($minWordLength) and not(key('w', $lcWord, $stopwordsFileXml))"/>
+        <xsl:sequence select="string-length($lcWord) ge xs:integer($tokenizer.minWordLength) and not(key('w', $lcWord, $stopwordsFileXml))"/>
     </xsl:function>
 
 

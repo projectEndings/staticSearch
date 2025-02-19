@@ -1634,13 +1634,19 @@
           </elementSpec>
           
           <elementSpec ident="searchPage" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
-            <gloss>The search page that will be the primary access point for staticSearch. This page may or may not exist, but its location is used for determining the collection that will be indexed, so it <emph>must </emph> be at the root of the collection directory.</gloss>
+            <gloss>The search page that will be the primary access point for staticSearch. This page may or may not exist, but its location is used for determining the collection that will be indexed, so it <emph>must</emph> be at the root of the collection directory.</gloss>
             <classes>
+              <memberOf key="ss.model.param"/>
               <memberOf key="ss.atts.file"/>
             </classes>
             <content>
               <empty/>
             </content>
+            <attList>
+              <attDef ident="file" mode="change" usage="req">
+                <gloss>The path (relative to the config file) to the search page.</gloss>
+              </attDef>
+            </attList>
             <remarks>
               <p>The search page is a regular HTML page which forms part of your site. The only 
             important characteristic it must have is a <gi>div</gi> element with 
@@ -1651,6 +1657,9 @@
           
           <elementSpec ident="index" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>Configures options relating to indexing.</gloss>
+            <classes>
+              <memberOf key="ss.model.param"/>
+            </classes>
             <attList>
               <attDef ident="recurse" usage="rec">
                 <gloss>Determines whether or not to recurse into the subdirectories of the collection and index those files.</gloss>
@@ -1670,6 +1679,7 @@
             <gloss>Specifies the unique version to append to the index, so that the browser
             will not use cached versions of older index files.</gloss>
             <classes>
+              <memberOf key="ss.model.param"/>
               <memberOf key="ss.atts.file"/>
             </classes>
             <content>
@@ -1700,6 +1710,7 @@
           <elementSpec ident="stopwords" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>Specifies a list of <term>stopwords</term>--that is, words to be ignored when indexing.</gloss>
             <classes>
+              <memberOf key="ss.model.param"/>
               <memberOf key="ss.atts.file"/>
             </classes>
             <content>
@@ -1709,6 +1720,7 @@
               <attDef ident="file" mode="change">
                 <gloss>The path (relative to the config file) to a text file 
                   containing a list of words to be ignored by the indexer (one word per line).</gloss>
+                <defaultVal>xsl/english_stopwords.txt</defaultVal>
               </attDef>
             </attList>
             <remarks>
@@ -1734,6 +1746,7 @@
           <elementSpec ident="dictionary" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>Specifies a dictionary against which tokens may be checked during indexing.</gloss>
             <classes>
+              <memberOf key="ss.model.param"/>
               <memberOf key="ss.atts.file"/>
             </classes>
             <content>
@@ -1742,6 +1755,7 @@
             <attList>
               <attDef ident="file" mode="change">
                 <gloss>The relative path (from the config file) to a dictionary file (one word per line).</gloss>
+                <defaultVal>xsl/english_words.txt</defaultVal>
               </attDef>
             </attList>
             <remarks>
@@ -1760,6 +1774,9 @@
           
           <elementSpec ident="tokenizer" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>Configures options for the tokenizing process.</gloss>
+            <classes>
+              <memberOf key="ss.model.param"/>
+            </classes>
             <attList>
               <attDef ident="minWordLength" usage="rec">
                 <gloss>Specifies the minimum length in 
@@ -1782,12 +1799,18 @@
           
           <elementSpec ident="scoringAlgorithm" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>The scoring algorithm to use for ranking keyword results.</gloss>
+            <classes>
+              <memberOf key="ss.model.param"/>
+              <memberOf key="ss.atts.file"/>
+            </classes>
             <content>
               <empty/>
             </content>
             <attList>
-              <attDef ident="name" usage="req">
+              <!--Need to set @usage="rec", annoyingly-->
+              <attDef ident="name" usage="rec">
                 <gloss>Specifies the name of the scoring algorithm to use.</gloss>
+                <defaultVal>raw</defaultVal>
                 <valList type="closed">
                   <valItem ident="raw">
                     <desc>raw score</desc>
@@ -1838,6 +1861,7 @@
               will be used.</gloss>
             <classes>
               <memberOf key="ss.atts.dir"/>
+              <memberOf key="ss.model.param"/>
             </classes>
             <content>
               <empty/>
@@ -1845,6 +1869,7 @@
             <attList>
               <attDef ident="dir" mode="change">
                 <gloss>The path (relative to the config file) of the directory to use for stemming.</gloss>
+                <defaultVal>stemmers/en/</defaultVal>
                 <valList mode="add" type="semi">
                   <valItem ident="stemmers/en/">
                     <desc>English stemmer</desc>
@@ -1912,6 +1937,9 @@
           
           <elementSpec ident="createContexts" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>Whether to include keyword-in-context extracts in the index.</gloss>
+            <classes>
+              <memberOf key="ss.model.param"/>
+            </classes>
             <content>
               <empty/>
             </content>
@@ -1929,6 +1957,7 @@
                 <attDef ident="create">
                   <desc>Specifies whether the indexer stores keyword-in-context extracts
                     for each hit in a document.</desc>
+                  <defaultVal>true</defaultVal>
                   <valList type="closed">
                     <valItem ident="true"/>
                   </valList>
@@ -2032,6 +2061,9 @@
           
           <elementSpec ident="results" ns="http://hcmc.uvic.ca/ns/staticSearch" module="ss">
             <gloss>Controls the configuration of the results page.</gloss>
+            <classes>
+              <memberOf key="ss.model.param"/>
+            </classes>
             <attList>
               <attDef ident="resultsPerPage">
                 <gloss>The maximum number of document results to be displayed per <soCalled>page</soCalled>.
@@ -2094,6 +2126,7 @@
             <gloss>Sets the folder into which the index data and JavaScript will 
               be placed.</gloss>
              <classes>
+               <memberOf key="ss.model.param"/>
                <memberOf key="ss.atts.dir"/>
              </classes>
             <content>
@@ -2121,6 +2154,10 @@
                 different locations.</p>
             </remarks>
           </elementSpec>
+          
+          <classSpec ident="ss.model.param" module="ss" type="model">
+              <desc>Groups parameter elements, which provide configuration options for staticSearch.</desc>
+          </classSpec>
           
           
           

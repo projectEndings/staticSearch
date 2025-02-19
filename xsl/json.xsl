@@ -332,7 +332,7 @@
                             algorithm -->
                         <number key="score">
                             <xsl:choose>
-                                <xsl:when test="$scoringAlgorithm = 'tf-idf'">
+                                <xsl:when test="$scoringAlgorithm.name = 'tf-idf'">
                                     <xsl:sequence select="hcmc:returnTfIdf($rawScore, $stemDocsCount, $currDocUri)"/>
                                 </xsl:when>
                                 <xsl:otherwise>
@@ -342,7 +342,7 @@
                         </number>
                         
                         <!--Now add the contexts array, if specified to do so -->
-                        <xsl:if test="$phrasalSearch or $createContexts">
+                        <xsl:if test="$createContexts.phrasalSearch or $createContexts.create">
                             <xsl:call-template name="returnContextsArray"/>
                         </xsl:if>
                     </map>
@@ -387,9 +387,9 @@
                 of kwics set in the config.-->
         <xsl:variable name="contexts" as="element(span)+"
             select="
-            if ($phrasalSearch)
+            if ($createContexts.phrasalSearch)
             then current-group()
-            else subsequence(current-group(), 1, $maxKwicsToHarvest)"/>        
+            else subsequence(current-group(), 1, $createContexts.maxKwicsToHarvest)"/>        
         <xsl:variable name="contextCount" select="count($contexts)" as="xs:integer"/>
         
         <array xmlns="http://www.w3.org/2005/xpath-functions" key="contexts">
@@ -640,7 +640,7 @@
                                     as="xs:string*"/>
                                 <!--Return the string: we know we have to add the truncation string here too-->
                                 <xsl:sequence 
-                                    select="$kwicTruncateString || string-join($newTokens,' ') || $endSpace || $stringSoFar "/>
+                                    select="$createContexts.kwicTruncateString || string-join($newTokens,' ') || $endSpace || $stringSoFar "/>
                             </xsl:when>
                             <xsl:otherwise>
                                 <!--Otherwise, we're going left to right, which is simpler
@@ -652,7 +652,7 @@
                                     select="subsequence($tokens, 1, $tokenDiff)" 
                                     as="xs:string*"/>
                                 <xsl:sequence
-                                    select="$stringSoFar || $startSpace || string-join($newTokens,' ') || $kwicTruncateString"/>
+                                    select="$stringSoFar || $startSpace || string-join($newTokens,' ') || $createContexts.kwicTruncateString"/>
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:break>
@@ -792,7 +792,7 @@
                                 <xsl:if test="$thisFilterType = 'feat'">
                                     <number key="minNameLength">
                                         <xsl:sequence 
-                                            select="min(($minWordLength, ($thisFilterMetas ! string-length(@content))))"/>
+                                            select="min(($tokenizer.minWordLength, ($thisFilterMetas ! string-length(@content))))"/>
                                     </number>
                                 </xsl:if>
                                 <xsl:sequence select="hcmc:createDescFeatFilterMap($thisFilterMetas, $thisFilterId)"/>
