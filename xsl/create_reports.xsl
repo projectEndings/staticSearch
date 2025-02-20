@@ -171,7 +171,7 @@
                         <xsl:when test="count($docsWithoutIds) gt 0">
                             <ul>
                                 <xsl:for-each select="$docsWithoutIds">
-                                    <li><xsl:value-of select="document-uri(root(.))"/></li>
+                                    <li><xsl:value-of select="root(.)//html/@ss-uri"/></li>
                                 </xsl:for-each>
                             </ul>
                         </xsl:when>
@@ -186,8 +186,8 @@
                         <xsl:when test="count($docsWithoutLang) gt 0">
                             <ul>
                                 <xsl:for-each select="$docsWithoutLang">
-                                    <li><xsl:value-of select="document-uri(root(.))"/></li>
-                                </xsl:for-each>
+                                    <li><xsl:value-of select="root(.)//html/@ss-uri"/></li>
+                                 </xsl:for-each>
                             </ul>
                         </xsl:when>
                         <xsl:otherwise>
@@ -200,7 +200,7 @@
                 <xsl:choose>
                     <xsl:when test="count($badNumericFilters) gt 0">
                         <ul>
-                            <xsl:for-each-group select="$badNumericFilters" group-by="document-uri(root(.))">
+                            <xsl:for-each-group select="$badNumericFilters" group-by="root(.)//html/@ss-uri">
                                 <li><xsl:value-of select="current-grouping-key()"/>
                                     <ul>
                                         <xsl:for-each select="current-group()">
@@ -238,7 +238,7 @@
                     <xsl:when test="count($docsWithoutFragmentIds) gt 0">
                         <ul>
                             <xsl:for-each select="$docsWithoutFragmentIds">
-                                <li><xsl:value-of select="document-uri(root(.))"/></li>
+                                <li><xsl:value-of select="root(.)//html/@ss-uri"/></li>
                             </xsl:for-each>
                         </ul>
                     </xsl:when>
