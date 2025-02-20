@@ -148,7 +148,7 @@
             with a link element pointing to the CSS file.</xd:desc>
     </xd:doc>
     <xsl:template match="style[@id='ssCss'] | link[@id='ssCss']">
-        <link rel="stylesheet" href="{$outputFolder}/ssSearch.css" id="ssCss"/>
+        <link rel="stylesheet" href="{$output.dir}/ssSearch.css" id="ssCss"/>
         <!--<style id="ssCss">
             <xsl:comment>
                 <xsl:value-of select="$css" disable-output-escaping="yes"/>
@@ -165,7 +165,7 @@
     <xsl:template match="head[not(*[@id='ssCss'])]">
         <xsl:copy>
             <xsl:apply-templates select="@*"/>
-            <link rel="stylesheet" href="{$outputFolder}/ssSearch.css" id="ssCss"/>
+            <link rel="stylesheet" href="{$output.dir}/ssSearch.css" id="ssCss"/>
             <xsl:apply-templates select="node()"/>
         </xsl:copy>
     </xsl:template>
@@ -214,7 +214,7 @@
 
             <!--Now add the script for the staticSearch library. -->
 
-            <script src="{$outputFolder}/ssSearch.js"><!-- Don't self-close script tags. --></script>
+            <script src="{$output.dir}/ssSearch.js"><!-- Don't self-close script tags. --></script>
           
             <xsl:comment>
               Note that if you want to debug a problem with the JavaScript, you can
@@ -224,22 +224,22 @@
           
             <!--Now add the script that initializes the search object. -->
           
-            <script src="{$outputFolder}/ssInitialize.js"><!-- Don't self-close script tags. --></script>
+            <script src="{$output.dir}/ssInitialize.js"><!-- Don't self-close script tags. --></script>
             <noscript><xsl:value-of select="hcmc:getCaption('ssScriptRequired', $captionLang)"/></noscript>
 
             <!--Now create the form-->
             <form accept-charset="UTF-8" id="ssForm"
-                data-allowphrasal="{if ($phrasalSearch) then 'yes' else 'no'}"
-                data-allowwildcards="{if ($wildcardSearch) then 'yes' else 'no'}"
-                data-minwordlength="{if ($minWordLength) then $minWordLength else '3'}"
-                data-maxkwicstoshow="{if ($maxKwicsToShow) then $maxKwicsToShow else 10}"
-                data-scoringalgorithm="{if ($scoringAlgorithm) then $scoringAlgorithm else 'raw'}"
-                data-resultsperpage="{$resultsPerPage}"
+                data-allowphrasal="{if ($createContexts.phrasalSearch) then 'yes' else 'no'}"
+                data-allowwildcards="{if ($createContexts.wildcardSearch) then 'yes' else 'no'}"
+                data-minwordlength="{$tokenizer.minWordLength}"
+                data-maxkwicstoshow="{$results.maxKwicsToShow}"
+                data-scoringalgorithm="{$scoringAlgorithm.name}"
+                data-resultsperpage="{$results.resultsPerPage}"
                 onsubmit="return false;"
                 data-versionstring="{$versionString}"
-                data-ssfolder="{$outputFolder}"
-                data-kwictruncatestring="{$kwicTruncateString}"
-                data-resultslimit="{$resultsLimit}"
+                data-ssfolder="{$output.dir}"
+                data-kwictruncatestring="{$createContexts.kwicTruncateString}"
+                data-resultslimit="{$results.maxResults}"
                 >
                 
                 <!--Standard inputs-->

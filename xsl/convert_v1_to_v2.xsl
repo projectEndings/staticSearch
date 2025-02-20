@@ -21,7 +21,12 @@
             can be run for future changes.</xd:p>
         </xd:desc>
     </xd:doc>
-
+    
+    <xd:doc>
+        <xd:desc>Include the schema processing for outlining default values,
+            which is stored in a separate module.</xd:desc>
+    </xd:doc>
+    <xsl:include href="process_schema_for_config.xsl"/>
     
     <xd:doc>
         <xd:desc>This is an xml-to-xml identity transform.</xd:desc>
@@ -38,14 +43,14 @@
     <xd:doc>
         <xd:desc>This parameter controls how the transformation operates;
         the user gets to choose whether to overwrite the old file or not.
-        Options are (overwrite|new).</xd:desc>
+        Options are (o=overwrite|n=new).</xd:desc>
     </xd:doc>
-    <xsl:param name="output" as="xs:string" select="'new'"/>
+    <xsl:param name="output" as="xs:string" select="'n'"/>
     
     <xd:doc>
         <xd:desc>The output file is calculated based on the parameter above.</xd:desc>
     </xd:doc>
-    <xsl:variable name="outputFile" as="xs:string" select="if ($output eq 'overwrite') then base-uri(/) else replace(base-uri(/),'\.xml$','_v2.xml')"/>
+    <xsl:variable name="outputFile" as="xs:string" select="if ($output eq 'o') then base-uri(/) else replace(base-uri(/),'\.xml$','_v2.xml')"/>
     
     <xd:doc>
         <xd:desc>In v1 we allowed boolean parameters to take a variety of forms; this
@@ -53,6 +58,8 @@
     </xd:doc>
     <xsl:variable name="reBooleanTrue" as="xs:string">^\s*(t|true|1|y|yes)\s*$</xsl:variable>
     <xsl:variable name="reBooleanFalse" as="xs:string">^\s*(f|false|0|n|no)\s*$</xsl:variable>
+    
+    
     
     <xd:doc>
         <xd:desc>Root template: if the config is already set to 2.0, this transformation just ends
@@ -65,7 +72,7 @@
                     is already set to version=2, so this transformation will do nothing.
                 </xsl:message>
             </xsl:when>
-            <xsl:when test="$output eq 'new' and unparsed-text-available($outputFile)">
+            <xsl:when test="$output eq 'n' and unparsed-text-available($outputFile)">
                 <xsl:message terminate="yes">&#x0a;******************&#x0a;The file {$outputFile} already exists.&#x0a;Please delete or move it before running this process again.&#x0a;******************&#x0a;&#x0a;</xsl:message>
             </xsl:when>
             <xsl:otherwise>
@@ -96,35 +103,46 @@
         <xsl:copy>
         <!-- The best approach here is to construct a complete file based on 
              what's present. -->
-            <searchPage file="{searchFile/text()}"/>
-            <index recurse="{hcmc:getStrBoolean(recurse, 'true')}"/>
+            <searchPage file="{hcmc:getString(searchFile/text(),$defaultParams?searchPage.file)}"/>
+            <index recurse="{hcmc:getStrBoolean(recurse, $defaultParams?index.recurse)}"/>
             <stopwords
-                file="{hcmc:getString(stopwordsFile, '')}"/>
+                file="{hcmc:getString(stopwordsFile, $defaultParams?stopwords.file)}"/>
             <dictionary
-                file="{hcmc:getString(dictionaryFile, '')}"/>
-            <tokenizer
-                minWordLength="{xs:string(hcmc:getInteger(minWordLength, 2))}"/>
-            <scoringAlgorithm name="{hcmc:getString(scoringAlgorithm, 'raw')}"/>
+                file="{hcmc:getString(dictionaryFile, $defaultParams?dictionary.file)}"/>
+            <scoringAlgorithm name="{hcmc:getString(scoringAlgorithm, $defaultParams?scoringAlgorithm.name)}"/>
+            <xsl:variable name="stemmerFolder" 
+                select="if (stemmerFolder) then concat('stemmers/', stemmerFolder) else ()" as="xs:string?"/>
             <stemmer
-                dir="{hcmc:getString(stemmerFolder, 'stemmers/en/')}"/>
-            <tokenizer minWordLength="{hcmc:getInteger(minWordLength, 2)}"/>
-            <contexts
-                create="{hcmc:getStrBoolean(createContexts, 'false')}"
-                phrasalSearch="{hcmc:getStrBoolean(phrasalSearch, 'true')}" 
-                wildcardSearch="{hcmc:getStrBoolean(wildcardSearch, 'true')}"
-                maxKwicsToHarvest="{hcmc:getInteger(maxKwicsToHarvest, 5)}"
-                maxKwicLength="{hcmc:getInteger(totalKwicLength, 15)}"
-                kwicTruncateString="{hcmc:getString(kwicTruncateString, '...')}"         
-            />
+                dir="{hcmc:getString($stemmerFolder, $defaultParams?stemmer.dir)}"/>
+            <tokenizer minWordLength="{hcmc:getInteger(minWordLength, $defaultParams?tokenizer.minWordLength)}"/>
+            <createContexts>
+                <xsl:variable name="create" 
+                    select="hcmc:getStrBoolean(createContexts, $defaultParams?createContexts.create)" as="xs:string"/>
+                <xsl:attribute name="create" select="$create"/>
+                <!--If create is false, no other attributes are allowed, so we're done-->
+                <xsl:if test="$create = 'true'">
+                    <!--Always check phrasal search-->
+                    <xsl:variable name="phrasalSearch" as="xs:string"
+                        select="hcmc:getStrBoolean(phrasalSearch, $defaultParams?createContexts.phrasalSearch)"/>
+                    <xsl:attribute name="phrasalSearch" select="$phrasalSearch"/>
+                    <xsl:attribute name="wildcardSearch"
+                        select="hcmc:getStrBoolean(wildcardSearch, $defaultParams?createContexts.wildcardSearch)"/>
+                    <xsl:if test="$phrasalSearch = 'false'">
+                        <xsl:attribute name="maxKwicsToHarvest"
+                            select="hcmc:getInteger(maxKwicsToHarvest, $defaultParams?createContexts.maxKwicsToHarvest)"/>
+                    </xsl:if>
+                    <xsl:attribute name="maxKwicLength"
+                        select="hcmc:getInteger(totalKwicLength, $defaultParams?createContexts.maxKwicLength)"/>
+                    <xsl:attribute name="kwicTruncateString" 
+                        select="hcmc:getString(kwicTruncateString, $defaultParams?createContexts.kwicTruncateString)"/>
+                </xsl:if>
+            </createContexts>
             <results 
-                resultsPerPage="{hcmc:getInteger(resultsPerPage, 100)}"
-                maxKwicsToShow="{hcmc:getInteger(maxKwicsToShow, 5)}"
-                maxResults="{hcmc:getInteger(resultsLimit, 1000)}"/>
-            <version file="{hcmc:getString(versionFile, '')}"/>
-            
-            <!-- NOTE: I believe this should actually be:
-                 <output dir=""/> -->
-            <outputDir name="{hcmc:getString(outputFolder, 'staticSearch')}"/>
+                resultsPerPage="{hcmc:getInteger(resultsPerPage, $defaultParams?results.resultsPerPage)}"
+                maxKwicsToShow="{hcmc:getInteger(maxKwicsToShow, $defaultParams?results.maxKwicsToShow)}"
+                maxResults="{hcmc:getInteger(resultsLimit, $defaultParams?results.maxResults)}"/>
+            <version file="{hcmc:getString(versionFile, $defaultParams?version.file)}"/>
+            <output dir="{hcmc:getString(outputFolder, $defaultParams?output.dir)}"/>
         </xsl:copy>
         
         <!-- Now we handle the things we want to warn about. -->

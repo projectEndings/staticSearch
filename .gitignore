@@ -53,3 +53,5 @@ js/ssSearch-debug.js
 js/ssSearch.js
 js/*.js.map
 
+# VSCode Configuration
+.idea
