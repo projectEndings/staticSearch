@@ -134,18 +134,19 @@
         <xsl:choose>
             <xsl:when test="$mergedParams?version.file ne ''">
                 <xsl:try>
-                    <xsl:sequence 
+                    <xsl:variable name="v" 
                         select="unparsed-text(resolve-uri($mergedParams?version.file, $configUri)) =>
                         normalize-space() =>
                         replace('\s+','_')"/>
+                    <xsl:sequence select="if (starts-with($v,'_')) then $v else ('_' || $v)"/>
                     <xsl:catch>
                         <xsl:message>WARNING: No version file specified.</xsl:message>
-                        <xsl:sequence select="hcmc:generateRandomHash()"/>
+                        <xsl:sequence select="'_' || hcmc:generateRandomHash()"/>
                     </xsl:catch>
                 </xsl:try>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:sequence select="hcmc:generateRandomHash()"/>
+                <xsl:sequence select="'_' || hcmc:generateRandomHash()"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:variable> 
