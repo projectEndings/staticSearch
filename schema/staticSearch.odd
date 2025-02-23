@@ -1250,7 +1250,7 @@
         
       </div>
       
-      <div xml:id="newSinceVersion1">
+      <div xml:id="newSinceLastVersion">
         <head>What's new since version 1.4?</head>
         <list>
           <item>Level: Intermediate</item>
@@ -1260,6 +1260,15 @@
         <head>Changes in version 2.0</head>
           
           <list>
+            <item>The included dictionaries and stopwords lists for English and 
+            French have been moved from the <ident>xsl</ident> folder to new locations:
+              <ident>dicts/words_en.txt</ident>, <ident>dicts/words_fr.txt</ident>,
+            <ident>stopwords/stopwords_en.txt</ident>, and
+              <ident>stopwords/stopwords_fr.txt</ident>. This is purely for 
+            housekeeping purposes. If you have a configuration file which points at 
+            one of these files in the old location, you will need to update that
+            file.</item>
+            
             <item>Five JavaScript CustomEvents are now dispatched by the StaticSearch object, to better
               enable programmers to write JavaScript code which interacts with the search page. See
               <ref target="#programming">Programming with staticSearch</ref> for more details.</item>
@@ -1578,7 +1587,7 @@
               <attDef ident="file" mode="change">
                 <gloss>The path (relative to the config file) to a text file 
                   containing a list of words to be ignored by the indexer (one word per line).</gloss>
-                <defaultVal>xsl/english_stopwords.txt</defaultVal>
+                <defaultVal>stopwords/stopwords_en.txt</defaultVal>
               </attDef>
             </attList>
             <remarks>
@@ -1613,7 +1622,7 @@
             <attList>
               <attDef ident="file" mode="change">
                 <gloss>The relative path (from the config file) to a dictionary file (one word per line).</gloss>
-                <defaultVal>xsl/english_words.txt</defaultVal>
+                <defaultVal>dicts/words_en.txt</defaultVal>
               </attDef>
             </attList>
             <remarks>

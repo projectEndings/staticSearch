@@ -4,8 +4,8 @@
    <params>
       <searchPage file="docs/index.html"/>
       <index recurse="false"/>
-      <stopwords file="xsl/english_stopwords.txt"/>
-      <dictionary file="xsl/english_words.txt"/>
+      <stopwords file="stopwords/stopwords_en.txt"/>
+      <dictionary file="dicts/words_en.txt"/>
       <scoringAlgorithm name="raw"/>
       <stemmer dir="stemmers/en"/>
       <tokenizer minWordLength="2"/>

@@ -5,7 +5,7 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2025-02-23T18:18:59Z. 2019-2025. 
+Schema generated from ODD source 2025-02-23T18:31:59Z. 2019-2025. 
 TEI Edition: P5 Version 4.9.0. Last updated on 24th January 2025, revision f73186978 
 TEI Edition Location: https://www.tei-c.org/Vault/P5/4.9.0/ 
   
@@ -32,7 +32,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.9.0/
       <ns xmlns="http://purl.oclc.org/dsdl/schematron"
           prefix="xh"
           uri="http://www.w3.org/1999/xhtml"/>
-      <pattern xmlns="http://purl.oclc.org/dsdl/schematron" id="d9e3384-constraint">
+      <pattern xmlns="http://purl.oclc.org/dsdl/schematron" id="d9e3397-constraint">
          <rule context="xh:span">
             <report test="descendant::*[not(namespace-uri(.) =               ('http://www.w3.org/1999/xhtml', 'http://www.tei-c.org/ns/1.0'))]">span descendants must be in the
               namespaces
@@ -153,7 +153,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.9.0/
          <empty/>
          <attribute xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
                     name="file"
-                    a:defaultValue="xsl/english_stopwords.txt">
+                    a:defaultValue="stopwords/stopwords_en.txt">
             <a:documentation>(The path (relative to the config file) to a text file containing a list of words to be ignored by the indexer (one word per line).) </a:documentation>
             <data type="anyURI"/>
          </attribute>
@@ -166,7 +166,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.9.0/
          <empty/>
          <attribute xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
                     name="file"
-                    a:defaultValue="xsl/english_words.txt">
+                    a:defaultValue="dicts/words_en.txt">
             <a:documentation>(The relative path (from the config file) to a dictionary file (one word per line).) </a:documentation>
             <data type="anyURI"/>
          </attribute>
