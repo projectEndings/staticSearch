@@ -53,12 +53,12 @@
   </xd:doc>
   <xsl:template match="/">
     <xsl:for-each select="$inputFiles">
-      <xsl:if test="matches(document-uri(.), 'tei-p5-doc/((en)|(fr)|(es)|(de)|(it))/')">
-        <xsl:variable name="sourcePath" as="xs:string" select="document-uri(.)"/>
+      <xsl:if test="matches(base-uri(.), 'tei-p5-doc/((en)|(fr)|(es)|(de)|(it))/')">
+        <xsl:variable name="sourcePath" as="xs:string" select="base-uri(.)"/>
         <xsl:variable name="outputPath" as="xs:string" select="replace($sourcePath, '/tei/source/doc/tei-p5-doc', '/tei/output')"/>
         <xsl:message>Processing <xsl:value-of select="$sourcePath"/> to <xsl:value-of select="$outputPath"/></xsl:message>
         
-        <xsl:variable name="docUri" as="xs:string" select="document-uri(.)"/>
+        <xsl:variable name="docUri" as="xs:string" select="base-uri(.)"/>
         
         <xsl:variable name="docName" as="xs:string" select="tokenize($docUri, '/')[last()]"/>
         

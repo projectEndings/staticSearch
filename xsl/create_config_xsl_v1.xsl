@@ -647,7 +647,7 @@
         <xso:variable name="kwicLengthHalf"
             select="{xs:integer(round(xs:integer($configDoc//totalKwicLength) div 2))}"/>
         <xso:variable name="docs" 
-            select="collection(concat($collectionDir, {$sq || '?select=*.*htm*;recurse=' || (if ($recurse) then 'yes' else 'no') || $sq}))[not(starts-with(document-uri(.),$tempDir))][not(ends-with(document-uri(.), $buildReportFilename))]"/>
+            select="collection(concat($collectionDir, {$sq || '?select=*.*htm*;recurse=' || (if ($recurse) then 'yes' else 'no') || $sq}))[not(starts-with(base-uri(.),$tempDir))][not(ends-with(base-uri(.), $buildReportFilename))]"/>
         
         <xso:variable name="docUris" 
             select="uri-collection(concat($collectionDir, {$sq || '?select=*.*htm*;recurse=' || (if ($recurse) then 'yes' else 'no') || $sq}))[not(starts-with(.,$tempDir))][not(ends-with(., $buildReportFilename))]"/>
@@ -668,7 +668,7 @@
         <xd:doc>
             <xd:desc>The document's URI as a string.</xd:desc>
         </xd:doc>
-        <xso:variable name="uri" select="xs:string(document-uri(.))" as="xs:string"/>
+        <xso:variable name="uri" select="xs:string(base-uri(.))" as="xs:string"/>
         
         <xd:doc>
             <xd:desc>The relative uri from the root:

@@ -368,8 +368,8 @@
                 select="$collectionDir || '?select=*.*htm*;recurse=' || $recurseYN"/></xso:variable>
         <!--The documents to use, based on the collectionURI-->
         <xso:variable name="docs" 
-            select="collection($collectionURI)[not(starts-with(document-uri(.),$tempDir))]
-                                              [not(ends-with(document-uri(.), $buildReportFilename))]"/>
+            select="collection($collectionURI)[not(starts-with(base-uri(.),$tempDir))]
+                                              [not(ends-with(base-uri(.), $buildReportFilename))]"/>
         <!--And the document URIs-->
         <xso:variable name="docUris" 
             select="uri-collection($collectionURI)[not(starts-with(.,$tempDir))]
@@ -390,7 +390,7 @@
         <xso:variable name="hasFilterLabels" 
             select="{if ($configDoc//filter) then 'true' else 'false'}()"/>
         <!--The document's URI as a string-->
-        <xso:variable name="uri" select="xs:string(document-uri(.))" as="xs:string"/>
+        <xso:variable name="uri" select="xs:string(base-uri(.))" as="xs:string"/>
         <xd:doc>
             <xd:desc>The relative uri from the root:
                 this is the full URI minus the collection dir. 

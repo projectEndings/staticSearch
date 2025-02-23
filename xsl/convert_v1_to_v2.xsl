@@ -68,7 +68,7 @@
     <xsl:template match="/">
         <xsl:choose>
             <xsl:when test="config[xs:integer(@version) = 2]">
-                <xsl:message>WARNING: Configuration file <xsl:value-of select="document-uri(.)"/>
+                <xsl:message>WARNING: Configuration file <xsl:value-of select="base-uri(.)"/>
                     is already set to version=2, so this transformation will do nothing.
                 </xsl:message>
             </xsl:when>

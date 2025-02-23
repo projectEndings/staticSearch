@@ -33,7 +33,7 @@
     
     <excludes>
         <!--Ignore the master SS doc from the search-->
-        <exclude type="index" match="html[matches(document-uri(/),'staticSearch.html$')]"/>
+        <exclude type="index" match="html[matches(base-uri(/),'staticSearch.html$')]"/>
     </excludes>
 
 </config>
