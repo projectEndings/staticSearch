@@ -82,7 +82,7 @@
             xmlns:tei="http://www.tei-c.org/ns/1.0"
             xmlns:teix="http://www.tei-c.org/ns/Examples"
             xmlns:xlink="http://www.w3.org/1999/xlink"
-            id="d9e3752-constraint">
+            id="d9e3384-constraint">
       <rule context="xh:span">
          <report test="descendant::*[not(namespace-uri(.) =               ('http://www.w3.org/1999/xhtml', 'http://www.tei-c.org/ns/1.0'))]">span descendants must be in the
               namespaces
