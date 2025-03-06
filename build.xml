@@ -12,7 +12,7 @@
         *  build the test site by default.                       *
         *                                                        *
         *  Note that you can also specify a relative path using  *
-        *  -DssConfig=../rel/cfg.xml *                             *
+        *  -DssConfigFile=../rel/cfg.xml *                             *
         *                                                        *
         **********************************************************
     -->
@@ -171,7 +171,7 @@
      *                                                              *
      ****************************************************************-->
 
-  <target name="init">
+  <target name="init" depends="validate.config">
     <description>
       TARGET: init
       This target initializes the static search indexing process. It first
@@ -281,6 +281,7 @@ create a new file? (o=overwrite, n=new)"
       <arg value="ssVerbose=${ssVerbose}"/>
       <arg value="output=${outputStrategy}"/>
     </java>
+    <fail message="Terminating this build. Please restart the build using your new configuration file."/>
   </target>
   
   <target name="validate.html">
