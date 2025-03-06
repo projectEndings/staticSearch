@@ -105,10 +105,37 @@
              what's present. -->
             <searchPage file="{hcmc:getString(searchFile/text(),$defaultParams?searchPage.file)}"/>
             <index recurse="{hcmc:getStrBoolean(recurse, $defaultParams?index.recurse)}"/>
-            <stopwords
-                file="{hcmc:getString(stopwordsFile, $defaultParams?stopwords.file)}"/>
-            <dictionary
-                file="{hcmc:getString(dictionaryFile, $defaultParams?dictionary.file)}"/>
+            <stopwords>
+                <xsl:attribute name="file">
+                    <!--Per #322, default stopwords files have been moved to their own dedicated directory,
+                        so we should warn if it appears that a default may have been used -->
+                    <xsl:variable name="pointer" 
+                        select="hcmc:getString(stopwordsFile, $defaultParams?stopwords.file)"
+                        as="xs:string"/>
+                    <xsl:variable name="resolvedURI" select="resolve-uri($pointer)" as="xs:anyURI"/>
+                    <xsl:if test="matches($resolvedURI,'/xsl/.+_stopwords.txt$')">
+                        <xsl:message>WARNING: Stopword files have been moved to /stopwords/; if you had been
+                            using a default stopwords file bundled with v1 of staticSearch (xsl/.+_stopwords.txt),
+                            then you may need to update your config file to use /stopwords/.</xsl:message>
+                    </xsl:if>
+                    <xsl:sequence select="$pointer"/>
+                </xsl:attribute>
+            </stopwords>
+            <dictionary>
+                <xsl:attribute name="file">
+                    <!--Per #322, default dictionary files have been moved to their own dedicated directory,
+                        so we should warn if it appears that a default may have been used -->
+                    <xsl:variable name="pointer" 
+                        select="hcmc:getString(dictionaryFile, $defaultParams?dictionary.file)" as="xs:string"/>
+                    <xsl:variable name="resolvedURI" select="resolve-uri($pointer)" as="xs:anyURI"/>
+                    <xsl:if test="matches($resolvedURI,'/xsl/.+_words.txt$')">
+                        <xsl:message>WARNING: Dictionary files have been moved to /dicts/; if you had been
+                            using a default dictionary file bundled with v1 of staticSearch (xsl/.+_words.txt),
+                            then you may need to update your config file to use /dicts/.</xsl:message>
+                    </xsl:if>
+                    <xsl:sequence select="$pointer"/>
+                </xsl:attribute>
+            </dictionary>
             <scoringAlgorithm name="{hcmc:getString(scoringAlgorithm, $defaultParams?scoringAlgorithm.name)}"/>
             <xsl:variable name="stemmerFolder" 
                 select="if (stemmerFolder) then concat('stemmers/', stemmerFolder) else ()" as="xs:string?"/>
@@ -117,7 +144,8 @@
             <tokenizer minWordLength="{hcmc:getInteger(minWordLength, $defaultParams?tokenizer.minWordLength)}"/>
             <createContexts>
                 <xsl:variable name="create" 
-                    select="hcmc:getStrBoolean(createContexts, $defaultParams?createContexts.create)" as="xs:string"/>
+                    select="hcmc:getStrBoolean(createContexts, $defaultParams?createContexts.create)"
+                    as="xs:string"/>
                 <xsl:attribute name="create" select="$create"/>
                 <!--If create is false, no other attributes are allowed, so we're done-->
                 <xsl:if test="$create = 'true'">
