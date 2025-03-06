@@ -171,7 +171,7 @@
      *                                                              *
      ****************************************************************-->
 
-  <target name="init">
+  <target name="init" depends="validate.config">
     <description>
       TARGET: init
       This target initializes the static search indexing process. It first
@@ -607,7 +607,7 @@ create a new file? (o=overwrite, n=new)"
   </target>
 
   <target name="all"
-    depends="validate.config, init, validate, config, tokenize, json, buildJS, copyFiles, makeSearchPage, report, clean">
+    depends="init, validate, config, tokenize, json, buildJS, copyFiles, makeSearchPage, report, clean">
     <description>
       TARGET: all
       Default target for running the entire static search creation process.
@@ -615,7 +615,7 @@ create a new file? (o=overwrite, n=new)"
   </target>
 
   <target name="allButValidate"
-    depends="validate.config, init, config, tokenize, json, buildJS, copyFiles, makeSearchPage, report, clean">
+    depends="init, config, tokenize, json, buildJS, copyFiles, makeSearchPage, report, clean">
     <description>
       TARGET: allButValidate
       Target to override validation, which is helpful in cases
@@ -624,7 +624,7 @@ create a new file? (o=overwrite, n=new)"
   </target>
 
   <target name="test"
-    depends="validate.config, init, validate, config, tokenize, json, buildJS, copyFiles, makeSearchPage, makeDebugSearchPage, makeManualDebugSearchPage, report">
+    depends="init, validate, config, tokenize, json, buildJS, copyFiles, makeSearchPage, makeDebugSearchPage, makeManualDebugSearchPage, report">
     <description>
       TARGET: test
       Target that runs the whole process, but does not clean up the
@@ -633,7 +633,7 @@ create a new file? (o=overwrite, n=new)"
   </target>
 
   <target name="basic"
-    depends="validate.config, init, validate, config, tokenize, json, buildJS, copyFiles, makeSearchPage, clean">
+    depends="init, validate, config, tokenize, json, buildJS, copyFiles, makeSearchPage, clean">
     <description>
       TARGET: basic
       Target that runs the whole process other than the report creation.
