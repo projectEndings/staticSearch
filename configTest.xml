@@ -5,7 +5,7 @@
         <searchPage file="test/search.html"/>
         <index recurse="true"/>
         <stopwords file="test/test_stopwords.txt"/>
-        <dictionary file="xsl/english_words.txt"/>
+        <dictionary file="dicts/words_en.txt"/>
         <scoringAlgorithm name="raw"/>
         <stemmer dir="stemmers/en/"/>
         <tokenizer minWordLength="2"/>
