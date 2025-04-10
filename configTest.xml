@@ -32,6 +32,7 @@
             label="Notes"/>
         <context match="cite" label="Citations"/>
         <context match="p[contains-token(@class,'citation')]" label="Citations"/>
+        <context match="blockquote/p[contains-token(@class,'citation')]" label="Blockquote citations"/>
     </contexts>
     <excludes>
         <exclude type="index" match="html[@id='excluded']"/>
