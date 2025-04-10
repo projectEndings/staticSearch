@@ -84,7 +84,7 @@
     </xsl:accumulator>
     
     <xsl:accumulator name="context-ids" initial-value="()" as="xs:string*">
-        <xsl:accumulator-rule match="*[@ss-ctx-id]" select="($value, @ss-ctx-id)" phase="start"/>
+        <xsl:accumulator-rule match="*[@ss-ctx-id]" select="($value, tokenize(@ss-ctx-id, '\s+'))" phase="start"/>
         <xsl:accumulator-rule match="*[@ss-ctx-id]" select="$value[position() lt last()]" phase="end"/>
     </xsl:accumulator>
     
