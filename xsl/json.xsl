@@ -85,7 +85,8 @@
     
     <xsl:accumulator name="context-ids" initial-value="()" as="xs:string*">
         <xsl:accumulator-rule match="*[@ss-ctx-id]" select="($value, tokenize(@ss-ctx-id, '\s+'))" phase="start"/>
-        <xsl:accumulator-rule match="*[@ss-ctx-id]" select="$value[position() lt last()]" phase="end"/>
+        <xsl:accumulator-rule match="*[@ss-ctx-id]" phase="end"
+            select="subsequence($value, 1, count($value) - count(tokenize(@ss-ctx-id)))"/>
     </xsl:accumulator>
     
    <!--JT: This accumulator added for 110, but causes overflow issues in LOI;
