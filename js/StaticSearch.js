@@ -1034,6 +1034,9 @@ class StaticSearch{
       for (let sel of this.boolFilterSelects){
         sel.selectedIndex = 0;
       }
+      for (let txt of this.featFilterInputs){
+        txt.value = '';
+      }
       return true;
     }
     catch(e){
