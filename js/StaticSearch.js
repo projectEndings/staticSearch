@@ -1048,6 +1048,9 @@ class StaticSearch{
       for (let sel of this.boolFilterSelects){
         sel.selectedIndex = 0;
       }
+      for (let txt of this.featFilterInputs){
+        txt.value = '';
+      }
       //Clear the search params in the URL too.
       let url = window.location.href.split(/[?#]/)[0];
       history.pushState({time: Date.now()}, '', url);
