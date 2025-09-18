@@ -1353,6 +1353,11 @@
             <cell>Configuration file(s)</cell>
           </row>
           <row>
+            <cell><ref target="https://www.transgendermediaportal.org/">The Transgender Media Portal</ref></cell>
+            <cell><ref target="https://www.transgendermediaportal.org/search.html">Search</ref></cell>
+            <cell> </cell>
+          </row>
+          <row>
             <cell><ref target="https://becklectures.uvic.ca/">The Beck Lecture Series</ref></cell>
             <cell><ref target="https://becklectures.uvic.ca/search.html">Search</ref></cell>
             <cell><ref target="https://hcmc.uvic.ca/svn/beck/config_staticSearch.xml">SVN</ref></cell>
