@@ -260,7 +260,7 @@ class StaticSearch{
       this.debug = false;
 
       //Configuration of a specific version string to avoid JSON caching.
-      this.versionString = this.ssForm.getAttribute('data-versionString');
+      this.versionString = this.ssForm.getAttribute('data-versionstring');
 
       //Associative array for storing retrieved JSON search string data.
       //Any retrieved data stored in here is retained between searches
