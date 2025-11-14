@@ -1564,6 +1564,11 @@
             <cell><ref target="https://hcmc.uvic.ca/svn/mariage/static/config_staticSearch.xml">SVN</ref></cell>
           </row>
           <row>
+            <cell><ref target="https://lemdo.uvic.ca/moms/">The MoEML Mayoral Shows Anthology</ref></cell>
+            <cell><ref target="https://lemdo.uvic.ca/moms/search.html">Search</ref></cell>
+            <cell><ref target="https://hcmc.uvic.ca/svn/lemdo/data/anthologies/moms/config_staticSearch.xml">SVN</ref></cell>
+          </row>
+          <row>
             <cell><ref target="https://www.moravians-at-sea.de/">Moravians at Sea</ref></cell>
             <cell><ref target="https://www.moravians-at-sea.de/suche.html">Suche</ref></cell>
             <cell><ref target="https://github.com/mprell/moravians-at-sea-Prod">GitHub</ref></cell>
