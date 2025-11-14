@@ -1490,18 +1490,13 @@
         <head>Projects using staticSearch</head>
         <list>
           <item>Level: Basic</item>
-          <item>Last Updated: <date when="2022-08-15">15 August 2022</date></item>
+          <item>Last Updated: <date when="2025-11-14">14 November 2025</date></item>
         </list>
         <table>
           <row role="label">
             <cell>Name</cell>
             <cell>Search Page(s)</cell>
             <cell>Configuration file(s)</cell>
-          </row>
-          <row>
-            <cell><ref target="https://www.transgendermediaportal.org/">The Transgender Media Portal</ref></cell>
-            <cell><ref target="https://www.transgendermediaportal.org/search.html">Search</ref></cell>
-            <cell> </cell>
           </row>
           <row>
             <cell><ref target="https://becklectures.uvic.ca/">The Beck Lecture Series</ref></cell>
@@ -1511,53 +1506,17 @@
           <row>
             <cell><ref target="https://hcmc.uvic.ca/project/bbti/">The British Book Trade Index</ref></cell>
             <cell><ref target="https://hcmc.uvic.ca/project/bbti/search.html">Search</ref></cell>
-            <cell><ref target="https://github.com/UVicHCMC/BBTI">GitHub</ref></cell>
-          </row>
-          <row>
-            <cell><ref target="https://www.moravians-at-sea.de/">Moravians at Sea</ref></cell>
-            <cell><ref target="https://www.moravians-at-sea.de/suche.html">Suche</ref></cell>
-            <cell><ref target="https://github.com/mprell/moravians-at-sea-Prod">GitHub</ref></cell>
-          </row>
-          <row>
-            <cell><ref target="https://mapoflondon.uvic.ca">The Map of Early Modern London</ref></cell>
-            <cell><ref target="https://mapoflondon.uvic.ca/search.htm">Search</ref></cell>
-            <cell><ref target="https://hcmc.uvic.ca/svn/london/static/config_staticSearch.xml">SVN</ref></cell>
-          </row>
-          <row>
-            <cell><ref target="https://winnifredeatonarchive.org">The Winnifred Eaton Archive</ref></cell>
-            <cell><ref target="https://winnifredeatonarchive.org/search.html">Search</ref></cell>
-            <cell>
-              <ref target="https://github.com/winnifredeatonarchive/wea_data/blob/09ae8660007a10e23e80e2f5769aec0bf1f919c6/code/staticSearch/config.xml">Github</ref></cell>
-          </row>
-          <row>
-            <cell><ref target="https://johnkeats.uvic.ca/">Mapping Keat's Progress</ref></cell>
-            <cell><ref target="https://johnkeats.uvic.ca/search.html">Search</ref></cell>
-            <cell><ref target="https://hcmc.uvic.ca/svn/keats/config_staticSearch.xml">SVN</ref></cell>
-          </row>
-          <row>
-            <cell><ref target="https://myndir.uvic.ca/">My Norse Digital Image Repository</ref></cell>
-            <cell><ref target="https://myndir.uvic.ca/search.html">Search</ref></cell>
-            <cell><ref target="https://hcmc.uvic.ca/svn/myndir/config_staticSearch.xml">SVN</ref></cell>
+            <cell><ref target="https://github.com/UVicHCMC/BBTI/blob/dev/config_staticSearch.xml">GitHub</ref></cell>
           </row>
           <row>
             <cell><ref target="https://bcgenesis.uvic.ca/">The Colonial Despatches of BC and Vancouver Island</ref></cell>
             <cell><ref target="https://bcgenesis.uvic.ca/search.html">Search</ref></cell>
             <cell><ref target="https://hcmc.uvic.ca/svn/coldesp/trunk/config_staticSearch.xml">SVN</ref></cell>
           </row>
-          <!--<row>
-            <cell><ref target="https://scancan.net">The Scandinavian-Canadian Studies Journal</ref></cell>
-            <cell><ref target="https://scancan.net/search.htm">Search</ref></cell>
-            <cell><ref target="https://hcmc.uvic.ca/svn/scancan/config_staticSearch.xml">SVN</ref></cell>
-          </row>-->
           <row>
-            <cell><ref target="https://graves.uvic.ca/">The Robert Graves Diary</ref></cell>
-            <cell><ref target="https://graves.uvic.ca/search.html">Search</ref></cell>
-            <cell><ref target="https://hcmc.uvic.ca/svn/graves/config_staticSearch.xml">SVN</ref></cell>
-          </row>
-          <row>
-            <cell><ref target="https://francotoile.uvic.ca/">Francotoile</ref> ( a digital library of videos and transcripts of French speakers from around the world)</cell>
-            <cell><ref target="https://francotoile.uvic.ca/search.html">Search</ref></cell>
-            <cell><ref target="https://hcmc.uvic.ca/svn/francotoile/trunk/config_staticSearch.xml">SVN</ref></cell>
+            <cell><ref target="https://dhq.digitalhumanities.org/">DHQ: Digital Humanities Quarterly</ref></cell>
+            <cell><ref target="https://dhq.digitalhumanities.org/vol/search.html">Search</ref></cell>
+            <cell></cell>
           </row>
           <row>
             <cell><ref target="https://dvpp.uvic.ca">Digital Victorian Periodical Poetry</ref></cell>
@@ -1565,25 +1524,82 @@
             <cell><ref target="https://hcmc.uvic.ca/svn/dvpp/">SVN</ref> (multiple configuration files)</cell>
           </row>
           <row>
+            <cell><ref target="https://lemdo.uvic.ca/douai/">The Douai Shakespeare Manuscript Project</ref></cell>
+            <cell><ref target="https://lemdo.uvic.ca/douai/search.html">Search</ref></cell>
+            <cell><ref target="https://hcmc.uvic.ca/svn/lemdo/data/anthologies/douai/config_staticSearch.xml">SVN</ref></cell>
+          </row>
+          <row>
+            <cell><ref target="https://francotoile.uvic.ca/">Francotoile</ref> ( a digital library of videos and transcripts of French speakers from around the world)</cell>
+            <cell><ref target="https://francotoile.uvic.ca/search.html">Search</ref></cell>
+            <cell><ref target="https://hcmc.uvic.ca/svn/francotoile/trunk/config_staticSearch.xml">SVN</ref></cell>
+          </row>
+          <row>
+            <cell><ref target="https://medievalmideast.org/">Historical Index of the Medieval Middle East</ref></cell>
+            <cell><ref target="https://medievalmideast.org/search.html">Search</ref></cell>
+            <cell></cell>
+          </row>
+          <row>
+            <cell><ref target="https://loi.uvic.ca/archive/">Landscapes of Injustice</ref></cell>
+            <cell><ref target="https://loi.uvic.ca/archive/search.html">Search</ref>. The home page is itself a search page; this is a digital archive with multiple staticSearch interfaces.</cell>
+            <cell><ref target="https://hcmc.uvic.ca/svn/landscapes/production/">SVN</ref> (multiple configuration files)</cell>
+          </row>
+          <row>
+            <cell><ref target="https://lemdo.uvic.ca/lemdo/">LEMDO: Linked Early Modern Drama Online</ref></cell>
+            <cell><ref target="https://lemdo.uvic.ca/lemdo/search.html">Search</ref></cell>
+            <cell><ref target="https://hcmc.uvic.ca/svn/lemdo/data/anthologies/lemdo/config_staticSearch.xml">SVN</ref></cell>
+          </row>
+          <row>
+            <cell><ref target="https://johnkeats.uvic.ca/">Mapping Keat's Progress</ref></cell>
+            <cell><ref target="https://johnkeats.uvic.ca/search.html">Search</ref></cell>
+            <cell><ref target="https://hcmc.uvic.ca/svn/keats/config_staticSearch.xml">SVN</ref></cell>
+          </row>
+          <row>
+            <cell><ref target="https://mapoflondon.uvic.ca">The Map of Early Modern London</ref></cell>
+            <cell><ref target="https://mapoflondon.uvic.ca/search.htm">Search</ref></cell>
+            <cell><ref target="https://hcmc.uvic.ca/svn/london/static/config_staticSearch.xml">SVN</ref></cell>
+          </row>
+          <row>
             <cell><ref target="https://mariage.uvic.ca/">Le mariage sous L'Ancien Régime</ref></cell>
             <cell><ref target="https://mariage.uvic.ca/recherche.html">Recherche</ref></cell>
             <cell><ref target="https://hcmc.uvic.ca/svn/mariage/static/config_staticSearch.xml">SVN</ref></cell>
           </row>
           <row>
-            <cell><ref target="https://loi.uvic.ca/archive/">Landscapes of Injustice</ref></cell>
-            <cell><ref target="https://loi.uvic.ca/archive/search.html">Search</ref>. The home page is itself a search page; this is a digital archive with multiple staticSearch interfaces.</cell>
-            <cell><ref target="https://hcmc.uvic.ca/svn/landscapes/production/">SVN</ref></cell>
+            <cell><ref target="https://www.moravians-at-sea.de/">Moravians at Sea</ref></cell>
+            <cell><ref target="https://www.moravians-at-sea.de/suche.html">Suche</ref></cell>
+            <cell><ref target="https://github.com/mprell/moravians-at-sea-Prod">GitHub</ref></cell>
           </row>
           <row>
-            <cell><ref target="http://medievalmideast.org/">Historical Index of the Medieval Middle East</ref></cell>
-            <cell>The home page includes a search function which leads to the search page.</cell>
-            <cell></cell>
+            <cell><ref target="https://myndir.uvic.ca/">My Norse Digital Image Repository</ref></cell>
+            <cell><ref target="https://myndir.uvic.ca/search.html">Search</ref></cell>
+            <cell><ref target="https://hcmc.uvic.ca/svn/myndir/config_staticSearch.xml">SVN</ref></cell>
+          </row>
+          <row>
+            <cell><ref target="https://lemdo.uvic.ca/qme/">The Queenʼs Men Editions</ref></cell>
+            <cell><ref target="https://lemdo.uvic.ca/qme/search.html">Search</ref></cell>
+            <cell><ref target="https://hcmc.uvic.ca/svn/lemdo/data/anthologies/qme/config_staticSearch.xml">SVN</ref></cell>
+          </row>
+          <row>
+            <cell><ref target="https://graves.uvic.ca/">The Robert Graves Diary</ref></cell>
+            <cell><ref target="https://graves.uvic.ca/search.html">Search</ref></cell>
+            <cell><ref target="https://hcmc.uvic.ca/svn/graves/config_staticSearch.xml">SVN</ref></cell>
+          </row>
+          <row>
+            <cell><ref target="https://www.transgendermediaportal.org/">The Transgender Media Portal</ref></cell>
+            <cell><ref target="https://www.transgendermediaportal.org/search.html">Search</ref></cell>
+            <cell><ref target="https://github.com/TMPortal/TMPFactory/blob/main/tmpStaticSearch/config_transmediaportal.xml">GitHub</ref></cell>
+          </row>
+          <row>
+            <cell><ref target="https://winnifredeatonarchive.org">The Winnifred Eaton Archive</ref></cell>
+            <cell><ref target="https://winnifredeatonarchive.org/search.html">Search</ref></cell>
+            <cell>
+              <ref target="https://github.com/winnifredeatonarchive/wea_data/blob/09ae8660007a10e23e80e2f5769aec0bf1f919c6/code/staticSearch/config.xml">Github</ref></cell>
           </row>
           <!--<row>
-            <cell>Linked Early Modern Drama Online (forthcoming)</cell>
-            <cell/>
-            <cell/>
+            <cell><ref target="https://scancan.net">The Scandinavian-Canadian Studies Journal</ref></cell>
+            <cell><ref target="https://scancan.net/search.htm">Search</ref></cell>
+            <cell><ref target="https://hcmc.uvic.ca/svn/scancan/config_staticSearch.xml">SVN</ref></cell>
           </row>-->
+          
         </table>
       </div>
       
