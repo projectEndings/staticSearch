@@ -81,7 +81,7 @@
     
     
     <!--Saxon-->
-    <property name="saxon" value="${lib.dir}/saxon-he-11.4.jar"/>
+    <property name="saxon" value="${lib.dir}/saxon-he-12.5.jar"/>
     
     <!--Condition set for the TEI server, since the TEI site can go down periodically:
   If we can reach the TEI guidelines-->
@@ -111,8 +111,9 @@
      ****************************************************************-->
     
     <target name="patchOddSrc">
-        <description>Patches the staticSearch ODD to use RNG interleave
-        to work around bugs in TEI's regular processing.</description>
+        <description>Preprocesses the staticSearch ODD to expand any constructs
+           or modify features that are not handled by the TEI stylesheets
+           (e.g. interleave).</description>
         <echo message="${echo.separator}"/>
         <echo message="Patching the staticSearch ODD ..."/>
         <echo message="${echo.separator}"/>
@@ -238,6 +239,14 @@
             
             This target is the main driver for the process: it performs all of the regular schema creation
             and documentation creation tasks.</description>
+    </target>
+    
+    <target name="justDocs" depends="patchOddSrc, odd2processedOdd, odd2Doc">
+        <description>
+            TARGET: justDocs
+            
+            This target just creates the documentation; useful for quick proofing and rapid development.
+        </description>
     </target>
     
     

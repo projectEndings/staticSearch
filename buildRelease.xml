@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." name="BuildRelease" default="all" xmlns:if="ant:if"
+  xmlns:unless="ant:unless">
+
+  <!-- 
+        **********************************************************
+        *  Ant file for building release package for the         *
+        *  staticSearch engine. A release package would include  *
+        *  all and only the files needed to use staticSearch in  *
+        *  a project, excluding 
+        *                                                        *
+        *  Note that you can also specify a relative path using  *
+        *  -DssConfig=../rel/cfg.xml *                             *
+        *                                                        *
+        **********************************************************
+    -->
+
+  <!--****************************************************************
+     *                                                              *
+     *                       Task Definitions                       *
+     *                                                              *
+     ****************************************************************-->
+  
+  <!--  We need ant contrib. -->
+  <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+    <classpath>
+      <pathelement location="${basedir}/lib/ant-contrib.jar"/>
+    </classpath>
+  </taskdef>
+  
+  <!--****************************************************************
+     *                                                              *
+     *                           Properties                         *
+     *                                                              *
+     ****************************************************************-->
+
+  <!-- We want our own base directory in case basedir is overridden
+       by an invoking ant process. -->
+  <dirname property="ssBaseDir" file="${ant.file}"/>
+
+  <!--Output folder for the package we create. -->
+  <property name="distOutputFolder" value="${ssBaseDir}/dist"/>
+  
+  <!--The NAME of the temporary folder, which we treat as a constant-->
+  <property name="tempFolder" value="ssTemp"/>
+  
+  <!--The temporary directory for distro files before zipping etc.-->
+  <property name="staticSearchTempDir" value="${ssBaseDir}/${tempFolder}"/>
+  
+  <!-- The fileset we need. -->
+  <fileset id="requiredFiles" dir="${ssBaseDir}" 
+    excludes="xsl/functions.xspec xsl/patch_tei_odd.xsl xsl/spiff_up_documentation.xsl xsl/split_documentation.xsl js/searchTest.* js/out js/out/**/*">
+    <include name="css/**/*"/>
+    <include name="docs/staticSearch.html"/>
+    <include name="docs/documentation.css"/>
+    <include name="images/**/*"/>
+    <include name="js/**/*"/>
+    <include name="lib/**/*"/>
+    <include name="schema/staticSearch.odd"/>
+    <include name="schema/staticSearch.rng"/>
+    <include name="schema/staticSearch.sch"/>
+    <!-- NOTE: If we move the stemmers around, this will need to change. -->
+    <include name="stemmers/**/*"/>
+    <include name="xsl/**/*"/>
+    <include name="build.xml"/>
+    <include name="EDITION"/>
+    <include name="license_BSD.txt"/>
+    <include name="gitInfo.txt"/>
+  </fileset>
+  
+  <loadfile property="edition" srcFile="${ssBaseDir}/EDITION"/>
+  
+  <target name="readEdition">
+    <description>
+      TARGET readEdition
+      This reads the EDITION file in the root directory
+      and if it's an alpha or beta, it checks with the 
+      user to make sure they do want to create a release.
+    </description>
+    <loadfile property="alphabeta" srcFile="${ssBaseDir}/EDITION">
+      <filterchain>
+        <replaceregex pattern="\s*[\d\.]+([^\d\.]+)\s*$" replace="\1">
+        </replaceregex>
+      </filterchain>
+    </loadfile>
+    <if>
+      <not>
+        <equals arg1="${alphabeta}" arg2=""/>
+      </not>
+      <then>
+        <input message="Warning: the edition is apparently a prerelease (${edition}). Are you sure you want to continue?"
+          validargs="y,n"
+          addproperty="continue"/>
+        <condition property="abort">
+          <equals arg1="n" arg2="${continue}"/>
+        </condition>
+        <fail if="${abort}">Build aborted.</fail>
+      </then>
+    </if>
+    <echo message="Edition is ${edition}"/>
+  </target>
+  
+  <target name="getGitInfo">
+    <description>
+      TARGET getGitInfo
+      This generates a small text file containing the 
+      git branch and revision information, so it's 
+      easy to determine what the release package was
+      built from.
+    </description>
+    <delete file="${ssBaseDir}/gitInfo.txt"/>
+    <echo output="${ssBaseDir}/gitInfo.txt" message="Branch: " append="false"/>
+    <exec executable="git" output="${ssBaseDir}/gitInfo.txt" append="true">
+      <arg value="rev-parse"/>
+      <arg value="--abbrev-ref"/>
+      <arg value="HEAD"/>
+    </exec>
+    <echo output="${ssBaseDir}/gitInfo.txt" message="Commit: " append="true"/>
+    <exec executable="git" output="${ssBaseDir}/gitInfo.txt" append="true">
+      <arg value="rev-parse"/>
+      <arg value="HEAD"/>
+    </exec>
+  </target>
+  
+  <target name="buildDist">
+    <description>
+      TARGET buildDist
+      This copies all the required files into the temporary 
+      folder ready for zipping.
+    </description>
+    <echo message="Creating distribution..."/>
+    <echo message="Cleaning out existing folder..."/>
+    <delete dir="${staticSearchTempDir}"/>
+    <mkdir dir="${staticSearchTempDir}/staticSearch"/>
+    <echo message="Copying files..."/>
+    <copy todir="${staticSearchTempDir}/staticSearch">
+      <fileset refid="requiredFiles"/>
+    </copy>
+  </target>
+  
+  <target name="zipDist">
+    <description>
+      TARGET zipDist
+      Creates two output archives from the distribution 
+      content, one zip and one tar.gz.
+    </description>
+    <echo message="Creating compressed archives..."/>
+    <delete dir="${distOutputFolder}"/>
+    <mkdir dir="${distOutputFolder}"/>
+    <zip destfile="${distOutputFolder}/staticSearch_${edition}.zip" 
+      basedir="${staticSearchTempDir}" 
+      includes="staticSearch/**/*"/>
+    <tar destfile="${distOutputFolder}/staticSearch_${edition}.tar.gz" 
+      basedir="${staticSearchTempDir}" 
+      includes="staticSearch/**/*"
+      compression="gzip"
+      longfile="posix"
+    />
+  </target>
+  
+  <target name="all">
+    <description>
+      TARGET all
+      Runs a complete build.
+    </description>
+    <antcall target="readEdition"/>
+    <antcall target="getGitInfo"/>
+    <antcall target="buildDist"/>
+    <antcall target="zipDist"/>
+  </target>
+  
+
+</project>

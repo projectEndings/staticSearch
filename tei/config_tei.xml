@@ -18,7 +18,7 @@
         <totalKwicLength>15</totalKwicLength>
         <kwicTruncateString>...</kwicTruncateString>
         <stopwordsFile>tei_stopwords.txt</stopwordsFile>
-        <dictionaryFile>../xsl/english_words.txt</dictionaryFile>
+        <dictionaryFile>../dicts/words_en.txt</dictionaryFile>
         <outputFolder>staticSearch</outputFolder>
     </params>
     

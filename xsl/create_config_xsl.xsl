@@ -33,29 +33,31 @@
     </xd:doc>
     
     <xsl:include href="constants.xsl"/>
+    <xsl:include href="process_schema_for_config.xsl"/>
     
     <!--**************************************************************
-       *                                                            * 
-       *                         PARAMETERS                         *
-       *                                                            *
-       **************************************************************-->
+        *                                                            * 
+        *                         PARAMETERS                         *
+        *                                                            *
+        **************************************************************-->
     
-    <xsl:param name="configFile" select="'config.xml'"/>
-    <xsl:param name="buildReportFilename" select="'staticSearch_report.html'"/>
+    <xsl:param name="configFile" select="'config.xml'" as="xs:string"/>
+    <xsl:param name="buildReportFilename" select="'staticSearch_report.html'" as="xs:string"/>
     <xsl:param name="ssVerbose" as="xs:string" select="'false'" static="yes"/>
     <xsl:param name="ssBaseDir" as="xs:string" required="yes"/>
     
     <xd:doc>
         <xd:desc>Parameter to determine if verbose xsl:messages should be enabled.</xd:desc>
     </xd:doc>
-    <xsl:variable name="verbose" as="xs:boolean" select="matches($ssVerbose,'^(t|true|y|yes|1)','i')" static="yes"/>
+    <xsl:variable name="verbose" as="xs:boolean" 
+        select="matches($ssVerbose,'^(t|true|y|yes|1)','i')" static="yes"/>
     
     
     <!--**************************************************************
-       *                                                            * 
-       *                         NAMESPACE ALIAS                    *
-       *                                                            *
-       **************************************************************-->
+        *                                                            * 
+        *                         NAMESPACE ALIAS                    *
+        *                                                            *
+        **************************************************************-->
     
     <xd:doc>
         <xd:desc>
@@ -66,18 +68,18 @@
     
     
     <!--**************************************************************
-       *                                                            * 
-       *                         VARIABLES                          *
-       *                                                            *
-       **************************************************************-->
-    
+        *                                                            * 
+        *                         VARIABLES                          *
+        *                                                            *
+        **************************************************************-->
+
     <xd:doc>
         <xd:desc><xd:ref name="configDoc" type="variable">$configDoc</xd:ref> is the configuration
-        document (i.e. the URI provided by the param loaded using the document function). We are extra
-        careful here to test whether or not the configuration document actually exists; if it doesn't
-        then the process exits.</xd:desc>
+            document (i.e. the URI provided by the param loaded using the document function). We are extra
+            careful here to test whether or not the configuration document actually exists; if it doesn't
+            then the process exits.</xd:desc>
     </xd:doc>
-    <xsl:variable name="configDoc">
+    <xsl:variable name="configDoc" as="document-node()">
         <xsl:choose>
             <xsl:when test="doc-available($configFile)">
                 <xsl:copy-of select="document($configFile)"/>
@@ -89,65 +91,27 @@
     </xsl:variable>
     
     
-
-    
     <xd:doc>
-        <xd:desc><xd:ref name="ssDefaultStemmerFolder" 
-            type="variable">$ssDefaultStemmerFolder</xd:ref>
-            is the location to use when no specific stemmer has been supplied. 
-            It's the location of the English Porter 2 stemmer.
-        </xd:desc>
+        <xd:desc>Declared configuration options</xd:desc>
     </xd:doc>
-    <xsl:variable name="ssDefaultStemmerFolder" as="xs:string" 
-        select="'en'"/>
-    
-    
-    <xd:doc>
-        <xd:desc><xd:ref name="schemaURI" type="variable">$schemaURI</xd:ref> is the URI for the static search 
-            configuration schema written in the TEI ODD language. We get the URI here during the configuration creation
-            process as it can provide useful information as to what the expected values are for various
-            configuration options. If, for whatever reason, the schema is not available locally (it is packed
-            with the static search distribution), then we check to see if this has been downloaded as a package
-            from a formal release; if it hasn't, then we get the latest release. If, for whatever reason, the 
-            latest release isn't available, then we just get the latest one from the /dev/ branch.
-            </xd:desc>
-    </xd:doc>
-    
-    <xsl:variable name="schemaURI" as="xs:string">
-        <xsl:choose>
-            <xsl:when test="doc-available($ssBaseDir || '/schema/staticSearch.odd')">
-                <xsl:value-of select="$ssBaseDir || '/schema/staticSearch.odd'"/>
-            </xsl:when>
-            <xsl:when test="unparsed-text-available($ssBaseDir || '/VERSION.txt')">
-                <xsl:variable name="versionNum" 
-                    select="unparsed-text-lines($ssBaseDir || '/VERSION.txt')[1] =>
-                    normalize-space()"/>
-                <xsl:value-of select="'https://raw.githubusercontent.com/projectEndings/staticSearch/v' || $versionNum || '/schema/staticSearch.odd'"/>
-            </xsl:when>
-            <xsl:when test="doc-available('https://raw.githubusercontent.com/projectEndings/staticSearch/' || hcmc:getLatestReleaseNum() || '/schema/staticSearch.odd')">
-                <xsl:value-of select="'https://raw.githubusercontent.com/projectEndings/staticSearch/' || hcmc:getLatestReleaseNum() || '/schema/staticSearch.odd'"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="'https://raw.githubusercontent.com/projectEndings/staticSearch/dev/schema/staticSearch.odd'"/>
-            </xsl:otherwise>
-        </xsl:choose>
+    <xsl:variable name="configParams" as="map(xs:string, item()?)">
+        <xsl:map>
+            <xsl:for-each select="$configDoc//*:params/*/@*">
+                <xsl:variable name="ident" select="local-name(parent::*) || '.' || local-name()"/>
+                <xsl:variable name="value" select="string(.)" as="xs:string"/>
+                <xsl:map-entry key="$ident" select="hcmc:castParam($ident, $value)"/>
+            </xsl:for-each>
+        </xsl:map>
     </xsl:variable>
     
-    <xd:doc>
-        <xd:desc><xd:ref name="schema" type="variable">$schema</xd:ref> is the loaded
-        TEI ODD file that contains the schema available at the URI determined by
-        <xd:ref name="schemaURI" type="variable">$schemaURI</xd:ref>.</xd:desc>
-    </xd:doc>
-    <xsl:variable name="schema" as="document-node()">
-        <xsl:message use-when="$verbose">Getting schema from <xsl:value-of select="$schemaURI"/></xsl:message>
-        <xsl:sequence select="document($schemaURI)"/>
-    </xsl:variable>
-        
-        
     
-  
-
-
+    <xd:doc>
+        <xd:desc>Final parameters</xd:desc>
+    </xd:doc>
+    <xsl:variable name="mergedParams" 
+        as="map(xs:string, item()?)" 
+        select="map:merge(($defaultParams, $configParams), map{'duplicates': 'use-last'})"/>
+    
     <xd:doc>
         <xd:desc><xd:ref name="configUri" type="variable">$configUri</xd:ref> is the resolved URI
         of the configuration file; this works as the base directory against which we can resolve
@@ -160,26 +124,33 @@
             of the search document that will be transformed (in <xd:a href="makeSearchPage.xsl">makeSearchPage.xsl</xd:a>)
             and from which we can derive the project directory.</xd:desc>
     </xd:doc>
-    <xsl:variable name="searchDocUri" select="resolve-uri($configDoc//searchFile/text(),$configUri)" as="xs:anyURI"/>
-    
-    <xd:doc>
-        <xd:desc><xd:ref name="versionDocUri" type="variable">$versionDocUri</xd:ref> is the absolute URI
-            of an optional document that contains a version string for the build to use in creating filenames.</xd:desc>
-    </xd:doc>
-    <xsl:variable name="versionDocUri" select="if ($configDoc//versionFile) then resolve-uri($configDoc//versionFile/text(),$configUri) else ''" as="xs:string"/>
+    <xsl:variable name="searchDocUri" select="resolve-uri($mergedParams?searchPage.file, $configUri)" as="xs:anyURI"/>
     
     <xd:doc>
         <xd:desc><xd:ref name="versionString" type="variable">$versionString</xd:ref> is the version information read from the
             versionDoc if there is one; otherwise it is an empty string.</xd:desc>
     </xd:doc>
-    <xsl:variable name="versionString" select="if (($versionDocUri != '') and (unparsed-text-available($versionDocUri))) then replace(normalize-space(unparsed-text($versionDocUri)), '\s+', '_') else ''" as="xs:string"/>
+    <xsl:variable name="versionString" as="xs:string">
+        <xsl:choose>
+            <xsl:when test="$mergedParams?version.file ne ''">
+                <xsl:try>
+                    <xsl:variable name="v" 
+                        select="unparsed-text(resolve-uri($mergedParams?version.file, $configUri)) =>
+                        normalize-space() =>
+                        replace('\s+','_')"/>
+                    <xsl:sequence select="if (starts-with($v,'_')) then $v else ('_' || $v)"/>
+                    <xsl:catch>
+                        <xsl:message>WARNING: No version file specified.</xsl:message>
+                        <xsl:sequence select="'_' || hcmc:generateRandomHash()"/>
+                    </xsl:catch>
+                </xsl:try>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="'_' || hcmc:generateRandomHash()"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable> 
     
-    <xd:doc>
-        <xd:desc><xd:ref name="stemmerFolder" type="variable">$stemmerFolder</xd:ref> is the location of 
-        a folder containing XSLT and JavaScript implementations of stemmers. If empty, we default to 
-        ssDefaultStemmerFolder.</xd:desc>
-    </xd:doc>
-    <xsl:variable name="stemmerFolder" select="if ($configDoc//stemmerFolder) then $configDoc//stemmerFolder/text() else $ssDefaultStemmerFolder" as="xs:string"/>
     
     <xd:doc>
         <xd:desc><xd:ref name="collectionDir" type="variable">$collectionDir</xd:ref> is the path to the
@@ -188,17 +159,12 @@
     </xd:doc>
     <xsl:variable name="collectionDir" select="string-join(tokenize($searchDocUri,'/')[not(position() = last())],'/')" as="xs:string?"/>
     
-    <xd:doc>
-        <xd:desc><xd:ref name="outputFolder" type="variable">$outputFolder</xd:ref> is the optional name of a folder
-            in which to store the output JS and JSON.</xd:desc>
-    </xd:doc>
-    <xsl:variable name="outputFolder" select="if ($configDoc//outputFolder) then $configDoc//outputFolder/text() else 'staticSearch'" as="xs:string"/>
     
     <xd:doc>
         <xd:desc><xd:ref name="outDir" type="variable">$outDir</xd:ref> is path to the output directory for all
         of the static search products, which is simply a directory contained within the collection directory.</xd:desc>
     </xd:doc>
-    <xsl:variable name="outDir" select="$collectionDir || '/' || $outputFolder"/>
+    <xsl:variable name="outDir" select="$collectionDir || '/' || $mergedParams?output.dir"/>
     
     <xd:doc>
         <xd:desc><xd:ref name="tempDir" type="variable">$tempDir</xd:ref> is the directory in which the static search
@@ -213,17 +179,6 @@
       </xd:desc>
     </xd:doc>
     <xsl:param name="ssPatternsetFile" select="$tempDir || '/patternset.txt'"/>
-   
-    <xd:doc>
-        <xd:desc><xd:ref name="recurse" type="variable">$recurse</xd:ref> is a boolean that states whether or not the 
-            static search should recurse into subdirectories of the collection directory.</xd:desc>
-    </xd:doc>
-    <xsl:variable name="recurse" select="hcmc:stringToBoolean($configDoc//recurse/text())" as="xs:boolean"/>
-  
-  <!--Single quote-->
-  <xsl:variable name="sq">'</xsl:variable>
- 
-      
     
     <xd:doc>
         <xd:desc>
@@ -283,6 +238,7 @@
        **************************************************************-->
     
     
+    
     <xd:doc>
         <xd:desc>This is the main, root template that creates config.xsl. This XSL is then imported into the 
             tokenize.xsl, overriding any existing rules that are included in the document.</xd:desc>
@@ -293,26 +249,11 @@
             <xsl:message>Version string for this build: <xsl:value-of select="$versionString"/></xsl:message>
         </xsl:if>
         
-        
-        <xsl:for-each select="$configDoc//params/*" use-when="$verbose">
-            <xsl:message>$<xsl:value-of select="local-name()"/>: <xsl:value-of select="."/></xsl:message>
-        </xsl:for-each>
-        
-        
-        <!-- Create the patternset file which will be used later by the tokenizing process. -->
-        <xsl:result-document href="{$ssPatternsetFile}" method="text">
-          <xsl:choose>
-            <xsl:when test="$recurse">
-              <xsl:sequence select="'**/*.html&#x0a;**/*.xhtml&#x0a;**/*.htm'"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:sequence select="'*.html&#x0a;*.xhtml&#x0a;*.htm'"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:result-document>
+        <xsl:call-template name="createPatternSet"/>
         
         <!--Create the result document, which is also an XSLT document, but placed in the dummy XSO namespace-->
-        <xsl:result-document href="file:///{$ssBaseDir}/xsl/config.xsl" method="xml" encoding="UTF-8" normalization-form="NFC" indent="yes">
+        <xsl:result-document href="file:///{$ssBaseDir}/xsl/config.xsl" 
+            method="xml" encoding="UTF-8" normalization-form="NFC" indent="yes">
             
             <!--Root stylesheet-->
             <xso:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -338,209 +279,23 @@
                         </xd:p>
                     </xd:desc>
                 </xd:doc>
-                
                 <!-- First, we have to include the stemmer. We can't do this dynamically because
                     a dynamic variable can't be used to create a shadow attribute. -->
-                <xso:include href="{$ssBaseDir || '/stemmers/' || $stemmerFolder || '/ssStemmer.xsl'}"/>
+                <xso:include href="{$ssBaseDir || '/' || $mergedParams?stemmer.dir || '/ssStemmer.xsl'}"/>
                 <xso:include href="constants.xsl"/>
-                
-                <!--Now, create all the parameters-->
-                
                 <!--First, create the global variables and parameters-->
                 <xsl:call-template name="createGlobals" exclude-result-prefixes="#all"/>
-                
-                <xsl:call-template name="createStopwordsXML" exclude-result-prefixes="#all"/>
-                
-                <xsl:for-each select="$rules">
-                    <xso:template match="{@match}" priority="{$PRIORITY_THIRD}" mode="decorate">
-                        <xso:param name="data" tunnel="yes" as="map(*)"/>                        
-                        <xso:call-template name="hcmc:updateData">
-                            <xso:with-param name="caller" select="'config#decorate'"/>
-                            <xso:with-param name="key" select="$KEY_WEIGHTS"/>
-                            <xso:with-param name="value" select="{@weight}"/>
-                            <xso:with-param name="append">[<xsl:value-of select="local-name()"/>/@match=<xsl:value-of select="@match"/>]</xso:with-param>
-                        </xso:call-template>
-                    </xso:template>
-                </xsl:for-each>
-                
-                <!--Now create the config XSL's version of the context map,
-            which may be a map (if there are contexts with labels)
-            OR an empty sequence (if there aren't)-->
-                <xso:variable name="ssContextMap" as="map(*)?">
-                    <xsl:choose>
-                        <xsl:when test="exists($contexts[@label])">
-                            <!--Create a usable map in the output config
-                        using the values assembled by $contextMap-->
-                            <xso:map>
-                                <xsl:for-each select="map:keys($contextMap)">
-                                    <xso:map-entry 
-                                        key="{hcmc:quoteString(.)}"
-                                        select="{hcmc:quoteString($contextMap(.))}"/>
-                                </xsl:for-each>
-                            </xso:map>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xso:sequence select="()"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xso:variable>
-                
-                <xsl:for-each select="$contexts">
-                    <xso:template match="{@match}" priority="{$PRIORITY_THIRD}" mode="decorate">
-                        <xso:call-template name="hcmc:updateData">
-                            <xso:with-param name="caller" select="'config#decorate'"/>
-                            <xso:with-param name="key" select="$KEY_CONTEXTS"/>
-                            <xso:with-param name="value" select="{hcmc:stringToBoolean(@context)}()"/>
-                            <xso:with-param name="append">[<xsl:value-of select="local-name()"/>/@match=<xsl:value-of select="@match"/>]</xso:with-param>
-                        </xso:call-template>
-                    </xso:template>
-                    
-                    <xsl:if test="@label">
-                        <xsl:variable name="thisLabel" select="@label"/>
-                        <xsl:variable name="contextId" 
-                            select="$contextMap(normalize-space($thisLabel))"
-                            as="xs:string"/>
-                        <xso:template match="{@match}" priority="{$PRIORITY_THIRD}" mode="decorate">
-                            <xso:call-template name="hcmc:updateData">
-                                <xso:with-param name="caller" select="'config#decorate'"/>
-                                <xso:with-param name="key" select="$KEY_CONTEXT_IDS"/>
-                                <xso:with-param name="value" select="{hcmc:quoteString($contextId)}"/>
-                                <xso:with-param name="append">[<xsl:value-of select="local-name()"/>/@match=<xsl:value-of select="@match"/>]</xso:with-param>
-                            </xso:call-template>
-                        </xso:template>
-                    </xsl:if>
-                </xsl:for-each>
-                
-                <xsl:for-each select="$excludeRules">
-                    <xso:template match="{@match}"  priority="{$PRIORITY_THIRD}" mode="decorate">
-                        <xso:call-template name="hcmc:updateData">
-                            <xso:with-param name="caller" select="'config#decorate'"/>
-                            <xso:with-param name="key" select="$KEY_EXCLUDES"/>
-                            <xso:with-param name="value" select="{hcmc:stringToBoolean('')}()"/>
-                            <xso:with-param name="append">[<xsl:value-of select="local-name()"/>/@match=<xsl:value-of select="@match"/>]</xso:with-param>
-                        </xso:call-template>
-                    </xso:template>
-                </xsl:for-each>
-                
                 <!-- Always create the filterLabels variable even if there aren't any. It 
                      makes downstream processing easier. -->
                 <xsl:call-template name="createFilterLabels"/>
-                <xsl:message use-when="$verbose">
-                    <xsl:message>Create filter labels</xsl:message>
-                    <xsl:message><xsl:call-template name="createFilterLabels" exclude-result-prefixes="#all"/></xsl:message>
-                </xsl:message>
-                
-                <!--Now, finally, the last rule -->
-                <xso:template match="*" name="hcmc:last"  priority="{$PRIORITY_LAST}" mode="decorate">
-                    <xso:param name="data" tunnel="yes" as="map(*)"/>
-                    <xso:variable name="weights" select="$data($KEY_WEIGHTS)" as="xs:integer*"/>
-                    <xso:variable name="ctxIds" select="$data($KEY_CONTEXT_IDS)" as="xs:string*"/>
-                    <xso:variable name="contexts" select="$data($KEY_CONTEXTS)" as="xs:boolean*"/>
-                    <xso:variable name="excludes" select="$data($KEY_EXCLUDES)" as="xs:boolean*"/>
-                    <xso:choose>
-                        <!--This is the root, so we must process it-->
-                        <xso:when test="not(ancestor::*)">
-                            <xso:if test="not(empty($weights)) and $weights[last()] = 0">
-                                <xso:message terminate="yes">
-                                    *********************************************
-                                    ERROR: You have specified a weight of 0 for 
-                                    the root <xso:value-of select="local-name()"/> element, 
-                                    which would create an empty output file and generate an error during 
-                                    tokenization.
-                                    
-                                    Did you mean to use an exclude instead?
-                                    *********************************************
-                                </xso:message>
-                            </xso:if>
-                            <xso:call-template name="hcmc:copy"/>
-                        </xso:when>
-                        <!--If there is weighting info, then either...-->
-                        <xso:when test="not(empty($weights))">
-                            <xso:choose>
-                                <!--It should be removed (since it's a weight=0)-->
-                                <xso:when test="$weights[last()] = 0">
-                                    <xso:if test="$verbose">
-                                        <xso:message>config#decorate: Removing <xso:value-of select="local-name()"/> (weight=0)</xso:message>
-                                    </xso:if>
-                                </xso:when>
-                                <!--Or it must be retained-->
-                                <xso:otherwise>
-                                    <xso:call-template name="hcmc:copy"/>
-                                </xso:otherwise>
-                            </xso:choose>
-                        </xso:when>
-                        <xso:when test="empty($contexts) or ($contexts[last()] = false())">
-                            <xso:apply-templates select="node()" mode="#current"/>
-                        </xso:when>
-                        <xso:otherwise>
-                            <xso:call-template name="hcmc:copy"/>
-                        </xso:otherwise>
-                    </xso:choose>
-                </xso:template>
-                
-                <!--Special template used to update data and 
-                    provide debugging output, if necessary-->
-                <xso:template name="hcmc:updateData">
-                    <xso:param name="data" tunnel="yes" as="map(*)"/>
-                    <xso:param name="caller" as="xs:string?"/>
-                    <xso:param name="append" as="xs:string?"/>
-                    <xso:param name="key" as="xs:string"/>
-                    <xso:param name="value" as="item()"/>
-                    <xso:variable name="currValues" select="$data($key)" as="item()*"/>
-                    <xso:variable name="newValues" select="($currValues, $value)" as="item()+"/>
-                    <xso:if test="$verbose">
-                        <xso:message>
-                            <xso:value-of separator=": ">
-                                <xso:text>hcmc:updateData</xso:text>
-                                <xso:sequence select="$caller"/>
-                                <xso:sequence select="'Updating ' || local-name()"/>
-                                <xso:sequence select="$key || '=' || string-join($newValues,';')"/>
-                            </xso:value-of>
-                            <xso:if test="not(empty($append))">
-                                <xso:value-of select="' ' || $append"/>
-                            </xso:if>
-                        </xso:message>
-                    </xso:if>
-                    <xso:next-match>
-                        <xso:with-param name="data"
-                            tunnel="yes" as="map(*)"
-                            select="map:put($data, $key ,$newValues)"/>
-                    </xso:next-match>
-                </xso:template>
-                
-                <xso:template name="hcmc:copy">
-                    <xso:copy>
-                        <xso:call-template name="hcmc:copy-atts"/>
-                        <xso:apply-templates select="node()" mode="decorate"/>
-                    </xso:copy>
-                </xso:template>
-                
-                <xso:template name="hcmc:copy-atts">
-                    <xso:param name="data" as="map(*)" tunnel="yes"/>
-                    <xsl:message>Add the ss-uri attribute for the uris</xsl:message>
-                    <xso:if test="not(ancestor::*)">
-                        <xso:attribute name="ss-uri" select="$relativeUri"/>
-                    </xso:if>
-                    <xso:apply-templates select="@*" mode="decorate"/>
-                    <xso:where-populated>
-                        <xso:attribute name="ss-wt" select="$data($KEY_WEIGHTS)[last()]"/>
-                    </xso:where-populated>
-                    <xso:where-populated>
-                        <xso:attribute name="ss-ctx-id" select="string-join($data($KEY_CONTEXT_IDS), ' ')"/>
-                    </xso:where-populated>
-                    <xso:where-populated>
-                        <xso:attribute name="ss-ctx" select="xs:string($data($KEY_CONTEXTS)[last()])"/>
-                    </xso:where-populated>
-                    <xso:where-populated>
-                        <xso:attribute name="ss-excld" select="xs:string($data($KEY_EXCLUDES)[last()])"/>
-                    </xso:where-populated>
-                </xso:template>
-                
+                <!--Create the stopwords XML for use by a key-->
+                <xsl:call-template name="createStopwordsXML" exclude-result-prefixes="#all"/>
+                <!--And the complex rules as configured-->
+                <xsl:call-template name="processRules" exclude-result-prefixes="#all"/>
             </xso:stylesheet>
-            
         </xsl:result-document>
     </xsl:template>
-    
+
     
     <!--**************************************************************
        *                                                            * 
@@ -552,124 +307,90 @@
             document for the transformations</xd:desc>
     </xd:doc>
     <xsl:template name="createGlobals" exclude-result-prefixes="#all">
+        <xsl:variable name="recurseYN" 
+            select="if ($mergedParams?index.recurse) then 'yes' else 'no'"
+            as="xs:string"/>
         
-        <xsl:variable name="params" as="element()+">
-            
-            <!--First, create the actual configuration file thing-->
-            <xso:param name="configFile"><xsl:value-of select="$configUri"/></xso:param>
-            <!-- Pass through the build report filename param. -->
-            <xso:param name="buildReportFilename" select="'{$buildReportFilename}'"/>    
-            
-            <!--Set the ssVerbose parameter -->
-            <xso:param name="ssVerbose" select="'false'" as="xs:string" static="yes"/>
-            
-            <!--And the corresponding verbose variable-->
-            <xso:variable name="verbose" select="{matches($ssVerbose,'^(y|yes|t|true|1)$','i')}()" as="xs:boolean" static="yes"/>
-            
-            <xsl:for-each select="$configDoc//params/*" >
-                <xsl:variable name="thisParam" select="."/>
-                <xsl:variable name="paramName" select="local-name()"/>
-                <xsl:variable name="thisElementSpec" select="$schema//tei:elementSpec[@ident=$paramName]" as="element(tei:elementSpec)?"/>
-                
-                <xso:param>
-                    <xsl:attribute name="name" select="$paramName"/>
-                    
+        <!--First, create the actual configuration file thing-->
+        <xso:param name="configFile"><xsl:value-of select="$configUri"/></xso:param>
+        <!-- Pass through the build report filename param. -->
+        <xso:param name="buildReportFilename" select="'{$buildReportFilename}'"/>    
+        <!--Set the ssVerbose parameter -->
+        <xso:param name="ssVerbose" select="'false'" as="xs:string" static="yes"/>
+        <!--And the corresponding verbose variable-->
+        <xso:variable name="verbose" select="{matches($ssVerbose,'^(y|yes|t|true|1)$','i')}()" as="xs:boolean" static="yes"/>
+        <!--Now iterate through the merged parameters-->
+        <xsl:for-each select="map:keys($mergedParams)">
+            <xsl:variable name="key" select="." as="xs:string"/>
+            <xsl:variable name="value" select="$mergedParams($key)" as="item()?"/>
+            <xsl:if test="$verbose">
+                <xsl:message>config: <xsl:value-of select="$key"/> = <xsl:value-of select="$value"/> (default: <xsl:value-of select="$defaultParams($key)"/>; type: <xsl:value-of select="$paramTypes($key)"/>)</xsl:message>
+            </xsl:if>
+            <xso:param name="{$key}">
+                <xsl:attribute name="select">
                     <xsl:choose>
-                        <!--TODO: Make this smarter! Look at the ODD file
-                            and see if the parameter is a boolean or not. If it is, do this, otherwise, just assume its a string
-                            (or an integer or whatever else)-->
-                        <xsl:when test="$thisElementSpec and $thisElementSpec[descendant::tei:dataRef[@name='boolean']]">
-                            <xsl:attribute name="select" select="concat(hcmc:stringToBoolean(xs:string(.)),'()')"/>
+                        <xsl:when test="empty($value)">
+                            <xsl:sequence select="'()'"/>
                         </xsl:when>
-                        <xsl:when test="$thisElementSpec and $thisElementSpec[descendant::tei:dataRef[@name='anyURI']]">
-                            <xsl:value-of select="resolve-uri(.,$configUri)"/>
+                        <xsl:when test="$value instance of xs:integer">
+                            <xsl:sequence select="$value"/>
+                        </xsl:when>
+                        <xsl:when test="$value instance of xs:boolean">
+                            <xsl:sequence select="string($value) || '()'"/>
+                        </xsl:when>
+                        <xsl:when test="$value = ''">
+                            <xsl:sequence select="hcmc:quoteString('')"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:value-of select="."/>
+                            <xsl:sequence select="hcmc:quoteString($value)"/>
                         </xsl:otherwise>
                     </xsl:choose>
-                </xso:param>
-            </xsl:for-each>
-            
-            <!-- We record the current default stemmer folder. -->
-            <xso:param name="defaultStemmerFolder"><xsl:value-of select="$ssDefaultStemmerFolder"/></xso:param>
-            
-            <!-- We need an outputFolder element even if the user hasn't put one in. -->
-            <xsl:if test="not($configDoc//params/outputFolder)">
-                <xso:param name="outputFolder">staticSearch</xso:param>
-            </xsl:if>
-            
-            <!--Specify whether or not wildcard search should be performed; we default false-->
-            <xsl:if test="not($configDoc//params/wildcardSearch)">
-                <xso:param name="wildcardSearch" select="false()"/>
-            </xsl:if>
-            
-            <!--Set the scoring algorithm, if it's not set-->
-            <xsl:if test="not($configDoc//params/scoringAlgorithm)">
-                <xso:param name="scoringAlgorithm" select="'raw'"/>
-            </xsl:if>
-            
-            <!--Specify the minimum length of items to index; we default to 3. -->
-            <xsl:if test="not($configDoc//params/minWordLength)">
-                <xso:param name="minWordLength" select="3"/>
-            </xsl:if>
-
-            
-            <!--Add resultsPerPage: default to 0-->
-            <xsl:if test="not($configDoc//params/resultsPerPage)">
-                <xso:param name="resultsPerPage" select="0"/>
-            </xsl:if>
-            
-            <!--And resultsLimit: default to 2000-->
-            <xsl:if test="not($configDoc//params/resultsLimit)">
-                <xso:param name="resultsLimit" select="2000"/>
-            </xsl:if>
-            
-            <!-- Finally, add the parsed-out version string from the versionFile. -->
-            <xso:param name="versionString"><xsl:value-of select="if (($versionDocUri != '') and (unparsed-text-available($versionDocUri))) then concat('_', replace(normalize-space(unparsed-text($versionDocUri)), '\s+', '_')) else ''"/></xso:param>
-            
-        </xsl:variable>
-        
-        <xsl:sequence select="$params" exclude-result-prefixes="#all"/>
-        
-
+                </xsl:attribute>
+            </xso:param>
+        </xsl:for-each>
+        <!-- Finally, add the parsed-out version string from the versionFile. -->
+        <xso:param name="versionString"><xsl:value-of select="$versionString"/></xso:param>
         
         <!--Configure the collection use x?html? ( so htm, html, xhtml, xhtm would all work
         as files)-->
-        
+        <xso:variable name="searchDocUri"><xsl:value-of select="$searchDocUri"/></xso:variable>
         <!--We've determines these above, so we can just shove in the absolute URIs-->
         <xso:variable name="collectionDir"><xsl:value-of select="$collectionDir"/></xso:variable>
         <xso:variable name="outDir"><xsl:value-of select="$outDir"/></xso:variable>
         <xso:variable name="tempDir"><xsl:value-of select="$tempDir"/></xso:variable>
         <xso:variable name="ssBaseDir"><xsl:value-of select="$ssBaseDir"/></xso:variable>
-        
-        
-        <xso:variable name="kwicLengthHalf"
-            select="{xs:integer(round(xs:integer($configDoc//totalKwicLength) div 2))}"/>
+        <!--Now generated / handy variables we use throughout other processes-->
+        <xso:variable name="kwicLengthHalf" as="xs:integer"
+            select="{round(xs:integer($mergedParams?createContexts.maxKwicLength) div 2)}">
+        </xso:variable>
+        <!--The full name of the collection, stored here as a literal path-->
+        <xso:variable name="collectionURI"><xsl:sequence 
+                select="$collectionDir || '?select=*.*htm*;recurse=' || $recurseYN"/></xso:variable>
+        <!--The documents to use, based on the collectionURI-->
         <xso:variable name="docs" 
-            select="collection(concat($collectionDir, {$sq || '?select=*.*htm*;recurse=' || (if ($recurse) then 'yes' else 'no') || $sq}))[not(starts-with(document-uri(.),$tempDir))][not(ends-with(document-uri(.), $buildReportFilename))]"/>
-        
+            select="collection($collectionURI)[not(starts-with(base-uri(.),$tempDir))]
+                                              [not(ends-with(base-uri(.), $buildReportFilename))]"/>
+        <!--And the document URIs-->
         <xso:variable name="docUris" 
-            select="uri-collection(concat($collectionDir, {$sq || '?select=*.*htm*;recurse=' || (if ($recurse) then 'yes' else 'no') || $sq}))[not(starts-with(.,$tempDir))][not(ends-with(., $buildReportFilename))]"/>
-        
+            select="uri-collection($collectionURI)[not(starts-with(.,$tempDir))]
+                                                  [not(ends-with(., $buildReportFilename))]"/>
+        <!--The tokenized collection URI, which will similarily require potential recursion-->
+        <xso:variable name="tokenizedCollectionURI"><xsl:sequence
+                select="$tempDir || '?select=*_tokenized.*htm*;recurse=' || $recurseYN"/></xso:variable>
+        <!--The tokenized documents, which do not need any exclusions-->
         <xso:variable name="tokenizedDocs" 
-            select="collection(concat($tempDir, {$sq || '?select=*_tokenized.*htm*;recurse=' || (if ($recurse) then 'yes' else 'no') || $sq}))"/>
-        
+            select="collection($tokenizedCollectionURI)"/>
+        <!--The URIs for the tokenized documents-->
         <xso:variable name="tokenizedUris" 
-            select="uri-collection(concat($tempDir, {$sq || '?select=*_tokenized.*htm*;recurse=' || (if ($recurse) then 'yes' else 'no') || $sq}))"/>
-        
+            select="uri-collection($tokenizedCollectionURI)"/>
+        <!--Whether this has exclusions-->
         <xso:variable name="hasExclusions" 
             select="{if ($configDoc//exclude) then 'true' else 'false'}()"/>
-        
+        <!--Whether this has filter labels-->
         <xso:variable name="hasFilterLabels" 
             select="{if ($configDoc//filter) then 'true' else 'false'}()"/>
-        
-        
-        <xd:doc>
-            <xd:desc>The document's URI as a string.</xd:desc>
-        </xd:doc>
-        <xso:variable name="uri" select="xs:string(document-uri(.))" as="xs:string"/>
-        
+        <!--The document's URI as a string-->
+        <xso:variable name="uri" select="xs:string(base-uri(.))" as="xs:string"/>
         <xd:doc>
             <xd:desc>The relative uri from the root:
                 this is the full URI minus the collection dir. 
@@ -681,12 +402,13 @@
         
         <xso:template name="echoParams">
             <xso:if test="$verbose">
-                <xsl:for-each select="$params">
-                    <xso:message>$<xsl:value-of select="@name"/>: <xso:value-of select="{concat('$',@name)}"/></xso:message>
-                </xsl:for-each>
-                <xso:message>$collectionDir: <xso:value-of select="$collectionDir"/></xso:message>
-                <xso:message>$outDir: <xso:value-of select="$outDir"/></xso:message>
-                <xso:message>$tempDir: <xso:value-of select="$tempDir"/></xso:message>
+                <xso:variable name="thisUri" select="static-base-uri()" as="xs:anyURI"/>
+                <xso:variable name="thisBasename" select="tokenize($thisUri,'/')[last()]" as="xs:string"/>
+                <xso:message>====== VARIABLES DECLARED IN <xso:value-of select="static-base-uri()"/> =======</xso:message>
+                <xso:for-each select="document(static-base-uri())//*:stylesheet/(*:param | *:variable)">
+                    <xso:message><xso:value-of select="$thisBasename"/>: $<xso:value-of select="@name"/>: <xso:value-of select="@select"/> [<xso:value-of select="local-name()"/>]</xso:message>
+                </xso:for-each>
+                <xso:message>====== END PARAMETERS =======</xso:message>
             </xso:if>
         </xso:template>
     </xsl:template>
@@ -696,46 +418,21 @@
         and an associated key</xd:desc>
     </xd:doc>
     <xsl:template name="createStopwordsXML">
-        <xsl:for-each select="($configDoc//stopwordsFile)">
-            <xsl:variable name="path" select="resolve-uri(text(),$configUri)"/>
-            <xsl:variable name="uri" select="concat($outDir,'/dicts/',substring-before(tokenize($path,'/')[last()],'.txt'),'.xml')"/>
-            <xsl:result-document href="{$uri}" method="xml">
-                <hcmc:words>
-                    <xsl:for-each select="tokenize(unparsed-text($path),'\s+')">
-                        <hcmc:word><xsl:value-of select="lower-case(normalize-space(.))"/></hcmc:word>
-                    </xsl:for-each>
-                </hcmc:words>
-            </xsl:result-document>
-            <xsl:variable name="docFn">doc('<xsl:value-of select="$uri"/>')</xsl:variable>
-            <xso:variable name="{concat(local-name(),'Xml')}" select="{$docFn}"/>
-        </xsl:for-each>
+        <xsl:variable name="path" select="resolve-uri($mergedParams?stopwords.file,$configUri)"/>
+        <xsl:variable name="uri" select="concat($outDir,'/dicts/',substring-before(tokenize($path,'/')[last()],'.txt'),'.xml')"/>
+        <xsl:result-document href="{$uri}" method="xml">
+            <hcmc:words>
+                <xsl:for-each select="tokenize(unparsed-text($path),'\s+')">
+                    <hcmc:word><xsl:value-of select="lower-case(normalize-space(.))"/></hcmc:word>
+                </xsl:for-each>
+            </hcmc:words>
+        </xsl:result-document>
+        <xsl:variable name="docFn">doc('<xsl:value-of select="$uri"/>')</xsl:variable>
+        <xso:variable name="stopwordsFileXml" select="{$docFn}"/>
         <xso:key name="w" match="hcmc:word" use="."/>
     </xsl:template>
-<!--
-    <xd:doc>
-        <xd:desc>Template to create an XML representation of the dictionary file 
-        and an associated key.</xd:desc>
-    </xd:doc>
-    <xsl:template name="createDictionaryXML" exclude-result-prefixes="xs xd tei">
-        <xsl:for-each select="($configDoc//stopwordsFile, $configDoc//dictionaryFile)">
-            <xsl:variable name="path" select="resolve-uri(text(),$configUri)"/>
-            <xsl:variable name="uri" select="concat($outDir,'/dicts/',substring-before(tokenize($path,'/')[last()],'.txt'),'.xml')"/>
-            <xsl:result-document href="{$uri}" method="xml">
-                <hcmc:words>
-                    <xsl:for-each select="tokenize(unparsed-text($path),'\s+')">
-                        <hcmc:word><xsl:value-of select="lower-case(normalize-space(.))"/></hcmc:word>
-                    </xsl:for-each>
-                </hcmc:words>
-            </xsl:result-document>
-            <xsl:variable name="docFn">doc('<xsl:value-of select="$uri"/>')</xsl:variable>
-            <xso:variable name="{concat(local-name(),'Xml')}" select="{$docFn}"/>
-        </xsl:for-each>
-        
-        <xso:key name="w" match="hcmc:word" use="."/>
-    </xsl:template>-->
-    
-    
-    
+
+
     <xd:doc>
         <xd:desc>The <xd:ref name="createFilterLabels" type="template">createFilterLabels</xd:ref> template creates 
             a copy of the original filter data in a variable; there's no real reason to process 
@@ -745,6 +442,207 @@
         <xso:variable name="filterLabels" as="element(hcmc:filter)*">
             <xsl:sequence select="$filters"/>
         </xso:variable>
+    </xsl:template>
+    
+    
+    <xd:doc>
+        <xd:desc>Create the patternset file which will be used later by the tokenizing process.</xd:desc>
+    </xd:doc>
+    <xsl:template name="createPatternSet">
+        <xsl:result-document href="{$ssPatternsetFile}" method="text">
+            <xsl:choose>
+                <xsl:when test="$mergedParams?index.recurse">
+                    <xsl:sequence select="'**/*.html&#x0a;**/*.xhtml&#x0a;**/*.htm'"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:sequence select="'*.html&#x0a;*.xhtml&#x0a;*.htm'"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:result-document>
+    </xsl:template>
+    
+    <xd:doc>
+        <xd:desc>The processRules template creates all of the template rules for decorating 
+        each token during tokenization. It relies on a set of priorities, which recursively keeps 
+        track of all declared values, and then works out which should be honoured.</xd:desc>
+    </xd:doc>
+    <xsl:template name="processRules">
+        <xsl:for-each select="$rules">
+            <xso:template match="{@match}" priority="{$PRIORITY_THIRD}" mode="decorate">
+                <xso:param name="data" tunnel="yes" as="map(*)"/>                        
+                <xso:call-template name="hcmc:updateData">
+                    <xso:with-param name="caller" select="'config#decorate'"/>
+                    <xso:with-param name="key" select="$KEY_WEIGHTS"/>
+                    <xso:with-param name="value" select="{@weight}"/>
+                    <xso:with-param name="append">[<xsl:value-of select="local-name()"/>/@match=<xsl:value-of select="@match"/>]</xso:with-param>
+                </xso:call-template>
+            </xso:template>
+        </xsl:for-each>
+        
+        <!--Now create the config XSL's version of the context map,
+            which may be a map (if there are contexts with labels)
+            OR an empty sequence (if there aren't)-->
+        <xso:variable name="ssContextMap" as="map(*)?">
+            <xsl:choose>
+                <xsl:when test="exists($contexts[@label])">
+                    <!--Create a usable map in the output config
+                        using the values assembled by $contextMap-->
+                    <xso:map>
+                        <xsl:for-each select="map:keys($contextMap)">
+                            <xso:map-entry 
+                                key="{hcmc:quoteString(.)}"
+                                select="{hcmc:quoteString($contextMap(.))}"/>
+                        </xsl:for-each>
+                    </xso:map>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xso:sequence select="()"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xso:variable>
+        
+        <xsl:for-each select="$contexts">
+            <xso:template match="{@match}" priority="{$PRIORITY_THIRD}" mode="decorate">
+                <xso:call-template name="hcmc:updateData">
+                    <xso:with-param name="caller" select="'config#decorate'"/>
+                    <xso:with-param name="key" select="$KEY_CONTEXTS"/>
+                    <xso:with-param name="value" select="{hcmc:stringToBoolean(@context)}()"/>
+                    <xso:with-param name="append">[<xsl:value-of select="local-name()"/>/@match=<xsl:value-of select="@match"/>]</xso:with-param>
+                </xso:call-template>
+            </xso:template>
+            
+            <xsl:if test="@label">
+                <xsl:variable name="thisLabel" select="@label"/>
+                <xsl:variable name="contextId" 
+                    select="$contextMap(normalize-space($thisLabel))"
+                    as="xs:string"/>
+                <xso:template match="{@match}" priority="{$PRIORITY_THIRD}" mode="decorate">
+                    <xso:call-template name="hcmc:updateData">
+                        <xso:with-param name="caller" select="'config#decorate'"/>
+                        <xso:with-param name="key" select="$KEY_CONTEXT_IDS"/>
+                        <xso:with-param name="value" select="{hcmc:quoteString($contextId)}"/>
+                        <xso:with-param name="append">[<xsl:value-of select="local-name()"/>/@match=<xsl:value-of select="@match"/>]</xso:with-param>
+                    </xso:call-template>
+                </xso:template>
+            </xsl:if>
+        </xsl:for-each>
+        
+        <xsl:for-each select="$excludeRules">
+            <xso:template match="{@match}"  priority="{$PRIORITY_THIRD}" mode="decorate">
+                <xso:call-template name="hcmc:updateData">
+                    <xso:with-param name="caller" select="'config#decorate'"/>
+                    <xso:with-param name="key" select="$KEY_EXCLUDES"/>
+                    <xso:with-param name="value" select="{hcmc:stringToBoolean('')}()"/>
+                    <xso:with-param name="append">[<xsl:value-of select="local-name()"/>/@match=<xsl:value-of select="@match"/>]</xso:with-param>
+                </xso:call-template>
+            </xso:template>
+        </xsl:for-each>
+
+        <!--Now, finally, the last rule -->
+        <xso:template match="*" name="hcmc:last"  priority="{$PRIORITY_LAST}" mode="decorate">
+            <xso:param name="data" tunnel="yes" as="map(*)"/>
+            <xso:variable name="weights" select="$data($KEY_WEIGHTS)" as="xs:integer*"/>
+            <xso:variable name="ctxIds" select="$data($KEY_CONTEXT_IDS)" as="xs:string*"/>
+            <xso:variable name="contexts" select="$data($KEY_CONTEXTS)" as="xs:boolean*"/>
+            <xso:variable name="excludes" select="$data($KEY_EXCLUDES)" as="xs:boolean*"/>
+            <xso:choose>
+                <!--This is the root, so we must process it-->
+                <xso:when test="not(ancestor::*)">
+                    <xso:if test="not(empty($weights)) and $weights[last()] = 0">
+                        <xso:message terminate="yes">
+                            *********************************************
+                            ERROR: You have specified a weight of 0 for 
+                            the root <xso:value-of select="local-name()"/> element, 
+                            which would create an empty output file and generate an error during 
+                            tokenization.
+                            
+                            Did you mean to use an exclude instead?
+                            *********************************************
+                        </xso:message>
+                    </xso:if>
+                    <xso:call-template name="hcmc:copy"/>
+                </xso:when>
+                <!--If there is weighting info, then either...-->
+                <xso:when test="not(empty($weights))">
+                    <xso:choose>
+                        <!--It should be removed (since it's a weight=0)-->
+                        <xso:when test="$weights[last()] = 0">
+                            <xso:if test="$verbose">
+                                <xso:message>config#decorate: Removing <xso:value-of select="local-name()"/> (weight=0)</xso:message>
+                            </xso:if>
+                        </xso:when>
+                        <!--Or it must be retained-->
+                        <xso:otherwise>
+                            <xso:call-template name="hcmc:copy"/>
+                        </xso:otherwise>
+                    </xso:choose>
+                </xso:when>
+                <xso:when test="empty($contexts) or ($contexts[last()] = false())">
+                    <xso:apply-templates select="node()" mode="#current"/>
+                </xso:when>
+                <xso:otherwise>
+                    <xso:call-template name="hcmc:copy"/>
+                </xso:otherwise>
+            </xso:choose>
+        </xso:template>
+        
+        <!--Special template used to update data and 
+                    provide debugging output, if necessary-->
+        <xso:template name="hcmc:updateData">
+            <xso:param name="data" tunnel="yes" as="map(*)"/>
+            <xso:param name="caller" as="xs:string?"/>
+            <xso:param name="append" as="xs:string?"/>
+            <xso:param name="key" as="xs:string"/>
+            <xso:param name="value" as="item()"/>
+            <xso:variable name="currValues" select="$data($key)" as="item()*"/>
+            <xso:variable name="newValues" select="($currValues, $value)" as="item()+"/>
+            <xso:if test="$verbose">
+                <xso:message>
+                    <xso:value-of separator=": ">
+                        <xso:text>hcmc:updateData</xso:text>
+                        <xso:sequence select="$caller"/>
+                        <xso:sequence select="'Updating ' || local-name()"/>
+                        <xso:sequence select="$key || '=' || string-join($newValues,';')"/>
+                    </xso:value-of>
+                    <xso:if test="not(empty($append))">
+                        <xso:value-of select="' ' || $append"/>
+                    </xso:if>
+                </xso:message>
+            </xso:if>
+            <xso:next-match>
+                <xso:with-param name="data"
+                    tunnel="yes" as="map(*)"
+                    select="map:put($data, $key ,$newValues)"/>
+            </xso:next-match>
+        </xso:template>
+        
+        <xso:template name="hcmc:copy">
+            <xso:copy>
+                <xso:call-template name="hcmc:copy-atts"/>
+                <xso:apply-templates select="node()" mode="decorate"/>
+            </xso:copy>
+        </xso:template>
+        
+        <xso:template name="hcmc:copy-atts">
+            <xso:param name="data" as="map(*)" tunnel="yes"/>
+            <xsl:message>Add the ss-uri attribute for the uris</xsl:message>
+            <xso:if test="not(ancestor::*)">
+                <xso:attribute name="ss-uri" select="$relativeUri"/>
+            </xso:if>
+            <xso:apply-templates select="@*" mode="decorate"/>
+            <xso:where-populated>
+                <xso:attribute name="ss-wt" select="$data($KEY_WEIGHTS)[last()]"/>
+            </xso:where-populated>
+            <xso:where-populated>
+                <xso:attribute name="ss-ctx-id" select="string-join($data($KEY_CONTEXT_IDS), ' ')"/>
+            </xso:where-populated>
+            <xso:where-populated>
+                <xso:attribute name="ss-ctx" select="xs:string($data($KEY_CONTEXTS)[last()])"/>
+            </xso:where-populated>
+            <xso:where-populated>
+                <xso:attribute name="ss-excld" select="xs:string($data($KEY_EXCLUDES)[last()])"/>
+            </xso:where-populated>
+        </xso:template>
     </xsl:template>
     
  
@@ -803,13 +701,19 @@
         <xsl:sequence select="concat('''', string($str), '''')"/>
     </xsl:function>
     
-    <xd:doc>
-        <xd:desc>This function gets the latest release number from Github </xd:desc>
-    </xd:doc>
-    <xsl:function name="hcmc:getLatestReleaseNum" as="xs:string">
-        <xsl:variable name="json" select="unparsed-text('https://api.github.com/repos/projectEndings/staticSearch/releases/latest')"/>
-        <xsl:variable name="xml" select="json-to-xml($json)"/>
-        <xsl:value-of select="$xml//*:string[@key='tag_name']/text()"/>
+    <xsl:function name="hcmc:getGitHash" as="xs:string">
+        <xsl:variable name="dotGitDir" select="resolve-uri('.git', $configFile)"/>
+        <xsl:variable name="gitHEAD" select="normalize-space(unparsed-text($dotGitDir || '/HEAD'))" as="xs:string"/>
+        <xsl:variable name="refDir" select="normalize-space(substring-after($gitHEAD,'ref: '))" as="xs:string"/>
+        <xsl:variable name="commitHash" select="unparsed-text(resolve-uri($refDir,$dotGitDir))"/>
+        <xsl:sequence select="substring($commitHash,1, 6)"/>
+    </xsl:function>
+    
+    <xsl:function name="hcmc:generateRandomHash" as="xs:string">
+        <xsl:variable name="generator" select="random-number-generator()" as="map(*)"/>
+        <xsl:variable name="alpha" select="(97 to 122) ! codepoints-to-string(.)" as="xs:string+"/>
+        <xsl:variable name="nums" select="0 to 9" as="xs:integer+"/>
+        <xsl:sequence select="string-join($generator?permute(($alpha, $nums))[position() lt 7],'')"/>
     </xsl:function>
     
 </xsl:stylesheet>

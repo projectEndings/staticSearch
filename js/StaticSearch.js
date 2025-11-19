@@ -256,7 +256,7 @@ class StaticSearch{
       this.debug = false;
 
       //Configuration of a specific version string to avoid JSON caching.
-      this.versionString = this.ssForm.getAttribute('data-versionString');
+      this.versionString = this.ssForm.getAttribute('data-versionstring');
 
       //Associative array for storing retrieved JSON search string data.
       //Any retrieved data stored in here is retained between searches
@@ -355,6 +355,11 @@ class StaticSearch{
       //search has completed.
       this.searchFinishedHook = function(num){};
 
+      //We add another function which can be overridden by end-users if
+      //for example they need the results div to be scrolled while taking
+      //account of a fixed page header or something similar.
+      this.scrollToResults = function(){this.resultsDiv.scrollIntoView({behavior: 'smooth', block: 'start'});};
+
       //We add a method which can be overridden by end users to do any 
       //special handling for input strings (such as removing some diacritics
       //but not others).
@@ -363,6 +368,9 @@ class StaticSearch{
       //Now we're instantiated, check to see if there's a query
       //string that should initiate a search.
       this.parseUrlQueryString();
+
+      //Emit an event to notify that the object is instantiated.
+      window.dispatchEvent(new CustomEvent('ssInstantiated'));
     }
     catch(e){
       console.log('ERROR: ' + e.message);
@@ -442,6 +450,8 @@ class StaticSearch{
     else{
       this.allJsonRetrieved = true;
       document.body.classList.remove('ssLoading');
+      //Emit an event to notify that all Json has been retrieved.
+      window.dispatchEvent(new CustomEvent('ssJsonRetrieved'));
     }
   }
 
@@ -451,15 +461,18 @@ class StaticSearch{
   *              control and assigns functionality events to it.
   * @param {!string} filterId the id of the filter to set up.
   * @param {!string} filterName the string name of the filter.
+  * @param {!number} minNameLength the minimum length for the string
+  *               a user types into the control at which a search 
+  *               of the filter values will be initiated.
   * @return {boolean} true if a filter is found and set up, else false.
   */
-  setupFeatFilter(filterId, filterName){
+  setupFeatFilter(filterId, filterName, minNameLength){
     let featFilter = document.getElementById(filterId);
     if (featFilter !== null){
       try{
         //Now we set up the control as a typeahead.
         let filterData = this.mapFilterData.get(filterName);
-        this.mapFeatFilters.set(filterName, new SSTypeAhead(featFilter, filterData, filterName, this.minWordLength));
+        this.mapFeatFilters.set(filterName, new SSTypeAhead(featFilter, filterData, filterName, minNameLength));
         //Re-enable it.
         let inp = featFilter.querySelector('input');
         inp.disabled = false;
@@ -540,7 +553,7 @@ class StaticSearch{
           let fch = await fetch(this.jsonDirectory + 'filters/' + filterId + this.versionString + '.json');
           let json = await fch.json();
           this.mapFilterData.set(json.filterName, json);
-          this.setupFeatFilter(json.filterId, json.filterName);
+          this.setupFeatFilter(json.filterId, json.filterName, json.minNameLength);
         }
     //Then set its checkboxes appropriately.
         this.mapFeatFilters.get(key).setCheckboxes(searchParams.getAll(key));
@@ -655,6 +668,8 @@ class StaticSearch{
         }
       }
     }
+    //Emit an event to notify that the object is instantiated.
+    window.dispatchEvent(new CustomEvent('ssSearchStarting'));
     // Now initialize that we're searching
     this.isSearching = true;
      //And now setup the timeout
@@ -677,7 +692,7 @@ class StaticSearch{
     else{
       this.isSearching = false;
     }
-    window.scroll({ top: this.resultsDiv.offsetTop, behavior: "smooth" });
+    this.scrollToResults();
     return result;
   }
 
@@ -773,6 +788,10 @@ class StaticSearch{
           url += '?' + encodeURI(search.join('&'));
           history.pushState({time: Date.now()}, '', url);
         }
+        else{
+//If there are no search parameters, clear the URL.
+          history.pushState({time: Date.now()}, '', url);
+        }
       }
       /*else{
         console.log('Not storing search in browser history.');
@@ -783,7 +802,6 @@ class StaticSearch{
       console.log('ERROR: failed to push search into browser history: ' + e.message);
     }
   }
-
 
 /** @function StaticSearch~parseSearchQuery
   * @description this retrieves the content of the text
@@ -819,6 +837,8 @@ class StaticSearch{
       //Then remove any leading or trailing apostrophes
       strSearch = strSearch.replace(/(^'|'$)/g,'');
 
+      //Now escape ampersands.
+      strSearch = strSearch.replace(/&/g, '&amp;');
 
       //If we're not supporting phrasal searches, get rid of double quotes.
       if (!this.allowPhrasal){
@@ -873,8 +893,9 @@ class StaticSearch{
       this.addSearchItem(strSoFar, inPhrase);
      
       // Now clear the queryBox and replace its contents
-      // By joining the normalized query
-      this.queryBox.value = this.normalizedQuery.join(" ");
+      // by joining the normalized query, and putting 
+      // any ampersands back where they were.
+      this.queryBox.value = this.normalizedQuery.join(" ").replace(/&amp;/, '&');
       
 
       //We always want to handle the terms in order of
@@ -1027,6 +1048,15 @@ class StaticSearch{
       for (let sel of this.boolFilterSelects){
         sel.selectedIndex = 0;
       }
+      for (let txt of this.featFilterInputs){
+        txt.value = '';
+      }
+      //Clear the search params in the URL too.
+      let url = window.location.href.split(/[?#]/)[0];
+      history.pushState({time: Date.now()}, '', url);
+
+    //Emit an event to notify that the form has been cleared.
+    window.dispatchEvent(new CustomEvent('ssFormCleared'));
       return true;
     }
     catch(e){
@@ -1176,7 +1206,7 @@ class StaticSearch{
       if (xSets.length > 0){
         let result = xSets[0];
         for (var i=1; i<xSets.length; i++){
-          result = result.xIntersection(xSets[i]);
+          result = result.intersection(xSets[i]);
         }
         result.filtersActive = true;
         return result;
@@ -1524,6 +1554,8 @@ class StaticSearch{
       let pTooManyResults = document.createElement('p');
       pTooManyResults.append(this.captionSet.strTooManyResults);
       this.resultsDiv.appendChild(pTooManyResults);
+      //Emit an event to notify that the search is completed, including the hit count.
+      window.dispatchEvent(new CustomEvent('ssSearchCompleted', {detail: {'hits': this.resultSet.getSize()}}));
       return true;
     } catch (e) {
       console.log('ERROR: ' + e);
@@ -1897,6 +1929,8 @@ if (this.discardedTerms.length > 0){
       }
       this.isSearching = false;
       this.searchFinishedHook(4);
+      //Emit an event to notify that the search is completed, including the hit count.
+      window.dispatchEvent(new CustomEvent('ssSearchCompleted', {detail: {'hits': this.resultSet.getSize()}}));
       return (this.resultSet.getSize() > 0);
     }
     catch(e){

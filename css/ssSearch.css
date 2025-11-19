@@ -38,7 +38,7 @@ fieldset.ssFieldset > legend.sr-only{
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0,0,0,0);
+  clip-path: circle(0);
   border: 0; 
 }
 
@@ -186,6 +186,7 @@ a.fidLink{
 div#ssPoweredBy{
     font-size: 0.75rem;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     margin: 0.5rem;

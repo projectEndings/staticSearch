@@ -119,9 +119,11 @@
         <xd:desc>Regex to match alphanumeric words. Note that we use 
         Unicode character classes to take our best shot at splitting on
         word boundaries, but this is bound to be fragile where multiple
-        languages are involved.</xd:desc>
+        languages are involved. NOTE: character U+A78F is introduced explicitly,
+        although it should be covered by \p{L}, because of an apparent bug in
+        Java or Saxon regex processing; see GH issue #200.</xd:desc>
     </xd:doc>
-  <xsl:variable name="alphanumeric">[\p{L}\p{M}<xsl:value-of select="string-join($allApos,'')"/>]+</xsl:variable>
+  <xsl:variable name="alphanumeric">[&#xA78F;\p{L}\p{M}\p{Pc}<xsl:value-of select="string-join($allApos,'')"/>]+</xsl:variable>
     
     <xd:doc>
         <xd:desc>Regex to match hyphenated words</xd:desc>
@@ -395,7 +397,7 @@
     </xd:doc>
     <xsl:template match="meta[contains-token(@class,'staticSearch_docImage')]/@content[not(matches(.,'^https?'))]" mode="tokenize">
         <xsl:variable name="absPath" as="xs:string" select="resolve-uri(., $uri)"/>
-        <xsl:variable name="newRelPath" as="xs:string" select="hcmc:makeRelativeUri($searchFile, $absPath)"/>
+        <xsl:variable name="newRelPath" as="xs:string" select="hcmc:makeRelativeUri($searchDocUri, $absPath)"/>
         <xsl:attribute name="content" select="$newRelPath"/>
     </xsl:template>
     
@@ -582,7 +584,7 @@
     </xd:doc>
     <xsl:function name="hcmc:shouldIndex" as="xs:boolean">
         <xsl:param name="lcWord" as="xs:string"/>
-        <xsl:sequence select="string-length($lcWord) ge xs:integer($minWordLength) and not(key('w', $lcWord, $stopwordsFileXml))"/>
+        <xsl:sequence select="string-length($lcWord) ge xs:integer($tokenizer.minWordLength) and not(key('w', $lcWord, $stopwordsFileXml))"/>
     </xsl:function>
 
 

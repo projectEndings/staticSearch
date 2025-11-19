@@ -541,7 +541,7 @@
 	<xsl:param name="space" />
 	<svrl:active-pattern >
 	    <axsl:attribute name="document">
-	    	<axsl:value-of select="document-uri(/)" />
+	    	<axsl:value-of select="base-uri(/)" />
 	    </axsl:attribute><!-- If XSLT1 remove this -->
 		<xsl:if test=" string( $id )">
 			<axsl:attribute name="id">

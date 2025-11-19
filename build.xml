@@ -37,7 +37,10 @@
      *                           Properties                         *
      *                                                              *
      ****************************************************************-->
-
+  
+  <!-- We want to allow users to turn fork=true off if they need to
+       because of Security Manager warnings. -->
+  <property name="javaFork" value="true"/>
 
   <!-- We want our own base directory in case basedir is overridden
        by an invoking ant process. -->
@@ -54,7 +57,7 @@
   </pathconvert>
 
   <!-- Use the saxon in our lib folder. -->
-  <property name="ssSaxon" value="${ssBaseDir.converted}/lib/saxon-he-11.4.jar"/>
+  <property name="ssSaxon" value="${ssBaseDir.converted}/lib/saxon-he-12.5.jar"/>
   
   <!-- Use the closure compiler in our lib folder. -->
   <property name="ssClosure" value="${ssBaseDir.converted}/lib/closure-compiler.jar"/>
@@ -83,6 +86,12 @@
   <!--The derived name of the configuration directory based off of the configuration
         file path-->
   <dirname property="configDir" file="${ssConfigFile}"/>
+  
+  <condition property="isWindows">
+    <os family="windows" />
+  </condition>
+  
+  
 
   <pathconvert property="configDir.converted" dirsep="/">
     <path location="${configDir}" />
@@ -95,7 +104,7 @@
   </pathconvert>
 
   <!--Load the configuration file as a property file-->
-  <xmlproperty file="${ssConfigFile}" keeproot="true"/>
+  <xmlproperty file="${ssConfigFile}" keeproot="true" collapseattributes="true"/>
 
   <!--Set the verbose flag to false by default; set to true to see detailed messages-->
   <property name="ssVerbose" value="false"/>
@@ -105,7 +114,7 @@
   <property name="ssVerboseReport" value="false"/>
 
   <!--The path to the search page, relative to the configuration directory-->
-  <property name="ssSearchFilePath" value="${configDir.converted}/${config.params.searchFile}"/>
+  <property name="ssSearchFilePath" value="${configDir.converted}/${config.params.searchPage.file}"/>
 
   <!--The name of the collection dir, derived from the search file-->
   <dirname property="ssCollectionDirName" file="${ssSearchFilePath}"/>
@@ -121,9 +130,12 @@
 
   <!--Output folder, which is forked, depending on whether or not an output folder
         is specified in the configuration file-->
-  <property name="ssOutputFolder" if:set="config.params.outputFolder"
-    value="${config.params.outputFolder}"/>
-  <property name="ssOutputFolder" unless:set="config.params.outputFolder" value="staticSearch"/>
+  <property name="ssOutputFolder"
+    if:set="config.params.output.dir"
+    value="${config.params.output.dir}"/>
+  <property name="ssOutputFolder"
+    unless:set="config.params.output.dir"
+    value="staticSearch"/>
 
   <!--Stemmer folder, which is forked, depending on whether or not a stemmer folder
         is specified in the configuration file-->
@@ -159,7 +171,7 @@
      *                                                              *
      ****************************************************************-->
 
-  <target name="init">
+  <target name="init" depends="validate.config">
     <description>
       TARGET: init
       This target initializes the static search indexing process. It first
@@ -180,16 +192,39 @@
 
     <!-- If we're building the test data, we need to generate the VERSION file
          and also copy the .htm_ files to .html before starting. -->
+    <echo message="${ssConfigFileName}"/>
     <if>
       <equals arg1="configTest.xml" arg2="${ssConfigFileName}"/>
       <then>
         <delete file="${ssBaseDir.converted}/test/VERSION"/>
         <exec executable="git">
           <arg value="rev-parse"/>
-          <arg value="--short"/>
-          <arg value="HEAD"/>
-          <redirector output="${ssBaseDir.converted}/test/VERSION"/>
+          <arg value="--is-inside-work-tree"/>
+          <redirector outputproperty="isGitRepo"/>
         </exec>
+        <if>
+          <equals arg1="true" arg2="${isGitRepo}"/>
+          <then>
+            <exec executable="git">
+              <arg value="rev-parse"/>
+              <arg value="--short"/>
+              <arg value="HEAD"/>
+              <redirector output="${ssBaseDir.converted}/test/VERSION"/>
+            </exec>
+          </then>
+          <else>
+            <!-- Generate a random version string. -->
+            <math result="rand" datatype="int">
+              <op op="rint">
+                <op op="*">
+                  <num value="1000"/>
+                  <op op="random"/>
+                </op>
+              </op>
+            </math>
+            <echo file="${ssBaseDir.converted}/test/VERSION" message="vrand${rand}"/>
+          </else>
+        </if>
       </then>
     </if>
     <!-- If this build is our test suite, then we need to copy the 
@@ -204,11 +239,55 @@
       </then>
     </if>
   </target>
-
-  <target name="validate">
+  
+  <target name="checkConfigVersion">
     <description>
-      TARGET: validate
-      Task to validate that the source XHTML is well-formed XHTML. Note that this DOES
+      TARGET checkConfigVersion
+      Checks the supplied configuration file to see if it has 
+      @version="2" on its root element. If not, it invokes the
+      conversion process.
+    </description>
+    <echo message="Checking version of config file ${ssBaseDir.converted}/${ssConfig}..."/>
+    <fileset id="configOnly" dir="${ssBaseDir.converted}" includes="${ssConfig}">
+      <containsregexp expression="&lt;config[^&gt;]+version\s*=\s*.2."/>
+    </fileset>
+    <condition property="isV2" value="true" else="false">
+      <matches pattern="^2" string="${config.version}"/>
+    </condition>
+    
+    <antcall target="convertConfigFile" unless:true="${isV2}"/>
+  </target>
+  
+  <target name="convertConfigFile">
+    <description>
+      TARGET convertConfigFile
+      This runs an identity transform on the supplied config
+      file to create from it a version 2 file, and then reports
+      the outcome to the user.
+    </description>
+    <input addproperty="outputStrategy"
+           message="Your config file is for version 1 of staticSearch.&#x0a;
+It will be converted to version 2 format.&#x0a;
+Would you like to overwrite the existing file or &#x0a;
+create a new file? (o=overwrite, n=new)"
+           validargs="o,n"
+           defaultvalue="n"/>
+    <!--<echo message="${outputStrategy}"/>-->
+    <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
+      <arg value="-xsl:${ssBaseDir.converted}/xsl/convert_v1_to_v2.xsl"/>
+      <arg value="-s:${ssBaseDir.converted}/${ssConfig}"/>
+      <arg value="--suppressXsltNamespaceCheck:on"/>
+      <arg value="ssBaseDir=${ssBaseDir.converted}"/>
+      <arg value="ssVerbose=${ssVerbose}"/>
+      <arg value="output=${outputStrategy}"/>
+    </java>
+    <fail message="Terminating this build. Please restart the build using your new configuration file."/>
+  </target>
+  
+  <target name="validate.html">
+    <description>
+      TARGET: validate.html
+      Target to check input files as well-formed XHTML. Note that this DOES
       NOT check whether or not it is valid XHTML: only that it is well-formed. This target also
       checks the config file and sees if it's invalid. We don't fail if it's invalid, though, since
       we must assume that some people just don't care: but raise the error anyway. 
@@ -224,12 +303,22 @@
         <exclude name="**/staticSearch_report.html"/>
       </fileset>
     </xmlvalidate>
+  </target>
+  
+  <target name="validate.config" depends="checkConfigVersion">
     <echo message="Validating ${ssConfigFile} against the staticSearch schema..."/>
     <exec executable="java" failonerror="false">
       <arg line="-jar ${ssBaseDir.converted}/lib/jing.jar"/>
       <arg value="${ssBaseDir.converted}/schema/staticSearch.rng"/>
       <arg value="${ssConfigFile}"/>
     </exec>
+  </target>
+
+  <target name="validate" depends="validate.config, validate.html">
+    <description>
+      TARGET: validate
+      Task to validate various input files, including the XHTML and the configuration file.
+    </description>
   </target>
 
 
@@ -246,7 +335,8 @@
       <arg value="-xsl:${ssBaseDir.converted}/xsl/create_config_xsl.xsl"/>
       <arg value="-s:${ssBaseDir.converted}/xsl/create_config_xsl.xsl"/>
       <arg value="--suppressXsltNamespaceCheck:on"/>
-      <arg value="configFile=file:///${ssConfigFile}"/>
+      <arg value="configFile=file://${ssConfigFile}" unless:true="${isWindows}"/>
+      <arg value="configFile=file:///${ssConfigFile}" if:true="${isWindows}"/>
       <arg value="ssBaseDir=${ssBaseDir.converted}"/>
       <arg value="ssVerbose=${ssVerbose}"/>
       <arg value="ssPatternsetFile=file:///${ssPatternsetFile}"/>

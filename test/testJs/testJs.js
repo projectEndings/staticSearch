@@ -2,11 +2,24 @@
  * test suite, and is never needed in a working search
  * application context. */
 
-//This is a set of automated tests which are intended to check whether
+//Initially we create event listeners for all our custom 
+//events, so that we can check they're working in the console.
+const fncTestEvents = function(evt){
+  console.log('Custom event received: ' + evt.type);
+  if (evt.detail){
+    console.log('Detail included: ');
+    console.dir(evt.detail);
+  }
+};
+window.addEventListener('ssInstantiated', fncTestEvents);
+window.addEventListener('ssJsonRetrieved', fncTestEvents);
+window.addEventListener('ssSearchStarting', fncTestEvents);
+window.addEventListener('ssFormCleared', fncTestEvents);
+window.addEventListener('ssSearchCompleted', fncTestEvents);
+
+//Now is a set of automated tests which are intended to check whether
 //we're getting the results we expect back from the search object.
-
 var reportDiv = null;
-
 
 var currTestNum = -1;
 var tests =[];
@@ -51,6 +64,22 @@ tests.push({
       docsFound: 1,
       contextsFound: 2,
       scoreTotal: 2
+    })
+  }
+});
+
+//One word search word-internal sinological dot search
+tests.push({
+  setup: function () {
+    Sch.queryBox.value = "teꞏst";
+  },
+  check: function (num) {
+    console.log("Search hook " + num);
+    console.log(`Testing results for word with word - internal sinological dot "teꞏst".`);
+    checkResults({
+      docsFound: 1,
+      contextsFound: 1,
+      scoreTotal: 1
     })
   }
 });
@@ -214,6 +243,20 @@ tests.push({
     console.log('Testing results for the phrase "our day Was clouded" with max date 2000.');
     checkResults({
       docsFound: 0, contextsFound: 0, scoreTotal: 0
+    });
+  }
+});
+
+//Phrasal search with ampersand.
+tests.push({
+  setup: function () {
+    Sch.queryBox.value = '"Marks & Spencer"'
+  },
+  check: function (num) {
+    console.log('Search hook ' + num);
+    console.log('Testing results for the phrase "Marks & Spencer".');
+    checkResults({
+      docsFound: 1, contextsFound: 3, scoreTotal: 3
     });
   }
 });
@@ -400,6 +443,20 @@ tests.push({
     })
   }
 })
+//Testing tokenization with a word containing an undertie (connector punctuation).
+tests.push({
+  setup: function(){
+    Sch.queryBox.value = 'kn‿kaš'
+  },
+  check: function(num){
+    console.log('search hook ' + num);
+    console.log('Testing results for a word containing connector punctuation');
+    checkResults({
+      docsFound: 1, contextsFound: 2, scoreTotal: 2
+    })
+  }
+})
+
 
 var startTime = null;
 

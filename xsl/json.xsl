@@ -332,13 +332,15 @@
                             algorithm -->
                         <number key="score">
                             <xsl:choose>
-                                <xsl:when test="$scoringAlgorithm = 'tf-idf'">
-                                    <xsl:sequence 
-                                        select="hcmc:returnTfIdf($rawScore, $stemDocsCount, $currDocUri)"/>
-                                </xsl:when>
-                                <xsl:when test="$scoringAlgorithm = 'BM25'">
+                                <xsl:when test="$scoringAlgorithm.name = 'BM25'">
                                     <xsl:sequence 
                                         select="hcmc:returnBM25($rawScore, $stemDocsCount, $currDocUri)"/>
+                                </xsl:when>
+                                <xsl:when test="$scoringAlgorithm.name = 'BM25L'">
+                                    <xsl:sequence select="hcmc:returnBM25L($rawScore, $stemDocsCount, $currDocUri)"/>
+                                </xsl:when>
+                                <xsl:when test="$scoringAlgorithm.name = 'tf-idf'">
+                                    <xsl:sequence select="hcmc:returnTfIdf($rawScore, $stemDocsCount, $currDocUri)"/>
                                 </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:sequence select="$rawScore"/>
@@ -347,7 +349,7 @@
                         </number>
                         
                         <!--Now add the contexts array, if specified to do so -->
-                        <xsl:if test="$phrasalSearch or $createContexts">
+                        <xsl:if test="$createContexts.phrasalSearch or $createContexts.create">
                             <xsl:call-template name="returnContextsArray"/>
                         </xsl:if>
                     </map>
@@ -392,9 +394,9 @@
                 of kwics set in the config.-->
         <xsl:variable name="contexts" as="element(span)+"
             select="
-            if ($phrasalSearch)
+            if ($createContexts.phrasalSearch)
             then current-group()
-            else subsequence(current-group(), 1, $maxKwicsToHarvest)"/>        
+            else subsequence(current-group(), 1, $createContexts.maxKwicsToHarvest)"/>        
         <xsl:variable name="contextCount" select="count($contexts)" as="xs:integer"/>
         
         <array xmlns="http://www.w3.org/2005/xpath-functions" key="contexts">
@@ -610,7 +612,7 @@
         
         <!--"k1" is a constant, which "controls non-linear term frequency normalization (saturation)"-->
         <xsl:variable name="k1" select="1.8"/>
-        <xsl:variable name="delta" select="0.5"/>
+        <xsl:variable name="delta" select="0.6"/>
         
         
         <!--Compute the average document length-->
@@ -796,7 +798,7 @@
                                     as="xs:string*"/>
                                 <!--Return the string: we know we have to add the truncation string here too-->
                                 <xsl:sequence 
-                                    select="$kwicTruncateString || string-join($newTokens,' ') || $endSpace || $stringSoFar "/>
+                                    select="$createContexts.kwicTruncateString || string-join($newTokens,' ') || $endSpace || $stringSoFar "/>
                             </xsl:when>
                             <xsl:otherwise>
                                 <!--Otherwise, we're going left to right, which is simpler
@@ -808,7 +810,7 @@
                                     select="subsequence($tokens, 1, $tokenDiff)" 
                                     as="xs:string*"/>
                                 <xsl:sequence
-                                    select="$stringSoFar || $startSpace || string-join($newTokens,' ') || $kwicTruncateString"/>
+                                    select="$stringSoFar || $startSpace || string-join($newTokens,' ') || $createContexts.kwicTruncateString"/>
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:break>
@@ -945,6 +947,12 @@
                         <!--Now fork on filter types and call the respective functions-->
                         <xsl:choose>
                             <xsl:when test="$thisFilterType = ('desc', 'feat')">
+                                <xsl:if test="$thisFilterType = 'feat'">
+                                    <number key="minNameLength">
+                                        <xsl:sequence 
+                                            select="min(($tokenizer.minWordLength, ($thisFilterMetas ! string-length(@content))))"/>
+                                    </number>
+                                </xsl:if>
                                 <xsl:sequence select="hcmc:createDescFeatFilterMap($thisFilterMetas, $thisFilterId)"/>
                             </xsl:when>
                             <xsl:when test="$thisFilterType = 'date'">
