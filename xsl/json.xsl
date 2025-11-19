@@ -49,6 +49,14 @@
     <xsl:variable name="tokenizedDocsCount" select="count($tokenizedDocs)" as="xs:integer"/>
     
     <xd:doc>
+        <xd:desc>Get the average length of the document, which is needed for BM25.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="averageDocLength" 
+        select="sum($tokenizedUris ! hcmc:getTotalTermsInDoc(.))
+        div 
+        count($tokenizedUris)" as="xs:double"/>
+    
+    <xd:doc>
         <xd:desc>All stems from the tokenized docs; we use this in a few places.</xd:desc>
     </xd:doc>
     <xsl:variable name="stems" select="$tokenizedDocs//span[@ss-stem]" as="element(span)*"/>
@@ -526,14 +534,6 @@
         <xsl:param name="rawScore" as="xs:integer"/>
         <xsl:param name="stemDocsCount" as="xs:integer"/>
         <xsl:param name="thisDocUri" as="xs:string"/>
-        <!--Compute the average document length-->
-        <!--TODO: While getTotalTermsInDoc is memoized, 
-            this should be moved outside
-            of the function-->
-        <xsl:variable name="averageDocLength" 
-            select="sum($tokenizedUris ! hcmc:getTotalTermsInDoc(.))
-            div 
-            count($tokenizedUris)" as="xs:double"/>
         
         <!--Get the total terms in the document-->
         <xsl:variable name="totalTermsInDoc" 
@@ -575,7 +575,9 @@
             select="$rawScore + $k1 * (1 - $b + $b * $lengthRatio)"/>
         
         <!--Now the final BM25 relevance score-->
-        <xsl:variable name="BM25" select="$idf * ($numerator div $denominator)" as="xs:double"/>
+        <xsl:variable name="BM25" 
+            select="$idf * ($numerator div $denominator)" 
+            as="xs:double"/>
         <xsl:message use-when="$verbose">Calculated BM25: <xsl:sequence select="$BM25"/></xsl:message>
         <xsl:sequence select="$BM25"/>
     </xsl:function>
@@ -619,11 +621,11 @@
         <!--TODO: While getTotalTermsInDoc is memoized, 
             this should be moved outside
             of the function-->
-        <xsl:variable name="docCount" select="count($tokenizedUris)" as="xs:integer"/>
+
         <xsl:variable name="averageDocLength" 
             select="sum($tokenizedUris ! hcmc:getTotalTermsInDoc(.))
             div 
-            $docCount" as="xs:double"/>
+            $tokenizedDocsCount" as="xs:double"/>
         
         <!--Get the total terms in the document-->
         <xsl:variable name="totalTermsInDoc" 
@@ -644,7 +646,7 @@
         <xsl:variable name="idf" 
             as="xs:double"
             select="math:log(
-            ($docCount + 1)
+            ($tokenizedDocsCount + 1)
             div
             ($stemDocsCount + 0.5)
             )"/>
@@ -855,11 +857,17 @@
     </xd:doc>
     <xsl:function name="hcmc:getTotalTermsInDoc" as="xs:integer" new-each-time="no">
         <xsl:param name="docUri" as="xs:string"/>
-        <xsl:variable name="thisDoc" select="$tokenizedDocs[base-uri(.) = $docUri]" as="document-node()"/>
-        <xsl:variable name="thisDocSpans" select="$thisDoc//span[@ss-stem]" as="element(span)*"/>
+        <xsl:variable name="thisDocSpans" 
+            select="$stems[base-uri(.) = $docUri]"
+            as="element(span)*"/>
+<!--        <xsl:variable name="thisDoc" select="$tokenizedDocs[base-uri(.) = $docUri]" as="document-node()"/>
+        <xsl:variable name="thisDocSpans" select="$thisDoc//span[@ss-stem]" />-->
         <!--We tokenize these since there can be multiple stems for a given span-->
-        <xsl:variable name="thisDocStems" select="for $span in $thisDocSpans return tokenize($span/@ss-stem,'\s+')" as="xs:string+"/>
-        <xsl:variable name="uniqueStems" select="distinct-values($thisDocStems)" as="xs:string+"/>
+        <xsl:variable name="thisDocStems" as="xs:string+"
+            select="for $span in $thisDocSpans return
+                    tokenize($span/@ss-stem,'\s+')"/>
+        <xsl:variable name="uniqueStems" 
+            select="distinct-values($thisDocStems)" as="xs:string+"/>
         <xsl:sequence select="count($uniqueStems)"/>
     </xsl:function>
     
