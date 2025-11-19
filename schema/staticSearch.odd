@@ -1711,7 +1711,7 @@
                 <valList type="closed">
                   <valItem ident="raw">
                     <desc>raw score</desc>
-                    <gloss>Default: Calculate the score based off of the weighted number of 
+                    <gloss>Default: Calculate the score based on the weighted number of 
                       instances of a term in a text.</gloss>
                     <remarks>
                       <p>The raw score is simply the sum of all instances of a term 
@@ -1722,7 +1722,7 @@
                   </valItem>
                   <valItem ident="tf-idf">
                     <desc>tf-idf (term frequency-inverse document frequency)</desc>
-                    <gloss>Calculate the score based off of the tf-idf scoring algorithm.</gloss>
+                    <gloss>Calculate the score using the tf-idf scoring algorithm.</gloss>
                     <remarks>
                       <p>The tf-idf algorithm (term frequency-inverse document frequency)
                         computes the mathematical relevance of a term within a document relative to the rest
@@ -1737,6 +1737,21 @@
                         scoring, including: <ref target="https://en.wikipedia.org/wiki/Tf%E2%80%93idf">Wikipedia</ref> and 
                         Christopher D. Manning, Prabhakar Raghavan and Hinrich Schütze, <ref target="https://nlp.stanford.edu/IR-book/html/htmledition/tf-idf-weighting-1.html">Introduction 
                           to Information Retrieval</ref>, Cambridge University Press. 2008.</p>
+                    </remarks>
+                  </valItem>
+                  <valItem ident="BM25">
+                    <desc>BM25 (best matching 25)</desc>
+                    <gloss>EXPERIMENTAL: Calculate the score using the BM25 scoring algorithm.</gloss>
+                    <remarks>
+                      <p>The BM25 (best matching 25) algorithm computes the relevance of a term within a document collection, taking into account term frequency saturation and relative document length. This is particularly useful for collections that have documents of significantly different lengths, or where TF-IDF relevance scoring may be misleading.</p>
+                      <p>BM25 is used by many other search engines, such as Elastisearch and Lucene. For more information, see Elasticsearch's "<ref target="https://www.elastic.co/blog/practical-bm25-part-1-how-shards-affect-relevance-scoring-in-elasticsearch">Practical BM25</ref>" blog post.</p>
+                    </remarks>
+                  </valItem>
+                  <valItem ident="BM25L">
+                    <desc>BM25L (best matching 25 for long documents)</desc>
+                    <gloss>EXPERIMENTAL: Calculate the score using Lv and Zhai's modification of BM25.</gloss>
+                    <remarks>
+                      <p>This is an experimental adaptation of Lv and Zhai's (2011) modification of BM25 that attempts to normalize against BM25's penalization of longer documents. See <ptr target="https://dl.acm.org/doi/10.1145/2009916.2010070"/>. </p>
                     </remarks>
                   </valItem>
                 </valList>
