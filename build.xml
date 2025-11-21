@@ -87,6 +87,10 @@
         file path-->
   <dirname property="configDir" file="${ssConfigFile}"/>
   
+  <!--The relative path to the schema from the configuration file-->
+  <property name="ssSchemaPath.rel" relative="true" 
+    basedir="${configDir}" location="${ssBaseDir}/schema/staticSearch.rng"/>
+  
   <condition property="isWindows">
     <os family="windows" />
   </condition>
@@ -280,6 +284,7 @@ create a new file? (o=overwrite, n=new)"
       <arg value="ssBaseDir=${ssBaseDir.converted}"/>
       <arg value="ssVerbose=${ssVerbose}"/>
       <arg value="output=${outputStrategy}"/>
+      <arg value="ssSchemaPath=${ssSchemaPath.rel}"/>
     </java>
     <fail message="Terminating this build. Please restart the build using your new configuration file."/>
   </target>
