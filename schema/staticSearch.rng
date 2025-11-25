@@ -5,7 +5,7 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2025-11-14T17:40:51Z. 2019-2025. 
+Schema generated from ODD source 2025-11-19T23:14:34Z. 2019-2025. 
 TEI Edition: P5 Version 4.10.2. Last updated on 4th September 2025, revision bcfa98f42 
 TEI Edition Location: https://www.tei-c.org/Vault/P5/4.10.2/ 
   
@@ -32,7 +32,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.10.2/
       <ns xmlns="http://purl.oclc.org/dsdl/schematron"
           prefix="xh"
           uri="http://www.w3.org/1999/xhtml"/>
-      <pattern xmlns="http://purl.oclc.org/dsdl/schematron" id="d9e3476-constraint">
+      <pattern xmlns="http://purl.oclc.org/dsdl/schematron" id="d9e3514-constraint">
          <rule context="xh:span">
             <report test="descendant::*[not(namespace-uri(.) =               ('http://www.w3.org/1999/xhtml', 'http://www.tei-c.org/ns/1.0'))]">span descendants must be in the
               namespaces
@@ -199,9 +199,13 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.10.2/
                <a:documentation>(Specifies the name of the scoring algorithm to use.) </a:documentation>
                <choice>
                   <value>raw</value>
-                  <a:documentation>(Default: Calculate the score based off of the weighted number of instances of a term in a text.) raw score</a:documentation>
+                  <a:documentation>(Default: Calculate the score based on the weighted number of instances of a term in a text.) raw score</a:documentation>
                   <value>tf-idf</value>
-                  <a:documentation>(Calculate the score based off of the tf-idf scoring algorithm.) tf-idf (term frequency-inverse document frequency)</a:documentation>
+                  <a:documentation>(Calculate the score using the tf-idf scoring algorithm.) tf-idf (term frequency-inverse document frequency)</a:documentation>
+                  <value>BM25</value>
+                  <a:documentation>(EXPERIMENTAL: Calculate the score using the BM25 scoring algorithm.) BM25 (best matching 25)</a:documentation>
+                  <value>BM25L</value>
+                  <a:documentation>(EXPERIMENTAL: Calculate the score using Lv and Zhai's modification of BM25.) BM25L (best matching 25 for long documents)</a:documentation>
                </choice>
             </attribute>
          </optional>
