@@ -48,6 +48,12 @@
     <xsl:param name="output" as="xs:string" select="'n'"/>
     
     <xd:doc>
+        <xd:desc>Parameter (provided by ant) that provides the path to the schema,
+            relative to the configuration file.</xd:desc>
+    </xd:doc>
+    <xsl:param name="ssSchemaPath" as="xs:string" select="'../schema/staticSearch.rng'"/>
+    
+    <xd:doc>
         <xd:desc>The output file is calculated based on the parameter above.</xd:desc>
     </xd:doc>
     <xsl:variable name="outputFile" as="xs:string" select="if ($output eq 'o') then base-uri(/) else replace(base-uri(/),'\.xml$','_v2.xml')"/>
@@ -77,6 +83,10 @@
             </xsl:when>
             <xsl:otherwise>
                 <xsl:result-document href="{$outputFile}">
+                    <xsl:processing-instruction
+                        name="xml-model">href="{$ssSchemaPath}" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"</xsl:processing-instruction>
+                    <xsl:processing-instruction
+                        name="xml-model">href="{$ssSchemaPath}" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"</xsl:processing-instruction>
                     <xsl:message>Configuration file {base-uri(/)} converted to version 2 {format-date(current-date(), '[Y0001]-[M01]-[D01]')}, with output at {$outputFile}.</xsl:message>
                     <xsl:comment>Configuration file {base-uri(/)} converted to version 2 {format-date(current-date(), '[Y0001]-[M01]-[D01]')}.</xsl:comment>
                     <xsl:apply-templates/>
