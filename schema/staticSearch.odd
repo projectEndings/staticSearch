@@ -507,7 +507,7 @@
                   directly to the search page that will be the primary access point for the search.
                   Since the search file must be at the root of the directory that you wish to index
                   (i.e. the directory that contains all of the XHTML you want the search to index),
-                  the searchFile parameter provides the necessary information for knowing 
+                  the searchPage parameter provides the necessary information for knowing 
                   what document collection to index and where to put the output JSON. In other words,
                   in specifying the location of your search page, you are also specifying the location
                   of your document collection. See <ref target="#searchPage">Creating a search page</ref> for more
