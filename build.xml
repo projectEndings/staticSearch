@@ -276,6 +276,17 @@ Would you like to overwrite the existing file or &#x0a;
 create a new file? (o=overwrite, n=new)"
            validargs="o,n"
            defaultvalue="n"/>
+    
+    <!-- If overwriting, we'll make sure a backup is created first
+         in case something goes wrong. -->
+    <if>
+      <equals arg1="${outputStrategy}" arg2="o"/>
+      <then>
+        <copy file="${ssBaseDir.converted}/${ssConfig}" tofile="${ssBaseDir.converted}/${ssConfig}.BAK"/>
+        <echo message="A backup of your config file has been created: ${ssBaseDir.converted}/${ssConfig}.BAK"/>
+      </then>
+    </if>
+    
     <!--<echo message="${outputStrategy}"/>-->
     <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
       <arg value="-xsl:${ssBaseDir.converted}/xsl/convert_v1_to_v2.xsl"/>

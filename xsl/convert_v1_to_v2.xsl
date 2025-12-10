@@ -245,12 +245,12 @@
         <xd:desc>Function to create boolean string values from unreliable or absent input.</xd:desc>
         <xd:param name="input" as="item()?">May be an element, attribute, or text node
             which contains the original value if it exists.</xd:param>
-        <xd:param name="default" as="xs:string">The default value to use if the input does 
+        <xd:param name="default" as="xs:boolean">The default value to use if the input does 
             not provide anything usable.</xd:param>
     </xd:doc>
     <xsl:function name="hcmc:getStrBoolean" as="xs:string">
         <xsl:param name="input" as="item()?"/>
-        <xsl:param name="default" as="xs:string"/>
+        <xsl:param name="default" as="xs:boolean"/>
         <xsl:choose>
             <xsl:when test="$input and matches($input, $reBooleanTrue, 'i')">
                 <xsl:sequence select="'true'"/>
@@ -258,8 +258,11 @@
             <xsl:when test="$input and matches($input, $reBooleanFalse, 'i')">
                 <xsl:sequence select="'false'"/>
             </xsl:when>
+            <xsl:when test="$default">
+                <xsl:sequence select="'true'"/>
+            </xsl:when>
             <xsl:otherwise>
-                <xsl:sequence select="$default"/>
+                <xsl:sequence select="'false'"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
@@ -268,14 +271,15 @@
         <xd:desc>Function to create string values from unreliable or absent input.</xd:desc>
         <xd:param name="input" as="item()?">May be an element, attribute, or text node
             which contains the original value if it exists.</xd:param>
-        <xd:param name="default" as="xs:string">The default value to use if the input does 
+        <xd:param name="default" as="xs:string?">The default value to use if the input does 
         not provide anything usable.</xd:param>
     </xd:doc>
     <xsl:function name="hcmc:getString" as="xs:string">
         <xsl:param name="input" as="item()?"/>
-        <xsl:param name="default" as="xs:string"/>
+        <xsl:param name="default" as="xs:string?"/>
+        <xsl:message select="xs:string($input)"/>
         <xsl:choose>
-            <xsl:when test="$input and string-length($input) gt 0">
+            <xsl:when test="xs:string($input) and string-length($input) gt 0">
                 <xsl:sequence select="xs:string($input)"/>
             </xsl:when>
             <xsl:otherwise>
