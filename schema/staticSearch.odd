@@ -1262,7 +1262,9 @@
             the configuration file has been significantly re-organized; configuration files made for earlier
             versions of staticSearch <emph>will not</emph> work in 2.0.</p>
           
-          <p>When you update staticSearch, the build will attempt to convert a v1.0 configuration fil to v2.0 and save it as a new file.</p>
+          <p>When you update staticSearch, the build will attempt to convert a v1.0 configuration fil to v2.0 and save it as a new file. The following table summarizes changes to the configuration file, but see the updated documentation in <ptr target="#creatingConfigFile"/> for more details, samples, and a template file.</p>
+          
+          
           
           <table>
             <row>
@@ -1273,8 +1275,12 @@
             
             <row>
               <cell>searchFile</cell>
-              <cell>Renamed to searchPage; now uses a file attribute</cell>
-              <cell>v1 used text content; v2 requires <eg>&lt;searchPage file="..." /></eg>.</cell>
+              <cell>Renamed to <gi>searchPage</gi>; now uses a file attribute</cell>
+              <cell>v1 used text content; v2 requires <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                  <searchPage file="index.html"/>
+                  
+              </egXML>
+              </cell>
             </row>
             
             <row>
@@ -1298,43 +1304,55 @@
             <row>
               <cell><gi>scoringAlgorithm</gi></cell>
               <cell>Value now in a name attribute</cell>
-              <cell>v1 used text content; v2 uses <eg>name="..."</eg>.</cell>
+              <cell>v1 used text content; v2 uses <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                  <scoringAlgorithm name="tf-idf"/>
+                  
+              </egXML>
+              Note that there also new values of <gi>scoringAlgorithm</gi>. 
+              </cell>
             </row>
             
             <row>
               <cell>stemmerFolder</cell>
               <cell>Becomes a <gi>stemmer</gi> element with a <att>dir</att> attribute</cell>
-              <cell>The path is prefixed with <eg>stemmers/</eg>; now written as <eg>dir="stemmers/..."</eg>.</cell>
+              <cell>The path is prefixed with <eg>stemmers/</eg>; now written as <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                  <stemmer dir="stemmers/en"/>
+                  
+              </egXML>
+              </cell>
             </row>
             
             <row>
               <cell>minWordLength</cell>
               <cell>Moved into <gi>tokenizer</gi> element as an attribute</cell>
-              <cell>Now appears as <eg>&lt;tokenizer minWordLength="..."</eg>.</cell>
+              <cell>Now appears as <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                  <tokenizer minWordLength="3"/>
+                  
+              </egXML></cell>
             </row>
             
             <row>
               <cell>createContexts and related settings</cell>
-              <cell>Reorganized into one createContexts element with attributes</cell>
+              <cell>Reorganized into one <gi>createContexts</gi> element with attributes</cell>
               <cell>v2 enforces rules about valid attributes depending on whether create is true or false; options such as phrasalSearch and wildcardSearch move to attributes.</cell>
             </row>
             
             <row>
               <cell>phrasalSearch</cell>
               <cell>Now an attribute of <gi>createContexts</gi></cell>
-              <cell>Only present when <eg>create="true"</eg>.</cell>
+              <cell>Only present when <att>create</att>=<val>true</val>.</cell>
             </row>
             
             <row>
               <cell>wildcardSearch</cell>
               <cell>Now an attribute of <gi>createContexts</gi></cell>
-              <cell>Only present when <eg>create="true"</eg>.</cell>
+              <cell>Only present when <att>create</att>=<val>true</val>.</cell>
             </row>
             
             <row>
               <cell>maxKwicsToHarvest</cell>
               <cell>Now an attribute of <gi>createContexts</gi></cell>
-              <cell>Written only when phrasalSearch is false.</cell>
+              <cell>Written only when <att>phrasalSearch</att>=<val>false</val>.</cell>
             </row>
             
             <row>
@@ -1346,42 +1364,55 @@
             <row>
               <cell>kwicTruncateString</cell>
               <cell>Now an attribute of <gi>createContexts</gi></cell>
-              <cell>Always included when <eg>create="true"</eg>.</cell>
+              <cell>Required when <att>create</att>=<val>true</val>.</cell>
             </row>
             
             <row>
               <cell>resultsPerPage</cell>
               <cell>Moved into <gi>results</gi> element as an attribute</cell>
-              <cell>Now appears as <gi>results</gi>/<att>resultsPerPage</att>.</cell>
+              <cell>Now appears as <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                  <results resultsPerPage="3"/>
+              </egXML></cell>
             </row>
             
             <row>
               <cell>maxKwicsToShow</cell>
-              <cell>Moved into results element as an attribute</cell>
-              <cell>Now appears as <gi>results</gi>/@<att>maxKwicsToShow</att>.</cell>
+              <cell>Moved into <gi>results</gi> element as an attribute</cell>
+              <cell>Now appears as <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                  <results maxKwicsToShow="3"/>
+                  
+              </egXML></cell>
             </row>
             
             <row>
               <cell>resultsLimit</cell>
               <cell>Renamed to <att>maxResults</att></cell>
-              <cell>Now appears as <gi>results</gi>/<att>maxResults</att>.</cell>
+              <cell>Now appears as <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                  <results maxResults="3"/>
+                  
+              </egXML></cell>
             </row>
             
             <row>
               <cell>versionFile</cell>
               <cell>Now a version element with a file attribute</cell>
-              <cell>Changed from text content to <eg>file="..."</eg>.</cell>
+              <cell>Changed from text content to <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                  <version file="VERSION"/>
+              </egXML></cell>
             </row>
             
             <row>
               <cell>outputFolder</cell>
               <cell>Now an output element with a dir attribute</cell>
-              <cell>Changed from text content to <eg>dir="..."</eg>.</cell>
+              <cell>Changed from text content to <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                  <output dir="search"/>
+              </egXML>
+              </cell>
             </row>
             
             <row>
               <cell>verbose</cell>
-              <cell>Deprecated</cell>
+              <cell>Removed</cell>
               <cell>The verbose option has been removed and replaced by the <code>ssVerbose</code> property in ant. To get debugging messages,
                 set the ssVerbose parameter to true (other accepted values: t, yes, y, 1)
                 <eg>
@@ -1392,14 +1423,14 @@
             
             <row>
               <cell>indentJSON</cell>
-              <cell>Deprecated</cell>
+              <cell>Removed</cell>
               <cell><gi>indentJSON</gi> has been removed since it is rarely necessary other than for debugging purposes,
                 which can be better handled by other tools (i.e. viewed in Firefox or using the command-line tool jq).</cell>
             </row>
             
             <row>
               <cell>linkToFragmentId</cell>
-              <cell>Deprecated</cell>
+              <cell>Removed</cell>
               <cell><gi>linkToFragmentId</gi>, which controlled whether the search results should link back to the
                 nearest document fragment with an <att>id</att>, has been made part of the default behaviour of 
                 staticSearch and is no longer configurable. However, if you do not want the link to the nearest fragment
@@ -1414,7 +1445,7 @@
             </row>
             <row>
               <cell>scrollToTextFragment</cell>
-              <cell>Deprecated</cell>
+              <cell>Removed</cell>
               <cell>The <gi>scrollToTextFragment</gi> option, which relied on the experimental <ref target="https://wicg.github.io/scroll-to-text-fragment/">Text Fragments specification</ref>, has been removed. 
                 A more reliable alternative is to use JavaScript to 
                 <ref target="#highlightTargetPage">highlight hits on the target page</ref>.</cell>
