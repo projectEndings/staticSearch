@@ -1267,7 +1267,7 @@
           
           
           <table>
-            <row>
+            <row role="label">
               <cell>Element</cell>
               <cell>Change</cell>
               <cell>Description</cell>
