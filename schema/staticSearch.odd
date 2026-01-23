@@ -1251,13 +1251,174 @@
       </div>
       
       <div xml:id="newSinceLastVersion">
-        <head>What's new since version 1.4?</head>
+        <head>What's new between versions?</head>
         <list>
           <item>Level: Intermediate</item>
-          <item>Last Updated: <date when="2025-02-10">23 February 2025</date></item>
+          <item>Last Updated: <date when="2026-01-23">23 January 2026</date></item>
         </list>
         <div xml:id="newIn2.0">
-        <head>Changes in version 2.0</head>
+        <head>Changes in version 2.0.0</head>
+          <p>staticSearch 2.0 contains breaking changes and improvements to staticSearch. In particular,
+            the configuration file has been significantly re-organized; configuration files made for earlier
+            versions of staticSearch <emph>will not</emph> work in 2.0.</p>
+          
+          <p>When you update staticSearch, the build will attempt to convert a v1.0 configuration fil to v2.0 and save it as a new file.</p>
+          
+          <table>
+            <row>
+              <cell>Element</cell>
+              <cell>Change</cell>
+              <cell>Description</cell>
+            </row>
+            
+            <row>
+              <cell>searchFile</cell>
+              <cell>Renamed to searchPage; now uses a file attribute</cell>
+              <cell>v1 used text content; v2 requires <eg>&lt;searchPage file="..." /></eg>.</cell>
+            </row>
+            
+            <row>
+              <cell><gi>index</gi>/<att>recurse</att></cell>
+              <cell>Preserved in v2</cell>
+              <cell>Still appears as a recurse attribute on the index element.</cell>
+            </row>
+            
+            <row>
+              <cell>stopwordsFile</cell>
+              <cell>Now uses a <gi>stopwords</gi> element with a file attribute</cell>
+              <cell>Default file locations moved from <eg>/xsl/</eg> to <eg>/stopwords/</eg>; warnings emitted if old defaults are detected.</cell>
+            </row>
+            
+            <row>
+              <cell>dictionaryFile</cell>
+              <cell>Now uses a <gi>dictionary</gi> element with a file attribute</cell>
+              <cell>Default dictionary files moved from <eg>/xsl/</eg> to <eg>/dicts/</eg>; warnings emitted for old default paths.</cell>
+            </row>
+            
+            <row>
+              <cell><gi>scoringAlgorithm</gi></cell>
+              <cell>Value now in a name attribute</cell>
+              <cell>v1 used text content; v2 uses <eg>name="..."</eg>.</cell>
+            </row>
+            
+            <row>
+              <cell>stemmerFolder</cell>
+              <cell>Becomes a <gi>stemmer</gi> element with a <att>dir</att> attribute</cell>
+              <cell>The path is prefixed with <eg>stemmers/</eg>; now written as <eg>dir="stemmers/..."</eg>.</cell>
+            </row>
+            
+            <row>
+              <cell>minWordLength</cell>
+              <cell>Moved into <gi>tokenizer</gi> element as an attribute</cell>
+              <cell>Now appears as <eg>&lt;tokenizer minWordLength="..."</eg>.</cell>
+            </row>
+            
+            <row>
+              <cell>createContexts and related settings</cell>
+              <cell>Reorganized into one createContexts element with attributes</cell>
+              <cell>v2 enforces rules about valid attributes depending on whether create is true or false; options such as phrasalSearch and wildcardSearch move to attributes.</cell>
+            </row>
+            
+            <row>
+              <cell>phrasalSearch</cell>
+              <cell>Now an attribute of <gi>createContexts</gi></cell>
+              <cell>Only present when <eg>create="true"</eg>.</cell>
+            </row>
+            
+            <row>
+              <cell>wildcardSearch</cell>
+              <cell>Now an attribute of <gi>createContexts</gi></cell>
+              <cell>Only present when <eg>create="true"</eg>.</cell>
+            </row>
+            
+            <row>
+              <cell>maxKwicsToHarvest</cell>
+              <cell>Now an attribute of <gi>createContexts</gi></cell>
+              <cell>Written only when phrasalSearch is false.</cell>
+            </row>
+            
+            <row>
+              <cell>totalKwicLength</cell>
+              <cell>Renamed to <att>maxKwicLength</att></cell>
+              <cell>Now an attribute of createContexts.</cell>
+            </row>
+            
+            <row>
+              <cell>kwicTruncateString</cell>
+              <cell>Now an attribute of <gi>createContexts</gi></cell>
+              <cell>Always included when <eg>create="true"</eg>.</cell>
+            </row>
+            
+            <row>
+              <cell>resultsPerPage</cell>
+              <cell>Moved into <gi>results</gi> element as an attribute</cell>
+              <cell>Now appears as <gi>results</gi>/<att>resultsPerPage</att>.</cell>
+            </row>
+            
+            <row>
+              <cell>maxKwicsToShow</cell>
+              <cell>Moved into results element as an attribute</cell>
+              <cell>Now appears as <gi>results</gi>/@<att>maxKwicsToShow</att>.</cell>
+            </row>
+            
+            <row>
+              <cell>resultsLimit</cell>
+              <cell>Renamed to <att>maxResults</att></cell>
+              <cell>Now appears as <gi>results</gi>/<att>maxResults</att>.</cell>
+            </row>
+            
+            <row>
+              <cell>versionFile</cell>
+              <cell>Now a version element with a file attribute</cell>
+              <cell>Changed from text content to <eg>file="..."</eg>.</cell>
+            </row>
+            
+            <row>
+              <cell>outputFolder</cell>
+              <cell>Now an output element with a dir attribute</cell>
+              <cell>Changed from text content to <eg>dir="..."</eg>.</cell>
+            </row>
+            
+            <row>
+              <cell>verbose</cell>
+              <cell>Deprecated</cell>
+              <cell>The verbose option has been removed and replaced by the <code>ssVerbose</code> property in ant. To get debugging messages,
+                set the ssVerbose parameter to true (other accepted values: t, yes, y, 1)
+                <eg>
+                  ant -DssConfig=cfg.xml -DssVerbose=true
+                </eg>
+              </cell>
+            </row>
+            
+            <row>
+              <cell>indentJSON</cell>
+              <cell>Deprecated</cell>
+              <cell><gi>indentJSON</gi> has been removed since it is rarely necessary other than for debugging purposes,
+                which can be better handled by other tools (i.e. viewed in Firefox or using the command-line tool jq).</cell>
+            </row>
+            
+            <row>
+              <cell>linkToFragmentId</cell>
+              <cell>Deprecated</cell>
+              <cell><gi>linkToFragmentId</gi>, which controlled whether the search results should link back to the
+                nearest document fragment with an <att>id</att>, has been made part of the default behaviour of 
+                staticSearch and is no longer configurable. However, if you do not want the link to the nearest fragment
+                to appear in the results, you can visually hide the link element with the <ident>fidLink</ident> class 
+                in your site's CSS:
+                <eg>
+                  .fidLink{
+                  display:none;
+                  }
+                </eg>
+              </cell>
+              <cell>scrollToTextFragment</cell>
+              <cell>Deprecated</cell>
+              <cell>The <gi>scrollToTextFragment</gi> option, which relied on the experimental <ref target="https://wicg.github.io/scroll-to-text-fragment/">Text Fragments specification</ref>, has been removed. 
+                A more reliable alternative is to use JavaScript to 
+                <ref target="#highlightTargetPage">highlight hits on the target page</ref>.</cell>
+            </row>
+          </table>
+          
           
           <list>
             <item>The included dictionaries and stopwords lists for English and 
@@ -1277,66 +1438,13 @@
             still do that if you prefer).</item>
             <item>A static one-page HTML version of the staticSearch documentation is now provided as 
             part of the distribution package.</item>
-            <item>The Saxon XSLT processor has been updated to version 12.5.</item>
+            <item>The Saxon XSLT processor has been updated to version 11. Note, we cannot update to Saxon version 12 due to mysterious memory leak errors.</item>
             <item>The <ident>ant-contrib.jar</ident> library is now included in the repository, so you no longer need
             to install it yourself. (You still need to install Ant itself.)</item>
             <item>Windows support has been added courtesy of a pull request from Tony Graham, and we will continue
               to try to test and maintain it from now on.</item>
           </list>
-          
-          
-       <!-- TODO: THIS NEEDS TO REFLECT THE ACTUAL CHAHNGES MADE, INCLUDING THE AUTOMATED UPDATING
-            OF OLD CONFIG FILES. -->
-          <p>staticSearch 2.0 contains  breaking changes and improvements to staticSearch. In particular,
-          the configuration file has been significantly re-organized; configuration files made for earlier
-          versions of staticSearch <emph>will not</emph> work in 2.0.
-          </p>
-          <table>
-            <row role="label">
-              <cell role="label">Configuration Option</cell>
-              <cell role="label">Explanation</cell>
-            </row>
-            <row>
-              <cell><gi>verbose</gi></cell>
-              <cell>The verbose option has been removed and replaced by the <code>ssVerbose</code> property in ant. To get debugging messages,
-                set the ssVerbose parameter to true (other accepted values: t, yes, y, 1)
-                <eg>
-                  ant -DssConfig=cfg.xml -DssVerbose=true
-                </eg>
-              </cell>
-            </row>
-            <row>
-              <cell>
-                <gi>indentJSON</gi>
-              </cell>
-              <cell><gi>indentJSON</gi> has been removed since it is rarely necessary other than for debugging purposes,
-              which can be better handled by other tools (i.e. viewed in Firefox or using the command-line tool jq).</cell>
-            </row>
-            <row>
-              <cell>
-                <gi>linkToFragmentId</gi>
-              </cell>
-              <cell><gi>linkToFragmentId</gi>, which controlled whether the search results should link back to the
-                nearest document fragment with an <att>id</att>, has been made part of the default behaviour of 
-                staticSearch and is no longer configurable. However, if you do not want the link to the nearest fragment
-              to appear in the results, you can visually hide the link element with the <ident>fidLink</ident> class 
-                in your site's CSS:
-              <eg>
-                .fidLink{
-                  display:none;
-                }
-              </eg>
-              </cell>
-            </row>
-            <row>
-              <cell><gi>scrollToTextFragment</gi></cell>
-              <cell>The <gi>scrollToTextFragment</gi> option, which relied on the experimental <ref target="https://wicg.github.io/scroll-to-text-fragment/">Text Fragments specification</ref>, has been removed. 
-                A more reliable alternative is to use JavaScript to 
-                <ref target="#highlightTargetPage">highlight hits on the target page</ref>.</cell>
-            </row>
-            
-          </table>
-          
+         
         </div>
       </div>
       
