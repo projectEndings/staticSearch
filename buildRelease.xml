@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project basedir="." name="BuildRelease" default="all" xmlns:if="ant:if"
-  xmlns:unless="ant:unless">
+  xmlns:unless="ant:unless" xmlns:res="antlib:org.apache.tools.ant.types.resources">
 
   <!-- 
         **********************************************************
@@ -79,18 +79,19 @@
       and if it's an alpha or beta, it checks with the 
       user to make sure they do want to create a release.
     </description>
-    <loadfile property="alphabeta" srcFile="${ssBaseDir}/EDITION">
-      <filterchain>
-        <replaceregex pattern="\s*[\d\.]+([^\d\.]+)\s*$" replace="\1">
-        </replaceregex>
-      </filterchain>
-    </loadfile>
+    
+    <loadfile property="edition" srcFile="${ssBaseDir}/EDITION"/>
+    <propertyregex
+      property="alphabeta"
+      input="${edition}"
+      regexp="[\d\.]+"
+      replace=""/>
     <if>
       <not>
         <equals arg1="${alphabeta}" arg2=""/>
       </not>
       <then>
-        <input message="Warning: the edition is apparently a prerelease (${edition}). Are you sure you want to continue?"
+        <input message="Warning: the edition is apparently a prerelease (${edition} contains ${alphabeta}). Are you sure you want to continue?"
           validargs="y,n"
           addproperty="continue"/>
         <condition property="abort">
