@@ -1473,6 +1473,12 @@ table.table td{
 table.table td{
     padding: 1ex 1ex 1ex 1ex;
 }
+
+.table table td{
+    border: solid black 1pt;
+    padding: 1ex 1ex 1ex 1ex;
+}
+
 p.mainAuthor{
     display: block;
     margin: 1ex 0ex 1ex 0ex;

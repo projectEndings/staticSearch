@@ -1411,6 +1411,8 @@
                   }
                 </eg>
               </cell>
+            </row>
+            <row>
               <cell>scrollToTextFragment</cell>
               <cell>Deprecated</cell>
               <cell>The <gi>scrollToTextFragment</gi> option, which relied on the experimental <ref target="https://wicg.github.io/scroll-to-text-fragment/">Text Fragments specification</ref>, has been removed. 
