@@ -51,6 +51,7 @@
   <fileset id="requiredFiles" dir="${ssBaseDir}" 
     excludes="xsl/functions.xspec xsl/patch_tei_odd.xsl xsl/spiff_up_documentation.xsl xsl/split_documentation.xsl js/searchTest.* js/out js/out/**/*">
     <include name="css/**/*"/>
+    <include name="dicts/**/*"/>
     <include name="docs/staticSearch.html"/>
     <include name="docs/documentation.css"/>
     <include name="images/**/*"/>
@@ -61,6 +62,7 @@
     <include name="schema/staticSearch.sch"/>
     <!-- NOTE: If we move the stemmers around, this will need to change. -->
     <include name="stemmers/**/*"/>
+    <include name="stopwords/**/*"/>
     <include name="xsl/**/*"/>
     <include name="build.xml"/>
     <include name="EDITION"/>
