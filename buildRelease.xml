@@ -64,6 +64,7 @@
     <include name="stemmers/**/*"/>
     <include name="stopwords/**/*"/>
     <include name="xsl/**/*"/>
+    <exclude name="xsl/config.xsl"/>
     <include name="build.xml"/>
     <include name="EDITION"/>
     <include name="license_BSD.txt"/>
