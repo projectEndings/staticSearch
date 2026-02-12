@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - dev
+      - feature/dev-release-ci-fix
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -38,9 +40,10 @@ jobs:
 
       - name: Sync branch state
         run: |
-          git fetch origin dev --tags
-          git checkout dev
-          git pull --rebase origin dev
+          branch="${{ github.ref_name }}"
+          git fetch origin "${branch}" --tags
+          git checkout "${branch}"
+          git pull --rebase origin "${branch}"
 
       - name: Bump EDITION semver patch
         id: bump
@@ -65,7 +68,7 @@ jobs:
           PY
           )"
 
-          echo "${next_version}" > EDITION
+          printf "%s" "${next_version}" > EDITION
 
           echo "previous_version=${current_version}" >> "$GITHUB_OUTPUT"
           echo "version=${next_version}" >> "$GITHUB_OUTPUT"
@@ -78,6 +81,7 @@ jobs:
         run: ant -f buildRelease.xml all
 
       - name: Commit and push EDITION
+        if: github.ref_name == 'dev'
         run: |
           if git diff --quiet -- EDITION; then
             echo "No EDITION changes detected."
@@ -88,6 +92,7 @@ jobs:
           git push origin HEAD:dev
 
       - name: Create and push release tag
+        if: github.ref_name == 'dev'
         run: |
           tag="${{ steps.bump.outputs.tag }}"
           if [ -n "$(git ls-remote --tags origin "refs/tags/${tag}")" ]; then
@@ -98,6 +103,7 @@ jobs:
           git push origin "${tag}"
 
       - name: Create GitHub prerelease
+        if: github.ref_name == 'dev'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.bump.outputs.tag }}

@@ -9,6 +9,8 @@ Pushes to `dev` now run an automated GitHub Actions workflow (`.github/workflows
 1. Creates and pushes a Git tag in the form `vX.Y.Z`.
 1. Creates a GitHub prerelease with generated notes and attached `dist/*.zip` and `dist/*.tar.gz` artifacts.
 
+For testing the workflow itself, pushes to `feature/dev-release-ci-fix` (or manual `workflow_dispatch`) run the same build steps without committing, tagging, or creating releases.
+
 ## Notes
 
 - The workflow is `dev`-only.

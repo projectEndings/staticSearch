@@ -84,7 +84,7 @@
     <propertyregex
       property="alphabeta"
       input="${edition}"
-      regexp="[\d\.]+"
+      regexp="[\d\.\s]+"
       replace=""/>
     <if>
       <not>
