@@ -1,9 +1,17 @@
-# How to Make a Release
+# Dev Build and Release Automation
 
-1. Make sure you're in the dev branch. 
-1. Make sure all tests are passing and everything is working in the dev branch. 
-1. Make sure all development branches are merged into dev. 
-1. Edit the EDITION file to set the correct version number for the release. Commit and push the change. 
-1. git checkout main, then git merge dev with an appropriate message. Then git push.
-1. Go to GitHub and draft a new release in the interface. Get the release notes from the What's New page in the documentation.
-1. git checkout dev, and git merge main to bring them into sync. Then increment the version number in EDITION (adding "alpha") and commit/push. 
+Pushes to `dev` now run an automated GitHub Actions workflow (`.github/workflows/dev-release.yml`) which:
+
+1. Reads `EDITION`, parses semantic versioning (`X.Y.Z`), and increments the patch number (`Z + 1`).
+1. Updates `EDITION` on `dev` with the new version and commits that change automatically.
+1. Runs the project build and tests (`ant -f build.xml test`).
+1. Builds release archives (`ant -f buildRelease.xml all`).
+1. Creates and pushes a Git tag in the form `vX.Y.Z`.
+1. Creates a GitHub prerelease with generated notes and attached `dist/*.zip` and `dist/*.tar.gz` artifacts.
+
+## Notes
+
+- The workflow is `dev`-only.
+- `EDITION` should remain semantic-version compatible (`major.minor.patch`).
+- Legacy values like `2.0.1beta` are accepted as input for bumping, but output is normalized to strict semver (`2.0.2`).
+- GitHub Pages deployment will be handled in a separate workflow step later.

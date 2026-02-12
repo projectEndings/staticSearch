@@ -1,0 +1,110 @@
+name: Dev Build and Release
+
+on:
+  push:
+    branches:
+      - dev
+
+permissions:
+  contents: write
+
+concurrency:
+  group: dev-build-release
+  cancel-in-progress: false
+
+jobs:
+  build-and-release:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Install Ant
+        run: sudo apt-get update && sudo apt-get install --yes ant
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Sync branch state
+        run: |
+          git fetch origin dev --tags
+          git checkout dev
+          git pull --rebase origin dev
+
+      - name: Bump EDITION semver patch
+        id: bump
+        run: |
+          current_version="$(tr -d '\r\n' < EDITION)"
+          next_version="$(python3 - <<'PY'
+          import re
+          from pathlib import Path
+
+          current = Path("EDITION").read_text(encoding="utf-8").strip()
+          match = re.match(r'^(\d+)\.(\d+)\.(\d+)(?:[-+][0-9A-Za-z.-]+)?$', current)
+
+          # Backward-compatible fallback for legacy values like 2.0.1beta.
+          if not match:
+              match = re.match(r'^(\d+)\.(\d+)\.(\d+)[0-9A-Za-z.-]*$', current)
+
+          if not match:
+              raise SystemExit(f"EDITION must start with semantic version X.Y.Z, got: {current!r}")
+
+          major, minor, patch = map(int, match.groups())
+          print(f"{major}.{minor}.{patch + 1}")
+          PY
+          )"
+
+          echo "${next_version}" > EDITION
+
+          echo "previous_version=${current_version}" >> "$GITHUB_OUTPUT"
+          echo "version=${next_version}" >> "$GITHUB_OUTPUT"
+          echo "tag=v${next_version}" >> "$GITHUB_OUTPUT"
+
+      - name: Build and test project
+        run: ant -f build.xml test
+
+      - name: Build release archives
+        run: ant -f buildRelease.xml all
+
+      - name: Commit and push EDITION
+        run: |
+          if git diff --quiet -- EDITION; then
+            echo "No EDITION changes detected."
+            exit 0
+          fi
+          git add EDITION
+          git commit -m "ci: bump EDITION to ${{ steps.bump.outputs.version }} [skip ci]"
+          git push origin HEAD:dev
+
+      - name: Create and push release tag
+        run: |
+          tag="${{ steps.bump.outputs.tag }}"
+          if [ -n "$(git ls-remote --tags origin "refs/tags/${tag}")" ]; then
+            echo "Tag ${tag} already exists on origin; reusing it."
+            exit 0
+          fi
+          git tag -a "${tag}" -m "Release ${tag}"
+          git push origin "${tag}"
+
+      - name: Create GitHub prerelease
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.bump.outputs.tag }}
+          name: ${{ steps.bump.outputs.tag }}
+          prerelease: true
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+          files: |
+            dist/*.zip
+            dist/*.tar.gz
