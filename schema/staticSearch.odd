@@ -2405,7 +2405,7 @@
           <elementSpec ident="filters" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
             <gloss>Wrapper for filter elements in the configuration file</gloss>
             <desc>The optional filters/filter part of the configuration file allows the
-            user to specify custom labels with HTML markup for specific filters, so they
+            user to configure the functionality of a filter, such as specifying custom labels with HTML markup for specific filters, so they
             are not limited by the label supplied in the XHTML meta/@name attribute.</desc>
             <content>
               <elementRef key="filter" minOccurs="1" maxOccurs="unbounded"/>
@@ -2413,20 +2413,25 @@
           </elementSpec>
           
           <elementSpec ident="filter" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
-            <gloss>Allows specification of a custom label for a filter on the search page</gloss>
+            <gloss>Allows customization of a filter</gloss>
             <desc>Filters are identified through plain-text labels defined as XHTML meta/@name
             attributes in the document headers. This element allows a user to specify a richer
-            label for a particular filter by using HTML code. Multiple labels may be specified
+            label for a particular filter by using HTML code as well as denoting whether this filter should be used for sorting. Multiple labels may be specified
             in different languages. The <att>filterName</att> attribute must be supplied, and 
             must be identical to the XHTML meta/@name attribute for the filter as it appears
             in the HTML document heads.</desc>
             <content>
-              <elementRef key="span" minOccurs="1" maxOccurs="unbounded"/>
+              <elementRef key="span" minOccurs="0" maxOccurs="unbounded"/>
             </content>
             <attList>
               <attDef ident="filterName" usage="req">
                 <datatype>
                   <dataRef key="teidata.text"/>
+                </datatype>
+              </attDef>
+              <attDef ident="sortable" usage="opt">
+                <datatype>
+                  <dataRef key="ssdata.boolean"/>
                 </datatype>
               </attDef>
             </attList>

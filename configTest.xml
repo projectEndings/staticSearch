@@ -48,5 +48,6 @@
                 <span style="font-variant: small-caps;">Random Piffle</span>
             </span>
         </filter>
+        <filter filterName="Date range" sortable="true"/>
     </filters>
 </config>

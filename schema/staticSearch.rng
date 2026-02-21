@@ -5,9 +5,9 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2026-01-23T23:01:06Z. 2019–2026. 
-TEI Edition: P5 Version 4.10.2. Last updated on 4th September 2025, revision bcfa98f42 
-TEI Edition Location: https://www.tei-c.org/Vault/P5/4.10.2/ 
+Schema generated from ODD source 2026-02-20T23:35:59Z. 2019–2026. 
+TEI Edition: P5 Version 4.11.0. Last updated on 18th February 2026, revision 358d2e48e 
+TEI Edition Location: https://www.tei-c.org/Vault/P5/4.11.0/ 
   
 --><!--Free to anyone for any purpose-->
    <define name="anyElement_span_1">
@@ -32,7 +32,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.10.2/
       <ns xmlns="http://purl.oclc.org/dsdl/schematron"
           prefix="xh"
           uri="http://www.w3.org/1999/xhtml"/>
-      <pattern xmlns="http://purl.oclc.org/dsdl/schematron" id="d10e3807-constraint">
+      <pattern xmlns="http://purl.oclc.org/dsdl/schematron" id="d10e3814-constraint">
          <rule context="xh:span">
             <report test="descendant::*[not(namespace-uri(.) =               ('http://www.w3.org/1999/xhtml', 'http://www.tei-c.org/ns/1.0'))]">span descendants must be in the
               namespaces
@@ -475,7 +475,7 @@ Suggested values include: 1] stemmers/en/; 2] stemmers/fr/; 3] stemmers/identity
    </define>
    <define name="filters">
       <element name="filters" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Wrapper for filter elements in the configuration file) The optional filters/filter part of the configuration file allows the user to specify custom labels with HTML markup for specific filters, so they are not limited by the label supplied in the XHTML meta/@name attribute.</a:documentation>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Wrapper for filter elements in the configuration file) The optional filters/filter part of the configuration file allows the user to configure the functionality of a filter, such as specifying custom labels with HTML markup for specific filters, so they are not limited by the label supplied in the XHTML meta/@name attribute.</a:documentation>
          <oneOrMore>
             <ref name="filter"/>
          </oneOrMore>
@@ -483,14 +483,25 @@ Suggested values include: 1] stemmers/en/; 2] stemmers/fr/; 3] stemmers/identity
    </define>
    <define name="filter">
       <element name="filter" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Allows specification of a custom label for a filter on the search page) Filters are identified through plain-text labels defined as XHTML meta/@name attributes in the document headers. This element allows a user to specify a richer label for a particular filter by using HTML code. Multiple labels may be specified in different languages. The <code xmlns="http://www.w3.org/1999/xhtml"
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Allows customization of a filter) Filters are identified through plain-text labels defined as XHTML meta/@name attributes in the document headers. This element allows a user to specify a richer label for a particular filter by using HTML code as well as denoting whether this filter should be used for sorting. Multiple labels may be specified in different languages. The <code xmlns="http://www.w3.org/1999/xhtml"
                   xmlns:rng="http://relaxng.org/ns/structure/1.0">@filterName</code> attribute must be supplied, and must be identical to the XHTML meta/@name attribute for the filter as it appears in the HTML document heads.</a:documentation>
-         <oneOrMore>
+         <zeroOrMore>
             <ref name="span"/>
-         </oneOrMore>
+         </zeroOrMore>
          <attribute name="filterName">
             <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
          </attribute>
+         <optional>
+            <attribute name="sortable">
+               <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+               <choice>
+                  <value>true</value>
+                  <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+                  <value>false</value>
+                  <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+               </choice>
+            </attribute>
+         </optional>
          <empty/>
       </element>
    </define>

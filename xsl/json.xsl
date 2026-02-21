@@ -951,7 +951,10 @@
                     <map xmlns="http://www.w3.org/2005/xpath-functions">
                         <string key="filterId"><xsl:value-of select="$thisFilterId"/></string>
                         <string key="filterName"><xsl:value-of select="$thisFilterName"/></string>
-                        
+                        <xsl:if test="$filterLabels[@filterName = $thisFilterName][@sortable = 'true']">
+                            <string key="sortable">true</string>
+                            
+                        </xsl:if>
                         <!--Now fork on filter types and call the respective functions-->
                         <xsl:choose>
                             <xsl:when test="$thisFilterType = ('desc', 'feat')">

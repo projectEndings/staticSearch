@@ -523,13 +523,64 @@
                             </fieldset>
                         </div>
                     </xsl:if>
+                    
+                    <div class="ssSorter">
+                        <label>Sort results by:</label>
+                        <select>
+                            <option value="ssScore-desc">Score (High to low)</option>
+                            <option value="ssScore-asc">Score (Low to high)</option>
+                            <option value="ssTitle-asc">Title (A-Z)</option>
+                            <option value="ssTitle-desc">Title (Z-A)</option>
+                            <xsl:for-each select="$descFilters, $dateFilters, $boolFilters, $numFilters">
+                                <xsl:variable name="jsonDoc" select="unparsed-text(.) => json-to-xml()"
+                                    as="document-node()"/>
+                                <xsl:variable name="filterName" select="$jsonDoc//j:string[@key='filterName']"/>
+                                <xsl:variable name="filterId" select="$jsonDoc//j:string[@key='filterId']"/>
+                                <xsl:variable name="filterType" 
+                                    select="replace($filterId,'^ss([^\d]+).+','$1') => lower-case()"/>
+                                <xsl:if test="$jsonDoc//j:string[@key='sortable']">
+                                    <xsl:variable name="directions" 
+                                        select="if ($filterType = ('desc')) 
+                                        then ('asc','desc') 
+                                        else ('desc','asc')" as="xs:string+"/>
+                                    <xsl:for-each select="$directions">
+                                        <option value="{$jsonDoc//j:string[@key='filterId']}-{.}">
+                                            <!--TODO: Update this to use configured filter name-->
+                                            <xsl:value-of select="$filterName"/>
+                                            <xsl:text> </xsl:text>
+                                            <xsl:choose>
+                                                <xsl:when test=". = 'asc'">
+                                                    <xsl:choose>
+                                                        <xsl:when test="$filterType = 'desc'">(A-Z)</xsl:when>
+                                                        <xsl:when test="$filterType = 'date'">(Earliest to latest)</xsl:when>
+                                                        <xsl:when test="$filterType = 'num'">(Low to high)</xsl:when>
+                                                    </xsl:choose>
+                                                </xsl:when>
+                                                <xsl:when test=". = 'desc'">
+                                                    <xsl:choose>
+                                                        <xsl:when test="$filterType = 'desc'">(Z-A)</xsl:when>
+                                                        <xsl:when test="$filterType = 'date'">(Latest to earliest)</xsl:when>
+                                                        <xsl:when test="$filterType = 'num'">(High to low)</xsl:when>
+                                                    </xsl:choose>
+                                                </xsl:when>
+                                            </xsl:choose>
+                                        </option>
+                                    </xsl:for-each>
+                                </xsl:if>
+                                
+                            </xsl:for-each>
+                        </select>
+                    </div>
+                    
                     <span class="postFilterSearchBtn">
                         <button id="ssDoSearch2">
                             <xsl:sequence select="hcmc:getCaption('ssDoSearch', $captionLang)"/>
                         </button>
                     </span>
                
+              
                 </xsl:if>
+                
 
             </form>
             
@@ -546,7 +597,7 @@
               <xsl:sequence select="hcmc:getCaption('ssLoading', $captionLang)"/>
             </div>
           </xsl:if>
-          
+
 
             <!--And now create the results div in the document-->
             <div id="ssResults">

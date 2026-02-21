@@ -30,4 +30,7 @@
       <exclude type="index"
                match="html[matches(base-uri(/),'staticSearch.html$')]"/>
    </excludes>
+   <filters>
+      <filter filterName="Date Updated" sortable="true"/>
+   </filters>
 </config>
