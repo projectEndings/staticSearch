@@ -505,23 +505,6 @@ class StaticSearch{
       return false;
     }
   }
-  
-  /**
-   * @function StaticSearch~getFilterDataById
-   * 
-   * @description Utility function to retrieve filter data
-   * from a filterId
-   * 
-   * @returns The map object entry if defined; otherwise false
-   */ 
-    getFilterDataById(filterId){
-    for (const [key, value] of this.mapFilterData){
-        if (value["filterId"] == filterId){
-            return value;
-        }
-        return false;
-    }
-  }  
 
 /** @function StaticSearch~parseUrlQueryString
   * @description this function is run after the class is instantiated
