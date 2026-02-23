@@ -524,9 +524,9 @@
                         </div>
                     </xsl:if>
                     
-                    <div class="ssSorter">
-                        <label>Sort results by:</label>
-                        <select>
+                    <div class="ssSorter hidden">
+                        <label for="ssSortSelect">Sort results by:</label>
+                        <select id="ssSortSelect">
                             <option value="ssScore-desc">Score (High to low)</option>
                             <option value="ssScore-asc">Score (Low to high)</option>
                             <option value="ssTitle-asc">Title (A-Z)</option>

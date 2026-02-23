@@ -179,6 +179,19 @@ class StaticSearch{
       /** @type {!Array<string>} */
       this.normalizedQuery  = [];
       
+      //This sort control
+      this.sorterDiv = document.querySelector('.ssSorter');
+      this.sortSelect = document.querySelector('select#ssSortSelect');
+      if (this.sortSelect){
+        // Create a set of unique sortable fields
+         this.sortableFields = new Set([...this.sortSelect.options].map(opt => {
+             const { value } = opt;
+             return value.split('-')[0];
+         })
+        )
+      }
+      
+      
       //An object which will be filled with a complete list of all the
       //individual stems indexed for the site. Data retrieved later by
       //AJAX.
@@ -414,10 +427,15 @@ class StaticSearch{
       if (path.match(/ssFeat/)){
         this.setupFeatFilter(json.filterId, json.filterName);
       }
+      if (this.sortableFields.has(json.filterId)){
+        this.resultSet.addSortBy(json);   
+      }
       return;
     }
   }
-
+    
+ 
+ 
 /** @function staticSearch~getJson
   * @description this function trickle-downloads a series of resource files
   *              which the object has determined it may need, getting
@@ -487,6 +505,23 @@ class StaticSearch{
       return false;
     }
   }
+  
+  /**
+   * @function StaticSearch~getFilterDataById
+   * 
+   * @description Utility function to retrieve filter data
+   * from a filterId
+   * 
+   * @returns The map object entry if defined; otherwise false
+   */ 
+    getFilterDataById(filterId){
+    for (const [key, value] of this.mapFilterData){
+        if (value["filterId"] == filterId){
+            return value;
+        }
+        return false;
+    }
+  }  
 
 /** @function StaticSearch~parseUrlQueryString
   * @description this function is run after the class is instantiated
@@ -597,6 +632,14 @@ class StaticSearch{
           break;
         default:
           sel.selectedIndex = 0;
+      }
+    }
+    if (searchParams.has('sort')){
+      let sortOpt = searchParams.get('sort').trim();
+      let optIdx = [...this.sortSelect.options].findIndex(opt => opt.value == sortOpt);
+      console.log(optIdx);
+      if (optIdx > -1){
+          this.sortSelect.options[optIdx].selected = true;
       }
     }
 
@@ -785,6 +828,7 @@ class StaticSearch{
         }
 
         if (search.length > 0){
+          search.push(`sort=${this.sortSelect.value}`);   
           url += '?' + encodeURI(search.join('&'));
           history.pushState({time: Date.now()}, '', url);
         }
@@ -1051,10 +1095,11 @@ class StaticSearch{
       for (let txt of this.featFilterInputs){
         txt.value = '';
       }
+      this.sortSelect.selectedIndex = 0;
       //Clear the search params in the URL too.
       let url = window.location.href.split(/[?#]/)[0];
       history.pushState({time: Date.now()}, '', url);
-
+        
     //Emit an event to notify that the form has been cleared.
     window.dispatchEvent(new CustomEvent('ssFormCleared'));
       return true;
@@ -1577,7 +1622,7 @@ class StaticSearch{
 
 //Start by clearing any previous results.
       this.resultSet.clear();
-
+       
 //Process any filters that may be active.
       this.processFilters();
 
@@ -1614,6 +1659,23 @@ if (this.discardedTerms.length > 0){
   //pDiscarded.appendChild(txt);
 }
 
+// Now update the sortSelect to hide options for the score if
+// no such score would ever exist 
+if (this.terms.length < 1) {
+   [...this.sortSelect.options].forEach(opt => {
+     if (opt.value.startsWith('ssScore')){
+         opt.disabled = true;
+     }
+     if (this.sortSelect.options[this.sortSelect.selectedIndex].disabled && opt.value == "ssTitle-asc"){
+         opt.selected = true;
+     }
+   })
+} else {
+    [...this.sortSelect.options].forEach((opt, idx) => {
+        opt.disabled = false;
+    })
+}
+
 //Easy ones first: #4
       if ((this.terms.length < 1)&&(this.docsMatchingFilters.size < 1)){
 
@@ -1624,6 +1686,7 @@ if (this.discardedTerms.length > 0){
         let pFound = document.createElement('p');
         pFound.append(this.captionSet.strDocumentsFound + '0');
         this.resultsDiv.appendChild(pFound);
+        this.sorterDiv.classList.add('hidden');
         this.isSearching = false;
         this.searchFinishedHook(1);
         return false;
@@ -1631,8 +1694,8 @@ if (this.discardedTerms.length > 0){
 //#3
       if ((this.terms.length < 1)&&(this.docsMatchingFilters.size > 0)){
         this.resultSet.addArray([...this.docsMatchingFilters]);
-        this.resultSet.sortByScoreDesc();
-
+        this.sorterDiv.classList.remove('hidden');
+        this.resultSet.sortBy(this.sortSelect.value);
         this.clearResultsDiv();
         if (pDiscarded !== null){
           this.resultsDiv.appendChild(pDiscarded);
@@ -1643,12 +1706,15 @@ if (this.discardedTerms.length > 0){
         //Switch depending on the result size:
         //Report that there are no results
         if (this.resultSet.getSize() < 1){
+            this.sorterDiv.classList.add('hidden');
           this.reportNoResults(true);
           // Else if the number of results is greater than the limit.
         } else if (this.resultSet.getSize() > this.resultsLimit){
+            this.sorterDiv.classList.add('hidden');
             this.reportTooManyResults();
         } else {
           // Otherwise, render the results, optionally paginated.
+          this.sorterDiv.classList.remove('hidden');
           this.resultsDiv.appendChild(this.resultSet.resultsAsHtml(this.captionSet.strScore));
           if (this.resultsPerPage > 0 && this.resultsPerPage < this.resultSet.getSize()){
             this.paginateResults();
@@ -1884,6 +1950,7 @@ if (this.discardedTerms.length > 0){
           }
           else{
             console.log('No useful search terms found.');
+            this.sorterDiv.classList.add('hidden');
             this.isSearching = false;
             this.searchFinishedHook(3);
             return false;
@@ -1903,9 +1970,9 @@ if (this.discardedTerms.length > 0){
    
         this.resultSet.filterByContexts(this.activeContexts);
       }
-
-
-      this.resultSet.sortByScoreDesc();
+       
+      this.resultSet.sortBy(this.sortSelect.value);
+      //this.resultSet.sortByScoreDesc();
       this.clearResultsDiv();
       if (pDiscarded !== null){
         this.resultsDiv.appendChild(pDiscarded);
@@ -1916,11 +1983,14 @@ if (this.discardedTerms.length > 0){
       //Switch depending on the result size:
       //Report that there are no results
       if (this.resultSet.getSize() < 1){
+        this.sorterDiv.classList.add('hidden');
         this.reportNoResults(true);
         // Else if the number of results is greater than the limit.
       } else if (this.resultSet.getSize() > this.resultsLimit){
+        this.sorterDiv.classList.add('hidden');
         this.reportTooManyResults();
       } else {
+        this.sorterDiv.classList.remove('hidden');
         // Otherwise, render the results, optionally paginated.
         this.resultsDiv.appendChild(this.resultSet.resultsAsHtml(this.captionSet.strScore));
         if (this.resultsPerPage > 0 && this.resultsPerPage < this.resultSet.getSize()){
@@ -1940,8 +2010,9 @@ if (this.discardedTerms.length > 0){
       return false;
     }
   }
+    
 
-
+    
   /**
    * @function StaticSearch~paginateResults
    * @description This method adds pagination controls to the results and adds

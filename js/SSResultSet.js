@@ -46,6 +46,9 @@ class SSResultSet{
       //A list of titles indexed by docUri is retrieved by AJAX
       //and set later.
       this.titles = null;
+      
+      //The order for the titles
+      this.titleSortIndex = new Map();
     }
     catch(e){
       console.log('ERROR: ' + e.message);
@@ -304,7 +307,210 @@ class SSResultSet{
       return 0;
     }
   }
+  
+  
+/**
+  * @function SSResultSet~addSortBy
+  * @description Adds each filter (that is configured to be sortable)
+  *             as part of an index to make sorting computations
+  *             possible in later stages
+  * @param {Object} json The filter information retrieved by
+  *                      the main staticSearch class
+  * @return {number} the size of the title sort index
+  */
+  addSortBy(json){
+     const { filterId } = json;
+     const filterMap = new Map();
+     // Set this filterMap in the titleSortIndex
+     this.titleSortIndex.set(filterId, filterMap);
+     
+     /**
+      * Now we have to fork, depending on the type of filter
+      */
+      
+     // ssDescs are the trickiest since
+     // they are multi-valued (and inverted)
+     if (filterId.startsWith("ssDesc")){
+        // Use only the keys that look like `ssDesc1_1` 
+        const sortedEntries = Object.entries(json)
+            .filter(([key, _value]) => key.startsWith(filterId))
+            .sort((a, b) => {
+                // Sort these keys by their sortKey for precedence
+                 const aVal = a[1]?.sortKey || a[1].name;
+                 const bVal = b[1]?.sortKey || b[1].name;
+                 return bVal.localeCompare(aVal);
+             })
+             .map(([_key, value]) => value);
+        for (const entry of sortedEntries){
+            entry.docs.forEach(doc => {
+               //Only set the doc if it isn't in the map
+               // This is so the index only has a single value
+               // which is whatever one is sorted first
+               if (!filterMap.has(doc)){
+                 filterMap.set(doc, entry.name);   
+               }
+            });
+        }
+     }
+     
+     // Easier case: Booleans. These are structured
+     // similar to descs, but with only 2 values
+     if (filterId.startsWith("ssBool")){
+        for (const [key, value] of Object.entries(json)){
+            if (key.startsWith(filterId)){
+               const { name, docs } = value;
+               docs.forEach(doc => {
+                  filterMap.set(doc, (name === "true"));
+               });
+            }            
+        }
+     }
+     
+     // Next: Dates. 
+     if (filterId.startsWith("ssDate")){
+         const { docs } = json;
+         for (const [key, value] of Object.entries(docs)){
+            // Use the first of a date range; we can convert it to a 
+            // standard date object (since we just need to sort, not 
+            // accurately do anything else)
+            const parsedDate = new Date(value[0]);
+            filterMap.set(key, parsedDate);
+         }
+     }
+     
+     // Numeric filters: Again, we just take the first value
+     if (filterId.startsWith("ssNum")){
+         const { docs } = json;
+         for (const [key, value] of Object.entries(docs)){
+             const parsedFloat = parseFloat(value[0]);
+             filterMap.set(key, parsedFloat);
+         }
+    }
+    return this.titleSortIndex.size;
+  }
+  
 
+/**
+  * @function SSResultSet~sortBy
+  * @description Sorts the collection of items to sort via 
+  *             the user control; the default case is that
+  *             highest scoring documents are at the top
+  * @param {string} optionId The option value from the sort select
+  * @return {boolean} true if successful, false on error.
+  */
+  sortBy(optionId){
+      /* 
+       * The sort select options are constructed like:
+       *    FILTER-DIRECTION
+       * 
+       * The exceptions are Score and Titles, neither of
+       * which are filters, but simplicity's sake,
+       * we treat them like they are (e.g. ssScore-asc)
+       * 
+       */
+      const [filterId, direction] = optionId.split("-");
+      const IS_ASCENDING = (direction === "asc");
+      
+      /**
+       * Nested functions so that they can be 
+       * repurposed in the sorting chain 
+       * 
+       * All functions take three arguments: the two
+       * things to be compared and then the direction
+       * for sorting, since the preferred order
+       * (especially for secondary sorting) is
+       * contingent on where the sort occurs in the
+       * chain of requests
+       * 
+       * The mod variable simply reverses the math
+       * to multiple the comparison by -1 to make
+       * the order descending
+       */
+      const compareScore = (a, b, isAsc) => {
+          const mod = isAsc ? 1 : -1;
+          return (a[1].score - b[1].score) * mod;
+      }
+      const compareSortKey = (a, b, isAsc) => {
+          const mod = isAsc ? 1 : -1;
+          if (a[1].sortKey == b[1]) return 0;
+          return (a[1].sortKey.localeCompare(b[1].sortKey)) * mod;
+      }
+      const compareFilter = (a, b, isAsc) => {
+            const mod = isAsc ? 1 : -1;
+            const filterMap = this.titleSortIndex.get(filterId);
+            const aValue = filterMap.get(a[0]);
+            const bValue = filterMap.get(b[0]);
+            // If they are the same, we return 0
+            if (aValue === bValue) return 0;
+            // If neither exist, then just return 0
+            if (!aValue && !bValue) return 0;
+            // Sort missing values at the end, always
+            if (!aValue) return 1
+            if (!bValue) return -1
+            // Otherwise, we now need to switch
+            // depending on the type of filter
+            if (filterId.startsWith('ssDesc')){
+                // Alternatively, could use Intl. comparison
+                // which might be more memory efficient?
+                return aValue.localeCompare(bValue) * mod;
+            }
+            if (filterId.startsWith('ssBool')){
+                return aValue ? -1 : 1;
+            }
+            if (filterId.startsWith('ssDate')){
+                return (aValue - bValue) * mod;
+            }
+            if (filterId.startsWith('ssNum')){
+                return (aValue - bValue) * mod;
+            }
+            return (aValue - bValue) * mod;
+      }
+      
+      // Now the main function
+      try{
+          const s = this.mapDocs.size;
+          this.mapDocs = new Map([...this.mapDocs.entries()].sort((a, b) => {
+          
+             /**
+              * Most complicated case: There is some filter
+              * the user wants to sort by. 
+              * 1. Sort by filter value (order depending on user) 
+              * 2. Then sort by score (always descending)
+              * 3. Then sort by sortkey (always ascending)
+              * 
+              */
+              if (this.titleSortIndex.has(filterId)){
+                return compareFilter(a, b, IS_ASCENDING) || 
+                       compareScore(a, b, false) || 
+                       compareSortKey(a, b, true)
+              }
+              
+              /**
+               * Standard case: The sort is done by score (the default case)
+               * 1. Sort by score (order depending on user)
+               * 2. Sort by sortKey (always ascending)
+               * 
+               */
+              if (filterId == "ssScore"){
+                  return compareScore(a, b, IS_ASCENDING) || 
+                         compareSortKey(a, b, true)
+              }
+              
+              /**
+               * Title sort: This is always the default case
+               * 1. Sort by sortKey (order depending on user)
+               * 2. Sort by score (if available)
+               */
+              return compareSortKey(a, b, IS_ASCENDING) ||
+                     compareScore(a, b, false) 
+            }));
+        return (s === this.mapDocs.size);
+  } catch(e) {
+       console.log('ERROR: ' + e.message);
+       return false;
+  }
+ }
+  
 /**
   * @function SSResultSet~sortByScoreDesc
   * @description Sorts the collection of documents so that the highest

@@ -48,6 +48,9 @@
                 <span style="font-variant: small-caps;">Random Piffle</span>
             </span>
         </filter>
+        <filter filterName="Document type" sortable="true"/>
+        <filter filterName="Random numeric value" sortable="true"/>
         <filter filterName="Date range" sortable="true"/>
+        <filter filterName="Number of animal names" sortable="true"/>
     </filters>
 </config>

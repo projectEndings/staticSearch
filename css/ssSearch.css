@@ -268,3 +268,9 @@ body.ssSearching:not(.ssLoading) div#ssSearching, body.ssLoading:not(.ssSearchin
     transform: translate(-50%, -50%);
     display: block;
 }
+
+/*  Special styling for the result sorting */
+
+.ssSorter.hidden{
+    display:none;
+}
