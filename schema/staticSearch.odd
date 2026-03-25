@@ -1254,9 +1254,16 @@
         <head>What's new between versions?</head>
         <list>
           <item>Level: Intermediate</item>
-          <item>Last Updated: <date when="2026-01-23">23 January 2026</date></item>
+          <item>Last Updated: <date when="2026-03-25">25 March 2026</date></item>
         </list>
-        <div xml:id="newIn2.0">
+        
+        <div xml:id="newIn2.0.1">
+          <head>Changes in version 2.0.1</head>
+          <p>staticSearch 2.0.1 is a minor update to 2.0.0. It fixes one bug in the process
+          which automatically converts a version 1 config file into a version 2 configuration
+          file, and removes some unnecessary files from the distribution package.</p>
+        </div>
+        <div xml:id="newIn2.0.0">
         <head>Changes in version 2.0.0</head>
           <p>staticSearch 2.0 contains breaking changes and improvements to staticSearch. In particular,
             the configuration file has been significantly re-organized; configuration files made for earlier
