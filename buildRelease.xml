@@ -57,13 +57,18 @@
     <include name="images/**/*"/>
     <include name="js/**/*"/>
     <include name="lib/**/*"/>
+    <exclude name="lib/ant-contrib_docs/**"/>
+    <exclude name="lib/saxon_docs/**"/>
     <include name="schema/staticSearch.odd"/>
     <include name="schema/staticSearch.rng"/>
     <include name="schema/staticSearch.sch"/>
     <!-- NOTE: If we move the stemmers around, this will need to change. -->
-    <include name="stemmers/**/*"/>
+    <include name="stemmers/**/*.js"/>
+    <include name="stemmers/**/*.xsl"/>
+    <exclude name="stemmers/**/ssStemmerTest.js"/>
     <include name="stopwords/**/*"/>
     <include name="xsl/**/*"/>
+    <exclude name="xsl/config.xsl"/>
     <include name="build.xml"/>
     <include name="EDITION"/>
     <include name="license_BSD.txt"/>
