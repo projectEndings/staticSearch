@@ -186,7 +186,7 @@
                 resultsPerPage="{hcmc:getInteger(resultsPerPage, $defaultParams?results.resultsPerPage)}"
                 maxKwicsToShow="{hcmc:getInteger(maxKwicsToShow, $defaultParams?results.maxKwicsToShow)}"
                 maxResults="{hcmc:getInteger(resultsLimit, $defaultParams?results.maxResults)}"/>
-            <version file="{hcmc:getString(versionFile, $defaultParams?version.file)}"/>
+            <version file="{hcmc:getString(versionFile, '')}"/>
             <output dir="{hcmc:getString(outputFolder, $defaultParams?output.dir)}"/>
         </xsl:copy>
         
