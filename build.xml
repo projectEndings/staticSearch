@@ -251,7 +251,7 @@
       @version="2" on its root element. If not, it invokes the
       conversion process.
     </description>
-    <echo message="Checking version of config file ${ssBaseDir.converted}/${ssConfig}..."/>
+    <echo message="Checking version of config file ${ssConfigFile}..."/>
     <fileset id="configOnly" dir="${ssBaseDir.converted}" includes="${ssConfig}">
       <containsregexp expression="&lt;config[^&gt;]+version\s*=\s*.2."/>
     </fileset>
@@ -282,15 +282,15 @@ create a new file? (o=overwrite, n=new)"
     <if>
       <equals arg1="${outputStrategy}" arg2="o"/>
       <then>
-        <copy file="${ssBaseDir.converted}/${ssConfig}" tofile="${ssBaseDir.converted}/${ssConfig}.BAK"/>
-        <echo message="A backup of your config file has been created: ${ssBaseDir.converted}/${ssConfig}.BAK"/>
+        <copy file="${ssConfigFile}" tofile="${ssConfigFile}.BAK"/>
+        <echo message="A backup of your config file has been created: ${ssConfigFile}.BAK"/>
       </then>
     </if>
     
     <!--<echo message="${outputStrategy}"/>-->
     <java classpath="${ssSaxon}" classname="net.sf.saxon.Transform" failonerror="true" fork="true">
       <arg value="-xsl:${ssBaseDir.converted}/xsl/convert_v1_to_v2.xsl"/>
-      <arg value="-s:${ssBaseDir.converted}/${ssConfig}"/>
+      <arg value="-s:${ssConfigFile}"/>
       <arg value="--suppressXsltNamespaceCheck:on"/>
       <arg value="ssBaseDir=${ssBaseDir.converted}"/>
       <arg value="ssVerbose=${ssVerbose}"/>
