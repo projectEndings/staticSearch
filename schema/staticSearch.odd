@@ -1492,7 +1492,7 @@
         <head>Projects using staticSearch</head>
         <list>
           <item>Level: Basic</item>
-          <item>Last Updated: <date when="2025-11-14">14 November 2025</date></item>
+          <item>Last Updated: <date when="2025-11-14">7 May 2026</date></item>
         </list>
         <table>
           <row role="label">
@@ -1600,6 +1600,13 @@
             <cell><ref target="https://winnifredeatonarchive.org/search.html">Search</ref></cell>
             <cell>
               <ref target="https://github.com/winnifredeatonarchive/wea_data/blob/09ae8660007a10e23e80e2f5769aec0bf1f919c6/code/staticSearch/config.xml">Github</ref></cell>
+          </row>
+          <row>
+            <cell><ref target="https://cha.artsci.tamu.edu/CriticismArchive/">The Criticism Archive</ref></cell>
+            <cell>
+              <ref target="https://cha.artsci.tamu.edu/CriticismArchive/HTML/search.html">Search</ref>
+            </cell>
+            <cell></cell>
           </row>
           <!--<row>
             <cell><ref target="https://scancan.net">The Scandinavian-Canadian Studies Journal</ref></cell>
