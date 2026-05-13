@@ -21,7 +21,8 @@
   
   <xsl:include href="process_schema_for_config.xsl"/>
   
-  <xsl:output method="xhtml" html-version="5.0" encoding="UTF-8" indent="yes" omit-xml-declaration="yes"/>
+  <xsl:output method="xhtml" html-version="5.0" encoding="UTF-8" indent="yes" 
+    omit-xml-declaration="yes" include-content-type="no"/>
 
 
 <!-- Root template. -->
@@ -46,6 +47,9 @@
 <!-- Get rid of pointless itemprop attribute.  -->
   <xsl:template match="@itemprop"/>
   
+  <!-- Get rid of obsolete script/@type attribute.  -->
+  <xsl:template match="script/@type"/>
+  
 <!-- Section headers should be h2s.  -->
   <xsl:template match="section/header/h1 | section/h1">
     <h2><xsl:apply-templates select="@*|node()"/></h2>
@@ -56,10 +60,20 @@
     <h3><xsl:apply-templates select="@*|node()"/></h3>
   </xsl:template>
   
-<!-- Get rid of the meta charset element, since we already 
-     get the http-equiv one from Saxon and both should not 
-     be present. -->
-  <xsl:template match="meta[@charset]"/>
+<!-- Get rid of the meta[@http-equiv="Content-Type"] in favour of 
+     a cleaner meta[@charset]. -->
+  <xsl:template match="meta[@http-equiv='Content-Type']"/>
+  
+  <!-- Insert meta[@charset] if it is not there. -->
+  <xsl:template match="head">
+    <xsl:copy>
+      <xsl:apply-templates select="@*"/>
+      <xsl:if test="not(child::meta[@charset])">
+        <meta charset="UTF-8"/>
+      </xsl:if>
+      <xsl:apply-templates select="node()"/>
+    </xsl:copy>
+  </xsl:template>
   
   <!-- Regenerate the title element, cos it gets borked. Also add the viewport meta tag. -->
   <xsl:template match="title">
@@ -80,7 +94,7 @@
   
   <!--Add a little control before the egXML-->
   <xsl:template match="div[@id = 'configQuickstart_egXML']">
-    <input type="checkbox" id="configQuickstart_egXML_control">Show/Hide fillable inputs</input>
+    <input type="checkbox" id="configQuickstart_egXML_control"/><label for="configQuickstart_egXML_control">Show/Hide fillable inputs</label>
     <xsl:copy>
       <xsl:apply-templates select="@*|node()"/>
     </xsl:copy>
@@ -124,7 +138,7 @@
               </select>
             </xsl:when>
             <xsl:when test="$type = 'nonNegativeInteger'">
-              <input type="number" min="0" value="{$value}" size="4"/>
+              <input type="number" min="0" value="{$value}"/>
             </xsl:when>
             <!--If there's a configured valList (e.g. as it is 
                   for scoringAlgorithm), then create a select list-->
