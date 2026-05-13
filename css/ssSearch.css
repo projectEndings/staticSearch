@@ -13,6 +13,10 @@
  * search form elements and search results on 
  * the search page. */
 
+body{
+    --invalid-input-color: #ffc0cb;
+}
+
 form#ssForm{
     display: flex;
     flex-direction: column;
@@ -28,6 +32,10 @@ input#ssQuery{
 }
 input.staticSearch_feat:disabled{
   cursor: wait;
+}
+
+input:invalid{
+    background-color: var(--invalid-input-color);
 }
 
 /* Visually hide elements necessary for accessibility */
