@@ -63,7 +63,7 @@
     </xd:doc>
     <xsl:output method="xhtml" encoding="UTF-8" normalization-form="NFC"
         exclude-result-prefixes="#all" omit-xml-declaration="yes" html-version="5.0"
-        include-content-type="yes"/>
+        include-content-type="no"/>
 
     <!--**************************************************************
        *                                                            *
@@ -159,22 +159,29 @@
     <xd:doc>
         <xd:desc>This  template detects an HTML head element which does not contain an
             existing style element with the id ssCss, and injects one containing the code in
-            the <xd:ref name="css">$css</xd:ref> parameter. We place it first in the head element
-            so that any subsequent style element provided by the user can override it.</xd:desc>
+            the <xd:ref name="css">$css</xd:ref> parameter. We place it early in the head element
+            so that any subsequent style element provided by the user can override it.
+            We also take the opportunity to inject a meta[@charset] if there isn't one.
+        </xd:desc>
     </xd:doc>
-    <xsl:template match="head[not(*[@id='ssCss'])]">
+    <xsl:template match="head">
         <xsl:copy>
             <xsl:apply-templates select="@*"/>
-            <link rel="stylesheet" href="{$output.dir}/ssSearch.css" id="ssCss"/>
+            <xsl:if test="not(child::meta[@charset])">
+                <meta charset="UTF-8"/>
+            </xsl:if>
+            <xsl:if test="not(*[@id='ssCss'])">
+                <link rel="stylesheet" href="{$output.dir}/ssSearch.css" id="ssCss"/>
+            </xsl:if>
             <xsl:apply-templates select="node()"/>
         </xsl:copy>
     </xsl:template>
     
     <xd:doc>
-        <xd:desc>This suppresses the meta[@charset] element if any, because we
-        are including the content type in the xsl:output.</xd:desc>
+        <xd:desc>This suppresses the meta[@http-equiv] element if any, because we
+        are including the more standard meta[@charset].</xd:desc>
     </xd:doc>
-    <xsl:template match="meta[@charset]"/>
+    <xsl:template match="meta[@http-equiv eq 'Content-Type']"/>
     
     <xd:doc>
         <xd:desc>This is the main template for matching the staticSearch element
