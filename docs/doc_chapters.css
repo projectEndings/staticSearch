@@ -79,11 +79,13 @@ div[data-section] > nav > ul {
     list-style-type: none;
     margin-left:-1rem;
     margin-right:-1rem;
+    li.search>a, li.search>a:visited, li.search>a:hover{
+        text-decoration: none;
+    }
 }
 
 div[data-section] > h1 + ul > li{
        padding: 0 1rem;
- 
 }
 
 div[data-section] > h1 + ul > li:first-child{

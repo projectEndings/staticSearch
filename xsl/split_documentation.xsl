@@ -263,6 +263,9 @@
                         <a href="{$precedingSection/@id}.html"><xsl:sequence select="$precedingSection/header/h2/node()"/></a>
                     </xsl:if>
                 </li>
+                <li class="search">
+                    <a href="index.html">🔍</a>
+                </li>
                 <li class="next">
                     <xsl:if test="$followingSection">
                         <a href="{$followingSection/@id}.html">
