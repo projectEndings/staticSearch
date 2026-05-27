@@ -1254,8 +1254,16 @@
         <head>What's new between versions?</head>
         <list>
           <item>Level: Intermediate</item>
-          <item>Last Updated: <date when="2026-03-25">25 March 2026</date></item>
+          <item>Last Updated: <date when="2026-05-27">27 May 2026</date></item>
         </list>
+        
+        <div xml:id="newIn2.0.2">
+          <head>Changes in version 2.0.2</head>
+          <p>staticSearch 2.0.2 is a minor update to 2.0.1. It makes some improvements to
+            the HTML code in the search page, implements validity checking on date fields,
+            removes a few more unnecessary files, and adds a search field to every page
+            in the documentation site.</p>
+        </div>
         
         <div xml:id="newIn2.0.1">
           <head>Changes in version 2.0.1</head>
