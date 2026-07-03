@@ -27,4 +27,9 @@
     <xsl:param name="KEY_CONTEXT_IDS" as="xs:string" static="yes" select="'contextIds'"/>
     <xsl:param name="KEY_EXCLUDES" as="xs:string" static="yes" select="'excludes'"/>
     
+    <!-- We set the maximum length of a version string to 32 characters because 
+         version strings are used in constructing filenames, and filenames should
+         not be excessively long. -->
+    <xsl:param name="MAXLEN_VERSION_STRING" as="xs:integer" static="yes" select="32"/>
+    
 </xsl:stylesheet>

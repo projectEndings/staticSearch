@@ -138,7 +138,13 @@
                         select="unparsed-text(resolve-uri($mergedParams?version.file, $configUri)) =>
                         normalize-space() =>
                         replace('\s+','_')"/>
-                    <xsl:sequence select="if (starts-with($v,'_')) then $v else ('_' || $v)"/>
+                    <!-- Issue a warning if the version string is too long. -->
+                    <xsl:if test="string-length($v) gt $MAXLEN_VERSION_STRING">
+                        <xsl:message>BE WARNED: The version string is too long, and will 
+                        be truncated to <xsl:value-of select="$MAXLEN_VERSION_STRING"/> 
+                        characters.</xsl:message>
+                    </xsl:if>
+                    <xsl:sequence select="if (starts-with($v,'_')) then substring($v, 1, $MAXLEN_VERSION_STRING) else ('_' || substring($v, 1, $MAXLEN_VERSION_STRING))"/>
                     <xsl:catch>
                         <xsl:message>WARNING: No version file specified.</xsl:message>
                         <xsl:sequence select="'_' || hcmc:generateRandomHash()"/>
