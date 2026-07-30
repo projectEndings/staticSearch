@@ -1500,7 +1500,7 @@
         <head>Projects using staticSearch</head>
         <list>
           <item>Level: Basic</item>
-          <item>Last Updated: <date when="2025-11-14">7 May 2026</date></item>
+          <item>Last Updated: <date when="2026-07-30">30 July 2026</date></item>
         </list>
         <table>
           <row role="label">
@@ -1512,6 +1512,16 @@
             <cell><ref target="https://becklectures.uvic.ca/">The Beck Lecture Series</ref></cell>
             <cell><ref target="https://becklectures.uvic.ca/search.html">Search</ref></cell>
             <cell><ref target="https://hcmc.uvic.ca/svn/beck/config_staticSearch.xml">SVN</ref></cell>
+          </row>
+          <row>
+            <cell><ref target="https://www.boccaccioteseida.it/">Boccaccio's Teseida</ref></cell>
+            <cell>There are a variety of different search pages in this edition.</cell>
+            <cell>N/A</cell>
+          </row>
+          <row>
+            <cell><ref target="https://www.talesofcanterbury.org/">The Book of the Tales of Canterbury: A Critical Edition</ref></cell>
+            <cell>There are a variety of different search pages in this edition.</cell>
+            <cell>N/A</cell>
           </row>
           <row>
             <cell><ref target="https://hcmc.uvic.ca/project/bbti/">The British Book Trade Index</ref></cell>
