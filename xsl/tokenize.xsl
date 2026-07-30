@@ -98,10 +98,9 @@
     </xd:doc>
     <xsl:output indent="no" method="xml"/>
     
-    
     <!--**************************************************************
        *                                                            *
-       *                         Variables                          *
+       *              Variables and Parameters                      *
        *                                                            *
        **************************************************************-->  
     
@@ -134,8 +133,10 @@
     <xd:doc>
         <xd:desc>All of the above word regexes, strung together to match all
         possible words.</xd:desc>
+        <xd:desc>Note that this is surfaced as a configurable parameter, so 
+        that languages where tokenizing is more complicated can override it.</xd:desc>
     </xd:doc>
-    <xsl:variable name="tokenRegex">(<xsl:value-of select="string-join(($numericWithDecimal,$hyphenatedWord,$alphanumeric),'|')"/>)</xsl:variable>
+    <xsl:param name="tokenRegex">(<xsl:value-of select="string-join(($numericWithDecimal,$hyphenatedWord,$alphanumeric),'|')"/>)</xsl:param>
 
     
     <xd:doc>
