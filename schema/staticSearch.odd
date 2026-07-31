@@ -1779,7 +1779,8 @@
           </elementSpec>
           
           <elementSpec ident="stopwords" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
-            <gloss>Specifies a list of <term>stopwords</term>--that is, words to be ignored when indexing.</gloss>
+            <gloss>Specifies a list of <term>stopwords</term>--that is, words to be ignored when indexing. If you
+            do not wish to use any stopwords, create an empty file and point to it.</gloss>
             <classes>
               <memberOf key="ss.model.param"/>
               <memberOf key="ss.atts.file"/>
@@ -1809,7 +1810,10 @@
                 for your site is to generate your index, then search for the largest JSON index files that are 
                 generated, to see if they might be too common to be useful as search terms. You can also use the
                 <title>Word Frequency</title> table in the generated staticSearch report 
-                (see <ptr target="#theStaticSearchReport"/>).</p>
+                (see <ptr target="#theStaticSearchReport"/>). If you do not wish to use any stopwords, 
+                simply create an empty file and point to it. However, almost all projects will want to suppress
+                common words such as articles and pronouns.
+              </p>
               <p></p>
             </remarks>
           </elementSpec>
