@@ -5,9 +5,9 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2026-05-27T17:12:44Z. 2019–2026. 
-TEI Edition: P5 Version 4.11.0. Last updated on 18th February 2026, revision 358d2e48e 
-TEI Edition Location: https://www.tei-c.org/Vault/P5/4.11.0/ 
+Schema generated from ODD source 2026-07-31T17:20:02Z. 2019–2026. 
+TEI Edition: P5 Version 4.12.0. Last updated on 28th July 2026, revision 113e933e2 
+TEI Edition Location: https://www.tei-c.org/Vault/P5/4.12.0/ 
   
 --><!--Free to anyone for any purpose-->
    <define name="anyElement_span_1">
@@ -32,7 +32,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.11.0/
       <ns xmlns="http://purl.oclc.org/dsdl/schematron"
           prefix="xh"
           uri="http://www.w3.org/1999/xhtml"/>
-      <pattern xmlns="http://purl.oclc.org/dsdl/schematron" id="d10e3836-constraint">
+      <pattern xmlns="http://purl.oclc.org/dsdl/schematron" id="d10e3859-constraint">
          <rule context="xh:span">
             <report test="descendant::*[not(namespace-uri(.) =               ('http://www.w3.org/1999/xhtml', 'http://www.tei-c.org/ns/1.0'))]">span descendants must be in the
               namespaces
@@ -149,7 +149,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.11.0/
    </define>
    <define name="stopwords">
       <element name="stopwords" ns="http://hcmc.uvic.ca/ns/staticSearch">
-         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Specifies a list of stopwords--that is, words to be ignored when indexing.) </a:documentation>
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(Specifies a list of stopwords--that is, words to be ignored when indexing. If you do not wish to use any stopwords, create an empty file and point to it.) </a:documentation>
          <empty/>
          <attribute xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
                     name="file"
