@@ -1677,7 +1677,7 @@
                     </config>
                   </egXML>
                 </exemplum>
-                <remarks>
+                <remarks ident="configVersion">
                   <p>The <att>version</att> attribute only needs to specify the major version of staticSearch with which the configuration file is compatible. While minor versions may introduce new, optional configuration options, backwards-incompatible changes to the config will only occur across major versions (e.g. a configuration file created for staticSearch 1.1 will work with staticSearch 1.4, but is not guaranteed to work with staticSearch 2.0).</p>
                 </remarks>
               </attDef>
@@ -1718,7 +1718,7 @@
                 <gloss>The path (relative to the config file) to the search page.</gloss>
               </attDef>
             </attList>
-            <remarks>
+            <remarks ident="searchPagePath">
               <p>The search page is a regular HTML page which forms part of your site. The only 
             important characteristic it must have is a <gi>div</gi> element with 
               <att>id</att>=<val>staticSearch</val>, whose contents will be rewritten by 
@@ -1738,7 +1738,7 @@
                   <dataRef key="ssdata.boolean"/>
                 </datatype>
                 <defaultVal>false</defaultVal>
-                <remarks>
+                <remarks ident="recurseExplanation">
                   <p>This is useful for static sites that create nested
                     directory structures (such as those generated from Jekyll or Wordpress).</p>
                 </remarks>
@@ -1763,7 +1763,7 @@
                   <val>1.5</val>, <val>123456</val>, or <val>06ad419</val>).</gloss>
               </attDef>
             </attList>
-            <remarks>
+            <remarks ident="projVersionExplanation">
               <p><gi>version</gi> enables you to specify the path to a plain-text file
                 containing a simple version number for the project. This might take the form of 
                 a software-release-style version number such as <val>1.5</val>, or it might be
@@ -1779,7 +1779,8 @@
           </elementSpec>
           
           <elementSpec ident="stopwords" module="ss" ns="http://hcmc.uvic.ca/ns/staticSearch">
-            <gloss>Specifies a list of <term>stopwords</term>--that is, words to be ignored when indexing.</gloss>
+            <gloss>Specifies a list of <term>stopwords</term>--that is, words to be ignored when indexing. If you
+            do not wish to use any stopwords, create an empty file and point to it.</gloss>
             <classes>
               <memberOf key="ss.model.param"/>
               <memberOf key="ss.atts.file"/>
@@ -1794,7 +1795,7 @@
                 <defaultVal>stopwords/stopwords_en.txt</defaultVal>
               </attDef>
             </attList>
-            <remarks>
+            <remarks ident="stopwordExplanation">
               <p>A stopword is a word that will not be indexed, because it is too
                 common (<mentioned>the</mentioned>, <mentioned>a</mentioned>, <mentioned>you</mentioned>
                 and so on). There are common stopwords files for most languages available on the Web, but 
@@ -1809,7 +1810,10 @@
                 for your site is to generate your index, then search for the largest JSON index files that are 
                 generated, to see if they might be too common to be useful as search terms. You can also use the
                 <title>Word Frequency</title> table in the generated staticSearch report 
-                (see <ptr target="#theStaticSearchReport"/>).</p>
+                (see <ptr target="#theStaticSearchReport"/>). If you do not wish to use any stopwords, 
+                simply create an empty file and point to it. However, almost all projects will want to suppress
+                common words such as articles and pronouns.
+              </p>
               <p></p>
             </remarks>
           </elementSpec>
@@ -1829,7 +1833,7 @@
                 <defaultVal>dicts/words_en.txt</defaultVal>
               </attDef>
             </attList>
-            <remarks>
+            <remarks ident="dictionaryExplanation">
               <p>The indexing process checks each word as it builds the index, and keeps a record
                 of all words which are not found in the configured dictionary. Though this does not have
                 any direct effect in the indexing process, all words not found in the dictionary are listed
@@ -1857,7 +1861,7 @@
                   <dataRef name="nonNegativeInteger"/>
                 </datatype>
                 <defaultVal>2</defaultVal>
-                <remarks>
+                <remarks ident="minWordLengthExplanation">
                   <p>Values of 3 or above may be useful for European languages to exclude
                     common prepositions, articles, et cetera. If you set this to a lower
                     limit for reasons specific to your project, you should ensure that your
@@ -1886,7 +1890,7 @@
                     <desc>raw score</desc>
                     <gloss>Default: Calculate the score based on the weighted number of 
                       instances of a term in a text.</gloss>
-                    <remarks>
+                    <remarks ident="rawScoreExplanation">
                       <p>The raw score is simply the sum of all instances of a term 
                         (optionally multipled by a configured weight via the
                         <gi>rule</gi>/<att>weight</att> <ref target="#specifyingRules">configuration</ref>) in a document. This will usually provide good
@@ -1896,7 +1900,7 @@
                   <valItem ident="tf-idf">
                     <desc>tf-idf (term frequency-inverse document frequency)</desc>
                     <gloss>Calculate the score using the tf-idf scoring algorithm.</gloss>
-                    <remarks>
+                    <remarks ident="tf-idfExplanation">
                       <p>The tf-idf algorithm (term frequency-inverse document frequency)
                         computes the mathematical relevance of a term within a document relative to the rest
                         of the document collection. The staticSearch implementation of tf-idf basically follows the textbook definition of tf-idf:
@@ -1915,7 +1919,7 @@
                   <valItem ident="BM25">
                     <desc>BM25 (best matching 25)</desc>
                     <gloss>EXPERIMENTAL: Calculate the score using the BM25 scoring algorithm.</gloss>
-                    <remarks>
+                    <remarks ident="BM25Explanation">
                       <p>The BM25 (best matching 25) algorithm computes the relevance of a term within a document collection, taking into account term frequency saturation and relative document length. This is particularly useful for collections that have documents of significantly different lengths, or where TF-IDF relevance scoring may be misleading.</p>
                       <p>BM25 is used by many other search engines, such as Elastisearch and Lucene. For more information, see Elasticsearch's "<ref target="https://www.elastic.co/blog/practical-bm25-part-1-how-shards-affect-relevance-scoring-in-elasticsearch">Practical BM25</ref>" blog post.</p>
                     </remarks>
@@ -1923,14 +1927,14 @@
                   <valItem ident="BM25L">
                     <desc>BM25L (best matching 25 for long documents)</desc>
                     <gloss>EXPERIMENTAL: Calculate the score using Lv and Zhai's modification of BM25.</gloss>
-                    <remarks>
+                    <remarks ident="BM25LExplanation">
                       <p>This is an experimental adaptation of Lv and Zhai's (2011) modification of BM25 that attempts to normalize against BM25's penalization of longer documents. See <ptr target="https://dl.acm.org/doi/10.1145/2009916.2010070"/>. </p>
                     </remarks>
                   </valItem>
                 </valList>
               </attDef>
             </attList>
-            <remarks>
+            <remarks ident="scoringAlgorithmExplanation">
               <p><gi>scoringAlgorithm</gi> is an optional element that specifies which 
                 scoring algorithm to use when calculating the score of a term and thus the order
                 in which the results from a search are sorted.</p>
@@ -1971,7 +1975,7 @@
                 </valList>
               </attDef>
             </attList>
-            <remarks>
+            <remarks ident="stemmerExplanation">
               <p>The staticSearch project currently has only two real stemmers:
                 an implementation of the Porter 2 algorithm for modern English, and
                 an implementation of the French Snowball stemmer. These 
@@ -2052,7 +2056,7 @@
                   <valList type="closed">
                     <valItem ident="true"/>
                   </valList>
-                  <remarks><p>Setting <att>create</att>=<val>true</val> increases the size of the index, but makes for much more user-friendly search results; instead of seeing just a score for each document found, the user will see a series of short text strings with the search keyword(s) highlighted.</p></remarks>
+                  <remarks ident="createContextsExplanation"><p>Setting <att>create</att>=<val>true</val> increases the size of the index, but makes for much more user-friendly search results; instead of seeing just a score for each document found, the user will see a series of short text strings with the search keyword(s) highlighted.</p></remarks>
                 </attDef>
                 <attDef ident="phrasalSearch">
                   <gloss>Whether or not to support phrasal searches. 
@@ -2063,7 +2067,7 @@
                     <dataRef key="ssdata.boolean"/>
                   </datatype>
                   <defaultVal>true</defaultVal>
-                  <remarks>
+                  <remarks ident="phrasalSearchExplanation">
                     <p>Phrasal search functionality enables your users to search for specific phrases
                       by surrounding them with quotation marks (<code>"</code>), as in many search engines. In order 
                       to support this kind of search, <gi>createContexts</gi> must also be set to true as we store
@@ -2083,7 +2087,7 @@
                     <dataRef key="ssdata.boolean"/>
                   </datatype>
                   <defaultVal>true</defaultVal>
-                  <remarks>
+                  <remarks ident="wildcardExplanation">
                     <p>Wildcard searches are
                       more effective when phrasal searching is also turned on, because the contexts 
                       available for phrasal searches are also used to provide wildcard results.</p>
@@ -2101,7 +2105,7 @@
                     <dataRef name="nonNegativeInteger"/>
                   </datatype>
                   <defaultVal>5</defaultVal>
-                  <remarks>
+                  <remarks ident="maxKwicsExplanation">
                       <p>For example, if a user
                         searches for the word <q>elephant</q>, and it occurs 27 times in a document, but the 
                         <att>maxKwicsToHarvest</att> value is set to 5, then only the first five (sorted in document order)
@@ -2120,7 +2124,7 @@
                     <dataRef name="nonNegativeInteger"/>
                   </datatype>
                   <defaultVal>15</defaultVal>
-                  <remarks>
+                  <remarks ident="maxKwicLengthExplanation">
                     <p>The longer the keyword-in-context strings are, the larger the individual index
                       files will be, but the more useful the KWICs will be for users looking at the search results.
                       Note that the phrasal searching relies on the KWICs and thus longer KWICs allow for longer
@@ -2135,7 +2139,7 @@
                     <dataRef name="string"/>
                   </datatype>
                   <defaultVal>…</defaultVal>
-                  <remarks>
+                  <remarks ident="kwicTruncateStringExplanation">
                     <p>This parameter is particularly useful 
                       if the language of your search page conventionally uses a different ellipsis
                       character. Japanese, for example, uses the 3-dot-leader character.</p>
@@ -2143,7 +2147,7 @@
                 </attDef>
               </attList>
             </attList>
-            <remarks>
+            <remarks ident="contextsRequiredExplanation">
               <p>Note that contexts are necessary for phrasal searching or wildcard searching.</p>
             </remarks>
           </elementSpec>
@@ -2165,7 +2169,7 @@
                   <dataRef name="nonNegativeInteger"/>
                 </datatype>
                 <defaultVal>0</defaultVal>
-                <remarks>
+                <remarks ident="resultsPerPageExplanation">
                   <p>For most sites, where the number of results is likely to be in the low thousands,
                     it's perfectly practical to show all the results at once, because the staticSearch
                     processor is so fast. However, if you have tens of thousands of documents, and it's
@@ -2184,7 +2188,7 @@
                   <dataRef name="nonNegativeInteger"/>
                 </datatype>
                 <defaultVal>25</defaultVal>
-                <remarks>
+                <remarks ident="maxKwicsToShowExplanation">
                   <p><att>maxKwicsToShow</att> is useful for avoiding situations where a given query 
                     may result in hundreds of results (especially when searching for common words, et cetera)
                     and make the results page difficult to navigate.</p>
@@ -2199,7 +2203,7 @@
                   <dataRef name="nonNegativeInteger"/>
                 </datatype>
                 <defaultVal>2000</defaultVal>
-                <remarks>
+                <remarks ident="maxResultsExplanation">
                   <p>This configuration option is meant to prevent errors for sites where a given set of 
                     filters or search terms can return a set of document that can cause a browser's rendering
                     engine to fail. For smaller collections, it's unlikely
@@ -2229,13 +2233,13 @@
                   <dataRef name="NCName"/>
                 </datatype>
                 <defaultVal>staticSearch</defaultVal>
-                <remarks>
+                <remarks ident="dirIsXmlName">
                   <p>This should conform with the 
                     <ref target="https://www.w3.org/TR/REC-xml/#dt-name">XML Name</ref> specification.</p>
                 </remarks>
               </attDef>
             </attList>
-            <remarks>
+            <remarks ident="outputFolderExplanation">
               <p>When the staticSearch build process creates its output, many files need to be 
                 added to the website for which an index is being created. For convenience, all of 
                 these files are stored in a single folder. This element is used to specify the 
@@ -2273,7 +2277,7 @@
                 <datatype>
                   <dataRef name="string"/>
                 </datatype>
-                <remarks>
+                <remarks ident="labelExplanation">
                   <p>When describing a <gi>context</gi>, the <att>label</att> attribute names a component of the page that
                     can be searched within (see <ptr target="#searchOnlyIn"/>).</p>
                 </remarks>
@@ -2338,7 +2342,7 @@
                 </datatype>
               </attDef>
             </attList>
-            <remarks>
+            <remarks ident="indexWeightExplanation">
               <p>The rule element is used to identify nodes in the XHTML document collection which should be
                 treated in a special manner when indexed; either they might be ignored (if <att>weight</att>=<val>0</val>),
                 or any words found in them might be given greater weight than words in normal contexts 
@@ -2384,7 +2388,7 @@
                 </datatype>
               </attDef>
             </attList>
-            <remarks>
+            <remarks ident="contextBoundaryExplanation">
               <p>When the indexer is extracting keyword-in-context strings for each word, it uses a common-sense
                 approach based on common element definitions, so that for example when it reaches the end of a paragraph,
                 it will not continue into the next paragraph to get more context words. You may have special runs of 
@@ -2427,7 +2431,7 @@
                 </valList>
               </attDef>
             </attList>
-            <remarks>
+            <remarks ident="excludeExplanation">
               <p><gi>exclude</gi> can be used to identify documents or parts of documents that are to be omitted from 
                 indexing, but, unlike setting <gi>weight</gi> to zero, should be retained during the indexing process. This is helpful in cases where the text itself should be ignored by the indexer, but should still appear in KWICs. Another common use is for multiple search engines/pages that each have their own special features; in this case, you may want one specific search index/page to ignore filter controls (HTML <gi>meta</gi> elements, as 
                 described in <ptr target="#searchFacetFeatures"/>) which are provided to support other search pages.</p>
