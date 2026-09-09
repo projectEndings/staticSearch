@@ -14,6 +14,8 @@
         <xd:desc>
             <xd:p><xd:b>Created on:</xd:b> June 26, 2019</xd:p>
             <xd:p><xd:b>Updated on:</xd:b> November 16, 2023</xd:p>
+            <xd:p>Hacked in September 2026 by MDH as part of an experiment to support 
+            crude Japanese tokenization.</xd:p>
             <xd:p><xd:b>Authors:</xd:b> Joey Takeda and Martin Holmes</xd:p>
             <xd:p>This transformation takes as input one of the collection of documents specified in
                 the configuration file and creates the temporary tokenized and stemmed output HTML
@@ -135,8 +137,14 @@
         <xd:desc>All of the above word regexes, strung together to match all
         possible words.</xd:desc>
     </xd:doc>
-    <xsl:variable name="tokenRegex">(<xsl:value-of select="string-join(($numericWithDecimal,$hyphenatedWord,$alphanumeric),'|')"/>)</xsl:variable>
-
+    <!--<xsl:variable name="tokenRegex">(<xsl:value-of select="string-join(($numericWithDecimal,$hyphenatedWord,$alphanumeric),'|')"/>)</xsl:variable>-->
+    
+    <xd:doc>
+        <xd:desc>This is the experimental Japanese token regex, which is designed to split on boundaries
+        between different glyph types (hiragana, katakana, kanji, romaji, punctuation etc.).</xd:desc>
+    </xd:doc>
+    <xsl:variable name="tokenRegex" as="xs:string">([&#x3092;]+|[\p{IsHiragana}]+|[\p{IsKatakana}]+|[\p{IsCJKUnifiedIdeographs}]+|[A-Za-z]+|\p{N}+)</xsl:variable>
+    
     
     <xd:doc>
         <xd:desc>The identifier for the document within staticSearch; this is
