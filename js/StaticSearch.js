@@ -363,7 +363,7 @@ class StaticSearch{
       //We add a method which can be overridden by end users to do any 
       //special handling for input strings (such as removing some diacritics
       //but not others).
-      this.preProcessSearchString = function(strSearch){return strSearch;};
+      StaticSearch.preProcessSearchString = function(strSearch){return strSearch;};
 
       //Now we're instantiated, check to see if there's a query
       //string that should initiate a search.
