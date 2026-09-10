@@ -895,7 +895,9 @@ class StaticSearch{
       // Now clear the queryBox and replace its contents
       // by joining the normalized query, and putting 
       // any ampersands back where they were.
-      this.queryBox.value = this.normalizedQuery.join(" ").replace(/&amp;/, '&');
+      // Note: for the Japanese scenario, we don't do this;
+      // the preprocessed query will look weird to the end user.
+      //this.queryBox.value = this.normalizedQuery.join(" ").replace(/&amp;/, '&');
       
 
       //We always want to handle the terms in order of
@@ -1704,7 +1706,7 @@ if (this.discardedTerms.length > 0){
   //out any <mark> tags)...
                   let unmarkedContext = cntxt.context.replace(/<[^>]+>/g, '');
                   //Do a dual test to see if either version matches the context.
-                  if ((phraseRegex.test(unmarkedContext)) || (phraseRegexJa.text(unmarkedContext))){
+                  if ((phraseRegex.test(unmarkedContext)) || (phraseRegexJa.test(unmarkedContext))){
   //We have a candidate document for inclusion, and a candidate context.
                     let c = unmarkedContext.replace(phraseRegex, '<mark>' + '$&' + '</mark>');
                     currContexts.push(
