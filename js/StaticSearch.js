@@ -1688,7 +1688,11 @@ if (this.discardedTerms.length > 0){
             let stem = self.terms[phr].stem;
             let str = self.terms[phr].str;
             let phraseRegex = self.phraseToRegex(str);
-  //If that term is in the index (it should be, even if it's empty, but still...)
+            //Special for Japanese: we need to do some space-stripping as well
+            //so we create a modified version for a second possible match.
+            let phraseRegexJa = new RegExp(str.replace(/(?<=[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}\p{Punctuation}])\s+(?=[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}\p{Punctuation}])/gu, ''));
+            console.log('phraseRegexJa = ' + phraseRegexJa);
+            //If that term is in the index (it should be, even if it's empty, but still...)
             if (self.index[stem]){
   //Look at each of the document instances for that term...
               for (let inst of self.index[stem].instances){
@@ -1699,7 +1703,8 @@ if (this.discardedTerms.length > 0){
   //Check whether our phrase matches that context (remembering to strip
   //out any <mark> tags)...
                   let unmarkedContext = cntxt.context.replace(/<[^>]+>/g, '');
-                  if (phraseRegex.test(unmarkedContext)){
+                  //Do a dual test to see if either version matches the context.
+                  if ((phraseRegex.test(unmarkedContext)) || (phraseRegexJa.text(unmarkedContext))){
   //We have a candidate document for inclusion, and a candidate context.
                     let c = unmarkedContext.replace(phraseRegex, '<mark>' + '$&' + '</mark>');
                     currContexts.push(
