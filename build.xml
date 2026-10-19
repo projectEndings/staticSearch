@@ -143,9 +143,9 @@
 
   <!--Stemmer folder, which is forked, depending on whether or not a stemmer folder
         is specified in the configuration file-->
-  <property name="ssStemmerFolder" if:set="config.params.stemmerFolder"
+  <property name="ssStemmerFolder" if:set="config.params.stemmer.dir"
     value="${config.params.stemmerFolder}"/>
-  <property name="ssStemmerFolder" unless:set="config.params.stemmerFolder" value="en"/>
+  <property name="ssStemmerFolder" unless:set="config.params.stemmer.dir" value="en"/>
 
   <!--The directory for all of the static search assets (JSON files, Javascripts, et cetera).
         Note that the static search directory is placed directly within the collection directory-->
