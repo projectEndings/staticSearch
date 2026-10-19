@@ -5,7 +5,7 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://hcmc.uvic.ca/ns/staticSearch"><!--
-Schema generated from ODD source 2026-07-31T17:20:02Z. 2019–2026. 
+Schema generated from ODD source 2026-10-19T20:39:23Z. 2019–2026. 
 TEI Edition: P5 Version 4.12.0. Last updated on 28th July 2026, revision 113e933e2 
 TEI Edition Location: https://www.tei-c.org/Vault/P5/4.12.0/ 
   
@@ -218,17 +218,17 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.12.0/
          <empty/>
          <attribute xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
                     name="dir"
-                    a:defaultValue="stemmers/en/">
-            <a:documentation>(The path (relative to the config file) of the directory to use for stemming.) 
-Suggested values include: 1] stemmers/en/; 2] stemmers/fr/; 3] stemmers/identity; 4] stemmers/stripDiacritics</a:documentation>
+                    a:defaultValue="en/">
+            <a:documentation>(The path (relative to the stemmers directory) of the directory to use for stemming.) 
+Suggested values include: 1] en/; 2] fr/; 3] identity; 4] stripDiacritics</a:documentation>
             <choice>
-               <value>stemmers/en/</value>
+               <value>en/</value>
                <a:documentation>English stemmer</a:documentation>
-               <value>stemmers/fr/</value>
+               <value>fr/</value>
                <a:documentation>French stemmer</a:documentation>
-               <value>stemmers/identity</value>
+               <value>identity</value>
                <a:documentation>Identity stemmer</a:documentation>
-               <value>stemmers/stripDiacritics</value>
+               <value>stripDiacritics</value>
                <a:documentation>Diacritic stripping stemmer</a:documentation>
                <data type="anyURI"/>
             </choice>

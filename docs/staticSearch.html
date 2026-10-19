@@ -552,11 +552,11 @@ function showByMod() {
                         in which the JavaScript and XSLT implementations of stemmers can be found. 
                         If not specified, then the staticSearch default English  stemmer (en)
                         will be used.
-                        --&gt;</span><br/>  <span class="element">&lt;stemmer <span class="attribute">dir</span>="<span class="attributevalue"><span class="initial-value">stemmers/en/</span><span class="fillable-attval"><select>
-                                 <option value="stemmers/en/">stemmers/en/</option>
-                                 <option value="stemmers/fr/">stemmers/fr/</option>
-                                 <option value="stemmers/identity">stemmers/identity</option>
-                                 <option value="stemmers/stripDiacritics">stemmers/stripDiacritics</option></select></span></span>"/&gt;</span><br/>  <br/><span class="comment">&lt;!--
+                        --&gt;</span><br/>  <span class="element">&lt;stemmer <span class="attribute">dir</span>="<span class="attributevalue"><span class="initial-value">en/</span><span class="fillable-attval"><select>
+                                 <option value="en/">en/</option>
+                                 <option value="fr/">fr/</option>
+                                 <option value="identity">identity</option>
+                                 <option value="stripDiacritics">stripDiacritics</option></select></span></span>"/&gt;</span><br/>  <br/><span class="comment">&lt;!--
                         createContexts: Whether to include keyword-in-context extracts in the index.
                         --&gt;</span><br/>  <span class="element">&lt;createContexts <span class="attribute">maxKwicLength</span>="<span class="attributevalue"><span class="initial-value">15</span><span class="fillable-attval"><input type="number" min="0" value="15"/></span></span>"<br/>   <span class="attribute">create</span>="<span class="attributevalue"><span class="initial-value">true</span><span class="fillable-attval"><select>
                                  <option value="true">true</option>
@@ -755,7 +755,7 @@ function showByMod() {
                               <table class="specDesc">
                                  <tr>
                                     <td class="Attribute"><span class="att">dir</span></td>
-                                    <td>(<span>The path (relative to the config file) of the directory to use for stemming.</span>)</td>
+                                    <td>(<span>The path (relative to the stemmers directory) of the directory to use for stemming.</span>)</td>
                                  </tr>
                               </table>
                            </div>
@@ -1485,9 +1485,9 @@ function showByMod() {
                      <tr>
                         <td>stemmerFolder</td>
                         <td>Becomes a <a class="link_ref" href="#TEI.stemmer" title="&lt;stemmer&gt;">&lt;stemmer&gt;</a> element with a <span class="att">dir</span> attribute</td>
-                        <td>The path is prefixed with 
+                        <td>The path will automatically be prefixed with 
                            <pre id="index.xml-eg-d38e1976" class="pre_eg cdata">stemmers/<a href="#index.xml-eg-d38e1976" class="anchorlink">⚓</a></pre>; now written as 
-                           <div id="index.xml-egXML-d38e1978" class="pre egXML_valid"><span class="element">&lt;stemmer <span class="attribute">dir</span>="<span class="attributevalue">stemmers/en</span>"/&gt;</span></div>
+                           <div id="index.xml-egXML-d38e1978" class="pre egXML_valid"><span class="element">&lt;stemmer <span class="attribute">dir</span>="<span class="attributevalue">en</span>"/&gt;</span></div>
                         </td>
                      </tr>
                      <tr>
@@ -3334,7 +3334,7 @@ element span { attribute lang { text }?, ( anyElement_span_1* | text )+ }<a href
                                  <table class="attList">
                                     <tr>
                                        <td class="odd_label">dir</td>
-                                       <td class="odd_value">(<span>The path (relative to the config file) of the directory to use for stemming.</span>) 
+                                       <td class="odd_value">(<span>The path (relative to the stemmers directory) of the directory to use for stemming.</span>) 
                                           <div class="table">
                                              <table class="attDef">
                                                 <tr>
@@ -3353,13 +3353,13 @@ element span { attribute lang { text }?, ( anyElement_span_1* | text )+ }<a href
                                                    <td class="odd_label"><span xml:lang="en" lang="en" class="label">Suggested values include:</span></td>
                                                    <td class="odd_value">
                                                       <dl class="valList">
-                                                         <dt><span class="odd_label">stemmers/en/</span></dt>
+                                                         <dt><span class="odd_label">en/</span></dt>
                                                          <dd><span>English stemmer</span><span xml:lang="en" lang="en" class="defaultVal">[Default] </span></dd>
-                                                         <dt><span class="odd_label">stemmers/fr/</span></dt>
+                                                         <dt><span class="odd_label">fr/</span></dt>
                                                          <dd><span>French stemmer</span></dd>
-                                                         <dt><span class="odd_label">stemmers/identity</span></dt>
+                                                         <dt><span class="odd_label">identity</span></dt>
                                                          <dd><span>Identity stemmer</span></dd>
-                                                         <dt><span class="odd_label">stemmers/stripDiacritics</span></dt>
+                                                         <dt><span class="odd_label">stripDiacritics</span></dt>
                                                          <dd><span>Diacritic stripping stemmer</span></dd>
                                                       </dl>
                                                    </td>
@@ -3432,13 +3432,7 @@ element span { attribute lang { text }?, ( anyElement_span_1* | text )+ }<a href
                               <pre id="index.xml-eg-d38e4920" class="pre_eg cdata">
 element stemmer
 {
-   attribute dir
-   {
-      "stemmers/en/"
-    | "stemmers/fr/"
-    | "stemmers/identity"
-    | "stemmers/stripDiacritics"
-   },
+   attribute dir { "en/" | "fr/" | "identity" | "stripDiacritics" },
    empty
 }<a href="#index.xml-eg-d38e4920" class="anchorlink">⚓</a></pre>
                            </td>
@@ -3882,7 +3876,7 @@ ssdata.boolean = "true" | "false"<a href="#index.xml-eg-d38e5481" class="anchorl
             <!--
  Generated from index.xml using XSLT stylesheets version 7.62.0a
 		 based on http://www.tei-c.org/Stylesheets/
-		 on 2026-07-31T17:20:09Z.
+		 on 2026-10-19T20:39:27Z.
 		 SAXON HE 11.7.
 		   --></address>
       </div>

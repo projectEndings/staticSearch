@@ -1330,9 +1330,8 @@
             <row>
               <cell>stemmerFolder</cell>
               <cell>Becomes a <gi>stemmer</gi> element with a <att>dir</att> attribute</cell>
-              <cell>The path is prefixed with <eg>stemmers/</eg>; now written as <egXML xmlns="http://www.tei-c.org/ns/Examples">
-                  <stemmer dir="stemmers/en"/>
-                  
+              <cell>The path will automatically be prefixed with <eg>stemmers/</eg>; now written as <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                  <stemmer dir="en"/>
               </egXML>
               </cell>
             </row>
@@ -1957,19 +1956,19 @@
             </content>
             <attList>
               <attDef ident="dir" mode="change">
-                <gloss>The path (relative to the config file) of the directory to use for stemming.</gloss>
-                <defaultVal>stemmers/en/</defaultVal>
+                <gloss>The path (relative to the stemmers directory) of the directory to use for stemming.</gloss>
+                <defaultVal>en/</defaultVal>
                 <valList mode="add" type="semi">
-                  <valItem ident="stemmers/en/">
+                  <valItem ident="en/">
                     <desc>English stemmer</desc>
                   </valItem>
-                  <valItem ident="stemmers/fr/">
+                  <valItem ident="fr/">
                     <desc>French stemmer</desc>
                   </valItem>
-                  <valItem ident="stemmers/identity">
+                  <valItem ident="identity">
                     <desc>Identity stemmer</desc>
                   </valItem>
-                  <valItem ident="stemmers/stripDiacritics">
+                  <valItem ident="stripDiacritics">
                     <desc>Diacritic stripping stemmer</desc>
                   </valItem>
                 </valList>

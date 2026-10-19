@@ -7,7 +7,7 @@
       <stopwords file="stopwords/stopwords_en.txt"/>
       <dictionary file="dicts/words_en.txt"/>
       <scoringAlgorithm name="raw"/>
-      <stemmer dir="stemmers/en"/>
+      <stemmer dir="en"/>
       <tokenizer minWordLength="2"/>
       <createContexts create="true"
                       phrasalSearch="true"
