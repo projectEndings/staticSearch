@@ -287,7 +287,7 @@
                 </xd:doc>
                 <!-- First, we have to include the stemmer. We can't do this dynamically because
                     a dynamic variable can't be used to create a shadow attribute. -->
-                <xso:include href="{$ssBaseDir || '/' || $mergedParams?stemmer.dir || '/ssStemmer.xsl'}"/>
+                <xso:include href="{$ssBaseDir || '/stemmers/' || $mergedParams?stemmer.dir || '/ssStemmer.xsl'}"/>
                 <xso:include href="constants.xsl"/>
                 <!--First, create the global variables and parameters-->
                 <xsl:call-template name="createGlobals" exclude-result-prefixes="#all"/>
