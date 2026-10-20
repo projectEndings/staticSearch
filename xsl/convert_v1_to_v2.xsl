@@ -155,7 +155,7 @@
             
             <scoringAlgorithm name="{hcmc:getString(scoringAlgorithm, $defaultParams?scoringAlgorithm.name)}"/>
             <xsl:variable name="stemmerFolder" 
-                select="if (stemmerFolder) then concat('stemmers/', stemmerFolder) else ()" as="xs:string?"/>
+                select="if (stemmerFolder) then stemmerFolder else ()" as="xs:string?"/>
             <stemmer
                 dir="{hcmc:getString($stemmerFolder, $defaultParams?stemmer.dir)}"/>
             <tokenizer minWordLength="{hcmc:getInteger(minWordLength, $defaultParams?tokenizer.minWordLength)}"/>
